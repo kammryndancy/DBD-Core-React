@@ -1,0 +1,214 @@
+0010 REM "Order Processing Parameter Setup V <FM2MPN>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 08/29/03 - 13.377222 - lms - SSP# 164010
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM ***NOTE FM2MPD USES BYTES 201 TO 212*******
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FM2MPN",X1$="Order Processing Parameter Setup V"
+0135 C9=-1,V0=-5
+0136 L4=15,L5=5,L6=24,L7=9,L8=28
+0140 M0$="-##,##0",M1$="-##0",M2$="-###.00"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 K9$=X3$(9,3)+"F/M",K9=LEN(K9$)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5],A[6]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ZZPARM  06O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0620 GOSUB 6000
+1000 REM "
+1010 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1035 DIM A$(512),A[6]
+1045 A$(1,0+K9)=K9$+A1$
+1060 PRINT (0,ERR=1070)'CF',; GOSUB 6450; GOTO 1100
+1070 GOSUB 6000; GOSUB 6450
+1100 REM "KEY SEQ
+1110 X0=-1,C0=0,X1=0,C9=0,Z9=0
+1120 C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 9900
+1140 ON X0 GOTO 1500
+1200 REM "
+1215 IF C0<0 THEN GOTO 9900
+1500 REM "
+1505 Z9=-1
+1510 A1$=K9$
+1520 READ (Z[1],KEY=A1$,DOM=1600)IOL=0310
+1525 Z9=0
+1590 GOTO 1700
+1600 REM "
+1620 CALL "ZZPROM","2",X3$,Z,"","","",0; ON Z GOTO 1650,1630
+1630 GOTO 9800
+1690 GOTO 2000
+1700 REM "
+1790 GOSUB 6200
+1800 REM "
+1820 CALL "ZZPROM","P",X3$,Z,"","","",X0; ON Z GOTO 1850,6700
+1830 GOTO 2000
+1850 REM "MODIFY
+1855 X0=X0-1; IF Z9=1 THEN GOTO 1880 ELSE IF Z9=0 THEN Z9=1
+1860 EXTRACT (Z[1],KEY=A1$,DOM=1870)IOL=0310
+1865 C9=1
+1870 GOSUB 6200
+1890 IF Z<0 THEN GOTO 2035 ELSE GOTO 2000
+2000 REM "DATA SEQ
+2010 C0=0,X0=-1,X1=1
+2020 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+2025 IF C0>3 OR X0<0 THEN GOTO 1800
+2040 ON X0 GOTO 2200,2250,2300,2350,2400,2450,2500,2550,2600,3150,2650,2700,2750,2800,2850,2900,2950,3000,3050,3100,1800
+2200 REM "Display Order Summary Screen in Req/Release Entry (O/P-D1)?
+2210 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,3,245,1,C0,"","{3"+X$,"","FM2MPN02","","",""
+2240 GOTO 2020
+2250 REM "Enable Customer Item Code Feature?
+2255 REM "IF POS(X3$(9,3)="434449500470474",3)=0 THEN GOTO 02020 ELSE LET X$="ENABLE CUSTOMER'S ITEM CODE FEATURE?"
+2256 X$="New Feature, Limited Functionality"
+2260 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,4,246,1,C0,"","{3"+X$,"","FM2MPN04","","",""
+2290 GOTO 2020
+2300 REM "Eliminate Send Letter type?
+2305 X$="Also O/P,D1 TYL field"; REM "WO109643
+2310 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,5,247,1,C0,"","{3"+X$,"","FM2MPN06","","",""
+2340 GOTO 2020
+2350 REM "Eliminate Print Shipping Ack?
+2360 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,6,248,1,C0,"","{3"+X$,"","FM2MPN08","","",""
+2390 GOTO 2020
+2400 REM "Enable Duplicate Ship-to Check in order entry
+2410 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,7,249,1,C0,"","{3"+X$,"","FM2MPN10","","",""
+2440 GOTO 2020
+2450 REM "Enable receiving/billing department feature
+2460 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,8,250,1,C0,"","{3"+X$,"","FM2MPN12","","",""
+2490 GOTO 2020
+2500 REM "Set Special Ship? to 'Y' for custom forms in Order Entry O/P-D1?
+2505 X$="If P/O code entered for a Custom Item default Special Ship to 'Y'"
+2510 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,9,251,1,C0,"","{3"+X$,"","FM2MPN14","","",""
+2540 GOTO 2020
+2550 REM "2nd set of Carton Label formats
+2560 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,10,252,1,C0,"","{3"+X$,"","FM2MPN16","","",""
+2590 GOTO 2020
+2600 REM "Calculate RON suggested reorder qty based on avg monthly usage?
+2605 X$="If sug reorder qty in F/M=0 & reorder point days is not 0,M=enter # of months"
+2610 CALL "ZZENTR","SRU",A{ALL},A$,X4$,X3$,70,11,253,1,C0,"","{3"+X$,"YNM","FM2MPN18","","",""
+2640 GOTO 2020
+2650 REM "When modifying an existing order line, retain original selling price
+2655 REM "REMOVED 2655 on 3/27/98 cwj
+2660 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,12,254,1,C0,"","{3"+X$,"","FM2MPN20","","",""
+2690 GOTO 2020
+2700 REM "Notify operator order is bill as shipped
+2710 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,13,255,1,C0,"","{3"+X$,"","FM2MPN22","","",""
+2740 GOTO 2020
+2750 REM "Allow Over Shipment
+2760 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,14,256,1,C0,"","{3"+X$,"","FM2MPN24","","",""
+2790 GOTO 2020
+2800 REM "Allow Change by invoice if Summary Bill
+2810 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,15,257,1,C0,"","{3"+X$,"","FM2MPN26","","",""
+2840 GOTO 2020
+2850 REM "Enable Backorder Fill Feature from Inventory Transactions
+2860 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,16,258,1,C0,"","{3"+X$,"","FM2MPN28","","",""
+2890 GOTO 2020
+2900 REM "Do not bring sell unit in from lot to req line for customer owned
+2910 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,17,259,1,C0,"","{3"+X$,"","FM2MPN30","","",""
+2940 GOTO 2020
+2950 REM "Set U/M for N-other line type in O/P, O1 as 'M' instead of 'EACH'
+2960 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,18,260,1,C0,"","{3"+X$,"","FM2MPN32","","",""
+2990 GOTO 2020
+3000 REM "Automatically add freight from selected lots to order header freight field
+3005 X$="Freight returned from selected lots in O/P,O1 & D1 & Auto Reqs"
+3010 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,19,261,1,C0,"","{3"+X$,"","FM2MPN34","","",""
+3040 GOTO 2020
+3050 REM "Display maximum when displaying location's req max exceed warning
+3055 X$="Enable location's requisition maximum exceeded warning must be set to 'Y'"
+3060 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,20,262,1,C0,"","{3"+X$,"","FM2MPN36","","",""
+3090 GOTO 2020
+3100 REM "Retain message lines in order history
+3110 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,21,263,1,C0,"","{3"+X$,"","FM2MPN38","","",""
+3140 GOTO 2020
+3150 REM "NUMBER OF MONTHS FOR REORDER CALCULATION - SSP# 160722
+3155 IF A$(253,1)<>"M" THEN GOTO 2020
+3160 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,72,11,307,2,C0,"","{3"+X$,"","FM2MPN18","","",""
+3170 IF NUM(A$(307,2))<0 THEN GOTO 3160
+3172 IF NUM(A$(307,2))>12 THEN GOTO 3160
+3190 GOTO 2020
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6050 PRINT @(4,3),"Enable Sales Order Summary Display in Req/Release Entry (O/P-D1)?",
+6055 PRINT @(33,4),"Enable Customer's Item Code Feature?",
+6060 PRINT @(8,5),"Eliminate 'Send Letter Type' from O/E Header Screen (O/P-O1)?",@(0,6),"Eliminate 'Print shipping acknowledgement' from O/E Hdr Scr (O/P-O1)?",
+6065 PRINT @(1,7),"When out of stock in O/P-D1, warn if order exists with same ship-to?",
+6070 PRINT @(25,8),"Enable receiving/billing department feature?",
+6075 PRINT @(5,9),"Set Special Ship? to 'Y' for custom forms in Order Entry O/P-O1?",@(2,10),"Do you require a 2nd set of Carton Label fields by Order Line item?",
+6080 PRINT @(6,11),"Calculate RON Suggested Reorder Qty based on Avg Monthly Usage?",
+6090 PRINT @(1,12),"When modifying an existing order line, retain entered selling price?",@(3,13),"Notify operator order is bill as shipped in PO Receiving (P/O-P3)?",
+6095 PRINT @(49,14),"Allow Over Shipment?",@(26,15),"Allow Exclusion of Invoice on Summary Bill?",
+6096 PRINT @(11,16),"Enable Backorder Fill Feature from Inventory Transactions?",@(6,17),"Do not bring sell unit from lot to req line for customer owned?",
+6097 PRINT @(2,18),"Set U/M for N-other line type in O/P, O1 as 'M' rather than 'EACH'?",
+6099 PRINT @(3,19),"Automatically add freight from lots to order header freight field?",
+6105 PRINT @(3,20),"Display maximum when displaying location's req max exceed warning?",
+6110 PRINT @(31,21),"Retain message lines in order history?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6215 GOSUB 6450
+6230 PRINT @(70,3),A$(245,1),@(70,4),A$(246,1),@(70,5),A$(247,1),@(70,6),A$(248,1),@(70,7),A$(249,1),@(70,8),A$(250,1),@(70,9),A$(251,1),@(70,10),A$(252,1),@(70,11),A$(253,1),@(70,12),A$(254,1),@(70,13),A$(255,1),@(70,14),A$(256,1),@(70,15),A$(257,1),@(70,16),A$(258,1),@(70,17),A$(259,1),@(70,18),A$(260,1),@(70,19),A$(261,1),@(70,20),A$(262,1),@(70,21),A$(263,1),
+6240 PRINT @(72,11),A$(307,2),; REM " SSP# 160722
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6430 IF C9>=0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6455 IF C9<0 THEN GOTO 6445
+6490 RETURN 
+6500 REM "DELETE
+6510 REMOVE (Z[1],KEY=A1$,DOM=6511)
+6590 GOTO 1630
+6600 REM "ALT KEY DATA READS
+6690 RETURN 
+6700 REM "ADD ENTRY
+6705 IF Z9=0 THEN GOTO 6790
+6710 WRITE (Z[1],KEY=A1$)IOL=0310
+6790 GOTO 1630
+6800 REM "NEXT ENTRY IN FILE
+6810 A1$=KEY(Z[1],END=6895)
+6820 A$(1,LEN(A1$))=A1$
+6825 IF A1$(1,LEN(K9$))<>K9$ THEN GOTO 6895
+6830 GOSUB 6600
+6835 GOSUB 6450
+6890 GOTO 1515
+6895 PRINT 'RB',; READ (Z[1],KEY=K9$,DOM=1140); GOTO 1140
+6902 V9$="2803  2804  4803  2906  2907  4806  6009  6010  6011  "
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "FM2MPO"
+9999 END 

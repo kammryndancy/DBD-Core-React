@@ -1,0 +1,163 @@
+0010 REM "Build AS9 from ARK & AR6    <AR2UTN>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 09/19/08 - 15.738333 - jvv - SSP# 217566
+0037 REM "217566-Commission substitution by vendor to allow certain house    
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UTN",X1$="Build Comm Booked from Comm Pending"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11] ! SSP 217566
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ARK...  02O AR6...  03O AS9...  04O ASA...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0630 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 DIM A$(65),A[15]
+1000 REM 
+1001 REM "C is count of ARK recs processed, C1 is count of records added to AS9
+1009 REM "Read ARK
+1010 READ (Z[1],END=5000)IOL=0310
+1014 REM "Read AR6 if available
+1015 DIM B$(169),B[14]
+1020 READ (Z[2],KEY=A$(1,18),DOM=1021)IOL=0320
+1049 REM "Calculate salesperson splits into S(1)-S(5), if 1st is blank, assume all others are too, put all into S(1); NOTE: commissions are based on commissions PENDING, not total - S(1)-S(5) IS COMMISSION, P(1)-P(5) IS GROSS PROFIT (TOTAL GP NOT PENDING); ALSO PRORATE NET AMOUNT N(1)-N(5)
+1050 DIM N[5],P[5],S[5]; N0=A[1],P0=A[3],S0=A[4]
+1055 IF POS(" "<>A$(46,4))=0 THEN N[1]=A[1],S[1]=A[4],P[1]=A[3]; GOTO 1100
+1060 FOR I=1 TO 5
+1064 REM "If last one(5) or last one filled in, put all into bucket & go
+1065 IF I=5 THEN N[5]=N0,S[5]=S0,P[5]=P0; EXITTO 1091 ELSE IF POS(" "<>A$(46+I*4,4))=0 THEN N[I]=N0,S[I]=S0,P[I]=P0; EXITTO 1091
+1069 REM "Calculate based on sp% & subtract from commission left to disburse (S0)
+1070 S1=S0*A[10+I]/100,S[I]=S1,S0=S0-S1,P1=P0*A[10+I]/100,P[I]=P1,P0=P0-P1,N1=N0*A[10+I]/100,N[I]=N1,N0=N0-N1
+1090 NEXT I
+1100 REM "If fiscal year & AP are blank(couldnot find AR6) then calculate from invoice date, using month for period & year for FY.
+1105 IF POS(" "<>B$(127,6))<>0 THEN F$=B$(127,6); GOTO 1120
+1110 J$=FND$(A$(19,6))
+1115 F$=J$(7,4)+J$(1,2)
+2000 REM "Create an AS9 Record for each salesperson & write out
+2100 REM 
+2105 FOR I=1 TO 5
+2110 IF POS(" "<>A$(42+I*4,4))=0 THEN EXITTO 2896
+2120 DIM C$(200),C[11] ! SSP 217566
+2204 REM "Fiscal Year & Acctg period
+2205 C$(1,6)=F$
+2209 REM "Salesperson
+2210 C$(7,4)=A$(42+I*4,4)
+2214 REM "Invoice number
+2215 C$(11,8)=A$(11,8)
+2219 REM "Customer number
+2220 C$(22,10)=A$(1,10)
+2224 REM "Invoice Date
+2225 C$(32,6)=A$(19,6)
+2229 REM "Item number is left blank
+2234 REM "Item description
+2235 C$(58,40)="Conversion invoice - "+FND$(X3$(21,6))
+2239 REM "Selling Unit of measure
+2240 C$(98,4)="EACH"
+2244 REM "Commission code
+2245 C$(102,5)=A$(35,5)
+2249 REM "Invoice paid in full? - if yes, there would be no pending record
+2250 C$(107,1)=" "
+2264 REM "Order number ( will be blank if AR6 record not found)
+2265 C$(108,8)=B$(66,8)
+2269 REM "Quantity (in eaches)
+2270 C[0]=1
+2274 REM "Quantity per selling u/m
+2275 C[1]=1
+2279 REM "Unit price - = invoice net amount - PRORATED
+2280 C[2]=N[I]
+2284 REM "Unit cost - PRORATED invoice net amount - invoice gross profit
+2285 C[3]=N[I]-P[I]
+2289 REM "Extended price  - = invoice net amount PRORATED
+2290 C[4]=N[I]
+2294 REM "Extended cost -PRORATED invoice net amount - invoice gross profit
+2295 C[5]=N[I]-P[I]
+2299 REM "Salesperson GP - from sp splits in P()
+2300 C[6]=P[I]
+2304 REM "Salesperson comm - from  sp splits in S()
+2305 C[7]=S[I]
+2400 REM "GP SSP 217566
+2405 C[8]=C[4]-C[5] ! SSP 217566
+2410 REM "GP ADJ 217566
+2415 C[9]=P[I]-C[8] ! SSP 217566
+2700 REM "Write out record, there should be only this one for this fy,ap,sp,inv,so set the seq # and write out with a DOM, if already there, we skip it.
+2705 C$(19,3)="000"
+2707 GOSUB 7700; IF Q=1 THEN GOTO 2716
+2710 WRITE (Z[3],KEY=C$(1,21),DOM=2716)IOL=0330
+2713 REM "if write is successful, update ASA
+2714 C1=C1+1
+2715 WRITE (Z[4],KEY=C$(22,10)+C$(11,8)+C$(1,10)+C$(19,3))
+2755 C=C+1
+2760 IF MOD(C,T1)=1 THEN GOSUB 8150; PRINT @(20,20),C$(22,10)," - ",C$(11,8),
+2895 NEXT I
+2995 GOTO 1000
+5000 REM "EOJ
+5005 PRINT @(20,20),'CL',
+5010 J$="Process complete!!    "+FNS$(STR(C1:"###,##0"))+" records added to AS9."
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,J$,"","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will add information to the Commissions Booked by   ",'LF',"Line file (AS9) based on invoice totals in the Commissions Pending file (ARK).",'LF',"Some data will be retreived from the Invoice History file (AR6) if the record ",'LF',"is available, if not the order number will be blank and the FY and period will ",'LF',"be set from the invoice date. There will be one record for each salesperson on ",'LF',"each invoice that is not already in AS9.   The data will be a summary of the ",'LF',"invoice without item detail. The results can be maintained with menu option ",'LF',"SAR - M9. The sort file ASA is also updated."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7700 REM "Check ASA for duplicate Customer #, invoice #. Q=1 if duplicate, Q=0 if not
+7705 Q=0
+7710 READ (Z[4],KEY=C$(22,10)+C$(11,8),DOM=7711)
+7715 K$=KEY(Z[4],END=7745)
+7720 IF K$(1,18)=C$(22,10)+C$(11,8) THEN Q=1 ELSE Q=0
+7745 RETURN 
+8100 REM "Get approx total number of records T, by div'ing #sectors @512 per, by the record size we are expecting.
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,12),"There are "+STR(T)+" Commission Pending records to process"
+8120 T1=INT(T*.02); IF T1=1 THEN T1=2; REM " set to 2% of total record,if 1 set to 2 to do mod correctly
+8145 RETURN 
+8150 REM "Display horiz. bar graph given total #, T and current #, C
+8155 CALL "ZZBARG",X3$,"HG",16,10,50,T2,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("          "=Z9$+"          ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

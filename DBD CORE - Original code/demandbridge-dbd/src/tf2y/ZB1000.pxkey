@@ -1,0 +1,115 @@
+<PxTable>
+ TableName=ZB1000
+ TableKey=K1007399613
+ FileCreate=KEYED "ZB1000",23,180,768,BSZ=4,OPT="0"
+ MaxFields=00004
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           "
+    FIELD_1$="001SAMPLE-01           SCustomer Credit Limit Data         AR_CUSTOMER_MASTER  1                                           13100005   Customer Credit Limit Data                                                                                                                                                                                                K102051735                  "
+    FIELD_2$="CUSTOMER_CODE       0110A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    66                                                                                                             "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           "
+    FIELD_1$="001SAMPLE-02           SSAMPLE-01, multiple lines          AR_CUSTOMER_MASTER  1                                           13100006   Customer Credit Data                                             (Report prints 2 lines per customer w/ a blank line between)                                                                              B1U                    "
+    FIELD_2$="CUSTOMER_CODE       0010A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    66              "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           "
+    FIELD_1$="001SAMPLE-03           SSAMPLE-02, Only Cust. over limit   AR_CUSTOMER_MASTER  1                                           13100020   Customer Credit Data                                             (SAMPLE-02, but only customers over the credit limit)                                                                                     B1U                    "
+    FIELD_2$="CUSTOMER_CODE       0010A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    66              "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           "
+    FIELD_1$="001SAMPLE-04           SSAMPLE-03 sorted by Salesperson    AR_CUSTOMER_MASTER  1                     T                     13100021   Customer Credit Data                                             (SAMPLE-03, sorted by salesperson code)                                                                                                   B1U                    "
+    FIELD_2$="SALESPERSON_CODE    1104A1S   LOOKUP_SEQUENCE     0010A1S                                                                                                                                                         "
+    FIELD_3$="IU     NNN    66              "
+    FIELD_4$="    ~~~~          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           "
+    FIELD_1$="001SAMPLE-05           SSAMPLE-04 using page heading fieldsAR_CUSTOMER_MASTER  1                     T                     10000022   Customer Credit Data                                             (SAMPLE-04, With Salesperson headers)                                                                                                     B1US                   "
+    FIELD_2$="SALESPERSON_CODE    1104A1S   LOOKUP_SEQUENCE     0010A1S                                                                                                                                                         "
+    FIELD_3$="IU     NNN    66              "
+    FIELD_4$="    ~~~~          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-10           "
+    FIELD_1$="001SAMPLE-10           LMailing Label Example              AR_CUSTOMER_MASTER  1                     T                     131000252                                                                                                                                                                                                                                    "
+    FIELD_2$="ZIP_CODE            0009A1S                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    664             "
+    FIELD_4$="         ~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-11           "
+    FIELD_1$="001SAMPLE-11           LMailing label sorted               AR_CUSTOMER_MASTER  1                     T                     13100026                                                                                                                                                                                                                                     "
+    FIELD_2$="ZIP_3               0103A1S                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    664             "
+    FIELD_4$="   ~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           "
+    FIELD_1$="001SAMPLE-20           FForm type entry                    AR_CUSTOMER_MASTER  1                                           13100028                                                                                                                                                                                                                                     "
+    FIELD_2$="CUSTOMER_CODE       0010A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    06              "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           "
+    FIELD_1$="001SAMPLE-30           DDetail example                     AR_CUSTOMER_MASTER  1AR_OPEN_INVOICES    1                      13100029   Open Invoices                                                                                                                                                                                                                     "
+    FIELD_2$="CUSTOMER_CODE       0110A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN                    "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           "
+    FIELD_1$="001SAMPLE-40           SStatistics Example                 AR_CUSTOMER_MASTER  1                     T                     13100031   Customer Sales Stats by Salesperson                                                                                                                                                                        T                      "
+    FIELD_2$="CUSTOMER_CODE       0110A1A                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN                    "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           "
+    FIELD_1$="001SAMPLE-50           PPreprinted form example            FM_CUST_JOB_MASTER  1                     T                     13100041   Custom Salesperson Report                                                                                                                                                                                                         "
+    FIELD_2$="SALESPERSON_CODE    1104A1S   CUSTOMER_CODE       1110A1A   FORM_CODE           0010A1S                                                                                                                           "
+    FIELD_3$="IU     NNN    66U             "
+    FIELD_4$="    ~~~~          ~~~~~~~~~~          ~~~~~~~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         "
+    FIELD_1$="001TIME REPORT         SPreliminary View of Time Log Data  TK_LOG              1                                           13100156                                                                                                                                                                                                                             K102221668                  "
+    FIELD_2$="EMPLOYEE_CODE       0104A1S                                                                                                                                                                                       "
+    FIELD_3$="IU     NNN    66                                                                                                             "
+    FIELD_4$="    ~~~~"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           "
+    FIELD_1$="002SAMPLE-80           TB-Link ASCII file example          AR_CUSTOMER_MASTER  1                                           13100043                                                                                                                                                                                                                                     "
+    FIELD_2$="CUSTOMER_CODE       0110A1A                                                                                                                                                                                       "
+    FIELD_3$="I*ASCL NCREDIT                100                                               "
+    FIELD_4$="          ~~~~~~~~~~"
+   </RecordData>
+
+</Data>
+
+</PxTable>

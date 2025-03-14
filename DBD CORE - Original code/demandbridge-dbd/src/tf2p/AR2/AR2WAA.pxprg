@@ -1,0 +1,251 @@
+0010 REM "<AR2WAA> Update Customer Invoicing Gateway Entry -Called from WebEc
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 10/01/14 - 11.759722 - crg - SSP# 273020
+0037 REM "273020-Webec credit card orders encountered exception in AR2WAA    
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM " ACTION$ = "C" to create an invoice in the parallel database
+0051 REM " ACTION$ = "I" to create an invoice in the live database
+0052 REM " ACTION$ = "D" to delete the invoice from the parallel database
+0053 REM " ACTION$ = "B" to delete the invoice from BOTH the parallel database and from the LIVE Order file
+0054 REM " ACTION$ = "O" to de-link the temp. invoice from the live order
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,ORDER$,SERVER$,ACTION$,GRB_KEY$,OPTIONS$
+0095 REM "ORDER$="00009271",ACTION$="I"
+0096 REM "SERVER$="111111111111111"
+0100 SETERR 9000
+0101 INVOICE$=ORDER$(2,7)+" "
+0110 X0$="AR2WAA",X1$="Update Parallel Customer Invoice  Entry-From WebEc"
+0120 DIM Z0$(80,"-"),S0$(40)
+0125 DIM BLANK$(40)
+0130 K0=20,K1=1
+0135 C9=-1
+0170 FID_0$=FID(0); IF %IN_WEBEC$="Y" THEN FID_0$(1,1)="G"
+0200 REM "
+0210 REM "Q0$="SM7",Q1$="*"
+0220 IF STP(Q0$,1)<>"" THEN ALT_FILE$=Q0$ ELSE ALT_FILE$=""
+0240 REM "IF Q1$="" OR Q1$="*" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0296 ORDER_TIME$=STR(INT(TIM):"00")+STR(100*FPT(TIM):"00")
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20]
+0320 IOLIST O$,O[0],O[1],O[2],O[3],O[4],O[5],O[6],O[7],O[8],O[9],O[10],O[11],O[12],O[13]
+0340 IOLIST D$,D[0],D[1],D[2],D[3],D[4],D[5],D[6],D[7],D[8],D[9],D[10],D[11],D[12],D[13],D[14],D[15],D[16],D[17],D[18],D[19],D[20],D[21],D[22],D[23],D[24],D[25],D[26],D[27],D[28],D[29]
+0370 IOLIST SM4$,SM4[0],SM4[1],SM4[2],SM4[3],SM4[4],SM4[5],SM4[6],SM4[7],SM4[8],SM4[9],SM4[10],SM4[11],SM4[12]
+0500 REM " Files
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "If file opens are added here, they also need to be added to 7515, WO122361
+0510 REM "IF ACTION$="I" THEN Z$="01O SM0... 02O FS1... 03O PO3... 04O SM3... 05O FMP... 06O PO2... 07O SM4... 08O SM5... 09O SM6... 10O PO1... 11O APD... 12O ZZP  13O ZZPARM  14O FT3...  25O ZYW... "
+0511 Z$="01O GRB...  02O GRD...  03O GRC...  04O GSD...  05O GS3...  09O POE...  10O FS1...  11O GRT...  12O ZZP  13O ZZPARM  14O FS2...  15O FMN...  25O ZYW...  "
+0515 REM "IF ALT_FILE$<>"" THEN Z$(5,3)=ALT_FILE$
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 DIM R9$(100); READ (Z[13],KEY=X3$(9,3)+"A/R",DOM=0526)R9$
+0540 IF Q1$="" OR Q1$="*" THEN SHOW_IT=1 ELSE SHOW_IT=0
+0550 %ACTION$=ACTION$
+0560 PERFORM "ARGSCM;MCOMM_DEFAULTS" ! SSP 225300
+0600 REM "
+0900 DIM A[20]; DIM O[13]
+1000 REM " CREATE INVOICE IN PARALLEL DATABASE
+1020 IF POS(ACTION$="DB")>0 THEN GOSUB 6500; REM DELETE
+1030 IF POS(ACTION$="CI")>0 THEN GOSUB 7400; REM "NEED TO DETERMINE THE ACTIVE BATCH TO USE
+1040 IF POS(ACTION$="CIO")>0 THEN GOSUB 2400; REM "CREATE A NEW INVOICE IN THE PARALLEL DATABASE
+1099 GOTO 5000
+2400 REM "Invoice the order if needed
+2402 IF ACTION$="I" OR ACTION$="O" THEN READ (Z[10],KEY=ORDER$,DOM=2403)IOL=0320
+2406 IF POS(ACTION$="IO")>0 THEN EXTRACT (Z[10],KEY=ORDER$)IOL=0320; IF O$(284,1)="I" THEN GRB_KEY$=O$(299,14); EXITTO 5000 ELSE IF ACTION$="O" THEN O$(194,1)=" "; O$(63,1)=" "; O$(272,12)=""; O$(284,1)="O"; ELSE O$(194,1)=" "; O$(63,1)="Y",O$(272,12)="",O$(284,1)="I"; END_IF ; WRITE (Z[10])IOL=0320; REM " WHEN WE  DELETE INVOICE FROM PARALLEL DATABASE, REMOVE HOLD FLAG, REMOVE IN PROCESS  FLAG, RESET DATE/TIME TO "" - DON'T WANT TO DO THIS IF A 'B', BECAUSE WE JUST REMOVED THAT RECORD.  SSP172662, add CC invoice status flag to FS1.  If we are about to do the real invoice and find out the CC status for this order is already I, then don't proceed, get FY/AP/Inve num and exit program.
+2407 IF ACTION$="I" OR ACTION$="O" THEN CALL "FM2ODH",X3$,-1,O$,O{ALL}; CALL "FM2ODH",X3$,1,O$,O{ALL} ! SSP166208, need to first do maintenance delete
+2408 IF POS(ACTION$="C")>0 THEN EXTRACT (Z[10],KEY=ORDER$)IOL=0320; O$(63,1)="Y"; O$(272,6)=X3$(21,6),O$(278,4)=ORDER_TIME$,O$(284,1)="C"; WRITE (Z[10],KEY=ORDER$)IOL=0320; REM " WHEN WE  DELETE INVOICE FROM PARALLEL DATABASE, REMOVE HOLD FLAG, REMOVE IN PROCESS  FLAG, RESET DATE/TIME TO "" - DON'T WANT TO DO THIS IF A 'B', BECAUSE WE JUST REMOVED THAT RECORD.  SSP172662, add CC invoice status flag to FS1
+2410 IF ACTION$="C" THEN GOTO 2450 ELSE IF ACTION$="O" THEN GOTO 2455
+2420 DIM I0$(14)
+2440 V8$=X3$(174,4)+X3$(85,1),X3$(174,4)=V0$(81,4),X3$(85,1)=V0$(85,1); REM "Set batch info from report parameters
+2450 I$="0"+V0$(73,6)+ORDER$(1,8); CALL "AR2EAA",X3$,X4$,I$,I0$,C0,ALT_FILE$; REM "If complete and received ok then invoice the order
+2451 GRB_KEY$=I0$
+2452 Z10$=PTH(Z[10],ERR=*PROCEED); IF POS("FS1"=Z10$)=0 THEN CLOSE (Z[10],ERR=*PROCEED); OPEN (Z[10])"FS1"+%C$ ! SSP 225300, 273020
+2455 IF ACTION$="I" THEN EXTRACT (Z[10],KEY=ORDER$)IOL=0320; O$(299,14)=GRB_KEY$; WRITE (Z[10],KEY=ORDER$)IOL=0320 ! SSP172662, record FY/AP/Inv num in FS1
+2457 IF ACTION$="O" THEN EXTRACT (Z[10],KEY=ORDER$)IOL=0320; GRB_KEY$=O$(299,14); O$(299,14)=""; WRITE (Z[10],KEY=ORDER$)IOL=0320 ! SSP198208
+2460 IF ACTION$="I" THEN X3$(174,4)=V8$(1,4),X3$(85,1)=V8$(5,1); REM "Restore x3 batch values.  SSP169365, only if in I mode
+2461 RETURN 
+2465 GOSUB 7510; REM "WO122361, reopen all files
+2470 REM "Always set invoiced values, to show that it was processed for invoiceing
+2480 REM "IF B$(63,1)<>"Y" THEN A$(100,1)="Y",A$(101,8)=I0$(7); REM "If ok then show it was invoiced, and record invoice number. SSP119925, if we skipped around on 2430 because invoicing in progress flag was set then don't set invoiced in SM0 to Y, this should keep the SM0 record to be picked up the next time.
+2490 REM "IF B$(63,1)<>"Y" THEN GOSUB 7800
+2499 RETURN 
+5000 REM "EOJ
+5001 %ACTION$=""
+5002 IF %IN_WEBEC$<>"Y" THEN GOTO 5190 ! SSP166845, may be running EC3UTL
+5005 REM "IF PO_NUM$<>"" THEN EOJ_FLAG$="Y"; GOSUB 2500
+5010 REM "T=C; GOSUB 8150
+5020 REM "IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5030 FILE_NAME$="ECA",FSLOT=33004; GOSUB 7700
+5035 FILE_NAME$="ECB",FSLOT=33005; GOSUB 7700
+5040 FILE_NAME$="ECC",FSLOT=33006; GOSUB 7700
+5045 FILE_NAME$="AR1",FSLOT=33007; GOSUB 7700
+5050 FILE_NAME$="FM0",FSLOT=33008; GOSUB 7700
+5055 FILE_NAME$="FMP",FSLOT=33009; GOSUB 7700
+5060 FILE_NAME$="ECS",FSLOT=33010; GOSUB 7700
+5065 FILE_NAME$="ECU",FSLOT=33011; GOSUB 7700
+5070 FILE_NAME$="EDC",FSLOT=33012; GOSUB 7700
+5075 FILE_NAME$="EDB",FSLOT=33015; GOSUB 7700
+5080 FILE_NAME$="ZZPARM",FSLOT=33013; GOSUB 7710
+5085 FILE_NAME$="ASP",FSLOT=33016; GOSUB 7700
+5090 FILE_NAME$="AR2",FSLOT=33017; GOSUB 7700
+5095 REM "do not use FSLOT 33018 - used in EC3SRV around 6300 for process scheduling      
+5100 FILE_NAME$="ECE",FSLOT=33019; GOSUB 7700
+5190 GOTO 9900
+5900 REM "REMOVE LINES                                                          
+5905 A0=A[20]; DIM Y[4]; Q9$=""
+5917 F=Z[11]; IF A0=0 THEN GOTO 5955
+5920 EXTRACT (F,IND=0,ERR=5960)IOL=0290
+5925 IF Y[4]=-2 THEN READ (F,IND=0); WAIT 0; GOTO 5920 ELSE Y[4]=-2; WRITE (F,IND=0)IOL=0290
+5930 A1=Y[1],Y[1]=A0,Y[0]=Y[0]-1
+5935 READ (F,IND=A0)A; IF A>0 THEN Y[0]=Y[0]-1,A0=A; GOTO 5935
+5940 WRITE (F,IND=A0)A1
+5950 Y[4]=-1; WRITE (F,IND=0)IOL=0290
+5955 REM "IF Q9$="" THEN Q9$="*",F=Z[2]; GOTO 5920 ELSE GOTO 5970
+5956 IF Q9$="" AND A[0]>0 THEN Q9$="*",A0=A[0],F=Z[2]; GOTO 5920 ELSE GOTO 5970
+5960 IF ERR=0 THEN RETRY ELSE GOTO 9900
+5990 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Processing Shipping Manifest Entry Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6500 REM "DELETE                              
+6510 READ (Z[1],KEY="",DOM=6511)
+6515 GRB_KEY$=KEY(Z[1],END=6799); READ (Z[1])
+6520 IF GRB_KEY$(7,8)<>INVOICE$ THEN GOTO 6515
+6530 READ (Z[1],KEY=GRB_KEY$)IOL=0310
+6540 REM "F=Z[11]
+6550 GOSUB 5900
+6570 REMOVE (Z[1],KEY=GRB_KEY$,DOM=6571)
+6580 IF %MSLC THEN CCKEY$="I"+GRB_KEY$(7)+GRB_KEY$(1,6)+DIM(4); CALL "ARGSCM; DELETE_ALL",CCKEY$ ! SSP 225300
+6590 REMOVE (Z[3],KEY=GRB_KEY$,DOM=6591)
+6600 READ (Z[4],KEY=GRB_KEY$,DOM=6601)
+6610 GSD_KEY$=KEY(Z[4],END=6640); READ (Z[4])
+6620 IF GSD_KEY$(7,8)<>INVOICE$ THEN GOTO 6610
+6630 REMOVE (Z[4],KEY=GSD_KEY$)
+6635 GOTO 6610
+6640 READ (Z[5],KEY=INVOICE$,DOM=6641)
+6645 GS3_KEY$=KEY(Z[5],END=6799)
+6646 IF GS3_KEY$(1,8)<>INVOICE$ THEN GOTO 6696
+6690 REMOVE (Z[5],KEY=GS3_KEY$,DOM=6691)
+6695 GOTO 6645
+6800 ! IF POS(ACTION$="D")<>0 THEN EXTRACT (Z[10],KEY=ORDER$,DOM=*NEXT)IOL=0320; O$(284,1)=""; O$(63,1)=""; O$(272,12)=""; WRITE (Z[10],KEY=ORDER$)IOL=0320; REM "GOTO 6899; REM " WHEN WE DELETE INVOICE FROM PARALLEL DATABASE, REMOVE HOLD FLAG, REMOVE IN PROCESS FLAG, RESET DATE/TIME TO "".  SSP166845, added DOM in case there is no order.  SSP175546, remarked out this line.  ACTION$="D" seems to only come from EC3UTL, and if would only be for cc orders that were purchased and now have a real invoice for them, so we DON'T want to remove the invoicing in progress flag.
+6825 IF ACTION$="D" THEN RETURN 
+6850 IF ACTION$="B" THEN READ (Z[10],KEY=ORDER$,DOM=6899)IOL=0320
+6853 REM "CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+6855 %ACTION$=""
+6859 CALL "FM2ODH",X3$,-1,O$,O{ALL} ! SSP166308, need to do a maintenance delete first, this will adjust the IC1 record and other things
+6860 CALL "FM2ODH",X3$,-2,O$,O{ALL}
+6865 REM "Z$="01O GRB...  02O GRD...  03O GRC...  04O GSD...  05O GS3...  09O POE...  10O FS1...  11O GRT...  12O ZZP  13O ZZPARM  14O FS2...  15O FMN...  25O ZYW...  "
+6866 REM "CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 6867,9900
+6870 GOSUB 8600
+6899 RETURN 
+7400 REM "Read report selection parameters"
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)*,*,V1$,V3$,V2$,V0$
+7454 IF LEN(V0$)<96 THEN V0$=V0$+" "; GOTO 7454
+7455 IF V0$(1,3)<>"SM2" THEN V0$(81,15)=""; REM "Not for this program
+7462 IF POS(" "<>V0$(81,15))=0 THEN GOSUB 7600
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"  ")-1)
+7485 REM "FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "If level 7 then close all files and reopen to clear unclosed files that can accumulate to cause "FILE COULD NOT BE OPENED" errors. Assumes that the rwrite at line 1090 will properly position SM0 for next read correctly.  WO122361, some files were not staying open on the same channel so we will do a GOSUB 7510 and reopen all files
+7505 IF POS("7."=SYS)=0 THEN GOTO 7545
+7510 DIM Z[NUM(X3$(60,3))]; Y1$="",Y0$=""
+7515 Z$="01O SM0...  02O FS1...  03O PO3...  04O SM3...  05O FMP...  06O PO2...  07O SM4...  08O SM5...  09O SM6...  10O PO1...  11O APD...  12O ZZP  13O ZZPARM 14O FT3...  "
+7516 IF ALT_FILE$<>"" THEN Z$(5,3)=ALT_FILE$
+7520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 7521,9900
+7545 RETURN 
+7600 REM "Get batch control number for Invoices (AR2EAA) and Receiving (PO2MAG) also set fiscal year & acctg period
+7602 REM "and A/P Invoices (AP2DAA); where A$(90,5)=a/p batch number
+7603 V0$(73,6)=R9$(7,6)
+7604 SERVER$=SERVER$+BLANK$; SERVER$=SERVER$(1,15)
+7605 REM "Get invoicing into a$(81,5) using AR2EAA
+7606 ZYW$=""; READ (Z[25],KEY=SERVER$,DOM=7607)ZYW$; V0$(73,6)=ZYW$(21,6); REM " THE SERVER ID SHOULD BE PASSED
+7607 IF ACTION$="C" THEN RETURN ; REM " IF YOU ARE CREATING THE INVOICE IN THE PARALLEL DATABASE, DON'T USE BATCHES
+7608 IF X3$(145,1)<>"1" THEN RETURN ; REM "if not batch company then don't set batch info
+7609 V9$=X3$(174,4)+X3$(85,1)
+7610 X3$(174,4)="",X3$(85,1)="",P0$="AR2WAA"
+7612 IF ZYW$="" THEN X9=0; CALL "ZZBATZ",X3$,X4$,"AR2EAA","WebEC Credit Card Invoices"
+7615 IF ZYW$<>"" THEN V0$(81,5)=ZYW$(16,5) ELSE V0$(81,5)=X3$(174,4)+X3$(85,1),X3$(174,4)="",X3$(85,1)=""
+7620 IF ZYW$="" THEN DIM ZYW$(125); ZYW$=SERVER$+V0$(81,5)+V0$(73,6); WRITE (Z[25],KEY=SERVER$)ZYW$
+7646 IF %IN_WEBEC$="N" THEN PRINT @(0,3),'CE',; REM "Clear screen after
+7649 RETURN 
+7650 REM "Set P0 to 1 if all lines are complete and order is ready to bill, else set it to 0, P1 is number of lines found, if 0 then P0 should be 1, no lines means no P/O means shipping inventory, so bill it now
+7655 P0=0,P1=0,P2=0; READ (Z[6],KEY=A$(1,8),DOM=7656)
+7660 K6$=KEY(Z[6],END=7680); IF K6$(1,8)<>A$(1,8) THEN IF P1=0 THEN P0=1; GOTO 7680 ELSE GOTO 7680
+7665 P1=P1+1; READ (Z[6],KEY=K6$,DOM=7660)P6$
+7670 IF P6$(6,1)<>"Y" THEN IF ALT_FILE$="" THEN P0=0; GOTO 7690 ELSE P2=P2+1; REM "If even one line is not complete then skip out with P 0=0.  If CIG Plus then even if some lines are not complete we still wa nt to bill it so go on rather than skipping out.  SSP144414 added P2,  if CIG Plus keep track of number of PO lines that are not complete.    
+7675 GOTO 7660
+7680 REM "IF still here, then all lines found are marked complete or we are coming from CIG Plus, so set P0 to 1 to indicate that i is time to bill
+7685 P0=1; GOSUB 7700; REM "Set it to 1, but goto 7700 to check next record in SM0
+7690 RETURN 
+7695 RETURN 
+7700 REM " Reopen needed webec files
+7705 CLOSE (FSLOT); OPEN (FSLOT,ERR=7706)FILE_NAME$+X3$(9,3); GOTO 7720
+7710 CLOSE (FSLOT); OPEN (FSLOT,ERR=7711)FILE_NAME$; GOTO 7720
+7745 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8115 IF SHOW_IT THEN PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF SHOW_IT THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8600 REM "Remove lines & P/O's                     
+8605 GOSUB 8700
+8610 READ (Z[14],KEY=O$(118,8),DOM=8611)
+8615 K0$=KEY(Z[14],END=8690)
+8620 IF K0$(1,8)<>O$(118,8) THEN GOTO 8690
+8625 DIM D$(160),D[29]
+8630 READ (Z[14],KEY=K0$)IOL=0340
+8635 REMOVE (Z[14],KEY=K0$,DOM=8636)
+8640 IF D$(9,1)<>" " THEN CALL "FM2ODP",X3$,D$
+8670 GOTO 8610; REM "Must reposition               
+8695 REM "%ACTION$="D"
+8700 REM "Remove POE comments                  
+8705 READ (Z[9],KEY=ORDER$,DOM=8706)
+8710 K$=KEY(Z[9],END=8740)
+8715 IF K$(1,8)<>A$(118,8) THEN GOTO 8740
+8720 REMOVE (Z[9],KEY=K$)
+8730 GOTO 8710
+8740 REM " REMOVE HEADER NOW                                    
+8770 REMOVE (Z[10],KEY=ORDER$,DOM=8771)
+8775 REMOVE (Z[15],KEY=ORDER$,DOM=8776)
+8780 REM "REMOVE O TYPE AXS RECORD IF APPLICABLE !SSP 225300
+8782 IF %MSLC THEN CKEY$="O"+O$(118,8)+O$(6,10); CALL "ARGSCM;DELETE_ALL",CKEY$ ! SSP 225300            
+8799 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "198208-Needs a way to allow credit card orders to NOT be invoiced  
+56003 REM "273020-Webec credit card orders encountered exception in AR2WAA    

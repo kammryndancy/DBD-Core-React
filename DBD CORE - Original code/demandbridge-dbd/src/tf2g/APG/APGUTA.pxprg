@@ -1,0 +1,118 @@
+0010 ! APGUTA - A/P Rebuild Master File Balance
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/08/09 - 7.66 - tma - SSP# 230362
+0037 REM "230362-Some of the AP rebuilds - why are there smiley faces when   
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "APGUTA","../APG/AP.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0106 PRINT 'CURSOR'(0) ! SSP#230362 - changed from 8 to 0 to get rid of smiley 
+0110 X0$="AP2UTA",X1$="A/P Rebuild Master File Balance Due",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01L AP5...  02O API...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0625 PRINT 'CURSOR'(0)
+0630 RETURN 
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0900 DIM A[6],B[18]
+0990 READ (Z[1],DOM=0991,KEY="")
+1000 REM "CLEAR BALANCE IN VENDOR FILE
+1010 PRINT 'MESSAGE'("CLEARING VENDOR BALANCE IN AP5 ",0)
+1020 EXTRACT (Z[1],END=1100)IOL=0310
+1025 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+1030 A[0]=0
+1040 WRITE (Z[1])IOL=0310
+1050 GOTO 1020
+1100 REM "PROCESS OPEN INVOICES
+1110 L$=""
+1115 GOSUB 8200
+1120 PRINT 'MESSAGE'("REBUILDING TOTAL FROM API ",0)
+1140 READ (Z[2],KEY="",DOM=1141)
+1200 READ (Z[2],END=5000)IOL=0320
+1220 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+1300 IF L$<>B$(1,10) THEN GOSUB 3000
+1320 T=T+B[13]
+1340 GOTO 1200
+3000 REM VENDOR CHANGE
+3020 IF L$="" THEN GOTO 3080
+3030 DIM A$(38),A[6]
+3040 EXTRACT (Z[1],KEY=L$,DOM=3041)IOL=0310
+3050 A$(1,10)=L$,A[0]=T
+3060 WRITE (Z[1],KEY=A$(1,10))IOL=0310
+3080 L$=B$(1,10),T=0
+3090 RETURN 
+5000 REM "EOJ
+5005 C=T5; GOSUB 8150
+5010 GOSUB 3000
+5020 MSGBOX "Process complete!!",MSG("CONFIRMING"),"INFO,TIM=3"
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program will process the Accounts Payable Open Invoice File 'API' and post the total to the Vendor Balance record 'AP5'"
+6165 ! PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8115 ML_MESS.CTL'VALUE$="There are "+STR(T5)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",6.2,1,28,T1,T5,C
+8195 RETURN 
+8200 REM "Same as 8100,but for z(2)
+8210 CALL "ZZINFO",Z[2],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8230 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8240 R0=0,T1=0
+8245 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 END_PROC: CMD_STR$="E"
+9905 PRINT 'CURSOR'(0)
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

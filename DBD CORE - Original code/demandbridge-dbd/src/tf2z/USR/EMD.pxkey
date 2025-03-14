@@ -1,0 +1,1883 @@
+<PxTable>
+ TableName=EMD
+ TableKey=K1049573028
+ FileCreate=KEYED "EMD",11,0,-256,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EMD_SegDesc"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":50-csc"
+    LASTUPDATEDFILE$="2015/10/28 10:40:53-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DOC_TYPE$:[LEN(3)]"
+    NAME$="DOC_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Document Type"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST SEGMENT_ID$:[LEN(5)]"
+    NAME$="SEGMENT_ID"
+    DESCRIPTION$="=MSG("+QUO+"SEGMENT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="P"
+    NOTES$="Segment ID"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST SEGMENT_NUM$:[LEN(3)]"
+    NAME$="SEGMENT_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEGM_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Segment #"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DOC_TYPE$:[LEN(3,SEP=SEP)]"
+    NAME$="DOC_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Document Type"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST SEGMENT_ID$:[LEN(5,SEP=SEP)]"
+    NAME$="SEGMENT_ID"
+    DESCRIPTION$="=MSG("+QUO+"SEGMENT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Segment ID"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST SEGMENT_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="SEGMENT_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEGM_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Segment #"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST SEGMENT_DESC$:[LEN(SEP,SIZ=75)]"
+    NAME$="SEGMENT_DESC"
+    DESCRIPTION$="=MSG("+QUO+"SEG_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="75"
+    INTERNALFORMAT$="L"
+    NOTES$="Description"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="810BIG  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="BIG  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Invoice Date                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810BIG  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="BIG  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Invoice Number                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810BIG  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="BIG  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810BIG  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="BIG  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Purchase Order Number                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Transportation Method/Type Code                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Standard Carrier Alpha Code (SCAC Code)                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Reference Number Qualifier                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CAD  008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CAD  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810CTT  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="CTT  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of Line Items                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810DTM  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="DTM  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Date/Time Qualifier                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810DTM  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="DTM  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Date                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810FOB  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="FOB  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Shipment Method of Payment                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GE   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GE   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of Included Transaction Sets                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GE   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GE   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Group Control Number                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Functional ID Code                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Application Sender's Code                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Application Receiver's Code                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Group Date                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Group Time                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Group Control Number                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Responsible Agency Code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810GS   008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Version/Release/Industry ID Code                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IEA  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IEA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of Included Functional Groups                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IEA  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IEA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Interchange Control Number                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Authorization Information Qualifier                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Authorization Information                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Security Information Qualifier                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Security Information                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Interchange Sender ID Qualifier                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Interchange Sender Identification                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Interchange Receiver ID Qualifier                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Interchange Receiver ID                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  009"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="Interchange Date                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  010"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="Interchange Time                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  011"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="Interchange Standards ID                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  012"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="012"
+    SEGMENT_DESC$="Interchange Control Version                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  013"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="013"
+    SEGMENT_DESC$="Interchange Control Number                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  014"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="014"
+    SEGMENT_DESC$="Acknowledgement Request                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  015"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="015"
+    SEGMENT_DESC$="Test Indicator                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISA  016"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="016"
+    SEGMENT_DESC$="Subelement Separator                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISS  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISS  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of Units Shipped                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISS  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISS  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Unit of Measurement Code                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISS  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISS  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Weight                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ISS  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ISS  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Unit of Measurement Code                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Quantity Invoiced                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Unit of Measure Code                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Unit Price                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Product/Service ID Qualifier                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Product/Service ID                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Product/Service ID Qualifier                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  009"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="Product/Service ID                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  010"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="Product/Service ID Qualifier                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810IT1  011"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="IT1  "
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="Product/Service ID                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Allowance/Charge Indicator                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Method of Handling Code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Allowance/Charge Rate                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Allowance/Charge Total Amount                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Allowance/Charge Percent Qualifier                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  009"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="Allowance/Charge Percent                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  010"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  011"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  012"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="012"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  013"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="013"
+    SEGMENT_DESC$="Description                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA  014"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA  "
+    SEGMENT_NUM$="014"
+    SEGMENT_DESC$="Special Charge/Allowance Code                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Allowance/Charge Indicator                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Method of Handling Code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Allowance/Charge Rate                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Allowance/Charge Total Amount                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2008"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Allowance/Charge Percent Qualifier                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2009"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="Allowance/Charge Percent                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2010"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2011"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2012"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="012"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2013"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="013"
+    SEGMENT_DESC$="Description                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITA-2014"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITA-2"
+    SEGMENT_NUM$="014"
+    SEGMENT_DESC$="Special Charge/Allowance Code                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Terms Type Code                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Terms Discount Percent                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Terms Discount Due Date                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  005"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Terms Discount Days Due                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  006"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Terms Net Due Date                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ITD  007"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ITD  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Terms Net Days                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N1   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Entity ID Code                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N1   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Name                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N3   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N3   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Address                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N3   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N3   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Address Additional Information                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N4   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N4   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="City Name                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N4   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N4   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="State                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810N4   003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="N4   "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Postal Code                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810PO4  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="PO4  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Pack                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810PO4  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="PO4  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Size                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810PO4  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="PO4  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Unit of Measure Code                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810REF  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="REF  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Reference Number Qualifier                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810REF  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="REF  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810REF  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="REF  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810SE   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="SE   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of Included Segments                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810SE   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="SE   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Transaction Set Control Number                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ST   001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ST   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Transaction Set ID Code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810ST   002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="ST   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Transaction Set Control Number                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810TDS  001"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="TDS  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Total Invoice Amount                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810TDS  002"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="TDS  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Amount Subject to Terms Discount                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810TDS  003"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="TDS  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Discounted Amount Due                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810TDS  004"
+    DOC_TYPE$="810"
+    SEGMENT_ID$="TDS  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Terms Discount Amount                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856BSN  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="BSN  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Transaction Set Purpose Code                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856BSN  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="BSN  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Shipment Identifier                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856BSN  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="BSN  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Date                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856BSN  004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="BSN  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Time                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856CTT  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="CTT  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="NUMBER OF LINE ITEMS                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856CTT  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="CTT  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="HASH TOTAL                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="DATE/TIME QUALIFIER                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="DATE                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="TIME                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM-1001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM-1"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Date/Time Qualifier                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM-1002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM-1"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Actual Ship Date                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM-1003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM-1"
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Actual Ship Time                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM-2001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM-2"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Date/Time Qualifier                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856DTM-2002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="DTM-2"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Expected Arrival Date                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GE   001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GE   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of included Transactions Sets                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GE   002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GE   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Group Control Number                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Functional ID Code                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Application Sender's Code                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Application Receiver's Code                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Group Date                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   005"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Group Time                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   006"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Group Control Number                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   007"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Responsible Agency Code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856GS   008"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="GS   "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Version/Release/Industry Code                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-1 001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-1 "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Hierachical ID Number                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-1 002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-1 "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Not Used                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-1 003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-1 "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Hierachical Level Code                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-1 004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-1 "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Hierachical Child Code                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-2 001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-2 "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="HIERARCHICAL ID NUMBER                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-2 002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-2 "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="HIERARCHICAL PARENT ID                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-2 003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-2 "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="HIERARCHICAL LEVEL CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-2 004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-2 "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="HIERARCHICAL CHILD CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-3 001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-3 "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="HIERARCHICAL ID NUMBER                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-3 002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-3 "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="HIERARCHICAL PARENT ID                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-3 003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-3 "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="HIERARCHICAL LEVEL CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-3 004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-3 "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="HIERARCHICAL CHILD CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-4 001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-4 "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="HIERARCHICAL ID NUMBER                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-4 002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-4 "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="HIERARCHICAL PARENT ID                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-4 003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-4 "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="HIERARCHICAL LEVEL CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856HL-4 004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="HL-4 "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="HIERARCHICAL CHILD CODE                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856IEA  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="IEA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Number of included Functional Sets                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856IEA  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="IEA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Interchange Control Number                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Authorization Information Qualifier                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Authorization Information                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="Security Information Qualifier                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="Security Information                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  005"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="Interchange Sender ID Quailfier                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  006"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="Interchange Sender Identification                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  007"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="Interchane Receiver ID Qualifier                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  008"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="Interchange Receiver ID                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  009"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="Interchange Date                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  010"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="Interchange Time                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  011"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="Interchange Standards ID                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  012"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="012"
+    SEGMENT_DESC$="Interchange Control Version                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  013"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="013"
+    SEGMENT_DESC$="Interchange Control Number                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  014"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="014"
+    SEGMENT_DESC$="Acknowledge Request                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  015"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="015"
+    SEGMENT_DESC$="Test Indicator                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ISA  016"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ISA  "
+    SEGMENT_NUM$="016"
+    SEGMENT_DESC$="Subelement Separator                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="ASSIGNED IDENTIFICATION                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="PRODUCT ID QUALIFIER                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="PRODUCT ID                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="PRODUCT ID QUALIFIER                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  005"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="PRODUCT ID                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  006"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="PRODUCT ID QUALIFIER                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856LIN  007"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="LIN  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="PRODUCT ID                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MAN  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MAN  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="MARKS AND NUMBERS QUALIFIER                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MAN  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MAN  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="MARKS AND NUMBERS                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MEA  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MEA  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="MEASUREMENT REFERENCE ID CODE                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MEA  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MEA  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MEA  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MEA  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="MEASUREMENT VALUE                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856MEA  004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="MEA  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="UNIT OF MEASURE CODE                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856N1   001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="ENTITY ID CODE                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856N1   002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856N1   003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="ID CODE QUALIFIER                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856N1   004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="N1   "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="ID CODE                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856PRF  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="PRF  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="PO NUMBER                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856PRF  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="PRF  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="PO RELEASE NUMBER                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-1001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-1"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Reference Number Qualifier                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-1002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-1"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-2001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-2"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Reference Number Qualifier                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-2002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-2"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-3001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-3"
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Reference Number Qualifier                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856REF-3002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="REF-3"
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Reference Number                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856SE   001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="SE   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="NUMBER OF INCLUDED SEGMENTS                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856SE   002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="SE   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="TRANSACTION SET CONTROL NUMBER                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856SN1  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="SN1  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="ASSIGNED IDENTIFICATION                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856SN1  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="SN1  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="NUMBER OF UNITS SHIPPED                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856SN1  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="SN1  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="UNIT OF MEASURE CODE                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ST   001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ST   "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="Transaction set ID code                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856ST   002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="ST   "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="Transaction Set Control Number                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD3  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD3  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="EQUIPMENT DESCRIPTION CODE                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD3  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD3  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD3  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD3  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="EQUIPMENT NUMBER                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  001"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="001"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  002"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="002"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  003"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="003"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  004"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="004"
+    SEGMENT_DESC$="TRANSPORTATION METHOD TYPE CODE                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  005"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="005"
+    SEGMENT_DESC$="ROUTING                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  006"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="006"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  007"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="007"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  008"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="008"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  009"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="009"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  010"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="010"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  011"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="011"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856TD5  012"
+    DOC_TYPE$="856"
+    SEGMENT_ID$="TD5  "
+    SEGMENT_NUM$="012"
+    SEGMENT_DESC$="NOT USED                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8901    1  "
+    DOC_TYPE$="890"
+    SEGMENT_ID$="1    "
+    SEGMENT_NUM$="1  "
+    SEGMENT_DESC$="                                                                           "
+   </RecordData>
+
+</Data>
+
+</PxTable>

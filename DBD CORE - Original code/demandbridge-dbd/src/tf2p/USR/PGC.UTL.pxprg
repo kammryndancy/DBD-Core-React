@@ -1,0 +1,7 @@
+0010 ! Compare two source files
+0020 REM "CALL "PGC.UTL","rel/archive/EC3AP1.K60615.1547","EC3AP1"
+0030 ENTER (PROG1$),(PROG2$)
+0040 CALL "LST2TXT.UTL",PROG1$,FILE1$
+0050 CALL "LST2TXT.UTL",PROG2$,FILE2$
+0060 INVOKE "[wdx]C:\Program Files\Compare It\wincmp3 "+SUB(FILE1$,"[wdx]","")+" "+SUB(FILE2$,"[wdx]","")
+0070 EXIT 

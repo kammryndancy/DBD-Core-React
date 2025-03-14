@@ -1,0 +1,50 @@
+0010 REM "A/R prorate module <AR2XAA>
+0040 REM "Copyright 1987 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0890 SETERR 9000
+0900 REM "A=array containing total amounts (this will not be changed)
+0910 REM "A0=index of first value needed in A array, A1=ending index in A array
+0920 REM "E=array to contain prorated values, assumed to be a1-a0 * size of r array big
+0930 REM "R= Rate array contain amount to prorate by, last one will be checked to insure the total is 100%
+0940 REM "R0,R1 = starting and ending indexes in the rate array
+1000 REM "Enter values"
+1010 ENTER X3$,A{ALL},A0,A1,E{ALL},R{ALL},R0,R1
+1100 REM "Intialize values, indexes & copy array A into B
+1110 N=A1-A0,N0=R1-R0
+1112 IF R[R0+N0]=0 THEN N0=N0-1; IF N0=-1 THEN GOTO 9900 ELSE GOTO 1112
+1114 IF N0=0 AND R[R0+N0]=100 THEN GOTO 2200
+1115 IF N=0 THEN DIM B[1] ELSE DIM B[N]
+1150 FOR I=0 TO N
+1155 B[I]=A[A0+I]
+1160 NEXT I
+1165 N1=0
+1170 FOR I=0 TO N0-1
+1175 N1=N1+R[R0+I]
+1180 NEXT I
+1185 R[R0+N0]=100-N1
+2000 REM "Fiqure all but the last amount"
+2010 FOR I=0 TO N0-1
+2020 FOR J=0 TO N
+2050 N1=I*(N+1)+J,E[N1]=A[J+A0]*R[I+R0]/100,B[J]=B[J]-E[N1]
+2080 NEXT J
+2090 NEXT I
+2100 REM " FIX UP LAST ONE
+2105 N1=N0*(N+1)
+2110 FOR I=0 TO N
+2120 E[N1+I]=B[I]
+2130 NEXT I
+2190 GOTO 9900
+2200 REM "Do case of only one 100% case
+2210 FOR J=0 TO N; E[J]=A[J+A0]; NEXT J
+2230 GOTO 9900
+3000 GOTO 9900
+9000 REM "error
+9010 EXIT ERR
+9500 REM 
+9510 IF ERR=36 THEN LIST 0010; LIST 0900,1010; EXIT 
+9514 PRINT 'LF',"N1=",N1," I=",I," N0=",N0," N=",N,
+9515 PRINT 'LF',"ERR=",ERR,"  ","TCB(5)=",TCB(5),; INPUT *
+9520 EXIT ERR
+9900 REM "End
+9920 EXIT 
+9999 END 

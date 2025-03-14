@@ -1,0 +1,15 @@
+0010 REM "<OS2RAS> Move United Files from PC to Server
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 11/15/18 - 9.744722 - tma - SSP# 304163
+0037 REM "304163-Menu option OS2, U3 says TopForm.                           
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0150 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access this program"; IF TCB(13)=1 THEN BEGIN ; RUN "ZMENU" ELSE EXIT 
+0170 %GUI=1
+0200 CALL "OSGTSF",ERR=*NEXT
+0210 %GUI=0
+0250 RUN "ZMENU"
+9999 END 
+56000 REM "189013-Multiple problems due to NT                                 
+56010 REM "192936-Create a new TOPS program to allow Tops Clients to copy   

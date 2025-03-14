@@ -1,0 +1,11 @@
+0010 REM "Select Ghost Task <ZZGHST>
+0030 REM "(C) 1985,1986 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "This software contains trade secrets and proprietary information"
+1000 REM 
+1020 ENTER G$
+1200 GOSUB 7000
+1990 EXIT 
+7000 F$=TSK(0),G$=""; FOR I=1 TO LEN(F$) STEP 6
+7010 IF F$(I,1)="G" AND F$(I,2)<>FID(0) THEN G$=G$+F$(I,3)
+7020 NEXT I; RETURN 
+9999 END 

@@ -1,0 +1,221 @@
+0010 REM "<WM2UBA> Import Warehouse Management Gateway File
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 02/20/02 - 11.343611 - dmm - SSP# 142887
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="WM2UBA",X1$="Warehouse Management Gateway Import"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0250 OFFSET=17
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0320 IOLIST A$
+0340 IOLIST ICA$,ICA[0],ICA[1]
+0350 IOLIST LINK,ICB$,ICB[0],ICB[1],ICB[2],ICB[3]
+0380 IOLIST AR1$,AR1[0],AR1[1],AR1[2],AR1[3],AR1[4],AR1[5],AR1[6],AR1[7],AR1[8],AR1[9],AR1[10],AR1[11],AR1[12],AR1[13],AR1[14],AR1[15]
+0390 IOLIST IC0$,IC0[0],IC0[1],IC0[2],IC0[3],IC0[4],IC0[5],IC0[6],IC0[7],IC0[8],IC0[9],IC0[10],IC0[11],IC0[12],IC0[13],IC0[14],IC0[15],IC0[16],IC0[17],IC0[18],IC0[19],IC0[20],IC0[21],IC0[22],IC0[23],IC0[24],IC0[25],IC0[26],IC0[27],IC0[28],IC0[29],IC0[30],IC0[31],IC0[32],IC0[33],IC0[34],IC0[35],IC0[36],IC0[37],IC0[38],IC0[39],IC0[40]
+0400 IOLIST FM0$,FM0[0],FM0[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O WM0... 03O WM2... 04O ICA... 05O ICB... 06O ICF... 07O ICK... 08O AR1... 09O IC0... 10O FM0... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"I/C")IC$
+0535 READ (Z[13],KEY=X3$(9,3)+"GWM")GWM$
+0600 REM "
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 DIM A[14],Y[4]
+1000 REM "Get list of WM1 files to process
+1010 CALL "ZZ2BLS","D0:WM1*","S",F$
+1015 P=POS(":"=F$); IF P=0 THEN GOTO 2000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1050 Z$="01CU 01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")F1$; REM "Open for reading raw file
+1080 GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0,T1=0
+1106 TMP$=FN%XFD$(Z[1],0),TOT=DEC($00$+TMP$(38,4)),T0=INT(TOT*.02); IF T0<1 THEN T0=2
+1107 PRINT @(15,15),'CE',"Processing: "+F1$+"  "+STP(STR(TOT:"##,###,###"),0),
+1110 READ (Z[1],END=1900)I$; I9=I9+LEN(I$)
+1120 IF MOD(I9,T0)=1 THEN GOSUB 8150
+1125 IF LEN(I$)<499 THEN I9$=I$; DIM I$(499); I$(1)=I9$; REM "Correct length if short
+1126 REM PRINT @(0,3),'CE',@(0,4),I$; INPUT *
+1130 DIM A$(516)
+1135 A$(7,1)="1"; REM "Set status code to unprocessed
+1140 A$(18)=I$; REM "Load incoming information
+1145 IF STP(A$(64,6),3," ")="" THEN A$(64,6)=IC$(7,6); GOTO 1150; REM "If blank fiscal year a/p then set from i/c params
+1146 REM "if not blank fy a/p then check it
+1147 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+A$(64,4),DOM=1148)GL$; IF FN%NMV(A$(68,2))=0 THEN GOTO 1148 ELSE PD=NUM(A$(68,2)); IF PD<1 OR PD>NUM(GL$(13,2)) THEN GOTO 1148 ELSE GOTO 1149; REM "goto 1148 if in error, else to 1149
+1148 A$(7,1)="2"; REM "Invalid fy/ap
+1160 IF STP(A$(OFFSET+139,4),3," ")="" THEN A$(OFFSET+139,4)=GWM$(7,4)
+1350 REM "Write out record
+1355 A$(1,6)=STR(SEQ_NO:"000000"),SEQ_NO=SEQ_NO+1
+1360 WRITE (Z[2],KEY=A$(1,6),DOM=1361)IOL=0320; GOTO 1365
+1361 REM "if dom, find highest seq # and add 1
+1362 READ (Z[2],KEY=DIM(6,$FF$),DOM=1363)
+1363 K$=KEP(Z[2],END=1364)
+1364 SEQ_NO=NUM(A$(1,6))+1; GOTO 1355
+1365 WRITE (Z[3],KEY=" "+A$(64,6)+A$(1,6)); REM "Update sort by Processed? fiscal Year, A/P
+1395 GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to bu. for archiving. Erase an existing file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$="bu."+F1$
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 ERASE F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$
+1995 GOTO 1015
+2000 REM "Process WM0 entries that have not been done yet
+2004 CURR_FYAP$=""
+2005 READ (Z[3],KEY="",DOM=2006)
+2006 GOSUB 8100; PRINT @(0,15),'CE',@(15,15),"Processing imported records: "+STP(STR(TOT:"##,###,###"),0),; GOSUB 8150
+2010 K3$=KEY(Z[3],END=2090); IF K3$(1,1)<>" " THEN GOTO 2090 ELSE READ (Z[3]); I9=I9+1; IF MOD(I9,T0)=1 THEN GOSUB 8150
+2012 EXTRACT (Z[2],KEY=K3$(8,6),DOM=2013)IOL=0320; GOTO 2015
+2013 REMOVE (Z[3],KEY=K3$,DOM=2010); GOTO 2010; REM "If record not found in WM0 then remove this key from WM2
+2015 GOSUB 2100; IF A$(7,1)<>"0" THEN GOTO 2085; REM "Check out record to see if any problems
+2020 IF A$(OFFSET+47,6)<>CURR_FYAP$ THEN GOSUB 2200
+2025 IF A$(OFFSET+7,1)="P" THEN GOTO 22026 ELSE GOSUB 2250; REM "Setup ICB record
+2080 REM "If done update WM2 record
+2082 WRITE (Z[3],KEY="Y"+K3$(2)); REM "write out key as processed
+2083 REMOVE (Z[3],KEY=K3$,DOM=2010); REM "remove now, will leave file positioned to next record
+2085 GOTO 2010
+2095 GOTO 5000
+2100 REM "check out A$ for errors, set status code accordingly
+2105 IF POS(A$(OFFSET+7,1)="PRATW")=0 THEN A$(7,1)="3"; GOTO 2190; REM "verify transaction type
+2107 DIM AR1$(600),AR1[15]; IF STP(A$(OFFSET+119,10),3," ")="" THEN GOTO 2109 ELSE FIND (Z[8],KEY=A$(OFFSET+119,10),DOM=2108)IOL=0380; GOTO 2109; REM "Check customer code
+2108 A$(7,1)="4"; GOTO 2190; REM "Invalid customer code
+2110 DIM IC0$(187),IC0[40]; FIND (Z[9],KEY=A$(OFFSET+119,20),DOM=2111)IOL=0390; GOTO 2112; REM "Verify Item in Item masterfile
+2111 A$(7,1)="5"; GOTO 2190; REM "invalid item code
+2113 DIM FM0$(524),FM0[1]; FIND (Z[10],KEY="D"+DIM(10)+A$(OFFSET+139,4),DOM=2114)IOL=0400; GOTO 2115; REM "Verify distributer warehouse
+2114 A$(7,1)="6"; GOTO 2190; REM "invalid warehouse
+2116 IF STP(A$(OFFSET+8,4),3," ")="" THEN GOTO 2119 ELSE FIND (Z[10],KEY="D"+DIM(10)+A$(OFFSET+8,4),DOM=2117); GOTO 2119
+2117 A$(7,1)="7"; GOTO 2190; REM "invalid transfer to whse
+2190 A$(7,1)="0"; WRITE LOCK (Z[2],KEY=A$(1,6))IOL=0320; REM "Update record, hold on to the extract
+2195 RETURN 
+2200 REM "Change of fiscal year accounting period, so created new transaction
+2210 DIM ICA$(57),ICA[1]
+2215 ICA$(1,6)=A$(OFFSET+47,6),ICA$(13,40)="Whse Mgmt Gateway"
+2216 IF STP(X3$(178,6),3," ")="" THEN ICA$(7,6)="GWM" ELSE ICA$(7,6)=X3$(178,6); REM "Use audit control number if available, else just GWM
+2225 WRITE (Z[4],KEY=ICA$(1,12),DOM=2226)IOL=0340
+2226 REM "Either already exists, or we just wrote, so extract so we can keep
+2227 EXTRACT (Z[4],KEY=ICA$(1,12),DOM=2225)IOL=0340
+2240 CURR_FYAP$=A$(OFFSET+47,6),LAST_LINE=0
+2245 RETURN 
+2250 REM "Setup ICB record from WM0 data
+2255 DIM ICB$(57),ICB[3]
+2260 ICB$(1,1)=A$(OFFSET+7,1); IF POS(ICB$(1,1)="R")<>0 AND POS(" "<>A$(OFFSET+41,6))<>0 THEN ICB$(2,6)=A$(OFFSET+41,6) ELSE ICB$(2,6)=X3$(21,6); REM "trans type & date, if receipt use receipt date if not blank
+2262 ICB$(8,4)=A$(OFFSET+139,4); IF ICB$(1,1)="R" THEN ICB$(12,14)=A$(OFFSET+186,14); REM "location, vendor,plant
+2264 ICB$(26,20)=A$(OFFSET+119,20),ICB$(50,4)=A$(OFFSET+8,4); IF ICB$(1,1)="W" THEN ICB$(1,1)="A",ICB$(57,1)="Y"; REM "Item code, transfer to whse, set waste type adjustment
+2266 ICB$(46,4)=IC0$(124,4),ICB[2]=IC0[15],ICB[1]=IC0[15]; REM "U/M, qty per U/M, unit cost from item master
+2268 NUM_IN$=A$(OFFSET+419,7); GOSUB CONVERT_NUMBER; ICB[0]=NUM_IN
+2270 GOSUB 7700; REM "set extension
+2280 GOSUB 5200; REM "set A9
+2282 GOSUB 7750
+2295 RETURN 
+4900 REM "END OF LINES
+4910 Y[4]=-1; WRITE (Z[5],IND=0)IOL=0290
+4920 CALL "ZZEXPF",X3$,X4$,"X"+STR(Z[5]),"",G9; IF G9>0 THEN GOTO 9900
+4925 EXTRACT (Z[5],IND=0)IOL=0290
+4930 Z=NUM(FIN(F,"MAXREC")); Y[3]=Z-1
+4935 Y[4]=-2; WRITE (Z[5],IND=0)IOL=0290
+4940 GOTO 5230
+4980 GOTO 9900
+5000 REM "EOJ
+5010 PRINT @(0,15),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+5200 REM "GET NEXT INDEX TO ICB file and put in A9
+5210 EXTRACT (Z[5],IND=0,ERR=5295)IOL=0290
+5215 IF Y[4]=-2 THEN READ (Z[5]); WAIT 0; GOTO 5210
+5220 Y[4]=-2; WRITE (Z[5],IND=0)IOL=0290
+5230 IF Y[1]<1 THEN A9=Y[2],Y[2]=Y[2]+1; GOTO 5260
+5255 A9=Y[1]; READ (Z[5],IND=A9)Y[1]
+5260 IF Y[0]<Y[3] THEN Y[0]=Y[0]+1,Y[4]=-1 ELSE Y[2]=Y[2]-1; GOTO 4900
+5280 WRITE (Z[5],IND=0)IOL=0290
+5290 RETURN 
+5295 IF ERR<>0 THEN GOTO 9000 ELSE RETRY 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Warehouse Management Information"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Convert date q$ into q0$
+7501 REM "Q$ in YYYYMMDD format
+7505 Q0$=""
+7510 IF LEN(Q$)<8 THEN GOTO 7545 ELSE Q1$=Q$(7,2)
+7515 IF Q1$<"50" THEN Q1$="20"+Q1$ ELSE Q1$="19"+Q1$
+7520 Q0$=CHR(NUM(Q1$(1,3),ERR=7521)-125)+Q1$(4,1)+Q$(1,2)+Q$(4,2)
+7545 RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2)
+7595 RETURN 
+7600 CONVERT_NUMBER:REM "Convert number in NUM_IN$ to NUM_IN including translating EBCIDIC to ASCII conversion artifacts
+7601 REM "Some programs when converting numberic values from EBCIDIC to ASCII will indicate negative numbers by adding a value to the least significant digit when translated the number is negative if the last char is not 0-9. The value will be as follows: }=0, J=1, K=2, L=3, M=4, N=5, O=6, P=7, Q=8, R=9
+7605 NUM_IN=0; TMP=POS(NUM_IN$(LEN(NUM_IN$),1)="}JKLMNOPQR")
+7610 IF TMP=0 THEN NUM_IN=NUM(NUM_IN$,ERR=CONVERT_NUMBER_END); GOTO CONVERT_NUMBER_END
+7615 REM "Convert last char back to num and convert to negative
+7620 NUM_IN$(LEN(NUM_IN$),1)=STR(TMP-1:"0"),NUM_IN=-NUM(NUM_IN$,ERR=CONVERT_NUMBER_END)
+7645 CONVERT_NUMBER_END:RETURN 
+7700 REM "Set ICB[3] extension
+7704 CLOSE (14); OPEN (14)"ZZPARM"
+7705 DIM UM$(20),UM[1]; FIND (14,KEY="U/M"+ICB$(46,4),DOM=7706)UM$,UM[0],UM[1]
+7710 IF UM$(20,1)<>"Y" OR UM[0]=0 THEN ICB[3]=ICB[0]*ICB[1] ELSE ICB[3]=ICB[0]*ICB[1]/UM[0]
+7745 RETURN 
+7750 REM "Add ICB line to end of chain
+7755 IF LAST_LINE>0 THEN GOTO 7760
+7756 REM "figure out if first line on header (last_line=0) or set last line to point to the last_line
+7757 INDEX=ICA[0]
+7758 IF INDEX>0 THEN LAST_LINE=INDEX; READ (Z[5],IND=INDEX)INDEX; GOTO 7758
+7760 REM "Write out record using A9 as index to write out. If last_line=0 then this is 1st line so update ICA, else read the last_line and update its link.
+7765 LINK=0; WRITE (Z[5],IND=A9)IOL=0350
+7770 IF LAST_LINE=0 THEN ICA[0]=A9; WRITE LOCK (Z[4],KEY=ICA$(1,12))IOL=0340; GOTO 7790
+7775 EXTRACT (Z[5],IND=LAST_LINE)IOL=0350; LINK=A9; WRITE (Z[5],IND=LAST_LINE)IOL=0350; LAST_LINE=A9
+7795 RETURN 
+8100 REM "Initialize bar graph variable for second pass
+8110 CALL "ZZINFO",Z[3],T9,X3$,TOT,T0,K,B,D,S0,S1,F$
+8130 T1=0,I9=0,T0=INT(TOT*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,TOT,I9
+8195 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

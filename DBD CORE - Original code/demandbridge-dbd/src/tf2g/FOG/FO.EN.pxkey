@@ -1,0 +1,2901 @@
+<PxTable>
+ TableName=FO.EN
+ TableKey=K1033742497
+ FileCreate=KEYED "FO.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_14$="./lib/_tfmsglib.en"
+    FIELD_18$="1"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_33$="000F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="            0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_33$="000F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="77"
+    FIELD_5$="7"
+    FIELD_6$="W"
+    FIELD_7$="=MSG("+QUO+"CUST_CO"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="XRPT_SEQ$="+QUO+"1"+QUO+",refresh_flg=1,RPT_SEQDESC$="+QUO+"( By Customer )"+QUO
+    FIELD_18$="2013/10/25 09:12 tma"
+    FIELD_21$="xR"
+    FIELD_28$="tma"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0223"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="22"
+    FIELD_3$="0.6"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"STARTING"+QUO+")"
+    FIELD_9$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0243"
+    FIELD_1$="FONTED_TEXT_2"
+    FIELD_2$="42"
+    FIELD_3$="0.6"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ENDING"+QUO+")"
+    FIELD_9$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0306"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="5"
+    FIELD_3$="2.2"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CUST_CO"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0323"
+    FIELD_1$="ML_CUST_START"
+    FIELD_2$="22"
+    FIELD_3$="2.2"
+    FIELD_4$="14"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="1000"
+    FIELD_13$="XIF STP(ML_CUST_START$)="+QUO+QUO+" or POS ("+QUO+"-"+QUO+"=ML_CUST_START$)<> 0  ML_CUST_START$="+QUO+QUO+",REFRESH_FLG=1;FI;ML_CUST_START$=ML_CUST_START.CTL'VALUE$"
+    FIELD_14$="=MSG("+QUO+"STAR_SON"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_19$="QRY_AR1.1,tf2g/ARG/AR.EN"
+    FIELD_21$="XU"
+    FIELD_22$="FIELDS"
+    FIELD_23$="First"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0343"
+    FIELD_1$="ML_CUST_END"
+    FIELD_2$="42"
+    FIELD_3$="2.2"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="1000"
+    FIELD_13$="XIF STP(ML_CUST_END$)="+QUO+QUO+"or POS ("+QUO+"-"+QUO+"=ML_CUST_END$)<> 0  ML_CUST_END$="+QUO+QUO+",REFRESH_FLG=1;FI;ML_CUST_END$=ML_CUST_END.CTL'VALUE$"
+    FIELD_14$="=MSG("+QUO+"END_SON"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_19$="QRY_AR1.1,tf2g/ARG/AR.EN"
+    FIELD_21$="XU"
+    FIELD_22$="FIELDS"
+    FIELD_23$="Last"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0506"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="5"
+    FIELD_3$="4.4"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SHIP_T_C"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0523"
+    FIELD_1$="ML_LOC_START"
+    FIELD_2$="22"
+    FIELD_3$="4.4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1000"
+    FIELD_12$="X%LOC_TYPE$="+QUO+"C"+QUO+",%CUSTOMER$=ML_CUST_START$;IF STP(ML_CUST_START$)="+QUO+QUO+" %CUSTOMER$="+QUO+QUO+",%LOC_TYPE$="+QUO+"  "+QUO
+    FIELD_13$="XREFRESH_FLG=1;IF STP(ML_LOC_START$)="+QUO+QUO+" ML_LOC_START$="+QUO+QUO+" ELSE IF STP(ML_LOC_START$)<>"+QUO+QUO+" ML_LOC_START$=PAD(ML_LOC_START$,4,0,"+QUO+"0"+QUO+")"
+    FIELD_14$="=MSG("+QUO+"STAR_L_C"+QUO+")"
+    FIELD_17$="4"
+    FIELD_19$="QRY_FM0.2,../ARG/AR.EN"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+    FIELD_23$="First"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1         0543"
+    FIELD_1$="ML_LOC_END"
+    FIELD_2$="42"
+    FIELD_3$="4.4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1000"
+    FIELD_12$="X%LOC_TYPE$="+QUO+"C"+QUO+",%CUSTOMER$=ML_CUST_END$;IF STP(ML_CUST_END$)="+QUO+QUO+" %CUSTOMER$="+QUO+QUO+",%LOC_TYPE$="+QUO+"  "+QUO
+    FIELD_13$="XREFRESH_FLG=1;IF STP(ML_LOC_END$)="+QUO+QUO+" ML_LOC_END$="+QUO+QUO+" ELSE IF STP(ML_LOC_END$)<>"+QUO+QUO+" ML_LOC_END$=PAD(ML_LOC_END$,4,0,"+QUO+"0"+QUO+")"
+    FIELD_14$="=MSG("+QUO+"END_L_C"+QUO+")"
+    FIELD_17$="4"
+    FIELD_19$="QRY_FM0.2,../ARG/AR.EN"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+    FIELD_23$="Last"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="100"
+    FIELD_5$="39"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"FOGDAA"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"FOGDAA;Init"+QUO
+    FIELD_12$="P"+QUO+"FOGDAA;Main_post_display"+QUO
+    FIELD_13$="P"+QUO+"FOGDAA;Wrapup"+QUO
+    FIELD_18$="2011/03/15 14:14 jdf"
+    FIELD_21$="S-cXR"
+    FIELD_24$="="+QUO+"FO0"+QUO+"+%C$"
+    FIELD_25$="01"
+    FIELD_28$="sns"
+    FIELD_29$="10102220"
+    FIELD_30$="000158"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0102"
+    FIELD_1$="BUTTON_11"
+    FIELD_2$="1"
+    FIELD_3$="0.8"
+    FIELD_4$="26"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="="+QUO+"{!Arrow_right}"+QUO+"+"+QUO+"&"+QUO+"+MSG("+QUO+"FOGDAA_1"+QUO+")"
+    FIELD_9$="1"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;QRY_FO0"+QUO+"   ;PERFORM "+QUO+"FOGDAA;LOAD_LINE_TYPES"+QUO+" ;PERFORM "+QUO+"FOGDAA;LOAD_BLANK_LINE"+QUO+"  "
+    FIELD_14$="=MSG("+QUO+"FOGDAA_2"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"FOGDAA_2"+QUO+")"
+    FIELD_34$="0"
+    FIELD_38$="FBL"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0301"
+    FIELD_1$="BOXES_3"
+    FIELD_2$="0"
+    FIELD_3$="2.9"
+    FIELD_4$="99.4"
+    FIELD_5$="7"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0602"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="1"
+    FIELD_3$="5"
+    FIELD_4$="7"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CUST_CODE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0610"
+    FIELD_1$="CUSTOMER"
+    FIELD_2$="9"
+    FIELD_3$="5"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="2"
+    FIELD_12$="XPERFORM "+QUO+"FOGDAA;CHECK_CHANGES"+QUO+";PERFORM "+QUO+"FOGDAA;Clear_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_21$="XUD"
+    FIELD_22$="KEY1"
+    FIELD_26$="ZZWLKU;ar_cust_val"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0628"
+    FIELD_1$="%CUST_NAME"
+    FIELD_2$="27"
+    FIELD_3$="5"
+    FIELD_4$="35"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0667"
+    FIELD_1$="FONTED_TEXT_30"
+    FIELD_2$="66"
+    FIELD_3$="5"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"HOLD"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0683"
+    FIELD_1$="REQ_ON_HOLD"
+    FIELD_2$="82"
+    FIELD_3$="5"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="27"
+    FIELD_12$="XOk_TO_PROCESS=0; INIT_REQ_ON_HOLD$=req_on_hold$"
+    FIELD_13$="XIF REQ_ON_HOLD$<>"+QUO+"Y"+QUO+" AND INIT_REQ_ON_HOLD$="+QUO+"Y"+QUO+" THEN OK_TO_PROCESS=1"
+    FIELD_14$="=MSG("+QUO+"EXT_D_M_O2"+QUO+")"
+    FIELD_21$="FB<D"
+    FIELD_22$="FIELDS2"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_30$="=MSG("+QUO+"EXT_D_M_O2"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0802"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="1"
+    FIELD_3$="7.6"
+    FIELD_4$="9"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"LOC_CODE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0812"
+    FIELD_1$="LOC_CODE"
+    FIELD_2$="11"
+    FIELD_3$="7.6"
+    FIELD_4$="5"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_13$="XID$="+QUO+"REQ_NUM"+QUO+",LOC_CODE$=PAD(LOC_CODE$,4,0,"+QUO+"0"+QUO+"),REFRESH_FLG=1;PERFORM "+QUO+"FOGDAA;Find_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"LOC_CODE"+QUO+")"
+    FIELD_17$="4"
+    FIELD_21$="D"
+    FIELD_22$="KEY3"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0819"
+    FIELD_1$="FONTED_TEXT_4"
+    FIELD_2$="18"
+    FIELD_3$="7.6"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"REQ_NO"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0832"
+    FIELD_1$="REQ_NUM"
+    FIELD_2$="31"
+    FIELD_3$="7.6"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;FIND_REC"+QUO
+    FIELD_14$="=MSG("+QUO+"CUST_PO"+QUO+")"
+    FIELD_17$="15"
+    FIELD_21$="TD"
+    FIELD_22$="KEY4,KEY5"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0852"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="51"
+    FIELD_3$="7.6"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SEQ_NUM"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0865"
+    FIELD_1$="SEQ_NUM"
+    FIELD_2$="64"
+    FIELD_3$="7.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="6"
+    FIELD_13$="XSEQ_NUM$=PAD(SEQ_NUM$,3,0,"+QUO+"0"+QUO+"),REFRESH_FLG=1;PERFORM "+QUO+"FMGUT8;Find_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    FIELD_17$="3"
+    FIELD_21$="D"
+    FIELD_22$="KEY6"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0871"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="70"
+    FIELD_3$="7.6"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"REQU_D"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      0882"
+    FIELD_1$="REQ_DATE"
+    FIELD_2$="81"
+    FIELD_3$="7.6"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="7"
+    FIELD_14$="=MSG("+QUO+"ACTI_DT"+QUO+")"
+    FIELD_17$="12"
+    FIELD_19$="*ZZWQRY"
+    FIELD_21$="D"
+    FIELD_22$="KEY5,FIELDS2"
+    FIELD_26$="ZZWDTE;validate"
+    FIELD_27$="ZZWDTE;display"
+    FIELD_29$="DATE-KKMMDD"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1001"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="0"
+    FIELD_3$="9.4"
+    FIELD_4$="99.4"
+    FIELD_5$="4"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1102"
+    FIELD_1$="FONTED_TEXT_52"
+    FIELD_2$="1"
+    FIELD_3$="10.8"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ATTN"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1109"
+    FIELD_1$="ATTN_NAME"
+    FIELD_2$="8"
+    FIELD_3$="10.8"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="8"
+    FIELD_14$="=MSG("+QUO+"RECVG_DEPT"+QUO+")"
+    FIELD_17$="30"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1131"
+    FIELD_1$="FONTED_TEXT_53"
+    FIELD_2$="30"
+    FIELD_3$="10.8"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"NEEDED_BY"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1138"
+    FIELD_1$="NEEDED_BY"
+    FIELD_2$="37.5"
+    FIELD_3$="10.8"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="9"
+    FIELD_14$="=MSG("+QUO+"BILL_D"+QUO+")"
+    FIELD_17$="12"
+    FIELD_19$="*ZZWQRY"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS2"
+    FIELD_26$="ZZWDTE;validate"
+    FIELD_27$="ZZWDTE;display"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1150"
+    FIELD_1$="FONTED_TEXT_13"
+    FIELD_2$="49"
+    FIELD_3$="10.8"
+    FIELD_4$="5.2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SHIP_V_C"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1155"
+    FIELD_1$="SHIP_VIA_CODE"
+    FIELD_2$="54.6"
+    FIELD_3$="10.8"
+    FIELD_4$="1"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="10"
+    FIELD_14$="=MSG("+QUO+"FROM_LOC"+QUO+")"
+    FIELD_17$="1"
+    FIELD_21$="LBTD"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1157"
+    FIELD_1$="SHIP_VIA_DESC"
+    FIELD_2$="56"
+    FIELD_3$="10.8"
+    FIELD_4$="18"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="11"
+    FIELD_14$="=MSG("+QUO+"SHIP_V_D"+QUO+")"
+    FIELD_17$="15"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1176"
+    FIELD_1$="FONTED_TEXT_28"
+    FIELD_2$="75"
+    FIELD_3$="10.8"
+    FIELD_4$="9"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SALES_TAX"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1185"
+    FIELD_1$="STAX_CODE"
+    FIELD_2$="84.5"
+    FIELD_3$="10.8"
+    FIELD_4$="12.5"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%SALES_TAX_MASK$"
+    FIELD_9$="12"
+    FIELD_14$="=MSG("+QUO+"VEND_PLANT"+QUO+")"
+    FIELD_17$="=%SALES_TAX_LEN"
+    FIELD_19$="QRY_AR5,tf2g/ARG/AR.EN"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS2"
+    FIELD_26$="ZZWLKU;Sales_tax"
+    FIELD_27$="ZZWLKU;Sales_tax"
+    FIELD_29$="SALES_TAX"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1301"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="0"
+    FIELD_3$="12.9"
+    FIELD_4$="99.4"
+    FIELD_5$="8"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1501"
+    FIELD_1$="FONTED_TEXT_8"
+    FIELD_2$="0"
+    FIELD_3$="14"
+    FIELD_4$="3"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"LN"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1503"
+    FIELD_1$="BUTTON_9"
+    FIELD_2$="2"
+    FIELD_3$="14.25"
+    FIELD_4$="0"
+    FIELD_5$="1"
+    FIELD_6$="B"
+    FIELD_9$="28"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1505"
+    FIELD_1$="LINE_NUM"
+    FIELD_2$="4"
+    FIELD_3$="14"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="13"
+    FIELD_14$="=MSG("+QUO+"FROM_LOC"+QUO+")"
+    FIELD_17$="3"
+    FIELD_21$="TD"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1509"
+    FIELD_1$="FONTED_TEXT_9"
+    FIELD_2$="8"
+    FIELD_3$="14"
+    FIELD_4$="3"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"TP"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1513"
+    FIELD_1$="LINE_TYPE"
+    FIELD_2$="12"
+    FIELD_3$="14"
+    FIELD_4$="20"
+    FIELD_5$="7"
+    FIELD_6$="D"
+    FIELD_7$="=%LINE_TYPE_LIST$"
+    FIELD_9$="14"
+    FIELD_12$="XCUR_LINE_TYPE$=LINE_TYPE$"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;LOAD_LINE_TYPES"+QUO+";IF STP(LINE_TYPE$)="+QUO+QUO+" THEN NEXT_ID=LINE_TYPE.CTL;FI;IF CUR_LINE_TYPE$<>LINE_TYPE$ THEN PERFORM "+QUO+"FOGDAA;RE_ENTER_LINE"+QUO
+    FIELD_14$="=MSG("+QUO+"LINE_TYPE"+QUO+")"
+    FIELD_21$="XD"
+    FIELD_22$="FIELDS"
+    FIELD_25$="=%LINE_TYPE_VALUES$"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1532"
+    FIELD_1$="FONTED_TEXT_7"
+    FIELD_2$="31"
+    FIELD_3$="14"
+    FIELD_4$="5"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ITEM"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1538"
+    FIELD_1$="ITEM_CODE"
+    FIELD_2$="37"
+    FIELD_3$="14"
+    FIELD_4$="14"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="15"
+    FIELD_12$="X%CUSTOMER$=CUSTOMER$;CALL"+QUO+"ZZWLKU;PARSE_CUST"+QUO+",CUSTOMER$,%CUST_DIV$,%CUST_CODE$"
+    FIELD_13$="XITEM_DESC$=MID(QRY_VAL$,11) , refresh_flg=1; PERFORM "+QUO+"FOGDAA;ITEM_INFO"+QUO
+    FIELD_14$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_17$="10"
+    FIELD_19$="*FOGDAA;ITEM_QUERY"
+    FIELD_21$="XUD"
+    FIELD_22$="FIELDS"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1553"
+    FIELD_1$="FONTED_TEXT_10"
+    FIELD_2$="52"
+    FIELD_3$="14"
+    FIELD_4$="7"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="="+QUO+"Description"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1561"
+    FIELD_1$="ITEM_DESC"
+    FIELD_2$="60"
+    FIELD_3$="14"
+    FIELD_4$="35"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="16"
+    FIELD_14$="=MSG("+QUO+"ITEM_DESC"+QUO+")"
+    FIELD_17$="40"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1702"
+    FIELD_1$="FONTED_TEXT_12"
+    FIELD_2$="1"
+    FIELD_3$="16.2"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SHIP_FR"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1713"
+    FIELD_1$="SHIP_FROM_WHSE"
+    FIELD_2$="12"
+    FIELD_3$="16.2"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="17"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;POST_WHSE"+QUO
+    FIELD_14$="=MSG("+QUO+"FROM_LOC"+QUO+")"
+    FIELD_17$="4"
+    FIELD_19$="QRY_FM0.W,tf2g/OPG/OP.EN"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS"
+    FIELD_26$="ZZWLKU;WHSE_VAL"
+    FIELD_27$="ZZWLKU;WHSE_FMT"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1722"
+    FIELD_1$="%WHSE_NAME"
+    FIELD_2$="21"
+    FIELD_3$="16.2"
+    FIELD_4$="35"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_14$="=MSG("+QUO+"ITEM_DESC"+QUO+")"
+    FIELD_17$="35"
+    FIELD_21$="LTD"
+    FIELD_22$="FIELDS"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1759"
+    FIELD_1$="FONTED_TEXT_15"
+    FIELD_2$="58"
+    FIELD_3$="16.2"
+    FIELD_4$="9"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"I_UNIT"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1769"
+    FIELD_1$="UM"
+    FIELD_2$="68"
+    FIELD_3$="16.2"
+    FIELD_4$="5"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="18"
+    FIELD_14$="=MSG("+QUO+"FROM_LOC"+QUO+")"
+    FIELD_17$="4"
+    FIELD_21$="TUD"
+    FIELD_22$="FIELDS"
+    FIELD_26$="ZZWLKU;UNIT_VAL"
+    FIELD_27$="ZZWLKU;UNIT_FMT"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1774"
+    FIELD_1$="FONTED_TEXT_58"
+    FIELD_2$="73"
+    FIELD_3$="16.2"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"QUANTITY"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1783"
+    FIELD_1$="QTY"
+    FIELD_2$="82"
+    FIELD_3$="16.2"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="##,###,###.00-"
+    FIELD_9$="19"
+    FIELD_14$="=MSG("+QUO+"QTY_S"+QUO+")"
+    FIELD_17$="15"
+    FIELD_21$="TD"
+    FIELD_22$="FIELDS"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1965"
+    FIELD_1$="BT_WRITE2"
+    FIELD_2$="64"
+    FIELD_3$="18"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&ADD"+QUO+")"
+    FIELD_9$="24"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;ADD_LINES"+QUO+" ; NEXT_ID= LINE_TYPE.CTL ; DISABLE CONTROL BT_WRITE2.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_ADD"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_ADD"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1975"
+    FIELD_1$="BT_WRITE"
+    FIELD_2$="74"
+    FIELD_3$="18"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="20"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;Write_rec"+QUO+"; ENABLE CONTROL BT_WRITE2.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS2"
+    FIELD_30$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      1985"
+    FIELD_1$="BT_DELETE1"
+    FIELD_2$="84"
+    FIELD_3$="18"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="25"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;Delete_rec"+QUO+"; ENABLE CONTROL BT_WRITE2.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS2"
+    FIELD_30$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      2102"
+    FIELD_1$="ORDER_LINE"
+    FIELD_2$="1"
+    FIELD_3$="20.8"
+    FIELD_4$="97.8"
+    FIELD_5$="15"
+    FIELD_6$="L"
+    FIELD_9$="5"
+    FIELD_13$="XIF STP(ORDER$)<>"+QUO+QUO+" THEN MSGBOX MSG("+QUO+"FOGDAA_3"+QUO+"), MSG("+QUO+"FYI"+QUO+")  ELSE PERFORM "+QUO+"FOGDAA;SELECT_LINE"+QUO+";PERFORM "+QUO+"FOGDAA;LOAD_LINE_TYPES"+QUO
+    FIELD_21$="r"
+    FIELD_23$="[Line]C6.00,[Type]C5.00,[Item]L15.00,[Desc]L40.00,[U/M]C10.00,[Qty]R10.00,"
+    FIELD_34$="L"
+    FIELD_36$=$01$+"L[Line]C6.00,[Type]C5.00,[Item]L15.00,[Desc]L40.00,[U/M]C10.00,[Qty]R10.00,"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3702"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="1"
+    FIELD_3$="36.3"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGDAA;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3706"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="5"
+    FIELD_3$="36.3"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGDAA;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3710"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="9"
+    FIELD_3$="36.3"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGDAA;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3714"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="13"
+    FIELD_3$="36.3"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGDAA;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3759"
+    FIELD_1$="BT_WRITE1"
+    FIELD_2$="58.7"
+    FIELD_3$="36.3"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="21"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;Write_rec"+QUO+"; ENABLE CONTROL BT_WRITE2.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3769"
+    FIELD_1$="BT_CLEAR"
+    FIELD_2$="68.8"
+    FIELD_3$="36.3"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="22"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;Clear_rec"+QUO+";NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3779"
+    FIELD_1$="BT_DELETE"
+    FIELD_2$="78.8"
+    FIELD_3$="36.3"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="26"
+    FIELD_13$="XPERFORM "+QUO+"FOGDAA;Delete_rec"+QUO+"; PERFORM "+QUO+"FOGDAA;CLEAR_REC"+QUO+" ; ENABLE CONTROL BT_WRITE2.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      3789"
+    FIELD_1$="BT_EXIT"
+    FIELD_2$="88.8"
+    FIELD_3$="36.3"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="23"
+    FIELD_13$="XPerform "+QUO+"FOGDAA;Check_changes"+QUO+";  cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGDAA      R001"
+    FIELD_1$="%ITEM_DESC"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="A"
+    FIELD_9$="0"
+    FIELD_13$="XITEM_DESC$=%ITEM_DESC$,REFRESH_FLG=1"
+    FIELD_23$="ITEM_DESC"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="61"
+    FIELD_5$="13"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"FOGMPA"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"FOGMPA;init"+QUO
+    FIELD_12$="P "+QUO+"FOGMPA;Main_post_display"+QUO
+    FIELD_13$="P"+QUO+"FOGMPA;wrapup"+QUO
+    FIELD_15$="=%help_path$+"+QUO+"\hlp\KitManagement\WebHelp\KIT_S2.htm"+QUO
+    FIELD_18$="2011/01/17 13:25 jdf"
+    FIELD_21$="ScXR"
+    FIELD_26$="FOGMPA"
+    FIELD_28$="JOANNE"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0102"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="0.5"
+    FIELD_3$="0"
+    FIELD_4$="60"
+    FIELD_5$="10.8"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="2"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0205"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="4"
+    FIELD_3$="1.2"
+    FIELD_4$="43"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"FOGMPA_3"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,SR"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0249"
+    FIELD_1$="IMPORT_FILE_SEC"
+    FIELD_2$="48"
+    FIELD_3$="1.2"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_13$="XIMPORT_FILE_SEC$=STR(NUM(IMPORT_FILE_SEC$):"+QUO+"00000"+QUO+");REFRESH_FLG=1"
+    FIELD_14$="=MSG("+QUO+"FOGMPA_31"+QUO+")"
+    FIELD_17$="5"
+    FIELD_28$="0-99999"
+    FIELD_30$="=MSG("+QUO+"FOGMPA_31"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0405"
+    FIELD_1$="FONTED_TEXT_4"
+    FIELD_2$="4"
+    FIELD_3$="3.2"
+    FIELD_4$="43"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"FOGMPA_4"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,SR"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0449"
+    FIELD_1$="TF_OPTION"
+    FIELD_2$="48"
+    FIELD_3$="3.2"
+    FIELD_4$="4.35"
+    FIELD_5$="4"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"FOGMPA_DN"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="2"
+    FIELD_14$="=MSG("+QUO+"TF_OPTION"+QUO+")"
+    FIELD_25$="=MSG("+QUO+"FOGMPA_DNR"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"TF_OPTION"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0505"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="4"
+    FIELD_3$="4.8"
+    FIELD_4$="43"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"FOGMPA_5"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,SR"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      0549"
+    FIELD_1$="ITEM_CODE_YN"
+    FIELD_2$="48"
+    FIELD_3$="4.8"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="3"
+    FIELD_14$="=MSG("+QUO+"FOGMPA_51"+QUO+")"
+    FIELD_21$="FB<"
+    FIELD_25$="NY"
+    FIELD_30$="=MSG("+QUO+"FOGMPA_51"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      1241"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="40"
+    FIELD_3$="10.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="4"
+    FIELD_13$="XPerform "+QUO+"FOGMPA;Load_Info"+QUO+";Perform "+QUO+"FOGMPA;WRITE_REC"+QUO+";NEXT_ID=BUTTON_3.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGMPA      1251"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="50"
+    FIELD_3$="10.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="5"
+    FIELD_13$="XPERFORM "+QUO+"FOGMPA;CHECK_CHANGES"+QUO+";CMD_STR$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="83"
+    FIELD_5$="24"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"FOGRAS"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+";Init"+QUO
+    FIELD_12$="P"+QUO+";Main_post_display"+QUO
+    FIELD_13$="P"+QUO+";Wrapup"+QUO
+    FIELD_18$="2014/08/14 10:02 dmm"
+    FIELD_21$="S-cXR"
+    FIELD_24$="="+QUO+"ZZS"+QUO+"+%C$"
+    FIELD_25$="12"
+    FIELD_26$="FOGRAS"
+    FIELD_28$="tma"
+    FIELD_29$="00101220"
+    FIELD_30$="000541"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0102"
+    FIELD_1$="BOXES_3"
+    FIELD_2$="1"
+    FIELD_3$="0"
+    FIELD_4$="81"
+    FIELD_5$="5.5"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0203"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="2"
+    FIELD_3$="1.4"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SELECTION"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0214"
+    FIELD_1$="RPT_SELEC"
+    FIELD_2$="13"
+    FIELD_3$="1.4"
+    FIELD_4$="14"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_12$="Xnext_folder=evn("+QUO+"FLDR."+QUO+"+_F_OBJ$[RPT_SEQ]+"+QUO+".CTL"+QUO+"),REFRESH_FLG=1"
+    FIELD_13$="P"+QUO+";SELECT_SELECTION"+QUO
+    FIELD_14$="=MSG("+QUO+"ENT_R_S"+QUO+")"
+    FIELD_17$="12"
+    FIELD_19$="QRY_ZZS_1,../ZZG/ZZ.EN"
+    FIELD_21$="TU"
+    FIELD_23$="(STANDARD)"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0225"
+    FIELD_1$="FONTED_TEXT_2"
+    FIELD_2$="24"
+    FIELD_3$="1.4"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0238"
+    FIELD_1$="RPT_DESC"
+    FIELD_2$="37"
+    FIELD_3$="1.4"
+    FIELD_4$="35"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_14$="=MSG("+QUO+"ENT_D_R"+QUO+")"
+    FIELD_17$="40"
+    FIELD_21$="T"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0403"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="2"
+    FIELD_3$="3"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"OPTIONS"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0414"
+    FIELD_1$="RPT_OPT"
+    FIELD_2$="13"
+    FIELD_3$="3"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_14$="=MSG("+QUO+"RAS_OPT"+QUO+")"
+    FIELD_17$="12"
+    FIELD_23$="(NORMAL)"
+    FIELD_30$="=MSG("+QUO+"RAS_OPT"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0425"
+    FIELD_1$="FONTED_TEXT_4"
+    FIELD_2$="24"
+    FIELD_3$="3"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SEQ"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0438"
+    FIELD_1$="RPT_SEQ"
+    FIELD_2$="37"
+    FIELD_3$="3"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_17$="1"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0441"
+    FIELD_1$="RPT_SEQDESC"
+    FIELD_2$="40"
+    FIELD_3$="3"
+    FIELD_4$="32"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0602"
+    FIELD_1$="FOLDER"
+    FIELD_2$="1"
+    FIELD_3$="5.4"
+    FIELD_4$="81"
+    FIELD_5$="9.2"
+    FIELD_6$="S"
+    FIELD_7$="FO1==MSG("+QUO+"CUST_CO"+QUO+")"+$00$
+    FIELD_9$="5"
+    FIELD_10$="00"
+    FIELD_17$="14"
+    FIELD_23$="T"
+    FIELD_25$="0"
+    FIELD_26$="1,/"
+    FIELD_27$="Default/"
+    FIELD_32$="MS Sans Serif,1,C&"
+    FIELD_36$="04"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      0803"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="2"
+    FIELD_3$="7.2"
+    FIELD_4$="79"
+    FIELD_5$="7.3"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1602"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="14.8"
+    FIELD_4$="81"
+    FIELD_5$="7"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1704"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="3"
+    FIELD_3$="16.2"
+    FIELD_4$="28"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"FOGRAS_L1"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1733"
+    FIELD_1$="CB_VARIANCE"
+    FIELD_2$="31.5"
+    FIELD_3$="16.16"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="6"
+    FIELD_14$="=MSG("+QUO+"FOGRAS_L1"+QUO+")+"+QUO+"?"+QUO
+    FIELD_21$="FB<"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1744"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="43"
+    FIELD_3$="16.2"
+    FIELD_4$="28"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"FOGRAS_L2"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1773"
+    FIELD_1$="SEC_DET_LN"
+    FIELD_2$="72"
+    FIELD_3$="16.16"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="7"
+    FIELD_14$="=MSG("+QUO+"FOGRAS_L2"+QUO+")+"+QUO+"?"+QUO
+    FIELD_21$="FB<"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1873"
+    FIELD_1$="SEL_FILES"
+    FIELD_2$="72"
+    FIELD_3$="17.96"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="8"
+    FIELD_14$="=MSG("+QUO+"GW_SEL_FLS"+QUO+")"
+    FIELD_21$="FB<"
+    FIELD_25$="NY"
+    FIELD_30$="=MSG("+QUO+"GW_SEL_FLS"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      1942"
+    FIELD_1$="FONTED_TEXT_20"
+    FIELD_2$="41"
+    FIELD_3$="18"
+    FIELD_4$="30"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"GW_SEL_FLS"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      2203"
+    FIELD_1$="PRG_NAME"
+    FIELD_2$="2"
+    FIELD_3$="21.8"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_8$="FOGRAS"
+    FIELD_9$="0"
+    FIELD_12$="P"+QUO+"FOGRAS;Check_changes"+QUO
+    FIELD_13$="P"+QUO+"FOGRAS;Find_rec"+QUO
+    FIELD_17$="18"
+    FIELD_21$="LBHD"
+    FIELD_22$="KEY1"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      2242"
+    FIELD_1$="RPT_VEIW"
+    FIELD_2$="41.5"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&VIEW_R"+QUO+")"
+    FIELD_9$="1"
+    FIELD_13$="XPerform "+QUO+"FOGRAS;Check_changes"+QUO+";Perform"+QUO+"FOGRAS;View_Report"+QUO
+    FIELD_14$="=MSG("+QUO+"VIEW_RPT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"VIEW_RPT"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      2252"
+    FIELD_1$="PRT_OUTOPS"
+    FIELD_2$="51.5"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&OUTPUT_OP"+QUO+")"
+    FIELD_9$="9"
+    FIELD_12$="X !ARG_1$="+QUO+"FOGRAS"+QUO
+    FIELD_13$="JZGXOPO,../ZGX/ZG.EN"
+    FIELD_14$="=MSG("+QUO+"OUT_OPT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"OUT_OPT"+QUO+")"
+    FIELD_37$=" "
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      2262"
+    FIELD_1$="RPT_PRT"
+    FIELD_2$="61.5"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&PRINT_R"+QUO+")"
+    FIELD_9$="10"
+    FIELD_13$="XPerform "+QUO+"FOGRAS;Check_changes"+QUO+";Perform"+QUO+"FOGRAS;Print_Report"+QUO
+    FIELD_14$="=MSG("+QUO+"PRIN_RPT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRIN_RPT"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      2272"
+    FIELD_1$="EXIT"
+    FIELD_2$="71.5"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="11"
+    FIELD_13$="XPerform "+QUO+"FOGRAS;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_E"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGRAS      U001"
+    FIELD_1$="4"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="U"
+    FIELD_9$="0"
+    FIELD_13$="XPerform "+QUO+"ICGRAS;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="78"
+    FIELD_5$="24"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"FOGSHD"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"FOGSHD;Init"+QUO
+    FIELD_12$="Xperform "+QUO+"FOGSHD;Main_post_display"+QUO+";call"+QUO+"ICGMAZ;CHNBT"+QUO+",BUTTON_9.CTL"
+    FIELD_13$="P"+QUO+"FOGSHD;Wrapup"+QUO
+    FIELD_18$="2011/02/25 15:39 jdf"
+    FIELD_21$="S-cXR"
+    FIELD_24$="="+QUO+"FO5"+QUO+"+%C$"
+    FIELD_25$="12"
+    FIELD_28$="tma"
+    FIELD_29$="00101220"
+    FIELD_30$="000269"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0102"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="0.5"
+    FIELD_3$="0"
+    FIELD_4$="77"
+    FIELD_5$="20.5"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0203"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="2"
+    FIELD_3$="1.2"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CUST_CODE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0232"
+    FIELD_1$="CUSTOMER"
+    FIELD_2$="30"
+    FIELD_3$="1.2"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="1"
+    FIELD_13$="P"+QUO+"FOGSHD;Find_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_19$="QRY_AR1.1,../ARG/AR.EN"
+    FIELD_21$="XU"
+    FIELD_22$="KEY1"
+    FIELD_26$="ZZWLKU;ar_cust_val"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0246"
+    FIELD_1$="BUTTON_9"
+    FIELD_2$="45.1"
+    FIELD_3$="0.9"
+    FIELD_4$="3"
+    FIELD_5$="1.6"
+    FIELD_6$="B"
+    FIELD_7$="{!lookup2}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGSHD;SEL_QRY"+QUO
+    FIELD_14$="=MSG("+QUO+"FOGSHD"+QUO+")+"+QUO+" "+QUO+"+MSG("+QUO+"QUERY"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"FOGSHD"+QUO+")+"+QUO+" "+QUO+"+MSG("+QUO+"QUERY"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0250"
+    FIELD_1$="%CUST_NAME"
+    FIELD_2$="48.8"
+    FIELD_3$="1.2"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0402"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="0.6"
+    FIELD_3$="2.6"
+    FIELD_4$="77"
+    FIELD_5$="0.2"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0509"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="8"
+    FIELD_3$="3.6"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ALT_IN_C_C"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0531"
+    FIELD_1$="ALT_CUST"
+    FIELD_2$="30"
+    FIELD_3$="3.6"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="2"
+    FIELD_13$="XREFRESH_FLG=1; CALL "+QUO+"ZZWLKU;PARSE_CUST"+QUO+",ALT_CUST$,ALT_INV_CUST_DIV$,ALT_INV_CUST_CODE$; ALT_CUST$=ALT_INV_CUST_DIV$+ALT_INV_CUST_CODE$"
+    FIELD_14$="=MSG("+QUO+"OFGMPB_1"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_19$="QRY_AR1.1,../ARG/AR.EN"
+    FIELD_21$="XTU"
+    FIELD_22$="FIELDS"
+    FIELD_24$="1"
+    FIELD_26$="ZZWLKU;ar_cust_val"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_1"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0547"
+    FIELD_1$="%CUST_NAME1"
+    FIELD_2$="45.8"
+    FIELD_3$="3.6"
+    FIELD_4$="30"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0603"
+    FIELD_1$="FONTED_TEXT_4"
+    FIELD_2$="2"
+    FIELD_3$="5.2"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"DFLT_A_L"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0631"
+    FIELD_1$="DFLT_ATTN_LINE"
+    FIELD_2$="30"
+    FIELD_3$="5.2"
+    FIELD_4$="31"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_14$="=MSG("+QUO+"DFLT_A_L"+QUO+")"
+    FIELD_17$="30"
+    FIELD_21$="T"
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"DFLT_A_L"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0803"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="2"
+    FIELD_3$="7"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SECU_I_P"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      0831"
+    FIELD_1$="SECURE_ITEMS_PERMIT"
+    FIELD_2$="30"
+    FIELD_3$="7"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_14$="=MSG("+QUO+"OFGMPB_2"+QUO+")"
+    FIELD_17$="20"
+    FIELD_21$="T"
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_2"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1003"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="2"
+    FIELD_3$="8.8"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"PRCN_O_M_A"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1031"
+    FIELD_1$="PRCNT_OF_MTHLY_AVG"
+    FIELD_2$="30"
+    FIELD_3$="8.8"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_14$="=MSG("+QUO+"PRCN_O_M_A"+QUO+")"
+    FIELD_17$="3"
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_3"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1130"
+    FIELD_1$="REQS_REV_BEF_SHIPMNT"
+    FIELD_2$="29.7"
+    FIELD_3$="10.56"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="6"
+    FIELD_14$="=MSG("+QUO+"REQ_R_B_S"+QUO+")+"+QUO+"?"+QUO
+    FIELD_21$="FB<"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_4"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1203"
+    FIELD_1$="FONTED_TEXT_7"
+    FIELD_2$="2"
+    FIELD_3$="10.6"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"REQ_R_B_S"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1303"
+    FIELD_1$="FONTED_TEXT_8"
+    FIELD_2$="2"
+    FIELD_3$="12.4"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CAN_S_I_B"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1331"
+    FIELD_1$="CAN_STOCK_ITEM_REQU"
+    FIELD_2$="29.7"
+    FIELD_3$="12.36"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="7"
+    FIELD_14$="=MSG("+QUO+"CAN_S_I_B"+QUO+")"
+    FIELD_21$="FB<"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_30$="=MSG("+QUO+"CAN_S_I_B"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1503"
+    FIELD_1$="FONTED_TEXT_9"
+    FIELD_2$="2"
+    FIELD_3$="14.2"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"NO_BACK"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1531"
+    FIELD_1$="NO_BACKORDERS"
+    FIELD_2$="29.7"
+    FIELD_3$="14.16"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="8"
+    FIELD_14$="=MSG("+QUO+"NO_BACK"+QUO+")+"+QUO+"?"+QUO
+    FIELD_21$="FB<"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_5"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1703"
+    FIELD_1$="FONTED_TEXT_10"
+    FIELD_2$="2"
+    FIELD_3$="16"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"P_I_O_W_O"+QUO+")+"+QUO+"?"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1731"
+    FIELD_1$="OPPOSITE_WHSE"
+    FIELD_2$="29.7"
+    FIELD_3$="15.96"
+    FIELD_4$="1.88"
+    FIELD_5$="1.18"
+    FIELD_6$="C"
+    FIELD_7$="{!Check_NoB|!Check_YesB}"
+    FIELD_8$="N"
+    FIELD_9$="9"
+    FIELD_14$="=MSG("+QUO+"P_I_O_W_O"+QUO+")+"+QUO+"?"+QUO
+    FIELD_21$="FB<"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+    FIELD_29$="CHECK_NY"
+    FIELD_30$="=MSG("+QUO+"OFGMPB_6"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1803"
+    FIELD_1$="FONTED_TEXT_11"
+    FIELD_2$="2"
+    FIELD_3$="17.8"
+    FIELD_4$="27"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"A_O_N_S"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      1830"
+    FIELD_1$="ALT_ORD_NUM_SEQ"
+    FIELD_2$="29.75"
+    FIELD_3$="17.8"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="10"
+    FIELD_13$="XPERFORM "+QUO+"FOGSHD;ALTERNATE_SEQ"+QUO
+    FIELD_14$="=MSG("+QUO+"A_O_N_S"+QUO+")"
+    FIELD_17$="1"
+    FIELD_21$="X"
+    FIELD_22$="FIELDS"
+    FIELD_28$="0-9"
+    FIELD_30$="=MSG("+QUO+"A_O_N_S"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2102"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="1"
+    FIELD_3$="20.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGSHD;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2106"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="5"
+    FIELD_3$="20.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGSHD;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2110"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="9"
+    FIELD_3$="20.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGSHD;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2114"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="13"
+    FIELD_3$="20.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"FOGSHD;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2138"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="37"
+    FIELD_3$="20.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="11"
+    FIELD_13$="XPERFORM "+QUO+"FOGSHD;Write_rec"+QUO+";NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2148"
+    FIELD_1$="BUTTON_8"
+    FIELD_2$="47"
+    FIELD_3$="20.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="12"
+    FIELD_13$="XPERFORM "+QUO+"FOGSHD;Clear_rec"+QUO+";NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2158"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="57"
+    FIELD_3$="20.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="13"
+    FIELD_13$="P"+QUO+"FOGSHD;Delete_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FOGSHD      2168"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="67"
+    FIELD_3$="20.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="14"
+    FIELD_13$="XPerform "+QUO+"FOGSHD;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="80"
+    FIELD_5$="26"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"ORD_REQ_G"+QUO+")+"+QUO+" - "+QUO+"+"+QUO+"DB Distributor "+QUO+"+$ae$"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+";init"+QUO
+    FIELD_18$="2010/12/08 18:02 Chaitanya Guntur"
+    FIELD_21$="-mMZX+"
+    FIELD_26$="OFGMEN"
+    FIELD_28$="Chaitanya Guntur"
+    FIELD_33$="000F"
+    FIELD_38$="Z"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0202"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.8"
+    FIELD_4$="78"
+    FIELD_5$="22.6"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0256"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="55"
+    FIELD_3$="1"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="B"
+    FIELD_7$="="+QUO+"{!Stop}"+QUO+"+msg("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="1000"
+    FIELD_13$="E"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0304"
+    FIELD_1$="SHAPES_1"
+    FIELD_2$="2.5"
+    FIELD_3$="1.8"
+    FIELD_4$="75"
+    FIELD_5$="20.6"
+    FIELD_6$="["
+    FIELD_9$="0"
+    FIELD_10$="0,0,0"
+    FIELD_17$="1,7"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0314"
+    FIELD_1$="IMAGE_2"
+    FIELD_2$="13"
+    FIELD_3$="2.2"
+    FIELD_4$="54"
+    FIELD_5$="19.6"
+    FIELD_6$="I"
+    FIELD_7$="=picture$"
+    FIELD_9$="0"
+    FIELD_16$="2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        2440"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="39"
+    FIELD_3$="23.2"
+    FIELD_4$="39"
+    FIELD_5$="2.2"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ORD_REQ_G"+QUO+")+"+QUO+" "+QUO
+    FIELD_9$="0"
+    FIELD_32$="Arial,2,RBI&"
+    FIELD_33$="0CFF"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        2503"
+    FIELD_1$="ML_TIME_EF"
+    FIELD_2$="2"
+    FIELD_3$="24"
+    FIELD_4$="22"
+    FIELD_5$="1.2"
+    FIELD_6$="M"
+    FIELD_8$="=DTE(0:"+QUO+"%Dl, %Ml %D, %Yl "+QUO+")"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="<Top Level>"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_14$="-"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Setup"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&System Parameters"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FOGMPA"+QUO
+    FIELD_17$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M003"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Customer Parameters"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FOGSHD"+QUO
+    FIELD_17$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M004"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Processing"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M005"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Req GW Journal/Update"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FOGRAS"+QUO
+    FIELD_17$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M006"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Utilities"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M007"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Requisition Maintenance"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FOGDAA"+QUO
+    FIELD_17$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0000"
+    FIELD_1$="FO0_Hdr"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="75"
+    FIELD_5$="25"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"FOGDAA"+QUO+")+"+QUO+" "+QUO+"+MSG("+QUO+"QUERY"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FO0"+QUO+"+%C$"
+    FIELD_18$="2011/02/10 08:35 jdf"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.CUST_DIV$+_MN_.CUST_CODE$+_MN_.LOC_CODE$+_MN_.REQ_NUM$+_MN_.SEQ_NUM$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0001"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0002"
+    FIELD_1$="LOC_CODE"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0003"
+    FIELD_1$="REQ_NUM"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REQ_NO"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="15"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0004"
+    FIELD_1$="REQ_ON_HOLD"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REQ_O_H"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     0005"
+    FIELD_1$="SEQ_NUM"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO0     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0000"
+    FIELD_1$="FO5_CustParm"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="92"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"FOGSHD"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FO5"+QUO+"+%C$"
+    FIELD_18$="2010/12/13 10:03 jdf"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0001"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0002"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0003"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.ALT_INV_CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.ALT_INV_CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="17"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ALT_CST_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0004"
+    FIELD_1$="DFLT_ATTN_LINE"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DFLT_A_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0005"
+    FIELD_1$="SECURE_ITEMS_PERMIT"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SECU_I_P"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="20"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0006"
+    FIELD_1$="PRCNT_OF_MTHLY_AVG"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PRCN_O_M_A"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0007"
+    FIELD_1$="REQS_REV_BEF_SHIPMNT"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REQS_R_B_S"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0008"
+    FIELD_1$="CAN_STOCK_ITEM_REQU"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CAN_S_I_R"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0009"
+    FIELD_1$="NO_BACKORDERS"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"NO_BACK"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0010"
+    FIELD_1$="OPPOSITE_WHSE"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"P_I_O_W_O"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     0011"
+    FIELD_1$="ALT_ORD_NUM_SEQ"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"A_O_N_S"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     F001"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FO5     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

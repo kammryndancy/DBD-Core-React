@@ -1,0 +1,88 @@
+0010 REM "Contract Class <FM2CON>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 06/10/08 - 11.426388 - dmm - SSP# 212768
+0037 REM "212768-Add Blanket PO feature to work with the Contract feature.   
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 VALIDATE_BLANKET_PO:! WO212768
+1005 FTU_IOLIST:IOLIST FTU$,FTU[0],FTU[1],FTU[2],FTU[3],FTU[4],FTU[5],FTU[6],FTU[7],FTU[8]
+1010 ENTER X3$,X4$,FTU_CHN,CUSTOMER$,BLANKET_PO$,BLANKET_PO_DATE$,CONTRACT_NUM$,MSG_TEXT$,VALID_BLANKET_PO
+1020 VALID_BLANKET_PO=-2,MSG_TEXT$="Blanket PO is not on file."
+1030 FTU_KEY$=CUSTOMER$+BLANKET_PO$+BLANKET_PO_DATE$
+1040 DIM FTU[8]; READ (FTU_CHN,KEY=FTU_KEY$,DOM=*NEXT,END=1090)IOL=FTU_IOLIST; VALID_BLANKET_PO=0,MSG_TEXT$=""; GOTO 1090 ! If there is an exact match, assume this one is valid
+1045 NEXT_FTU_KEY: K$=KEY(FTU_CHN,END=1090); IF K$(1,30)<>FTU_KEY$(1,30) THEN GOTO 1090
+1050 READ (FTU_CHN,KEY=K$)IOL=FTU_IOLIST
+1055 IF FTU$(97,6)<>DIM(6) THEN IF FTU$(97,6)<X3$(21,6) THEN VALID_BLANKET_PO=-3,MSG_TEXT$="This blanket PO has expired."; GOTO NEXT_FTU_KEY ! Expired, try for another match
+1060 BLANKET_PO_DATE$=FTU$(31,6),VALID_BLANKET_PO=0,MSG_TEXT$=""; IF FTU$(103,15)=DIM(15) OR POS(X3$(40,3)=FTU$(103,15),3)>0 THEN GOTO *NEXT ELSE VALID_BLANKET_PO=-5,MSG_TEXT$="This blanket PO is not valid for this operator code."; GOTO NEXT_FTU_KEY ! If no operator restriction or this operator matches, then go on to next test, otherwise set the error then read the next record to see if another match
+1065 IF CONTRACT_NUM$<>FTU$(118,20) THEN VALID_BLANKET_PO=-6,MSG_TEXT$="This blanket PO does not match the entered contract number."; GOTO NEXT_FTU_KEY ! Contract number in FTU record must match the contract number entered for this order
+1070 IF FTU[0]>0 AND FTU[1]>=FTU[0] THEN VALID_BLANKET_PO=-7,MSG_TEXT$="The dollar amount of this blanket PO is fulfilled."; GOTO NEXT_FTU_KEY ! If the invoiced to date amount is greater than or equal to the blanket po amount, then this one can't be used anymore
+1090 EXIT 
+1095 ! 
+1100 VALID_FTU_QRY:! WO212768
+1110 ENTER OP1$,OP2$,OP3$,OP4$,OP5$,EXP_DATE$,FTU_CONTRACT$,FTU_AMT,FTU_INV
+1115 OPERATOR_LIST$=PAD(OP1$,3)+PAD(OP2$,3)+PAD(OP3$,3)+PAD(OP4$,3)+PAD(OP5$,3)
+1120 OK=1
+1125 IF OPERATOR_LIST$<>DIM(15) THEN IF POS(%X3$(40,3)=OPERATOR_LIST$,3)=0 THEN OK=0; GOTO 1195 ! Current user does not match an operator code for this blanket PO
+1130 EXP_DATE$=PAD(EXP_DATE$,6); IF EXP_DATE$<>DIM(6) AND EXP_DATE$<%X3$(21,6) THEN OK=0; GOTO 1195 ! Expiration date is less than today's date
+1135 FTU_CONTRACT$=PAD(FTU_CONTRACT$,20); IF FTU_CONTRACT$<>%CONTRACT$ THEN OK=0; GOTO 1195 ! Contract number must match entered contract number
+1140 IF FTU_AMT>0 AND FTU_INV>=FTU_AMT THEN OK=0; GOTO 1195 ! Total invoiced is greater than the blanket PO amount
+1195 IF OK THEN EXIT ELSE EXIT 1
+1199 ! 
+1200 VALID_FTS_QRY:! WO212768, adding this section, the VALID_QRY section used for existing queries is not checking for the contract expiration date.  Will use this new section for QRY_FTS.3, may need to have others use this as well.
+1210 ENTER OP1$,OP2$,OP3$,OP4$,OP5$,EXP_DATE$
+1215 OPERATOR_LIST$=PAD(OP1$,3)+PAD(OP2$,3)+PAD(OP3$,3)+PAD(OP4$,3)+PAD(OP5$,3)
+1220 OK=1
+1225 IF OPERATOR_LIST$<>DIM(15) THEN IF POS(%X3$(40,3)=OPERATOR_LIST$,3)=0 THEN OK=0; GOTO 1195 ! Current user does not match an operator code for this contract
+1230 EXP_DATE$=PAD(EXP_DATE$,6); IF EXP_DATE$<>DIM(6) AND EXP_DATE$<%X3$(21,6) THEN OK=0; GOTO 1195 ! Expiration date is less than today's date
+1295 IF OK THEN EXIT ELSE EXIT 1
+1299 ! 
+9999 END 
+20500 VALIDATE_CONTRACT_NUM:! [200893]-added routine
+20510 ENTER FILENO,TMP_CUSTOMER$,TMP_CONTRACT$,TMP_CONTRACT_DATE$,HLD_CONTRACT$,NEW_ORDER_FLAG$,MSG_TEXT$,CUR_DATE$,VALID_CONTRACT ! tmp_customer$=customer, tmp_contract$=contract entered, tmp_contract_date=contract date, new_order_flag$=Y=new order/n=existing order, MSG_TEXT$=error message
+20512 VALID_CONTRACT=-2,MSG_TEXT$="Contract Number is Not on File"
+20540 IF STP(TMP_CONTRACT$)="" THEN VALID_CONTRACT=-1,MSG_TEXT$="A Valid Contract Number is Required" ELSE IF HLD_CONTRACT$=TMP_CONTRACT$ AND NEW_ORDER_FLAG$<>"Y" THEN VALID_CONTRACT=0,MSG_TEXT$=""
+20560 IF VALID_CONTRACT=-2 THEN {! 20780
+20580 TMP_KEY$=TMP_CUSTOMER$+TMP_CONTRACT$+TMP_CONTRACT_DATE$
+20585 CALL "UPDFTS;READBYKEY",FILENO,0,TMP_KEY$,SEG2$,SEG3$,SEG4$,SEG5$,FTS$,FTS{ALL},FOUNDFTS
+20590 IF FOUNDFTS THEN {
+20595 VALID_CONTRACT=0,MSG_TEXT$=""
+20600  } ELSE {! 20695
+20610 CALL "UPDFTS;READNEXT",FILENO,FTS$,FTS{ALL},FOUNDFTS
+20650 IF FOUNDFTS AND FTS$(1,30)=TMP_KEY$(1,30) THEN {! 20690 } it's a valid contract - not check for duplicates and contract date
+20655 VALID_CONTRACT=0,MSG_TEXT$="",TMP_CONTRACT_DATE$=FTS$(31,6)
+20660 IF STP(FTS$(97,6))<>"" AND FTS$(97,6)<%X3$(21,6) THEN VALID_CONTRACT=-3,MSG_TEXT$="The Contract Has Already Expired" ! [SSP-212325]
+20665 CALL "UPDFTS;READNEXT",FILENO,FTS2$,FTS2{ALL},FOUNDFTS2 ! [SSP-212325]
+20670 IF FOUNDFTS2 AND FTS2$(1,30)=TMP_KEY$(1,30) THEN VALID_CONTRACT=2,MSG_TEXT$="" ! duplicate contract #, need query [SSP-212325]
+20690  } ! 20650
+20695  } ! 20600
+20780  } ! 20560
+20795 EXIT 
+20800 VALIDATE_CONTRACT_DATE:
+20810 ENTER FILENO,CONTRACT_CUST$,CONTRACT$,CONTRACT_DATE$,CUR_DATE$,VALID_CONTRACT,MSG_TEXT$
+20815 VALID_CONTRACT=0,MSG_TEXT$=""
+20820 CALL "UPDFTS;READBYKEY",FILENO,0,CONTRACT_CUST$,CONTRACT$,CONTRACT_DATE$,SEG4$,SEG5$,FTS$,FTS{ALL},FOUNDFTS
+20840 IF FOUNDFTS THEN IF FTS$(97,6)=DIM(6) THEN EXIT 
+20850 IF FOUNDFTS THEN IF FTS$(97,6)<CUR_DATE$ THEN VALID_CONTRACT=-3,MSG_TEXT$="The Contract Has Already Expired"
+20890 EXIT 
+20898 ! 
+20899 ! 
+20900 VALIDATE_CONTRACT_USER:
+20910 ENTER FILENO,CONTRACT_CUST$,CONTRACT$,CONTRACT_DATE$,USER$,OK,MSG_TEXT$
+20920 OK=0,MSG_TEXT$=""
+20950 CALL "UPDFTS;READBYKEY",FILENO,0,CONTRACT_CUST$,CONTRACT$,CONTRACT_DATE$,SEG4$,SEG5$,FTS$,FTS{ALL},FOUNDFTS
+20955 IF FTS$(103,15)<>DIM(15) AND FOUNDFTS THEN {
+20960 IF USER$<>DIM(3) THEN IF POS(USER$=FTS$(103,15),3)=0 THEN OK=-5,MSG_TEXT$="This Contract is unavailable for the Current User ID"
+20980  }
+20990 EXIT 
+21000 VALID_QRY:! specifies valid entries for query
+21010 ENTER OP1$,OP2$,OP3$,OP4$,OP5$,USER$
+21020 OPERATOR_LIST$=PAD(OP1$,3)+PAD(OP2$,3)+PAD(OP3$,3)+PAD(OP4$,3)+PAD(OP5$,3)
+21030 OK=1
+21040 IF OPERATOR_LIST$<>DIM(15) THEN {
+21050 IF POS(USER$=OPERATOR_LIST$,3)=0 THEN OK=0
+21060  }
+21090 IF OK THEN EXIT ELSE EXIT 1
+56000 REM "200893-Create New Contract number field in order processing        
+56002 REM "212325-follow up issues to contract work order for vanguard        
+56004 REM "215144-program CONTRC from ssp 212325 needs to be renamed to an    
+56006 REM "212768-Add Blanket PO feature to work with the Contract feature.

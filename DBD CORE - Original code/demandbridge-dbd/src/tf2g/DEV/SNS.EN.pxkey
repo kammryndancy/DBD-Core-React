@@ -1,0 +1,211 @@
+<PxTable>
+ TableName=SNS.EN
+ TableKey=K1331050447
+ FileCreate=KEYED "SNS.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="60"
+    FIELD_5$="17"
+    FIELD_6$="W"
+    FIELD_7$="Fmgord"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_18$="2012/03/06 12:31 sns"
+    FIELD_21$="R"
+    FIELD_28$="sns"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      0202"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="1"
+    FIELD_3$="1.2"
+    FIELD_4$="13"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ORDER_NUMBER"+QUO+")"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,-11,R"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      0216"
+    FIELD_1$="ORDER_NUMBER"
+    FIELD_2$="15"
+    FIELD_3$="1.2"
+    FIELD_4$="9"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1000"
+    FIELD_12$="P"+QUO+"FMGORD:Check_changes"+QUO
+    FIELD_13$="P"+QUO+"FMGORD:Find_rec"+QUO
+    FIELD_17$="8"
+    FIELD_32$=",-11,"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1503"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="2"
+    FIELD_3$="14.2"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="1001"
+    FIELD_13$="P"+QUO+"DEVZWL;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1507"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="6"
+    FIELD_3$="14.2"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="1002"
+    FIELD_13$="P"+QUO+"DEVZWL;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1511"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="10"
+    FIELD_3$="14.2"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="1003"
+    FIELD_13$="P"+QUO+"DEVZWL;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1515"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="14"
+    FIELD_3$="14.2"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="1004"
+    FIELD_13$="P"+QUO+"DEVZWL;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1520"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="19"
+    FIELD_3$="14.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="1005"
+    FIELD_13$="P"+QUO+"DEVZWL;Write_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1530"
+    FIELD_1$="BUTTON_8"
+    FIELD_2$="29"
+    FIELD_3$="14.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="1006"
+    FIELD_13$="P"+QUO+"DEVZWL;Clear_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1540"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="39"
+    FIELD_3$="14.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="1007"
+    FIELD_13$="P"+QUO+"DEVZWL;Delete_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGORD      1550"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="49"
+    FIELD_3$="14.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="1008"
+    FIELD_13$="XPerform "+QUO+"DEVZWL;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

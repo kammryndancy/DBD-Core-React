@@ -1,0 +1,143 @@
+0010 REM "Export OLAP Information <AR2XOL>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 12/16/02 - 12.258055 - dmm - SSP# 155804
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2XOL",X1$="Export OLAP Information"
+0120 DIM Z0$(80,"-"),A[1]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST AS9$,AS9[0],AS9[1],AS9[2],AS9[3],AS9[4],AS9[5],AS9[6],AS9[7]
+0320 IOLIST AR3$
+0330 IOLIST AR1$,AR1[0],AR1[1],AR1[2],AR1[3],AR1[4],AR1[5],AR1[6],AR1[7],AR1[8],AR1[9],AR1[10],AR1[11],AR1[12],AR1[13],AR1[14],AR1[15]
+0340 IOLIST AP4$,AP4[0],AP4[1]
+0360 IOLIST FS6$,FS6[0],FS6[1],FS6[2],FS6[3],FS6[4],FS6[5],FS6[6],FS6[7]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AS9...  02O AR3...  03O AR1... 04O AP4... 05O FS8... 06O FS6...  07O FT3...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 FYAP$="200201"; REM "Default to 2000 period 1, SSP155804, change year to 2002
+0535 DIM GLYE$(105); FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+FYAP$(1,4),DOM=0536)GLYE$
+0590 SEP$=$09$
+0600 REM "
+0610 GOSUB 6000
+0620 IF Q1$<>"*" THEN GOSUB 8100
+0630 IF Q1$="*" THEN GOTO 0695
+0640 IF Q1$="" THEN CALL "ZZPROM",".YE",X3$,Z,"Proceed?","","",0; ON Z GOTO 0695,0650,9900
+0650 REM "Input FY acct period
+0655 CALL "ZZENTR","Z",A{ALL},FYAP$,X4$,X3$,32,12,1,4,C0,"","","","AR2XOL02","","",""
+0660 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+FYAP$(1,4),DOM=0655)GLYE$
+0661 CALL "ZZDISP","D",GLYE$(15+NUM(GLYE$(13,2))*6,6),"",X3$,"","",45,12,X4$
+0665 CALL "ZZENTR","Z",A{ALL},FYAP$,X4$,X3$,32,13,5,2,C0,"","","","AR2XOL04","","",""
+0670 IF FYAP$(5,2)<"01" OR FYAP$(5,2)>GLYE$(13,2) THEN GOTO 0665
+0671 CALL "ZZDISP","D",GLYE$(15+NUM(FYAP$(5,2))*6,6),"",X3$,"","",45,13,X4$
+0690 GOTO 0640
+0700 REM "set file to write into on channel 1000, erase any existing file
+0710 OLAP_FILE$="OLAP"+X3$(9,3)+".txt"
+0720 ERASE OLAP_FILE$,ERR=0721; GOTO 0720
+0730 SERIAL OLAP_FILE$,0,0
+0740 CLOSE (1000); OPEN LOCK (1000,OPT="TEXT")OLAP_FILE$
+0750 WRITE (1000)"Company"+SEP$+"Accounting Period"+SEP$+"Division"+SEP$+"Sales Rep Code"+SEP$+"Sales Rep Name"+SEP$+"Customer Code"+SEP$+"Customer Name"+SEP$+"Sales Order Number"+SEP$+"Item Code"+SEP$+"Item Description"+SEP$+"Product Code"+SEP$+"Invoice Number"+SEP$+"Invoice Date"+SEP$+"Vendor Code"+SEP$+"Vendor Name"+SEP$+"Cost"+SEP$+"Sell"+SEP$+"Commission Paid"+SEP$+"Commission Code"+SEP$+"Quantity"+SEP$+"PO Number"+SEP$+"Order Source"+SEP$
+0900 REM "Position file
+0910 READ (Z[1],KEY=FYAP$,DOM=0911)
+1000 REM "BEGIN MAIN PROCESS
+1010 DIM AS9$(115),AS9[7]; READ (Z[1],END=5000)IOL=0310
+1020 C=C+1; IF Q1$<>"*" THEN IF MOD(C,T0)=1 THEN GOSUB 8150
+1029 REM "read supporting records
+1030 DIM AR3$(255); FIND (Z[2],KEY=AS9$(7,4),DOM=1031)IOL=0320
+1032 DIM AR1$(434),AR1[15]; FIND (Z[3],KEY=AS9$(22,10),DOM=1033)IOL=0330
+1039 REM "get fs6 record
+1040 DIM FS6$(113),FS6[7]; READ (Z[5],KEY=AS9$(22,10)+AS9$(108,8),DOM=1041)
+1045 K8$=KEY(Z[5],END=1050); IF K8$(1,18)<>AS9$(22,10)+AS9$(108,8) THEN GOTO 1050 ELSE IF K8$(20,10)<>AS9$(48,10) THEN READ (Z[5]); GOTO 1045 ELSE READ (Z[6],KEY=K8$(1,10)+K8$(19,1)+K8$(20,10)+K8$(11,8)+K8$(30,1),DOM=1050)IOL=0360
+1050 REM "Either  have FS6$ or it is blank
+1054 DIM AP4$(363),AP4[1]; FIND (Z[4],KEY=FS6$(87,10),DOM=1055)IOL=0340
+1060 REM GET FT3 RECORDS
+1070 DIM FT3$(280)
+1080 READ (Z[7],KEY=AS9$(108,8),DOM=1200)FT3$
+1200 REM "Output fields
+1203 OUT$=""
+1204 OUT$=OUT$+X3$(9,3)+SEP$; REM "Company code
+1205 GOSUB 7550; OUT$=OUT$+FYAP_DATE$+SEP$+AS9$(22,2)+SEP$; REM "FY ACCT PD Ending date, Division code
+1206 OUT$=OUT$+AS9$(7,4)+SEP$+AR3$(5,35)+SEP$; REM "Sale rep code & name
+1208 CALL "ZZDISP","AX",AS9$(22,10),"A/R",X3$,TMP$,"",0,0,X4$; OUT$=OUT$+TMP$+SEP$+AR1$(11,35)+SEP$; REM "Customer code, name
+1210 CALL "ZZDISP","AX",AS9$(108,8),"O/P",X3$,TMP$,"",0,0,X4$; OUT$=OUT$+TMP$+SEP$; REM "Sales order number
+1212 OUT$=OUT$+AS9$(38,20)+SEP$+AS9$(58,40)+SEP$; REM "Item code & Description
+1214 OUT$=OUT$+FS6$(31,3)+SEP$; REM "Product Code
+1216 DATEIN$=AS9$(32,6); GOSUB 7500; OUT$=OUT$+AS9$(11,8)+SEP$+DATEOUT$+SEP$; REM "Invoice number & date
+1218 CALL "ZZDISP","AX",FS6$(87,10),"A/P",X3$,TMP$,"",0,0,X4$; OUT$=OUT$+TMP$+SEP$+AP4$(11,35)+SEP$; REM "Vendor code & name
+1220 OUT$=OUT$+STR(AS9[5])+SEP$+STR(AS9[4])+SEP$; REM "Extended Cost & Sell
+1222 OUT$=OUT$+STR(AS9[7])+SEP$+AS9$(102,5)+SEP$; REM "Commission amount & code
+1224 OUT$=OUT$+STR(AS9[0])+SEP$+SEP$; REM "Quantity, PO Number (blank for now)
+1230 OUT$=OUT$+FT3$(246,4)+SEP$
+1290 WRITE (1000)OUT$
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; IF Q1$<>"*" THEN GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6002 IF Q1$="*" THEN GOTO 6190
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,4),"This TopForm progam exports data for use in the ",@(10,5),"OLAP program into a file name OLAP"+X3$(9,3),
+6030 PRINT @(10,12),"Starting Fiscal Year:",@(13,13),"Accounting Period:",
+6165 PRINT (0,ERR=6166)'SF',
+6170 PRINT @(32,12),FYAP$(1,4),@(37,12),"Ending:",; CALL "ZZDISP","D",GLYE$(15+NUM(GLYE$(13,2))*6,6),"",X3$,"","",45,12,X4$
+6173 PRINT @(32,13),FYAP$(5,2),@(37,13),"Ending:",; CALL "ZZDISP","D",GLYE$(15+NUM(FYAP$(5,2))*6,6),"",X3$,"","",45,13,X4$
+6190 RETURN 
+7500 REM "given DATEIN$ in TF format give DATEOUT$ in MM/DD/YYYY
+7505 DATEOUT$=""
+7510 CALL "ZZDISP","DX",DATEIN$,"",X3$,DATEOUT$,"",0,0,X4$
+7515 REM "LET DATEOUT$=DATEOUT$(4,2)+DATEOUT$(1,2)+DATEOUT$(7,4)
+7545 RETURN 
+7550 REM "get Fiscal Year Accting pd ending date into FYAP_DATE$ based on AS9(1-6)
+7555 DIM FYAP_DATE$(8),TMP$(200); FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+AS9$(1,4),DOM=7556)TMP$
+7560 DATEIN$=TMP$(15+NUM(AS9$(5,2))*6,6); GOSUB 7500; FYAP_DATE$=DATEOUT$
+7595 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(10,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9011 IF Q0$<>"" THEN IF Q0$(1,2)="JS" THEN A1$=$FF$+X0$+"|Error|"+STR(Y5)+"|Line|"+STR(Y6)+"|"; GOTO 9900
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,157 @@
+0010 REM "<PO2MAL> Receive a P/O line
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/18/14 - 16.786111 - jvv - SSP# 262321
+0037 REM "262321-WMS:  While in WMS PO receiving - able to delete po  - stock
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0074 REM "Called from SM2UAA, PO receiving part of Customer Invoicing Gateway
+0075 REM "A$=Receiving info string (see OLD#01890 for details)
+0076 REM "A(ALL)=Receiving info numerics
+0077 REM "C0 is return value, 0=ok, 1=line is not on file,2=Being received in another batch (8200's), 3=Coming from calling program (SM2UAA), this is receipt for D type location, vendor invoicing only, no po receiving, 4=Being received in another batch (8100's, inventory costing)
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,A$,A{ALL},C0,SM0$,SM0{ALL}
+0100 SETERR 9000
+0110 X0$="PO2MAL",X1$="Receive a P/O line"
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27]
+0330 IOLIST C$
+0390 IOLIST I$,I[0],I[1],I[2],I[3],I[4],I[5],I[6],I[7],I[8],I[9],I[10],I[11],I[12],I[13],I[14],I[15],I[16],I[17],I[18],I[19],I[20],I[21],I[22],I[23],I[24],I[25],I[26],I[27],I[28],I[29],I[30]
+0400 IOLIST U$,U[0],U[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O PO2...  03O PO1...  08O FS1...  09O IC0...  13O ZZPARM  14O PO7...  15O POA...  16O FTO...  17O ZY9     18O FTK...  19O POH...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 DIM M6[1]; CALL "IC2PRE",X3$,Z[13],M6$,M6{ALL},"",0,"",0
+0590 READ (Z[13],KEY=X3$(9,3)+"I/C")INV_PARM$
+0595 READ (Z[13],KEY=X3$(9,3)+"F/M")OPS_PARM$
+0900 REM "Initialization
+0905 IF C0=3 THEN D_TYPE$="Y" ELSE D_TYPE$="N"
+0910 C0=0
+0920 DIM R1$(43)
+0921 R1$(1,10)=A$(14,10),R1$(11,6)=A$(24,6); REM "A/P invoice #, receipt date
+0922 R1$(17,6)=A$(30,6),R1$(23,11)=STR(A[6]:"-#######.00"); REM "FY/Acct Pd, Freight
+1000 REM "Read in P/O line
+1010 DIM B$(170),B[27]
+1015 B$(82,9)=A$(1,9),B$(7,3)=A$(10,3),B1$=B$(82,9)+B$(7,3),S1$=A$(13,1)
+1020 READ (Z[2],KEY=B1$,DOM=1021)IOL=0320; GOTO 1025
+1021 REM "Missing record
+1022 C0=1; GOTO 9900
+1025 DIM PO1$(383); READ (Z[3],KEY=A$(1,9),DOM=1026)PO1$
+1030 DIM U$(22),U[1]; READ (Z[13],KEY="U/M"+B$(77,4),DOM=1031)IOL=0400
+1040 IF X3$(145,1)="1" THEN GOSUB 8200; REM "If batch processing make sure nobody is receiving this PO in a different batch at this time
+1041 IF X3$(145,1)="1" AND OPS_PARM$(280,1)="Y" AND PO1$(351,1)="B" THEN GOSUB 8100; REM "If batch processing and inventory costing turned on and this is a B type order then make sure nobody is receiving this order in a different batch at this time
+1050 REM "Call routine prior to modifies
+1054 OPTIONS$=""; IF OPS_PARM$(280,1)="Y" AND PO1$(351,1)="B" AND B$(7,3)<>"001" THEN OPTIONS$=OPTIONS$+"P"+"W"; REM "Get product code and warehouse for inventory costing, see 8405 of PO2MAB
+1055 CALL "PO2MAU",X3$,X4$,B$,B{ALL},R1$,S1$,8400,J$,J{ALL},OPTIONS$
+1060 REM "load in previous values as needed
+1100 REM "Update PO2 record
+1120 B$(119,12)=A$(36,12),B$(131,6)=A$(48,6); REM "Job number, job date
+1125 B$(137,9)=A$(54,9); REM "Ending number
+1130 IF A$(63,1)="Y" THEN B$(6,1)="Y" ELSE B$(6,1)="N"; REM "Complete?
+1131 IF %WMS_RECV$="Y" THEN B$(6,1)="N" ! dont flag wms recv as complete SSP204292
+1135 IF D_TYPE$<>"Y" THEN B[7]=B[7]+A[0]; REM "Quantity received ,don't do if dist whse, will do invoice qty only
+1140 IF A[1]=0 AND A[7]<>0 THEN GOSUB 8050; REM "If needed calculate unit cost
+1145 IF A[1]<>0 THEN B[8]=A[1] ELSE B[8]=B[0]; REM "Unit cost
+1146 IF POS(X3$(9,3)="522")<>0 AND A[1]=0 THEN B[8]=0,B[0]=0,B[4]=0; REM SSP 219104
+1150 IF A[7]<>0 THEN IF D_TYPE$<>"Y" THEN B[14]=B[14]+A[7] END_IF ELSE GOSUB 8000; REM "Use provided extension or calc new one
+1155 B[12]=A[2]; REM "backordered
+1160 IF A[3]<>0 THEN B[5]=A[3]; REM "pack
+1165 IF A[4]<>0 THEN B[18]=A[4]; REM "carton weight
+1170 IF A[5]<>0 THEN B[19]=A[5]; REM "combo quantity
+1175 REM "If complete then copy receive now to invoice now,changed for CIG Plus, used to only do line 1180 if B$(6,1)="Y", but needed to also set up ap if partial shipment and receiving with vendor invoice
+1180 IF A$(14,10)<>DIM(10) THEN IF D_TYPE$<>"Y" THEN B[10]=B[10]+B[7],B[17]=B[8],B[16]=B[16]+B[14] ELSE B[10]=B[10]+A[0],B[17]=B[8]; IF A[7]<>0 THEN B[16]=B[16]+A[7] ELSE B[16]=B[16]+B9
+1200 REM "Now write out
+1204 OPTIONS$="",OPTIONS$=OPTIONS$+"C"; IF OPS_PARM$(280,1)="Y" AND PO1$(351,1)="B" AND B$(7,3)<>"001" THEN OPTIONS$=OPTIONS$+"P"+"W"; REM "Added C on SSP132195,need to keep amounts exact from PO7 records when creating AP entries, will set 93,1 to Y in PO2MAU then check for this in AP2DAE.  Also do in cost stuff.
+1210 IF %WMS_RECV$="Y" THEN B[12]=MAX((B[1]-B[7]),0); IF PO1$(361,1)="Y" THEN IF B[7]>=B[1] THEN B$(6,1)="Y" ! Flag wms recv as completed, if PO is for a cust supplied inv vendor and recv is complete - 252860
+1215 CALL "PO2MAU",X3$,X4$,B$,B{ALL},R1$,S1$,8450,J$,J{ALL},OPTIONS$ ! 252860 - Moved from line 1205 to 1215
+1220 WRITE (Z[2],KEY=B1$)IOL=0320
+1300 REM "Create Freight Header 05/15/00; (as in PO2MAG)
+1305 DIM FRT$(130); FRT$(1)=J$,FRT$(20,19)="",FRT$(62)="",FRT$(94,1)="Y" ! SSP#210034
+1308 NEW_FRT=0,NEW_FRT=NUM(FRT$(51,11),ERR=1320); IF NEW_FRT=0 THEN GOTO 1320 ! don't do check if 0 freight amount
+1311 ! 182560 - see if record there, if not normal process; if there then if 0 remove and follow normal process, if not 0 then skip it to prevent duplicates
+1312 FIND (Z[14],KEY=FRT$(1,23),DOM=1320)TEST_FRT$
+1315 TEST_FRT=0,TEST_FRT=NUM(MID(TEST_FRT$,51,11),ERR=*NEXT)
+1316 IF TEST_FRT<>0 THEN GOTO 1330
+1317 ! If here then FRT rec exists and TEST_FRT is zero so remove records so we can update
+1318 REMOVE (Z[14],KEY=FRT$(1,23),DOM=*PROCEED); REMOVE (Z[15],KEY=FRT$(10,10)+FRT$(1,9)+FRT$(20,4),DOM=*PROCEED)
+1320 WRITE (Z[14],KEY=FRT$(1,23),DOM=1330)FRT$
+1325 WRITE (Z[15],KEY=FRT$(10,10)+FRT$(1,9)+FRT$(20,4),DOM=1330)
+1395 ! GOTO 9900 ! rem'd for 180032
+1400 REM "Check for lotted items
+1410 DIM C$(383),I$(187),I[30]
+1420 READ (Z[3],KEY=B1$(1,9),DOM=1421)IOL=0330
+1440 READ (Z[9],KEY=B$(91,20),DOM=1441)IOL=0390
+1450 IF I$(112,1)="Y" THEN GOSUB 2000
+1490 ! IF C$(173,1)<>"C" AND INV_PARM$(44,1)="Y" AND J[0]<>0 AND I$(112,1)="Y" THEN GOSUB 2000 ! rem'd was not used anyway since 1395 goto 9900
+1495 GOTO 9900
+2000 REM "Lot Routines
+2010 LOT_PASS$=B$(82,9)+R1$(1,10)+B$(7,3); REM "PO# + Inv# + Line#
+2020 REM CALL "IC2LAB",X3$,X4$,"",LOT_PASS$,SM0$,SM0{ALL} ! rem'd since IC2LAB was manual process also.  cleaner to use line call updpoh
+2030 IF SM0$(240,8)<>DIM(8) THEN CALL "UPDPOH;UPDATE_FROMSM7",ERR=*NEXT,Z[19],X3$,X4$,SM0$,SM0{ALL},B$,B{ALL},PO1$
+2090 RETURN 
+8000 REM "Calculate extension
+8004 B9=0
+8005 IF U$(20,1)="Y" THEN Q0=U[1] ELSE Q0=B[2]
+8010 IF Q0=0 THEN Q0=1
+8015 B9=B[7]/Q0*B[8]
+8020 IF U[0]<>0 THEN B9=B9/U[0]
+8040 IF D_TYPE$<>"Y" THEN B[14]=B[14]+B9
+8045 RETURN 
+8050 REM "Calculate unit cost
+8055 IF A[0]=0 THEN RETURN 
+8060 PRECISION M6[1]
+8062 IF U[0]=0 THEN U[0]=1; REM SSP 219104
+8065 CALL "FM2EXT",Z[13],1,B$(77,4),B[2],A[0],U,A[7],M6[1]; A[1]=U ! A[1]=A[7]*U[0]/A[0]; REM "SSP132195,removed () which caused unit cost to calculate incorrectly if M unit of measure. SSP228574, change to use FM2EXT so all U/M's are supported, variable U/M's were not calculating the unit cost correctly
+8070 PRECISION 2
+8095 RETURN 
+8100 REM "For Inventory Costing, if they use batch processing and this is a B type order and the flag is set in FS1 then we will check to see if this order number is already being received in another batch, if so display a message with the batch number saying they can't access this order for PO receiving until the other batch is updated, WO111482 COPIED FROM PO2MAG
+8105 DIM FS1$(350); READ (Z[8],KEY=A$(1,8),DOM=8145)FS1$
+8110 IF FS1$(240,1)<>"Y" THEN GOTO 8145
+8115 DIM FTK$(60); READ (Z[18],KEY=A$(1,8),DOM=8120)FTK$; IF FTK$(9,4)=X3$(174,4) THEN GOTO 8145 ELSE GOSUB 8150; IF VALID_BATCH$="Y" THEN C0=4; EXITTO 9900
+8120 FTK$(1,15)=A$(1,8)+X3$(174,4)+X3$(40,3); WRITE (Z[18],KEY=A$(1,8),DOM=8115)FTK$
+8145 RETURN 
+8150 REM "Check for batch record to make sure FTK record is valid, SSP123659
+8155 VALID_BATCH$="N"
+8159 REM "Check for batch record to make sure FTK record is valid, SSP123659
+8160 READ (Z[17],KEY=FTK$(9,4),DOM=8161)
+8165 READ (Z[17],END=8170)ZY9$; IF ZY9$(1,4)=FTK$(9,4) AND ZY9$(6,6)="PO2MAG" THEN VALID_BATCH$="Y"; GOTO 8195 ELSE GOTO 8165
+8170 REMOVE (Z[18],KEY=A$(1,8)); REM "Bogus FTK record,remove and return which will write out the new one and go on
+8195 RETURN 
+8200 REM "For batch processing, we will write out a record to FTO file when a PO is being received, if another user attempts to receive in another batch they will receive a message and will not be allowed access, similar to FTK file for Inventory Costing, SSP125960  COPIED FROM PO2MAG
+8202 CALL "UPDFTO;CHECK_PO_LOCK",X3$,X4$,"W",NEW_FTO$,A$(1,9),FTO_REC$,BATCH_EXISTS$,"Y"; IF BATCH_EXISTS$="Y" THEN C0=2; EXITTO 9900 ELSE RETURN ! SSP 262321
+8245 RETURN 
+8900 REM "Define Functions
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "180032-Wireless Warehousing                                        
+56001 REM "210034-Governor invoice importing issues                           
+56002 REM "228574-Problem in CIG Plus with unit cost calculation when using a
+56003 REM "252860-PO for customer supplied inventory vendor is not closing
+56004 REM "262321-WMS:  While in WMS PO receiving - able to delete po  - stock

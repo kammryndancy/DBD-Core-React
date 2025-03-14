@@ -1,0 +1,170 @@
+0010 REM "Unattended Printer Group Control program <ZZ2PGC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/11/24 - 13.959641 - jvv - SSP# 307486
+0037 REM "307486-Update Display time for an UAP process.DBD-450 DBSPT-176349 
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0042 IF %GUI THEN EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="ZZ2PGC",X1$="Unattended Printer Group Control Program",K9$="PRINTERGP",K9=9
+0120 DIM Z0$(80,"-")
+0125 %UNATTEND=0,%UNATTEND_GROUP$="",%UNATTEND_EMAIL$="" ! 248040
+0130 K0=2,K1=1
+0135 C9=-1,V9=-2
+0145 GOSUB 8950
+0200 REM "
+0230 IF Q1$<>"" THEN X2=-1; PRINT @(0,3),'CE',
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0330 IOLIST C$
+0490 IOLIST R0$,W$,W[0],W[1],W[2],W[3],W[4]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZPARM  02O PO6...  03O ZZS...  04O POF...  06O ZZPARM  07O ZZQ     "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0600 REM "Remove any records left for this autoprint que. These records will start with "AUTO"+Q1$(10,2)
+0610 EXTRACT (Z[7],KEY="AUTO"+Q1$(10,2),DOM=0611)
+0620 K5$=KEY(Z[7],END=0645)
+0625 IF K5$(1,6)<>"AUTO"+Q1$(10,2) THEN GOTO 0645
+0630 REMOVE (Z[7],KEY=K5$,DOM=0631)
+0640 GOTO 0620
+0700 IF NOT(NUL(%WDX$)) THEN CAP$="Company: "+X3$(9,3)+" Group: "+MID(Q1$,-2); PRINT (0,ERR=*PROCEED)'CAPTION'(CAP$)
+0900 REM "Read in keys to look for into K$
+0910 GOSUB 7500
+0950 IF %UNATTEND_DATA_XFR$="Y" THEN CALL "ZZ2TXF",X3$,X4$; REM data transfer (email/ftp); SSP183203
+1000 REM " start searching the file.
+1004 K0=0
+1005 READ (Z[2],KEY="",DOM=1006)
+1010 K0$=KEY(Z[2],END=1080); READ (Z[2])
+1014 REM "If key part in K$ then gosub 3000 to add to list else continue
+1015 IF POS(K0$(1,1)=K$)<>0 THEN GOSUB 3000
+1019 REM "skip other K0$(1,1)s by positioning the file forward
+1020 IF K0$(1,1)<>"V" THEN READ (Z[2],KEY=K0$(1,1)+$FF$,ERR=1021) ELSE READ (Z[2],KEY=K0$(1,7)+$FF$,ERR=1021) ! SSP192520 if V type then for position read use V plus program name, could be OS2C01 or PO2XML
+1025 GOTO 1010
+1080 READ (Z[4],KEY="",DOM=1081)
+1083 K0$=KEY(Z[4],END=1090); READ (Z[4],KEY=K0$,ERR=1085)
+1085 K0$="C"; GOSUB 3000
+1089 REM "If no records found(K0=0) then delay and research, else start run
+1090 IF K0<>0 THEN GOTO 7600
+1092 GOSUB 7500; REM "Reread key info to catch any changes
+1100 IF POS("MS-WINDOWS"=UCS(SYS))>0 AND %HAS_IMAGE_LIB THEN CALL "ZZ2CMD",X3$,X4$,"{IL_PS_TO_PDF}","","IN",DUMMY,DUMMY$
+1105 IF POS("MS-WINDOWS"=UCS(SYS))>0 THEN CALL "ZZ2CMD",X3$,X4$,"{VSI_FAX}","","IN",DUMMY,DUMMY$
+1445 PRINT @(0,21),'CL',FN%PRINT_DATETIME$(FN%GET_DATETIME("",0),"%Y-%Mz-%Dz %Hz:%mz:%sz")," : Waiting for print jobs...Enter 'I' to interrupt", ! SSP307486
+1450 INPUT (0,ERR=1000,TIM=NUM(A$(12,2)))Q$; GOTO *NEXT
+1500 IF POS(Q$="Ii")>0 THEN GOTO 7550 ELSE GOTO 1000
+3000 REM "We found one to run, so add to list
+3004 REM "S1 is used in 5000's
+3005 U2$="",S1=0
+3009 REM "Step through the programs in the group to get all of the programs that have matching keys
+3010 FOR I=1 TO LEN(K$)
+3015 IF K0$(1,1)<>K$(I,1) THEN GOTO 3045
+3020 I0=(I-1)*21+14; IF I0>=224 THEN I0=I0+1; REM "Adjust for stop flag in position 224,1
+3025 DIM W[4]
+3026 IF K0$(1,1)="F" THEN A$(I0+1,6)=K0$(2,6),R0$=DIM(30); DIM C$(72); C$(1,10)=K0$(2,6)+"SH  "; GOTO 3040
+3027 IF K0$(1,1)="V" AND A$(I0+1,5)<>K0$(2,5) THEN GOTO 3045 END_IF ; IF K0$(1,1)="V" THEN A$(I0+1,6)=K0$(2,6),R0$=DIM(30); DIM C$(72); C$(1,10)=K0$(2,6)+"AUTO"; GOTO 3040 ! SSP192520, if V type but doesn't match program from printer group setup then don't process this record.
+3029 IF A$(I0+1,6)="FW2RBA" THEN WAIT NUM(A$(12,2),ERR=3030)
+3030 READ (Z[3],KEY=A$(I0+1,6)+A$(I0+9,12),DOM=3032)IOL=0330,IOL=0490; GOTO 3035
+3031 REM "If can't find under program name, try with A in place of last letter, ex. can't find FM2RBC, try FM2RBA, then replace with real program name
+3032 READ (Z[3],KEY=A$(I0+1,5)+"A"+A$(I0+9,12),DOM=3045)IOL=0330,IOL=0490
+3033 C$(1,6)=A$(I0+1,6)
+3035 IF C$(1,6)="PO2PDA" THEN C$(1,6)="PO2PCC"; REM "Special case for carton label printing
+3040 GOSUB 5000
+3041 K0=1; REM "Used in 1000's
+3045 NEXT I
+3095 RETURN 
+5000 REM "Write Print Data
+5003 REM "Place into print queue file (ZZQ), with a printer id of "AUTO"+PRINTER GROUP NUMBER, eg "01"
+5019 REM "Encode Printer Group number into T1$ after ???
+5020 T1$="???"+A$(10,2)+" ",R0$(1,1)="Q",S1=S1+1
+5025 K9$="",K1$=DAY,K1$=K1$(7,2)+K1$(1,2)+K1$(4,2),K1$="AUTO"+A$(10,2)+X3$(162,1)+R0$(17,1)+K1$+STR(S1:"0000")+" "+C$(1,6)+X3$(9,3)+X3$(40,3)
+5030 K2$=K1$,K2$(15,4)=STR(TIM*100:"0000")
+5070 WRITE (Z[7],KEY=K1$(1,19),DOM=5075)K2$,X3$,X4$,T1$,R0$,W$,IOL=0330; GOTO 5090
+5075 REM "unsuccessful write, try again with new S1
+5080 GOTO 5020
+5090 RETURN 
+7500 REM "Read in group record and construct K$ string of keys to look for
+7501 REM "This also resets the delay time
+7510 READ (Z[1],KEY=Q1$,DOM=9900)IOL=0310
+7511 READ (Z[1],KEY="PRINTEROP"+MID(Q1$,10,2),DOM=*NEXT)PRINTEROP$ ! Read in options for this Unattended print group  ! 248040
+7520 I=14,K$=""
+7530 IF I=224 THEN I=I+1 END_IF ; IF A$(I,1)<>" " THEN K$=K$+A$(I,1),I=I+21; GOTO 7530; REM "Skip stop flag in position 224 of the string
+7532 PRINT @(0,10),'CL',"Unattended status: Waiting "+A$(12,2)+" seconds.."
+7533 GOSUB UPDATE_STATUS ! 268710
+7535 WAIT NUM(A$(12,2),ERR=7536); REM "Go ahead and delay seconds to solve issue in #090280
+7540 IF A$(224,1)="C" THEN GOTO 7550
+7545 RETURN 
+7550 REM "Print cancel flag found, clear it, write out record then end
+7555 EXTRACT (Z[1],KEY=Q1$)IOL=0310
+7560 A$(224,1)=" "
+7565 WRITE (Z[1],KEY=Q1$)IOL=0310
+7569 REM "If Ghost release ourself, else return to ZMENU
+7570 B$=FID(0)
+7575 IF B$="G" THEN RELEASE ELSE GOTO 9900
+7600 REM "Start dequeing of reports
+7605 REM "Add Que entry to return to this program
+7609 REM "SET R0$(17,1) to a high value to make sure it falls at the end of the list
+7610 DIM R0$(30); W$="",R0$(17,1)=CHR(126),C$(1,6)="ZZ2PGC",C$(7)="",C$(19,40)="Print Group "+A$(10,2)
+7615 GOSUB 5000
+7650 B$="Q"+"AUTO"+A$(10,2)+"                    ",Q$=X3$(1,6)
+7660 CALL "ZZERPT",X3$,X4$,"","",K9$,-1,0,0,0,0,0,0,B$
+7670 IF K9$="" THEN GOTO 1000
+7675 PRINT @(0,10),'CL',"Unattended status: Running ",K9$,
+7677 %UNATTEND=1,%UNATTEND_GROUP$=MID(Q1$,10,2),%UNATTEND_EMAIL$=STP(MID(PRINTEROP$,12,60),2) ! 248040
+7680 RUN K9$,ERR=7685
+7685 PRINT "Err in running of program |"+K9$+"| !!!"
+7686 ESCAPE 
+8950 REM "Program flow logic
+8951 REM " FOR DEBUG:LET Q1$="PRINTERGP01"; GOTO 08990
+8960 DIM U0$(6); U0$(1)=FID(0),U0$=U0$+"PF"
+8970 CLOSE (14); OPEN (14)"ZZPARM"; FIND (14,KEY=U0$,DOM=8990)U0$,U1$
+8975 IF U1$="" THEN RETURN 
+8980 Q1=NUM(U1$(7,2)),Q1$=U1$(9,Q1),U1$=U1$(Q1+9)
+8990 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM "PROG FLOW
+9710 IF U1$="" THEN REMOVE (Z[13],KEY=U0$,DOM=9900); GOTO 9900
+9720 WRITE (Z[13],KEY=U0$)U0$,U1$
+9725 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9730 RUN U1$(1,6)
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 Q1$=A1$; EXIT 
+9940 BEGIN ; SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 UPDATE_STATUS:
+10010 CALL "UPDSV0;UPDATE_STATUS",ERR=*NEXT,"UNATTENDPR","UAP GROUP "+MID(Q1$,10,2),"","Unattended Printing - Group "+MID(Q1$,10,2),"ZZ2PGC",STR(TCB(89))
+10045 RETURN 
+10049 ! 
+56000 ! Program changes starting 02/09/06
+56010 REM "192520-Testing XML PO output, setup unattended per kmc instructions
+56015 REM "194087-Changes made at Whitepaper during 2nd week of install       
+56020 REM "199496-Set up Ghostscript for Windows. Merrill changes  
+56021 REM "268710-Server status reporting framework - new file for servers to 
+56022 REM "307486-Update Display time for an UAP process.DBD-450 DBSPT-176349 

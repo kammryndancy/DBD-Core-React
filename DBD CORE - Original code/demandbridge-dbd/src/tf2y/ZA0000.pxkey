@@ -1,0 +1,887 @@
+<PxTable>
+ TableName=ZA0000
+ TableKey=K1007399558
+ FileCreate=KEYED "ZA0000",20,200,384,BSZ=4,OPT="0"
+ MaxFields=00003
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ACTIVITY_LOG        "
+    FIELD_1$="ACTIVITY_LOG        User Error/Activity Log                 ZYL...               13                                                                                                                                                                         "
+    FIELD_2$="40"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_CHECK_REGISTER   "
+    FIELD_1$="AP_CHECK_REGISTER   AP Check Register                       APC...              217        SOURCE_COMP + BANK_CODE + VENDOR_CODE + CHECK_CODE                                                                                                               "
+    FIELD_2$="70"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_DIVISIONS        "
+    FIELD_1$="AP_DIVISIONS        Division Masterfile                    0AP0...              202        DIVISION_NUMBER                                                                                                                                                  "
+    FIELD_2$="34"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_INVOICE_HIST     "
+    FIELD_1$="AP_INVOICE_HIST     A/P Invoice History File               0APQ...              220        VENDOR_CODE+INVOICE                                                                                                                                              "
+    FIELD_2$="264"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_INV_BY_BANK      "
+    FIELD_1$="AP_INV_BY_BANK      A/P Invoice sort by Bank Code          0APP...              323        BANK_CODE+AP_VENDOR+INVOICE_NUMBER                                                                                                                               "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MONTHLY_DISB     "
+    FIELD_1$="AP_MONTHLY_DISB     Monthly Disbursements Check Header     0APM...              217        FISCAL_YEAR__ACCTG_P+BANK_CODE+CHECK_NUMBER+SEQUENCE                                                                                                             "
+    FIELD_2$="116"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MTH_CKS_BY_CKNO  "
+    FIELD_1$="AP_MTH_CKS_BY_CKNO  Monthly Disb. by Check Number sort     0APY...              315        BANK_CODE+CHECK_NUMBER+FISCAL_YEAR+ACCOUNTING_PERIOD                                                                                                             "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MTH_DISB_DTL     "
+    FIELD_1$="AP_MTH_DISB_DTL     Monthly Disb Invoice detail            0APN...              227        FYACCTG_PERIOD+BANK_CODE+CHECK_NUMBER+SEQUENCE_COUNTER+INVOICE_NUMBER                                                                                            "
+    FIELD_2$="142"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_OPEN_INVOICES    "
+    FIELD_1$="AP_OPEN_INVOICES    A/P Open Invoice                       0API...              220        VENDOR_CODE+INVOICE                                                                                                                                              "
+    FIELD_2$="264"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_TERMS_CODES      "
+    FIELD_1$="AP_TERMS_CODES      Terms Code Masterfile                  0AP2...              202        TERMS_CODE                                                                                                                                                       "
+    FIELD_2$="64"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_ALPHA     "
+    FIELD_1$="AP_VENDOR_ALPHA     Vendor sort by lookup code             0AP6...              320        LOOKUP_CODE+VENDOR_CODE                                                                                                                                          "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_CATEG     "
+    FIELD_1$="AP_VENDOR_CATEG     Alternate vendor sort by category      0AP7...              319        VENDOR_CATEGORY_CODE+VENDOR_CODE                                                                                                                                 "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_MASTER    "
+    FIELD_1$="AP_VENDOR_MASTER    Vendor Masterfile                      0AP4...              210        VENDOR_CODE                                                                                                                                                      "
+    FIELD_2$="396"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_MESSAGES  "
+    FIELD_1$="AP_VENDOR_MESSAGES  Vendor message file                    0AP8...              210        VENDOR_CODE                                                                                                                                                      "
+    FIELD_2$="252"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_PURCHASES "
+    FIELD_1$="AP_VENDOR_PURCHASES Vendor purchases                        AP9...              915        VENDOR_CODE + YEAR +"+QUO+"P"+QUO+"                                                                                                                                          "
+    FIELD_2$="96"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_STATUS    "
+    FIELD_1$="AP_VENDOR_STATUS    Vendor Status Data                     0AP5...              210        VENDOR_CODE                                                                                                                                                      "
+    FIELD_2$="224"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMMISSION_CODES "
+    FIELD_1$="AR_COMMISSION_CODES Commission code                        0AR4...              205        COMMISSION_CODE                                                                                                                                                  "
+    FIELD_2$="256"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PAY         "
+    FIELD_1$="AR_COMM_PAY         Commissions payable                    0ARM...              233        FISCAL_YEAR+ACCOUNTING_PERIOD+SALESPERSON_CODE+CUSTOMER_NUMBER+INVOICE_NUMBE                                                                                     "
+    FIELD_2$="144"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PAYABLE     "
+    FIELD_1$="AR_COMM_PAYABLE     Commissions payable                    0ARM...              233        YEAR+PERIOD+SALESPERSON_CODE+CUSTOMER_CODE+INVOICE_NUMBER+COMM_#           E                                                                                     "
+    FIELD_2$="144"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PEND        "
+    FIELD_1$="AR_COMM_PEND        Sales tax & commission pending         0ARK...              218        CUSTOMER_CODE + INVOICE_NUMBER                                                                                                                                   "
+    FIELD_2$="192"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_CATEG   "
+    FIELD_1$="AR_CUSTOMER_CATEG   Customer category setup                0ARG...              209        CUSTOMER_CATEGORY_CODE                                                                                                                                           "
+    FIELD_2$="42"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_MASTER  "
+    FIELD_1$="AR_CUSTOMER_MASTER  Customer Masterfile                     AR1...              210        CUSTOMER_CODE                                                                                                                                         J5062716711"
+    FIELD_2$="512"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_SALES   "
+    FIELD_1$="AR_CUSTOMER_SALES   Sales History Stats                     ARX...              925        DIVISION+SALESPERSON_CODE+CATEGORY_CODE+PRODUCT_CODE+ORDER+YEAR+SALES_TYP                                                                                        "
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_BY_LOOKUP   "
+    FIELD_1$="AR_CUST_BY_LOOKUP   Customer Lookup Sequence               0ARE...              320        CUSTOMER_LOOKUP_CODE+CUSTOMER_CODE                                                                                                                               "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_BY_SLS      "
+    FIELD_1$="AR_CUST_BY_SLS      Customer sort by primary salesperson   0ARU...              314        SALESPERSON_CODE+CUSTOMER_CODE                                                                                                                                   "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_CREDIT      "
+    FIELD_1$="AR_CUST_CREDIT      Customer Credit Analysis               0AR0...              210        CUSTOMER_CODE                                                                                                                                                    "
+    FIELD_2$="224"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_STATS_SALES "
+    FIELD_1$="AR_CUST_STATS_SALES Customer Statistics                     AR9...              915        CUSTOMER_CODE + YEAR + SALES_TYPE                                                                                                                                "
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_DIVISIONS        "
+    FIELD_1$="AR_DIVISIONS        Division Masterfile                    0ARH...              202        DIVISION_CODE                                                                                                                                                    "
+    FIELD_2$="34"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_GL_INTERFACE     "
+    FIELD_1$="AR_GL_INTERFACE     G/L Interface Information              0ARI...              209        CUSTOMER_CATEGORY                                                                                                                                                "
+    FIELD_2$="224"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INVOICE_HISTORY  "
+    FIELD_1$="AR_INVOICE_HISTORY  Invoice History                        0AR8...              218        CUSTOMER_CODE+INVOICE_NUMBER                                                                                                                                     "
+    FIELD_2$="196"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INV_BY_INV_DATE  "
+    FIELD_1$="AR_INV_BY_INV_DATE  Sort of open invoice by invoice date   0ARN...              325        CUSTOMER_NUMBER+PAID_FLAG_A=PAID,_B=UNPAI+INVOICE_DATE+INVOICE_NUMBER                                                                                            "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INV_HDR          "
+    FIELD_1$="AR_INV_HDR          A/R Invoice Data Entry Header          1ARB...              214        FISCAL_YEAR+ACCOUNTING_PERIOD+INVOICE_NUMBER                                                                                                                     "
+    FIELD_2$="512"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_OPEN_INVOICES    "
+    FIELD_1$="AR_OPEN_INVOICES    A/R Open Invoices                      0AR6...              218        CUSTOMER_CODE+INVOICE_NUMBER                                                                                                                          K1020515921"
+    FIELD_2$="285"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_DIST       "
+    FIELD_1$="AR_SALES_DIST       A/R Sales Distribution                  ARV...              209        DIST_CODE                                                                                                                                                        "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_TAX_CODES  "
+    FIELD_1$="AR_SALES_TAX_CODES  Sales Tax Masterfile                   0AR5...              210        SALES_TAX_CODE                                                                                                                                                   "
+    FIELD_2$="54"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_TX_PBL     "
+    FIELD_1$="AR_SALES_TX_PBL     Sales tax payable                      0ARL...              224        FISCAL_YEAR+ACCOUNTING_PERIOD+SALES_TAX_CODE+INVOICE_NUMBER                                                                                                      "
+    FIELD_2$="144"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_BY_LOOKUP    "
+    FIELD_1$="AR_SLS_BY_LOOKUP    Salesperson Lookup Sequence            0ARF...              314        LOOKUP_SEQUENCE+SALESPERSON_CODE                                                                                                                                 "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_MASTER       "
+    FIELD_1$="AR_SLS_MASTER       Salesperson Masterfile                 0AR3...              204        SALESPERSON_CODE                                                                                                                                                 "
+    FIELD_2$="246"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_STATS        "
+    FIELD_1$="AR_SLS_STATS        Salesperson Statistics                 0ARA...              29         SALESPERSON_CODE+FISCAL_YEAR+BALANCE_TYPE                                                                                                                        "
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TERMS_CODES      "
+    FIELD_1$="AR_TERMS_CODES      A/R Terms Codes                         AR2...              202        TERMS_CODE                                                                                                                                                       "
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CA2_AR1             "
+    FIELD_1$="CA2_AR1             AR Customer Conversion                  AR100A               06        ASI_CUSTOMER_CODE                                                                                                                                                "
+    FIELD_2$="22"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CARTON_LABEL        "
+    FIELD_1$="CARTON_LABEL        Carton Labels to Print File             POF...               26        TYPE+SHIP_FROM+ORDER_NUMBER+LINE_NUMBER+CUSTOMER_NUMBER                                                                                                          "
+    FIELD_2$="604"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CFS_COMMISSIONS     "
+    FIELD_1$="CFS_COMMISSIONS     CFS Commission Detail File              U01...              207        INVOICE_NUMBER                                                                                                                                                   "
+    FIELD_2$="178"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CIG_PLUS            "
+    FIELD_1$="CIG_PLUS            Customer Invoicing Gateway Plus         RP1                 8 0                                                                                    "
+    FIELD_2$="240"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COMMISSION_BY_LINE  "
+    FIELD_1$="COMMISSION_BY_LINE  Commissions by Line item (Optional)    0AS4...              221        FISCAL_YEAR+ACCOUNTING_PERIOD+SALESPERSON_CODE+INVOICE_NUMBER+SEQ_NUMBER                                                                                         "
+    FIELD_2$="144"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CONS_ORDER_CUSTOMERS"
+    FIELD_1$="CONS_ORDER_CUSTOMERSConsolidated Order Customers (IEF menu) IE0...              210        CUST_CODE                                                                                                                                             J8111816001"
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CREDIT_CARD_INFO    "
+    FIELD_1$="CREDIT_CARD_INFO    Credit Card Information Setup           ARZ...              218        CUSTOMER_CODE + CREDIT_CARD_TYPE + SEQ_4                                                                                                              J8063009911"
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CREDIT_CARD_TYPE    "
+    FIELD_1$="CREDIT_CARD_TYPE    Credit Card Type                        ASP...              204        CREDIT_CARD_TYPE                                                                                                                                      J8063009581"
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS2                 "
+    FIELD_1$="CS2                 Requisitions Line File                  CS2...              227        LINE_NUMBER+LINE_TYPE+FROM_COMPANY_IE_CUSTOMER+FORM_CODE+COST_CENTER                                                                                             "
+    FIELD_2$="138"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSI_STAFFING        "
+    FIELD_1$="CSI_STAFFING        CSI Staffing                            ZWC...               04        PERSON'S_INITIALS                                                                                                                                                "
+    FIELD_2$="46"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_MASTER     "
+    FIELD_1$="CUSTOMER_MASTER     Customer Masterfile                     TP0...               09        CUSTOMER_CODE                                                                                                                                                    "
+    FIELD_2$="276"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_PMT_SUMMARY    "
+    FIELD_1$="CUST_PMT_SUMMARY    Customer payment summary                ARM-06              2 8        FIRM_ID + CUSTOMER_NUMBER                                                                                                                                        "
+    FIELD_2$="112"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_DETAIL     "
+    FIELD_1$="EMPLOYEE_DETAIL     EMPLOYEE DETAIL HISTORY                 PRT-01              214        FIRM_ID + EMPLOYEE_NUMBER + RECORD_A + PAY_CODE                                                                                                                  "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_HISTORY    "
+    FIELD_1$="EMPLOYEE_HISTORY    EMPLOYEE DETAIL HISTORY CONTRIBUTIONS   PRT-01              214        FIRM_ID+EMPLOYEE_NUMBER+RECORD_D+CONTRIBUTION_CODE                                                                                                               "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_MASTER     "
+    FIELD_1$="EMPLOYEE_MASTER     Employee master file                    PRM-01              211        FIRM_ID+EMPLOYEE_NUMBER                                                                                                                                          "
+    FIELD_2$="282"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EQ_PROSPECT         "
+    FIELD_1$="EQ_PROSPECT         Prospect Masterfile                    0FEA...              210        PROSPECT_CODE                                                                                                                                                    "
+    FIELD_2$="512"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FAX_LOG             "
+    FIELD_1$="FAX_LOG             Fax Log File                            ZYF...               06        REQ_ID                                                                                                                                                           "
+    FIELD_2$="182"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FIXED_ASSETS        "
+    FIELD_1$="FIXED_ASSETS        Fixed Asset Masterfile                  FX0...               06        ASSET_CODE                                                                                                                                                       "
+    FIELD_2$="78"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FIXED_ASSET_II      "
+    FIELD_1$="FIXED_ASSET_II      Fixed Asset Detail                      FX1...               19        ASSET_CODE+VENDOR_CODE+ACCESS_NUMBER                                                                                                                             "
+    FIELD_2$="74"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_DEFAULTS    "
+    FIELD_1$="FM_CUST_DEFAULTS    Customer O/P defaults                  0FMP...              211        "+QUO+"D"+QUO+"+CUSTOMER_CODE                                                                                                                                                "
+    FIELD_2$="0"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_JOB_MASTER  "
+    FIELD_1$="FM_CUST_JOB_MASTER  Customer Job Master                    0FM1...              220        CUSTOMER_CODE+FORM_CODE                                                                                                                                          "
+    FIELD_2$="416"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_FORM_SPEC_COMP   "
+    FIELD_1$="FM_FORM_SPEC_COMP   Form Spec - Composition file           0FMS...              220        CUSTOMER_CODE+FORM_CODE                                                                                                                                          "
+    FIELD_2$="164"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_LOCATION_MASTER  "
+    FIELD_1$="FM_LOCATION_MASTER  F/M Form Location Record               0FM4...              224        CUSTOMER_CODE+FORM_CODE+LOCATION                                                                                                                                 "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_LOC_BY_CT_CYCLE  "
+    FIELD_1$="FM_LOC_BY_CT_CYCLE  Location Sort by Count Cycle           0FMG...              317                                                                                                                                                                         "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_PMS_COLORS       "
+    FIELD_1$="FM_PMS_COLORS       PMS Numbers for colors                 0FMO...              206        PMS_NUMBER                                                                                                                                                       "
+    FIELD_2$="64"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_PRODUCT_CODES    "
+    FIELD_1$="FM_PRODUCT_CODES    Product codes                           FMP...              221        "+QUO+"T"+QUO+"+PRODUCT_CODE                                                                                                                                                 "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_SHIPMNT_DETAIL   "
+    FIELD_1$="FM_SHIPMNT_DETAIL   Detailed Form Activity                  FMZ...              234        CUSTOMER_CODE+LOCATION_TYPE+FORM_CODE+ACTIVITY_DATE+SEQ_COUNTER            V                                                                                     "
+    FIELD_2$="336"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_SHIP_TOS         "
+    FIELD_1$="FM_SHIP_TOS         Cust/Vendor/Whse Alternate Ship-to      FM0...              215        LOCATION_TYPE + CUSTOMER_CODE + SHIP_TO                                                                                                                          "
+    FIELD_2$="326"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_USAGE_BY_LOCATION"
+    FIELD_1$="FM_USAGE_BY_LOCATIONUsage by Location                       FM3...              929        CUSTOMER_CODE + FORM_CODE + LOCATION + YEAR + "+QUO+"U"+QUO+"                                                                                                                "
+    FIELD_2$="20"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_WAREHOUSES       "
+    FIELD_1$="FM_WAREHOUSES       Warehouse Locations                    0FM0...              215        LOCATION_CODE_C,D,P+CUSTOMER_OR_VENDOR_CODE,_BLANK+LOCATION_CODE                                                                                                 "
+    FIELD_2$="256"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMS_MGT_DATA      "
+    FIELD_1$="FORMS_MGT_DATA      Forms Mgt Report Data                   FMD...              225        CUSTOMER_CODE + FORM_CODE + LOCATION_TYPE + LOCATION_CODE                                                                                                        "
+    FIELD_2$="256"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMS_MGT_REPORTS   "
+    FIELD_1$="FORMS_MGT_REPORTS   Forms Mgt Report Info                   FMD...               24                                                                                                                                                                         "
+    FIELD_2$="196"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_SPEC_COMMENT   "
+    FIELD_1$="FORM_SPEC_COMMENT   Form Spec - Comment Permanent File     0FMV...              223        CUSTOMER_CODE+FORMS_CODE+LINE_NUMBER                                                                                                                             "
+    FIELD_2$="96"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_SPEC_PLY       "
+    FIELD_1$="FORM_SPEC_PLY       Form Spec - Permanent Ply File         0FMU...              223        CUSTOMER_CODE+FORMS_CODE+LINE_NUMBER                                                                                                                             "
+    FIELD_2$="144"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_ACCT_BREAKS      "
+    FIELD_1$="GL_ACCT_BREAKS      G/L Account Break File                 0GL4...              212        BREAK_AT_ACCOUNT_NUMBER                                                                                                                                          "
+    FIELD_2$="54"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_CHART_OF_ACCTS   "
+    FIELD_1$="GL_CHART_OF_ACCTS   General Ledger Master                  0GL1...              212        GL_ACCOUNT_NUMBER                                                                                                                                                "
+    FIELD_2$="64"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_DEPARTMENTS      "
+    FIELD_1$="GL_DEPARTMENTS      Department Data Setup                  0GLD...              209        DEPARTMENT_CODE                                                                                                                                                  "
+    FIELD_2$="256"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_DETAIL_FILE      "
+    FIELD_1$="GL_DETAIL_FILE      G/L Detail Posting File                0GL2...              231        GL_ACCOUNT_NUMBER+FISCAL_YEAR_ENDING+ACCOUNTING_PERIOD+POSTING_TYPEA=ACT,B=B                                                                                     "
+    FIELD_2$="126"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_JOURNALS         "
+    FIELD_1$="GL_JOURNALS         General Ledger Journal Codes           0GL5...              202        SOURCE_JOURNAL_CODE                                                                                                                                              "
+    FIELD_2$="48"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_SUMMARY_DATA     "
+    FIELD_1$="GL_SUMMARY_DATA     G/L Account Balances                   0GL3...              917        GL_ACCOUNT_NUMBER+FISCAL_YEAR+BALANCE_TYPE                                                                                                                       "
+    FIELD_2$="96"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEMS_BY_VENOR   "
+    FIELD_1$="IC_ITEMS_BY_VENOR   Item sort by Vendor , Product code     0IC4...              337        PRIMARY_VENDORY_SUPPLIER_COD+PLANT_CODE+PRODUCT_CODE+ITEM_CODE                                                                                                   "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_BY_PCODE    "
+    FIELD_1$="IC_ITEM_BY_PCODE    Items by product code sort             0IC5...              323        PRODUCT_CODE+ITEM_CODE                                                                                                                                           "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_LOCATION    "
+    FIELD_1$="IC_ITEM_LOCATION    Inventory by Location File             0IC1...              224        CUSTOMER_CODE + ITEM_CODE+LOCATION                                                                                                                               "
+    FIELD_2$="192"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_MASTER      "
+    FIELD_1$="IC_ITEM_MASTER      Inventory masterfile                   0IC0...              220        CUSTOMER_CODE+ITEM_CODE                                                                                                                                          "
+    FIELD_2$="320"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_STATS       "
+    FIELD_1$="IC_ITEM_STATS       Inventory Control Item statistics      0IC9...              229        ITEM_CODE+LOCATION_CODE+FISCAL_YEAR+BALANCE_TYPE                                                                                                                 "
+    FIELD_2$="128"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOC_PC_ITEM_SORT "
+    FIELD_1$="IC_LOC_PC_ITEM_SORT Location,Product code, Item code sort  0IC6...              327        LOCATION_CODE+PRODUCT_CODE+ITEM_CODE                                                                                                                             "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOT_DETAIL       "
+    FIELD_1$="IC_LOT_DETAIL       Inventory Lot Detail                    ICL...              242        CUSTOMER_CODE + ITEM_CODE + LOCATION_CODE +RECEIPT_DATE + SEQ_NO                                                                                                 "
+    FIELD_2$="364"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOT_MASTER       "
+    FIELD_1$="IC_LOT_MASTER       Inventory Sub-Ledger                   0ICF...              232        CUSTOMER_CODE+ITEM_CODE+LOCATION_CODE+RECEIPT_DATE+SEQUENCE_NO                                                                                                   "
+    FIELD_2$="320"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ISSUES_STATUS       "
+    FIELD_1$="ISSUES_STATUS                                               ZW8...               02        STATUS_CODE+DESCRIPTION                                                                                                                                          "
+    FIELD_2$="28"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ISSUE_CATEGORY      "
+    FIELD_1$="ISSUE_CATEGORY      Issue category                          ZW9...               02        CATEGORY_CODE                                                                                                                                                    "
+    FIELD_2$="28"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MANUAL_DATA         "
+    FIELD_1$="MANUAL_DATA         Client Manual Data                      ZWR...              008        CLIENT+MANUAL_CODE                                                                                                                                               "
+    FIELD_2$="152"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ONLINE_DOC_HDR      "
+    FIELD_1$="ONLINE_DOC_HDR      On-Line Documentation Header            ZW4...               05        REFERENCE_NO                                                                                                                                                     "
+    FIELD_2$="150"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ON_CUSTOMER_MASTER  "
+    FIELD_1$="ON_CUSTOMER_MASTER  +ON Customer Master file                ARM-01              2 8        FIRM_ID + CUSTOMER_NUMBER                                                                                                                                        "
+    FIELD_2$="272"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ON_CUSTOMER_PY_SUM  "
+    FIELD_1$="ON_CUSTOMER_PY_SUM  +on Customer Payment Summary            ARM-06              2 8        FIRM_ID + CUSTOMER_NUMBER                                                                                                                                        "
+    FIELD_2$="112"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_MTHLY_BOOKINGS   "
+    FIELD_1$="OP_MTHLY_BOOKINGS   Monthly Order Booking Summary          0FSD...              212        DIVISION+SALESPERSON_CODE+ORDER_DATE                                                                                                                             "
+    FIELD_2$="42"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_OPEN_ORDER       "
+    FIELD_1$="OP_OPEN_ORDER       FD Sales Order Header                  0FS1...              28         ORDER_NUMBER                                                                                                                                                     "
+    FIELD_2$="224"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_OPEN_ORD_LN      "
+    FIELD_1$="OP_OPEN_ORD_LN      FD Sales Order Line Entry              0FS2...              211        ORDER_NUMBER+LINE_NUMBER                                                   +                                                                          J8050710151"
+    FIELD_2$="320"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_ORDER_HISTORY    "
+    FIELD_1$="OP_ORDER_HISTORY    Order History File by customer/form    0FS6...              230        CUSTOMER_CODE +TYPE +FORM_CODE +ORDER_NUMBER +SEQ_NO                       _                                                                                     "
+    FIELD_2$="176"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_SHIPPING         "
+    FIELD_1$="OP_SHIPPING         Shipping Information                   0PO3...              213        ORDER_NUMBER+"+QUO+"     "+QUO+"                                                       +                                                                                     "
+    FIELD_2$="308"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_DETAIL           "
+    FIELD_1$="PO_DETAIL           Purchase order lines                   0PO2...              212        PO_NUMBER+LINE_NUMBER                                                      T                                                                                     "
+    FIELD_2$="354"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_HEADER           "
+    FIELD_1$="PO_HEADER           Purchase order header                  0PO1...              29         PO_NUMBER                                                                                                                                                        "
+    FIELD_2$="315"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_SORT_BY_VENDOR   "
+    FIELD_1$="PO_SORT_BY_VENDOR   P/O sort by Vendor                     0PO4...              323        VENDOR_CODE+PLANT_CODE+PO_NUMBER                                                                                                                                 "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_SRT_BY_ITEM      "
+    FIELD_1$="PO_SRT_BY_ITEM      Open P/O by Inventory item & Location  0PO5...              337        INVENTORY_CODE+LOCATION_CODE+PO_NUMBER+PO_LINE_NUMBER+SHIP_TO_SEQUENCE_CODE                                                                                      "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REORDER_DATA        "
+    FIELD_1$="REORDER_DATA        Reorder Data Entry                      CS5...               20        CUSTOMER_CODE+FORM_CODE                                                                                                                                          "
+    FIELD_2$="316"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION         "
+    FIELD_1$="REQUISITION         Requisition Entry                       FSM...               08        REQUISITION_NO                                                                                                                                                   "
+    FIELD_2$="338"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITIONS_HDR    "
+    FIELD_1$="REQUISITIONS_HDR    Requisition Entry File                  CS0...               24        COMPANY_CUSTOMER_CODE+LOCATION+REQUISITION_NUMBER                                                                                                                "
+    FIELD_2$="102"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION_DETL    "
+    FIELD_1$="REQUISITION_DETL    Requisitions Line File                  CS1...               00                                                                                                                                                                         "
+    FIELD_2$="114"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION_LINE    "
+    FIELD_1$="REQUISITION_LINE    Requisition Line                        FSN...               11        REQUISITION_NO+LINE_NUMBER                                                                                                                                       "
+    FIELD_2$="162"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00002              "
+    FIELD_1$="S00002              Semi-Perm sort: A/RNEW CUSTOMER LIST    S00002              306        CREDIT_LIMIT                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00044              "
+    FIELD_1$="S00044              Semi-Perm sort: A/RJSC                  S00044              306        CREDIT_LIMIT                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00047              "
+    FIELD_1$="S00047              Semi-Perm sort: F/MACTIVITY             S00047              325        FORM_CODE+CUSTOMER_CODE+ACTIVITY_DATE                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00057              "
+    FIELD_1$="S00057              Semi-Perm sort: JASLANCER               S00057              309        CUSTOMER_CODE                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00062              "
+    FIELD_1$="S00062              Semi-Perm sort: SSPHIST BY FORM         S00062              325        FORM_CODE+CUSTOMER_CODE+ACTIVITY_DATE                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALESMAN_MASTER     "
+    FIELD_1$="SALESMAN_MASTER     Salesperson Masterfile                  TP3...               03        SALESPERSON                                                                                                                                                      "
+    FIELD_2$="90"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALESPERSON_MASTER  "
+    FIELD_1$="SALESPERSON_MASTER  Salesperson Masterfile                 0AR3...              204        SALESPERSON_CODE                                                                                                                                                 "
+    FIELD_2$="246"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCHEDULING_DATA     "
+    FIELD_1$="SCHEDULING_DATA     Software Issues Scheduling              ZWS...               06        CONTROL_NUMBER                                                                                                                                                   "
+    FIELD_2$="42"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SEQ_COMM            "
+    FIELD_1$="SEQ_COMM            Seq Commissions                         U01...              2 7        INVOICE_NO                                                                                                                                                       "
+    FIELD_2$="178"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SOFTWARE_ISSUES     "
+    FIELD_1$="SOFTWARE_ISSUES     Software Issue Masterfile               ZW0...               06        ISSUE_NUMBER                                                                                                                                                     "
+    FIELD_2$="706"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SSP_PERSON          "
+    FIELD_1$="SSP_PERSON          SSP Persons                             ZW7...               03        SSP_PERSON                                                                                                                                                       "
+    FIELD_2$="34"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUPPORT_ISSUES      "
+    FIELD_1$="SUPPORT_ISSUES      Support Issue Database                  ZW2...               06        REF_NO                                                                                                                                                           "
+    FIELD_2$="218"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST                "
+    FIELD_1$="TEST                                                                                                                                                                                                                                                        "
+    FIELD_2$="0"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_AUTH_CONTROL     "
+    FIELD_1$="TF_AUTH_CONTROL     TopForm Authorization Masterfi          ZWA...               09        SERIAL_NUMBER                                                                                                                                                    "
+    FIELD_2$="66"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_SUPPORT          "
+    FIELD_1$="TF_SUPPORT          Support Issue Database                  ZW2...               06        REFERENCE_NUMBER                                                                                                                                                 "
+    FIELD_2$="218"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_BY_CLIENT        "
+    FIELD_1$="TK_BY_CLIENT        Time Log (TK2) by Client                TK4                 331        CLIENT_CODE+LOG_DATE+PROJECT_CODE+EMPLOYEE_CODE+SERVICE_CODE+SEQUENCE_COUNT                                                                           K1020611731"
+    FIELD_2$="0"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_BY_PROJECT       "
+    FIELD_1$="TK_BY_PROJECT       Time Log (TK2) by Project               TK3                 331        PROJECT_CODE+LOG_DATE+EMPLOYEE_CODE+SERVICE_CODE+CLIENT_CODE+SEQUENCE_COUNT                                                                           K1020611701"
+    FIELD_2$="0"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_CLIENT           "
+    FIELD_1$="TK_CLIENT           Timekeeping Client Data Tasks           TK0                 210        CLIENT_CODE                                                                                                                                           K1020611611"
+    FIELD_2$="64"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_IN_OUT_LOG       "
+    FIELD_1$="TK_IN_OUT_LOG       Timekeeping In/Out Log Data             TK5                 214        EMPLOYEE_CODE+LOG_DATE+LOG_TIME                                                                                                                       K1020611771"
+    FIELD_2$="64"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_LOG              "
+    FIELD_1$="TK_LOG              Timekeeping Log Data                    TK2                 231        EMPLOYEE_CODE+LOG_DATE+SERVICE_CODE+PROJECT_CODE+CLIENT_CODE+SEQUENCE_COUNT                                                                           K1020614371"
+    FIELD_2$="128"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_SERVICE          "
+    FIELD_1$="TK_SERVICE          Timekeeping Service Data Tasks          TK1                 2 3        SERVICE_CODE                                                                                                                                          K1020611631"
+    FIELD_2$="64"
+    FIELD_3$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_CONT_MASTER      "
+    FIELD_1$="TM_CONT_MASTER      Telemarketing Contact Master File      0ZP4...              210        LIST_TYPE+CONTACT_CODE                                                                                                                                           "
+    FIELD_2$="388"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TOPFORM_CLIENTS     "
+    FIELD_1$="TOPFORM_CLIENTS     TopForm Client Masterfile               ZWB...               06        TOPFORM_NUMBER                                                                                                                                                   "
+    FIELD_2$="544"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP1                 "
+    FIELD_1$="TP1                 Customer Alpha Sort                     TP1...              323        SORT_CODE+CUSTOMER_CODE                                                                                                                                          "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP2                 "
+    FIELD_1$="TP2                 Salesman sort                           TP2...              326        SALESPERSON+SORT_CODE+CUSTOMER_CODE                                                                                                                              "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPN                 "
+    FIELD_1$="TPN                 Detail file                             TPN...              208        LINE_NUMBER+ITEM_CODE                                                                                                                                            "
+    FIELD_2$="43"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPO                 "
+    FIELD_1$="TPO                 Open orders by Salesman                 TPO...              308        SALESPERSON+ORDER_NUMBER                                                                                                                                         "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW1                 "
+    FIELD_1$="ZW1                 Issues by Client                        ZW1...              306        CLIENT                                                                                                                                                           "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWD                 "
+    FIELD_1$="ZWD                 Issue sort by priority                  ZWD...              320        PRIORITY+STATUS_CODE+INITIAL_DATE+INITIAL_TIME+REF_NO                                                                                                            "
+    FIELD_2$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWG                 "
+    FIELD_1$="ZWG                 Topform Client by Lookup                ZWG...              316        LOOKUP_CODE+TOPFORM_NUMBER                                                                                                                                       "
+    FIELD_2$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

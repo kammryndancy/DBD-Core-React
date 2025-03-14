@@ -1,0 +1,45 @@
+0010 REM "Clear global variables  <ZZ2CLR>
+0035 REM "5.7 - 08/20/10 - 10.226111 - crg - SSP# 197952
+0037 REM "197952-Streamline processing by user - Chained journal updates
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 ! Clear
+1010 %ACTION$=""
+1015 %ZZFLES_LEVEL=0 ! Reset for zzfles
+1020 %ZZCOMP_WIN_ID=0; %ZZCOMP_WIN_LEVEL=0 ! Clear zzcomp variables
+1030 %ZZFLES_LEVEL=0 ! Reset for zzfles
+1040 %CUSTOMER$="" ! Customer Code
+1045 %ORDER_DIV$="",%ORDER_NUM$="" ! Order Number ! SSP227843 jdf
+1050 %ITEM_CODE$="" ! Item Code
+1060 %SCR_DEF_H_FL$=""
+1070 %PRINT_OPT$="" ! Printer options - 171415
+1080 %FF_ALWAYS=0 ! Form feed always 172919
+1090 %PRINTING_IN_VIEWER=0
+1095 %UNATTEND$="",%EML_PDF_PATH$=""
+1100 %NO_VALIDATE=0 ! WO255400, used in ZZWLKU
+2000 _FILE_NAME$="ZZPARM"; ZZPARM=HFN; OPEN (ZZPARM,ERR=2030)_FILE_NAME$
+2010 DIM U0$(6); U0$(1)=FID(0); U0$=U0$+"PF"; REMOVE (ZZPARM,KEY=U0$,ERR=*NEXT,DOM=*NEXT) ! SSP 219754
+2020 CLOSE (ZZPARM)
+2030 %IL_IMAGE_TYPE$="",%IL_IMAGE_KEY$=""; IF %IL_PDF THEN CLOSE (%IL_PDF,ERR=*PROCEED); %IL_PDF=0 ! 174140
+2040 %VENDOR$=""
+2050 IF %IL_CODES THEN CLOSE (%IL_CODES,ERR=*NEXT) ! SSP 209172
+2060 %IL_CODES=0 ! SSP 209172
+2070 %K9$="" ! wo214375
+2080 %OE_GRID=0 ! 208671 - Reset grid order entry flag
+2085 REM "Commenting out next lines - incorrect - see 230219
+2090 ! IF %SCR_LIB THEN CLOSE (%SCR_LIB,ERR=*NEXT); %SCR_LIB=0 ! ssp 225634
+2100 ! IF %SAVE_SCR_LIB THEN CLOSE (%SAVE_SCR_LIB,ERR=*NEXT) ! SSP 225634
+2110 ! IF %SAVE_SCR_LIB THEN %SCR_LIB=GFN; OPEN (%SCR_LIB)%SAVE_SCR_LIB$ ! SSP 225634
+2120 %RFQ=0 ! SSP#228873
+2130 BCP$=GBL("BATCHCTRL_PARMS","") ! 240299, Ref 123167
+2135 %SKIP_BATCH_SELECTION=0 ! 197952 - Causes interactive batch selection/creation to be skipped, used in chained updates processing where batch selection is programatically handled.
+9940 EXIT 
+9999 END 
+56000 ! "209172-PE during I/C UPdate                                        
+56002 REM "214375-See 208467;Create a new S/H Parameter, Never invoice an     
+56003 ! "219754-Getting an error when Saving GUI Security.                  
+56004 REM "208671-Order Entry - Redesign based upon a grid approach
+56005 ! "225634-PE - Winproc Error                                          
+56006 REM "240299-GL Trans showed another operator code other than correct one
+56007 REM "197952-Streamline processing by user - Chained journal updates
+56008 ! 255400-Inbound EDI943, Outbound EDI997. Custom program to translate

@@ -1,0 +1,242 @@
+<PxTable>
+ TableName=ZZ9
+ TableKey=K971278674
+ FileCreate=KEYED "ZZ9",6,0,-58,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZZ9_Device"
+    PHYSICALPATH$="January 28,2002 6:12pm"
+    LASTCHANGEDATE$="rms"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DEVICE_NAME$:[LEN(2)]"
+    NAME$="DEVICE_NAME"
+    DESCRIPTION$="=MSG("+QUO+"DEVI_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Device name"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DEVICE_NAME$:[LEN(2,SEP=SEP)]"
+    NAME$="DEVICE_NAME"
+    DESCRIPTION$="=MSG("+QUO+"DEVI_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Device name"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST DEVICE_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="DEVICE_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DEVI_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DEVICE_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="DEVICE_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DEVI_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Device type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST PRINTER_TYPE$:[LEN(8,SEP=SEP)]"
+    NAME$="PRINTER_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"PRIN_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Printer type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ZZ9_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="ZZ9_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+    NOTES$="Unused"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="LP"
+    DEVICE_NAME$="LP"
+    DEVICE_DESC$="System printer                          "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="SEIKOSHA"
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P1"
+    DEVICE_NAME$="P1"
+    DEVICE_DESC$="Laser Printer                           "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="IBMLASER"
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P2"
+    DEVICE_NAME$="P2"
+    DEVICE_DESC$="Slave 390                               "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="MICROMRC"
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P4"
+    DEVICE_NAME$="P4"
+    DEVICE_DESC$="HP Laserjet 4                           "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="HPLASER "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P5"
+    DEVICE_NAME$="P5"
+    DEVICE_DESC$="HP Laserjet 5                           "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="HPLASER "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P8"
+    DEVICE_NAME$="P8"
+    DEVICE_DESC$="OKki 390                                "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="OKI390  "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P9"
+    DEVICE_NAME$="P9"
+    DEVICE_DESC$="TI Laser                                "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="IBMLASER"
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PA"
+    DEVICE_NAME$="PA"
+    DEVICE_DESC$="TI MICROMARC                            "
+    DEVICE_TYPE$="2"
+    PRINTER_TYPE$="TIMICRO "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T0"
+    DEVICE_NAME$="T0"
+    DEVICE_DESC$="Terminal                                "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T1"
+    DEVICE_NAME$="T1"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T2"
+    DEVICE_NAME$="T2"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T3"
+    DEVICE_NAME$="T3"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T4"
+    DEVICE_NAME$="T4"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T5"
+    DEVICE_NAME$="T5"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T6"
+    DEVICE_NAME$="T6"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="OKI92   "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T7"
+    DEVICE_NAME$="T7"
+    DEVICE_DESC$="                                        "
+    DEVICE_TYPE$="1"
+    PRINTER_TYPE$="        "
+    ZZ9_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

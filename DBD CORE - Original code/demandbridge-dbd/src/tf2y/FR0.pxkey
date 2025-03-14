@@ -1,0 +1,355 @@
+<PxTable>
+ TableName=FR0
+ TableKey=K1372704542
+ FileCreate=KEYED "FR0",11,0,-384,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR0_Indexes"
+    PHYSICALPATH$="="+QUO+"../tf2y/FR0"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:41:55-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:42:46-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST INDEXING_CODE$:[LEN(4)]"
+    NAME$="INDEXING_CODE"
+    DESCRIPTION$="=MSG("+QUO+"INDE_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Indexing code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST FY$:[LEN(4)]"
+    NAME$="FY"
+    DESCRIPTION$="=MSG("+QUO+"FY"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Fiscal year"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST COMPANY_CODE$:[LEN(3)]"
+    NAME$="COMPANY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COMP_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Company code"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST INDEXING_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="INDEXING_CODE"
+    DESCRIPTION$="=MSG("+QUO+"INDE_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Indexing code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST FY$:[LEN(4,SEP=SEP)]"
+    NAME$="FY"
+    DESCRIPTION$="=MSG("+QUO+"FY"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Fiscal year"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST COMPANY_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="COMPANY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COMP_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Company code"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST FR0_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FR0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST INITIAL_LEVEL"
+    NAME$="INITIAL_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"INIT_L"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Initial level"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_1"
+    NAME$="ADJ_FACTOR_LVL_1"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_2"
+    NAME$="ADJ_FACTOR_LVL_2"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_3"
+    NAME$="ADJ_FACTOR_LVL_3"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_4"
+    NAME$="ADJ_FACTOR_LVL_4"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_4"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_5"
+    NAME$="ADJ_FACTOR_LVL_5"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_5"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_6"
+    NAME$="ADJ_FACTOR_LVL_6"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_6"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 6"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_7"
+    NAME$="ADJ_FACTOR_LVL_7"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_7"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 7"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_8"
+    NAME$="ADJ_FACTOR_LVL_8"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_8"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 8"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_9"
+    NAME$="ADJ_FACTOR_LVL_9"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_9"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 9"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_10"
+    NAME$="ADJ_FACTOR_LVL_10"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_10"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 10"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_11"
+    NAME$="ADJ_FACTOR_LVL_11"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_11"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 11"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_12"
+    NAME$="ADJ_FACTOR_LVL_12"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_12"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 12"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=18
+    IOLOBJ$="IOLIST ADJ_FACTOR_LVL_13"
+    NAME$="ADJ_FACTOR_LVL_13"
+    DESCRIPTION$="=MSG("+QUO+"ADJ_F_L_13"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###.0000-"
+    NOTES$="Adjustment Factor Level 13"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="CPI 1986   "
+    INDEXING_CODE$="CPI "
+    FY$="1986"
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$=" "
+    INITIAL_LEVEL=143.2333
+    ADJ_FACTOR_LVL_1=143.6655
+    ADJ_FACTOR_LVL_2=144.5665
+    ADJ_FACTOR_LVL_3=143.4988
+    ADJ_FACTOR_LVL_4=144.3429
+    ADJ_FACTOR_LVL_5=147.6434
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CPI 1987   "
+    INDEXING_CODE$="CPI "
+    FY$="1987"
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$=" "
+    INITIAL_LEVEL=1
+    ADJ_FACTOR_LVL_1=2
+    ADJ_FACTOR_LVL_2=3
+    ADJ_FACTOR_LVL_3=4
+    ADJ_FACTOR_LVL_4=5
+    ADJ_FACTOR_LVL_5=6
+    ADJ_FACTOR_LVL_6=7
+    ADJ_FACTOR_LVL_7=8
+    ADJ_FACTOR_LVL_8=9
+    ADJ_FACTOR_LVL_9=10
+    ADJ_FACTOR_LVL_10=11
+    ADJ_FACTOR_LVL_11=12
+    ADJ_FACTOR_LVL_12=13
+    ADJ_FACTOR_LVL_13=14
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPP      "
+    INDEXING_CODE$="G/LP"
+    FY$="P   "
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$="P"
+    ADJ_FACTOR_LVL_1=-1
+    ADJ_FACTOR_LVL_2=1
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTD     "
+    INDEXING_CODE$="G/LP"
+    FY$="TD  "
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$="P"
+    ADJ_FACTOR_LVL_2=1
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPYP     "
+    INDEXING_CODE$="G/LP"
+    FY$="YP  "
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$="P"
+    INITIAL_LEVEL=-1
+    ADJ_FACTOR_LVL_2=1
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTD     "
+    INDEXING_CODE$="G/LY"
+    FY$="TD  "
+    COMPANY_CODE$="   "
+    FR0_UNUSED_1$="Y"
+   </RecordData>
+
+</Data>
+
+</PxTable>

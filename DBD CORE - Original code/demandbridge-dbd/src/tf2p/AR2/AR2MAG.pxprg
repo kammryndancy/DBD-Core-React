@@ -1,0 +1,22 @@
+0010 REM "A/R Customer Message Display Module <AR2MAG>
+0035 REM "3.5 - 03/09/92 - 21.65
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "C$=Customer code, L=line number for 'CE', M=0 means invoice entry message, M=1 means order entry message, M=2 means cash receipts message, M1=1 if a the screen will need to be rediplayed by the calling program
+0100 ENTER X3$,X4$,C$,L,M,M1
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AS5...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0900 M1=0
+1000 REM "Customer Messages
+1020 FIND (Z[1],DOM=9900,KEY=C$)X$
+1030 IF POS(" "<>X$(11+M*180,180))=0 THEN GOTO 9900
+1040 PRINT @(0,L),'CE',@(12,L+1),X$(11+M*180,60),@(12,L+2),X$(71+M*180,60),@(12,L+3),X$(131+M*180,60),
+1060 CALL "ZZPROM",".4",X3$,0,"Message from Customer File","","",0
+1080 M1=1
+1100 GOTO 9900
+9900 REM 
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 EXIT 
+9999 END 

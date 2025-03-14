@@ -1,0 +1,560 @@
+<PxTable>
+ TableName=ZF0
+ TableKey=K1372704711
+ FileCreate=KEYED "ZF0",10,0,-384,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZF0_DocHdr"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/ZF0"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:10-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:27-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="Document code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10,SEP=SEP)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Document code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST RESPONSIBLE_AGENCY$:[LEN(1,SEP=SEP)]"
+    NAME$="RESPONSIBLE_AGENCY"
+    DESCRIPTION$="=MSG("+QUO+"RESP_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Responsible Agency"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST DOC_VERSION$:[LEN(4,SEP=SEP)]"
+    NAME$="DOC_VERSION"
+    DESCRIPTION$="=MSG("+QUO+"DOC_V"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Document Version"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST DATE_OF_VERSION$:[LEN(6,SEP=SEP)]"
+    NAME$="DATE_OF_VERSION"
+    DESCRIPTION$="=MSG("+QUO+"DATE_O_V"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Date of Version"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST BERT_DB_FOR_MAIN_SEC$:[LEN(20,SEP=SEP)]"
+    NAME$="BERT_DB_FOR_MAIN_SEC"
+    DESCRIPTION$="=MSG("+QUO+"B_D_F_M_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Bert Database for Main section"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST DETAIL_SEC_BERT_1$:[LEN(20,SEP=SEP)]"
+    NAME$="DETAIL_SEC_BERT_1"
+    DESCRIPTION$="=MSG("+QUO+"DETA_S_B_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Detail Section 1 Bert Database"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST DETAIL_SEC_BERT_2$:[LEN(20,SEP=SEP)]"
+    NAME$="DETAIL_SEC_BERT_2"
+    DESCRIPTION$="=MSG("+QUO+"DETA_S_B_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Detail Section 2 Bert Database"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST DETAIL_SEC_BERT_3$:[LEN(20,SEP=SEP)]"
+    NAME$="DETAIL_SEC_BERT_3"
+    DESCRIPTION$="=MSG("+QUO+"DETA_S_B_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Detail Section 3 Bert Database"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST ZF0_UNUSED_1$:[LEN(SEP,SIZ=21)]"
+    NAME$="ZF0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="21"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST ZF0_UNUSED_2"
+    NAME$="ZF0_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF0 Unused 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST ZF0_UNUSED_3"
+    NAME$="ZF0_UNUSED_3"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZFO Unused 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ZF0_UNUSED_4"
+    NAME$="ZF0_UNUSED_4"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF0 Unused 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST ZF0_UNUSED_5"
+    NAME$="ZF0_UNUSED_5"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF0 Unused 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST ZF0_UNUSED_6"
+    NAME$="ZF0_UNUSED_6"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF0 Unused 6"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="810       "
+    DOC_CODE$="810       "
+    TF_DESC$="Invoice                       "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AR_OPEN_INVOICES    "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="840       "
+    DOC_CODE$="840       "
+    TF_DESC$="RFQ                           "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="RFQ_MASTER          "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="850       "
+    DOC_CODE$="850       "
+    TF_DESC$="Purchase Order                "
+    RESPONSIBLE_AGENCY$="X"
+    DOC_VERSION$="3.20"
+    DATE_OF_VERSION$="J40920"
+    BERT_DB_FOR_MAIN_SEC$="PO_HEADER           "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="850R      "
+    DOC_CODE$="850R      "
+    TF_DESC$="Purchase Order Test for Robyn "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="PO_HEADER           "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       "
+    DOC_CODE$="856       "
+    TF_DESC$="Ship Notice/Manifest          "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="1   "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="                    "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APCHECK   "
+    DOC_CODE$="APCHECK   "
+    TF_DESC$="Accounts Payable Check        "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AR_CUSTOMER_MASTER  "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APREMIT   "
+    DOC_CODE$="APREMIT   "
+    TF_DESC$="A/P Check Remittance Report   "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AP_CHECK_REGISTER   "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AREMIT    "
+    DOC_CODE$="AREMIT    "
+    TF_DESC$="AP Check Remittance           "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="1   "
+    DATE_OF_VERSION$="L30903"
+    BERT_DB_FOR_MAIN_SEC$="AP_CHECK_REGISTER   "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CARTON    "
+    DOC_CODE$="CARTON    "
+    TF_DESC$="Carton Label                  "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CL        "
+    DOC_CODE$="CL        "
+    TF_DESC$="carton label                  "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CREDITREQ "
+    DOC_CODE$="CREDITREQ "
+    TF_DESC$="Credit requestor              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AR_CUST_CREDIT      "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  "
+    DOC_CODE$="FORMATCL  "
+    TF_DESC$="Flex Format Carton Labels     "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="1.00"
+    DATE_OF_VERSION$="J40920"
+    BERT_DB_FOR_MAIN_SEC$="PO_HEADER           "
+    DETAIL_SEC_BERT_1$="PO_DETAIL           "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATIF  "
+    DOC_CODE$="FORMATIF  "
+    TF_DESC$="Inactive Form Notice          "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="                    "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPI  "
+    DOC_CODE$="FORMATPI  "
+    TF_DESC$="Product Labels                "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="PO_HEADER           "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JETREPORT "
+    DOC_CODE$="JETREPORT "
+    TF_DESC$="Jetform of a report           "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="OP_OPEN_ORDER       "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REORDER   "
+    DOC_CODE$="REORDER   "
+    TF_DESC$="                              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RO        "
+    DOC_CODE$="RO        "
+    TF_DESC$="Reorder Notices               "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RR        "
+    DOC_CODE$="RR        "
+    TF_DESC$="Receiving Report              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="PO_HEADER           "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="STATEMENT "
+    DOC_CODE$="STATEMENT "
+    TF_DESC$="                              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="STM       "
+    DOC_CODE$="STM       "
+    TF_DESC$="                              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TH        "
+    DOC_CODE$="TH        "
+    TF_DESC$="                              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="                    "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="THANKYOU  "
+    DOC_CODE$="THANKYOU  "
+    TF_DESC$="Thank you letter              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="OP_OPEN_ORDER       "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK        "
+    DOC_CODE$="TK        "
+    TF_DESC$="thank you letter              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AR_CUSTOMER_MASTER  "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UR        "
+    DOC_CODE$="UR        "
+    TF_DESC$="Usage report                  "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="AR_CUSTOMER_MASTER  "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="USAGE     "
+    DOC_CODE$="USAGE     "
+    TF_DESC$="                              "
+    RESPONSIBLE_AGENCY$=" "
+    DOC_VERSION$="    "
+    DATE_OF_VERSION$="      "
+    BERT_DB_FOR_MAIN_SEC$="3P_SW               "
+    DETAIL_SEC_BERT_1$="                    "
+    DETAIL_SEC_BERT_2$="                    "
+    DETAIL_SEC_BERT_3$="                    "
+    ZF0_UNUSED_1$="                     "
+   </RecordData>
+
+</Data>
+
+</PxTable>

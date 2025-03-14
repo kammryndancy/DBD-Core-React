@@ -1,0 +1,68 @@
+0010 REM "Copy the information for AR1 group to ARA, ARB and ARC grop <UT2FUM>
+0035 REM "5.7 - 04/12/10 - 11.760555 - dmm - SSP# 237646
+0037 REM "237646-Program UT2FUM does not split the AR1 file to ARA, ARB, ARC 
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 BEGIN 
+0100 SETERR 9000
+0110 X0$="UT2FUM",X1$="FUD Command List Copy",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=2,K1=1
+0135 C9=-1,V9=-2
+0140 M0$="-##.00",M1$="##"
+0145 M0$="#,###"
+0200 REM "                                                                     
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                              
+0310 IOLIST A$(1,LEN(A$))
+0320 IOLIST B$,B[0],B[1]
+0500 REM "FILES                                                                
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X UT3...  06O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0600 REM "                                                                   
+0610 GOSUB 6000
+0620 CALL "ZZINFO",Z[1],T9,X3$,T,T0,0,0,0,0,0,F$
+0630 IF T>1000 THEN T0=100 ELSE T0=INT(T*.02); IF T0<=1 THEN T0=2
+0635 IF T>0 THEN CALL "ZZPROM",".Y",X3$,Z0,"Do you wish to proceed?","","",0; ON Z0 GOTO 0636,0650
+0900 READ (Z[1],KEY="AR1",DOM=*NEXT) ! SSP237646 
+1000 REM " Main read
+1010 K$=KEY(Z(1),END=9900); READ (Z(1),KEY=K$)A$
+1020 IF K$(1,3)<>"AR1" THEN GOTO 9900
+1030 C=C+1; IF MOD(C,T0)=1 THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+1040 WRITE (Z(1),KEY="ARA"+K$(4))"ARA"+A$(4)
+1050 WRITE (Z(1),KEY="ARB"+K$(4))"ARB"+A$(4)
+1060 WRITE (Z(1),KEY="ARC"+K$(4))"ARC"+A$(4)
+1080 REMOVE (Z(1),KEY=K$)
+1090 GOTO 1000
+6000 REM "BACKGROUND                                                           
+6005 PRINT (0,ERR=6016)'SB',
+6060 PRINT @(5,3),"This program will copy the data entered into the AR1 FUD group to",@(5,4),"the groups ARA, ARB and ARC.  Group ARD will also need to be run",@(5,5),"to rebuild the necessary sort files.",@(5,7),"The AR1 records will be removed from the file." ! SSP237646
+6065 PRINT (0,ERR=6066)'SF',
+6190 RETURN 
+9000 REM "ERROR PROCESSING                       
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                        
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program                                              
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9940 RUN "ZMENU"
+9999 END 
+56000 REM "237646-Program UT2FUM does not split the AR1 file to ARA, ARB, ARC SAVE

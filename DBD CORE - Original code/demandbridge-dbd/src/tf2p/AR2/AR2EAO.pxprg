@@ -1,0 +1,33 @@
+0010 REM "A/R Invoice entry lines display - <AR2EAO>
+0035 REM "3.8 - 09/02/94 - 10.87 - wmz
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 SETERR 9000; SETESC 9000
+0100 ENTER X3$,X4$,A$,P1$,X
+0110 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 ON X GOTO 7500,7510
+7505 PRINT @(0,3),'CE','SB',; GOSUB 8700
+7510 PRINT @(0,6),"Line:",@(10,6),"Type:",@(40,6),"Location:",@(0,7),"Item code",@(11,7),"P/C",@(16,7),"Left-Rgt Top-Botm Plys",@(40,7),"Item description",
+7515 PRINT @(0,9),"Unit Qty/unit",@(17),"Ordered",@(32),"Shipped",@(46),"Price",@(57),"Extension",@(68),"Gross profit",
+7520 PRINT @(0,11),"Print line?",@(36,11),"Cost:",@(0,12),Z0$,@(0,13),"Commission code:",@(43),"GP Adj:",@(62,13),"Comm:",@(0,14),"Sales dist code:",@(41,14),"Ord type:",@(54),"STC:",@(72),"Tax?",
+7530 PRINT @(0,15),Z0$,@(0,16),"Line",@(8,16),"Description",@(48,16),"Quantity",@(60,16),"Unit Price",@(73,16),"U/M",
+7560 PRINT 'SF',
+7570 GOSUB 8750
+7585 PRINT 'SF',
+7590 GOTO 9900
+8710 PRINT @(3,3),"Fiscal year:",@(25,3),"Accounting period:",@(0,4),"Invoice number:",@(29,4),"Customer code:",@(0,5),Z0$,
+8740 RETURN 
+8760 PRINT @(16,3),A$(1,4),@(44,3),A$(5,2),
+8765 PRINT @(49,3),"Ending ",FND$(P1$(NUM(A$(5,2))*6+15,6)),
+8770 CALL "ZZDISP","A",A$(7,8),"AR6",X3$,"","",16,4,X4$
+8775 CALL "ZZDISP","A",A$(15,10),"A/R",X3$,"","",44,4,X4$
+8790 RETURN 
+9005 IF ERR=69 THEN GOTO 9500
+9010 EXIT ERR
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM 
+9910 EXIT 
+9999 END 

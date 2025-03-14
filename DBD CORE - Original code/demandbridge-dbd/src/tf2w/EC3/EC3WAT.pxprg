@@ -1,0 +1,138 @@
+0010 REM "Check Web.ecs <EC3WAT>                                     
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 05/03/95 - 16.42 - jtb                                     
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia         
+0041 REM "        Licensed Software - All Rights Reserved.                 
+0050 ! Looks in file webecs.txt for comma separated list
+0051 ! company code, name, URL to ecclient
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3WAT",X1$="Check Web.ecs"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0210 TMP=UNT; OPEN (TMP)"ZZPARM"; FIND (TMP,KEY="TFEEC3SRV  ",DOM=*NEXT)X3$,*,X4$
+0220 CLOSE (TMP)
+0240 IF X3$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 ! GOSUB 6000
+0640 ! IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0800 ! INITIALIZE
+0805 RPT_WIDTH=132
+0810 DIM LINE$(RPT_WIDTH)
+0820 PRINTER_NAME$="*HTML*;FILE=/usr/lib/pvx/webecs.html;TITLE=Web.ec Watch Report"
+0900 Z[1]=UNT; OPEN (Z[1])"webecs.txt"
+0905 PRINT_HEADER=1
+1000 REM "BEGIN MAIN PROCESS                                               
+1010 READ (Z[1],END=1900)IN$
+1015 READ DATA FROM IN$,SEP="," TO COMP$,NAME$,URL$
+1100 ! Setup for call
+1110 IF MID(URL$,1,3)="XML" THEN URL$=MID(URL$,4); CONTENT$="<status><user>admin</user><password>"+COMP$+"</password></status>" ELSE IF COMP$="139" THEN CONTENT$="basic=EC3STA&user=demo&password=demo&" ELSE CONTENT$="basic=EC3STA&user=admin&password="+COMP$+"&" ! always one old exception
+1115 PROXY$="" ! "10.6.72.18"
+1120 ! OPTION$="T{15}" ! only wait 15 seconds
+1145 ! PRINT COMP$," ",NAME$
+1150 IF URL$="" THEN RETURN$="Files processed: No URL" ELSE CALL "EC3SND",ERR=*NEXT,X3$,X4$,URL$,CONTENT$,PROXY$,OPTION$,RETURN$
+1200 ! get info
+1212 STATUS_DATE$=FNGET_VALUE$("Status date/time")
+1214 START_DATE$=FNGET_VALUE$("Server started")
+1216 FILES_PROCESSED$=FNGET_VALUE$("Files processed")
+1218 ORDERS_PROCESSED$=FNGET_VALUE$("Orders processed")
+1220 ORDER_LINES_DONE$=FNGET_VALUE$("Order lines done")
+1222 VALID_LOGINS$=FNGET_VALUE$("Valid logins")
+1224 INVALID_LOGINS$=FNGET_VALUE$("Invalid logins")
+1226 FILES_TO_PROCESS$=FNGET_VALUE$("Files to process")
+1228 ACTIVE_SESSIONS$=FNGET_VALUE$("Active sessions")
+1230 ERRORS_FOUND$=FNGET_VALUE$("Errors found")
+1250 LINE$(1)=COMP$,LINE$(6)=PAD(NAME$,10)
+1252 LINE$(16)=MID(STATUS_DATE$,MSK(STATUS_DATE$,"[0-9]*/[0-9]*/[0-9]*"),MSL,ERR=*NEXT)
+1254 LINE$(28)=MID(START_DATE$,MSK(START_DATE$,"[0-9]*/[0-9]*/[0-9]*"),MSL,ERR=*NEXT)
+1256 LINE$(39)=PAD(FILES_PROCESSED$,7,0),LINE$(47)=PAD(ORDERS_PROCESSED$,7,0),LINE$(55)=PAD(ORDER_LINES_DONE$,7,0),LINE$(62)=PAD(VALID_LOGINS$,7,0)
+1257 LINE$(70)=PAD(INVALID_LOGINS$,7,0),LINE$(79)=PAD(FILES_TO_PROCESS$,7,0),LINE$(87)=PAD(ACTIVE_SESSIONS$,7,0),LINE$(94)=PAD(ERRORS_FOUND$,7,0)
+1260 GOSUB PRINT_LINE
+1262 LINE$(18)=MID(STATUS_DATE$,MSK(STATUS_DATE$,"[0-9]*:[0-9]*:[0-9]*"),MSL,ERR=*NEXT)
+1264 LINE$(30)=MID(START_DATE$,MSK(START_DATE$,"[0-9]*:[0-9]*:[0-9]*"),MSL,ERR=*NEXT)
+1290 GOSUB PRINT_LINE
+1600 GOTO 1000
+1900 REM "Done
+1995 GOTO 9900
+5000 REM "EOJ                                                              
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7300 PRINT_LINE:! print out line
+7305 IF PRT=0 THEN PRT=UNT; OPEN (PRT)PRINTER_NAME$
+7310 IF PRINT_HEADER THEN GOSUB PRINT_HEADER
+7320 PRINT (PRT)@(0),LINE$; DIM LINE$(LEN(LINE$))
+7345 RETURN 
+7349 ! 
+7350 PRINT_HEADER:! print out header line & clear print_header flag
+7353 DIM HEAD$(RPT_WIDTH); HEAD$(1)="Status started: "+FN%PRINT_DATETIME$(0,"%Mz/%Dz/%Y %hz:%mz:%sz"); PRINT (PRT)@(0),HEAD$
+7355 DIM HEAD$(RPT_WIDTH); HEAD$(1)="Comp",HEAD$(6)="Name",HEAD$(16)="Status Date",HEAD$(28)="Start Date",HEAD$(41)="Files",HEAD$(48)="Orders",HEAD$(56)=" Lines",HEAD$(63)="Logins",HEAD$(70)="Invalid",HEAD$(78)="Files2do",HEAD$(88)="Active",HEAD$(95)="Errors"; PRINT (PRT)@(0),HEAD$
+7360 PRINT (PRT)""
+7390 PRINT_HEADER=0
+7395 RETURN 
+7399 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 ! find S$ in RETURN$ and pull out value after the ':'
+8951 ! example S$="Files processed" get "Files processed: ###"
+8955 DEF FNGET_VALUE$(LOCAL S$)
+8965 LOCAL MASK$,TEMP$,VALUE$
+8970 MASK$=S$+":[^<]*"
+8975 TEMP$=MID(RETURN$,MSK(RETURN$,MASK$),MSL,ERR=*NEXT); VALUE$=STP(MID(TEMP$,POS(":"=TEMP$)+1,ERR=*NEXT),2)
+8990 RETURN VALUE$
+8995 END DEF
+8999 ! 
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9925 RELEASE 
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

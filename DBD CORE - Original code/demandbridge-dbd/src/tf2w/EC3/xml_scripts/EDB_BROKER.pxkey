@@ -1,0 +1,823 @@
+<PxTable>
+ TableName=EDB_BROKER
+ TableKey=K1239192844
+ FileCreate=KEYED "EDB_BROKER",99,0,1024,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EDB_XMLSub"
+    PHYSICALPATH$="2007/09/16 14:47"
+    LASTCHANGEDATE$=":58-Chaitanya Guntur"
+    LASTUPDATEDFILE$="2009/05/28 06:57:17-root"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST XML_DATA$:[LEN(99)]"
+    NAME$="XML_DATA"
+    DESCRIPTION$="=MSG("+QUO+"XML_DATA"+QUO+")"
+    TYPE$="S"
+    LENGTH$="99"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST XML_DATA$:[LEN(99,SEP=SEP)]"
+    NAME$="XML_DATA"
+    DESCRIPTION$="=MSG("+QUO+"XML_DATA"+QUO+")"
+    TYPE$="S"
+    LENGTH$="99"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST FORWARD_ATTR$:[LEN(1,SEP=SEP)]"
+    NAME$="FORWARD_ATTR"
+    DESCRIPTION$="=MSG("+QUO+"FWD_ATTR"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DROP_LINE$:[LEN(1,SEP=SEP)]"
+    NAME$="DROP_LINE"
+    DESCRIPTION$="=MSG("+QUO+"DROP_LINE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST REPLACE_LEFT$:[LEN(40,SEP=SEP)]"
+    NAME$="REPLACE_LEFT"
+    DESCRIPTION$="=MSG("+QUO+"RPL_LEFT"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ADD_LINE_1$:[LEN(60,SEP=SEP)]"
+    NAME$="ADD_LINE_1"
+    DESCRIPTION$="=MSG("+QUO+"ADD_LINE_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ADD_LINE_2$:[LEN(60,SEP=SEP)]"
+    NAME$="ADD_LINE_2"
+    DESCRIPTION$="=MSG("+QUO+"ADD_LINE_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST REPLACE_LEFT_2$:[LEN(40,SEP=SEP)]"
+    NAME$="REPLACE_LEFT_2"
+    DESCRIPTION$="=MSG("+QUO+"RPL_LEFT"+QUO+")+"+QUO+" 2"+QUO
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST REPLACE_LEFT_3$:[LEN(40,SEP=SEP)]"
+    NAME$="REPLACE_LEFT_3"
+    DESCRIPTION$="=MSG("+QUO+"RPL_LEFT"+QUO+")+"+QUO+" 3"+QUO
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST RL_EXPR$:[LEN(150,SEP=SEP)]"
+    NAME$="RL_EXPR"
+    DESCRIPTION$="=MSG("+QUO+"RL_EXPR"+QUO+")"
+    TYPE$="S"
+    LENGTH$="150"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST RL_EXPR_2$:[LEN(150,SEP=SEP)]"
+    NAME$="RL_EXPR_2"
+    DESCRIPTION$="=MSG("+QUO+"RL_EXPR_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="150"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST RL_EXPR_3$:[LEN(150,SEP=SEP)]"
+    NAME$="RL_EXPR_3"
+    DESCRIPTION$="=MSG("+QUO+"RL_EXPR_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="150"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST ADDLINE_EXPR_YN$:[LEN(1,SEP=SEP)]"
+    NAME$="ADDLINE_EXPR_YN"
+    DESCRIPTION$="=MSG("+QUO+"EXPR_YN"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ADDLINE_EXPR_YN_2$:[LEN(1,SEP=SEP)]"
+    NAME$="ADDLINE_EXPR_YN_2"
+    DESCRIPTION$="=MSG("+QUO+"EXPR_YN"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST FORWARD_VAL_YN$:[LEN(1,SEP=SEP)]"
+    NAME$="FORWARD_VAL_YN"
+    DESCRIPTION$="=MSG("+QUO+"FOR_VAL"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST FORWARD_VAL_EXPR$:[LEN(150,SEP=SEP)]"
+    NAME$="FORWARD_VAL_EXPR"
+    DESCRIPTION$="=MSG("+QUO+"FOR_VAL_EX"+QUO+")"
+    TYPE$="S"
+    LENGTH$="150"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST EDB_UNUSED_1$:[LEN(SEP,SIZ=58)]"
+    NAME$="EDB_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="58"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="/INVOICE                                                                                           "
+    XML_DATA$="/INVOICE                                                                                           "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="basic=EC3CIG~template=850_BROKERF_reply.template            "
+    ADD_LINE_2$="user=XML_PROC~password=topformxml~remove_file=Y             "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER                                                                                     "
+    XML_DATA$="/INVOICE/ORDER                                                                                     "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="new_vendor_inv=Y                                            "
+    ADD_LINE_2$="{dont_join_values}                                          "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/CUST_ORDER_NUM                                                                      "
+    XML_DATA$="/INVOICE/ORDER/CUST_ORDER_NUM                                                                      "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="tf_po_num                               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/DOCUMENT                                                                            "
+    XML_DATA$="/INVOICE/ORDER/DOCUMENT                                                                            "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="vendor_inv_num                          "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_LINE/CUST_LINE_NUM                                                            "
+    XML_DATA$="/INVOICE/ORDER/ORDER_LINE/CUST_LINE_NUM                                                            "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="new_po_line=Y~po_line_num               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_LINE/DATE_RECEIVED                                                            "
+    XML_DATA$="/INVOICE/ORDER/ORDER_LINE/DATE_RECEIVED                                                            "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="julian_rec_date                         "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_LINE/EXTENDED_PRICE                                                           "
+    XML_DATA$="/INVOICE/ORDER/ORDER_LINE/EXTENDED_PRICE                                                           "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="extended_cost.2                         "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_LINE/QUANTITY_SHIPPED                                                         "
+    XML_DATA$="/INVOICE/ORDER/ORDER_LINE/QUANTITY_SHIPPED                                                         "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="quantity                                "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_LINE/UNIT_OF_MEASURE                                                          "
+    XML_DATA$="/INVOICE/ORDER/ORDER_LINE/UNIT_OF_MEASURE                                                          "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="um                                      "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/ORDER_NUMBER                                                                        "
+    XML_DATA$="/INVOICE/ORDER/ORDER_NUMBER                                                                        "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="factory_job_num                         "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/PROCESS_FEE                                                                         "
+    XML_DATA$="/INVOICE/ORDER/PROCESS_FEE                                                                         "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="quantity=1~extended_cost.4              "
+    ADD_LINE_1$="new_po_line=Y~po_line_num=RSH                               "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICE/ORDER/SHIP_CHARGE                                                                         "
+    XML_DATA$="/INVOICE/ORDER/SHIP_CHARGE                                                                         "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="frt_amt.4                               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES                                                                                          "
+    XML_DATA$="/INVOICES                                                                                          "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="{dont_join_values}                                          "
+    ADD_LINE_2$="basic=EC3CIG~template=850_BROKERF_reply.template            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE                                                                                  "
+    XML_DATA$="/INVOICES/INVOICE                                                                                  "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="new_vendor_inv=Y                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/CUST_ORDER_NUM                                                                   "
+    XML_DATA$="/INVOICES/INVOICE/CUST_ORDER_NUM                                                                   "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="tf_po_num                               "
+    ADD_LINE_1$="user=XML_PROC                                               "
+    ADD_LINE_2$="password=topformxml                                         "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE                                                                       "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE                                                                       "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="new_po_line=Y                                               "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE/CUST_LINE_NUM                                                         "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE/CUST_LINE_NUM                                                         "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="po_line_num                             "
+    ADD_LINE_1$="new_po_line=Y                                               "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE/DATE_INVOICED                                                         "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE/DATE_INVOICED                                                         "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="julian_rec_date                         "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE/EXTENDED_PRICE                                                        "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE/EXTENDED_PRICE                                                        "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="extended_cost.2                         "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE/QUANTITY_SHIPPED                                                      "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE/QUANTITY_SHIPPED                                                      "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="quantity                                "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_LINE/UNIT_OF_MEASURE                                                       "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_LINE/UNIT_OF_MEASURE                                                       "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="um                                      "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/ORDER_NUMBER                                                                     "
+    XML_DATA$="/INVOICES/INVOICE/ORDER_NUMBER                                                                     "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="vendor_inv_num                          "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/INVOICES/INVOICE/PROCESS_FEE                                                                      "
+    XML_DATA$="/INVOICES/INVOICE/PROCESS_FEE                                                                      "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="frt_amt.4                               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns                                                                                              "
+    XML_DATA$="/asns                                                                                              "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="user=XML_PROC~password=topformxml~remove_file=Y             "
+    ADD_LINE_2$="basic=EC3CIG~template=850_BROKERF_reply.template            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn                                                                                          "
+    XML_DATA$="/asns/asn                                                                                          "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="Y"
+    REPLACE_LEFT$="                                        "
+    ADD_LINE_1$="asn_only=Y~new_vendor_inv=Y                                 "
+    ADD_LINE_2$="{dont_join_values}                                          "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/Line_number                                                                              "
+    XML_DATA$="/asns/asn/Line_number                                                                              "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="po_line_num                             "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/Ship_Date                                                                                "
+    XML_DATA$="/asns/asn/Ship_Date                                                                                "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="julian_ship_date                        "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/Ship_Method                                                                              "
+    XML_DATA$="/asns/asn/Ship_Method                                                                              "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="carrier_id                              "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/Ship_Time                                                                                "
+    XML_DATA$="/asns/asn/Ship_Time                                                                                "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="ship_time                               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/Tracking_Number                                                                          "
+    XML_DATA$="/asns/asn/Tracking_Number                                                                          "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="tracking_num                            "
+    ADD_LINE_1$="asn_only=Y                                                  "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/asns/asn/order_number                                                                             "
+    XML_DATA$="/asns/asn/order_number                                                                             "
+    FORWARD_ATTR$="N"
+    DROP_LINE$="N"
+    REPLACE_LEFT$="tf_po_num                               "
+    ADD_LINE_1$="                                                            "
+    ADD_LINE_2$="                                                            "
+    REPLACE_LEFT_2$="                                        "
+    REPLACE_LEFT_3$="                                        "
+    RL_EXPR$="                                                                                                                                                      "
+    RL_EXPR_2$="                                                                                                                                                      "
+    RL_EXPR_3$="                                                                                                                                                      "
+    ADDLINE_EXPR_YN$=" "
+    ADDLINE_EXPR_YN_2$=" "
+    FORWARD_VAL_YN$=" "
+    FORWARD_VAL_EXPR$="                                                                                                                                                      "
+    EDB_UNUSED_1$="                                                           "
+   </RecordData>
+
+</Data>
+
+</PxTable>

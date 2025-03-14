@@ -1,0 +1,221 @@
+<PxTable>
+ TableName=ZAF
+ TableKey=K1007399608
+ FileCreate=KEYED "ZAF",26,200,1024,BSZ=4,OPT="0"
+ MaxFields=00002
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="@ANYWHERE_IN              "
+    FIELD_1$="@ANYWHERE_IN              "
+    FIELD_2$="$(Z0$,Z1$)=STR(SGN(POS(Z0$=Z1$)):"+QUO+"0"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@BLANK                    "
+    FIELD_1$="@BLANK                    "
+    FIELD_2$="$(Z0$)=STR(ABS(SGN(POS("+QUO+" "+QUO+"<>Z0$))-1))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@CUSTOMER_TYPE            "
+    FIELD_1$="@CUSTOMER_TYPE            "
+    FIELD_2$="$(Z0 )=CHR(ASC("+QUO+"A"+QUO+")+8-EPT(Z0 ))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@DAYS_BETWEEN             "
+    FIELD_1$="@DAYS_BETWEEN             "
+    FIELD_2$="YJLIAN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@MONTH_IN                 "
+    FIELD_1$="@MONTH_IN                 "
+    FIELD_2$="$(Z0$)=Z0$(3,2)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@SUBSTRING                "
+    FIELD_1$="@SUBSTRING                "
+    FIELD_2$="$(Z0$,Z0 ,Z1 )=Z0$(Z0 ,Z1 )"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@TRIM                     "
+    FIELD_1$="@TRIM                     "
+    FIELD_2$="$(Z0$)=Z0$(1,POS("+QUO+"          "+QUO+"=Z0$+"+QUO+"          "+QUO+")-1)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="@YEAR_IN                  "
+    FIELD_1$="@YEAR_IN                  "
+    FIELD_2$="$(Z0$)=STR((ASC(Z0$(1,1))-65)*10+NUM(Z0$(2,1))+330*POS("+QUO+"  "+QUO+"=Z0$(1,2)):"+QUO+"##"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ADD+ON_DATE               "
+    FIELD_1$="ADD+ON_DATE               "
+    FIELD_2$="$(Z0$)=STR(ASC(Z0$(1,1))-1:"+QUO+"00"+QUO+")+STR(ASC(Z0$(1,1))-1:"+QUO+"00"+QUO+")+STR(ASC(Z0$(3,1))-1:"+QUO+"00"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ANYWHERE_IN               "
+    FIELD_1$="ANYWHERE_IN               "
+    FIELD_2$="$(Z0$,Z1$)=STR(SGN(POS(Z0$=Z1$)):"+QUO+"0"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BLANK                     "
+    FIELD_1$="BLANK                     "
+    FIELD_2$="$(Z0$)=STR(ABS(SGN(POS("+QUO+" "+QUO+"<>Z0$))-1))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CHG_DATE_6                "
+    FIELD_1$="CHG_DATE_6                "
+    FIELD_2$="YTOPYR"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CONT_CODE_01              "
+    FIELD_1$="CONT_CODE_01              "
+    FIELD_2$="$()=A0 =01"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CONT_CODE_07              "
+    FIELD_1$="CONT_CODE_07              "
+    FIELD_2$="$()=A0 =07"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COST                      "
+    FIELD_1$="COST                      "
+    FIELD_2$="$()=1*A0 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COST_CTR_CATEGORY         "
+    FIELD_1$="COST_CTR_CATEGORY         "
+    FIELD_2$="YTRNC1YTRNC2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CURRENT_ON_HAND           "
+    FIELD_1$="CURRENT_ON_HAND           "
+    FIELD_2$="$()=A0 -A1 +A2 -A3 -A4 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CURRENT_VALUE             "
+    FIELD_1$="CURRENT_VALUE             "
+    FIELD_2$="$()=A0 *A1 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_TYPE             "
+    FIELD_1$="CUSTOMER_TYPE             "
+    FIELD_2$="$(Z0 )=CHR(ASC("+QUO+"A"+QUO+")+8-EPT(Z0 ))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATE_OF                   "
+    FIELD_1$="DATE_OF                   "
+    FIELD_2$="$(Z0 ,Z1 ,Z2 )=CHR(ASC("+QUO+"A"+QUO+")+INT(Z0 /10))+STR(MOD(Z0 ,10))+STR(Z1 :"+QUO+"00"+QUO+")+STR(Z2 :"+QUO+"00"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_BETWEEN              "
+    FIELD_1$="DAYS_BETWEEN              "
+    FIELD_2$="YJLIAN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_SINCE                "
+    FIELD_1$="DAYS_SINCE                "
+    FIELD_2$="$(Z0$)=10*ASC(Z0$(1,1))-ASC(X3$(21,6))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAY_IN                    "
+    FIELD_1$="DAY_IN                    "
+    FIELD_2$="(Z0$)=NUM(Z0$(5,2))"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_NAME             "
+    FIELD_1$="EMPLOYEE_NAME             "
+    FIELD_2$="$()=A0 ,A1 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_SORT_KEY              "
+    FIELD_1$="GET_SORT_KEY              "
+    FIELD_2$="YUCASE"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IN                        "
+    FIELD_1$="IN                        "
+    FIELD_2$="$(Z0$,Z1$,Z0 )=A0 =SGN(POS(Z0$=Z1$,LEN(Z0$)));"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MONTH_IN                  "
+    FIELD_1$="MONTH_IN                  "
+    FIELD_2$="$(Z0$)=Z0$(3,2)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PACKED_2                  "
+    FIELD_1$="PACKED_2                  "
+    FIELD_2$="(Z0$)=DEC(Z0$)*.01"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="STRING                    "
+    FIELD_1$="STRING                    "
+    FIELD_2$="$(Z0 )=STR(Z0 :"+QUO+"00"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUBSTRING                 "
+    FIELD_1$="SUBSTRING                 "
+    FIELD_2$="$(Z0$,Z0 ,Z1 )=Z0$(Z0 ,Z1 )"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST                      "
+    FIELD_1$="TEST                      "
+    FIELD_2$="YTEST "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TRIM                      "
+    FIELD_1$="TRIM                      "
+    FIELD_2$="$(Z0$)=Z0$(1,POS("+QUO+"          "+QUO+"=Z0$+"+QUO+"          "+QUO+")-1)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="X                         "
+    FIELD_1$="X                         "
+    FIELD_2$="(A0 ,A1 )=SGN(A0 -A1 )"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_IN                   "
+    FIELD_1$="YEAR_IN                   "
+    FIELD_2$="$(Z0$)=STR((ASC(Z0$(1,1))-65)*10+NUM(Z0$(2,1))+330*POS("+QUO+"  "+QUO+"=Z0$(1,2)):"+QUO+"##"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YN_TO_BOOLEAN             "
+    FIELD_1$="YN_TO_BOOLEAN             "
+    FIELD_2$="$(Z0$)=STR(POS("+QUO+"Y"+QUO+"=Z0$):"+QUO+"0"+QUO+")"
+   </RecordData>
+
+</Data>
+
+</PxTable>

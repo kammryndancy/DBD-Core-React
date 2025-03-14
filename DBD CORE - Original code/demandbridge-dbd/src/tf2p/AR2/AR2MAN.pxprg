@@ -1,0 +1,41 @@
+0010 REM "Display for AR2MAK <AR2MAN>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.9 - 01/25/96 - 14.39 - tma
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ENTER X3$,X4$,A$,A{ALL},M0$,M1$,M2$,I
+0110 K9=0
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+1000 REM 
+1010 ON I GOTO 1020,1030
+1020 GOSUB 6000; GOTO 9900
+1030 GOSUB 6200; GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6010 DIM Z0$(80,"-")
+6060 PRINT @(1,3),"Customer code:",@(38,3),"Name:",@(0,4),"Invoice number:",@(0,5),Z0$,
+6070 PRINT @(14,6),"Invoice type:",@(44,6),"Apply to invoice no.:",@(14,7),"Invoice date:",@(44,7),"Audit control number:",@(6,8),"Billed from customer:",@(47,8),"Customer Category:",@(7,9),"CustomerP/O number:",@(6,10),"Terms code:",@(21,10),"Split?",@(10,11),"Invoice due date:",@(9,12),"Discount due date:",@(14,13),"Salespersons:",@(14,14),"Order Number:",@(53,13),"Orig.amount:",@(64,10),"Original Latest",@(0,16),"Link to transaction detail:",@(50,14),"Sales tax code:",@(53,11),"Fiscal year:",@(2,15),"Link to G/L distribution:",@(58,16),"GP Adj:",@(48,15),"Sales tax billed:",@(47,12),"Accounting period:",@(12,17),"Invoice amount:",@(57,17),"Freight:",@(11,18),"Invoice balance:",@(56,18),"Net sale:",@(11,19),"Discount amount:",@(52,19),"Gross profit:",@(10,20),"Cash inprogress:",@(48,20),"Total Commission:",@(6,21),"Freight billed in CB:",
+6080 PRINT @(42,21),"Shpd:",@(59,21),"Via:",@(49,9),"Summary Bill No:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6220 PRINT @(28,6),A$(19+K9,1),
+6224 CALL "ZZDISP","D",A$(20+K9,6),"",X3$,"","",28,7,X4$
+6228 CALL "ZZDISP","A",A$(26+K9,10),"A/R",X3$,"","",28,8,X4$
+6232 PRINT @(28,9),A$(36+K9,15),@(18,10),A$(51+K9,2),@(28,10),A$(53+K9,1),
+6236 CALL "ZZDISP","D",A$(54+K9,6),"",X3$,"","",28,11,X4$
+6240 CALL "ZZDISP","D",A$(60+K9,6),"",X3$,"","",28,12,X4$
+6243 CALL "ZZDISP","AX",A$(66+K9,8),"O/P",X3$,D9$,"",0,0,X4$
+6244 PRINT @(28,13),A$(74+K9,4),@(28,14),D9$,@(33,13),A$(78+K9,4),@(38,13),A$(82+K9,4),@(43,13),A$(86+K9,4),@(48,13),A$(90+K9,4),@(28,15),A[0]:M0$,@(28,16),A[1]:M0$,@(28,17),A[2]:M1$,@(28,18),A[3]:M1$,@(28,19),A[4]:M1$,@(28,20),A[5]:M1$,@(66,6),A$(94+K9,8),@(66,7),A$(102+K9,6),
+6248 CALL "ZZDISP","A",A$(108+K9,9),"ARG",X3$,"","",66,8,X4$
+6250 PRINT @(66,11),A$(127+K9,4),@(67,12),A$(131+K9,2),@(74,11),A$(133+K9,4),@(75,12),A$(137+K9,2),@(66,13),A[6]:M1$,@(68,15),A[7]:M2$,
+6255 CALL "ZZDISP","A",A$(117,10),"AR5",X3$,"","",66,14,X4$
+6260 PRINT @(68,16),A[14]:M2$,@(68,17),A[8]:M2$,@(66,18),A[9]:M1$,@(66,19),A[10]:M1$,@(66,20),A[11]:M1$,@(30,21),A[13]:M2$,
+6270 CALL "ZZDISP","D",A$(139,6),"",X3$,"","",48,21,X4$
+6280 PRINT @(64,21),A$(145,15),@(66,9),A$(160,8),
+6390 RETURN 
+9000 REM "ERROR
+9010 EXIT ERR
+9900 REM "END
+9930 EXIT 
+9999 END 

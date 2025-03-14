@@ -1,0 +1,33 @@
+0035 REM "5.7 - 12/08/15 - 11.922222 - crg - SSP# 281632
+0037 REM "281632-When the login procedure was updated, they are having a huge
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 SETERR 9000
+0100 GOSUB CHECK_CONNECTION
+0900 ON SPAWNABLE GOTO 2000,1000 ! Use telnet connection, Use spawning mechanism
+0999 ! 
+1000 REM "Spawn new session
+1010 CALL "ZZSPWN","ZSTARTG"
+1145 RELEASE 
+1199 ! 
+2000 REM "Run using current connection
+2010 RUN "ZSTARTG"
+2199 ! 
+8000 CHECK_CONNECTION:
+8005 SPAWNABLE=1
+8007 W1$=UCS(ENV("NO_WINDX_SPAWN",ERR=*NEXT)); IF W1$="Y" OR W1$="1" THEN SPAWNABLE=0; RETURN ! 281632
+8010 IF NOT(NUL(%WINDX_PORT$)) THEN RETURN ! App server session; spawning of sessions permitted
+8015 ! Get IP addresses of all server interfaces
+8020 OPEN (HFN)"< /sbin/ifconfig | grep "" addr"""; OSCHAN=LFO
+8030 READ RECORD (OSCHAN,END=*NEXT)T$; ALL_IPS$+=T$; GOTO *SAME
+8035 ! Get IP address that Windx client is connected to
+8040 CALL "[wdx]*windx.utl;get_val","KEY(1)",X$
+8050 IF POS(":"+X$+" "=ALL_IPS$) THEN RETURN ! Windx is directly connected; spawning of processes will succeed; proceed with spawn
+8080 ! If here then spawning will not succeed
+8085 SPAWNABLE=0
+8095 RETURN 
+8099 ! 
+9000 SETERR 9010
+9010 ESCAPE 
+9999 END 
+56002 REM "269390-Having slowness when using GUI.                             

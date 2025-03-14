@@ -1,0 +1,18 @@
+0100 BEGIN 
+0110 OPEN (1)"ZY9"
+0120 F$=""; REM " Inside the quotes you would enter the order numbers 8 characters make sure to use all zeros.  Place them side by side ie  0000695200007382                                                   
+1000 K$=KEY(1,END=9900); READ (1,KEY=K$)A$; IF K$="" THEN GOTO 1000
+1010 PRINT @(10,10),A$(1,5)
+1020 IF A$(6,8)<>"AR2EAA  " AND A$(6,8)<>"PO2MAG  " THEN GOTO 1000
+2000 CLOSE (2); OPEN (2,ERR=1000)"ARB"+A$(1,4)
+2010 B$=KEY(2,END=2190); READ (2,KEY=B$)C$
+2020 PRINT @(11,11),C$(7,8)
+2030 FOR X=1 TO LEN(F$) STEP 8
+2035 D$="BATCH: "+A$(1,5)+" INV "+C$(7,8)+" ORD "+MID(C$,92,8)
+2040 IF MID(C$,92,8)=F$(X,8) THEN ESCAPE ; REM " When it escapes type in PRINTD$ to get the batch number & invoice number
+2050 NEXT X
+2090 GOTO 2010
+2190 GOTO 1000
+9900 REM "JOB COMPLETE
+9910 RUN "ZMENU"
+9999 END 

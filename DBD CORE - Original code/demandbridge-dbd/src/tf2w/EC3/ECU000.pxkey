@@ -1,0 +1,522 @@
+<PxTable>
+ TableName=ECU000
+ TableKey=K1044025437
+ FileCreate=KEYED "ECU000",10,0,512,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ECU_Sort"
+    PHYSICALPATH$="June 25,2003 12:59pm"
+    LASTCHANGEDATE$="rds"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST CODE_SORT$:[LEN(10)]"
+    NAME$="CODE_SORT"
+    DESCRIPTION$="=MSG("+QUO+"SORT_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="sort code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST CODE_SORT$:[LEN(10,SEP=SEP)]"
+    NAME$="CODE_SORT"
+    DESCRIPTION$="=MSG("+QUO+"SORT_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="sort code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST DESC$:[LEN(50,SEP=SEP)]"
+    NAME$="DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="50"
+    INTERNALFORMAT$="S"
+    NOTES$="description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST SOURCE_FILE_1$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE_1"
+    DESCRIPTION$="=MSG("+QUO+"SOUR_F_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST ROUTINE_NAME$:[LEN(8,SEP=SEP)]"
+    NAME$="ROUTINE_NAME"
+    DESCRIPTION$="=MSG("+QUO+"ROUT_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="called routine name"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST COMMENTS_1$:[LEN(70,SEP=SEP)]"
+    NAME$="COMMENTS_1"
+    DESCRIPTION$="=MSG("+QUO+"COMMENTS_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="70"
+    INTERNALFORMAT$="S"
+    NOTES$="comments 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST COMMENTS_2$:[LEN(70,SEP=SEP)]"
+    NAME$="COMMENTS_2"
+    DESCRIPTION$="=MSG("+QUO+"COMMENTS_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="70"
+    INTERNALFORMAT$="S"
+    NOTES$="comments 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST COMMENTS_3$:[LEN(70,SEP=SEP)]"
+    NAME$="COMMENTS_3"
+    DESCRIPTION$="=MSG("+QUO+"COMMENTS_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="70"
+    INTERNALFORMAT$="S"
+    NOTES$="comments 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST COMMENTS_4$:[LEN(70,SEP=SEP)]"
+    NAME$="COMMENTS_4"
+    DESCRIPTION$="=MSG("+QUO+"COMMENTS_4"+QUO+")"
+    TYPE$="S"
+    LENGTH$="70"
+    INTERNALFORMAT$="S"
+    NOTES$="comments 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST SOURCE_FILE_2$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE_2"
+    DESCRIPTION$="=MSG("+QUO+"SOUR_F_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST SOURCE_FILE_3$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE_3"
+    DESCRIPTION$="=MSG("+QUO+"SOUR_F_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST SOURCE_FILE_4$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE_4"
+    DESCRIPTION$="=MSG("+QUO+"SOUR_F_4"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST SOURCE_FILE_5$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE_5"
+    DESCRIPTION$="=MSG("+QUO+"SOUR_F_5"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ORD_SRT_ON_CUST_PO$:[LEN(1,SEP=SEP)]"
+    NAME$="ORD_SRT_ON_CUST_PO"
+    DESCRIPTION$="=MSG("+QUO+"O_S_O_C_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="order sort based on customer po?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST ECU_UNUSED_1$:[LEN(39,SEP=SEP)]"
+    NAME$="ECU_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="39"
+    INTERNALFORMAT$="S"
+    NOTES$="unused"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST TYPE_D_O$:[LEN(1,SEP=SEP)]"
+    NAME$="TYPE_D_O"
+    DESCRIPTION$="=MSG("+QUO+"TYPE_D_O"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type (D/O)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST CODE_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="CODE_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"CODE_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST ECU_UNUSED_2$:[LEN(SEP,SIZ=1)]"
+    NAME$="ECU_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="DDL_SHIPTO"
+    CODE_SORT$="DDL_SHIPTO"
+    DESC$="DDL shiptolist                                    "
+    SOURCE_FILE_1$="FM0   "
+    ROUTINE_NAME$="EC3SCS  "
+    COMMENTS_1$="                                                                      "
+    COMMENTS_2$="                                                                      "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="      "
+    SOURCE_FILE_3$="      "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$=" "
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="D"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMAILSUB_O"
+    CODE_SORT$="EMAILSUB_O"
+    DESC$="Subject line definition for 'O' emails            "
+    SOURCE_FILE_1$="^E/C  "
+    ROUTINE_NAME$="        "
+    COMMENTS_1$="Email subject line definition maximum is 100 characters               "
+    COMMENTS_2$="                                                                      "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="ECD   "
+    SOURCE_FILE_3$="      "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="E"
+    CODE_TYPE$="O"
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_BYDAT"
+    CODE_SORT$="OSKW_BYDAT"
+    DESC$="order status keyword search - order date          "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_CITY "
+    CODE_SORT$="OSKW_CITY "
+    DESC$="order status keyword - city                       "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_CUSPO"
+    CODE_SORT$="OSKW_CUSPO"
+    DESC$="order status keyword search - customer po         "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_ILINE"
+    CODE_SORT$="OSKW_ILINE"
+    DESC$="order status keyword search - item code pattern   "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8) + LINE (3)                    "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_ITEM "
+    CODE_SORT$="OSKW_ITEM "
+    DESC$="order status keyword search - item code           "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8) + LINE (3)                    "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_OTYPE"
+    CODE_SORT$="OSKW_OTYPE"
+    DESC$="order status keyword search - order type          "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_SHPTO"
+    CODE_SORT$="OSKW_SHPTO"
+    DESC$="order status keyword - shipto code                "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_STATE"
+    CODE_SORT$="OSKW_STATE"
+    DESC$="order status keyword search - state               "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OSKW_ZIP  "
+    CODE_SORT$="OSKW_ZIP  "
+    DESC$="order status keyword search - zip code            "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OS_BYDATE "
+    CODE_SORT$="OS_BYDATE "
+    DESC$="By Order Date                                     "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OS_CUSTPO "
+    CODE_SORT$="OS_CUSTPO "
+    DESC$="By your PO number                                 "
+    SOURCE_FILE_1$="FS1   "
+    ROUTINE_NAME$="EC3SOR  "
+    COMMENTS_1$="First field must be the CUSTOMER CODE (10)                            "
+    COMMENTS_2$="Last field must be the ORDER NUMBER (8)                               "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="FS2   "
+    SOURCE_FILE_3$="PO3   "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$="N"
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="O"
+    CODE_TYPE$=" "
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SHIP_VIA  "
+    CODE_SORT$="SHIP_VIA  "
+    DESC$="customer specific ship via                        "
+    SOURCE_FILE_1$="FMP   "
+    ROUTINE_NAME$="        "
+    COMMENTS_1$="                                                                      "
+    COMMENTS_2$="                                                                      "
+    COMMENTS_3$="                                                                      "
+    COMMENTS_4$="                                                                      "
+    SOURCE_FILE_2$="      "
+    SOURCE_FILE_3$="      "
+    SOURCE_FILE_4$="      "
+    SOURCE_FILE_5$="      "
+    ORD_SRT_ON_CUST_PO$=" "
+    ECU_UNUSED_1$="                                       "
+    TYPE_D_O$="C"
+    CODE_TYPE$="V"
+    ECU_UNUSED_2$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

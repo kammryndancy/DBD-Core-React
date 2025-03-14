@@ -1,0 +1,31 @@
+
+<SCRIPT LANGUAGE='VBScript' RUNAT='Server'>
+
+' Runs the first time a user runs any page in your application
+Sub Session_OnStart 
+
+End Sub
+
+'Runs when a user's session times out or quits your application
+sub Session_OnEnd
+
+	'filename = "c:\ezorder\wwwroot\proof\" & right(Session.SessionID ,5) 
+	'Set fso = server.CreateObject("Scripting.FileSystemObject")
+
+	'On Error Resume Next
+	
+	'Set fo = fso.DeleteFile(filename & ".txt")
+	'Set fo = fso.DeleteFile(filename & ".pdf")
+	
+	'filename = "c:\ezorder\wwwroot\multimedia\" & right(Session.SessionID ,5) 
+	'Set fo = fso.DeleteFile(filename & ".txt")
+	'Set fo = fso.DeleteFile(filename & ".swf")
+	
+	
+	'set fo = nothing
+	'set fso = nothing
+
+end sub
+
+</SCRIPT>
+

@@ -1,0 +1,341 @@
+<PxTable>
+ TableName=4GLWRKTI
+ TableKey=K971278615
+ FileCreate=KEYED "4GLWRKTI",9,0,-80,BSZ=3,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="0010"+$01$
+    FIELD_1$="0010 REM "+QUO+"RSPREFIX -  : 08-Mar-00 09:13:32 - COO"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$01$
+    FIELD_1$="0012 ENDTRACE; BEGIN; SETESC 0160; SETERR 9990; FORMAT INCLUDE #IDSV,OPT="+QUO+"NONE"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$02$
+    FIELD_1$="; SETERR 8900; PRINT 'CS','SH',; OPEN (1,ERC=1) FID(0); CLEAR ERC; OPEN (3,ERR="
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$03$
+    FIELD_1$="9990) "+QUO+"IDDBD"+QUO+"; IF TCB(13)=0 CALL "+QUO+"IDPDRP"+QUO+","+QUO+QUO+" FI; IF STL(]7$)<400 OR ]6$="+QUO+QUO+" CALL"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$04$
+    FIELD_1$=" "+QUO+"IDPUB4"+QUO+",ERR=9995,]6$,]7$,]8$,]9$; CLOSE (4) ELSE OPEN (#IDSV.IDDBD-CH) "+QUO+"IDDBD"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$05$
+    FIELD_1$=QUO+" FI; IF NEA("+QUO+"]MS$"+QUO+",1)<12 IF NEA("+QUO+"]MS$"+QUO+",1)=0 DIM ]MS$[12] ELSE INSERT ARRAY ]MS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$06$
+    FIELD_1$="$[(1+NEA("+QUO+"]MS$"+QUO+",1), 12-NEA("+QUO+"]MS$"+QUO+",1))] FI; ]MS$[9]=PAD("+QUO+"C"+QUO+",14) FI; DIM ]ME$[10]"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$07$
+    FIELD_1$="; ]ME$[0]="+QUO+"4GRUN"+QUO+", ]ME$[9]=PAD("+QUO+"C"+QUO+",14), ]MD$="+QUO+"*"+QUO+", ]8$=PAD(CHR(62)+ $00FF00FF$,1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0012"+$08$
+    FIELD_1$="92,$00$), ]9$=DIM(100), ]9$(20,3)=$000000$, ]9$(23,8)="+QUO+"4GRUN"+QUO+", ]9$(73,2)=$0000$"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0100"+$01$
+    FIELD_1$="0100 ]7$(1,8)=PGN, ]7$(13,3)="+QUO+"4GL"+QUO+", ]7$(80,1)="+QUO+"Y"+QUO+"; GOSUB 199"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0109"+$01$
+    FIELD_1$="0109 IF TCB(13) EXIT FI; ]$=CVT(]9$(80,8),128), ]0$="+QUO+QUO+", ]1$="+QUO+QUO+", ]2$="+QUO+QUO+", ]3$="+QUO+QUO+","
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0109"+$02$
+    FIELD_1$=" ]4$="+QUO+QUO+", ]5$="+QUO+QUO+", ]8$="+QUO+QUO+", ]9$="+QUO+QUO+"; IF ]$="+QUO+QUO+" ]$="+QUO+"ID"+QUO+" FI; DIM ]PT$[0], ]MS$[0], ]ME"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0109"+$03$
+    FIELD_1$="$[0]; IF ]$="+QUO+"[SYSTEM]"+QUO+" RELEASE ELSE CALL "+QUO+"IDPDRP"+QUO+","+QUO+QUO+"; RUN ]$,ERR=9999"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0150"+$01$
+    FIELD_1$="0150 #IDSV.FILE-SUFFIX=]7$(241,4); EXTRACT RECORD (#IDSV.IDDBD-CH,ERR=155,KEY=$"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0150"+$02$
+    FIELD_1$="0001$+]7$(77,3)) ]5$; ]5$(56,4)=#IDSV.FILE-SUFFIX; WRITE RECORD (#IDSV.IDDBD-CH"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0150"+$03$
+    FIELD_1$=",KEY=$0001$+]7$(77,3)) ]5$"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0155"+$01$
+    FIELD_1$="0155 ]5$="+QUO+QUO+"; RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0161"+$01$
+    FIELD_1$="0161 GOTO 8800"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$01$
+    FIELD_1$="0171 IF NEA("+QUO+"]MS$"+QUO+",1)<12 IF NEA("+QUO+"]MS$"+QUO+",1)=0 DIM ]MS$[12] ELSE INSERT ARRAY ]MS$"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$02$
+    FIELD_1$="[(1+NEA("+QUO+"]MS$"+QUO+",1), 12-NEA("+QUO+"]MS$"+QUO+",1))] FI; ]MS$[9]=PAD("+QUO+"C"+QUO+",14) FI; ]MS$[0]=]7$(5"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$03$
+    FIELD_1$="9,8), ]MS$[1]=]5$; IF ]6<-100 ]MS$[2]=STR(ABS(]6)-100) ELSE ]MS$[2]="+QUO+QUO+" FI; IF ]"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$04$
+    FIELD_1$="MD$="+QUO+QUO+" ]MS$[9]=PAD("+QUO+"C"+QUO+",14) ELSE IF ]MD$="+QUO+"*"+QUO+" ]MS$[9]="+QUO+QUO+" ELSE ]MS$[9]=]MD$ FI FI;"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$05$
+    FIELD_1$=" CALL "+QUO+"8MSG"+QUO+",ERR=172,]MN$,]MS$[ALL],]6,]7$; IF ]6=99 GOSUB 8800; GOTO 170 ELSE "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$06$
+    FIELD_1$="IF ]6=6 IF ]7$(20,1)<>"+QUO+"."+QUO+" ]PH$=$FF$, #IDSV.SRP-RPT-WRK="+QUO+"M"+QUO+"; GOSUB 174; GOTO 171"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0171"+$07$
+    FIELD_1$=" FI FI FI; ]5=0, ]5$=]MS$[1]; IF NMV(]5$) ]5=NUM(]5$) FI; RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0173"+$01$
+    FIELD_1$="0173 IF ERR=100 ]MN$=]MN$+"+QUO+",,"+QUO+", ]MN$="+QUO+"N,14,,,,"+QUO+"+QUO+CVT(]7$(59,8),128)+"+QUO+"-"+QUO+"+ ]MN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0173"+$02$
+    FIELD_1$="$(1,POS("+QUO+","+QUO+"=]MN$,1,2)-1)+QUO; CALL "+QUO+"8MSG"+QUO+",]MN$,]ME$[ALL],]6,]7$; GOTO 109 ELSE "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0173"+$03$
+    FIELD_1$="GOTO 8900"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0174"+$01$
+    FIELD_1$="0174 ]7$(18,2)=]7$(59,2),]7$(58,1)="+QUO+"N"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0175"+$01$
+    FIELD_1$="0175 IF ]7$(20,1)<>"+QUO+"."+QUO+" ]7$(351,1)=#IDSV.SRP-RPT-WRK; CALL "+QUO+"IDPHP0"+QUO+",ERR=176,]7$("
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0175"+$02$
+    FIELD_1$="351,1),]6$,]6,]7$(1,STL(]7$)),1; #IDSV.SRP-RPT-WRK=]7$(351,1); IF ]6=1 CALL "+QUO+"ID"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0175"+$03$
+    FIELD_1$="PHP1"+QUO+","+QUO+"M"+QUO+",]6$,]6,]7$,1 FI FI; RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0176"+$01$
+    FIELD_1$="0176 IF ERR=100 RETURN ELSE GOTO 8900"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0199"+$01$
+    FIELD_1$="0199 DIM ]2$(101), ]3$(1)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0200"+$01$
+    FIELD_1$="0200 ]7$(241,4)="+QUO+"500"+QUO+"; GOSUB 150"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0201"+$01$
+    FIELD_1$="0201 RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8699"+$01$
+    FIELD_1$="8699 RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8700"+$01$
+    FIELD_1$="8700 ]9$(72,1)="+QUO+"X"+QUO+"; IF ]5$(1,1)="+QUO+"P"+QUO+" ]0=0 ELSE ]0=3 FI; IF ]5$(2,1)=$00$ ]5=0 EL"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8700"+$02$
+    FIELD_1$="SE ]5=ASC(]8$(ASC(]5$(2,1)),1)) FI; PRINT (]5) @(]0), ]5$(3); ]0=6"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8799"+$01$
+    FIELD_1$="8799 RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8800"+$01$
+    FIELD_1$="8800 IF ]9$(1,1)<>"+QUO+"X"+QUO+" AND ]7$(80,1)<>"+QUO+"N"+QUO+" IF ]9$(72,1)="+QUO+"X"+QUO+" ]9$(72,1)="+QUO+QUO+"; INPUT *"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8800"+$02$
+    FIELD_1$="; ]9$(72,1)="+QUO+"X"+QUO+" ELSE ]9$(31,8)=]7$(59,8), ]7$(59,8)="+QUO+"4GRUN"+QUO+", ]4$=]MN$,]MN$="+QUO+"Y,1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8800"+$03$
+    FIELD_1$=QUO+"; GOSUB 170; IF ]5$="+QUO+"Y"+QUO+" GOTO 8995 ELSE ]MN$=]4$, ]7$(59,8)=]9$(31,8) FI FI FI;"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8800"+$04$
+    FIELD_1$=" RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8900"+$01$
+    FIELD_1$="8900 SETERR 8910; ]9(7,3)=ERR; IF POS("+QUO+"IDUMEM"+QUO+"=PUB(1)) DROP "+QUO+"IDUMEM"+QUO+"; CALL "+QUO+"IDP"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8900"+$02$
+    FIELD_1$="DRP"+QUO+",]9$(10,1) FI; IF ]9(7,3)=16 OR ]9(7,3)=19 OR ]9(7,3)=31 OR ]9(7,3)=33 IF ]"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8900"+$03$
+    FIELD_1$="9$(10,1)="+QUO+"X"+QUO+" IF ]9$(11,4)="+QUO+"8951"+QUO+" ]9$(11,4)="+QUO+QUO+"; RETURN ELSE GOTO 8906"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8902"+$01$
+    FIELD_1$="8902 IF ]9$(11,4)="+QUO+"8951"+QUO+" GOTO 8951 ELSE IF ]9$(11,4)="+QUO+"8953"+QUO+" GOTO 8953"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8904"+$01$
+    FIELD_1$="8904 ]9$(10,8)=PGN,]9$(2,5)=STR(TCB(5)); CALL "+QUO+"IDUBER"+QUO+",]9$(10,8),]9(2,5),]9(7,3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8904"+$02$
+    FIELD_1$="),]5$; IF POS(]5$="+QUO+"Ee"+QUO+") <> 0 ]9(7,3)=109; GOTO 8990 ELSE IF POS(]5$="+QUO+"ESes"+QUO+",2) <"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8904"+$03$
+    FIELD_1$="> 0 ]9(7,3)=110; GOTO 8990"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8906"+$01$
+    FIELD_1$="8906 ]9$(11,4)="+QUO+QUO+"; SETERR 8900; RETRY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8911"+$01$
+    FIELD_1$="8911 GOTO 8990"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8950"+$01$
+    FIELD_1$="8950 ]9(11,4)=8951; GOTO 8900"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8951"+$01$
+    FIELD_1$="8951 ]9(11,4)=15; GOSUB 8960; RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8952"+$01$
+    FIELD_1$="8952 ]9(11,4)=8953; GOTO 8900"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8953"+$01$
+    FIELD_1$="8953 ]9(11,4)=13; GOSUB 8960; RETRY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8960"+$01$
+    FIELD_1$="8960 ]9$(31,8)=]7$(59,8),]7$(59,8)="+QUO+"4GRUN"+QUO+", ]MN$="+QUO+"x,"+QUO+"+]9$(11,4)+"+QUO+",,,,"+QUO+"+CVT(]9$("
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8960"+$02$
+    FIELD_1$="43,8),128)+"+QUO+","+QUO+"+]9$(7,3), ]9$(11,4)="+QUO+QUO+"; GOSUB 170; ]7$(59,8)=]9$(31,8); IF ]6=4 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8960"+$03$
+    FIELD_1$="GOTO 109 ELSE RETURN"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8990"+$01$
+    FIELD_1$="8990 IF ]9(7,3)<>110 GOTO 109 ELSE ]9$(7,3)="+QUO+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8991"+$01$
+    FIELD_1$="8991 ESCAPE"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8995"+$01$
+    FIELD_1$="8995 GOTO 109"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="9990"+$01$
+    FIELD_1$="9990 IF ERR=0 WAIT 2; RETRY ELSE PRINT 'CS',"+QUO+"Dictionary not found!"+QUO+"; DELETE"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="9995"+$01$
+    FIELD_1$="9995 PRINT 'CS',; DELETE"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="9999"+$01$
+    FIELD_1$="9999 RUN "+QUO+"ID"+QUO
+   </RecordData>
+
+</Data>
+
+</PxTable>

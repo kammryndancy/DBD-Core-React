@@ -1,0 +1,646 @@
+<PxTable>
+ TableName=FR1000
+ TableKey=K971278411
+ FileCreate=KEYED "FR1000",15,0,-170,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="A/RGP-YTD  "
+    FIELD_1$="A/RGP-YTD  Gross Profit - YTD            DP     00  0  Y  C                                                                     Gross       Profit      YTD          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RGP_PTD  "
+    FIELD_1$="A/RGP_PTD  Gross Profit - PTD            DP     00  0  N01C                                                                     G.P.        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RGP_YTD  "
+    FIELD_1$="A/RGP_YTD  Gross Profit YTD              DP     00  0  Y  C                                                                     G.P.        YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPTD_AVG "
+    FIELD_1$="A/RPTD_AVG PTD Average Invoice           F      0      N  S    SALES/PTD_INV                                                    Avg Inv Amt PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPTD_GPP "
+    FIELD_1$="A/RPTD_GPP Period to date Gross Profit % F             N       100*GP_PTD/SALES                                                 GP %        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPTD_INV "
+    FIELD_1$="A/RPTD_INV PTD number of invoices        DN     00  0  N01S                                                                     # Invoices  PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES   "
+    FIELD_1$="A/RSALES                                 DS     00  0  N01                                                                      Sales       PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES_LY"
+    FIELD_1$="A/RSALES_LY                              DS     0-1 0  N01                                                                      Sales LY    PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.01  "
+    FIELD_1$="A/RSLS.01                                DS     10  1  N01                                                                      Period 1                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.01L "
+    FIELD_1$="A/RSLS.01L                               DS     1-1 1  N01                                                                      Sales LY    Period 1                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.02  "
+    FIELD_1$="A/RSLS.02                                DS     10  2  N                                                                        Period 2                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.03  "
+    FIELD_1$="A/RSLS.03                                DS     10  3                                                                           Period 3                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.04  "
+    FIELD_1$="A/RSLS.04  Sales - Period 4              DS     10  4  N                                                                        Period 4                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.05  "
+    FIELD_1$="A/RSLS.05                                DS     10  5  N                                                                        Period 5                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.06  "
+    FIELD_1$="A/RSLS.06  Sales - period 6              DS     10  06 N01C                                                                     Period 6                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.07  "
+    FIELD_1$="A/RSLS.07  Sales - period 7              DS     10  07 N01C                                                                     Period 7                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.08  "
+    FIELD_1$="A/RSLS.08  sales - period 8              DS     10  08 N01C                                                                     Period 8                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.09  "
+    FIELD_1$="A/RSLS.09  Sales - period 9              DS     10  9  N01C                                                                     Period 9                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.10  "
+    FIELD_1$="A/RSLS.10  Sales - period 10             DS     10  10 N01C                                                                     Period 10                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.11  "
+    FIELD_1$="A/RSLS.11  Sales - period 11             DS     10  11 N01C                                                                     Period 11                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.12  "
+    FIELD_1$="A/RSLS.12  Sales - Period 12             DS     10  12 N01C                                                                     Period 12                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.PINC"
+    FIELD_1$="A/RSLS.PINCSales - period increase       F      0              SALES-SALES_LY                                                   Increase/DecPeriod Sales             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS.YINC"
+    FIELD_1$="A/RSLS.YINCYTD Incr/Decr Sales           F             N       SLS_YTD-SLS_YTDL                                                 Increase/DecSales - YTD              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS_YTD "
+    FIELD_1$="A/RSLS_YTD Year to date Sales            DS     00  0  E  C                                                                     Sales       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSLS_YTDL"
+    FIELD_1$="A/RSLS_YTDLSales YTD last year           DS     0-1 0  E  C                                                                     Sales - LY  Year to Date             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RTITLE   "
+    FIELD_1$="A/RTITLE                                 T                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RYTD_AVG "
+    FIELD_1$="A/RYTD_AVG Avg invoice - YTD             F             N       SLS_YTD/YTD_INV                                                  Avg Inv Amt YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RYTD_GPP "
+    FIELD_1$="A/RYTD_GPP Year to date GP %             F             N       100*GP_YTD/SLS_YTD                                               G.P.%       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RYTD_INV "
+    FIELD_1$="A/RYTD_INV YTD number of invoices        DN     00  0  E  S                                                                     # Invoices  YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXGP-YTD  "
+    FIELD_1$="ARXGP-YTD  Gross Profit - YTD            DP     00  0  Y  C                                                                     Gross       Profit      YTD          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXGP_PTD  "
+    FIELD_1$="ARXGP_PTD  Gross Profit - PTD            DP     00  0  N01C                                                                     G.P.        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXGP_YTD  "
+    FIELD_1$="ARXGP_YTD  Gross Profit YTD              DP     00  0  Y  C                                                                     G.P.        YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXPTD_AVG "
+    FIELD_1$="ARXPTD_AVG PTD Average Invoice           F      0      N  S    SALES/PTD_INV                                                    Avg Inv Amt PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXPTD_GPP "
+    FIELD_1$="ARXPTD_GPP Period to date Gross Profit % F             N       100*GP_PTD/SALES                                                 GP %        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXPTD_INV "
+    FIELD_1$="ARXPTD_INV PTD number of invoices        DN     00  0  N01S                                                                     # Invoices  PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSALES   "
+    FIELD_1$="ARXSALES                                 DS     00  0  N01                                                                      Sales       PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSALES_LY"
+    FIELD_1$="ARXSALES_LY                              DS     0-1 0  N01                                                                      Sales LY    PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.01  "
+    FIELD_1$="ARXSLS.01                                DS     10  1  N01                                                                      Period 1                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.01L "
+    FIELD_1$="ARXSLS.01L                               DS     1-1 1  N01                                                                      Sales LY    Period 1                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.02  "
+    FIELD_1$="ARXSLS.02                                DS     10  2  N                                                                        Period 2                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.03  "
+    FIELD_1$="ARXSLS.03                                DS     10  3                                                                           Period 3                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.04  "
+    FIELD_1$="ARXSLS.04  Sales - Period 4              DS     10  4  N                                                                        Period 4                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.05  "
+    FIELD_1$="ARXSLS.05                                DS     10  5  N                                                                        Period 5                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.06  "
+    FIELD_1$="ARXSLS.06  Sales - period 6              DS     10  06 N01C                                                                     Period 6                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.07  "
+    FIELD_1$="ARXSLS.07  Sales - period 7              DS     10  07 N01C                                                                     Period 7                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.08  "
+    FIELD_1$="ARXSLS.08  sales - period 8              DS     10  08 N01C                                                                     Period 8                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.09  "
+    FIELD_1$="ARXSLS.09  Sales - period 9              DS     10  9  N01C                                                                     Period 9                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.10  "
+    FIELD_1$="ARXSLS.10  Sales - period 10             DS     10  10 N01C                                                                     Period 10                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.11  "
+    FIELD_1$="ARXSLS.11  Sales - period 11             DS     10  11 N01C                                                                     Period 11                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.12  "
+    FIELD_1$="ARXSLS.12  Sales - Period 12             DS     10  12 N01C                                                                     Period 12                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.PINC"
+    FIELD_1$="ARXSLS.PINCSales - period increase       F      0              SALES-SALES_LY                                                   Increase/DecPeriod Sales             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS.YINC"
+    FIELD_1$="ARXSLS.YINCYTD Incr/Decr Sales           F             N       SLS_YTD-SLS_YTDL                                                 Increase/DecSales - YTD              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS_YTD "
+    FIELD_1$="ARXSLS_YTD Year to date Sales            DS     00  0  E  C                                                                     Sales       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXSLS_YTDL"
+    FIELD_1$="ARXSLS_YTDLSales YTD last year           DS     0-1 0  E  C                                                                     Sales - LY  Year to Date             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXTITLE   "
+    FIELD_1$="ARXTITLE                                 T                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXYTD_AVG "
+    FIELD_1$="ARXYTD_AVG Avg invoice - YTD             F             N       SLS_YTD/YTD_INV                                                  Avg Inv Amt YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXYTD_GPP "
+    FIELD_1$="ARXYTD_GPP Year to date GP %             F             N       100*GP_YTD/SLS_YTD                                               G.P.%       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARXYTD_INV "
+    FIELD_1$="ARXYTD_INV YTD number of invoices        DN     00  0  E  S                                                                     # Invoices  YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFGP-YTD  "
+    FIELD_1$="ASFGP-YTD  Gross Profit - YTD            DP     00  0  Y  C                                                                     Gross       Profit      YTD          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFGP_PTD  "
+    FIELD_1$="ASFGP_PTD  Gross Profit - PTD            DP     00  0  N01C                                                                     G.P.        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFGP_YTD  "
+    FIELD_1$="ASFGP_YTD  Gross Profit YTD              DP     00  0  Y  C                                                                     G.P.        YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFPTD_AVG "
+    FIELD_1$="ASFPTD_AVG PTD Average Invoice           F      0      N  S    SALES/PTD_INV                                                    Avg Inv Amt PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFPTD_GPP "
+    FIELD_1$="ASFPTD_GPP Period to date Gross Profit % F             N       100*GP_PTD/SALES                                                 GP %        PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFPTD_INV "
+    FIELD_1$="ASFPTD_INV PTD number of invoices        DN     00  0  N01S                                                                     # Invoices  PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSALES   "
+    FIELD_1$="ASFSALES                                 DS     00  0  N01                                                                      Sales       PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSALES_LY"
+    FIELD_1$="ASFSALES_LY                              DS     0-1 0  N01                                                                      Sales LY    PTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.01  "
+    FIELD_1$="ASFSLS.01                                DS     10  1  N01                                                                      Period 1                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.01L "
+    FIELD_1$="ASFSLS.01L                               DS     1-1 1  N01                                                                      Sales LY    Period 1                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.02  "
+    FIELD_1$="ASFSLS.02                                DS     10  2  N                                                                        Period 2                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.03  "
+    FIELD_1$="ASFSLS.03                                DS     10  3                                                                           Period 3                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.04  "
+    FIELD_1$="ASFSLS.04  Sales - Period 4              DS     10  4  N                                                                        Period 4                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.05  "
+    FIELD_1$="ASFSLS.05                                DS     10  5  N                                                                        Period 5                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.06  "
+    FIELD_1$="ASFSLS.06  Sales - period 6              DS     10  06 N01C                                                                     Period 6                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.07  "
+    FIELD_1$="ASFSLS.07  Sales - period 7              DS     10  07 N01C                                                                     Period 7                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.08  "
+    FIELD_1$="ASFSLS.08  sales - period 8              DS     10  08 N01C                                                                     Period 8                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.09  "
+    FIELD_1$="ASFSLS.09  Sales - period 9              DS     10  9  N01C                                                                     Period 9                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.10  "
+    FIELD_1$="ASFSLS.10  Sales - period 10             DS     10  10 N01C                                                                     Period 10                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.11  "
+    FIELD_1$="ASFSLS.11  Sales - period 11             DS     10  11 N01C                                                                     Period 11                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.12  "
+    FIELD_1$="ASFSLS.12  Sales - Period 12             DS     10  12 N01C                                                                     Period 12                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.PINC"
+    FIELD_1$="ASFSLS.PINCSales - period increase       F      0              SALES-SALES_LY                                                   Increase/DecPeriod Sales             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS.YINC"
+    FIELD_1$="ASFSLS.YINCYTD Incr/Decr Sales           F             N       SLS_YTD-SLS_YTDL                                                 Increase/DecSales - YTD              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS_YTD "
+    FIELD_1$="ASFSLS_YTD Year to date Sales            DS     00  0  E  C                                                                     Sales       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFSLS_YTDL"
+    FIELD_1$="ASFSLS_YTDLSales YTD last year           DS     0-1 0  E  C                                                                     Sales - LY  Year to Date             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFTITLE   "
+    FIELD_1$="ASFTITLE                                 T                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFYTD_AVG "
+    FIELD_1$="ASFYTD_AVG Avg invoice - YTD             F             N       SLS_YTD/YTD_INV                                                  Avg Inv Amt YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFYTD_GPP "
+    FIELD_1$="ASFYTD_GPP Year to date GP %             F             N       100*GP_YTD/SLS_YTD                                               G.P.%       YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASFYTD_INV "
+    FIELD_1$="ASFYTD_INV YTD number of invoices        DN     00  0  E  S                                                                     # Invoices  YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LBBAL    "
+    FIELD_1$="G/LBBAL    Beginning balance for period  DA     00  0  B00C                                                                     Beginning   Balance                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LEBAL    "
+    FIELD_1$="G/LEBAL    Ending Balance                DA     00  0  E00C                                                                     Current     Balance                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LEBALLY  "
+    FIELD_1$="G/LEBALLY  Ending Bal - Prior year 1     DA     0-1 0  E01C                                                                     1985        Balance                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LOBAL    "
+    FIELD_1$="G/LOBAL    Openning Balance for year     DA     00  0  O00C                                                                     Opening     Balance                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP01     "
+    FIELD_1$="G/LP01     Period 1                      DA     10  1  N01C                                                                     Period      01                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP02     "
+    FIELD_1$="G/LP02     Period 2                      DA     10  2  N01C                                                                     Period      02                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP03     "
+    FIELD_1$="G/LP03     Period 3                      DA     10  3  N01C                                                                     Period      03                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP04     "
+    FIELD_1$="G/LP04     Period 4                      DA     10  4  N01C                                                                     Period      04                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP05     "
+    FIELD_1$="G/LP05     Period 5                      DA     10  5  N01C                                                                     Period      05                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP06     "
+    FIELD_1$="G/LP06     Period 6                      DA     10  6   01C                                                                     Period      06                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP07     "
+    FIELD_1$="G/LP07     Period 7                      DA     10  7   01C                                                                     Period      07                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP08     "
+    FIELD_1$="G/LP08     Period 8                      DA     10  8   01C                                                                     Period      08                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP09     "
+    FIELD_1$="G/LP09     Period 9                      DA     10  9   01C                                                                     Period      09                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP10     "
+    FIELD_1$="G/LP10     Period 10                     DA     10  10  01C                                                                     Period      10                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP11     "
+    FIELD_1$="G/LP11     Period 11                     DA     10  11  01C                                                                     Period      11                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP12     "
+    FIELD_1$="G/LP12     Period 12                     DA     10  12  01C                                                                     Period      12                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LP13     "
+    FIELD_1$="G/LP13     Period 13                     DA     10  13 N01                                                                      Period      13                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPCHG    "
+    FIELD_1$="G/LPCHG    % of Change                   FA     0         C    100*YTD/BBAL-100                                                 % of        Change                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPINCR   "
+    FIELD_1$="G/LPINCR   Period increase over last yearFA     10  0   01C    PTD-PTDLY                                                        Plus/Minus  Last Year                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTD     "
+    FIELD_1$="G/LPTD     Period to date actual         DA     00  0  N01C                                                                     Period      To Date                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTD%    "
+    FIELD_1$="G/LPTD%    Period % of Sales             FA     10  0   01C    PTD*100/{SALES.PTD}                                              % of        Sales                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTDBUDG "
+    FIELD_1$="G/LPTDBUDG Period Budget                 DB     00  0  N01                                                                      Period      Budget                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTDBUDGV"
+    FIELD_1$="G/LPTDBUDGVPTD Budget Variance           F      0      N       PTD - PTDBUDG                                                    Budget      Variance    PTD          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTDLY   "
+    FIELD_1$="G/LPTDLY   Period to date last year      DA     0-1 0  N01C                                                                     This Period Last Year                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LPTDLY%  "
+    FIELD_1$="G/LPTDLY%  PTD % Sales Last Year         F      0              100 * PTDLY/ {SALES.PTDLY}                                       % of        Sales                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR1    "
+    FIELD_1$="G/LQTR1    Quarter 1                     DA     10  1  N03C                                                                     Quarter     Ending      03/31/94     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR1%   "
+    FIELD_1$="G/LQTR1%   QTR 1 % of sales              F      0              100*QTR1 / {SALES.QTR1}                                          Quarter 1   Pct Sales                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR2    "
+    FIELD_1$="G/LQTR2    Quarter 2                     DA     10  4  N03C                                                                     Quarter     Ending      06/30/94     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR2%   "
+    FIELD_1$="G/LQTR2%   Quarter 2 % of sales          F      0              100*QTR2 / {SALES.QTR2}                                          Quarter 2   Pct Sales                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR3    "
+    FIELD_1$="G/LQTR3    Quarter 3                     DA     10  7  N03C                                                                     Quarter     Ending      09/30/94     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LQTR4    "
+    FIELD_1$="G/LQTR4    Quarter 4                     DA     10  10 N03C                                                                     Quarter     Ending      12/31/94     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LTITLE   "
+    FIELD_1$="G/LTITLE                                 TA     10  0   01C                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYINCR   "
+    FIELD_1$="G/LYINCR   YTD Increase over last yr     FA     10  0   01C    YTD-YTDLY                                                        $ Over      Last Year                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYRTOT   "
+    FIELD_1$="G/LYRTOT   TOTAL FOR YEAR                DA     10  12 E01C                                                                     Total for   Year                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTD     "
+    FIELD_1$="G/LYTD     Year to date amount           DA     00  0  E01C                                                                     Year        To Date                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTD%    "
+    FIELD_1$="G/LYTD%    YTD % of Sales                FA     10  0   01C    100*YTD/{SALES.YTD}                                              Y-T-D %     of Sales                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTDBUDG "
+    FIELD_1$="G/LYTDBUDG YTD Budget                    DB     00  0  Y                                                                        Budget      YTD                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTDBUDGV"
+    FIELD_1$="G/LYTDBUDGVYTD Budget variance           F      0              YTD - YTDBUDG                                                    Budget      Variance    YTD          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTDLY   "
+    FIELD_1$="G/LYTDLY   YTD Last Year                 DA     0-1 0  Y01C                                                                     Y-T-D       Last Year                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="G/LYTDLY%  "
+    FIELD_1$="G/LYTDLY%  YTD Last year % of sales      F      0              100* YTDLY / {SALES.YTDLY}                                                                            "
+   </RecordData>
+
+</Data>
+
+</PxTable>

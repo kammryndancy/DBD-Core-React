@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="How To..." class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Vendor Owned Inventory</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">How to Enter an Order for Vendor-Owned Inventory</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b style="font-style: normal;">&#160;</b>
+        </p>
+        <p style="text-align: justify;">The following procedure applies to orders for goods that are to be owned and stored by the manufacturer until shipped to the customer.  At the time of shipping the distributor and the customer will be invoiced. </p>
+        <p style="text-align: justify;">Create a Bill as Shipped order (in the character-based user interface, a “B” type) for the Customer and a purchase order to the manufacturer using Order Entry. 
+ </p>
+        <p style="text-align: justify;">Because the order is a Bill as Shipped type order, the Special Shipping Instruction Panel will automatically be invoked. Also, a Distributor location (or “D” type location for character-based Order Entry) will be set.
+
+  If you have not already done so, set up a new <a href="../Order Processing Setup/Locations.htm">Warehouse</a> code for this remote Vendor Warehouse and select it as the shipping destination.  The menu option is OPS S4 for Character Based entry.
+</p>
+        <p style="text-align: justify;">When the vendor notifies you that the goods have been produced and they are in the vendor’s warehouse, go through PO Receiving and receive the goods into the warehouse that you have set up for that manufacturer location. Note that you are only PO receiving the goods, not the vendor invoice. You will skip the field where you would normally enter the vendor invoice number.  The vendor will not be invoicing the goods until they ship them to your customer. Because no vendor invoice number is being entered, no vendor invoicing data will default.  The complete flag is set to N. </p>
+        <p style="text-align: justify;">Update the Receiving Report and you will now be able to print a Stock Status Report, a Valued Inventory Report, or other inventory reports that show the product in that warehouse.  This data will also be available from various inquiry panels.  
+
+When the customer requisitions the goods, whether entered by a CSR or through WebEC, a Picking Ticket can be automatically directed through a fax to that vendor warehouse location.  The Manufacturer would direct ship the goods to the customers and forward a copy of the pick ticket to you or notify you using some other method that the goods have shipped.  This would be your trigger to go to AR&#160;Invoice Entry (AR, I1) and invoice the customer for the requisition.  This will relieve the inventory from the remote warehouse.  If the vendor is able to send a file similar to what DB Distributor receives from the various shipping systems, the invoicing can be accomplished automatically using the Customer Invoicing Gateway Plus.
+</p>
+        <p style="text-align: justify;">When you receive the vendor invoice in Accounting, you will go through PO Receiving once again.  This time, you will not be receiving goods but only a vendor invoice.  Note that Accounting only invoices for the quantity that shipped.  The operator will need to take care to enter the quantity being invoiced. The Purchase Order will remain open until all the goods have been requisitioned, released, and invoiced.
+</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2008 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

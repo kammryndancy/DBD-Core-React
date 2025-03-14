@@ -1,0 +1,195 @@
+0010 REM "O/P Period End Processing <FM2UPA>
+0035 REM "5.7 - 05/15/18 - 11.566388 - tma - SSP# 297525
+0037 REM "297525-If you get any error messages during GUI Order processing   
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "FMGUPA","../FMG/FM.EN"
+0060 EXIT 
+0080 INIT:
+0090 SETESC 9300; SETERR 9000
+0100 ! SETERR 9000
+0110 X0$="FM2UPA",X1$="O/P Period End Processing"
+0120 DIM Z0$(80,"-")
+0125 DIM G[4],D[4],Y[4],P[8],P0[5]
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0280 IOLIST P0$,P0[0],P0[1],P0[2],P0[3],P0[4],P0[5]
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31]
+0320 IOLIST B$
+0500 REM "FILES
+0505 Z=NUM(X3$(60,3)); DIM Z[Z]
+0510 Z$="01O FM1...  02O FMP...  03O FM3...  04O FSV...  05O FS1...  " ! SSP#269484
+0515 Z$=Z$+"13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0550 FIND (Z[13],KEY=X3$(9,3)+"F/M",DOM=9800)IOL=0280
+0560 FIND (Z[13],KEY=X3$(9,3)+"G/L")G0$
+0570 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+P0$(143,4))Y$
+0580 D0$=Y$(NUM(P0$(19,2))*6+15,6)
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0660 ! CALL "ZZPROM","P4",X3$,0,U6$,"","",0; U6=LEN(U6$)+2
+0670 ! CALL "ZZPROM","P1",X3$,0,U7$,"","",0; U7=LEN(U7$)+2
+0680 ! CALL "ZZPROM","P2",X3$,0,U8$,"","",0; U8=LEN(U8$)+2
+0690 ! CALL "ZZPROM","P3",X3$,0,U9$,"","",0; U9=LEN(U9$)+2
+0730 DIM A[31]
+0800 REM "CHECK FOR ROOM?
+0805 ! CALL "ZZPROM","U1",X3$,0,"","","",0
+0810 GOSUB 7800
+0830 ! PRINT @(0,22),'CL',
+0840 GOTO 0900
+0880 REM "PROMPT OUT OF ROOM
+0885 X$="There is not enough room to update this data. Press <Return>: "
+0890 ! CALL "ZZPROM","U3",X3$,S3,"","","",0; GOTO 9900
+0895 MSGBOX MSG("NER_DATA"),MSG("FYI"),"!"; CMD_STR$="END"; EXIT 
+0900 REM "RESTART LOGIC
+0915 ! GOSUB 6000
+0920 ACCTPD$=P0$(19,2); FIS_YR$=P0$(143,4)
+0930 REFRESH_FLG=1; RETURN 
+0940 REBUILD_FIELD:
+0950 DIM SOP_R2$(1); X$="If set to 'Y' all operators must be at a menu."
+0955 ! CALL "ZZENTR","Y",TMP{ALL},SOP_R2$,X4$,X3$,60,19,1,1,C0,"","{3"+X$,"","FM2UPA00","","",""
+0960 SOP_R2$=REB_FIELD$
+0970 ! CALL "ZZPROM","9",X3$,S3,"","","",0; ON S3 GOTO 0971,9900
+0980 REFRESH_FLG=1
+0990 RETURN 
+1000 REM "READ NEXT RECORD
+1010 PROCESS_UPDATE:
+1020 ! PRINT @(0,7),'CE',
+1090 ! CALL "ZZPROM","P0",X3$,0,"","","",12
+1100 REM "
+1110 D1$=Y$(15+NUM(P0$(19,2))*6,6)
+1140 P2=1
+1300 GOSUB 3000
+1310 GOSUB 3400 ! SSP#269484
+1800 REM "Finish up period end by updating period
+1810 IF P0$(19,2)>=Y$(13,2) THEN P0$(19,2)="01",P0$(143,4)=STR(NUM(P0$(143,4))+1:"0000") ELSE P0$(19,2)=STR(NUM(P0$(19,2))+1:"00")
+1820 WRITE (Z[13],KEY=X3$(9,3)+"F/M")IOL=0280
+1950 GOSUB 5000
+1980 CMD_STR$="END"
+1990 RETURN 
+3000 REM "Roll ytd figures, remove stats if neccessary, and Delete inactive inventory items
+3002 ! PRINT 'DIALOGUE'(5,5,80,25,"")
+3005 P0=X[Z[1],0],P1=0,P4=12,P5=16
+3010 PRINT 'MESSAGE'(U$+" Processing Forms...",0),
+3020 READ (Z[1],KEY="",DOM=3021)
+3030 K$=KEY(Z[1],END=3080); READ (Z[1])IOL=0310
+3035 GOSUB 6810
+3045 IF MID(A$,195,1)<>"I" THEN GOSUB 3100; GOTO 3030
+3050 A4$="",A5$="F/M",A6$=K$,A7$="P"
+3060 CALL "FM2UAB",ERR=3061,X3$,X4$,A5$,A6$,A4$,A7$
+3065 ! PRINT @(0,19),'CL',
+3068 READ (Z[1],KEY=K$,DOM=3069); REM " Reposition file gets closed sometimes in FM2UAB
+3070 GOTO 3030
+3080 ! PRINT 'POP'
+3090 RETURN 
+3100 REM "Process stats if necessary
+3104 REM "If year end, roll buckets to last year, check to remove stats
+3105 IF P0$(19,2)="12" THEN GOSUB 3200
+3110 REM "IF A$(193,2)<>P0$(19,2) AND (A$(193,2)<>"  " AND P0$(19,2)<>"12") THEN GOTO 3190
+3115 IF LEN(A$)>10 THEN READ (Z[2],KEY="D"+A$(1,10),DOM=3190)IOL=0320
+3120 REM LET Y4$=STR(NUM(P0$(143,4))-NUM(B$(48,1)):"0000")
+3125 REM GOSUB 03300
+3190 RETURN 
+3200 REM "Roll buckets into last year, clear and write out
+3210 A[12]=A[8],A[13]=A[9],A[14]=A[10],A[15]=A[11]
+3215 A[8]=0,A[9]=0,A[10]=0,A[11]=0
+3240 WRITE (Z[1],KEY=K$)IOL=0310
+3290 RETURN 
+3300 REM "Find and remove stats
+3305 RETURN ; REM "NEED NEW CRITERIA B$(48,1) IN 3120 IS NOT # YEARS! NO REMOVE FOR OF STATS FOR NOW. - SHOULD BE IN FMS YEAR END
+3310 READ (Z[3],KEY=A$(1,20),DOM=3311)
+3320 K0$=KEY(Z[3],END=3390); READ (Z[3])
+3325 IF K0$(1,20)<>A$(1,20) THEN GOTO 3390
+3330 IF K0$(25,4)<=Y4$ THEN REMOVE (Z[3],KEY=K0$); IF RT_PARM$<>"" THEN CUST$=K0$(1,10); CALL "RT2WOC",ERR=3331,X3$,X4$,CUST$,"FM3...","D",K0$
+3335 GOTO 3320
+3390 RETURN 
+3400 REM "Look for orphaned Billing Override Records and remove!SSP#269484
+3410 READ (Z(4),KEY="",DOM=*NEXT)
+3420 FSV_KEY$=KEY(Z(4),END=3490); READ (Z(4),KEY=FSV_KEY$)FSV$
+3430 FS1$=""; READ (Z(5),KEY=FSV_KEY$,DOM=*NEXT)FS1$
+3440 IF MID(FS1$,6,10)<>FSV$(9,10) THEN REMOVE (Z(4),KEY=FSV_KEY$)
+3450 GOTO 3420
+3490 RETURN 
+5000 REM "END OF UPDATE
+5050 IF SOP_R2$="Y" THEN CALL "FM2UT9",X3$,X4$,"","*"; REM "SSP90299, Call SOP R2 utility if user says yes
+5100 REM "
+5200 REM "CLEAR FILES
+5240 PRINT 'CF'
+5400 REM 
+5450 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(12,4),"This program will perform the period end processing",@(12,5),"for Order Processing for period ",P0$(19,2)," FYE ",P0$(143,4),"."
+6025 PRINT @(12,7),"This function removes any custom forms that have",@(12,8),"been specified as inactive.  You should verify",@(12,9),"that all reports which may require this data have been",@(12,10),"printed prior to period end processing."
+6030 PRINT @(12,12),"Also, at year-end, the buckets in the Custom Item",@(12,13),"file will be shifted from this year to last year.",
+6040 PRINT @(12,15),"Forms Management statistics will be removed based upon",@(12,16),"each customers requirement for history.",
+6050 PRINT @(7,19),"Run Rebuild Committed Fields & Order Sorts utility?",
+6165 PRINT (0,ERR=6066)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6225 GOSUB 6450
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6410 GOSUB 6000
+6430 IF C9>0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6490 RETURN 
+6600 REM "RESTART LOGIG
+6610 ! WRITE (Z[1],IND=I1)V0$,K0$,K1$,K0,K1 SSP#297525  This is FM1 it should NEVER write a restart record to FM1
+6690 RETURN 
+6700 REM "Set Y4$ = FY AP to remove inv. detail, based on params
+6710 Y1=NUM(P0$(19,2)),Y2=NUM(B$(48,1)),Y2$=P0$(143,4)
+6720 IF Y1-Y2>0 THEN Y4$=Y2$+STR(Y1-Y2:"00"); GOTO 6790
+6725 Y2=Y2-Y1,Y2$=STR(NUM(Y2$)-1:"0000")
+6730 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+Y2$,DOM=6731)Y3$; Y1=NUM(Y3$(13,2)); GOTO 6720
+6739 REM "Next lower year not found, set purge date to remove all lower ones
+6740 Y4$=Y2$+"13"
+6790 RETURN 
+6800 REM "% complete & phase printing
+6801 REM "P4= xpos on scrn,P5= ypos on scrn,P0=total # of recs,P1=counter(inc. in here),P2=total # of phases,P3=current phase(init to 0, incr. when P1 is = 0)
+6810 ! IF P1=0 THEN PRINT @(P4,P5),"     complete",; IF P2>1 THEN P3=P3+1; PRINT ", phase",P3," of",P2," phases"
+6815 P1+=1; CALL "ZZBARG",X3$,"HG",12.2,1,40,P,P0,P1
+6820 P1=P1+1 ! IF P0<>0 THEN PRINT @(P4,P5),P1*100/P0:"###%",
+6840 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES
+7800 REM "Load file info
+7810 DIM X[Z,1],X$(0)
+7815 FOR X=1 TO Z
+7820 CALL "ZZINFO",X,0,X3$,A,B,0,0,0,0,0,""; X[X,0]=A,X[X,1]=B
+7825 NEXT X
+7840 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9190,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 CMD_STR$="END"
+9100 REM " TRANSFER CONTROL
+9190 GOSUB 6600; GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9810 CALL "ZZPROM","4",X3$,A,"The F/M parameters have not been set for this company. Press |Return","","",0; GOTO 9900
+9900 REM "END PROGRAM
+9905 WRAPUP:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 ! RUN "ZMENU"
+9999 END 
+56000 ! "188540-Program FMGUPA - Period End for Order Processing. Need to   
+56001 REM "269484-Add removal of orphaned FSV records during month end process
+56002 REM "297525-If you get any error messages during GUI Order processing   

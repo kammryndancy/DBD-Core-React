@@ -1,0 +1,522 @@
+<PxTable>
+ TableName=OP.EN.CUST.csi
+ TableKey=K1227287420
+ FileCreate=KEYED "OP.EN.CUST.csi",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0000"
+    FIELD_1$="FM0_Loc"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="90"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_FM0P"+QUO+") + "+QUO+" - "+QUO+"+%plant_vendor_name$"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FM0"+QUO+"+%C$"
+    FIELD_18$="2015/01/27 12:09 lmc"
+    FIELD_19$="FMGSKA,../FMG/FM.EN"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.LOC_CODE$"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0001"
+    FIELD_1$="Formula:TBL(SGN(%AP_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%VEND_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0002"
+    FIELD_1$="LOC_CODE"
+    FIELD_4$="9"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_COD"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0003"
+    FIELD_1$="LOC_DESC"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0004"
+    FIELD_1$="LOC_PHONE"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_PHONE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="( XXX )  XXX - XXXX  XXXX"
+    FIELD_12$="14"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0005"
+    FIELD_1$="LOC_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    0006"
+    FIELD_1$="LOC_FAX"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FAX_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="(XXX)XXX-XXXX.XX"
+    FIELD_12$="12"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM0P    SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="="+QUO+"P"+QUO+"+%plant_vend$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0000"
+    FIELD_1$="FS1_OrderHdr"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="97"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_FS1_1"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FS1"+QUO+"+%C$"
+    FIELD_18$="2022/12/22 12:18:07 ErikaMason"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.ORDER_DIV$+_MN_.ORDER_NUM$"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0001"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.ORDER_DIV$+_MN_.ORDER_NUM$,"+QUO+"O/P"+QUO+")"
+    FIELD_4$="11"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ORDER_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0002"
+    FIELD_1$="ORDER_DATE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ORDER_DATE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0003"
+    FIELD_1$="ORDER_ID_3P"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"3P_ORD_ID"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="EEE"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0004"
+    FIELD_1$="CUST_PO"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_PO"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0005"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.CUST_DIV$+_MN_.CUST_CODE$,"+QUO+"A/R"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUST_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0006"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="AR1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0007"
+    FIELD_1$="SPER_CODE"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SPER_SHORT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0008"
+    FIELD_1$="ITEM_CODE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="10"
+    FIELD_30$="FS2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0009"
+    FIELD_1$="TF_DESC"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="40"
+    FIELD_30$="FS2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0010"
+    FIELD_1$="SPER_ABBREVIATED"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SPER_A"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="20"
+    FIELD_30$="AR3"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     0011"
+    FIELD_1$="EQD_CUST"
+    FIELD_4$="13"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ECUST"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="6"
+    FIELD_30$="AR1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     F001"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_23$="00000000000"
+    FIELD_30$="AR1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     F002"
+    FIELD_1$="AR3_Slsperson"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR3"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.SPER_CODE$"
+    FIELD_23$="00000000000"
+    FIELD_30$="AR3"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     F003"
+    FIELD_1$="FS2_OrderLns"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"FS2"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.ORDER_DIV$+_MN_.ORDER_NUM$+"+QUO+"001"+QUO
+    FIELD_23$="00000000000"
+    FIELD_30$="FS2"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     F004"
+    FIELD_1$="EEE_Ord3pInfo"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"EEE"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.ORDER_DIV$+_MN_.ORDER_NUM$"
+    FIELD_23$="00000000000"
+    FIELD_30$="EEE"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS1     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=STP(MID(%X3$,333,2))"
+    FIELD_13$="C"+QUO+"UPDSYO;VAL_QRY_LIST"+QUO+",REPS$,AR1.SPER_CODE$,AR1.SPER_CODE_2$,AR1.SPER_CODE_3$,AR1.SPER_CODE_4$,AR1.SPER_CODE_5$"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0000"
+    FIELD_1$="FS2_OrderLns"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"ORDE_L"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FS2"+QUO+"+%C$"
+    FIELD_18$="2009/01/16 15:38 jir"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.ORDER_DIV$+_MN_.ORDER_NUM$"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0001"
+    FIELD_1$="Formula:TBL(SGN(%OP_DIV_LEN),"+QUO+QUO+",_MN_.ORDER_DIV$+"+QUO+"-"+QUO+")+_MN_.ORDER_NUM$(1,%ORDER_LEN)"
+    FIELD_4$="11"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ORDER_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0002"
+    FIELD_1$="ORDER_LINE_NUM"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LINE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0003"
+    FIELD_1$="Formula:FN%ZZDISP$(FS1.CUST_DIV$+FS1.CUST_CODE$,"+QUO+"A/R"+QUO+")"
+    FIELD_4$="14"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ORD_C_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0004"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="28"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ORD_CUST_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="A3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0005"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.CUST_DIV$+_MN_.CUST_CODE$,"+QUO+"A/R"+QUO+")"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"FROM_C_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0006"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="35"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="A3"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0007"
+    FIELD_1$="Formula:STP(%LN_NAME$)"
+    FIELD_4$="25"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0008"
+    FIELD_1$="ITEM_CODE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0009"
+    FIELD_1$="TF_DESC"
+    FIELD_4$="40"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="40"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  0010"
+    FIELD_1$="SELL_PRICE_EXT"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELL_P_E"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##,###,###.00-"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  F001"
+    FIELD_1$="FS1_OrderHdr"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"FS1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.ORDER_DIV$+_MN_.ORDER_NUM$"
+    FIELD_23$="00000000"
+    FIELD_30$="FS1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  F002"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="-1"
+    FIELD_9$="0"
+    FIELD_10$="FS1.CUST_DIV$+FS1.CUST_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="A3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FS2_LN  SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=STP(MID(%X3$,333,2))"
+    FIELD_13$="C"+QUO+"UPDSYO;VAL_QRY_LIST"+QUO+",REPS$,A3.SPER_CODE$,A3.SPER_CODE_2$,A3.SPER_CODE_3$,A3.SPER_CODE_4$,A3.SPER_CODE_5$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,284 @@
+0010 REM "Update temporary files for SA reporting <AR2UUA>
+0035 REM "5.7 - 02/04/10 - 8.549444 - tma - SSP# 236058
+0037 REM "236058-Need explanation of the AR2UUA utility located at ARU-U4    
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="AR2UUA",X1$="Create Calendar Year Information for S/A"
+0120 DIM A$(256),A[19],B$(60),C$(227),C[2],D$(214),J$(46),S$(40),D[15],E[15]
+0121 DIM S[10,2]
+0140 Z0$="-##0",Z1$="-##,###.00#",Z2$="##,##0",Z3$="-######,##0",Z4$="#,###.00",Z5$="####,###.00"
+0210 T=1,T0=1,T1=1
+0220 W3=131
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3),W[4]
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0330 IOLIST X$,X[0],X[1],X[2],X[3],X[4],X[5],X[6]
+0340 IOLIST D$,D[0],D[1],D[2],D[3],D[4],D[5],D[6],D[7],D[8],D[9],D[10],D[11],D[12],D[13],D[14]
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15]
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Y$="01O GL1... 12X ZZE...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0540 READ (Z[13],KEY=X3$(9,3)+"G/L",DOM=9900)F9$
+0550 READ (Z[13],KEY=X3$(9,3)+"G/LYE"+F9$(34,4),DOM=9901)F8$
+0555 P9=NUM(F8$(13,2))
+0620 GOSUB 6000
+0640 ADDR "ZZPACK",ERR=0641
+1000 REM "GET PARAMETERS
+1100 REM "ENTER NUMBER OF PERIODS TO OFFSET
+1110 PRINT @(8,11),"Enter the number of periods (+ or minus) to adjust" ! SSP#236058
+1115 PRINT @(8,12),"the accounting data (i.e +2 means move period 4 to period 6)" ! SSP#236058
+1120 CALL "ZZENTR","NX",A{ALL},A$,X4$,X3$,70,12,0,200,C0,"-#0","{1"+X$,"","FM2NC000","AR1","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 1210,1211 ! SSP#236058
+1200 REM "GET FYE RECORD FOR NEW STUFF
+1210 P0=12+A[0],F7$=F8$
+1220 IF P0>0 AND P0<=P9 THEN GOTO 1250
+1225 IF P0>P9 THEN F7$(9,4)=STR(NUM(F7$(9,4))+1:"0000"),P0=P0-P9; FIND (Z[13],KEY=F7$(1,12),DOM=1245)F7$; GOTO 1220
+1230 IF P0<1 THEN F7$(9,4)=STR(NUM(F7$(9,4))-1:"0000"),P0=P0+P9; FIND (Z[13],KEY=F7$(1,12),DOM=1245)F7$; GOTO 1220
+1245 CALL "ZZPROM","4",X3$,0,"Cannot find date record for year "+F7$(9,4),"","",0; GOTO 9900
+1255 D1$=F7$(21+(P0-1)*6,6)
+1260 PRINT @(12,14),"The current year would then end on ",FND$(D1$) ! ssp#236058
+1275 MULTI_NUM$=" "
+1280 CALL "ZZPROM","Y",X3$,S3,"Do you wish to proceed with this function?","","",0; ON S3 GOTO 1281,9900
+1350 PRINT @(0,18),'CE',
+1360 Q2$=DAY,Q2$=Q2$(7,2)+Q2$(1,2)+Q2$(4,2)
+1365 Q3$=FND$(D1$),Q3$=Q3$(7,4)+Q3$(1,2)+Q3$(4,2)
+1370 IF NUM(Q2$(1,2))>90 AND NUM(Q2$(1,2))<=99 THEN Q2$="19"+Q2$ ELSE Q2$="20"+Q2$
+1375 IF Q3$<Q2$ THEN Q4$=STR(NUM(Q3$(1,4))+1) ELSE Q4$=Q3$(1,4)
+1400 REM 
+1500 REM 
+1520 GOTO 5000
+3100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+3110 CALL "ZZINFO",Z[10],T9,X3$,T_BAR,T0_BAR,K_BAR,B_BAR,D_BAR,S0_BAR,S1_BAR,F_BAR$
+3115 PRINT @(20,17),"There are "+STR(T_BAR)+" records to process"
+3130 T0_BAR=INT(T_BAR*.02); IF T0_BAR<=1 THEN T0_BAR=2
+3135 T1_BAR=0
+3145 RETURN 
+3150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+3155 CALL "ZZBARG",X3$,"HG",19,10,50,T1_BAR,T_BAR,COUNT
+3195 RETURN 
+3200 REM "If multi_num$="3" then wait on 1 & 2 to finish
+3205 PRINT @(0,18),'CE',"Waiting on Pass 1 & 2 to finish",
+3210 READ (Z[13],KEY="GL2NCA1",DOM=3211); WAIT 5; GOTO 3210
+3215 READ (Z[13],KEY="GL2NCA2",DOM=3216); WAIT 5; GOTO 3215
+3240 PRINT @(0,14),'CE', ! ssp#236058
+3245 RETURN 
+4050 F0$="GL2"+FID(0)
+4100 REM "PROCESS A FILE
+4102 IF MULTI_NUM$<>" " THEN FILE_NUM=FILE_NUM+1; IF MOD(FILE_NUM,3)+1<>NUM(MULTI_NUM$) THEN GOTO 4190
+4103 COMMAND$="echo "+MULTI_NUM$+QUO+"|"+QUO+STR(A[0])+QUO+"|"+QUO+F1$+QUO+"|"+QUO+"`date` >> GL2NCA_LOG"; INVOKE COMMAND$
+4104 COUNT=0
+4105 Y$="10O "+F1$+"... "
+4110 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 4111,4180
+4115 Q$=FID(Z[10]); ERASE F0$,ERR=4116; GOTO 4115
+4116 IF ERR<>12 THEN GOTO 9000
+4118 D0=ASC(Q$(20,1)),D9$=Q$(4,6)+Q$(21,2)
+4119 GOSUB 3100
+4120 Q$(4,6)=F0$,Q$(1,3)=$000000$; FILE Q$; D0=ASC(Q$(20,1))
+4122 Y$="11O "+F0$+" "
+4125 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; IF Z0<>0 THEN CALL "ZZPROM","4",X3$,0,"Problem opening "+F0$+" file!!!","","",0; GOTO 4125
+4130 PRINT @(12,18),"Currently processing:",
+4133 DIM E$(50); FIND (Z[12],KEY=F1$+"   ",DOM=4134)E$
+4135 PRINT @(34,18),E$(1,3),"-",E$(7,39), ! ssp#236058
+4150 IF F4$="" THEN GOSUB 4200 ELSE GOSUB 7800
+4175 PRINT @(0,18),'CE', ! ssp#236058
+4180 Y$="10C "+F1$+"... 11C "+F0$+" "
+4182 IF F2$<>"" THEN Y$=Y$+"09C "+F2$+"...  "
+4183 GOSUB 9750
+4190 REM "CLEAR R() FOR NEXT FILE
+4192 DIM R[10],S[4,2]
+4193 F2$="",F4$=""
+4195 RETURN 
+4200 REM "Actual substitution loop
+4201 REM "K0$=orig key, K1$=new key, D0$=orig data, D1$=new data, C0$=control data
+4205 READ (Z[10],KEY="",DOM=4206)
+4210 K0$=KEY(Z[10],END=4290)
+4215 IF E$(47,1)="S" THEN D0$=""; READ (Z[10]) ELSE READ RECORD (Z[10],KEY=K0$)D0$
+4218 COUNT=COUNT+1; IF MOD(COUNT,T0_BAR)=1 THEN GOSUB 3150; REM PRINT @(18,14),'CE',K0$,
+4240 GOSUB 4400
+4250 IF D0$>"" THEN WRITE RECORD (Z[11],KEY=K1$)D1$
+4255 IF D0$="" THEN WRITE (Z[11],KEY=K1$)
+4260 REM PRINT @(18,16),K1$,
+4265 IF F2$>"" THEN GOSUB 4600
+4285 GOTO 4210
+4295 RETURN 
+4400 REM "Rebuild K0$ to K1$ and D0$ to D1$ if needed based on C0$
+4405 K1$=K0$,D1$=D0$
+4409 REM "If no key elements to change, go to data change
+4410 IF R[1]=0 THEN GOTO 4450
+4415 P0$=K0$(R[1],2+R[0]); GOSUB 4500; K1$(R[1],2+R[0])=P1$
+4450 REM "DATA PORTION
+4452 IF D0$="" THEN GOTO 4480
+4455 FOR I=2 TO 9; IF R[I]=0 THEN EXITTO 4480
+4460 P0$=D0$(R[I],2+R[0]); GOSUB 4500; D1$(R[I],2+R[0])=P1$
+4465 NEXT I
+4495 RETURN 
+4500 REM "Given fy/ap P0$, return new FY/AP in P1$
+4502 IF P0$(1,LEN(P0$))=S$(1,LEN(P0$)) THEN P1$=P0$; RETURN 
+4504 SETERR 4590
+4505 Q$=P0$(1,R[0]); IF R[0]=2 THEN Q$=FND$(P0$(1,2)+"0101"),Q$=Q$(7,4)
+4510 P1=NUM(Q$),P0=NUM(P0$(R[0]+1,2)),P0=P0-A[0]
+4515 IF P0<1 THEN P1=P1-1,P0=P0+P9; GOTO 4515
+4520 IF P0>P9 THEN P1=P1+1,P0=P0-P9; GOTO 4520
+4525 P1$=STR(P1:"0000")+STR(P0:"00"); IF R[0]=4 THEN GOTO 4580
+4530 Q$=P1$(3,2); IF Q$(1,1)="8" THEN Q$(1,1)="I" ELSE IF Q$(1,1)="9" THEN Q$(1,1)="J" ELSE IF Q$(1,1)="0" THEN Q$(1,1)="K" ELSE ESCAPE 
+4535 P1$=Q$+P1$(5,2)
+4590 SETERR 9000; RETURN 
+4605 DIM X[10]; READ (Z[11],KEY=K1$)IOL=0330
+4610 FOR X=1 TO LEN(F2$) STEP 3
+4612 L0=INT(X/3),Y$=""
+4613 L1=X[S[L0,0]],L2=S[L0,1]; IF L1=0 THEN GOTO 4690
+4615 Y$="09O "+F2$(X,3)+"... "; GOSUB 9750
+4620 Y$=""
+4650 REM "PROCESS LINKS IN Z(9) STARTING WITH L1
+4655 READ RECORD (Z[9],IND=L1)X$
+4656 IF POS($00$<>X$)=0 THEN GOTO 4685
+4660 P=POS($8A$=X$),L3=NUM(X$(1,P-1)),Y$=Y$+BIN(L1,3)
+4665 P=P+L2,P0$=X$(P,R[0]+2); GOSUB 4500
+4670 X$(P,R[0]+2)=P1$
+4675 WRITE RECORD (Z[9],IND=L1)X$
+4680 IF L3>0 AND POS(BIN(L3,3)=Y$,3)=0 THEN L1=L3; GOTO 4655
+4685 Y$="09C "+F2$(X,3)+"... "; GOSUB 9750
+4690 NEXT X
+4695 RETURN 
+5200 REM "
+5250 REM "Set constants for rebuild routine
+5290 PRINT @(12,15),"Sales Analysis files Creation in process",
+5300 REM "Begin rebuilding
+5302 REM "R(0)=LENGTH OF YEAR (2,4), R(1)=KEY POS, R(2)..R(9)= DATA POSITION
+5305 DIM R[10]
+5350 GOSUB 8000
+5355 IF POS(MULTI_NUM$="12")<>0 THEN REMOVE (Z[13],KEY="GL2NCA"+MULTI_NUM$,DOM=5356)
+5356 IF MULTI_NUM$="3" THEN GOSUB 3200
+5360 IF MULTI_NUM$=" " OR MULTI_NUM$="3" THEN GOSUB 7500
+5365 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+5380 CALL "ZZPROM","4",X3$,0,"Sales Analysis file Creation utility completed!!!","","",0
+5399 GOTO 9900
+5400 REM "Check for things in progress
+5401 REM "Temp lock ZZPARM.  Lock on ZM1 will keep em off (5405)
+5402 LOCK (Z[13],ERR=5403); UNLOCK (Z[13]); GOTO 5405
+5403 PRINT @(0,21),'CL','BB',"Update will not be initiated at this time.  Try again later",'EB',; CALL "ZZPROM",".4",X3$,0,"Activity detected!  All other terminals must be logged off during update.","","",0; GOTO 9900
+5405 Y$="01O ARB...  02O IC3...  03O ICA...  04O FM6...  05O PO7...  09L ZM1    "
+5410 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 5411,9900
+5415 X5=0
+5420 F5=1,F5$="Accounts Receivable Invoicing (ARB)"; GOSUB 5500
+5425 F5=2,F5$="Inventory Physical Count (IC3)"; GOSUB 5500
+5430 F5=3,F5$="Inventory Transaction Entry (ICA)"; GOSUB 5500
+5435 F5=4,F5$="Forms Management Physical Count (FM6)"; GOSUB 5500
+5440 F5=5,F5$="P/O Receiving (PO7)"; GOSUB 5500
+5480 Y$="01C ARB...  02C IC3...  03C ICA...  04C FM6...  05C PO7...  "
+5485 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5490 IF X5<>0 THEN CALL "ZZPROM",".4",X3$,Z,"","","",0; GOTO 9900
+5495 RETURN 
+5500 REM "See if given file has any records, if yes give message and exit program
+5510 READ (Z[F5],KEY="",DOM=5511)
+5515 READ (Z[F5],END=5545)
+5519 REM "If here then it has records in it
+5520 IF X5=0 THEN PRINT @(17,10),"Renumbering cannot proceed until the",@(15,11),"transactions in these files are processed:",; X5=13
+5525 PRINT @(18,X5),F5$; X5=X5+1
+5545 RETURN 
+6000 REM 
+6005 PRINT 'CF','SB',@(4,5),"This utility will allow you to create S/A Stat files based on a calendar",@(4,6),"year.  These files will be used in the S/A reports if there is a C in the",@(4,7),"options field.",
+6010 PRINT @(12,9),"Current fiscal year is ",F9$(34,4), ! SSP#236058
+6015 P0=(NUM(F8$(13,2))-1)*6+21,D0$=F8$(P0,6)
+6020 PRINT " ending ",FND$(D0$),
+6085 PRINT 'SF',
+6090 RETURN 
+6100 REM "
+6110 Y5$(6)="From",Y5$(20)="To"
+6120 GOSUB 7300
+6199 RETURN 
+6900 REM "SORT
+6905 IF S9$="X" THEN GOTO 6990 ELSE S0=Z[1],S1=Z[2]
+6940 CALL "ZZSORT",X3$,"",V1$,S9$,"","",0,0,0,S0,S1,X9
+6990 RETURN 
+7500 REM "CHANGE THE FISCAL YEAR RECORDS
+7507 A[0]=-A[0]
+7520 READ (Z[13],KEY=X3$(9,3)+"G/LYE",DOM=7521)
+7522 READ (Z[13])
+7525 K0$=KEY(Z[13],END=7565); READ RECORD (Z[13])D0$; IF MID(K0$,1,8)<>X3$(9,3)+"G/LYE" THEN GOTO 7565
+7530 K1$="TMP"+K0$(4),D1$=D0$
+7535 R[0]=4,P0$=STR(NUM(D0$(9,4))-1:"0000")+STR(P9:"00"); GOSUB 4500; GOSUB 7600; D1$(15,6)=Q$
+7540 FOR X=1 TO P9
+7545 P0$=D0$(9,4)+STR(X:"00"); GOSUB 4500; GOSUB 7600; D1$((X-1)*6+21,6)=Q$
+7550 NEXT X
+7556 READ (Z[13],KEY=K0$)
+7560 GOTO 7525
+7565 REM "WRITE TMP RECORDS BACK
+7570 READ (Z[13],KEY="TMPG/LYE",DOM=7571)
+7575 K0$=KEY(Z[13],END=7585); READ RECORD (Z[13])D0$; IF MID(K0$,1,8)<>"TMPG/LYE" THEN GOTO 7585
+7595 RETURN 
+7599 ESCAPE 
+7600 REM "GET PERIOD ENDING DATE FOR P1$(4+2) IN Q$
+7610 Q$="      "; FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+P1$(1,4),DOM=7620)X$
+7615 Q$=X$((NUM(P1$(5,2))-1)*6+21,6)
+7645 RETURN 
+7800 REM "PROCESS STATS FILE
+7801 REM "F4$=STAT TYPE
+7802 R[0]=4,K2$=""
+7805 READ (Z[13],KEY="STAT"+F4$,DOM=7900)F4$
+7810 READ (Z[10],KEY="",DOM=7811)
+7815 K0$=KEY(Z[10],END=7900); READ (Z[10])REC$; K0=LEN(K0$)
+7816 COUNT=COUNT+1; IF MOD(COUNT,T0_BAR)=1 THEN GOSUB 3150; REM PRINT @(18,14),'CE',K0$,
+7820 Q$=K0$(LEN(K0$)); P=POS(Q$=F4$(49),17),Q0$=F4$(49+P-1,17)
+7830 CALL "ZZPACK",X3$,"R",Q0$(3,2),"",P9,0,D{ALL},Z[10],Q$,K0$(1,LEN(K0$)-1),F4$
+7850 REM "PROCESS PERIODS
+7860 FOR X=1 TO P9
+7862 REM "PRINT @(22,18),"PERIOD: ",X:"#0",
+7865 P0$=K0$(K0-4,4)+STR(X:"00"); GOSUB 4500
+7870 K1$=K0$,K1$(K0-4,4)=P1$(1,4)
+7871 IF K1$=K2$ THEN GOTO 7880
+7875 Q$=K1$(K0,1); DIM E[14]; CALL "ZZPACK",X3$,"R",Q0$(3,2),"",P9,0,E{ALL},Z[11],Q$,K1$(1,K0-1),F4$
+7877 E[0]=D[0]; REM "Set opening balance from current opening balance, we will recompute later (in 7900's), but this is necessary to get the opening balance on the first record.
+7880 P1=NUM(P1$(5,2)),E[P1]=E[P1]+D[X]
+7885 CALL "ZZPACK",X3$,"W",Q0$(3,2),"",P9,0,E{ALL},Z[11],K0$(K0,1),K1$(1,K0-1),F4$; K2$=K1$
+7890 NEXT X
+7895 GOTO 7815
+7995 RETURN 
+8050 REM "A/R FILES
+8053 F1$="AR9",F0$="AR9C",F4$="A/R",R[0]=4; GOSUB 4100
+8054 F1$="ARA",F0$="ARAC",F4$="AR3",R[0]=4; GOSUB 4100
+8057 F1$="ARX",F0$="ARXC",F4$="ARX",R[0]=4; GOSUB 4100
+8064 F1$="ASF",F0$="ASFC",F4$="ASF",R[0]=4; GOSUB 4100
+8895 RETURN 
+8900 REM "Functions
+8910 DEF FND$(Z9$)=Z9$(3,2)+"/"+Z9$(5,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8920 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8950 DEF FNQ$(Z9,Z9$)=STR(Z9:Z9$)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9041 OP1=FN%FFN("ZZE"); REM "***** TEST IF ZZE IS OPEN ***** ! [205471]-changed FFN() to FN%FFN()
+9042 IF OP1=0 THEN OPEN (Z[12])"ZZE"; REM "***** TEST OPEN OF ZZE *****
+9043 OP2=FFN("ZZPARM"); REM "***** TEST IF ZZPARM IS OPEN *****
+9044 IF OP2=0 THEN OPEN (Z[13])"ZZPARM"; REM "***** TEST OPEN OF ZZPARM *****
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9750 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+9780 RETURN 
+9900 REM "End program
+9910 DROP "ZZPACK",ERR=9911
+9920 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9940 RUN "ZMENU"
+9999 END 
+56000 REM + MOdification History
+56002 REM "205471-Oracle - FFN usage in tf2g progs. to be replaced by FN%FFN  
+56003 REM "236058-Need explanation of the AR2UUA utility located at ARU-U4    

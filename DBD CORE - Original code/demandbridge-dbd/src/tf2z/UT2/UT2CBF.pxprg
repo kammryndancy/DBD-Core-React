@@ -1,0 +1,18 @@
+0010 REM "Copy Basic File <UT2CBF>"
+0035 REM "3.4 - 12/22/90 - 17.97
+0040 REM "Copyright 1990 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0200 PRINT 'CS',"Copy file from one DIRectory to another"
+0300 INPUT "File to copy (eg. tf2p/FM2/FM2ODI) or F4 to End: ",F1$
+0320 IF CTL=4 THEN GOTO 9999
+0400 INPUT "Source DIRectory (eg. dev): ",D1$
+0500 INPUT "Destination DIRectory (eg. rel): ",D2$
+0600 INPUT "Continue? (Y/N): ",Q$
+0620 IF POS(Q$="Yy")>0 THEN GOTO 0621 ELSE IF POS(Q$="Nn")>0 THEN GOTO 0920 ELSE GOTO 0600
+0700 INVOKE "cp "+D1$+"/"+F1$+" "+D2$+"/"+F1$
+0800 PRINT "File ",F1$," copied from "+D1$+" to "+D2$,'LF'
+0900 GOTO 0300
+0920 PRINT "Process canceled..try again",'LF'
+0940 GOTO 0300
+9999 END 

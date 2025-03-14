@@ -1,0 +1,73 @@
+0010 ! ILGFIX - Fix invalid filenames (with :) in Cust inv directory
+0035 REM "5.6 - 07/17/08 - 12.808888 - jvv - SSP# 208706
+0037 REM "208706-Audit control numbers are duplicating from last year        
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0051 ! In general images regularly scanned are in the range 00-99 and images generated automatically by TopForm are in A0 and above
+0100 BEGIN 
+0110 OPEN (1,IOL=*)"IL1500"
+0120 DIM IL1$:IOL(1)
+0150 READ (1,END=0500,REC=IL1$)
+0160 IF IL1.IMAGE_TYPE$<>"A0" THEN GOTO 0150
+0170 IF POS(":"=IL1.IMAGE_PATH$)=0 THEN GOTO 0150
+0172 ESCAPE 
+0180 IL1.IMAGE_PATH$=SUB(IL1.IMAGE_PATH$,":","_")
+0190 WRITE (1,KEY=IL1.IMAGE_KEY$,REC=IL1$)
+0200 GOTO 0150
+0500 END 
+0505 LOCAL X,X3$,X4$,Y1$,Y0$,Z$,Z0,Z1
+0507 CALL "ZZCOMP","","","",X3$,X4$,"",-1,0,0; DIM BDL_Z[NUM(X3$(60,3))]
+0508 Z$="01O IL0... "; CALL "ZZFLES",X3$,Y1$,Y0$,Z$,BDL_Z{ALL},Z0,Z1
+0510 IF %IL_CODES THEN CLOSE (%IL_CODES,ERR=*PROCEED); %IL_CODES=0
+0515 %IL_CODES=GFN; OPEN (%IL_CODES)"*memory*"
+0520 X=FN_ADD_TO_LIST("00") ! Vendor Quote            > RFQ (8), Vend#+Quote# (20)
+0522 X=FN_ADD_TO_LIST("01") ! Vendor Invoice          > [opt TF P/O (9)], Vend#+Inv# (20)
+0524 X=FN_ADD_TO_LIST("02") ! Vendor Acknowledgement  > TF P/O (9)
+0526 X=FN_ADD_TO_LIST("03") ! Receiving Document      > TF P/O (9)
+0528 X=FN_ADD_TO_LIST("04") ! Customer Signed Delivery Ticket  > Order # (8)
+0530 X=FN_ADD_TO_LIST("05") ! Customer Check  > cust#, Cust# + Check# (18)
+0532 X=FN_ADD_TO_LIST("06") ! Customer Logo   > Cust# (10)
+0534 X=FN_ADD_TO_LIST("07") ! Form Proof Copy > TF P/O (9), [opt Item Code (20)]
+0536 X=FN_ADD_TO_LIST("08") ! Form Sample     > TF P/O (9), [opt Item Code (20)]
+0538 X=FN_ADD_TO_LIST("09") ! Item Image      > None, Item Code (20)
+0540 X=FN_ADD_TO_LIST("10") ! Customer Note   > Cust# (10)
+0542 X=FN_ADD_TO_LIST("11") ! Vendor Note     > Vend# (10)
+0544 X=FN_ADD_TO_LIST("12") ! Job Note     > order# (8)
+0546 X=FN_ADD_TO_LIST("13") ! customer Purchase order > None, Customer P/O number (15)
+0600 ! ^100 Generated images
+0610 X=FN_ADD_TO_LIST("A0") ! Customer Invoice          > Cust# + Inv# (18)
+0612 X=FN_ADD_TO_LIST("A1") ! Packing List to Warehouse > Order# (8), [opt whse (4)]
+0614 X=FN_ADD_TO_LIST("A2") ! Purchase Order to Vendor  > TF P/O# (9), Vend#(10)
+0616 X=FN_ADD_TO_LIST("A3") ! Reorder Notice            > Cust# (10), Form code (10)
+0618 X=FN_ADD_TO_LIST("A4") ! RFQ to Vendor             > RFQ# (8), Vend# (10)
+0619 X=FN_ADD_TO_LIST("A5") ! Customer Quote            > RFQ# (8), Cust# (10) or T/M List code (4) + T/M contact code (6) [if rfq$(391,1)="T"]
+0620 X=FN_ADD_TO_LIST("A6") ! Customer Statement        > Cust# (10)
+0622 X=FN_ADD_TO_LIST("A7") ! Order Ack to Customer     > Order# (8)
+0624 X=FN_ADD_TO_LIST("A8") ! Check to Vendor           > TF check# (6), Vend#+Check# (16)
+0625 X=FN_ADD_TO_LIST("RD") ! Thank you Letter   > Order(8) 190384
+0630 X=FN_ADD_TO_LIST("A9") ! Variable Print Proofs     > Order#+line# (11)
+0650 ! ^50 Reports
+0652 X=FN_ADD_TO_LIST("R0") ! Sales Journal             > Audit Control# (6), TopForm Date (6)
+0654 X=FN_ADD_TO_LIST("R1") ! Detailed Sales Journal    > Audit Control# (6), TopForm Date (6)
+0656 X=FN_ADD_TO_LIST("R2") ! Cash Receipts Journal    > Audit Control# (6), TopForm Date (6)
+0658 X=FN_ADD_TO_LIST("R3") ! Purchases Journal    > Audit Control# (6), TopForm Date (6)
+0660 X=FN_ADD_TO_LIST("R4") ! Cash Disbursments Journal    > Audit Control# (6), TopForm Date (6)
+0662 X=FN_ADD_TO_LIST("R5") ! Manual Check Journal    > Audit Control# (6), TopForm Date (6)
+0664 X=FN_ADD_TO_LIST("R6") ! G/L Journal Entry    > Audit Control# (6), TopForm Date (6)
+0666 X=FN_ADD_TO_LIST("R7") ! G/L Recurring Journal Entry    > Audit Control# (6), TopForm Date (6)
+0668 X=FN_ADD_TO_LIST("R8") ! P/O Receiving    > Audit Control# (6), TopForm Date (6)
+0670 X=FN_ADD_TO_LIST("R9") ! I/C  Transaction Entry > Audit Control# (6), TopForm Date (6)
+0672 X=FN_ADD_TO_LIST("RB") ! Finance Charge Journal > Audit Control# (6), TopForm Date (6)
+0674 X=FN_ADD_TO_LIST("RC") ! G/L Detail Transaction Register    > Audit Control# (6), TopForm Date (6) 192639
+0676 X=FN_ADD_TO_LIST("RE") ! Credit Card Plus Journal > Audit Control# (6), TopForm Date (6) ssp 197202
+0678 X=FN_ADD_TO_LIST("RF") ! CIG Journal   > Batch# (4), Topform Date (6) [SSP-200047]
+0680 X=FN_ADD_TO_LIST("RG") ! CIG+ Journal  > Batch# (4), Topform Date (6) [SSP-200047]
+0690 CALL "ZZFLES",X3$,Y1$,Y0$,"END",BDL_Z{ALL},0,0 ! [SSP-200047]-renumbered line
+0695 RETURN 
+0699 ! ***************************************************************
+56000 REM "190384-Make thank you letters email - they fax either Cust or   
+56002 REM "197202-Does the Credit Card Processing Report get saved to the     
+56005 REM "200864-No option to view invoices in A/R, S1, #4. Cust# 02-88000
+56010 REM "217412-When running checks Image Library only saves the last       
+56012 REM "207896-Is I/L ready to save reorder notice images?                 
+56014 REM "208706-Audit control numbers are duplicating from last year        

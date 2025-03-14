@@ -1,0 +1,21 @@
+Wednesday Apr 04/2001 15:11   Conversion report                       Page: 1
+             Input Bundle file:/usr/lib/pvx/tbd/data1/test_bun.dat              
+
+File........
+
+Program: tf2z/USR/ZZINST
+         Error #26: Variable type invalid
+            1490?IF S0<>SSN THEN IF POS("MS"=SYS)<>1 THEN EXIT 89 ELSE CALL "
+              :  ZZNTSN",X3$,SSN,FLAG$,MASTER_SSN; IF FLAG$<>"Y" OR S0<>MASTE
+              :  R_SSN THEN EXIT 89
+            2036?IF NTFLAG$="Y" THEN IF A[0]>0 THEN IF A[0]<>SSN THEN CALL "Z
+              :  ZNTSN",X3$,SERIN$,FLAG$,SEROUT$; GOTO 02045
+            2040?IF A[0]>0 THEN IF A[0]<>SSN THEN LET Q$="Application record 
+              :  SSN does not match"; GOTO 09800
+Program: tf2z/USR/ZZTFNM
+         Error #26: Variable type invalid
+            1010?IF SSN=406001157 OR SSN=1015906 THEN LET NAME$="tf500"; GOTO
+              :   09900
+<Eof>
+            Conversion complete 4 errors
+

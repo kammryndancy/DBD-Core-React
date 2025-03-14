@@ -1,0 +1,71 @@
+0010 REM "Set First Usage Date in FM4 and FM1 <FM2UTP>
+0035 REM "4.1 - 02/16/97 - 23.92 - kmc
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0110 X0$="FM2UTP",X1$="Set First Usage Date in FM4 and FM1"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 K9$=Q1$,K0=LEN(K9$)+5,K1=3
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0310 IOLIST A$,A9$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27],B[28],B[29],B[30],B[31]
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FM4...  02O FM1...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 DIM D0$(6)
+0634 PRINT @(10,10),"Set the first usage date to:",
+0635 CALL "ZZENTR","D",A{ALL},D0$,X4$,X3$,40,10,1,6,C0,"","","","FM2UTP00","","",""
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM 
+0910 DIM A[15],B[31]
+1020 REM "READ NEXT FM4 RECORD
+1030 K1$=KEY(Z[1],END=2000)
+1040 EXTRACT (Z[1],KEY=K1$)IOL=0310
+1050 A$(83,6)=D0$,C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1060 WRITE (Z[1],KEY=K1$)IOL=0310; IF RT_PARM$<>"" THEN CUST$=K1$(1,10); CALL "RT2WOC",ERR=1061,X3$,X4$,CUST$,"FM4...","U",K1$
+1090 GOTO 1030
+2000 REM "Now do FM1 records
+2010 K2$=KEY(Z[2],END=5000)
+2020 EXTRACT (Z[2],KEY=K2$)IOL=0320
+2025 IF LEN(B$)<386 THEN B$=B$+" "; GOTO 2025
+2030 B$(329,6)=D0$,C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+2040 WRITE (Z[2],KEY=K2$)IOL=0320; IF RT_PARM$<>"" THEN CUST$=K2$(1,10); CALL "RT2WOC",ERR=2041,X3$,X4$,CUST$,"FM1...","U",K2$
+2090 GOTO 2010
+5000 REM 
+5010 C=T; GOSUB 8150
+5020 CALL "ZZPROM","4",X3$,0,"Process completed","","",0
+5090 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility will set the First Usage Date in both FM1 (Forms Master) and FM4 (Forms Locations), for all forms.",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8112 CALL "ZZINFO",Z[2],T9,X3$,J,T0,K,B,D,S0,S1,F$; T=T+J; REM "Add in FM1 records
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y6$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y6$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9940 RUN "ZMENU"
+9999 END 

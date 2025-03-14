@@ -1,0 +1,107 @@
+0010 REM "Delete Items - Populate FUD - <FM2UUD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 02/15/05 - 12.887222 - lms - SSP# 168208
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FM2UUD",X1$="Add Items to Delete to FUD",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],IOL=0312
+0312 IOLIST A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31]
+0360 IOLIST F$,F[0],F[1],F[2],F[3],F[4],F[5],F[6],F[7],F[8],F[9],F[10],F[11],F[12],F[13],F[14],F[15],F[16],F[17],F[18],F[19],F[20],F[21],F[22],F[23],F[24],F[25],F[26],F[27],F[28],F[29],F[30],F[31],F[32],F[33]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FM1...  02O UT3...  13O ZZPARM  06O IC0...  08O FMP..."
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000
+0620 CHANNEL=1; GOSUB 8100
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 DIM V0$(100),V2$(20,"~"); V2$(1,10)=""
+0710 CALL "ZZENTR","D",A{ALL},V0$,X4$,X3$,45,10,79,6,C0,"",X$,"","AR2UT600","","",""
+0720 CALL "ZZENTR","D",A{ALL},V0$,X4$,X3$,45,12,85,6,C0,"",X$,"","AR2UT600","","",""
+0730 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0731,9900
+0990 PRINT @(10,13),"Item:",
+1000 REM 
+1010 DIM A[31]; READ (Z[1],END=2000)IOL=0310
+1015 PRINT @(20,13),A$(1,10),"  ",A$(11,10)
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1021 IF V0$(85,6)=DIM(6) THEN GOTO 1000
+1022 IF A$(126,6)>=V0$(85,6) THEN GOTO 1000
+1050 READ (Z[8],KEY="X"+A$(11,10),DOM=1070)SPECIAL$,S1,S3,S3
+1051 CALL "ZZPROM",".4",X3$,Z,"F/M Item Added Has Special Charge Code Same as Item: "+A$(1,10)+"   "+A$(11,10),"","",0
+1070 DIM UT3$(44); UT3$(1,4)="ICDD",UT3$(5,20)=A$(1,20),UT3_KEY$="ICD"+A$(1,20)
+1075 WRITE (Z[2],KEY=UT3_KEY$)UT3$
+1600 GOTO 1000
+2000 CHANNEL=6; GOSUB 8100
+2005 DIM F[33]; READ (Z[6],END=5000)IOL=0360
+2006 PRINT @(20,13),F$(1,10),"  ",F$(11,10)
+2007 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+2008 IF V0$(79,6)=DIM(6) THEN GOTO 2005
+2010 IF F$(96,6)>V0$(79,6) AND F$(102,6)>V0$(79,6) THEN GOTO 2005
+2015 READ (Z[8],KEY="X"+F$(11,10),DOM=2030)SPECIAL$,S1,S2,S3
+2025 CALL "ZZPROM",".4",X3$,Z,"I/C Item Added Has Special Charge Code Same as Item: "+F$(1,10)+"   "+F$(11,10),"","",0
+2030 DIM UT3$(44); UT3$(1,4)="ICDD",UT3$(5,20)=F$(1,20),UT3_KEY$="ICD"+F$(1,20)
+2035 WRITE (Z[2],KEY=UT3_KEY$)UT3$
+2036 GOTO 2005
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,3),"This CSI utility program will create records in the UT3 file for FUD group ICD ",'LF',"to delete items based on Last Sold/Last Purchased Date for I/C items and last",'LF',"Order Date on F/M Items."
+6025 PRINT @(7,10),"Delete Items with no activity since: ",
+6030 PRINT @(0,12),"Delete Custom Items with no activity since: ",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7999 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and b efore the Proceed? question. Set T to total # to do (by calling ZZINFO) an d T0 to the reporting interval (report every T0 number of records) this is  typically 2% of total; This also prints a message (@8115),so adjust accor dingly                                                                     
+8110 CALL "ZZINFO",Z[CHANNEL],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,16),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for  avalue of 1. IF T0 is 1, then nothing would get reported. We look for a re sult of 1 because this causes the first record to automatically start the  reporting instead of waiting until the T0'th record to get the first repor t                                                                          
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph  given total #, T and current #, C, and time counter T1 (T1 is init'ed her e and used here, just don't use it somewhere else)                         
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9945 DROP "ZZCASE",ERR=9946
+9950 RUN "ZMENU"
+9999 END 

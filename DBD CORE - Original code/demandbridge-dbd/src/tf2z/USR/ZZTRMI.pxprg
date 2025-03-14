@@ -1,0 +1,21 @@
+0010 REM "Terminal Initialization <ZZTRMI>
+0035 REM "4.4 - 09/27/99 - 10.79 - kmc - SSP# 117639
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "T$ is terminal type, O$ is option string
+0100 SETERR 9000
+1000 REM "Initialize the terminal
+1005 PRINT '_BLUE','WHITE','CS','DF',
+1010 PRINT 'GE'; REM "Cancel graphic mode if on
+2010 PRINT (0,ERR=2011)'BACKGR','BLUE',; REM " Background to BLUE
+2015 PRINT (0,ERR=2016)'YELLOW',
+2018 PRINT (0,ERR=2019)'BACKGR','BLUE',; REM "Background characters background to blue
+2020 PRINT (0,ERR=2021)'WHITE',; REM "Background characters to white
+2095 GOTO 9900
+9000 REM "Errors
+9010 EXIT ERR
+9900 REM "Normal end
+9940 SETERR 9960
+9950 EXIT 
+9960 RUN "ZMENU"
+9999 END 

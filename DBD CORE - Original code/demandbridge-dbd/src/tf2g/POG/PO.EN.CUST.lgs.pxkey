@@ -1,0 +1,116 @@
+<PxTable>
+ TableName=PO.EN.CUST.lgs
+ TableKey=K1348764946
+ FileCreate=KEYED "PO.EN.CUST.lgs",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0000"
+    FIELD_1$="PO1_POHdr"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="90"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_PO1"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"PO1"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2011/04/14 12:10 JOANNE"
+    FIELD_19$="POGMAZ"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.PO_DIV$+_MN_.PO_NUM$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0001"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.PO_DIV$+_MN_.PO_NUM$,"+QUO+"P/O"+QUO+")"
+    FIELD_4$="12"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"PO_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0002"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.VEND_DIV$+_MN_.VEND_CODE$,"+QUO+"A/P"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0003"
+    FIELD_1$="PLANT_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PLANT_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0004"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.ORDER_DIV$+_MN_.ORDER_NUM$,"+QUO+"O/P"+QUO+")"
+    FIELD_4$="12"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ORDER_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0005"
+    FIELD_1$="JOB_STATUS"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="12"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"JOB_STATUS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     0006"
+    FIELD_1$="JOB_STATUS_DATE"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="12"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"JOB_S_D"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO1     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%SALES_ORDER_PREFIX$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

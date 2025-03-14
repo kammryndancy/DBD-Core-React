@@ -1,0 +1,318 @@
+<PxTable>
+ TableName=FR4
+ TableKey=K1372704546
+ FileCreate=KEYED "FR4",4,0,-256,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR4_RptTemplate"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":56-csc"
+    LASTUPDATEDFILE$="2015/08/28 12:43:27-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(4)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Template code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Template code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST INDEXING_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="INDEXING_CODE"
+    DESCRIPTION$="=MSG("+QUO+"INDE_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Indexing code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST PRIOR_IND_OR_ACCUM$:[LEN(1,SEP=SEP)]"
+    NAME$="PRIOR_IND_OR_ACCUM"
+    DESCRIPTION$="=MSG("+QUO+"PRIO_I_O_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="prior indexing or accumulate"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST VERT_LINE_SPACING$:[LEN(40,SEP=SEP)]"
+    NAME$="VERT_LINE_SPACING"
+    DESCRIPTION$="=MSG("+QUO+"VERT_L_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Vertical line spacing (2=dbl)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST EVEN_IF_ALL_ZERO$:[LEN(1,SEP=SEP)]"
+    NAME$="EVEN_IF_ALL_ZERO"
+    DESCRIPTION$="=MSG("+QUO+"EVEN_I_A_Z"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST FR4_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FR4_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="1111"
+    TEMPLATE_CODE$="1111"
+    TF_DESC$="CONSOLIDATED DETAIL           "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="2222"
+    TEMPLATE_CODE$="2222"
+    TF_DESC$="test                          "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="3333"
+    TEMPLATE_CODE$="3333"
+    TF_DESC$="d                             "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="O"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AA  "
+    TEMPLATE_CODE$="AA  "
+    TF_DESC$="test                          "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BALS"
+    TEMPLATE_CODE$="BALS"
+    TF_DESC$="Balance Sheet                 "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CBAL"
+    TEMPLATE_CODE$="CBAL"
+    TF_DESC$="Comparative Balance Sheet     "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$="                                        "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DPL "
+    TEMPLATE_CODE$="DPL "
+    TF_DESC$="                              "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$="                                        "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MBF1"
+    TEMPLATE_CODE$="MBF1"
+    TF_DESC$="MBF P/L                       "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="11                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW1"
+    TEMPLATE_CODE$="NEW1"
+    TF_DESC$="Balance Sheet                 "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L "
+    TEMPLATE_CODE$="P/L "
+    TF_DESC$="Normal Profit / Loss Statement"
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$=" 0                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L2"
+    TEMPLATE_CODE$="P/L2"
+    TF_DESC$="SPECIAL FORMAT                "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$="                                        "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL-S"
+    TEMPLATE_CODE$="PL-S"
+    TF_DESC$="Summarized company P/L        "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$="                                        "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S "
+    TEMPLATE_CODE$="S/S "
+    TF_DESC$="Spread Sheet by period        "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="20                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SBS "
+    TEMPLATE_CODE$="SBS "
+    TF_DESC$="SOLOION BALANCE SHEET         "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$=" "
+    VERT_LINE_SPACING$="                                        "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SLS "
+    TEMPLATE_CODE$="SLS "
+    TF_DESC$="Customer Sales Report         "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="11                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST"
+    TEMPLATE_CODE$="TEST"
+    TF_DESC$="Test Template                 "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="10                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="XXX "
+    TEMPLATE_CODE$="XXX "
+    TF_DESC$="Test Report                   "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="O"
+    VERT_LINE_SPACING$="20                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="XYZ "
+    TEMPLATE_CODE$="XYZ "
+    TF_DESC$="This is a test                "
+    INDEXING_CODE$="    "
+    PRIOR_IND_OR_ACCUM$="A"
+    VERT_LINE_SPACING$="11                                      "
+    EVEN_IF_ALL_ZERO$=" "
+    FR4_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

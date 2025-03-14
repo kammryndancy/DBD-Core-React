@@ -1,0 +1,23 @@
+0010 REM "Show all utility programs ??2UT? for a system <ZZ2UT2"
+0035 REM "3.6 - 07/19/93 - 14.91 - jsc
+0040 REM "Copyright 1993 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0620 PRINT 'CS',"** Show utility programs for a system **",@(0,4)
+1020 INPUT 'LF',"Enter the two character system (i.e. FM, AR, etc.): ",Q$
+1025 IF Q$="" THEN GOTO 9900
+1040 IF LEN(Q$)<>2 THEN GOTO 1000
+1045 F0$=Q$
+1200 REM "Process numbers / letters
+1210 Q0$="0123456789"; FOR X=0 TO 25; Q0$=Q0$+CHR(ASC("A")+X); NEXT X
+1400 REM 
+1410 FOR X=1 TO LEN(Q0$)
+1420 Q$=F0$+"2UT"+Q0$(X,1)
+1430 PRINT @(0),Q$," ",
+1435 CLOSE (14); OPEN (14,ERR=1490)Q$; Q$=FID(14); IF Q$(10,1)<>$04$ THEN GOTO 1490
+1440 CALL "ZZXPRG",P5$,14,Q$(4,6),0,0
+1445 PRINT P5$
+1450 L1=L1+1; IF L1>15 THEN INPUT 'LF',"Press Enter to continue: ",*; L1=0
+1490 NEXT X
+1520 PRINT @(0),"Program complete!"
+9999 END 

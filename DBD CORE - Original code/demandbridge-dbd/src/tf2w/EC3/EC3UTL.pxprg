@@ -1,0 +1,124 @@
+0010 REM "Credit Card Order/Invoice Clearing Utility <EC3UTL>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 11/30/11 - 14.653333 - dmm - SSP# 250835
+0037 REM "250835-PROCESS log has 000-EC3UTL-601, 000-EC3WSF-550.  READONLY   
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,SERVER$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3UTL",X1$="Expired CC Order/Invoice Clearing"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0240 IF Q1$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST GRB$
+0320 IOLIST FS1$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O GRB...  02O FS1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0601 GOSUB SET_READONLY; DIM ECPARM$(2000); FIND (Z(13),KEY=X3$(9,3)+"E/C",DOM=*NEXT)ECPARM$; GOSUB CLEAR_READONLY; GOTO 0605 ! SSP250835, add READONLY logic
+0602 GOSUB CLEAR_READONLY; GOTO 9900 ! SSP250835
+0605 AVAIL_TIME=NUM(ECPARM$(933,3)); IF AVAIL_TIME=0 THEN AVAIL_TIME=60
+0606 GOSUB 7500; REM "get cutoff time
+0610 IF Q1$="" THEN GOSUB 6000
+0620 IF Q1$="" THEN GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "
+0710 IF STP(SERVER$,3," ")="" THEN DIM SERVER$(15); REM "to prevent err 47 in AR2WAA
+1000 REM "BEGIN MAIN PROCESS                                               
+1005 GRBKEY$=KEY(Z(1),END=5000); READ (Z(1),KEY=GRBKEY$)IOL=0310; CCACTION$="D"; REM "currently set clearing to the off-line invoice if no order found
+1010 FS1KEY$=GRB$(92,8); READ (Z(2),KEY=FS1KEY$,DOM=*NEXT)IOL=0320; CCACTION$="B"; GOTO 1020; REM "since order was found - if clearing occurs, clear both order and invoice.  SSP166845, changed DOM= to *NEXT, was 1000, need to continue anyway, even if no order.
+1015 GOTO 1300 ! SSP166845, No order found, need to delete invoice only
+1020 IF Q1$="" THEN C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1030 IF FS1$(194,1)<>"Y" THEN CCACTION$="D" ! GOTO 1000; REM "skip order if not on hold. SSP166845, don't skip, we still need to remove the temp invoice records if it meets the criteria
+1035 IF Q1$<>"" THEN GOTO 1041
+1036 CALL "EC3DAT",X3$,2,FS1$(272,6),FS1DATE$,""; CALL "EC3DAT",X3$,12,FS1$(278,4),FS1TIME$,""
+1040 PRINT @(10,16),'CL',"Order: ",FS1KEY$,"  Created ",FS1DATE$," ",FS1TIME$,
+1100 REM "ck if order past cutoff
+1120 IF FS1$(272,6)<>CURRDATE$ THEN GOTO 1300
+1200 REM "if time expired then clear
+1210 GOSUB 7600; IF CUTOFF_TIME=0 THEN GOTO 1300; REM "invalid time on order so clear
+1220 IF CUTOFF_TIME>2400 THEN GOTO 1300; REM "past midnight - clear
+1230 IF CUTOFF_TIME<CURRTIME THEN GOTO 1300
+1250 GOTO 1000; REM "order within cutoff
+1300 REM "clear order/invoice
+1310 IF Q1$="" THEN PRINT @(10,16),'CL',"Order: ",FS1KEY$,"  Created ",FS1DATE$," ",FS1TIME$,"  Expires: ",CUTOFF_TIME_FORMATTED$,
+1320 IF NOT(NUL(MID(FS1$,289,10))) AND CCACTION$="B" THEN CALL "EC3CPN;DELETE_FROM_WORKSHEET",ERR=*NEXT,X3$,X4$,FS1$(289,10) ! 183445, SSP 234003
+1330 IF NOT(NUL(Q1$)) THEN MX=FN%_LOG_MESSAGE_WITH_FLUSH("MESG","CREDIT CARD ORDER TIMEOUT|ORDER|"+FS1KEY$+"|INVOICE|"+GRBKEY$+"|CCACTION|"+CCACTION$) ! 197293
+1350 CALL "AR2WAA",X3$,X4$,"","N",FS1KEY$,SERVER$,CCACTION$,GRBKEY$,""
+1600 GOTO 1000
+5000 REM "EOJ                                                              
+5010 IF Q1$="" THEN C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will clear out credit card orders/invoices that have ",@(0,5),"not been purchased within the available time window of ",AVAIL_TIME," minutes",@(20,7),"Current date & time: ",CURRDATE_FORMATTED$,"  ",CURRTIME_FORMATTED$,@(20,8),"Orders expire after (minutes): ",AVAIL_TIME,
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7400 SET_READONLY:
+7410 SET_PARAM 'XI'
+7420 SET_READONLY_END:RETURN 
+7430 CLEAR_READONLY:
+7435 SET_PARAM -'XI'
+7440 CLEAR_READONLY_END:RETURN 
+7500 REM "set up dates
+7510 CALL "EC3DAT",X3$,3,CURRTIME$,CURRDATE$,CURRDATE_FORMATTED$; REM "current time (4) and date (6-tf format)
+7540 CURRTIME=NUM(CURRTIME$)
+7541 CALL "EC3DAT",X3$,12,CURRTIME$,CURRTIME_FORMATTED$,""
+7549 RETURN 
+7600 REM "take order time and add minutes
+7610 CUTOFF_TIME=0,ORDER_TIME=0; ORDER_TIME=NUM(FS1$(278,4),ERR=7640)
+7612 CUTOFF_TIME=ORDER_TIME+(AVAIL_TIME/60*100)
+7613 CUTOFF_TIME$=STR(CUTOFF_TIME:"0000")
+7622 CALL "EC3DAT",X3$,12,CUTOFF_TIME$,CUTOFF_TIME_FORMATTED$,""
+7640 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,10),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "197293-Web.ec order, received order confirm, does not show in TopForm
+56003 REM "234003-CRST and CNB Coupon Issues                                  
+56004 REM "250835-PROCESS log has 000-EC3UTL-601, 000-EC3WSF-550.  READONLY   

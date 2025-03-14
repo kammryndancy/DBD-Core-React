@@ -1,0 +1,242 @@
+0010 REM "E/C System parameters III <EC3MPE>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 05/27/08 - 8.975 - crg - SSP# 218603
+0037 REM "218603-Sales tax code lookup for orders with manual ship address
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM ***NOTE FM2MPD USES BYTES 201 TO 212*******
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3MPE",X1$="E/C System Parameters IV"
+0135 C9=-1,V0=-5
+0136 L4=15,L5=5,L6=24,L7=9,L8=28
+0140 M0$="-##,##0",M1$="-##0",M2$="-###.00"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 K9$=X3$(9,3)+"E/C",K9=LEN(K9$)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST A$(1); REM "148750
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ZZPARM  02O ECR... 06O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 CALL "ZZ2PRP","EW",MULTI_WHSE$,DATE$; IF POS(X3$(9,3)="582060092500524447470112525527112377538546449499543577802",3)<>0 THEN MULTI_WHSE$="Y"
+0611 DIM ARPARMS$(300); FIND (Z(6),KEY=X3$(9,3)+"A/R")ARPARMS$
+0620 GOSUB 6000
+1000 REM "
+1010 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1035 DIM A$(1275); REM "148750
+1045 A$(1,0+K9)=K9$+A1$
+1060 PRINT (0,ERR=1070)'CF',; GOSUB 6450; GOTO 1100
+1070 GOSUB 6000; GOSUB 6450
+1100 REM "KEY SEQ
+1110 X0=-1,C0=0,X1=0,C9=0,Z9=0
+1120 C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 9900
+1140 ON X0 GOTO 1500
+1200 REM "
+1215 IF C0<0 THEN GOTO 9900
+1500 REM "
+1505 Z9=-1
+1510 A1$=K9$
+1520 READ (Z[1],KEY=A1$,DOM=1600)IOL=0310
+1525 Z9=0
+1590 GOTO 1700
+1600 REM "
+1620 CALL "ZZPROM","2",X3$,Z,"","","",0; ON Z GOTO 1650,1630
+1630 GOTO 9800
+1690 GOTO 2000
+1700 REM "
+1790 GOSUB 6200
+1800 REM "
+1820 CALL "ZZPROM","P",X3$,Z,"","","",X0; ON Z GOTO 1850,6700
+1830 GOTO 2000
+1850 REM "MODIFY
+1855 X0=X0-1; IF Z9=1 THEN GOTO 1880 ELSE IF Z9=0 THEN Z9=1
+1860 EXTRACT (Z[1],KEY=A1$,DOM=1870)IOL=0310
+1865 C9=1
+1870 GOSUB 6200
+1890 IF Z<0 THEN GOTO 2035 ELSE GOTO 2000
+2000 REM "DATA SEQ
+2010 C0=0,X0=-1,X1=1
+2020 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+2025 IF C0>3 OR X0<0 THEN GOTO 1800
+2040 ON X0 GOTO 2200,3000,2300,2350,2400,2450,2500,2550,2250,2600,2650,2700,2750,2800,2850,2900,2950,1800
+2200 REM "activate multiple carrier tracking
+2202 X$="Y requires validated carrier ID's in E/C-S5 and on-file tracking buttons"
+2210 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,5,555,1,C0,"","{3"+X$,"","EC3MPE02","","",""
+2240 GOTO 2020
+2250 REM "activate unlimited secure codes by item
+2260 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,13,554,1,C0,"","{3"+X$,"","EC3MPE04","","",""
+2290 GOTO 2020
+2300 REM "recognize stock? setting on custome item master
+2302 X$="Y=will cause custom items w/Stock? set to Y to be treated as stock items by webec"
+2310 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,7,556,1,C0,"","{3"+X$,"","EC3MPE06","","",""
+2340 GOTO 2020
+2350 REM "insert <BR> for quantity break reporting on prod catalog
+2355 X$="Y=will insert HTML <BR> before each reported non-blank quantity break"
+2360 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,8,557,1,C0,"","{3"+X$,"","EC3MPE08","","",""
+2390 GOTO 2020
+2400 REM "limit p/c detail reporting to active shipto 154600
+2401 X$="Y will only show usage on PC detail for shipto currently active for worksheet"
+2410 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,9,558,1,C0,"","{3"+X$,"","EC3MPE10","","",""
+2440 GOTO 2020
+2450 REM "default item price source for webec item parameters
+2451 X$="C=custom item mstr   I=inventory mstr  blank=master file based on item type"
+2460 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,61,10,559,1,C0,"","{3"+X$,"","EC3MPE12","","",""
+2470 IF POS(A$(559,1)="I C")=0 THEN GOTO 2450
+2472 CALL "ZZPROM",".Y",X3$,Z,"Update all webec item parameter with this new default?","","",0; ON Z GOTO 2473,2490
+2474 DIM ECR$(1000); PRINT @(0,20),'CE',"Updating webec item parameters",; READ (Z(2),KEY="",DOM=2475)
+2475 ECRKEY$=KEY(Z(2),END=2487); READ RECORD (Z(2),KEY=ECRKEY$)ECRREC$
+2476 PRINT @(0,21),'CL',ECRKEY$,
+2480 IF ECRKEY$(1,10)=DIM(10) THEN ECRREC$(253,1)="I"; GOTO 2485
+2481 ECRREC$(253,1)=A$(559,1)
+2485 WRITE RECORD (Z(2),KEY=ECRKEY$)ECRREC$; GOTO 2475
+2487 PRINT @(0,20),'CE',
+2490 GOTO 2020
+2500 REM "override attn with change in shipto
+2501 X$="Y will retain attention field values even with change in shipto selection"
+2510 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,11,560,1,C0,"","{3"+X$,"","EC3MPE14","","",""
+2540 GOTO 2020
+2550 REM "Activate purchase approval
+2552 CALL "ZZ2PRP","PV",RESULT$,DATE$; IF RESULT$="Y" THEN GOTO 2560 ! SSP191226
+2553 IF POS(X3$(9,3)="107802803804805806807577583073088543566582508560575546524487470474540449093377092112497522118491",3)=0 THEN GOTO 2020
+2560 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,12,946,1,C0,"","{3"+X$,"","EC3MPE28","","",""
+2590 GOTO 2020
+2600 REM "activate unlimited webec categories
+2610 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,14,947,1,C0,"","{3"+X$,"","EC3MPE04","","",""
+2640 GOTO 2020
+2650 REM "ordering in M/1000 suppress extending order qty by 1000 - 159308
+2651 X$="Y=order quantity will not be multiplied by 1,000"
+2660 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,15,948,1,C0,"","{3"+X$,"","EC3MPE20","","",""
+2690 GOTO 2020
+2700 REM "activate multiple source customers in C3 160771
+2701 X$="Will support multiple source customers in the catalog loading utility"
+2710 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,16,949,1,C0,"","{3"+X$,"","EC3MPE22","","",""
+2740 GOTO 2020
+2750 REM "Process Credit Card capture without 'ccaction' tags   161190
+2751 IF ARPARMS$(130,1)<>"Y" THEN A$(950,1)=" "; GOSUB 6200; GOTO 2790
+2752 X$="Only set to Y if pages do not contain 'ccaction' directives"
+2760 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,61,17,950,1,C0,"","{3"+X$,"","EC3MPE24","","",""
+2790 GOTO 2020
+2800 REM "activate special address handling - rpm company 487 - 161537
+2805 X$="Y ONLY if your pages submit the shipto location and address together"
+2810 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,18,1086,1,C0,"","{3"+X$,"","EC3MPE26","","",""
+2840 GOTO 2020
+2850 REM "Variable Print Order Type  SSP 161995
+2855 X$="Blank = Default (Exact Repeat), C = Copy Change, N = New" ! SSP217429
+2860 CALL "ZZENTR","SRU",A{ALL},A$,X4$,X3$,61,19,1087,1,C0,"","{3"+X$," CN","EC3MPE12","","","" ! SSP217429, added N option
+2890 GOTO 2020
+2900 REM "Allow shipping information to be overridden with blanks? SSP164755
+2905 X$="Attention, address lines, city, state, zip"
+2910 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,20,1088,1,C0,"","{3"+X$,"","EC3MPE30","","",""
+2940 GOTO 2020
+2950 ! Unit of measure used for thousands? SSP167126
+2955 X$="Blank uses default of M   ."
+2960 CALL "ZZENTR","SUX",A{ALL},A$,X4$,X3$,61,21,1089,4,C0,"","{3"+X$,"U/M","EC3MPE08","U/M","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 2960,2961
+2965 IF A$(1089,4)=DIM(4) THEN GOTO 2990
+2970 FIND (Z[6],KEY="U/M"+A$(1089,4),DOM=2960)
+2990 GOTO 2020
+3000 ! "SSP 218603 - Sales tax code lookup by ship-to state
+3002 X$="Will cause sales tax code look up by ship-to state, for WebEC orders only"
+3010 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,61,6,1178,1,C0,"","{3"+X$,"","EC3MPE08","","",""
+3040 GOTO 2020
+3050 REM "
+3060 CALL "ZZENTR","SRU",A{ALL},A$,X4$,X3$,70,20,243,1,C0,"","{3"+X$,"ABN","EC3MPE36","","",""
+3090 GOTO 3040
+3100 REM "
+3110 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,70,21,244,1,C0,"","{3"+X$,"","EC3MPE38","","",""
+3140 GOTO 2020
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6050 PRINT @(27,3),"Emails upgraded to 60 characters?",@(15,4),"Product catalog upgraded with alternate sort?",@(25,5),"Activate multiple carrier tracking?",
+6055 PRINT @(50,6),"In Process",@(11,7),"Recognize Stock? item flag on custom item master?",@(2,8),"Insert <BR> when populating qty breaks on product catalog?",@(8,9),"limit usage reporting on PC detail to active shipto?",@(11,10),"Default 'price source' for webec item parameters:",@(13,11),"Retain 'attention' with every change in shipto?",@(26,12),"Activate order/approval functions?",@(20,13),"Activate unlimited secure codes by item?",@(22,14),"Activate unlimited categories by item?",@(5,15),"Ordering in M/1,000: Suppress extending qty times 1000?",; REM " SSP# 152902/157200/153058/154049/159308
+6065 PRINT @(1,16),"Activate multiple source customers in catalog loading (C3)?",; REM "160771
+6066 PRINT @(10,17),"Credit Card capture only - no 'ccaction' on pages:",; REM "161190
+6067 PRINT @(20,18),"Special address override handling (487)?",; REM "161537
+6070 PRINT @(6,19),"New/Repeat field on PO header for Variable Print item: ",; REM " SSP# 161995
+6075 PRINT @(4,20),"Allow shipping information to be overridden with blanks?", ! SSP164755
+6080 PRINT @(25,21),"Unit of measure used for thousands:", ! SSP167126
+6085 PRINT @(4,6),"Lookup sales tax code by ship-to state for WebEC orders:",; REM "SSP 218603
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6215 GOSUB 6450
+6220 PRINT @(61,3),A$(440,1),@(61,4),A$(553,1),
+6225 PRINT @(61,5),A$(555,1),@(61,7),A$(556,1),@(61,8),A$(557,1),@(61,9),A$(558,1),@(61,10),A$(559,1),@(61,11),A$(560,1),@(61,12),A$(946,1),@(61,13),A$(554,1),@(61,14),A$(947,1),@(61,15),A$(948,1),; REM " SSP# 152902 / 157200 /154600 / 157313 / 148750 / 159049 / 159308
+6235 PRINT @(61,16),A$(949,1); REM "160771
+6236 PRINT @(61,17),A$(950,1); REM "161190
+6237 PRINT @(61,18),A$(1086,1),; REM "161537
+6238 PRINT @(61,19),A$(1087,1),; REM "161537
+6240 PRINT @(61,20),A$(1088,1), ! SSP164755
+6245 PRINT @(61,21),A$(1089,4), ! SSP167126
+6250 PRINT @(61,6),A$(1178,1), ! SSP218603
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6430 IF C9>=0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6455 IF C9<0 THEN GOTO 6445
+6490 RETURN 
+6500 REM "DELETE
+6510 REMOVE (Z[1],KEY=A1$,DOM=6511)
+6590 GOTO 1630
+6600 REM "ALT KEY DATA READS
+6690 RETURN 
+6700 REM "ADD ENTRY
+6705 IF Z9=0 THEN GOTO 6790
+6710 WRITE (Z[1],KEY=A1$)IOL=0310
+6790 GOTO 1630
+6800 REM "NEXT ENTRY IN FILE
+6810 A1$=KEY(Z[1],END=6895)
+6820 A$(1,LEN(A1$))=A1$
+6825 IF A1$(1,LEN(K9$))<>K9$ THEN GOTO 6895
+6830 GOSUB 6600
+6835 GOSUB 6450
+6890 GOTO 1515
+6895 PRINT 'RB',; READ (Z[1],KEY=K9$,DOM=1140); GOTO 1140
+6902 V9$="2803  2804  4803  2906  2907  4806  6009  6010  6011  "
+7510 IF STP(A$(ST,LEN),1)="" THEN GOTO 7540
+7520 CLOSE (14); OPEN (14,ERR=7530)STP(A$(ST,LEN),1); GOTO 7540
+7530 TMP$="|WARNING - The template "+STP(A$(ST,LEN),1)+" cannot be found."; CALL "ZZPROM",".4",X3$,Z,TMP$,"","",0
+7540 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 Q1$=A1$; EXIT 
+9940 SETESC 9350
+9949 SETERR 9951
+9960 RUN "EC3MPF"; REM "148750
+9999 END 
+56000 ! Program changes starting 11/15/05
+56010 REM "187196-Installation - Webec, VP, ECPromo, TOPS and Shipping Mgmt.
+56015 REM "191226-Purchase approval activation parameter depends on company
+56020 REM "217429-WebEC PO's being faxed/emailed to vendor are showing as
+56021 REM "218603-Sales tax code lookup for orders with manual ship address

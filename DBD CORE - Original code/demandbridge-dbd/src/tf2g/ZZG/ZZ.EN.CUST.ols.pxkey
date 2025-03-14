@@ -1,0 +1,139 @@
+<PxTable>
+ TableName=ZZ.EN.CUST.ols
+ TableKey=K1337781745
+ FileCreate=KEYED "ZZ.EN.CUST.ols",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_FORM    0000"
+    FIELD_1$="*File=ZZPARM"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="45"
+    FIELD_5$="25"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"ZZGPDA"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="ZZPARM"
+    FIELD_18$="2010/09/21 10:11 tma"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FORM    0001"
+    FIELD_1$="Fld#1(5,1)"
+    FIELD_4$="7"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FORM    0002"
+    FIELD_1$="Fld#1(6,30)"
+    FIELD_4$="35"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"Desc"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FORM    SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="FORM"
+    FIELD_13$="T_MN_.FLD#1$(1,6)<>"+QUO+"FORMAT"+QUO
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    0000"
+    FIELD_1$="*File=ZZPARM"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="71"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="User"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="ZZPARM"
+    FIELD_18$="2015/05/20 15:13 tma"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    0001"
+    FIELD_1$="Fld#1(2,3)"
+    FIELD_4$="9"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"USER_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    0002"
+    FIELD_1$="Fld#1(5,30)"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    0003"
+    FIELD_1$="Formula:%ZZPAR$"
+    FIELD_4$="20"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ROLE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    0004"
+    FIELD_1$="Fld#1(41,2)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LEVEL"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_USER    SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="o"
+    FIELD_13$="C"+QUO+"ZZGMOA;CHECK_QRY"+QUO+",PRIME_KEY$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

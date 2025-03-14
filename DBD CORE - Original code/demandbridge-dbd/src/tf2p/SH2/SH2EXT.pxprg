@@ -1,0 +1,169 @@
+0010 REM "Export Shipping Info<SH2EXT>                                     
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 04/13/06 - 12.341388 - lms - SSP# 190993
+0037 REM "190993-Call from Chris with questions about the United Stationers  
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="SH2EXT",X1$="Export Shipping Information"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0241 IF NUL(%X3$) THEN %X3$=X3$
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O SM4...  02O FT5...  03O FT3... 04O AR1... 05O FM0... 06O FT4... 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 GOSUB 6000
+1000 ! Get Ranges
+1035 IF A$="" THEN DIM A$(73); A$(11,10)="~~~~~~~~~~",A$(27,6)="~~~~~~"; GOSUB 6200
+1095 IF X3$(333,2)<>"  " THEN IF A0=1 THEN A$(1,2)=X3$(333,2),A$(11,2)=X3$(333,2)
+1100 C0=0,X0=-1; GOTO 2000
+1799 PRINT @(20,20),"",; ESCAPE 
+1800 CALL "ZZPROM","0",X3$,Z,"Proceed?","","",0; ON Z GOTO PROCESS_INFO,9900,1100
+2000 REM "DATA SEQ
+2020 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+2025 IF C0>3 OR X0<0 THEN GOTO 1800
+2040 ON X0 GOTO 2100,2150,2200,2250,2300,1800
+2100 REM "Customer code
+2110 CALL "ZZENTR","AU>F",A{ALL},A$,X4$,X3$,20,5,1,10,C0,"A/R","{5"+X$,"","ZZXAR100","AR1","",""; IF ABS(C0)>4 THEN GOTO 1800
+2120 FIND (Z[4],KEY=A$(1,10),DOM=2121)IOL=0320
+2140 GOTO 2020
+2150 REM "Customer code
+2160 CALL "ZZENTR","AUF<",A{ALL},A$,X4$,X3$,34,5,11,10,C0,"A/R","{5"+X$,"","ZZXAR102","AR1","",""; IF ABS(C0)>4 THEN GOTO 1800
+2170 FIND (Z[4],KEY=A$(11,10),DOM=2171)IOL=0320
+2190 GOTO 2020
+2200 REM "Date"
+2210 CALL "ZZENTR","DU>F",A{ALL},A$,X4$,X3$,20,6,21,6,C0,"","{5"+X$,"","ZZXAR104","","",""; IF ABS(C0)>4 THEN GOTO 1800
+2240 GOTO 2020
+2250 REM "Date
+2260 CALL "ZZENTR","DUF<",A{ALL},A$,X4$,X3$,34,6,27,6,C0,"","{5"+X$,"","ZZXAR106","","",""; IF ABS(C0)>4 THEN GOTO 1800
+2290 GOTO 2020
+2300 REM "File name
+2310 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,20,8,33,40,C0,"","{5"+X$,"","ZZXAR108","","",""; IF ABS(C0)>4 THEN GOTO 1800
+2340 GOTO 2020
+3000 PROCESS_INFO:
+3010 ! setup output file
+3015 FILE_NAME$=STP(A$(33,40))
+3020 ERASE FILE_NAME$,ERR=*NEXT; GOTO *SAME
+3025 SERIAL FILE_NAME$
+3045 OUTPUT=HFN; OPEN LOCK (OUTPUT)FILE_NAME$
+3050 SEP$=$09$
+3060 REC$="UPS Id"+SEP$+"Ship to Attn"+SEP$+"Ship to Name"+SEP$+"Ship to Addr1"+SEP$+"Ship to Addr2"+SEP$+"Ship to City"+SEP$+"Ship to State"+SEP$+"Ship to Zip"+SEP$+"Phone"+SEP$+"Serv Lvl"+SEP$+"Weight"+SEP$+"REF#1"+SEP$+"REF#2"+SEP$+"PACKAGE"+SEP$+"PREPAID"+SEP$+"Ship Date"+SEP$+"UPS Chg"+SEP$+"TRK NO"+SEP$+"QTY Shipped"+SEP$+"DT#"+SEP$+"Cust P/O"+SEP$; REM SSP 190993
+3065 PRINT (OUTPUT)REC$; REC$=""
+3099 ! *********************************************************
+3100 GOSUB 8100; READ (Z[1],KNO=1,KEY=A$(21,6),DOM=*NEXT)
+3101 ! we are reading with KNO=1 which is by shipped on date
+3105 READ_NEXT_SM4:DIM SM4$:IOL(Z[1]); READ (Z[1],KNO=1,END=SM4_END,REC=SM4$); IF SM4.SHIPPED_ON_DATE$>A$(27,6) THEN GOTO SM4_END ! using KNO 1 we are in date order so skip out
+3110 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+3200 ! Apply ranges
+3205 ! Check date range
+3210 IF SM4.SHIPPED_ON_DATE$<A$(21,6) OR SM4.SHIPPED_ON_DATE$>A$(27,6) THEN GOTO READ_NEXT_SM4
+3215 ! Read FT3 record to check customer#, if not found then skip it
+3220 DIM FT3$:IOL(Z[3]); READ (Z[3],KEY=SM4.PO_DIV$+MID(SM4.PO_NUM$,1,6),DOM=READ_NEXT_SM4,REC=FT3$)
+3225 IF FT3.CUST_DIV$+FT3.CUST_CODE$<A$(1,10) OR FT3.CUST_DIV$+FT3.CUST_CODE$>A$(11,10) THEN GOTO READ_NEXT_SM4
+3250 DIM AR1$:IOL(Z[4]); READ (Z[4],KEY=FT3.CUST_DIV$+FT3.CUST_CODE$,DOM=*NEXT,REC=AR1$)
+3260 DIM FT5$:IOL(Z[2]); READ (Z[2],KEY=SM4.PO_DIV$+SM4.PO_NUM$+SM4.PO_LINE_NUM$+SM4.LOC_CODE$,DOM=*NEXT,REC=FT5$)
+3270 DIM FM0$:IOL(Z[5]); READ (Z[5],KEY="C"+FT3.CUST_DIV$+FT3.CUST_CODE$+FT5.LOC_CODE$,DOM=*NEXT,REC=AR1$)
+3300 ! Calculated values
+3301 IF POS(X3$(9,3)="500546")=0 THEN GOTO 3310
+3305 IF NOT(NUL(FT3.ORDERED_BY$(11,10))) THEN PHONE_NUM$=FT3.ORDERED_BY$(11,10) ELSE PHONE_NUM$=FM0.LOC_PHONE$; REM SSP 190993
+3307 IF (NUL(PHONE_NUM$)) THEN PHONE_NUM$=AR1.CUST_PHONE$; REM SSP 190993
+3309 GOTO 3320
+3310 IF NOT(NUL(FM0.LOC_PHONE$)) THEN PHONE_NUM$=FM0.LOC_PHONE$ ELSE PHONE_NUM$=AR1.CUST_PHONE$; REM SSP 190993
+3320 IF SM4.SHIPPING_WT<>0 THEN WEIGHT=SM4.SHIPPING_WT ELSE WEIGHT=SM4.ACTUAL_WEIGHT
+3325 REF2$=FT3.ORDER_GREETING$; REM SSP 190993
+3326 REF1$=FT3.ORDERED_BY$(1,10); REM SSP 190993
+3330 SERVICE_LEVEL$="ground"
+3345 CALL "ZZDISP","DX",SM4.SHIPPED_ON_DATE$,"",X3$,SHIP_DATE$,"",0,0,X4$
+3355 ID$=STP(FT5.MARK_FOR$)
+3360 PN$=PAD(PHONE_NUM$,14); CALL "ZZDISP","PX",PN$,"",X3$,PHONE_NUM$,"",0,0,X4$; IF LEN(STP(PHONE_NUM$))<=10 THEN PHONE_NUM$=STP(SUB(PHONE_NUM$,"Ext:",""))
+3365 ! Get ship quantity
+3366 SHIP_QTY=0; READ (Z[6],KEY=SM4.PO_DIV$+MID(SM4.PO_NUM$,1,6),DOM=*NEXT)
+3370 NEXT_FT4: KFT4$=KEY(Z[6],END=DONE_WITH_QTY); IF MID(KFT4$,1,8)<>SM4.PO_DIV$+MID(SM4.PO_NUM$,1,6) THEN GOTO DONE_WITH_QTY
+3375 DIM FT4$:IOL(Z[6]); READ (Z[6],KEY=KFT4$,DOM=NEXT_FT4,REC=FT4$)
+3380 IF POS(FT4.LINE_TYPE$="SM")=0 THEN SHIP_QTY+=FT4.OPEN_QTY
+3385 GOTO NEXT_FT4
+3390 DONE_WITH_QTY:
+3395 IF NUL(ID$) THEN GOTO *NEXT ELSE IF ID$<>LAST_ID$ THEN LAST_ID$=ID$ ELSE SHIP_QTY=0
+3396 IF MID(SM4.CUST_PO$,1,1)="~" THEN SM4.TOTAL_FRT=NUM(MID(SM4.CUST_PO$,2),ERR=*PROCEED)
+3400 BUILD_RECORD:! build the record to output
+3405 REC$=ID$+SEP$+FT5.ATTN_NAME$+SEP$+FT5.COMP_NAME_TO_SHIP_TO$+SEP$+FT5.LOC_ADDR_1$+SEP$+FT5.LOC_ADDR_2$+SEP$
+3410 REC$+=FT5.LOC_CITY$+SEP$+FT5.LOC_ST$+SEP$+FN%ZZDISP$(FT5.LOC_ZIP_CODE$,"ZIP")+SEP$
+3415 REC$+=QUO+STP(PHONE_NUM$)+QUO+SEP$+SERVICE_LEVEL$+SEP$+STR(WEIGHT:"#,###.00")+SEP$+REF1$+SEP$+REF2$+SEP$; REM SSP 190993
+3420 REC$+="package"+SEP$+"prepaid"+SEP$
+3425 REC$+=SHIP_DATE$+SEP$
+3430 REC$+=STR(SM4.TOTAL_FRT:"####.00")+SEP$+SM4.TRACKING_NUM$+SEP$+STR(SHIP_QTY:"#,###,###")+SEP$+FN%ZZDISP$(SM4.PO_DIV$+MID(SM4.PO_NUM$,1,6),"O/P")+SEP$+FT3.CUST_PO$+SEP$; REM SSP 190993
+3495 PRINT (OUTPUT)REC$; REC$="",REF1$="",REF2$=""
+3995 GOTO READ_NEXT_SM4
+3999 ! ***********************************************************
+5000 SM4_END:! Finished with file
+5010 C=T; GOSUB 8150
+5015 CLOSE (OUTPUT)
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6010 PRINT @(20,4),"Starting",@(34,4),"Ending",
+6020 PRINT @(3,5),"Customer code:",@(7,6),"Ship date:",
+6030 PRINT @(7,8),"File name:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6205 PRINT 'SF',
+6220 CALL "ZZDISP","A>",A$(1,10),"A/R",X3$,"","",20,5,X4$
+6224 CALL "ZZDISP","A<",A$(11,10),"A/R",X3$,"","",34,5,X4$
+6230 CALL "ZZDISP","D>",A$(21,6),"",X3$,"","",20,6,X4$
+6234 CALL "ZZDISP","D<",A$(27,6),"A/R",X3$,"","",34,6,X4$
+6240 PRINT @(20,8),A$(33,40),
+6390 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,10),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "190993-Call from Chris with questions about the United Stationers 

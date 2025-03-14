@@ -1,0 +1,8 @@
+0010 ! "6.0 - 06/10/03 - 17.7275 - jir
+0020 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0030 ! "        Licensed Software - All Rights Reserved.
+0040 _ZZP=HFN; OPEN (_ZZP)"ZZPARM"
+0050 READ (_ZZP,KEY=FID(0)+"      ")X3$,*,X4$
+0060 PRINT 'MESSAGE'(DEF 45)
+0070 PRINT 'MESSAGE'(X3$(9,3)+"-"+X3$(86,40),1)
+0080 EXIT 

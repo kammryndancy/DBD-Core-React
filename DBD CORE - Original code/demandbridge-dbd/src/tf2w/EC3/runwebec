@@ -1,0 +1,5 @@
+TERM=ansi
+export TERM
+umask 0
+cd /usr/lib/pvx
+/usr/lib/pvx/pvx EC3SRV -arg id=$1 $2 $3 $4

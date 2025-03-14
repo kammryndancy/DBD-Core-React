@@ -1,0 +1,46 @@
+0010 REM "Print changes in backup list <UT2BUL>
+0035 REM "3.7 - 04/12/94 - 16.59 - jsc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0110 F9$="TMP"+FID(0)+"X"; ERASE F9$,ERR=0111
+0115 PRINT 'CS','LF','LF'
+0120 INPUT 'LF',"Enter the backuplist file name (including DIRectory)",'LF',"or press F10 to create a new complete backuplist file: ",B0$; IF CTL=4 THEN GOTO 9900
+0130 IF CTL=10 THEN GOSUB 2000; GOTO 0230
+0220 INVOKE "cp "+B0$+" ./UTILS/"+F9$
+0230 CLOSE (1); OPEN (1,ERR=0120)F9$
+0260 GOSUB 6000
+1000 REM "NEXT FILE
+1010 IF POS($00$<>A$)=0 AND A$>"" THEN GOTO 5000
+1020 IF POS($0A$=A$)=0 THEN READ RECORD (1)X$; A$=A$+X$
+1030 P=POS($0A$=A$),Q$=A$(1,P-1),A$=A$(P+1)
+1040 IF Q$="" THEN GOTO 1000
+1050 REM 
+1055 P=POS("/"=Q$); IF P>0 THEN Q$=Q$(P+1); GOTO 1055
+1060 IF LEN(Q$)<>6 THEN GOTO 1000
+1200 REM "PROCESS PROGRAM
+1400 SETERR 1000
+1410 PRINT @(12,8),'CE',"Now comparing: ",Q$,""
+1420 CALL "UT2REV",X3$,V0$,V1$,":"+Q$,10
+1990 GOTO 1000
+2000 REM "Make new backuplist file
+2020 INPUT 'LF',"Enter the DIRectory (path) to use in making the",'LF',"filelist (i.e. rel/tf2p/AP2, etc.): ",P0$
+2025 V0$=P0$
+2040 P0$="cd "+P0$
+2044 REM "following line would add only programs with mod date < xx days
+2045 REM LET P9$=" -mtime -20 "
+2050 P0$=P0$+";find ./ "+P9$+" -print > /usr/lib/basic/UTILS/"+F9$
+2060 PRINT "Now creating the backuplist in file: ",F9$,"..."
+2070 INVOKE P0$
+2090 RETURN 
+5000 REM "END
+6000 REM 
+6010 PRINT @(0,3),'CE',
+6020 PRINT "This program will compare the entries in the 'rel' version"
+6025 PRINT "of TopForm to the 'dev' version of TopForm.  If you need to"
+6030 PRINT "compare the release volume to another volume, enter the"
+6040 PRINT "primary volume name (i.e. 'z.xxx'): ",; INPUT V1$
+6045 IF CTL=4 THEN GOTO 0010
+6090 RETURN 
+9940 RUN "ZMENU"
+9999 END 

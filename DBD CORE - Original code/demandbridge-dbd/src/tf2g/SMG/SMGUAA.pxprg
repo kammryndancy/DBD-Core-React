@@ -1,0 +1,425 @@
+0010 REM "<SMGUAA> Update Customer Invoicing Gateway Entry
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 04/16/24 - 14.312758 - crg - SSP# 307430
+0037 REM "307430-DBD-333;Add 101 to some of 288's company specfic code       
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "SMGUAA","../SMG/SM.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,RFRECID$
+0095 INIT:
+0100 SETERR 9000
+0110 X0$="SMGUAA",X1$="Update Customer Invoicing Gateway Entry"
+0120 DIM Z0$(80,"-"),S0$(40),SM4[12]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0220 IF STP(Q0$,1)<>"" THEN ALT_FILE$=Q0$ ELSE ALT_FILE$=""
+0240 IF Q1$="" OR Q1$="*" AND RFRECID$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15] ! WO244750, expand SM0
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13]
+0370 IOLIST SM4$,SM4[0],SM4[1],SM4[2],SM4[3],SM4[4],SM4[5],SM4[6],SM4[7],SM4[8],SM4[9],SM4[10],SM4[11],SM4[12],SM4[13],SM4[14],SM4[15] ! WO244750, expand SM4
+0500 REM " Files
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "If file opens are added here, they also need to be added to 7515, WO122361
+0510 Z$="01O SM0... 02O FS1... 03O PO3... 04O SM3... 05O FMP... 06O PO2... 07O SM4... 08O SM5... 09O SM6... 10O PO1... 11O APD... 12O ZZP  13O ZZPARM  14O FT3... 15O SMD...  16O SM0...  17O FS2...  18O SMC...  " ! WO243848, added SMC
+0515 IF ALT_FILE$<>"" THEN Z$(5,3)=ALT_FILE$
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 DIM R9$(100); READ (Z[13],KEY=X3$(9,3)+"A/R",DOM=0526)R9$
+0527 DIM SH_PARM$(300); READ (Z[13],KEY=X3$(9,3)+"S/H",DOM=0528)SH_PARM$
+0528 DIM SMP_PARM$(50); READ (Z[13],KEY=X3$(9,3)+"SMP",DOM=0529)SMP_PARM$
+0530 GOSUB 7400
+0540 IF Q1$="" OR Q1$="*" THEN SHOW_IT=1 ELSE SHOW_IT=0
+0545 IF RFRECID$<>"" THEN SHOW_IT=0
+0600 REM "
+0610 IF SHOW_IT THEN GOSUB 6000
+0620 GOSUB 8100
+0640 EXIT ; IF Q1$="" THEN MSGBOX "Proceed",MSG("WARNING"),"?,YESNO",OPT$; IF OPT$="NO" THEN GOTO 9900
+0641 PROCEED:
+0900 DIM A[15] ! WO244750, expand SM0
+0901 IF %TASK_NUM$<>"" THEN RFRECID$=%TASK_NUM$,Q1$="*" ! SSP#221690
+0990 IF Q1$="" OR Q1$="*" THEN READ (Z[1],KEY="",DOM=0991) ELSE READ (Z[1],KEY=Q1$,DOM=0991)
+0995 IF RFRECID$<>"" THEN READ (Z[1],KNO=3,KEY=RFRECID$,ERR=*NEXT)
+0998 IF %CUST_SORT THEN GOSUB SORT_BY_CUST; READ (MMF,KEY="",DOM=1000) ! SP 238370
+1000 REM "Process SM0
+1002 IF NOT(%CUST_SORT) THEN GOTO 1005 ! WO 238370
+1003 KSRT$=KEY(MMF,END=5000); READ (MMF,KEY=KSRT$)KSM0$ ! WO 238370
+1004 FIND (Z[1],KEY=KSM0$,DOM=1003)IOL=0310; K1$=KSM0$; GOTO 1006 ! WP 238370
+1005 IF RFRECID$<>"" THEN KYZ1$=KEY(Z[1],KNO=3,END=5000); READ (Z[1],KEY=KYZ1$,KNO=3,DOM=*SAME)IOL=0310 ELSE K1$=KEY(Z[1],KNO=0,END=5000); READ (Z[1],KEY=K1$,KNO=0,DOM=*SAME)IOL=0310
+1006 IF RFRECID$<>"" THEN IF A$(328,10)<>RFRECID$ THEN GOTO 1002 ELSE K1$=A$(1,13)+A$(124,3)
+1007 IF RFRECID$="" THEN IF A$(328,10)<>DIM(10) THEN GOTO 1002
+1008 IF A$(10,3)="D02" THEN %NET=A[4]; REMOVE (Z[1],KEY=K1$); GOTO 1002 ELSE IF A$(10,3)="D01" THEN %AMT_SUB_DISC=A[4]; REMOVE (Z[1],KEY=K1$); GOTO 1002
+1009 CALL "UPDFS1;READBYKEY",ERR=*NEXT,Z[2],0,A$(1,8),SEG2$,SEG3$,SEG4$,SEG5$,FS1$,FS1{ALL},FOUNDFS1; IF NOT(FOUNDFS1) THEN ORDER_FOUND=0; GOTO 1026 ! SSP216086 look to see if in FT3, if so then update SM4 and keep in SM0 so it prints on journal else remove the record.  Used to be THEN REMOVE (Z[1],KEY=K1$); GOTO 1002
+1010 IF A$(10,3)="D03" THEN %DISC_AMT=A[4]; REMOVE (Z[1],KEY=K1$); GOSUB 3000; GOTO 1002
+1011 IF Q1$<>"" AND Q1$<>"*" THEN IF K1$(1,LEN(Q1$))<>Q1$ THEN GOTO 5000; REM "If s/o number or s/o # and line# given, then only do those records
+1012 IF LEN(A$)<108 THEN A$=A$+S0$(1,9)
+1013 IF K1$(1,9)<>PO_NO$ THEN GOSUB 2500; REM "A/P Invoice routine
+1015 C=C+1; IF MOD(C,T0)=0 THEN GOSUB 8150
+1017 C0=0
+1020 IF A$(98,1)<>"Y" THEN GOSUB 2100; REM "Receive the Purchase order
+1024 IF ALT_FILE$>"" THEN GOTO 1027
+1025 INV$=""; ORDER_FOUND=0; READ (Z[2],KEY=A$(1,8),DOM=1026); ORDER_FOUND=1; GOTO 1027; REM "If order not found, then skip order header freight update and invoicing MOD: 1380819
+1026 DIM B[13]; FIND (Z[14],KEY=A$(1,8),DOM=1030)IOL=0320; GOSUB 7850; GOTO 1036; REM "130819, if here, open order not found, look for repeat order, if found, update SM4 tracking information, and the skip everything else
+1027 IF A$(97,1)<>"Y" AND A$(314,1)=" " AND A$(315,1)=" " THEN GOSUB 2000; GOSUB 2200 ELSE GOSUB 2300; REM "Update Freight amount in order header if not done, also update ship via code, added 314,1 check on SSP132195, if record has error code then don't update order, specifically order header freight
+1028 IF ALT_FILE$="" AND MID(SH_PARM$,224,1)="Y" THEN GOSUB CHECK_FS2 ! SSP206259, if CIG and parm set to not invoice any orders that have all PO type lines, then check FS2 and if true then set don't bill (99,1) to Y SSP 212086
+1029 IF SH_PARM$(200,1)<>"Y" AND A$(100,1)<>"Y" AND A$(314,1)=" " AND A$(315,1)=" " THEN GOSUB 2400; REM "Invoice it
+1030 IF ORDER_FOUND THEN GOTO *NEXT ELSE REMOVE (Z[1],KEY=K1$); GOTO 1002 ! SSP216086, we tried at line 1026 to find order in FT3 after not finding it in FS1, but it wasn't there either, so remove and go get next record.
+1035 IF ORDER_FOUND AND SH_PARM$(200,1)="Y" THEN GOSUB 7850; REM "If params set to not invoice then goto 7850 to copy SM0 record to SM4
+1085 GOSUB 7500
+1090 IF RFRECID$<>"" THEN CALL "UPDSM0;DELETE",0,A$,A{ALL},FOUNDSM0,BUSYSM0 ELSE WRITE (Z[1],KEY=K1$)IOL=0310
+1095 GOTO 1002
+2000 REM "Update Order Header with Freight Amount
+2005 DIM B[13],B$(350)
+2006 REM "If tracking number is not blank, the check the tracking number against the numbers ussed on this order, if already updated then skip to setting flag
+2007 IF STP(A$(383,60),3," ")="" THEN GOTO 2010 ELSE IF A$(1,9)<>CURR_ORDER$ THEN CURR_ORDER$=A$(1,9),TRACKING_LIST$="" ! ssp257952
+2008 IF POS(A$(383,60)=TRACKING_LIST$,60)<>0 THEN GOTO 2085 ELSE TRACKING_LIST$=TRACKING_LIST$+A$(383,60); REM IF ALREADY ON LIST THEN SKIP, ELSE ADD TOLIST AND PROCESS;! SSP257952
+2010 EXTRACT (Z[2],KEY=A$(1,8),DOM=2095)IOL=0320
+2020 B[8]=B[8]+A[3]
+2080 WRITE (Z[2],KEY=A$(1,8))IOL=0320
+2082 IF ALT_FILE$>"" AND A[3]<>0 THEN EXTRACT RECORD (Z[10],KEY=A$(1,9),DOM=2083)PO1$; PO1$(352,1)="Y",PO1$(353,11)=STR(A[3]:"-#######.00",ERR=2083); WRITE RECORD (Z[10],KEY=A$(1,9))PO1$; REM "Need code similar to 7951 in PO2MAG
+2084 REM "IF A[3]<>0 THEN GOSUB 6900
+2085 A$(97,1)="Y"; REM "Order flag
+2095 RETURN 
+2100 REM "Receive the purchase order
+2105 REM "Build P/O receiving record, then call update routine
+2106 IF A$(314,1)<>" " OR A$(315,1)<>" " THEN PO_ERR$="Y"; RETURN ; REM "If there are any errors then don't try to PO receive
+2110 DIM R$(63),R[7]
+2112 R$(1,13)=A$(1,13); REM "P/O number, line number, ship to code
+2114 R$(14,10)=A$(266,10); REM "Vendor Invoice Number
+2116 IF POS(" "<>A$(15,6))=0 THEN R$(24,6)=X3$(21,6) ELSE R$(24,6)=A$(15,6); REM "Receipt date is shipped on date, or today's date
+2118 IF STP(A$(288,6),1)="" THEN R$(30,6)=V0$(73,6) ELSE R$(30,6)=A$(288,6); REM "Fiscal Year & Accounting period
+2120 R$(36,12)=A$(294,12),R$(48,6)=A$(306,6); REM "Factory Job Number & Date
+2122 R$(54,9)=A$(147,9); REM "Ending Number
+2124 IF ALT_FILE$="" THEN IF A$(99,1)<>"Y" THEN R$(63,1)="Y"; REM "complete flag
+2126 IF ALT_FILE$>"" THEN IF A$(312,1)="Y" THEN R$(63,1)="Y"; REM "If CIG Plus and SM7 says complete then set to Y for complete
+2130 R[0]=A[0]; REM "Quantity received
+2131 R[1]=0; REM "Unit Cost Calculated or Defaulted in PO2MAL
+2132 IF ALT_FILE$>"" THEN R[2]=A[11] ELSE A[11]=0,R[2]=A[11]; REM "Quantity backordered currently NOT SET,set if SM7
+2133 A[12]=0,R[3]=A[12]; REM "Carton Pack currently NOT SET
+2134 R[4]=R[1]; REM "Actual Weight
+2135 R[5]=0; REM "Combo Quantity currently NOT SET
+2136 R[6]=A[3]; REM "Total freight
+2137 R[7]=A[4]; REM "Total cost
+2140 V8$=X3$(174,4)+X3$(85,1),X3$(174,4)=V0$(86,4),X3$(85,1)=V0$(90,1); REM "Set batch info from report parameters
+2143 IF A$(318,1)="Y" THEN C0=3; REM "Shipping to dist whse, vendor inv only, no po receiving
+2145 CALL "PO2MAL",X3$,X4$,R$,R{ALL},C0,A$,A{ALL}
+2150 IF C0=0 THEN A$(98,1)="Y",REC_LINES$=REC_LINES$+A$(10,3) ELSE PO_ERR$="Y"; IF C0=2 THEN IF A$(315,1)=" " THEN A$(315,1)="D" END_IF ELSE IF C0=4 THEN IF A$(315,1)=" " THEN A$(315,1)="E"; REM "If ok, show received. C0=2 means PO already being received in another batch (FTO record),C0=4 means PO already being received in another batch (FTK record, inventory costing)
+2151 C0=0
+2190 X3$(174,4)=V8$(1,4),X3$(85,1)=V8$(5,1); REM "Restore x3 batch values
+2195 RETURN 
+2200 REM "Update Ship Via in General Instructions from carrier code
+2205 REM "Do general instructions exist?
+2206 REM "Note READ RECORD to avoid having to worry about buckets
+2207 Z$="03C  04C  05C  03O PO3... 04O SM3... 05O FMP..."; CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 2208,2295
+2210 READ RECORD (Z[3],KEY=A$(1,8)+" "+"   "+" ",DOM=2295)P0$
+2215 REM "Does carrier code to ship via code map exist for this carrier code?
+2220 FIND (Z[4],KEY=A$(31,6),DOM=2295)M0$
+2225 REM "Does ship via code in map exist?
+2230 FIND (Z[5],KEY="S"+M0$(7,1),DOM=2295)V9$
+2255 REM "Replace ship via code & ship via description in PO3 record & write back out (using WRITE RECORD )
+2260 P0$(150,1)=V9$(2,1) ! ,P0$(210,15)=V9$(3,15)  WO 271507
+2262 IF MID(SH_PARM$,236,1)<>"Y" THEN P0$(210,15)=V9$(3,15) ! WO 271507
+2265 WRITE RECORD (Z[3],KEY=A$(1,8)+" "+"   "+" ")P0$
+2295 RETURN 
+2300 REM "If not updating orders then read order info
+2305 DIM B[13],B$(350)
+2310 READ (Z[2],KEY=A$(1,8),DOM=2311)IOL=0320
+2345 RETURN 
+2400 REM "Invoice the order if needed
+2404 ! IF POS(X3$(9,3)="084",3)<>0 AND B$(47,1)=" " THEN A$(100,1)="Y",A$(317,1)="Y"; IF A$(97,1)="Y" THEN GOSUB 7850; GOTO 2499 ELSE GOTO 2499 ! IF COMP 84 and sales order then don't invoice 193668 !SSP#197599!SSP#220920, 258069-commented out line
+2405 IF ALT_FILE$>"" THEN GOSUB 7950; IF PO_ERR$="Y" THEN GOTO 2499 ELSE IF PO1$(173,1)<>"C" OR POS(PO1$(351,1)="BS")>0 THEN A$(100,1)="Y",A$(317,1)="Y"; GOSUB 7850; GOTO 2499; REM "If CIG Plus then if stock PO or B type then no A/R but set invoiced to Y so record will go away when we clear, copy SM7 to SM4 (7850)
+2410 GOSUB 7650; IF ALT_FILE$>"" AND SMP_PARM$(8,1)="Y" AND B[0]>0 AND P2>0 THEN A$(100,1)="D"; GOSUB 7850; GOTO 2499 ELSE IF ALT_FILE$>"" AND B$(243,1)="Y" AND P2>0 THEN A$(100,1)="C"; GOSUB 7850; GOTO 2499; REM "Check PO2 lines to see if all complete or not. SSP144414 If CIG Plus and parm set and FS1 deposit amount and some lines not complete then no AR invoice. Also, if CIG Plus and order header field set and some lines not complete then no AR invoice.                       
+2420 DIM I0$(14)
+2430 IF A$(99,1)="Y" OR P0=0 OR C0<>0 OR B$(63,1)="Y" THEN IF ALT_FILE$>"" AND P0>0 THEN GOSUB 7850; GOTO 2499 ELSE IF ALT_FILE$>"" THEN GOTO 2499 ELSE GOTO 2470; REM " If don't bill or problem in receiving then skip invoicing or 7650s set P0 to 0 because at least one line is not complete. SSP119925, add check to see if invoicing in progress, if so don't attempt to invoice again. If CIG Plus then copy SM7 to SM$ (7850) then get out.
+2431 IF ALT_FILE$>"" THEN GOSUB 7750; IF ERR_FOUND$="Y" THEN GOTO 2499; REM "If CIG Plus then read all records for this order number checking for any error codes, if any found then we don't want to invoice the customer
+2440 V8$=X3$(174,4)+X3$(85,1),X3$(174,4)=V0$(81,4),X3$(85,1)=V0$(85,1); REM "Set batch info from report parameters
+2442 DIM FMP_S$(20); FIND (Z(5),KEY="S"+CARRIER_ID$(1,1),DOM=*NEXT)FMP_S$
+2445 %SHIP_DATE$=%X3$(15,6),%SHIP_VIA_CODE$=MID(CARRIER_ID$,1,1),%SHIP_VIA_DESC$=MID(FMP_S$,3,15); %SHIP_VIA_DESC$=PAD(%SHIP_VIA_DESC$,15)
+2446 REM "IF MID(R$,24,6)<>"" THEN %SHIP_DATE$=MID(R$,24,6); REM SSP 190704
+2447 IF SHIPPED_ON_DATE$<>"" THEN %SHIP_DATE$=SHIPPED_ON_DATE$; REM SSP 190704
+2448 %X3_TODAY$=%X3$(15,6); REM SSP 190704
+2449 ORD$=A$(1,8),INV$="",CR_FY$=V0$(73,4),CR_ACCTPD$=V0$(77,2)
+2450 IF MID(B$,54,1)<>"B" THEN I$="0"+V0$(73,6)+A$(1,8); CALL "SMGEAA",X3$,X4$,I$,ORD$,INV$,CR_FY$,CR_ACCTPD$
+2451 %SHIP_DATE$=""; REM SSP 190704
+2452 ! 
+2455 IF MID(B$,54,1)<>"B" AND INV$<>"" THEN CALL "UPDSMD;CREATE_FROM_INVOICE",Z[15],X3$,X4$,ORD$,INV$,CR_FY$,CR_ACCTPD$,A$
+2460 X3$(174,4)=V8$(1,4),X3$(85,1)=V8$(5,1); REM "Restore x3 batch values
+2465 GOSUB 7510; REM "WO122361, reopen all files
+2470 REM "Always set invoiced values, to show that it was processed for invoiceing
+2480 IF B$(63,1)<>"Y" AND INV$<>"" THEN A$(100,1)="Y",A$(101,8)=INV$; REM "If ok then show it was invoiced, and record invoice number. SSP119925, if we skipped around on 2430 because invoicing in progress flag was set then don't set invoiced in SM0 to Y, this should keep the SM0 record to be picked up the next time.
+2490 IF B$(63,1)<>"Y" THEN GOSUB 7800
+2499 RETURN 
+2500 REM "Accounts Payable Invoicing
+2503 IF ALT_FILE$="" THEN RETURN 
+2505 IF STP(PO_NO$,1)="" THEN GOTO 2590
+2510 IF STP(VEND_INV_NUM$,1)="" THEN GOTO 2590; REM "Skip if no inv#
+2513 IF AP_DONE$="Y" THEN GOTO 2590; REM "Already A/P invoiced
+2514 IF REC_LINES$="" THEN GOTO 2590; REM "If we haven't received any lines for this PO then no AP invoice setup
+2515 IF STP(PO_ERR$,1)<>"" THEN GOTO 2590; REM "Skip if P/O error
+2517 IF STP(AP_ERR$,1)<>"" THEN GOTO 2590; REM "Skip if A/P error
+2520 REM "Get P/O info
+2523 DIM PO1$(383)
+2525 READ (Z[10],KEY=PO_NO$,DOM=2526)PO1$; GOTO 2530
+2526 AP_ERR$="P"; GOTO 2560; REM "P/O missing
+2530 REM "Check if invoiced
+2535 READ (Z[11],KEY=FISCAL_YR$+ACCTG_PD$+VEND_NUM$+VEND_INV_NUM$,DOM=2540)
+2536 AP_ERR$="I"; GOTO 2560; REM "A/P already invoiced
+2540 REM "Setup and call to create A/P incl vendor code  & terms code
+2543 DIM PP_INV_NUM$(10)
+2545 Q2$=PO_NO$+VEND_INV_NUM$+PO1$(7,10)+VEND_INV_DATE$+FISCAL_YRPD$+PO1$(179,2)+PP_INV_NUM$+PO1$(210,2)
+2546 REM "Q2$ = P/O number + Vendor invoice number + Vendor code + Vendor invoice date + Fiscal Year & Accouting Period + Division number + Pre Paid Invoice (blank) + Terms code
+2550 V8$=X3$(174,4)+X3$(85,1),X3$(174,4)=V0$(91,4),X3$(85,1)=V0$(95,1); REM "Set batch info from report parameters
+2555 CALL "AP2DAA",X3$,X4$,Q0$,Q2$
+2557 AP_DONE$="Y"; REM "If ok, show A/P invoiced  **** ERRORS?
+2560 REM "Update SM0 record
+2562 SM0_CUR_KEY$=K1$
+2564 READ (Z[1],KEY=SM0_AP_KEY$,KNO=0,DOM=2570)IOL=0310
+2565 IF A$(10,1)="D" THEN GOTO 2599
+2566 A$(313,1)=AP_DONE$; IF AP_ERR$<>"" THEN A$(314,1)=AP_ERR$
+2568 WRITE (Z[1],KEY=SM0_AP_KEY$)IOL=0310
+2570 REM "Restore current record & X3 batch values
+2573 READ (Z[1],KEY=SM0_CUR_KEY$,KNO=0,ERR=2574)IOL=0310
+2575 X3$(174,4)=V8$(1,4),X3$(85,1)=V8$(5,1)
+2580 IF EOJ_FLAG$="Y" THEN RETURN 
+2590 REM "Save data for A/P invoicing from first record of P/O
+2591 SM0_AP_KEY$=K1$; REM "Save current key for A/P flag
+2593 PO_ERR$="",AP_ERR$="",REC_LINES$=""
+2595 PO_NO$=K1$(1,9),VEND_INV_NUM$=A$(266,10),VEND_INV_DATE$=A$(276,6)
+2596 IF STP(A$(288,6),1)="" THEN FISCAL_YRPD$=V0$(73,6) ELSE FISCAL_YRPD$=A$(288,6)
+2597 AP_DONE$=A$(313,1); REM AP_ERR$=A$(314,1)
+2599 RETURN 
+3000 REM "REPOSITION FILE
+3005 IOLIST SM7$
+3010 SELECT IOL=3005 FROM Z[1],KNO=0 BEGIN "" END "ZZZZZZZZZZZZZZZZ" WHERE ORDER$=A$(1,9)
+3030 NEXT RECORD 
+3050 READ (Z[1],KEY=SM7$(1,13)+SM7$(124,3),KNO=0,ERR=*NEXT)
+3099 RETURN 
+5000 REM "EOJ
+5005 IF PO_NO$<>"" THEN EOJ_FLAG$="Y"; GOSUB 2500
+5010 T=C; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 ! PRINT @(10,5),"Processing Shipping Manifest Entry Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6900 REM "Write to Freight Detail File ATF ssp 183911
+6901 IF A[3]=0 THEN GOTO 6950
+6902 DIM DET_IN$(255),DET_IN[8]
+6903 DET_IN[0]=A[3]
+6904 DET_IN$(1,9)=A$(1,9); REM " ORDER NUMBER
+6906 SOURCE$="SHP"; REM "SOURCE
+6908 RWD$="W"; REM "Action requested
+6912 PROGRAM$="SM2UAA"; REM " PROGRAM
+6925 CALL "AR2XAF",X3$,X4$,RWD$,SOURCE$,PROGRAM$,DET_IN$,DET_IN{ALL},DET_OUT$,DET_OUT{ALL},UNUSED1,UNUSED2
+7400 REM "Read report selection parameters"
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)*,*,V1$,V3$,V2$,V0$
+7454 IF LEN(V0$)<96 THEN V0$=V0$+" "; GOTO 7454
+7455 IF POS(V0$(1,3)="SM2SMG",3)=0 THEN V0$(81,15)=""; REM "Not for this program
+7462 IF POS(" "<>V0$(81,15))=0 THEN GOSUB 7600
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"  ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "If level 7 then close all files and reopen to clear unclosed files that can accumulate to cause "FILE COULD NOT BE OPENED" errors. Assumes that the rwrite at line 1090 will properly position SM0 for next read correctly.  WO122361, some files were not staying open on the same channel so we will do a GOSUB 7510 and reopen all files
+7505 IF POS("7."=SYS)=0 THEN GOTO 7545
+7510 DIM Z[NUM(X3$(60,3))]; Y1$="",Y0$=""
+7515 Z$="01O SM0... 02O FS1... 03O PO3... 04O SM3... 05O FMP... 06O PO2... 07O SM4... 08O SM5... 09O SM6... 10O PO1... 11O APD... 12O ZZP  13O ZZPARM 14O FT3... 17O FS2...  18O SMC...  " ! WO243848, added SMC
+7516 IF ALT_FILE$<>"" THEN Z$(5,3)=ALT_FILE$
+7520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 7521,9900
+7545 RETURN 
+7600 REM "Get batch control number for Invoices (AR2EAA) and Receiving (PO2MAG) also set fiscal year & acctg period
+7601 REM "V0$(81,5)=invoicing batch number, A$(86,5)=receiving batch number
+7602 REM "and A/P Invoices (AP2DAA); where A$(90,5)=a/p batch number
+7605 REM "Get invoicing into a$(81,5) using AR2EAA
+7607 V0$(73,6)=R9$(7,6); REM "Set Fiscal Year & Acct Period.
+7608 IF X3$(145,1)<>"1" THEN RETURN ; REM "if not batch company then don't set batch info
+7609 V9$=X3$(174,4)+X3$(85,1)
+7610 X3$(174,4)="",X3$(85,1)="",P0$="AR2EAA"
+7612 CALL "ZGBATC",X3$,X4$,P0$,X9; IF X9=1 THEN CMD_STR$="E"; EXIT 
+7615 V0$(81,5)=X3$(174,4)+X3$(85,1),X3$(174,4)="",X3$(85,1)=""
+7616 IF SHOW_IT THEN PRINT @(0,3),'CE',; REM "Clear screen after
+7625 REM "Get receiving into A$(86,5) using PO2MAG
+7630 X3$(174,4)="",X3$(85,1)="",P0$="PO2MAG"
+7632 CALL "ZGBATC",X3$,X4$,P0$,X9; IF X9=1 THEN CMD_STR$="E"; EXIT 
+7635 V0$(86,5)=X3$(174,4)+X3$(85,1),X3$(174,4)="",X3$(85,1)=""
+7637 IF SHOW_IT THEN PRINT @(0,3),'CE',; REM "Clear screen after
+7640 REM "Get receiving into A$(91,5) using AP2DAA *****
+7642 X3$(174,4)="",X3$(85,1)="",P0$="PO2MAG"
+7644 CALL "ZGBATC",X3$,X4$,P0$,X9; IF X9=1 THEN CMD_STR$="E"; EXIT 
+7646 V0$(91,5)=X3$(174,4)+X3$(85,1),X3$(174,4)="",X3$(85,1)=""
+7647 IF SHOW_IT THEN PRINT @(0,3),'CE',; REM "Clear screen after
+7648 X3$(174,4)=V9$(1,4),X3$(85,1)=V9$(5,1)
+7649 RETURN 
+7650 REM "Set P0 to 1 if all lines are complete and order is ready to bill, else set it to 0, P1 is number of lines found, if 0 then P0 should be 1, no lines means no P/O means shipping inventory, so bill it now
+7655 P0=0,P1=0,P2=0; READ (Z[6],KEY=A$(1,8),DOM=7656)
+7660 K6$=KEY(Z[6],END=7680); IF K6$(1,8)<>A$(1,8) THEN IF P1=0 THEN P0=1; GOTO 7680 ELSE GOTO 7680
+7665 P1=P1+1; READ (Z[6],KEY=K6$,DOM=7660)P6$
+7667 DIM SMC$(355); IF FS1$="" OR MID(FS1$,6,10)=DIM(10) THEN GOTO *NEXT ELSE FIND (Z[18],KEY=MID(FS1$,6,10),DOM=*NEXT)SMC$(1) ! WO243848, check SMC for customer record to never create AR invoice if lines not complete
+7670 IF P6$(6,1)<>"Y" THEN IF ALT_FILE$="" AND (MID(SH_PARM$,204,1)<>"Y" OR SMC$(31,1)="Y") THEN P0=0; GOTO 7690 ELSE IF P6$(10,1)<>"M" THEN P2=P2+1; REM "If even one line is not complete then skip out with P 0=0.  If CIG Plus then even if some lines are not complete we still wa nt to bill it so go on rather than skipping out.  SSP144414 added P2,  if CIG Plus keep track of number of PO lines that are not complete.  WO160386, if 204,1 is Y then don't want to stop doing an AR invoice if some lines not complete.  WO243848, added SMC check, customer set to never invoice if any lines not complete.  SSP256965, don't increment P2 if PO2 line is M (message) type   
+7675 GOTO 7660
+7680 REM "IF still here, then all lines found are marked complete or we are coming from CIG Plus, so set P0 to 1 to indicate that i is time to bill
+7685 P0=1; GOSUB 7700; REM "Set it to 1, but goto 7700 to check next record in SM0
+7695 RETURN 
+7700 REM "P0 is 1, but check next record in SM0, if the Sales order part matches then we want to wait until it is processed
+7704 READ (Z[1],KEY=K1$,KNO=0,DOM=7705); REM "Position to key we are doing
+7705 K9$=KEY(Z[1],KNO=0,END=7745); REM "if end of file then no more to process, so leave P0 alone and leave
+7710 IF K9$(10,1)="D" THEN GOTO 7745; REM " 
+7725 IF K9$(1,8)=K1$(1,8) THEN P0=0,P4=1; REM "If next key has same sales order P0=0 to hold off on billing till later
+7745 RETURN 
+7750 REM "If CIG Plus then read through all SM7 record for this order number to see if any have errors, if so then we don't want to do the AR invoicing.
+7755 ERR_FOUND$="N"
+7760 READ (Z[1],KEY=A$(1,8),KNO=0,DOM=7761)
+7765 K2$=KEY(Z[1],KNO=0,END=7790); READ (Z[1],KNO=0,KEY=K2$)SM7_CHECK$
+7770 IF K2$(1,8)<>A$(1,8) THEN GOTO 7790
+7775 IF SM7_CHECK$(314,1)<>" " OR SM7_CHECK$(315,1)<>" " THEN ERR_FOUND$="Y"; GOTO 7790
+7780 GOTO 7765
+7790 READ (Z[1],KEY=K1$,KNO=0,DOM=7791)
+7795 RETURN 
+7800 REM "Mark all SM0 records for the order to be invoiced, and set the invoice number. Then transfer all SM0 records for the order to SM4. A$(101,8) has the invoice number. Write at 1090 will reposition file properly
+7805 IF P0=0 AND P4=1 AND ALT_FILE$="" AND A$(101,8)=DIM(8) THEN P4=0; GOTO 7845; REM "SSP150513, haven't billed yet because more SM0 records for this order, don't transfer to SM4 at this time, will come back around again after the invoice is created and do it then.
+7810 READ (Z[1],KEY=A$(1,8),KNO=0,DOM=7811)
+7815 KEY_1$=KEY(Z[1],KNO=0,END=7845); IF KEY_1$(1,8)<>A$(1,8) THEN GOTO 7845 ELSE EXTRACT RECORD (Z[1],KNO=0,KEY=KEY_1$)SM0$
+7820 SM0$(100,1)="Y",SM0$(101,8)=A$(101,8); REM "Invoiced? and Invoice number
+7821 SM4$=SM0$,SM4$(328,10)=DIM(10) ! SSP#221059
+7822 CALL "SM2SM4",ERR=*NEXT,X3$,X4$,SM4$,SM4{ALL} ! SSP#221059
+7823 IF POS(X3$(9,3)="101288500",3)>0 AND (MID(SM0$,37,3)="UPS" OR UCS(MID(SM0$,37,2))="FE" OR UCS(MID(SM0$,37,2))="FX" OR UCS(MID(SM0$,37,3))="CHW") THEN DONT_WRITE_SM4=0,CHECK_SM4_ORDER$=SM0$(1,8),CHECK_SM4_TRACK$=MID(SM0$,383,60),CHECK_SM4_TRACK2$=MID(SM0$,49,20),CHECK_SM4_INV$=MID(SM0$,101,8); GOSUB CHECK_SM4_288; IF DONT_WRITE_SM4=1 THEN READ (Z[1]); GOTO 7840 ! WO246403 SSP257952 SSP260531!SSP#299106 TEMP Add 500 for testing!SSP#304502 SSP307430-DBD-333-DBSPT-149880
+7824 IF SH_PARM$(203,1)<>"Y" THEN READ RECORD (Z(7),KEY=SM0$(1,13)+SM0$(124,3),DOM=*NEXT)SM41$; IF SM41$(1,14)+SM41$(31,6)+SM41$(383,60)+SM41$(127,3)=SM0$(1,14)+SM0$(31,6)+SM0$(383,60)+SM0$(127,3) THEN WRITE RECORD (Z(7),KEY=SM4$(1,13)+SM4$(124,3))SM4$; GOTO 7835; REM "If parameter set this info maybe coming from entry on S/H P3 don't dupl 167200!SSP#221059 SSP257952
+7825 WRITE RECORD (Z[7],KEY=SM4$(1,13)+SM4$(124,3),DOM=*NEXT)SM4$; GOTO 7835 ! 291110 - IF SM4$(124,3)="990" THEN WRITE RECORD (Z[7],KEY=SM4$(1,13)+SM4$(124,3))SM4$; GOTO 7835 ELSE WRITE RECORD (Z[7],KEY=SM4$(1,13)+SM4$(124,3),DOM=*NEXT)SM4$; GOTO 7835
+7830 SM4$(124,3)=FN%INCR$(SM4$(124,3)); GOTO 7825 ! 291110 - STR(NUM(SM4$(124,3))+1:"000")
+7835 GOSUB 7900; IF A$(101,8)<>DIM(8) THEN WRITE RECORD (Z[1],KEY=KEY_1$)SM0$ ELSE READ (Z[1]); REM "Write to SM4 and then reposition SM0 to point to next record, changed to also write to SM0 so invoice number will print on the journal for all records pertaining to the same order number, SSP132195
+7840 GOTO 7815
+7845 RETURN 
+7850 REM "In case of not invoicing, then process a single SM0 record to SM4, unlike 7800's which do an order at a time
+7852 IF POS(X3$(9,3)="101288500",3)>0 AND (MID(A$,37,3)="UPS" OR UCS(MID(A$,37,2))="FE" OR UCS(MID(A$,37,2))="FX") THEN DONT_WRITE_SM4=0,CHECK_SM4_ORDER$=A$(1,8),CHECK_SM4_TRACK$=MID(A$,383,60),CHECK_SM4_TRACK2$=MID(A$,49,20),CHECK_SM4_INV$=MID(A$,101,8); GOSUB CHECK_SM4_288; IF DONT_WRITE_SM4=1 THEN RETURN ! WO246403 SSP257952 SSP260531!SSP#299106 TEMP Add 500 for testing SSP307430-DBD-333-DBSPT-149880
+7855 SM4$=A$; DIM SM4[15]; FOR III=0 TO 15; SM4[III]=A[III]; NEXT III ! WO244750, expand SM4
+7857 IF SM4$(10,1)="D" THEN GOTO 7865
+7859 CALL "SM2SM4",ERR=*NEXT,X3$,X4$,SM4$,SM4{ALL}
+7860 WRITE (Z[7],KEY=SM4$(1,13)+SM4$(124,3),DOM=7861)IOL=0370; GOSUB 7900; GOTO 7865 ! 291110 - IF SM4$(124,3)="990" THEN WRITE (Z[7],KEY=SM4$(1,13)+SM4$(124,3))IOL=0370; GOSUB 7900; GOTO 7865 ELSE WRITE (Z[7],KEY=SM4$(1,13)+SM4$(124,3),DOM=7861)IOL=0370; GOSUB 7900; GOTO 7865
+7862 SM4$(124,3)=FN%INCR$(SM4$(124,3)); GOTO 7860 ! 291110 - STR(NUM(SM4$(124,3))+1:"000")
+7895 RETURN 
+7900 REM "Write SM5 and SM6 for SM4$ record and B$ is FS1
+7905 WRITE (Z[8],KEY=SM4$(15,6)+SM4$(1,13)+SM4$(124,3))
+7910 WRITE (Z[9],KEY=B$(6,10)+SM4$(14,6)+SM4$(1,13)+SM4$(124,3))
+7945 RETURN 
+7950 REM "Read PO header if CIG Plus to see if stock or B type order
+7960 DIM PO1$(383); READ (Z[10],KEY=A$(1,9),DOM=7961)PO1$; GOTO 7995
+7961 PO_ERR$="Y"
+7995 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ML_MESS.CTL'VALUE$="There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF SHOW_IT THEN CALL "ZZBARG",X3$,"HG",7,7,40,T1,T,C
+8195 RETURN 
+8200 CHECK_FS2:! SSP206259, new parameter asking If all order lines have PO code then don't create invoice, check and see if FS2 lines, except S and M types, all have a PO code, if so set 99,1 to Y, which is the don't bill setting
+8205 ALL_LINES_PO$="N",FIRST_TIME$="Y"
+8210 READ (Z[17],KEY=A$(1,8),DOM=*NEXT,END=*RETURN)
+8215 FS2_KEY$=KEY(Z[17],END=8240); READ (Z[17],KEY=FS2_KEY$)FS2$
+8220 IF FS2_KEY$(1,8)<>A$(1,8) THEN IF FIRST_TIME$="Y" THEN GOTO *RETURN ELSE GOTO 8240
+8225 ! IF POS(FS2$(155,1)="MS")>0 THEN GOTO 8215 !SSP208467, remarking out this line, now 590 says we need to look at all lines, even S types for a PO code
+8230 IF FIRST_TIME$="Y" THEN FIRST_TIME$="N"
+8235 IF FS2$(9,1)=DIM(1) THEN ALL_LINES_PO$="N"; GOTO 8240 ELSE ALL_LINES_PO$="Y"; GOTO 8215
+8240 IF ALL_LINES_PO$="Y" THEN A$(99,1)="Y"
+8245 RETURN 
+8249 ! 
+8250 CHECK_SM4_288:! WO246403 - if company 288, could be coming from 7800's or 7850'so, might already be SM4 record for this tracking number and invoice number (might be blank), check for existing, but only for carrier names starting with UPS.  If found, then we don't want to write another SM4 record. SSP260531, also check for carrier names starting with uppercased FE or FX, also check new AND old tracking number fields.
+8251 ! RETURN ! DBSPT-175777
+8255 READ (Z[7],KEY=CHECK_SM4_ORDER$,DOM=*NEXT)
+8260 SM4_KEY$=KEY(Z[7],END=*RETURN); IF SM4_KEY$(1,8)<>CHECK_SM4_ORDER$ THEN RETURN 
+8265 DIM SM4_CHECK$(700); READ (Z[7],KEY=SM4_KEY$)SM4_CHECK$(1)
+8270 IF CHECK_SM4_TRACK$=SM4_CHECK$(383,60) AND CHECK_SM4_TRACK2$=SM4_CHECK$(49,20) THEN DONT_WRITE_SM4=1; RETURN ! SSP257952, SSP260531, check new and old tracking number fields!SSP# 299106 Per 288 remove the compare against the INV#
+8275 GOTO 8260
+8295 RETURN 
+8299 ! 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9750 REM "Open files!SSP#237374
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! SSP#237374
+9790 RETURN ! SSP#237374
+9900 REM "END PROGRAM
+9905 END_PROC:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9915 CLOSE (MMF,ERR=*NEXT) ! WO 238370
+9920 IF X3$(174,4)<>DIM(4) THEN GOSUB REMOVE_APD ! SSP#237374, SSP244408
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 REM "Remove APD batch file if empty, SSP#237374
+10005 REMOVE_APD:! SSP#237374
+10010 Z$="11O APD... "; GOSUB 9750 ! SSP#237374
+10020 READ (Z[11],KEY="",DOM=*NEXT) ! SSP#237374
+10030 K$=KEY(Z[11],END=*NEXT); FLAG=1 ! SSP#237374
+10040 Z$="11C APD... "; GOSUB 9750 ! SSP#237374
+10050 IF FLAG<>1 THEN ERASE "APD"+X3$(174,4) ! SSP#237374
+10090 RETURN ! SSP#237374
+12000 SORT_BY_CUST:REM "Create memory file sorted by Customer/PO Number if parameter set WO 238370
+12005 MMF=GFN; OPEN (MMF)"*memory*"
+12025 SORT_CUST$=DIM(10)
+12030 READ (Z[1],KEY="",DOM=*NEXT)
+12040 KS$=KEY(Z[1],KNO=0,END=12200); READ (Z[1],KEY=KS$,KNO=0)IOL=0310
+12050 SORT_CUST$=DIM(10); READ (Z[2],KEY=A$(1,8),DOM=12060)CFS1$; SORT_CUST$=CFS1$(6,10); GOTO 12100; REM "Check for existing open order WO 237374
+12060 DIM B[13]; FIND (Z[14],KEY=A$(1,8),DOM=12070)CFT3$; SORT_CUST$=CFT3$(6,10); GOTO 12100; REM "if here, open order not found, look for repeat order, WO 238370
+12070 SORT_CUST$="NO ORDER  "
+12100 ORDER_FOUND=1
+12110 WRITE (MMF,KEY=SORT_CUST$+KS$)KS$
+12120 GOTO 12040
+12200 RETURN 
+56001 REM "186852-Email Order Shipping Confirmations                          
+56002 REM "190704-Ran the CIG, invoices that printed are missing the Invoice  and shipped date.  ssp 190360 would like to have the shipped date default to the real shipped date instead of the system date
+56004 REM "191943-Add extra field to call statement for invoicing             
+56006 REM "190478-Additional Services - Handle shipements delivered via       
+56007 REM "195308-Not all orders are creating an invoice in order shipment    
+56008 REM "192797-Customer Invoicing Gateway parameter, Don't invoice         
+56009 REM "196002-Issue with invoice that came in through shipping gateway.   
+56015 REM "206259-CIG, print shop orders, no release lines, SMGUAA creates
+56016 REM "197599-Problem in S/H, P3 -Shipping system needs to update the     
+56020 REM "208467-Invoicing Gateway Pulling Vendor PO Lines
+56021 REM "212086-Running the CIG-1st time since the upgrade and it stuck
+56025 ! "216689-SMGMCA.1 - Need to make a few modifications to some fields  
+56026 REM "220920-Freight Tracking is posting UPS detail to releases,         ,221059-Table SM4_CIGHIS has a customer code and customer division 
+56028 REM "216086-EC credit card orders auto invoiced, already closed when 
+56029 REM "237374-a question about files building up on our server...          orphaned APD files being left when running CIG
+56030 REM "238370-CIG: New option to process in customer/order number sequence
+56032 ! WO243848-SMC parm, don't create AR invoice if lines not complete
+56034 ! WO244750-Inbound Freight Processing in CIG-expand SM0/SM4/SM7
+56036 ! WO246403-288 only, prevent SM4 dups for UPS with tracking/invoice match
+56038 ! SSP256965-CIGP; No invoice until complete, only msg lines open, need
+56039 REM "257952-Need larger tracking number field to replace 20 character   
+56040 REM "260531-Need mod to Customer Invoicing GW custom programming that   
+56041 REM "264641-Customer Invoicing GW; Add option to select which file(s) to
+56042 REM "271507-S/H System Parm; Don't update order ship via description?   
+56043 REM "291110-Modify SM files three character BOX_NUMBER to sequence using
+56044 REM "299106-A few years back, we submitted a w/o request to not allow   
+56045 REM "304502-Add carrier ID CHW_FedExGrd to the custom logic to check for
+56046 REM "307430-DBD-333;Add 101 to some of 288's company specfic code       
+56047 REM "307430-DBSPT-175777; Disable SM4 duplicate avoidance logic for 101/288       

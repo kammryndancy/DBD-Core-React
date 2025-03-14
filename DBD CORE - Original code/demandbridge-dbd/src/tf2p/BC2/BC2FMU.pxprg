@@ -1,0 +1,144 @@
+0010 REM "Convert existing flexible formats <BC2FMU>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 12/05/01 - 9.725555 - rms - SSP# 129412
+0040 REM "Copyright 2001 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="BC2FMU",X1$="Convert Existing Flexible Formats"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "I/O lists
+0310 IOLIST Y8$,Y8[0],Y8[1],Y8[2],Y8[3],X9$(1)
+0311 IOLIST Y8$,Y8[0],Y8[1],Y8[2],Y8[3],Y8[4],Y8[5],Y8[6],Y8[7],Y8[8],Y8[9],Y8[10],X9$
+0312 IOLIST Y8$,Y8[0],Y8[1],Y8[2],Y8[3],Y8[4],Y8[5],Y8[6],Y8[7],Y8[8],Y8[9],Y8[10],X9$,Y9$
+0315 IOLIST X9[0],Y9[0],X9[1],Y9[1],X9[2],Y9[2],X9[3],Y9[3],X9[4],Y9[4],X9[5],Y9[5],X9[6],Y9[6],X9[7],Y9[7],X9[8],Y9[8],X9[9],Y9[9],X9[10],Y9[10],X9[11],Y9[11],X9[12],Y9[12],X9[13],Y9[13],X9[14],Y9[14],X9[15],Y9[15],X9[16],Y9[16],X9[17],Y9[17],X9[18],Y9[18],X9[19],Y9[19],X9[20],Y9[20],X9[21],Y9[21],X9[22],Y9[22],X9[23],Y9[23],X9[24],Y9[24],X9[25],Y9[25],X9[26],Y9[26],X9[27],Y9[27],X9[28],Y9[28],X9[29],Y9[29],X9[30],Y9[30],X9[31],Y9[31],X9[32],Y9[32],X9[33],Y9[33],X9[34],Y9[34],X9[35],Y9[35],X9[36],Y9[36],X9[37],Y9[37],X9[38],Y9[38],X9[39],Y9[39],X9[40],Y9[40],X9[41],Y9[41],X9[42],Y9[42],X9[43],Y9[43],X9[44],Y9[44],X9[45],Y9[45],X9[46],Y9[46],X9[47],Y9[47],X9[48],Y9[48],X9[49],Y9[49],X9[50],Y9[50],X9[51],Y9[51],X9[52],Y9[52],X9[53],Y9[53],X9[54],Y9[54],X9[55],Y9[55],X9[56],Y9[56],X9[57],Y9[57],X9[58],Y9[58],X9[59],Y9[59],X9[60],Y9[60],X9[61],Y9[61],X9[62],Y9[62],X9[63],Y9[63],X9[64],Y9[64],X9[65],Y9[65],X9[66],Y9[66],X9[67],Y9[67],X9[68],Y9[68],X9[69],Y9[69],X9[70],Y9[70],X9[71],Y9[71],X9[72],Y9[72],X9[73],Y9[73],X9[74],Y9[74],X9[75],Y9[75],X9[76],Y9[76],X9[77],Y9[77],X9[78],Y9[78],X9[79],Y9[79],X9[80],Y9[80],X9[81],Y9[81],X9[82],Y9[82],X9[83],Y9[83],X9[84],Y9[84],X9[85],Y9[85],X9[86],Y9[86],X9[87],Y9[87],X9[88],Y9[88],X9[89],Y9[89],X9[90],Y9[90],X9[91],Y9[91],X9[92],Y9[92],X9[93],Y9[93],X9[94],Y9[94],X9[95],Y9[95],X9[96],Y9[96],X9[97],Y9[97],X9[98],Y9[98],X9[99],Y9[99],X9[100],Y9[100],X9[101],Y9[101],X9[102],Y9[102],X9[103],Y9[103],X9[104],Y9[104],X9[105],Y9[105],X9[106],Y9[106],X9[107],Y9[107],X9[108],Y9[108],X9[109],Y9[109],X9[110],Y9[110],X9[111],Y9[111],X9[112],Y9[112],X9[113],Y9[113],X9[114],Y9[114],X9[115],Y9[115],X9[116],Y9[116],X9[117],Y9[117],X9[118],Y9[118],X9[119],Y9[119],X9[120],Y9[120],X9[121],Y9[121],X9[122],Y9[122],X9[123],Y9[123],X9[124],Y9[124],X9[125],Y9[125],X9[126],Y9[126],X9[127],Y9[127],X9[128],Y9[128],X9[129],Y9[129],X9[130],Y9[130],X9[131],Y9[131],X9[132],Y9[132],X9[133],Y9[133],X9[134],Y9[134],X9[135],Y9[135],X9[136],Y9[136],X9[137],Y9[137],X9[138],Y9[138],X9[139],Y9[139],X9[140],Y9[140],X9[141],Y9[141],X9[142],Y9[142],X9[143],Y9[143],X9[144],Y9[144],X9[145],Y9[145],X9[146],Y9[146],X9[147],Y9[147],X9[148],Y9[148],X9[149],Y9[149],X9[150],Y9[150],X9[151],Y9[151],X9[152],Y9[152],X9[153],Y9[153],X9[154],Y9[154],X9[155],Y9[155]
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15]
+0360 IOLIST F$,F[0],F[1],F[2],F[3],F[4],F[5],F[6],F[7]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZPARM 05O ZF5... 06O ZF6... 07O QSX...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0540 FIND (Z[13],KEY=X3$(9,3)+"F/M")P0$
+0600 REM "
+0610 GOSUB 6000
+0615 DIM A$(3)
+0620 GOSUB 2000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM "Setup  Starting string S1$ and ending string S2$
+0910 IF A$(3,1)="*" THEN S1$="0",S2$="Z" ELSE S1$=A$(3,1),S2$=A$(3,1)
+0915 DIM Y8[10],X9[155],Y9[155],X9$(155)
+0950 IF A$(1,2)<>"FX" THEN EXTRACT (Z[1],KEY="FORMAT"+A$(1,2)+S1$,DOM=0951) ELSE EXTRACT (Z[7],KEY="FORMATFX"+S1$,DOM=0951)
+1000 REM "BEGIN MAIN PROCESS
+1010 IF LEN(A1$)>1 AND A1$(1,2)<>"FX" THEN K1$=KEY(Z[1],END=5000) ELSE K1$=KEY(Z[1],END=5000)
+1020 IF MID(K1$,1,8)<>"FORMAT"+A$(1,2) THEN GOTO 5000 ELSE IF K1$(9,1)>S2$ THEN GOTO 5000
+1030 IF A$(1,2)<>"FX" THEN READ (Z[1],KEY=K1$,DOM=1010)IOL=0310,IOL=0315 ELSE READ (Z[7],KEY=K1$,DOM=1010)IOL=0310,IOL=0315
+1050 PRINT @(20,15),"Processing Format "+A$(1,2)+"  type: "+K1$(9,1),
+1100 REM "Remove matching entries from ZF5 & ZF6
+1105 DIM K5$(10); K5$(1)="FORMAT"+A$(1,2)
+1110 REMOVE (Z[5],KEY=K5$,DOM=1111)
+1120 READ (Z[6],KEY=K5$,DOM=1121)
+1125 K6$=KEY(Z[6],END=1150)
+1130 IF K6$(1,LEN(K5$)+1)=K5$+K1$(9,1) THEN REMOVE (Z[6],KEY=K6$,DOM=1120); GOTO 1120 ELSE GOTO 1150
+1200 REM "Setup Document header
+1205 DIM E[15],E$(67)
+1210 IF A$(1,2)="PL" THEN E$(1,10)="856" ELSE IF A$(1,2)="IN" THEN E$(1,10)="810" ELSE IF A$(1,2)="PO" THEN E$(1,10)="850" ELSE IF A$(1,2)="FX" THEN E$(1,10)="840" ELSE E$(1,10)="FORMAT"+A$(1,2); REM "Document code
+1212 E$(11,1)=Y8$(9,1); REM "Format type
+1214 E$(12,30)=Y8$(10,30); REM "Description
+1216 E[0]=Y8[0]; REM "Number of lines on item
+1218 E[2]=Y8[1]; REM "Number of columns on item
+1220 E[4]=Y8[2]; REM "First line of lines section
+1222 E[5]=Y8[3]; REM "Number of lines in lines section
+1224 IF A$(1,2)="PO" THEN E[6]=Y9[32]; REM "If P/O set second lines section from line number of plys
+1245 WRITE (Z[5],KEY=E$(1,11))IOL=0350
+1300 REM "Setup document field records
+1305 FOR I=1 TO 155
+1310 DIM F$(178),F[7]
+1315 IF X9[I]=0 THEN GOTO 1385
+1320 F$(1,11)=E$(1,10)+E$(11,1); REM "document code + flex format type
+1325 F$(12,4)=STR(I:"0000"); REM "Field numer
+1330 F$(28,1)=X9$(I); REM "Print type
+1335 F[0]=X9[I]; REM "Print column
+1340 F[1]=Y9[I]; REM "Print line
+1350 REM "Change type if needed
+1355 IF POS(F$(1,8)="FORMATCL",8)<>0 THEN IF F$(28,1)="D" THEN F$(28,1)=" ",F$(69,5)="DBLHT"; REM "If carton label and double height print (type = D) then clear type and add DBLHT option
+1380 WRITE (Z[6],KEY=F$(1,27))IOL=0360
+1385 NEXT I
+1600 GOTO 1000
+2000 REM "Enter conversions
+2010 C0=0,X0=-1,X1=1
+2020 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+2025 IF C0>3 OR X0<0 THEN GOTO 1800
+2040 ON X0 GOTO 2300,2350,2095
+2095 RETURN 
+2300 REM "Format Code
+2305 J$="POPLCLINAPSTAKDTFX"
+2307 X$="PO,PL,CL,IN,AP,ST,AK,DT,FX"
+2310 CALL "ZZENTR","SUR",A{ALL},A$,X4$,X3$,28,8,1,2,C0,"","{3"+X$,J$,"BC2FMU10","","",""
+2315 IF ABS(C0)=4 THEN GOTO 2095
+2340 GOTO 2020
+2350 REM "Type to Print
+2355 J$="FORMAT"+A$(1,2),X$="Enter code to get or '*' for all"
+2360 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,28,10,3,1,C0,"","{3"+X$,J$,"BC2FMU12","FFA","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 2360,2361
+2365 IF ABS(C0)=4 THEN GOTO 2095
+2370 IF A$(3,1)<>"*" AND A$(1,2)<>"FX" THEN READ (Z[13],KEY="FORMAT"+A$(1,3),DOM=2360)
+2380 IF A$(3,1)<>"*" AND A$(1,2)<>"FX" THEN READ (Z[7],KEY="FORMAT"+A$(1,3),DOM=2360)
+2390 GOTO 2020
+5000 REM "EOJ
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility program will convert one or more existing flexible formats for use with the Bar Coding Module.",
+6030 PRINT @(0,8),"Flexible format to convert:",@(4,10),"Format Type to convert:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "Repaint screen
+6405 PRINT @(0,3),'CE',; GOSUB 6000
+6410 PRINT @(28,8),A$(1,2),@(28,10),A$(3,1),
+6445 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

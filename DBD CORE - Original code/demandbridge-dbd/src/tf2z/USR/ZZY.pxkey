@@ -1,0 +1,41 @@
+<PxTable>
+ TableName=ZZY
+ TableKey=K971278675
+ FileCreate=KEYED "ZZY",6,0,-320,BSZ=2,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="BA"
+    FIELD_1$="BABegin auxillary port output   T0For terminals with an auxillary port, this code will re-direct term-  inal output to the auxillary port.  Turned off by using EA.                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BR"
+    FIELD_1$="BRBegin reverse video           T1                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EA"
+    FIELD_1$="EAEnd auxillary port output     T0Ends auxillary port output of I/O, and turns off BA.                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ER"
+    FIELD_1$="EREnd reverse video             T1                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T1"
+    FIELD_1$="T1Normal 80 column mode         T0Sets the terminal to 80 column mode (default mode)                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="T2"
+    FIELD_1$="T2                              T1                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,18 @@
+0010 ! FXGMDA - Print fax log 
+0020 ! "5.2 - 09/19/03 - 12.636944 - jir
+0030 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0040 ! "        Licensed Software - All Rights Reserved.
+0050 PROCESS "FXGMDA","../FXG/FX.EN"
+0060 EXIT 
+0070 PROCEED:
+0075 ! PRINT 'DIALOGUE'(10,10,70,20,"Error Log"),
+0080 %ML_CMD.CTL=ML_CMD.CTL,%LB_CMD.CTL=LB_CMD.CTL
+1000 ! 1000,10
+1010 X2=-1; CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2
+1020 IF SYS="MS-WINDOWS" THEN CALL "ZZPROM",".4",X3$,Z,"This feature not supported from the TopForm menu in Windows","","",0; GOTO 1070
+1030 CLOSE (14); OPEN (14)"ZZPARM"
+1040 CALL "FX2SBC",X3$,14,P$,X9
+1045 IF P$(695,1)="3" THEN ML_CMD.CTL'VALUE$=STP(P$(697,30),1)+"/bin/vfxolog| lp" ELSE ML_CMD.CTL'VALUE$="umask 0; cd /usr/vsifax/bin; flog | lp"
+1050 IF P$(695,1)="3" THEN INVOKE STP(P$(697,30),1)+"/bin/vfxolog| lp" ELSE INVOKE "umask 0; cd /usr/vsifax/bin; flog | lp",ERR=*NEXT ! %GUI
+1070 %ML_CMD.CTL=0,%LB_CMD.CTL=0
+1080 EXIT 

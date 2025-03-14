@@ -1,0 +1,9 @@
+0010 ! WCGAAA - Make WebEC Central Global Variables
+0035 ! "6.0 - 05/05/03 - 11.326388 - kmc
+0040 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0100 ! Set X3 stuff if not set
+0110 IF NOT(%X3_SET) THEN CALL "ZZWMX3"
+0200 ! set WebEC Central stuff
+0210 %WC_SET=1
+0220 %WC_DIR$=LWD+DLM+"webec_central"

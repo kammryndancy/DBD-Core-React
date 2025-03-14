@@ -1,0 +1,90 @@
+0010 REM "Create email request for Variable Print <EC3VP0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 10/09/07 - 13.778055 - jdf - SSP# 212160
+0037 REM "212160-Webec is down.  Cannot use 64 character session id          
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "VP_EMAIL_REQ$ is string of the form  order#(8 long)+order line #(6) added togther
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},VP_EMAIL_REQ$,OPTIONS$
+0100 SETERR 9000
+0110 X0$="EC3VP0",X1$="Create email request for variable print"
+0120 EOL$=""; IF EC_PARM$(57,8)<>DIM(8) THEN EOL$=ATH(STP(EC_PARM$(57,8),1))
+0200 REM "
+1000 ! Process VP_MAIL_REQ$
+1010 WHILE LEN(VP_EMAIL_REQ$)>=11
+1015 ORDER$=VP_EMAIL_REQ$(1,8),ORDER_LINE$=VP_EMAIL_REQ$(9,3); VP_EMAIL_REQ$=MID(VP_EMAIL_REQ$,12)
+1030 GOSUB PROCESS_REQUEST
+1080 WEND 
+1095 GOTO 9900
+1099 ! **************************************************
+1100 PROCESS_REQUEST:! process  a request with ORDER$ and ORDER_LINE$
+1110 IF NOT(NUL(EC$[14](482,5))) THEN FILE_SUFFIX$=STP(EC$[14](482,5),3) ELSE XX$=STP(EC$[14](176,20),3," "),XX=POS("."=XX$); FILE_SUFFIX$=MID(XX$,XX)
+1500 REM "Create email request file 148750
+1501 REM "Use port 1002
+1505 CLOSE (1002)
+1510 PRECISION 5; RANDOM$=STR(INT(RND*100000)); PRECISION 2; TMP_EMAIL_FILE$=%SERVER_DIR$+TMPNAME$+RANDOM$ ! SSP166022, was previously using FILE_SUFFIX$, this was being picked up by the server before we would write to it.
+1511 OPEN (1002,ERR=1515)TMP_EMAIL_FILE$; CLOSE (1002); GOTO 1510; REM "if we can open the file then it is in use, try again
+1515 REM "Create file, then open file and write to it
+1520 SERIAL TMP_EMAIL_FILE$,ERR=1510
+1521 OPEN LOCK (1002)TMP_EMAIL_FILE$; MESS$="Creating email request for Variable Print|"+TMP_EMAIL_FILE$+"|ORDER|"+ORDER$+"|LINE|"+ORDER_LINE$+"|",MTYPE$="EMAIL"; GOSUB 7500
+1530 IF EC_PARM$(1177,1)="Y" THEN SID$=EC$[1](1,7) ELSE SID$=EC$[1](1213,64) ! SSP212160 jdf
+1532 WRITE RECORD (1002)"basic=EC3VP1"
+1533 WRITE RECORD (1002)"template="+TEMPLATE$
+1534 WRITE RECORD (1002)"session_id="+SID$ ! SSP212160 jdf
+1535 WRITE RECORD (1002)"order="+ORDER$
+1536 WRITE RECORD (1002)"order_line="+ORDER_LINE$
+1542 WRITE RECORD (1002)"remove_file=Y"
+1543 WRITE RECORD (1002)"no_header=Y"
+1580 WRITE RECORD (1002)EOL$
+1590 CLOSE (1002)
+1600 ! Create email file name, try the rename, if error, try again
+1610 EMAIL_FILE$=%SERVER_DIR$+TMPNAME$+RANDOM$+FILE_SUFFIX$
+1620 RENAME TMP_EMAIL_FILE$,EMAIL_FILE$,ERR=*NEXT; GOTO 1690
+1630 PRECISION 5; RANDOM$=STR(INT(RND*100000)); PRECISION 2; GOTO 1610
+1690 MESS$="Done posting Variable Print Email|"+EMAIL_FILE$+"|ORDER|"+ORDER$+"|LINE|"+ORDER_LINE$+"|",MTYPE$="EMAIL"; GOSUB 7500
+1990 RETURN 
+1999 ! **********************************************
+7500 REM "Put MESS$ in log & display to screen if IMODE
+7501 REM "MTYPE$ is type, clear it after, if '' then say info
+7502 REM "valid are INFO,WARN,EXIT,EXCP,STAT,EMAIL
+7504 IF XMODE THEN GOTO 7541
+7505 IF MTYPE$="" THEN MTYPE$="INFO"
+7510 OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MTYPE$+"|"+MESS$; PRECISION 2
+7520 IF USE_START_LOG THEN GOTO *NEXT ELSE IF NO_LOG THEN GOTO 7540 ELSE PRINT (33003)OUT$; REM "151249, if start_log set, don't do anything We may use the start log until we have the server id
+7540 IF DISPLAY_LOG THEN PRINT OUT$
+7541 MTYPE$=""
+7545 RETURN 
+7549 ! **************************************************
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "201193-Questions about security of Boars Head EC Promo site.       
+56004 REM "212160-Webec is down.  Cannot use 64 character session id          

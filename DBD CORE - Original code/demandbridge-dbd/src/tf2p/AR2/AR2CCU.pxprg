@@ -1,0 +1,140 @@
+0010 REM "Overwrite/Purge CC Related Records <AR2CCU>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 01/04/11 - 10.995277 - dmm - SSP# 239471
+0037 REM "239471-Use of Cybersource's Simple Order and Silent POST APIs to   
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Copied from EC3UTO, WO239471, 09/09/10
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2CCU",X1$="Overwrite/Purge CC Related Records"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECA...  02O ECD...  03O ARZ...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0630 DIM A$(3)
+0635 ! Overwrite CC fields in ECA? A$(1,1)
+0640 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,64,9,1,1,C0,"","{1"+X$,"","AR2CCU04","","",""; IF C0=4 THEN GOTO 9900
+0645 ! Overwrite CC fields in ECD? A$(2,1)
+0650 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,64,10,2,1,C0,"","{1"+X$,"","AR2CCU06","","",""; IF C0=4 THEN GOTO 9900
+0655 ! Purge ARZ file? A$(3,1)
+0660 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,64,11,3,1,C0,"","{1"+X$,"","AR2CCU06","","",""; IF C0=4 THEN GOTO 9900
+0690 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0691,9900
+1000 REM 
+1010 IF A$(1,1)="Y" THEN GOSUB OVERWRITE_ECA_RECS
+1020 IF A$(2,1)="Y" THEN GOSUB OVERWRITE_ECD_RECS
+1030 IF A$(3,1)="Y" THEN GOSUB PURGE_ARZ_FILE
+1090 GOTO 5000
+5000 REM "EOJ
+5010 PRINT @(0,13),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program will perform the tasks below that are designated with a Y response.This utility program is intended for administrator use only.  Please make sure  there is a backup of the current files prior to proceeding."
+6100 PRINT @(5,9),"Overwrite CC fields in EC Buyer records (ECA) with blanks?",
+6110 PRINT @(1,10),"Overwrite CC fields in EC Worksheet records (ECD) with blanks?",
+6115 PRINT @(5,11),"Purge all records from Customer CC Information file (ARZ)?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6410 GOSUB 6000
+6430 GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6490 RETURN 
+7500 OVERWRITE_ECA_RECS:
+7505 PRINT @(0,22),'CE',"ECA Update in progress",
+7510 C=0,FILEE=Z[1],MSG$="Buyer Records (ECA) file."
+7515 GOSUB 8100
+7520 READ (Z[1],KEY="",DOM=*NEXT)
+7525 K$=KEY(Z[1],END=ECA_DONE); EXTRACT RECORD (Z[1],KEY=K$)ECA$
+7530 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+7535 ECA$(493,68)=DIM(68)
+7540 WRITE RECORD (Z[1],KEY=K$)ECA$
+7545 GOTO 7525
+7580 ECA_DONE:
+7585 C=T; GOSUB 8150
+7590 RETURN 
+7599 ! 
+7600 OVERWRITE_ECD_RECS:
+7605 PRINT @(0,22),'CE',"ECD Update in progress",
+7610 C=0,FILEE=Z[2],MSG$="Worksheet Records (ECD) file."
+7615 GOSUB 8100
+7620 READ (Z[2],KEY="",DOM=*NEXT)
+7625 K$=KEY(Z[2],END=ECD_DONE); EXTRACT RECORD (Z[2],KEY=K$)ECD$
+7630 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+7635 ECD$(411,68)=DIM(68),ECD$(1099,4)=DIM(4)
+7640 WRITE RECORD (Z[2],KEY=K$)ECD$
+7645 GOTO 7625
+7680 ECD_DONE:
+7685 C=T; GOSUB 8150
+7690 RETURN 
+7699 ! 
+7700 PURGE_ARZ_FILE:
+7705 PRINT @(0,22),'CE',"ARZ Purge in progress",
+7710 C=0,FILEE=Z[3],MSG$="Customer CC Info (ARZ) file."
+7715 GOSUB 8100
+7720 READ (Z[3],KEY="",DOM=*NEXT)
+7725 K$=KEY(Z[3],END=ARZ_DONE); EXTRACT RECORD (Z[3],KEY=K$)ARZ$
+7730 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+7735 ARZ$(1,200)=DIM(200)
+7740 WRITE RECORD (Z[3],KEY=K$)ARZ$
+7745 REMOVE (Z[3],KEY=K$)
+7750 GOTO 7725
+7780 ARZ_DONE:
+7785 C=T; GOSUB 8150
+7790 RETURN 
+7799 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",FILEE,T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,13),"There are "+STR(T)+" records to process for the "+MSG$
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "239471-Use of Cybersource's Simple Order and Silent POST APIs to 

@@ -1,0 +1,161 @@
+<PxTable>
+ TableName=FRC
+ TableKey=K1372704551
+ FileCreate=KEYED "FRC",11,0,-256,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FRC_ConsCtrl"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":56-csc"
+    LASTUPDATEDFILE$="2015/08/28 12:43:28-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST CONSOLIDATION_CODE$:[LEN(4)]"
+    NAME$="CONSOLIDATION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CONS_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Consolidation code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST COMPANY_CODE$:[LEN(3)]"
+    NAME$="COMPANY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COMP_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Company code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST REPORT_TO_INCLUDE$:[LEN(4)]"
+    NAME$="REPORT_TO_INCLUDE"
+    DESCRIPTION$="=MSG("+QUO+"REPO_T_I"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Report to include"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST CONSOLIDATION_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="CONSOLIDATION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CONS_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Consolidation code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST COMPANY_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="COMPANY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COMP_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Company code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST REPORT_TO_INCLUDE$:[LEN(4,SEP=SEP)]"
+    NAME$="REPORT_TO_INCLUDE"
+    DESCRIPTION$="=MSG("+QUO+"REPO_T_I"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Report to include"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST DATA_ITEM$:[LEN(30,SEP=SEP)]"
+    NAME$="DATA_ITEM"
+    DESCRIPTION$="=MSG("+QUO+"DATA_ITEM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Data item"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST FRC_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FRC_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="C0  5000110"
+    CONSOLIDATION_CODE$="C0  "
+    COMPANY_CODE$="500"
+    REPORT_TO_INCLUDE$="0110"
+    DATA_ITEM$="                              "
+    FRC_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C0  5000120"
+    CONSOLIDATION_CODE$="C0  "
+    COMPANY_CODE$="500"
+    REPORT_TO_INCLUDE$="0120"
+    DATA_ITEM$="                              "
+    FRC_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1  5000100"
+    CONSOLIDATION_CODE$="C1  "
+    COMPANY_CODE$="500"
+    REPORT_TO_INCLUDE$="0100"
+    DATA_ITEM$="                              "
+    FRC_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1  500C0  "
+    CONSOLIDATION_CODE$="C1  "
+    COMPANY_CODE$="500"
+    REPORT_TO_INCLUDE$="C0  "
+    DATA_ITEM$="                              "
+    FRC_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

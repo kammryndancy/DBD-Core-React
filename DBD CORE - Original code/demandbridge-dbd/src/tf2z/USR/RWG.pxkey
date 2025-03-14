@@ -1,0 +1,82 @@
+<PxTable>
+ TableName=RWG
+ TableKey=K1170444875
+ FileCreate=KEYED "RWG",10,0,-768,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="RWG_Rpt_Group"
+    PHYSICALPATH$="RWG"
+    LASTCHANGEDATE$="2007/02/02 14:36"
+    LASTCHANGEBY$="jme"
+    LASTUPDATEDFILE$="2024/09/27 11:44:34-ChaitanyaGun_kianoi2"
+    DESCRIPTION$="Report Group"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST RPT_GROUP$:[LEN(10)]"
+    NAME$="RPT_GROUP"
+    DESCRIPTION$="=MSG("+QUO+"RPT_GRP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST RPT_GROUP$:[LEN(10,SEP=SEP)]"
+    NAME$="RPT_GROUP"
+    DESCRIPTION$="=MSG("+QUO+"RPT_GRP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST NOT_USED$:[LEN(SEP,SIZ=500)]"
+    NAME$="NOT_USED"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="500"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="WMS       "
+    RPT_GROUP$="WMS       "
+    TF_DESC$="WMS Reports                             "
+    NOT_USED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "
+   </RecordData>
+
+</Data>
+
+</PxTable>

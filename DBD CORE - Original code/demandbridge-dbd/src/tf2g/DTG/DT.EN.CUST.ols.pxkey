@@ -1,0 +1,122 @@
+<PxTable>
+ TableName=DT.EN.CUST.ols
+ TableKey=K1345642821
+ FileCreate=KEYED "DT.EN.CUST.ols",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0000"
+    FIELD_1$="*File=="+QUO+"ZZK"+QUO+"+%C$"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="80"
+    FIELD_5$="20"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"SCHDLD"+QUO+")+"+QUO+" "+QUO+"+MSG("+QUO+"REPORTS"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"ZZK"+QUO+"+%C$"
+    FIELD_18$="2011/02/20 10:27 jvv"
+    FIELD_21$="=R"
+    FIELD_23$="C0000000"
+    FIELD_29$="PAD("+QUO+"SCHEDULED_DBD_RPT"+QUO+",20)+MID(PRIME_KEY$,1,31)"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0001"
+    FIELD_1$="Fld#1(1,6)"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"PGM"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0002"
+    FIELD_1$="Fld#1(7,6)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"DATE"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0003"
+    FIELD_1$="Fld#1(13,4)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"TIME"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0004"
+    FIELD_1$="Fld#1(17,3)"
+    FIELD_4$="4"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"COMPANY"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0005"
+    FIELD_1$="Fld#1(20,3)"
+    FIELD_4$="4"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"USER"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0006"
+    FIELD_1$="Fld#1(23,2)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"OUTPUT_DEV"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   0007"
+    FIELD_1$="Fld#2"
+    FIELD_4$="60"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"DESC"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_13$="TMID(PRIME_KEY$,32,1)="+QUO+"S"+QUO
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

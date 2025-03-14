@@ -1,0 +1,24 @@
+0010 REM "Calculate discount information from terms <ZZDISC>
+0035 REM "3.5 - 11/08/91 - 10.35
+0040 REM "Copyright 1991 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X3$,D$,D0,D1,Q0$,Q1$,Q2$,Q0,X0
+1210 Q9$=D$(33,10); GOSUB 2000; Q1$=Q$; IF D0<>0 THEN CALL "ZZDATE",Q$,Q1$,D0,0
+1220 Q9$=D$(43,10); GOSUB 2000; Q2$=Q$; IF D1<>0 THEN CALL "ZZDATE",Q$,Q2$,D1,0
+1290 GOTO 9900
+2030 IF Q9$(1,1)=" " THEN GOTO 2200 ELSE IF Q9$(1,1)="P" THEN P0=NUM(Q9$(2,3)); CALL "ZZDATE",X3$,"",Q0$,Q$,P0,0,0,0,0,0,0,"","",""; GOTO 2590
+2050 REM "Day in month
+2055 Q$=Q0$; IF Q9$(1,1)="N" THEN GOSUB 8900
+2060 IF Q9$(1,1)<>"T" AND Q9$(1,1)<>"N" THEN GOTO 2200
+2070 Q$(5,2)=Q9$(5,2); IF Q$(5,1)="E" THEN GOSUB 8900; X$=Q$(1,4)+"00"; CALL "ZZDATE",X3$,"",X$,Q$,0,0,0,0,0,0,0,"","",""
+2080 IF Q9$(7,2)>"00" THEN IF Q0$(5,2)>=Q9$(7,2) THEN Q$(5,2)=Q9$(9,2); IF Q9$(5,2)>=Q9$(9,2) THEN GOSUB 8900
+2085 IF Q$(5,1)="E" THEN GOSUB 8900; X$=Q$(1,4)+"00"; CALL "ZZDATE",X3$,"",X$,Q$,0,0,0,0,0,0,0,"","",""
+2090 GOTO 2500
+2200 REM "INVALID 
+2220 Q$="      "; RETURN 
+2595 RETURN 
+8900 REM "Add 1 to year
+8910 Q$(3,2)=STR(NUM(Q$(3,2))+1:"00"); IF Q$(3,2)>"12" THEN IF Q$(2,1)<"9" THEN Q$(1,2)=BIN(DEC(Q$(1,2))+1,2),Q$(3,2)="01" ELSE IF Q$(3,2)>"12" THEN IF Q$(2,1)="9" THEN Q$(1,2)=BIN(DEC(Q$(1,1))+1,1)+"0",Q$(3,2)="01"
+8920 RETURN 
+9950 EXIT 
+9999 END 

@@ -1,0 +1,40 @@
+0010 ! SMGMEN - Shipping Management Menu
+0015 REM "5.0 - 06/01/2001 - rms - SSP# 133604
+0020 REM "Copyright 2001 Computer Software Inc.; Norcross, Georgia
+0021 REM "        Licensed Software - All Rights Reserved.
+0030 PRINT 'SHOW'(-1),
+0035 REM "5.7 - 08/16/10 - 15.206388 - tma - SSP# 240435
+0037 REM "240435-Compare of programs/panels from DEV to Release              
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 PROCESS "MENU","../SMG/SM.EN"
+0061 END 
+0100 INIT:! ^100,5 - Initialization Routine
+0105 IF DEC(MID(MSE,22,1))>0 THEN %WDX$="[WDX]" ELSE %WDX$=""
+0110 IF %WDX$<>"" THEN {
+0115 CALL %WDX$+"*WINDX.UTL;GET_LWD",%WINDX_DIR$
+0120 IF %WINDX_DIR$(LEN(%WINDX_DIR$),1)<>DLM THEN %WINDX_DIR$+=DLM
+0125  }
+0130 IF NOT(LEN(%WDX$)) THEN {
+0135 PICTURE$=".\tf_logo.bmp"
+0140  } ELSE {
+0145 PICTURE$=%WINDX$+%WINDX_DIR$+"topform\tf_logo.bmp"
+0150  }
+0210 EXIT 
+0215 END 
+0225 ! 
+0235 RESIZE_PANEL:
+0245 ! MSGBOX "MENU "+ARG_1$+","+ARG_2$+","+ARG_3$+","+ARG_4$
+0247 CNT=0
+0248 FOR X=1 TO 2
+0255 TMP$="ARG_"+STR(X)+"$"
+0265 IF VIS(TMP$)<>"" THEN CNT=X
+0275 NEXT 
+0276 IF CNT<>0 THEN {
+0285 _OBJ_C=NUM(ARG_1$)
+0295 _OBJ_L=NUM(ARG_2$)
+0305 ! _OBJ_W=NUM(ARG_3$)
+0315 ! _OBJ_H=NUM(ARG_4$)
+0320  }
+0330 RETURN 
+9999 END 

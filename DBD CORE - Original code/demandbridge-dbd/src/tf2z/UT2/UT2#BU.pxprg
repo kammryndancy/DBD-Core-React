@@ -1,0 +1,23 @@
+0010 REM "Backup to Diskette Instructions <UT2*BU>
+0040 REM "Copyright 1987 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0110 PRINT 'CS'
+0200 PRINT 'CS',"Follow the steps below when backing up to diskette:"
+0220 PRINT @(5,2),"1.  Advise all operators to terminate processing by typing OFF at a Menu."
+0222 J9$="INVOKE"+QUO+"backup.jr"+QUO
+0225 IF X3$(77,1)="U" THEN INPUT @(5,3),"2.  Press <CR> when all users are off the system",*; EXECUTE J9$
+0226 IF X3$(77,1)="U" THEN RUN "ZSTART"
+0230 PRINT @(5,3),"2.  On the console monitor, after the READY > displays, type"
+0235 PRINT @(9,4),"each line shown below followed by the Enter key:",'LF'
+0240 T$=TSK(0),T=LEN(T$)/6,L=6
+0260 FOR I=0 TO T-1
+0280 IF T$(I*6+1,2)="T0" OR T$(I*6+3,1)<>"2" THEN GOTO 0400
+0300 PRINT @(20,L),"RELEASE ",QUO,T$(I*6+1,2),QUO,
+0320 L=L+1
+0400 NEXT I
+0420 PRINT @(20,L),"START 5,BNK=1,",QUO,"*VPSD",QUO,"  (This is the Backup Program.)"
+0430 L=L+1; PRINT 'LF'; L=L+1
+0440 PRINT @(5,L),"3.  **NOTE: After backing up, be sure to Reboot the computer to continue"
+0450 L=L+1
+0460 PRINT @(17,L),"processing."
+9999 END 

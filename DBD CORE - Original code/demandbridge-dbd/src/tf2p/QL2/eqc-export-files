@@ -1,0 +1,11 @@
+umask 0
+TERM=ansi
+export TERM
+
+LD_LIBRARY_PATH=/usr/lib/oracle/10.2.0.3/client/lib/; export LD_LIBRARY_PATH
+TNS_ADMIN=/etc; export TNS_ADMIN
+
+cd /usr/lib/pvx
+/usr/lib/pvx/pvx QL2CHG -arg c=500 cf=eqc ENV_ID=EQLINK LOG_LEVEL=-1 > /dev/null 
+#/usr/lib/pvx/pvx QL2CHG -arg c=500 cf=eqc ENV_ID=EQLINK > /dev/null 
+

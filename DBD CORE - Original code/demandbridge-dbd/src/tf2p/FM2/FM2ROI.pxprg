@@ -1,0 +1,448 @@
+0010 REM "Item Status Report (Stock Status/Usage analysis - Inform Graphics) <FM2ROI>
+0015 REM "Prog Type: O -3.0A
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 11/19/99 - 16.27 - tma - SSP# 110686
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0110 X0$="FM2ROI",X1$="Items Status Report"
+0120 DIM A$(150),A[70],C$(300),C[28],S$(40),D$(397),E0$(50)
+0145 Z0$="#,###,###.00-",Z1$="##,##0",Z2$="###.00",Z3$="####,###-",Z4$="####",Z5$="###",Z6$="####,##0-"
+0210 T=1,T0=1,T1=1
+0220 W3=FNO(134)
+0225 W=999
+0230 DIM T3$(20,"*"),Y5$(W3),S$(20),W[4]
+0235 DIM C2$(50)
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0260 CALL "ZZRPTP",X3$,X0$,X1$,V9$,V0,Q0$,Q1$,Q2$,Q3$,Q4$,Q5$,Q6$
+0300 REM "I/O lists
+0305 REM "IOLIST FOR FMD - Items Mgt Report Info
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31],A[32],A[33],A[34],A[35],A[36],A[37],A[38],A[39],A[40],A[41],A[42],A[43],A[44],A[45],A[46],A[47],A[48],A[49],A[50],A[51],A[52],A[53],A[54],A[55],A[56],A[57],A[58],A[59],A[60],A[61],A[62],A[63],A[64],A[65],A[66],A[67],A[68],A[69],A[70]
+0325 REM "IOLIST FOR FM1 - Customer Job Master
+0330 IOLIST C$(1),C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15],C[16],C[17],C[18],C[19],C[20],C[21],C[22],C[23],C[24],C[25],C[26],C[27],C[28]
+0340 IOLIST D$(1)
+0350 IOLIST E$
+0352 IOLIST E0$
+0370 IOLIST G0$,G1$,G0[0],G0[1],G0[2],G0[3],G0[4],G0[5],G0[6],G0[7],G0[8],G0[9],G0[10],G0[11],G0[12],G0[13],G0[14],G0[15]
+0380 IOLIST H$,H[0],H[1],H[2],H[3],H[4],H[5],H[6],H[7]
+0400 IOLIST P$,P[0],P[1],P[2],P[3],P[4],P[5],P[6]
+0405 IOLIST P5$,P5[0],P5[1],P5[2],P5[3],P5[4],P5[5],P5[6],P5[7]
+0410 IOLIST F$,F[0],F[1],F[2],F[3],F[4],F[5],F[6]
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,IOL=0425
+0425 IOLIST V$,V[0],V[1]
+0430 IOLIST X$,A2[0],A2[1],A2[2],A2[3],A2[4],A2[5],A2[6],A2[7],A2[8],A2[9],A2[10],A2[11],A2[12],A2[13],A2[14],A2[15],A2[16],A2[17],A2[18],A2[19],A2[20]
+0440 IOLIST I8$,I8[0],I8[1],I8[2],I8[3],I8[4],I8[5],I8[6],I8[7],I8[8],I8[9],I8[10],I8[11],I8[12],I8[13],I8[14],I8[15],I8[16],I8[17],I8[18],I8[19],I8[20],I8[21],I8[22],I8[23],I8[24],I8[25],I8[26],I8[27],I8[28],I8[29],I8[30],I8[31],I8[32],I8[33],I8[34],I8[35],I8[36],I8[37],I8[38],I8[39],I8[40]
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0508 Q$="FMC",V1$(1,3)="IC0"
+0510 Y$="01X "+Q$+"...  03O FM1... 04O AR1... 05O FMP... 06O ZY2    07O FM4...  08O FS1... 10O FS6... 11O ICF... 12O IC1...  "; IF V1$(1,3)<>Y$(5,3) THEN Y$=Y$+"02X "+V1$+"  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0800 REM "Alternate Sort Info & total dim"
+0810 DIM U[10,2],U0$(10),Y[5,1]
+0820 CALL "ZZRSEQ",X3$,"FM2ROA",V1$,U,U0,U1,U{ALL},Y{ALL},T0,V0,U0$,T5$,U5$,S9$,X9; ON X9 GOTO 0821,9920
+0825 IF V0>1 THEN GOSUB 6950
+0850 DIM T[T0,T1]; U5$(1,20)=Q4$
+0890 REM "Open Printer
+0895 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W8$,W9$,W0,W9,W2,W3,W4; ON W4 GOTO 0896,9920
+0900 CALL "ZZPROM",".YE",X3$,S3,"Do you wish to print a test pattern?","","",0; ON S3 GOTO 0901,0920,9900
+0905 DIM A$(LEN(A$),"*"),D$(LEN(D$),"*"),C$(LEN(C$),"*"),C2$(LEN(C2$),"*"),E0$(LEN(E0$),"*")
+0906 R0$="*",A$(93,6)=X3$(21,6),C$(255,6)=X3$(21,6),C$(167,6)=X3$(21,6); DIM S9$(15,"*"),S7$(25,"*")
+0910 FOR X=0 TO 70; A[X]=999; NEXT X
+0915 GOSUB 6000; GOSUB 4000
+0917 FOR X=1 TO 5; GOSUB 2000; NEXT X
+0919 GOTO 0900
+0921 REM IF V$(72,1)="0" THEN LET U1=Z(1)
+0950 REM " Position read"
+0970 DIM V4$(U); U9=1; FOR X=1 TO U0; V4$(U[X,0],U[X,1])=V2$(U9,U[X,1]); U9=U9+2*U[X,1]; NEXT X
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0990 READ (U1,KEY=V4$,DOM=0991)
+1000 REM "Read next record and check range
+1005 U$=KEY(U1,END=5000)
+1010 FOR X=1 TO U0; U2=U[X,0],U3=U[X,0]*2-1,U4=U[X,1]
+1020 IF U$(U2,U4)<V2$(U3,U4) THEN READ (U1); EXITTO 1000
+1030 IF U$(U2,U4)>V2$(U3+U4,U4) THEN IF U=1 THEN EXITTO 5000 ELSE READ (U1); EXITTO 1000
+1040 NEXT X
+1100 REM "Get record"
+1110 U9$=U$; IF V0<2 THEN GOTO 1150 ELSE U$="",X=0
+1120 IF Y[X,0]>0 THEN U$=U$+U9$(Y[X,0],Y[X,1]),X=X+1; GOTO 1120
+1130 READ (U1)
+1150 DIM I8$(167),I8[40]; READ (Z[2],KEY=U$,DOM=1000)IOL=0440
+1154 DIM A$(100),A[74]; A$(1,20)=I8$(1,20),A$(45)=I8$(61,21),A$(82,4)=I8$(120,4),A[19]=I8[14]
+1155 READ (Z[1],KEY=U$+"     ",DOM=1156)IOL=0310
+1159 REM "Check to see if IC1 record exists, if not then skip this record
+1160 READ (Z[12],KEY=A$(1,20),DOM=1161)
+1162 I9$=KEY(Z[12],END=1000); IF I9$(1,20)<>A$(1,20) THEN GOTO 1000
+1165 DIM C$(LEN(C$)); FIND (Z[3],DOM=1166,KEY=A$(1,20))IOL=0330
+1166 IF C$(173,1)="H" THEN GOTO 1000; REM "Skip items that have an H in the Function Field of the item master as the first character
+1200 REM "Additional Reads
+1210 IF D$(1,10)<>A$(1,10) THEN GOSUB 8200
+1335 DIM E0$(20); FIND (Z[5],KEY="T"+C$(21,3),DOM=1336)IOL=0352
+1400 REM "Subtotals"
+1410 IF U2$="" THEN GOTO 1490 ELSE FOR T=1 TO U0; IF U9$(U[T,0],U[T,1])<>U2$(U[T,0],U[T,1]) THEN EXITTO 1420 ELSE NEXT T; GOTO 1480
+1425 GOSUB 3100
+1490 T=0,U2$=U9$
+1520 IF C2$(2,3)<>C$(21,3) THEN C2$(1)=""; READ (Z[5],KEY="T"+C$(21,3),DOM=1521)C2$
+1560 GOSUB 4000
+1590 GOSUB 2000
+1900 REM "Accumulate Totals"
+1910 T[T0,0]=T[T0,0]+1
+1915 T8=T8+F1; REM "total "TOTAL VALUE"s
+1916 T9=T9+1; REM "Total # of items
+1995 GOTO 1000
+2000 REM "Print item
+2010 IF W+7>W0 THEN GOSUB 6000
+2050 REM "line 1
+2055 Y5$(FNO(1))=C$(11,10),Y5$(FNO(17))=C$(42,40); REM "Item code, Item Description
+2057 IF POS(" "<>C$(167,6))<>0 THEN Y5$(FNO(60))="Revision date: "+C$(167,6); REM "Item Revision date
+2060 GOSUB 7300
+2070 REM " Line 2
+2075 GOSUB 7300; REM "Skip headings
+2100 REM "Line 3
+2104 REM "was a(3)+a(4) from fmc
+2105 Y5$(FNO(23))=STR(A1[3]+A1[4]-A1[5]+A1[6]:Z3$); REM "On hand at whse & customer locations
+2110 IF POS(" "<>P$(48,6))<>0 THEN Y5$(FNO(39))=FND$(P$(48,6)) ELSE IF POS(" "<>P$(34,6))<>0 THEN Y5$(FNO(39))=FND$(P$(34,6)); REM "Prev order date or substitute order date
+2120 IF POS(" "<>G$(291,6))<>0 THEN Y5$(FNO(57))=FND$(G$(291,6)) ELSE IF POS(" "<>G$(204,6))<>0 THEN Y5$(FNO(57))=FND$(G$(204,6)); REM "Scheduled Ship date from PO header, or if blank use date requested
+2125 IF C[23]=0 THEN Y5$(FNO(80))="0" ELSE Y5$(FNO(76))=STR(C[23]:Z3$); REM "Reorder point
+2130 Y5$(FNO(96))=STR(C[22]:Z4$); REM "Lead time in days
+2140 L=3; GOSUB 8450
+2145 GOSUB 7300
+2150 REM "Line 4
+2155 S8$=""; IF FNS$(C$(24,8))="" THEN S8$=FNS$(C$(32,8)) ELSE S8$=FNS$(C$(24,8)); IF FNS$(C$(32,8))>"" THEN S8$=S8$+" X "+FNS$(C$(32,8))
+2158 Y5$(FNO(1))=S8$; REM "Size
+2159 REM "was a(49) from fmc
+2160 Y5$(FNO(23))=STR(A1[7]:Z3$); REM "Allocated
+2190 L=4; GOSUB 8450
+2195 GOSUB 7300
+2200 REM "Line 5
+2205 Y5$(FNO(23))=STR(A1[3]+A1[4]-A1[5]+A1[6]-A1[7]:Z3$); REM "Available
+2210 IF P[5]=0 THEN Y5$(FNO(36))=STR(P[0]:Z3$) ELSE Y5$(FNO(36))=STR(P[5]:Z3$); REM " Previous order quanty received print qty ordered if quantity invoiced is 0
+2220 IF P5[5]=0 THEN Y5$(FNO(53))=STR(P5[0]:Z3$); REM "On order Quantity print only if received is 0
+2225 CALL "ZZDISP","AX",P5$(22,8),"O/P",X3$,X$,"",0,0,X4$; Y5$(FNO(68))=X$; REM "order number
+2229 Y5$(FNO(76))=FNS$(FNR$(STR(A2:Z6$)))+"/"+FNS$(FNR$(STR(A3:Z6$)))+"/"+FNS$(FNR$(STR(A4:Z6$))); REM "4/6/12 month averages
+2230 REM LET Y5$(FNO(76))=STR(A(2):Z3$); REM "Average monthly usage
+2235 REM LET Y5$(FNO(88))=STR(C7:Z3$); REM "Assigned monthly usage (see 8300's)
+2240 L=5; GOSUB 8450
+2245 GOSUB 7300
+2250 REM "Line 6
+2255 Y5$(FNO(1))=E0$(5,9); REM "Product Code Description
+2260 Y5$(FNO(12))=C$(40,2); REM "Plys
+2290 L=6; GOSUB 8450
+2295 GOSUB 7300
+2300 REM "line 7
+2305 Y5$(FNO(29))=F4$; REM "Unit of measure of release at price
+2310 IF O9$="O" THEN IF P[0]>P[5] THEN Y5$(FNO(36))=STR(P[0]-P[5]:Z3$); REM "Prev order balance left to rec. If order is not open (O9$="O") then balance should not print anytime
+2320 IF POS(" "<>P5$(34,6))<>0 THEN Y5$(FNO(52))=FNE$(P5$(34,6)); REM "On order order date
+2325 REM CALL "ZZDISP","AX",G$(297,9),"P/O",X3$,X$,"",0,0,X4$; LET Y5$(FNO(64))=X$; REM "On order P.O. number from PO header
+2326 Y5$(FNO(61))=P5$(54,15); REM "Customer P.O. number from current order info FS6
+2329 Y5$(FNO(76))=FNS$(FNR$(STR(A5:Z6$)))+"/"+FNS$(FNR$(STR(A6:Z6$)))+"/"+FNS$(FNR$(STR(A7:Z6$))); REM "4/6/12 weeks on hand
+2330 REM LET Y5$(FNO(76))=STR(INT(A(5)/7+.5):Z4$); REM "Weeks o/h - average usage
+2332 REM LET Y5$(FNO(83))=STR(P2:Z4$); REM "Weeks o/h - assigned usage
+2334 Y5$(FNO(88))=STR(C[24]:Z3$); REM "assigned/average percentage from item master
+2336 REM LET Y5$(FNO(95))=STR(P1:Z5$); REM "Current/Previous percentage
+2340 L=7; GOSUB 8450
+2345 GOSUB 7300
+2350 REM "line 8
+2355 IF C[25]<>0 AND POS(" "<>C$(238,4))<>0 THEN S7$=FNR$(STR(C[25]:Z1$))+" PER "+C$(238,4) ELSE IF C[4]=0 THEN S7$="" ELSE S7$="",S7$=FNR$(STR(C[4]:Z1$)); IF POS(" "<>C$(100,4))<>0 THEN S7$=S7$+" PER "+C$(100,4); REM "use the alternate unit of measure if available, or use regular u/m
+2358 Y5$(FNO(1))=S7$
+2360 IF F2<>0 THEN PRECISION 4; Y5$(FNO(17))=STR(F2:Z2$); PRECISION 2; REM "Average inv price from lots (see 8000's)
+2365 PRECISION 4; Y5$(FNO(26))=STR(F0:Z2$); PRECISION 2; REM "Release at is oldest price from lots (see 8000s)
+2390 L=8; GOSUB 8450
+2395 GOSUB 7300
+2400 REM "line 9
+2410 REM CALL "ZZDISP","AX",P$(22,8),"O/P",X3$,X$,"",0,0,X4$; LET Y5$(FNO(36))=X$; REM "Prev order our P/O #
+2411 Y5$(FNO(36))=P$(54,15); REM "Customer P/O number from previous Order infoFS6
+2420 Y5$(FNO(53))=STR(P5[5]:Z3$); REM "On order quantity received
+2425 IF O8$="O" THEN IF P5[0]>P5[5] AND P5[5]<>0 THEN Y5$(FNO(65))=STR(P5[0]-P5[5]:Z3$); REM "On order balance due, if order is not open the the balance due is 0
+2430 Y5$(FNO(76))=STR(C5:Z3$); REM "Current 12 months usage
+2435 Y5$(FNO(88))=STR(C6:Z3$); REM "Previous 12 months usage
+2440 L=9; GOSUB 8450
+2445 GOSUB 7300
+2450 REM "Line 10
+2454 O7$=" "; IF C$(254,1)="3" THEN IF POS("print"=C$(261,30))<>0 OR POS("Print"=C$(261,30))<>0 THEN O7$="N" ELSE O7$="R"; REM "Set O7$ to 'R' for replenish message or 'N' for reorder notice message or ' ' for no message
+2455 IF O7$="R" THEN Y5$(FNO(1))="Replenish" ELSE IF O7$="N" THEN CALL "ZZDISP","VX",C$(254,1),"REORDER",X3$,X$,"",0,0,X4$; Y5$(FNO(1))=X$; REM "Item status,only print if reorder
+2460 Y5$(FNO(30))=F2$; REM "Customer owned value flag
+2465 Y5$(FNO(31))=F3$; REM "Distributer owned value flag
+2470 Y5$(FNO(70))=P5$(101,4); REM "U/M for on order unit price
+2490 L=10; GOSUB 8450
+2495 GOSUB 7300
+2500 REM "Line 11
+2505 IF O7$="N" THEN IF POS(" "<>C$(255,6))<>0 THEN Y5$(FNO(1))="as of "+FNE$(C$(255,6))
+2510 Y5$(FNO(20))=STR(F1:Z0$); REM "Total value from lots (see 8000s)
+2515 IF P[1]<>0 THEN PRECISION 4; Y5$(FNO(34))=STR(P[1]:Z2$)+"/"+P$(101,4); PRECISION 2; REM "Prev order unit price
+2520 CALL "ZZDISP","A",P$(22,8),"O/P",X3$,X$,"",0,0,X4$; Y5$(FNO(44))=X$; REM "Previous order number
+2525 IF POS(" "<>P5$(48,6))<>0 THEN Y5$(FNO(53))=FND$(P5$(48,6)); REM "On order date received
+2530 PRECISION 4; Y5$(FNO(66))=STR(P5[1]:Z2$); PRECISION 2; REM "On order unit price
+2535 Y5$(FNO(76))=STR(F7:Z3$); REM "Year to date quantity
+2537 Y5$(FNO(88))=STR(F8:Z3$); REM "Year to date value
+2540 L=11; GOSUB 8450
+2545 GOSUB 7300
+2550 REM "line 12
+2560 C6=A[51]; REM "Previous Year?
+2595 GOSUB 7300
+2995 RETURN 
+3000 REM "Subtotaling Routines"
+3050 REM "Add to T$ for total title, T & T5 should be set
+3060 IF T7$(1,1)=" " THEN RETURN 
+3070 IF T7$(1,1)<>"S" THEN CALL "ZZDISP",T7$(1,1)+"X",T6$,T7$(2,3),X3$,T6$,"",0,0,X4$
+3080 IF T$="" THEN T$=T6$ ELSE T$=T$+" "+T6$
+3090 RETURN 
+3100 REM "Subtotal Logic
+3110 FOR T=U0 TO T STEP -1
+3130 T$=FNS$(U5$(T*20+1,20)),T6$=U2$(U[T,0],U[T,1]),T7$=T5$(T*4+1,4); GOSUB 3050; IF POS(U0$(T+1,1)="23")>0 THEN GOSUB 7000 ELSE GOSUB 7100
+3150 IF POS(U0$(T+1,1)="13")>0 THEN GOSUB 6000
+3180 NEXT T
+3195 RETURN 
+3280 RETURN 
+3380 RETURN 
+3480 RETURN 
+4000 REM "Print an item
+4005 GOSUB 8500
+4010 GOSUB 8100
+4015 GOSUB 8300
+4020 GOSUB 8350
+4025 GOSUB 8400
+4028 GOSUB 8600; REM "wo86022, check usage start date for calc of avgs
+4030 GOSUB 8250
+4035 GOSUB 8000
+4095 RETURN 
+5000 REM "End of Print
+5005 REM "Print report totals
+5010 GOSUB 6000
+5012 FOR I=1 TO 9; GOSUB 7300; NEXT I
+5015 Y5$(FNO(3))="Total Items",Y5$(FNO(20))="Report Total"; GOSUB 7300
+5020 Y5$(FNO(4))=STR(T9:"###,##0"),Y5$(FNO(20))=STR(T8:Z0$); GOSUB 7300
+5200 REM "
+5295 GOTO 9900
+6000 REM "Page header
+6030 IF J9=0 THEN J9=1 ELSE GOSUB 7300
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W9$,W3,W,W9,W8,W0,W5,W2,"X",W5$; IF T0$="END" THEN GOTO 6090 ELSE ON W5 GOTO 6041,9910
+6065 GOSUB 6100
+6090 RETURN 
+6100 REM "
+6105 IF FID(W9)=FID(0) THEN PRINT 'SB',
+6115 DIM D$(512); FIND (Z[4],KEY=A$(1,10),DOM=6116)IOL=0340
+6120 X$=FNS$(D$(11,35)); Y5$(INT(W3/2-LEN(X$)/2))=X$; GOSUB 7300; REM "Customer name
+6125 IF POS(" "<>X3$(21,6))<>0 THEN Y5$(INT(W3/2-17))="Inventory status as of: "+FND$(X3$(21,6)); GOSUB 7300 ELSE GOSUB 7300; REM "Print status date
+6129 CALL "ZZDISP","AX",D$(1,10),"A/R",X3$,X$,"",0,0,X4$; X$="("+FNS$(X$)+")"
+6130 Y5$(INT(W3/2-LEN(X$)/2))=X$; GOSUB 7300
+6195 IF FID(W9)=FID(0) THEN PRINT 'SF',
+6199 RETURN 
+6390 RETURN 
+6900 REM "SORT
+6990 RETURN 
+7000 REM "Totals logic
+7001 IF T=T0 THEN IF T[T0,0]<2 THEN GOSUB 7300; GOTO 7100
+7010 Y5$(17)=T3$(1,T0+1-T)+" "
+7015 IF T$<>"" THEN Y5$(17+T0+2-T)=T$+" "+Q2$+" ("+STR(T[T,0]:"0")+"):"
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 7200; GOTO 7190
+7095 GOSUB 7300; GOSUB 7300
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7205 GOSUB 7300; Y5$(1)=Q1$+": "+STR(T[0,0]); GOSUB 7300
+7210 PRECISION 14; T2=TIM-T2
+7220 T4$=STR(INT(T2):"##0")
+7230 T3=INT(FPT(T2)*3600)
+7240 T3=T3/60
+7250 T4$=T4$+":"+STR(T3:"00")
+7260 Y5$(1)=Q3$+": "+T4$; GOSUB 7300
+7280 PRECISION 2
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 IF POS("V"=W8$)>0 THEN CALL "ZZVIEW",X3$,0,0,W3,W9,W,W9$,Y5$; GOTO 7390
+7315 Y5$=Y5$(5)
+7320 W=W+1; IF POS(" "<>Y5$)=0 THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7330 DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     13O ZZPARM  "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7435 DIM V[1]
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V$(71,1)),W3$=V$(19,POS("   "=V$(19,40)+"   ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7600 REM "Prior year periods
+7610 IF NUM(FNE$(A1$(41,2)))<NUM(D1$) THEN F2=12; GOTO 7630 ELSE IF NUM(FNE$(A1$(41,2)))>NUM(D1$) THEN F2=0; GOTO 7630
+7620 P0=POS(A1$(43,2)=H7$,2); F2=P0/2+.5
+7640 RETURN 
+7650 REM "Current year periods
+7660 IF NUM(FNE$(A1$(41,2)))<NUM(D0$) THEN F1=12; GOTO 7680 ELSE IF NUM(FNE$(A1$(41,2)))>NUM(D0$) THEN F1=0; GOTO 7680
+7670 P0=POS(A1$(43,2)=H7$,2); F1=P0/2+.5
+7680 P0=POS(V0$(78,2)=H7$,2); F3=P0/2-.5
+7685 F4=F1-F3
+7695 RETURN 
+7700 REM "Read current year usage
+7710 X9=POS("U"=F1$,5),Q$="R",X$="U"
+7715 DIM G[14]
+7720 CALL "ZZPACK",X3$,Q$,F1$(X9+2,3),"",0,0,G{ALL},Z[5],X$,D$(1,24)+D0$,F9$
+7725 Q[0]=Q[0]+G[P0]; FOR X=1 TO P0; Q[1]=Q[1]+G[X]; NEXT X
+7740 RETURN 
+7750 REM "Unpack prior year
+7760 X9=POS("U"=F1$,5),Q$="R",X$="U"
+7770 CALL "ZZPACK",X3$,Q$,F1$(X9+2,3),P9$,0,0,H{ALL},Z[5],X$,A$(1,24)+D1$,F9$
+7790 RETURN 
+7900 REM "CONVERT VALUES FOR PUBLIC CONSUMPTION
+7910 FOR X=0 TO 5
+7915 Q[X]=Q[X]/I0
+7920 NEXT X
+7990 RETURN 
+8000 REM "Set F0 to price on oldest lot, F1 to total value of lots, and F2 to average price based on lots (F1 / total quantity),V3 is qty per unit of oldest lot
+8001 REM " F4 is total qty on each lot,F5 is total qty on lots, V1 is total value of all lots, committed or not, used for average price,V2 is non committed qtys, also used for avg price
+8002 REM "F2$ is set to a 'C' if customer owned inventory found, F3$ is set to a 'D' if distributer owned inventory is found,F4$ is u/m of oldest uncommitted lot
+8005 F0=0,F1=0,F2=0,F5=0,V1=0,V2=0,F0$="",F2$="",F3$="",F4$=""; DIM F[6]
+8010 READ (Z[11],KEY=A$(1,20),DOM=8011)
+8015 K1$=KEY(Z[11],END=8050); IF K1$(1,20)<>A$(1,20) THEN GOTO 8050
+8020 READ (Z[11],KEY=K1$,DOM=8015)IOL=0410
+8030 IF F[6]<>0 AND POS(" "<>F$(110,11))=0 THEN IF F$(25,6)<F0$ OR F0$="" THEN F0$=F$(25,6),F0=F[5],V3=F[6],F4$=FNS$(F$(129,4)); REM "If first lot then save off oldest lot if not committed
+8035 IF POS(" "<>A$(125,4))=0 THEN F4=F[4]*F[3] ELSE F4=F[4]*F[2]*F[3]
+8038 IF POS(" "<>F$(110,11))=0 THEN IF F$(21,1)="9" THEN F2$="C" ELSE F3$="D"; REM "Set flag based on customer owned/distributer owned. only looking at uncommitted lots
+8040 F5=F5+F4; REM "F5 is total of qties on lots
+8042 IF POS(" "<>F$(110,11))=0 THEN IF F[6]<>0 THEN F1=F1+F4/F[6]*F[5],V2=V2+F4; REM "compute sales total and add to total value F1 ONLY if not committed
+8043 IF F[6]<>0 THEN V1=V1+F4/F[6]*F[5]; REM "Compute sales total and add to total value V1, which is used in avg price calc
+8045 GOTO 8015
+8060 IF V3<>0 THEN IF V2/V3<>0 THEN F2=F1/(V2/V3); REM "Compute Average price (in printed u/m) from the total cost & total quantity non-committed lots
+8065 IF V3<>0 THEN F8=F2*F7/V3 ELSE F8=F2*F7/1000; REM "Recompute ytd cost based on average inventory price,was just /1000 changed ssp#93451
+8095 RETURN 
+8100 REM "Retrieve current open order into P5$, P5() and previous order (open or not) into P$,p()
+8105 DIM G$(383),P$(110),P[7],O[7],I$(320),I5$(200),P5$(110),P5[7]; O0$="",O1$=""
+8110 CALL "FM2UZD",X3$,X4$,C$(1,20),O$,O{ALL},O2$,O3$,O0,O1,O2,"",H1$,""; IF O$="" THEN GOTO 8145
+8115 O0$=O$(LEN(O$)-22,23)
+8116 REM SET O0$ TO THE OPEN ORDER, AND O1$ TO THE PREVIOUS ORDER (OPEN OR NOT)
+8120 GOTO 8125; REM "We don't care if it is open or not, the last order is the on or current order -> FIND (Z(8),KEY=O0$(1,8),DOM=08121) ; GOTO 08125; REM "IF FOUND THEN O0$ IS THE OPEN ORDER, IF NOT THEN USE IT IAS THE PREV ORDER, O1$
+8122 O1$=O0$,O0$=""; GOTO 8130
+8125 IF LEN(O$)>23 THEN O1$=O$(LEN(O$)-45,23) ELSE O1$=""
+8130 IF O0$<>"" THEN FIND (Z[10],KEY=C$(1,10)+H1$+C$(11,10)+O0$(1,8)+O0$(21,1),DOM=8131)IOL=0405; CALL "FM2UZI",X3$,X4$,P5$,G$,F0; IF POS(" "<>G$)=0 THEN G$(297,9)=P5$(22,8)
+8131 O8$="C"; IF O0$<>"" THEN FIND (Z[8],KEY=O0$(1,8),DOM=8132); O8$="O"; REM "IF o8$=O then current order is open else current order is closed
+8135 IF O1$<>"" THEN FIND (Z[10],KEY=C$(1,10)+H1$+C$(11,10)+O1$(1,8)+O1$(21,1),DOM=8136)IOL=0400
+8136 O9$="C"; IF O1$<>"" THEN FIND (Z[8],KEY=O1$(1,8),DOM=8137); O9$="O"; REM "Set O9$ to C for closed order or if it is in the open order file, set it to open
+8145 RETURN 
+8200 REM "Customer Change
+8210 READ (Z[4],KEY=A$(1,10))IOL=0340
+8220 READ (Z[5],KEY="D"+D$(1,10))IOL=0350
+8225 P1$=E$(56,2),P0$=E$(52,4); CALL "GL2RZA",ERR=1000,X3$,"E"+D$(1,10),P0$,P1$,S7$,Z[6],Z[5]
+8245 RETURN 
+8250 REM "Calculate current 12 months  usage C5 and prior 12 months C6
+8252 REM "F8 is recalc'ed in 8000's
+8254 C5=0,C6=0,F7=0,F8=0
+8255 FOR I0=0 TO 11
+8256 C5=C5+A0[D8+I0-1]; IF D9+I0<=D8+11 THEN F7=F7+A0[D9+I0],F8=F8+F0[D9+I0] ELSE IF D8=25 THEN F7=F7+A0[D9+I0-12],F8=F8+F0[D9+I0-12]
+8257 NEXT I0
+8260 FOR I0=1 TO 12; C6=C6+A0[D8-I0-1]; NEXT I0
+8262 REM "Calculate A2 - 4 month avg, A3 - 6month avg, A4 - 12 month avg - don't include the current month in these calculations
+8263 U_4=4; IF PIU<4 THEN U_4=PIU
+8265 A2=0,A2=INT((A0[D8+10]+A0[D8+9]+A0[D8+8]+A0[D8+7])/U_4); IF A2<0 THEN A2=0
+8268 U_6=6; IF PIU<6 THEN U_6=PIU
+8270 A3=0,A3=INT((A0[D8+10]+A0[D8+9]+A0[D8+8]+A0[D8+7]+A0[D8+6]+A0[D8+5])/U_6); IF A3<0 THEN A3=0
+8273 REM "C5 include current month (A0(D8+11)) So subtract off and add in 12th mmonth ago(A0(D8-1))
+8274 U_12=12; IF PIU<12 THEN U_12=PIU
+8275 A4=0,A4=INT(C5/U_12); IF A4<0 THEN A4=0
+8278 IF PIU<12 THEN C5=0; REM "If not in use for at least 12 months then don't print current 12 months bucket
+8279 IF PIU<24 THEN C6=0; REM "If not in use for at least 24 months then don't print previous 12 months bucket
+8280 GOSUB 8550
+8295 RETURN 
+8300 REM "Get estimated or 'assigned' usage from FM4 records
+8305 C7=0; DIM G0[15]; READ (Z[7],KEY=C$(1,20),DOM=8306)
+8310 READ (Z[7],END=8340)IOL=0370; IF C$(1,20)<>G0$(1,20) THEN GOTO 8340
+8315 C7=C7+G0[10]
+8320 GOTO 8310
+8345 RETURN 
+8350 REM "Calculate Assigned/Average % (P0), Current/Previous % (P1) and assigned weeks on hand (P2) (based on Assigned vs Average monthly usage and monthly usage weeks on hand)
+8355 P0=0,P1=0,P2=0
+8360 IF A[2]<>0 THEN P0=C7/A[2]*100
+8365 P2=INT(A[5]*P0/700+.5)
+8370 IF C6<>0 THEN P1=C5/C6*100
+8395 RETURN 
+8400 REM "Build D5$, Dates string
+8404 J$="312831303130313130313031",DAY_1=NUM(J$((NUM(X3$(23,2))-1)*2+1,2))
+8405 D5$="",D6$=FNE$(X3$(21,6)),CURRENT_DATE$=D6$(1,2)+","+D6$(4,2)+","+D6$(7,2),D6$=FN%NTD$(FN%DTN(CURRENT_DATE$,"MM,DD,YY")+DAY_1,"MMDDYY"),CURRENT_ONE$=D6$(1,2)+","+D6$(3,2)+","+D6$(5,2),D6$=D6$(1,2)+D6$(5,2); REM " ADD one to the month use Basic SQL format
+8406 REM "IF D6$(1,2)="12" THEN LET D6$="01"+STR(NUM(D6$(3,2))+1:"00") ELSE LET D6$=STR(NUM(D6$(1,2))+1:"00")+D6$(3,2); REM "ADD ONE TO CURRENT MONTH SO IT WILL BE INCLUDE IN THE LIST WHICH STARTS ONE MONTH PRIOR TO D6$
+8410 FOR I1=1 TO 18
+8411 J$="312831303130313130313031",DAY_1=NUM(J$((NUM(CURRENT_ONE$(1,2))-1)*2+1,2))
+8415 D6$=FN%NTD$(FN%DTN(CURRENT_ONE$,"MM,DD,YY")-DAY_1,"MMDDYY"),CURRENT_ONE$=D6$(1,2)+","+D6$(3,2)+","+D6$(5,2),D6$=D6$(1,2)+D6$(5,2)
+8418 REM "LET D6=NUM(D6$(1,2))-1, D7=NUM(D6$(3,2)); IF D6=0 THEN LET D6=12, D7=D7-1
+8420 D5$=D5$+D6$
+8425 NEXT I1
+8430 REM "Set D8$ to first year to get I/C stats for, D8 is month to get
+8431 D8=NUM(D5$(45,2)),D8$=D5$(47,2); IF D8$<"80" THEN D8$="20"+D8$ ELSE D8$="19"+D8$; REM "This code will break in the year 2080
+8432 READ (Z[5],KEY="E"+A$(1,10)+D8$,DOM=8433)X$; GOTO 8434; REM "Read in fy for lowest year, if not found, the get fy for the first available year, if no yers the skip adjustment
+8433 READ (Z[5],END=8435)X$; IF X$(2,10)<>A$(1,10) THEN GOTO 8435
+8434 IF D8$(4,1)<>STR(NUM(X$(19,1))+1:"0") THEN D8=D8+12-NUM(X$(20,2)) ELSE IF X$(20,2)<>"12" THEN D8=D8+(12-NUM(X$(20,2))); REM "Adjust D8 based on the date of the starting period,save old D8 in D9 to use when dealing in fiscal years
+8435 D8=D8+24,D8$=STR(NUM(D8$)-2:"0000"); REM "Adjust to pick the previous 2 years so we can do prior year #s
+8436 IF MOD(D8,12)=0 THEN D9=D8+1 ELSE D9=(INT(D8/12)+1)*12+1
+8440 CALL "UT2RSD",X3$,X4$,"F/MU",A$(1,20),D8$,6,A0{ALL}
+8442 CALL "UT2RSD",X3$,X4$,"F/MC",A$(1,20),D8$,6,F0{ALL}; REM "Get $ sales too
+8445 RETURN 
+8450 REM "Print usage analysis for line L
+8455 Y5$(FNO(102))=D5$((L-3)*4+1,2)+"/"+D5$((L-3)*4+3,2),Y5$(FNO(108))=STR(A0[14-L+D8]:Z3$)
+8460 Y5$(FNO(118))=D5$((L+6)*4+1,2)+"/"+D5$((L+6)*4+3,2),Y5$(FNO(124))=STR(A0[5-L+D8]:Z3$)
+8495 RETURN 
+8500 REM "Load A1() buckets by totaling relevant IC1 records
+8505 DIM A1[20],A2[20]; READ (Z[12],KEY=A$(1,20),DOM=8506)
+8510 K5$=KEY(Z[12],END=8540)
+8520 IF K5$(1,20)<>A$(1,20) THEN GOTO 8540
+8525 READ (Z[12],KEY=K5$)IOL=0430
+8530 FOR I1=0 TO 20; A1[I1]=A1[I1]+A2[I1]; NEXT I1
+8535 GOTO 8510
+8545 RETURN 
+8550 REM "Figure weeks on hand for 4/6/12 months averages (A5<-A2,A6<-A3,A7<-A4)
+8551 REM "Assumes 4 weeks per month
+8555 A5=0,A6=0,A7=0,X=A1[3]+A1[4]-A1[5]+A1[6]-A1[7]
+8560 IF A2<>0 THEN A5=INT(X/(A2/4)); IF A5<0 THEN A5=0
+8565 IF A3<>0 THEN A6=INT(X/(A3/4)); IF A6<0 THEN A6=0
+8570 IF A4<>0 THEN A7=INT(X/(A4/4)); IF A7<0 THEN A7=0
+8595 RETURN 
+8600 REM "Read FM4, determine earliest usage start date & calculate number of periods in use
+8605 PIU=0,OLD_DATE$="ZZZZZZ"; DIM FM4$(215); READ (Z[7],KEY=C$(1,20),DOM=8606)
+8610 READ (Z[7],END=8630)FM4$
+8615 IF FM4$(1,20)<>C$(1,20) THEN GOTO 8630
+8620 NEW_DATE$=FM4$(83,6); IF NEW_DATE$<OLD_DATE$ THEN OLD_DATE$=NEW_DATE$; GOTO 8610 ELSE GOTO 8610
+8630 IF STP(OLD_DATE$,3," ")="" OR OLD_DATE$="ZZZZZZ" THEN PIU=24; GOTO 8645
+8635 CALL "ZZDATE",X3$,X4$,X3$(21,6),OLD_DATE$,PIU,4,0,0,0,0,0,"","",""
+8640 IF PIU=0 THEN PIU=24
+8645 RETURN 
+8905 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+8910 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+8920 DEF FNB$(Z9$)=X3$(214-6*NUM(Z9$),1)
+8940 DEF FNS$(Z$)=Z$(1,POS("   "=Z$+"   ")-1)
+8950 REM "add offset to position
+8955 DEF FNO(Z)=Z+6
+8960 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8965 DEF FNE$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR(MOD(ASC(Z9$(1,1))-65,10)*10+NUM(Z9$(2,1)):"00")
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 IF Y5=68 THEN RETRY ELSE ON C9 GOTO 1140,2040
+9900 REM "End program
+9905 IF POS("V"=W8$)>0 THEN GOSUB 6000
+9910 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 IF Y4$<>"" THEN RUN Y4$,ERR=9931
+9940 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,116 @@
+0010 REM "Work with Primary Functions (EEC) <EC3EEC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 12/09/08 - 15.486666 - dmm - SSP# 224138
+0037 REM "224138-Additional to WO215369, need 4 additional fields and tags   
+0040 REM "Copyright 2008 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! ACTION$ will determine what to do concerning the customer's EEC records
+0055 ! Called from EC3BYB or EC3WS1
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},ACTION$,SELECTED_VALUE$,RETURN$,OTHER$
+0100 SETERR 9000
+0110 X0$="EC3ECC",X1$="Work with Primary Functions (EEC)"
+0125 EOL$=$0D0A$; EOL$=ATH(STP(EC_PARM$(57,8),1))
+0200 REM "
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS
+0310 IOLIST EEC$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EEC...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 ! 
+0550 GOSUB SET_READONLY ! Don't write any records in this program so can be turned on for duration, clear in 9900's
+0599 ! 
+0600 ! ACTION$ dictates where we go from here.
+0605 ! U=Does customer have any primary functions? Y or N in RETURN$ - This will be called from EC3BYB for use_primary_functions tag
+0610 ! L=List of primary functions for ddl, called from EC3WS1 for primary_function_ddl tag
+0615 ! D=List of primary function descriptions, called from EC3WS1 for primary_function_desc_ddl tag
+0620 ! R=Read record from EEC for SELECTED_VALUE$, called by EC3WS1 once buyer selects, need record to determine if additional fields needed
+0625 ! 
+0650 ON POS(ACTION$="ULDR") GOTO 9900,0900,1000,1200,1400
+0695 ! 
+0900 ! Action=U, read EEC using customer, is there any records?
+0905 CUSTOMER$=EC$[2](51,10),RETURN$="N"
+0910 READ (Z[1],KEY=CUSTOMER$,DOM=*NEXT)
+0915 K$=KEY(Z[1],END=9900); READ (Z[1],KEY=K$)EEC$
+0920 IF K$(1,10)<>CUSTOMER$ THEN GOTO 9900
+0925 RETURN$="Y"
+0945 GOTO 9900
+0949 ! 
+1000 ! Action=L, create drop down list of primary functions for customer
+1005 RETURN$="",DDL$="",CUSTOMER$=EC$[2](51,10)
+1010 READ (Z[1],KEY=CUSTOMER$,DOM=*NEXT)
+1015 K$=KEY(Z[1],END=1100)
+1020 IF K$(1,10)<>CUSTOMER$ THEN GOTO 1100
+1025 DIM EEC$(510); READ (Z[1],KEY=K$)EEC$(1)
+1030 ENTRY$=EEC$(11,30)
+1035 GOSUB ADD_HTML
+1040 DDL$+=ENTRY$
+1045 GOTO 1015
+1095 ! 
+1100 ! Done creating drop down list
+1110 RETURN$=DDL$
+1115 GOTO 9900
+1195 ! 
+1200 ! Action=D, create a drop down list of primary function descriptions for customer
+1205 RETURN$="",DDL$="",CUSTOMER$=EC$[2](51,10)
+1210 READ (Z[1],KEY=CUSTOMER$,DOM=*NEXT)
+1215 K$=KEY(Z[1],END=1300)
+1220 IF K$(1,10)<>CUSTOMER$ THEN GOTO 1300
+1225 DIM EEC$(510); READ (Z[1],KEY=K$)EEC$(1)
+1230 ENTRY$=STP(EEC$(44,35),1)
+1235 GOSUB ADD_HTML
+1240 DDL$+=ENTRY$
+1245 GOTO 1215
+1295 ! 
+1300 ! Done creating drop down list
+1310 RETURN$=DDL$
+1315 GOTO 9900
+1395 ! 
+1400 ! Action=R, read EEC using SELECTED_VALUE$, return record
+1405 RETURN$=""
+1410 IF STP(SELECTED_VALUE$,3)="" THEN GOTO 9900
+1415 CUSTOMER$=EC$[2](51,10),PRIMARY_FUNCTION$=PAD(SELECTED_VALUE$,30)
+1420 DIM EEC$(510); READ (Z[1],KEY=CUSTOMER$+PRIMARY_FUNCTION$+"001",DOM=9900)EEC$(1)
+1430 RETURN$=EEC$
+1490 GOTO 9900
+1495 ! 
+7500 ADD_HTML:
+7520 IF EEC$(11,30)=SELECTED_VALUE$ THEN ENTRY$="<option selected value="+QUO+EEC$(11,30)+QUO+">"+ENTRY$+"</option>" ELSE ENTRY$="<option value="+QUO+EEC$(11,30)+QUO+">"+ENTRY$+"</option>"
+7590 RETURN 
+8500 SET_READONLY:REM "Set the PRM READONLY to on
+8510 SET_PARAM 'XI'
+8525 SET_READONLY_END:RETURN 
+8529 ! 
+8530 CLEAR_READONLY:REM "Clear the PRM READONLY flag to off
+8535 SET_PARAM -'XI'
+8545 CLEAR_READONLY_END:RETURN 
+8549 ! 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 GOSUB CLEAR_READONLY
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "215369-Primary function by customer, can be up to three levels,
+56002 REM "224138-Additional to WO215369, need 4 additional fields and tags

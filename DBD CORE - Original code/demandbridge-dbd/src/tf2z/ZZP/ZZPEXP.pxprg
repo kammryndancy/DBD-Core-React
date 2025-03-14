@@ -1,0 +1,663 @@
+0010 REM "Export system parameters <ZZPEXP>
+0035 REM "5.7 - 08/27/24 - 19.955483 - jvv - SSP# 307477
+0037 REM "307477-Changes to Carton Label maintenance and Print               
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER 
+0100 SETERR 9000
+0110 X0$="ZZPEXP",X1$="Export system parameters"
+0130 PRINT 'CS',@(0,3),"Exporting system parameters: "
+0150 OPEN (HFN)"ZZPARM"; ZZPARM=LFO
+0160 GOSUB PARAM_EXPORT
+0165 GOSUB ACCOUNT_FORMAT_EXPORT
+0190 GOTO 9900
+0199 ! 
+0200 PARAM_EXPORT:
+0205 PRINT "Exporting A/R parameters"
+0210 GOSUB EXPORT_AR
+0215 PRINT "Exporting A/P parameters"
+0220 GOSUB EXPORT_AP
+0225 PRINT "Exporting G/L parameters"
+0230 GOSUB EXPORT_GL
+0235 PRINT "Exporting I/C parameters"
+0240 GOSUB EXPORT_IC
+0245 PRINT "Exporting F/M parameters"
+0250 GOSUB EXPORT_FM
+0255 PRINT "Exporting E/C parameters"
+0260 GOSUB EXPORT_EC
+0295 RETURN 
+0299 ! 
+0300 ACCOUNT_FORMAT_EXPORT:
+0301 RAW$="01234567890123456789"
+0305 %EXCEL_SHEET=1; PRINT (OUTPUT)"AcctCode Formats"; %EXCEL_SHEET=0 ! Create new sheet
+0310 %EXCEL_HEADER=1; PRINT (OUTPUT)"Account Code",$09$,"Raw Data Length",$09$,"Mask Code",$09$,"Display Format ("+%C$+")"; %EXCEL_HEADER=0
+0311 MASK$="A/R"; PRINT (OUTPUT)"Customer Code",$09$,"10",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0312 MASK$="A/P"; PRINT (OUTPUT)"Vendor Code",$09$,"10",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0313 MASK$="G/L"; PRINT (OUTPUT)"G/L Acct Code",$09$,"12",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0314 MASK$="O/P"; PRINT (OUTPUT)"Sales Order Number",$09$,"8",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0315 MASK$="P/O"; PRINT (OUTPUT)"Purchase Order Number",$09$,"9",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0316 MASK$="AR6"; PRINT (OUTPUT)"AR Invoice Num",$09$,"8",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0317 MASK$="AR5"; PRINT (OUTPUT)"Sales Tax Code",$09$,"10",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0318 MASK$="ZIP"; PRINT (OUTPUT)"ZIP Code",$09$,"9",$09$,MASK$,$09$,FN%ZZDISP$(RAW$,MASK$)
+0395 RETURN 
+0399 ! 
+1000 EXPORT_AR:
+1010 MOD_CODE$="AR"; MOD_KEY$="A/R"; GOSUB OPEN_TEXT_FILE
+1015 IOL_A_R:IOLIST A$,A{ALL}
+1025 DIM A$(255),A[8]; READ (ZZPARM,KEY=%C$+"A/R",DOM=*NEXT)IOL=IOL_A_R
+1030 %EXCEL_HEADER=1; PRINT (OUTPUT)"Module",$09$,"Key",$09$,"Parameter",$09$,"Values ("+%C$+")"; %EXCEL_HEADER=0
+1099 ! Export parameters: %C$+"A/R" 
+1100 PARM_DESC$="Current fiscal year:",PARM_VAL$=MID(A$,7,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1101 PARM_DESC$="Current accounting period:",PARM_VAL$=MID(A$,11,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1102 PARM_DESC$="Divisions required?",PARM_VAL$=MID(A$,13,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1103 PARM_DESC$="What size customer code should be used:",PARM_VAL$=MID(A$,14,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1104 PARM_DESC$="Do you require alternate bill-to customers?",PARM_VAL$=MID(A$,15,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1105 PARM_DESC$="Are there multiple bank codes?",PARM_VAL$=MID(A$,16,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1106 ! PARM_DESC$="***Unused***",PARM_VAL$=MID(A$,17,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1107 PARM_DESC$="Will the G/L control accounts be interfaced by category?",PARM_VAL$=MID(A$,19,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1108 PARM_DESC$="What is the maximum size of the customer category code:",PARM_VAL$=MID(A$,20,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1109 PARM_DESC$="Enter code(s) of statistical data to be retained:",PARM_VAL$=MID(A$,21,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1110 PARM_DESC$="Enter the corresponding number of prior year statistics to keep:",PARM_VAL$=MID(A$,31,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1111 PARM_DESC$="Number of periods to retain invoice history:",PARM_VAL$=MID(A$,41,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1112 PARM_DESC$="What is the standard bank code:",PARM_VAL$=MID(A$,43,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1113 PARM_DESC$="Do you age your accounts receivable by invoice due date?",PARM_VAL$=MID(A$,46,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1114 PARM_DESC$="Are your ageing categories in days?",PARM_VAL$=MID(A$,47,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1115 PARM_DESC$="Aging Category 01 - Description",PARM_VAL$=MID(A$,48,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1116 PARM_DESC$="Aging Category 02 - Description",PARM_VAL$=MID(A$,56,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1117 PARM_DESC$="Aging Category 03 - Description",PARM_VAL$=MID(A$,64,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1118 PARM_DESC$="Aging Category 04 - Description",PARM_VAL$=MID(A$,72,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1119 PARM_DESC$="Aging Category 05 - Description",PARM_VAL$=MID(A$,80,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1120 PARM_DESC$="Report sales tax when an invoice is paid?",PARM_VAL$=MID(A$,88,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1121 PARM_DESC$="Next invoice number for automatic invoicing:",PARM_VAL$=MID(A$,89,7); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1122 PARM_DESC$="Age credit memos? (N=always current):",PARM_VAL$=MID(A$,96,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1123 PARM_DESC$="Do you wish to renumber invoices during printing?",PARM_VAL$=MID(A$,97,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1124 PARM_DESC$="Print the G/L distribution on the Summary Sales Journal?",PARM_VAL$=MID(A$,98,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1125 PARM_DESC$="Ageing category to consider past due:",PARM_VAL$=MID(A$,99,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1126 PARM_DESC$="don't know",PARM_VAL$=MID(A$,100,7); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1127 PARM_DESC$="Activate alternate customer code field?",PARM_VAL$=MID(A$,107,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1128 PARM_DESC$="Create a commission by line item file?",PARM_VAL$=MID(A$,108,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1129 PARM_DESC$="Print overide billing address on packing list and P/O?",PARM_VAL$=MID(A$,109,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1130 PARM_DESC$="Substitute the last 2 digits of salesperson code into the G/L account number beginning in position:",PARM_VAL$=MID(A$,110,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1131 PARM_DESC$="Update statistics by saleperson, customer, product code:",PARM_VAL$=MID(A$,112,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1132 PARM_DESC$="Substitute Margin for Profit on some report headings?",PARM_VAL$=MID(A$,113,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1133 PARM_DESC$="Enable Customer Comment Printing Feature:",PARM_VAL$=MID(A$,114,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1134 PARM_DESC$="Enable question to setup T/M record for new customers?",PARM_VAL$=MID(A$,115,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1135 PARM_DESC$="Future Use (VTX)",PARM_VAL$=MID(A$,116,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1136 PARM_DESC$="Update order booking by customer file?",PARM_VAL$=MID(A$,117,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1137 PARM_DESC$="Print invoices in foreign currency feature?",PARM_VAL$=MID(A$,118,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1138 PARM_DESC$="Use G/L account numbers from Sales Tax Code record?",PARM_VAL$=MID(A$,119,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1139 PARM_DESC$="Allow work in progress g/l entries if no PO code?",PARM_VAL$=MID(A$,120,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1140 PARM_DESC$="Use substitution when making work in progress entries?",PARM_VAL$=MID(A$,121,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1141 PARM_DESC$="Set commission codes by line from Sls/PC Commission Table?",PARM_VAL$=MID(A$,122,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1142 PARM_DESC$="Update all profit statistics using Salesperson's Adj. GP?",PARM_VAL$=MID(A$,123,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1143 PARM_DESC$="Update statistics by Customer and Item Code?",PARM_VAL$=MID(A$,124,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1144 PARM_DESC$="Enable credit memo feature?",PARM_VAL$=MID(A$,125,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1145 PARM_DESC$="Enable credit requestor feature?",PARM_VAL$=MID(A$,126,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1146 PARM_DESC$="Comm/Payable to be affected by Discounts taken in C/R?",PARM_VAL$=MID(A$,127,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1147 PARM_DESC$="Shipments to 'D' Loc use sales tax code in whse Loc Rec?",PARM_VAL$=MID(A$,128,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1148 PARM_DESC$="Intrastate orders use tax codes from Warehouse Ship-to?",PARM_VAL$=MID(A$,129,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1149 PARM_DESC$="Enable Credit Card Feature?",PARM_VAL$=MID(A$,130,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1150 PARM_DESC$="Enter the length for each segment of the Sales Tax Number",PARM_VAL$=MID(A$,131,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1151 PARM_DESC$="Do you have a Sales Tax Download Service?",PARM_VAL$=MID(A$,134,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1152 PARM_DESC$="Use Lot Standard Cost to create GP Adjustment during invoicing",PARM_VAL$=MID(A$,135,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1153 PARM_DESC$="Standard Message for CC Sales:",PARM_VAL$=MID(A$,136,40); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1154 PARM_DESC$="Enable ability to tax Cust Owned Goods at time of release",PARM_VAL$=MID(A$,176,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1155 PARM_DESC$="Update Commission Statistics during Invoice and Chargeback Entry",PARM_VAL$=MID(A$,177,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1156 PARM_DESC$="Update Invoice Data Entry Batch files to allow ODBC Access?",PARM_VAL$=MID(A$,178,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1157 PARM_DESC$="Enable Cash Posting Invoice Range Logic?",PARM_VAL$=MID(A$,179,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1158 PARM_DESC$="Default RFQ CSR to TopForm Login Code?",PARM_VAL$=MID(A$,180,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1159 PARM_DESC$="Directory for Summary Bill Export file",PARM_VAL$=MID(A$,181,60); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1160 PARM_DESC$="Turn on Credit Card Plus processing?",PARM_VAL$=MID(A$,241,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1161 PARM_DESC$="On CC require processing before sales journal",PARM_VAL$=MID(A$,242,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1162 PARM_DESC$="Use query instead of List box for Order history by item?",PARM_VAL$=MID(A$,243,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1163 PARM_DESC$="CC Plus:  Default merchant account",PARM_VAL$=MID(A$,244,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1164 PARM_DESC$="Bypass ""Print Alignment Pattern?"" prompt in all reports? [Y/N]",PARM_VAL$=MID(A$,254,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1165 PARM_DESC$="Enable workaround to fix key sequence issue in Lot and IC8 transaction updates? [Y/N/A]",PARM_VAL$=MID(A$,255,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1166 PARM_DESC$="Aging Category 01 - Number of Days (If aging categories in days)",PARM_VAL$=STR(A[0]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1167 PARM_DESC$="Aging Category 02 - Number of Days (If aging categories in days)",PARM_VAL$=STR(A[1]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1168 PARM_DESC$="Aging Category 03 - Number of Days (If aging categories in days)",PARM_VAL$=STR(A[2]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1169 PARM_DESC$="Aging Category 04 - Number of Days (If aging categories in days)",PARM_VAL$=STR(A[3]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1170 PARM_DESC$="Aging Category 05 - Number of Days (If aging categories in days)",PARM_VAL$=STR(A[4]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1171 PARM_DESC$="Invoice dollar range for payment analysis - Level 1:",PARM_VAL$=STR(A[5]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1172 PARM_DESC$="Invoice dollar range for payment analysis - Level 2:",PARM_VAL$=STR(A[6]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1173 PARM_DESC$="Invoice dollar range for payment analysis - Level 3:",PARM_VAL$=STR(A[7]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1174 PARM_DESC$="Next invoice number (If you wish to renumber invoices during printing):",PARM_VAL$=STR(A[8]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1190 ! 
+1195 ! Export parameters: %C$+"AR1" 
+1196 MOD_CODE$="AR"; MOD_KEY$="AR1"; GOSUB OPEN_TEXT_FILE
+1197 IOL_AR1:IOLIST A$,A{ALL}
+1199 DIM A$(255),A[29]; READ (ZZPARM,KEY=%C$+"AR1",DOM=*NEXT)IOL=IOL_AR1
+1200 PARM_DESC$="Commission Accounting System?",PARM_VAL$=MID(A$,7,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1201 PARM_DESC$="Maximum number of salespeople per invoice:",PARM_VAL$=MID(A$,8,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1202 PARM_DESC$="Enter code(s) of statistical data to be retained:",PARM_VAL$=MID(A$,9,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1203 PARM_DESC$="Enter the corresponding number of prior year statistics to keep:",PARM_VAL$=MID(A$,19,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1204 PARM_DESC$="Salesperson interface to G/L",PARM_VAL$=MID(A$,29,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1205 PARM_DESC$="Starting Digit to Modify",PARM_VAL$=MID(A$,30,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1206 PARM_DESC$="Number of Digits to Substitute",PARM_VAL$=MID(A$,31,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1207 PARM_DESC$="Report commissions when an invoice is paid?",PARM_VAL$=MID(A$,32,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1208 PARM_DESC$="Pay commission ONLY when an invoice is paid in full?",PARM_VAL$=MID(A$,33,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1209 ! PARM_DESC$="***Not Used ***",PARM_VAL$=MID(A$,34,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1210 PARM_DESC$="Do you have declining commission based on invoice aging?",PARM_VAL$=MID(A$,36,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1211 PARM_DESC$="Default Commission Code for Invoicing - Custom Forms: (or DIRect shipments-all types)",PARM_VAL$=MID(A$,37,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1212 PARM_DESC$="Default Commission Code for Invoicing - Inventory Item:",PARM_VAL$=MID(A$,42,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1213 PARM_DESC$="Default Commission Code for Invoicing - Customer Specific Inventory:",PARM_VAL$=MID(A$,47,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1214 PARM_DESC$="Default Commission Code for Invoicing - Non-stock Item:",PARM_VAL$=MID(A$,52,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1215 PARM_DESC$="Default Commission Code for Invoicing - Special Charge:",PARM_VAL$=MID(A$,57,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1216 PARM_DESC$="Should Salesperson's GP include Invoice GP adjustment?",PARM_VAL$=MID(A$,62,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1217 PARM_DESC$="Update alternate sales tax file - AS3?",PARM_VAL$=MID(A$,63,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1218 PARM_DESC$="Allow override of billing address during order entry?",PARM_VAL$=MID(A$,64,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1219 PARM_DESC$="Ask immediate print question for speed bill invoices?",PARM_VAL$=MID(A$,65,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1220 PARM_DESC$="Ask if T/M file should be accessed when setting up a new customer?",PARM_VAL$=MID(A$,66,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1221 PARM_DESC$="Should T/M address be updated when customer's is changed?",PARM_VAL$=MID(A$,67,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1222 PARM_DESC$="Use SIC Code to hold Customer Commission Code?",PARM_VAL$=MID(A$,68,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1223 PARM_DESC$="Exclude freight Gross Profit from GP calculation at invoice time?",PARM_VAL$=MID(A$,69,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1224 PARM_DESC$="Default commission code for invoicing - Sales Order Shipping to 'D' Location:",PARM_VAL$=MID(A$,70,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1225 PARM_DESC$="Vendor commission code substitution position designator",PARM_VAL$=MID(A$,75,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1226 PARM_DESC$="Apply once per vendor",PARM_VAL$=MID(A$,76,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1227 PARM_DESC$="Enable Individual Salesperson Commission",PARM_VAL$=MID(A$,77,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1228 PARM_DESC$="Salesperson Days to Pay #1",PARM_VAL$=STR(A[0]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1229 PARM_DESC$="Salesperson Days to Pay #2",PARM_VAL$=STR(A[1]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1230 PARM_DESC$="Salesperson Days to Pay #3",PARM_VAL$=STR(A[2]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1231 PARM_DESC$="Commission Payable Type 0 - Days to Pay Type 1",PARM_VAL$=STR(A[3]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1232 PARM_DESC$="Commission Payable Type 0 - Days to Pay Type 2",PARM_VAL$=STR(A[4]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1233 PARM_DESC$="Commission Payable Type 0 -Days to Pay Type 3",PARM_VAL$=STR(A[5]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1234 PARM_DESC$="Commission Payable Type 1 - Days to Pay Type 1",PARM_VAL$=STR(A[6]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1235 PARM_DESC$="Commission Payable Type 1 - Days to Pay Type 2",PARM_VAL$=STR(A[7]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1236 PARM_DESC$="Commission Payable Type 1 - Days to Pay  Type 3",PARM_VAL$=STR(A[8]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1237 PARM_DESC$="Salesperson Days to Pay #4",PARM_VAL$=STR(A[9]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1238 PARM_DESC$="Salesperson Days to Pay #5",PARM_VAL$=STR(A[10]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1239 PARM_DESC$="Days to Pay # 4-Commission Type 0",PARM_VAL$=STR(A[11]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1240 PARM_DESC$="Days to Pay # 5-Commission Type 0",PARM_VAL$=STR(A[12]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1241 PARM_DESC$="Days to Pay # 4-Commission Type 1",PARM_VAL$=STR(A[13]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1242 PARM_DESC$="Days to Pay # 5-Commission Type 1",PARM_VAL$=STR(A[14]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1243 PARM_DESC$="Days to Pay #1 - Commission Type 2",PARM_VAL$=STR(A[15]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1244 PARM_DESC$="Days to Pay #1 - Commission Type 3",PARM_VAL$=STR(A[16]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1245 PARM_DESC$="Days to Pay #1 - Commission Type 4",PARM_VAL$=STR(A[17]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1246 PARM_DESC$="Days to Pay #2 - Commission Type 2",PARM_VAL$=STR(A[18]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1247 PARM_DESC$="Days to Pay #2 - Commission Type 3",PARM_VAL$=STR(A[19]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1248 PARM_DESC$="Days to Pay #2 - Commission Type 4",PARM_VAL$=STR(A[20]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1249 PARM_DESC$="Days to Pay #3 - Commission Type 2",PARM_VAL$=STR(A[21]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1250 PARM_DESC$="Days to Pay #3 - Commission Type 3",PARM_VAL$=STR(A[22]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1251 PARM_DESC$="Days to Pay #3 - Commission Type 4",PARM_VAL$=STR(A[23]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1252 PARM_DESC$="Days to Pay #4 - Commission Type 2",PARM_VAL$=STR(A[24]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1253 PARM_DESC$="Days to Pay #4 - Commission Type 3",PARM_VAL$=STR(A[25]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1254 PARM_DESC$="Days to Pay #4 - Commission Type 4",PARM_VAL$=STR(A[26]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1255 PARM_DESC$="Days to Pay #5 - Commission Type 2",PARM_VAL$=STR(A[27]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1256 PARM_DESC$="Days to Pay #5 - Commission Type 3",PARM_VAL$=STR(A[28]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1257 PARM_DESC$="Days to Pay #5 - Commission Type 4",PARM_VAL$=STR(A[29]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1290 ! 
+1295 ! Export parameters: %C$+"AR3" 
+1296 MOD_CODE$="AR"; MOD_KEY$="AR3"; GOSUB OPEN_TEXT_FILE
+1297 IOL_AR3:IOLIST A$,A{ALL}
+1299 DIM A$(1024),A[8]; READ (ZZPARM,KEY=%C$+"AR3",DOM=*NEXT)IOL=IOL_AR3
+1300 PARM_DESC$="Enable Cash Posting Order Range Logic?",PARM_VAL$=MID(A$,7,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1301 PARM_DESC$="Show tab 6 in Customer Constant Data panel (GUI Only)?",PARM_VAL$=MID(A$,8,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1302 PARM_DESC$="Skip tax code lookup if current location and tax code state/zip match?",PARM_VAL$=MID(A$,9,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1303 PARM_DESC$="Always display Order Notepad when accessing invoice in invoice entry (GUI Only)?",PARM_VAL$=MID(A$,10,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1304 PARM_DESC$="Bypass logic to create Job Number AR Invoice message lines?",PARM_VAL$=MID(A$,11,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1305 PARM_DESC$="Subscription profiles enabled for credit card information?",PARM_VAL$=MID(A$,12,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1306 PARM_DESC$="Email Invoices after Sales Journal Update",PARM_VAL$=MID(A$,13,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1390 RETURN 
+1391 ! 
+1395 EXPORT_AP:
+1396 ! Export parameters: %C$+"A/P" 
+1397 MOD_CODE$="AP"; MOD_KEY$="A/P"; GOSUB OPEN_TEXT_FILE
+1398 IOL_A_P:IOLIST A$
+1399 DIM A$(100); READ (ZZPARM,KEY=%C$+"A/P",DOM=*NEXT)IOL=IOL_A_P
+1400 PARM_DESC$="Current fiscal year",PARM_VAL$=MID(A$,7,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1401 PARM_DESC$="Current accounting period",PARM_VAL$=MID(A$,11,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1402 PARM_DESC$="Divisons required?",PARM_VAL$=MID(A$,13,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1403 PARM_DESC$="What size vendor code should be used:",PARM_VAL$=MID(A$,14,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1404 PARM_DESC$="Should accounting be for discounts lost or discounts earned:",PARM_VAL$=MID(A$,15,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1405 PARM_DESC$="Are there multiple bank codes?",PARM_VAL$=MID(A$,16,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1406 PARM_DESC$="What is the standard bank code:",PARM_VAL$=MID(A$,17,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1407 PARM_DESC$="Will the G/L control accounts be interfaced by category?",PARM_VAL$=MID(A$,20,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1408 PARM_DESC$="What is the maximum size of the vendor category code",PARM_VAL$=MID(A$,21,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1409 PARM_DESC$="Enter code(s) of statistical data to be retained:",PARM_VAL$=MID(A$,22,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1410 PARM_DESC$="Enter the corresponding number of prior years statistics to keep:",PARM_VAL$=MID(A$,32,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1411 PARM_DESC$="Number of periods to retain invoice history:",PARM_VAL$=MID(A$,42,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1412 PARM_DESC$="Print checks for other comps",PARM_VAL$=MID(A$,44,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1413 PARM_DESC$="Use vendor files of company",PARM_VAL$=MID(A$,45,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1414 PARM_DESC$="Should AP data be consolidated",PARM_VAL$=MID(A$,48,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1415 PARM_DESC$="Should invoice detail be printed on the Cash Disbursement Journal?",PARM_VAL$=MID(A$,49,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1416 ! PARM_DESC$="***Unused***",PARM_VAL$=MID(A$,50,11); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1417 PARM_DESC$="Is there 1099 processing?",PARM_VAL$=MID(A$,61,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1418 PARM_DESC$="What is the current calendar year:",PARM_VAL$=MID(A$,62,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1419 PARM_DESC$="Use extended terms code information?",PARM_VAL$=MID(A$,66,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1420 PARM_DESC$="Allow vendor messages?",PARM_VAL$=MID(A$,67,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1421 PARM_DESC$="Allow special invoice amounts?",PARM_VAL$=MID(A$,68,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1422 PARM_DESC$="Is there automatic check reconciliation?",PARM_VAL$=MID(A$,69,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1423 PARM_DESC$="Retain statistical data by salesperson?",PARM_VAL$=MID(A$,70,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1424 PARM_DESC$="Is Special Invoice Amount #2 VAT (Value Added Tax)?",PARM_VAL$=MID(A$,71,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1425 PARM_DESC$="VAT percentage:   .00",PARM_VAL$=MID(A$,72,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1426 PARM_DESC$="In P/O Rec.(P/O-P3) make G/L category = division (ie. freight)?",PARM_VAL$=MID(A$,76,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1427 PARM_DESC$="Reduce invoice amount by VAT for vendor purchase statistics?",PARM_VAL$=MID(A$,77,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1428 PARM_DESC$="Activate Intracompany G/L Account?",PARM_VAL$=MID(A$,78,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1429 PARM_DESC$="Include order line freight when excluding from discount? N",PARM_VAL$=MID(A$,79,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1430 PARM_DESC$="Allow 2nd discount number of days & percentage for AP terms codes? N",PARM_VAL$=MID(A$,80,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1431 PARM_DESC$="Print Check Amount in Alpha?",PARM_VAL$=MID(A$,81,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1432 PARM_DESC$="Update Invoice Information to ODBC File?",PARM_VAL$=MID(A$,82,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1490 RETURN 
+1491 ! 
+1495 EXPORT_GL:
+1496 ! Export parameters: %C$+"G/L" 
+1497 MOD_CODE$="GL"; MOD_KEY$="G/L"; GOSUB OPEN_TEXT_FILE
+1498 IOL_G_L:IOLIST A$
+1499 DIM A$(300); READ (ZZPARM,KEY=%C$+"G/L",DOM=*NEXT)IOL=IOL_G_L
+1500 PARM_DESC$="Enter the length for each segment of the G/L Account Number:",PARM_VAL$=STR(MID(A$,11,4):"0-0-0-0"); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1501 PARM_DESC$="Post prior year P/L Adjustments in current year to account:",PARM_VAL$=MID(A$,15,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1502 PARM_DESC$="Number of periods to retain General Ledger postings:",PARM_VAL$=MID(A$,27,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1503 PARM_DESC$="Number of prior years to retain Account Balance history:",PARM_VAL$=MID(A$,30,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1504 PARM_DESC$="Update All I/C Transactions to Detail File?",PARM_VAL$=MID(A$,32,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1505 PARM_DESC$="Calendar Year in which the Current Fiscal Year ends:",PARM_VAL$=MID(A$,34,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1506 PARM_DESC$="Current (Default) Accounting Period:",PARM_VAL$=MID(A$,38,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1507 PARM_DESC$="Which Accounting Method should be used? (Accrual, Cash):",PARM_VAL$=MID(A$,40,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1508 PARM_DESC$="Post Net Profit at Year End to Account:",PARM_VAL$=MID(A$,41,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1509 PARM_DESC$="Asset Account Types start at number:",PARM_VAL$=MID(A$,53,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1510 PARM_DESC$="Liabilities Account Numbers:",PARM_VAL$=MID(A$,65,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1511 PARM_DESC$="Equity / Capital Account Numbers:",PARM_VAL$=MID(A$,77,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1512 PARM_DESC$="Revenue Account Numbers:",PARM_VAL$=MID(A$,89,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1513 PARM_DESC$="Cost of Goods Sold:",PARM_VAL$=MID(A$,101,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1514 PARM_DESC$="Expenses:",PARM_VAL$=MID(A$,113,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1515 PARM_DESC$="Other Income:",PARM_VAL$=MID(A$,125,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1516 PARM_DESC$="Other Expenses:",PARM_VAL$=MID(A$,137,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1517 PARM_DESC$="Does this company have Departments?",PARM_VAL$=MID(A$,149,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1518 PARM_DESC$="Enter the Department description:",PARM_VAL$=MID(A$,150,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1519 PARM_DESC$="Starting Digit of the Department code:",PARM_VAL$=MID(A$,170,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1520 PARM_DESC$="Length of Department Code:",PARM_VAL$=MID(A$,172,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1521 PARM_DESC$="Cash Basis Options:",PARM_VAL$=""; PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1522 PARM_DESC$="Do you wish to maintain Accrual Basis information?",PARM_VAL$=MID(A$,180,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1523 PARM_DESC$="Print Accrual detail on Detail Transaction Register?",PARM_VAL$=MID(A$,181,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1524 PARM_DESC$="Retain Accrual General Ledger postings?",PARM_VAL$=MID(A$,182,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1525 PARM_DESC$="Number of prior years to retain Accrual Account Balances:",PARM_VAL$=MID(A$,183,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1526 PARM_DESC$="Last fiscal year closed (set in GL2UBA, no display)",PARM_VAL$=MID(A$,185,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1527 PARM_DESC$="Does this company have Sub-Accounts?",PARM_VAL$=MID(A$,240,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1528 PARM_DESC$="Starting Digit of the Sub-Account Code:",PARM_VAL$=MID(A$,241,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1529 PARM_DESC$="Length of Sub-Account Code:",PARM_VAL$=MID(A$,243,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1530 PARM_DESC$="Next Journal Entry Number to Assign:",PARM_VAL$=MID(A$,244,6); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1531 PARM_DESC$="Last Fiscal year that Recurring JE's were updated:",PARM_VAL$=MID(A$,250,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1532 PARM_DESC$="Last Fiscal Period that Recurring JE's were updated:",PARM_VAL$=MID(A$,254,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1533 PARM_DESC$="Restrict posting to a closed period?",PARM_VAL$=MID(A$,256,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1590 RETURN 
+1591 ! 
+1595 EXPORT_IC:
+1596 ! Export parameters: %C$+"I/C" 
+1597 MOD_CODE$="IC"; MOD_KEY$="I/C"; GOSUB OPEN_TEXT_FILE
+1598 IOL_I_C:IOLIST A$
+1599 DIM A$(101); READ (ZZPARM,KEY=%C$+"I/C",DOM=*NEXT)IOL=IOL_I_C
+1600 PARM_DESC$="Current fiscal year:",PARM_VAL$=MID(A$,7,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1601 PARM_DESC$="Current accounting period:",PARM_VAL$=MID(A$,11,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1602 PARM_DESC$="What size inventory code should be used:",PARM_VAL$=MID(A$,13,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1603 PARM_DESC$="Enter code(s) of statistical data to be retained:",PARM_VAL$=MID(A$,15,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1604 PARM_DESC$="Enter the corresponding number of prior year statistics to keep:",PARM_VAL$=MID(A$,25,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1605 PARM_DESC$="Do you require inventory transaction detail?",PARM_VAL$=MID(A$,35,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1606 PARM_DESC$="Number of periods to retain inventory detail:",PARM_VAL$=MID(A$,36,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1607 PARM_DESC$="Do you require customer specific inventory?",PARM_VAL$=MID(A$,38,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1608 PARM_DESC$="Does this company post G/L inventory control accounts by location?",PARM_VAL$=MID(A$,39,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1609 PARM_DESC$="Starting digit of the G/L sub-account number to substitute:",PARM_VAL$=MID(A$,40,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1610 PARM_DESC$="Number of digits for sub-account:",PARM_VAL$=MID(A$,42,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1611 PARM_DESC$="Do you require a lot control sub-ledger to your inventory?",PARM_VAL$=MID(A$,44,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1612 PARM_DESC$="Second Desc Line",PARM_VAL$=MID(A$,47,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1613 PARM_DESC$="Do you require backorder fill reporting?",PARM_VAL$=MID(A$,48,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1614 PARM_DESC$="Back Order Qty to reduce Committed?",PARM_VAL$=MID(A$,49,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1615 PARM_DESC$="Do you group like inventory items for quantity break pricing?",PARM_VAL$=MID(A$,50,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1616 PARM_DESC$="Do you require more than 6 quantity price breaks?",PARM_VAL$=MID(A$,51,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1617 PARM_DESC$="Automatic lot selection method code:",PARM_VAL$=MID(A$,52,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1618 PARM_DESC$="Lot display option:",PARM_VAL$=MID(A$,53,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1619 PARM_DESC$="Ignore Bin Locations when printing Count Sheets?",PARM_VAL$=MID(A$,54,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1620 PARM_DESC$="Number of Months to use to Calculate Average Usage:",PARM_VAL$=MID(A$,55,6); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1621 PARM_DESC$="Display average sales/month in I/C availability screen",PARM_VAL$=MID(A$,61,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1622 PARM_DESC$="Prompt in P/O Receiving if Customer Backorders?",PARM_VAL$=MID(A$,62,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1623 PARM_DESC$="P/O Receiving Update to change suggested bin location?",PARM_VAL$=MID(A$,63,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1624 PARM_DESC$="Expanded Lot Record",PARM_VAL$=MID(A$,64,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1625 PARM_DESC$="Display New Lot Numbers",PARM_VAL$=MID(A$,65,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1626 PARM_DESC$="Maintain Lot Trans Log (ICO)",PARM_VAL$=MID(A$,66,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1627 PARM_DESC$="Post Inventory Transfers to Committed & On P/O?",PARM_VAL$=MID(A$,67,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1628 PARM_DESC$="Display lot comment field during inquiry and lot selection?",PARM_VAL$=MID(A$,68,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1629 PARM_DESC$="Default Lot Inventory? to 'Y' for new items?",PARM_VAL$=MID(A$,69,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1630 PARM_DESC$="Automatic lot selection method code for automatic reqs only:",PARM_VAL$=MID(A$,70,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1631 PARM_DESC$="File Validation of QBC Groups?",PARM_VAL$=MID(A$,71,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1632 PARM_DESC$="Create separate order lines if different sell prices?",PARM_VAL$=MID(A$,72,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1633 PARM_DESC$="QBG Pricing: Include blank order line types/bypass Fixed Price",PARM_VAL$=MID(A$,73,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1690 RETURN 
+1691 ! 
+1695 EXPORT_FM:
+1696 ! Export parameters: %C$+"F/M" 
+1697 MOD_CODE$="FM"; MOD_KEY$="F/M"; GOSUB OPEN_TEXT_FILE
+1698 IOL_F_M:IOLIST A$,A{ALL}
+1699 DIM A$(255),A[6]; READ (ZZPARM,KEY=%C$+"F/M",DOM=*NEXT)IOL=IOL_F_M
+1700 PARM_DESC$="Numbering by division?",PARM_VAL$=MID(A$,8,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1701 PARM_DESC$="Next quote number:",PARM_VAL$=MID(A$,9,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1702 PARM_DESC$="Hardcoded to be 89",PARM_VAL$=MID(A$,17,2) ! PRINT (OUTPUT)IOL=IOL_PARM_OUT ! Hardcoded so skipping
+1703 PARM_DESC$="Current Accounting Period",PARM_VAL$=MID(A$,19,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1704 PARM_DESC$="Print plant address on carton label?",PARM_VAL$=MID(A$,21,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1705 GOTO 1716 ! PARM_DESC$="Manufacturing?",PARM_VAL$=MID(A$,22,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT ! Manufacturing params are only available for C#011
+1706 PARM_DESC$="Production Step/Order Tracking Descriptions - 1 - Checking",PARM_VAL$=MID(A$,23,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1707 PARM_DESC$="Production Step/Order Tracking Descriptions - 2 - Composition",PARM_VAL$=MID(A$,35,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1708 PARM_DESC$="Production Step/Order Tracking Descriptions - 3 - Negatives",PARM_VAL$=MID(A$,47,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1709 PARM_DESC$="Production Step/Order Tracking Descriptions - 4 - Plate Making",PARM_VAL$=MID(A$,59,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1710 PARM_DESC$="Production Step/Order Tracking Descriptions - 5 - Pre-Press",PARM_VAL$=MID(A$,71,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1711 PARM_DESC$="Production Step/Order Tracking Descriptions - 6 - On-Press",PARM_VAL$=MID(A$,83,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1712 PARM_DESC$="Production Step/Order Tracking Descriptions - 7 - Shipping",PARM_VAL$=MID(A$,95,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1713 PARM_DESC$="Production Step/Order Tracking Descriptions - 8",PARM_VAL$=MID(A$,107,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1714 PARM_DESC$="Production Step/Order Tracking Descriptions - 9",PARM_VAL$=MID(A$,119,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1715 PARM_DESC$="Production Step/Order Tracking Descriptions - 10",PARM_VAL$=MID(A$,131,12); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1716 PARM_DESC$="Current Fiscal Year",PARM_VAL$=MID(A$,143,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1717 PARM_DESC$="Finders fee to affect GP adjustment?",PARM_VAL$=MID(A$,147,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1718 PARM_DESC$="Track promotional statistics?",PARM_VAL$=MID(A$,148,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1719 PARM_DESC$="Do you have Feature Driven Pricing?",PARM_VAL$=MID(A$,149,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1720 PARM_DESC$="Should selling price be recomputed at invoicing (overruns)?",PARM_VAL$=MID(A$,150,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1721 PARM_DESC$="Do you want to be prompted for a Item Revision Date in O/E?",PARM_VAL$=MID(A$,151,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1722 PARM_DESC$="After billing, auto print new packing list for B/O items?",PARM_VAL$=MID(A$,152,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1723 PARM_DESC$="Set the default wrhse by division in requisition entry?",PARM_VAL$=MID(A$,153,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1724 PARM_DESC$="Print the complete special shipping address on the invoice?",PARM_VAL$=MID(A$,154,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1725 PARM_DESC$="Do you require line item discounts in order entry?",PARM_VAL$=MID(A$,155,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1726 PARM_DESC$="Prompt for zero sell price during P/O receiving?",PARM_VAL$=MID(A$,156,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1727 PARM_DESC$="Do you require order acknowledgements to be printed?",PARM_VAL$=MID(A$,157,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1728 PARM_DESC$="Eliminate backordered message line during invoicing?",PARM_VAL$=MID(A$,158,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1729 PARM_DESC$="Interface the TopForm RFQ Module with Order Processing?",PARM_VAL$=MID(A$,159,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1730 PARM_DESC$="Consolidated pick list code:",PARM_VAL$=MID(A$,160,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1731 PARM_DESC$="Credit checks warnings to be given during Order Entry:",PARM_VAL$=MID(A$,161,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1732 PARM_DESC$="Set default for SpeedBill to print packing lists/labels?",PARM_VAL$=MID(A$,166,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1733 PARM_DESC$="Reserved for future use (SOA):",PARM_VAL$=MID(A$,167,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1734 PARM_DESC$="Do you require user defined custom item specifications?",PARM_VAL$=MID(A$,168,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1735 PARM_DESC$="Does carton label format code vary by order line?",PARM_VAL$=MID(A$,169,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1736 PARM_DESC$="Allow blank date requested in Order Entry?",PARM_VAL$=MID(A$,170,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1737 PARM_DESC$="Set the GP adjustment to the cost for 'C' type releases?",PARM_VAL$=MID(A$,171,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1738 PARM_DESC$="Customer Number to NOT Adjust GP",PARM_VAL$=MID(A$,172,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1739 PARM_DESC$="Do you require cost codes during req and order entry?",PARM_VAL$=MID(A$,182,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1740 PARM_DESC$="Do you wish to report finder's fees on a cash basis?",PARM_VAL$=MID(A$,183,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1741 PARM_DESC$="Are Vendor/Product code finder's fee rates required?",PARM_VAL$=MID(A$,184,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1742 PARM_DESC$="Do you wish to print P/O formats based upon the P/O suffix?",PARM_VAL$=MID(A$,185,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1743 PARM_DESC$="Commission code defaulting based upon product code?",PARM_VAL$=MID(A$,186,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1744 PARM_DESC$="Implement supply item programming?",PARM_VAL$=MID(A$,187,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1745 PARM_DESC$="Allow specs for stock items?",PARM_VAL$=MID(A$,188,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1746 PARM_DESC$="Change item master art status to 'P' when PO printed?",PARM_VAL$=MID(A$,189,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1747 PARM_DESC$="Display the item notes in order entry?",PARM_VAL$=MID(A$,190,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1748 PARM_DESC$="Track 'bundled' pricing for custom jobs?",PARM_VAL$=MID(A$,191,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1749 PARM_DESC$="Reserved for future use (AGP)?",PARM_VAL$=MID(A$,192,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1750 PARM_DESC$="Display Total Freight on Lots after selection?",PARM_VAL$=MID(A$,193,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1751 PARM_DESC$="Include Requisitions on the order booking report?",PARM_VAL$=MID(A$,194,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1752 PARM_DESC$="Enable_Hidden_wrhse_Feature_flg",PARM_VAL$=MID(A$,195,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1753 PARM_DESC$="FS6 detail to update reqs shipped from whse <9000 as 'B' types instead of 'D' types",PARM_VAL$=MID(A$,196,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1754 PARM_DESC$="No Cust/Vdr Terms Desc & Lookup/Setup in O/P-D1 & P/O-P1?",PARM_VAL$=MID(A$,197,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1755 PARM_DESC$="Enable memo fields in Item Master on screens #2 & #8?",PARM_VAL$=MID(A$,198,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1756 PARM_DESC$="Feature group (G), Item code (F), Product code (P):",PARM_VAL$=MID(A$,201,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1757 PARM_DESC$="Should Special Charges be included?",PARM_VAL$=MID(A$,202,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1758 PARM_DESC$="Should detailed file be retained?",PARM_VAL$=MID(A$,203,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1759 PARM_DESC$="Update Customer file, Telemarketing (Blank=none):",PARM_VAL$=MID(A$,204,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1760 PARM_DESC$="Mailing label code to set:",PARM_VAL$=MID(A$,205,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1761 PARM_DESC$="When an order is entered:",PARM_VAL$=MID(A$,207,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1762 PARM_DESC$="When an order is deleted:",PARM_VAL$=MID(A$,210,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1763 PARM_DESC$="Enter Sell Price on Stock Purchase Orders?",PARM_VAL$=MID(A$,213,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1764 PARM_DESC$="Default Print On Field in Order Entry (O/P-O1) to:",PARM_VAL$=MID(A$,214,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1765 PARM_DESC$="Make GP adj. based on Salesperson Cost for DIRect ship inventory?",PARM_VAL$=MID(A$,219,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1766 PARM_DESC$="Reserved for future use (FMI):",PARM_VAL$=MID(A$,220,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1767 PARM_DESC$="Default P/O Receiving Acctg Period to current A/R Acctg Period?",PARM_VAL$=MID(A$,221,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1768 PARM_DESC$="Display Customer Category code during Req/Release Entry?",PARM_VAL$=MID(A$,222,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1769 PARM_DESC$="Change all Whse Loc Reorder points when Item Master's changes?",PARM_VAL$=MID(A$,223,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1770 PARM_DESC$="Default the Sell Price on Stock P/O to Item's Base Price?",PARM_VAL$=MID(A$,224,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1771 PARM_DESC$="Default Stock Item Sell Price in Order Entry to Item Master Price?",PARM_VAL$=MID(A$,225,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1772 PARM_DESC$="Enable New Order Type field in Order Entry?",PARM_VAL$=MID(A$,226,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1773 PARM_DESC$="Display Customer Phone No on Req/Rel Header Screen?",PARM_VAL$=MID(A$,227,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1774 PARM_DESC$="Should Bill as Shipped P/Os be booked when P/O is entered?",PARM_VAL$=MID(A$,228,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1775 PARM_DESC$="Book inventory with this customer code upon release (Optional): Treat this customer code as still inventory for release",PARM_VAL$=MID(A$,229,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1776 PARM_DESC$="Enable order shipment history feature?",PARM_VAL$=MID(A$,239,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1777 PARM_DESC$="Enable location's requisition maximum exceeded warning?",PARM_VAL$=MID(A$,240,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1778 PARM_DESC$="Enable item comment display in Order, Req & Trans Entry?",PARM_VAL$=MID(A$,241,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1779 PARM_DESC$="Ask suspend packing list printing question in O/P-D1 & O1?",PARM_VAL$=MID(A$,242,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1780 PARM_DESC$="Enable Suggestive Selling Feature?  A",PARM_VAL$=MID(A$,243,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1781 PARM_DESC$="Enable additional 4 lines of Customer Ship-to Address?",PARM_VAL$=MID(A$,244,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1782 PARM_DESC$="Enable Sales Order Summary Display in Req/Release Entry (O/P-D1)?",PARM_VAL$=MID(A$,245,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1783 PARM_DESC$="Enable Customer's Item Code Feature?",PARM_VAL$=MID(A$,246,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1784 PARM_DESC$="Eliminate 'Send Letter Type' from O/E Header Screen (O/P-O1)?",PARM_VAL$=MID(A$,247,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1785 PARM_DESC$="Eliminate 'Print shipping acknowledgement' from O/E Hdr Scr (O/P-O1)?",PARM_VAL$=MID(A$,248,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1786 PARM_DESC$="When out of stock in O/P-D1, warn if order exists with same ship-to?",PARM_VAL$=MID(A$,249,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1787 PARM_DESC$="Enable receiving/billing department feature?",PARM_VAL$=MID(A$,250,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1788 PARM_DESC$="Set Special Ship? to 'Y' for custom forms in Order Entry O/P-O1?",PARM_VAL$=MID(A$,251,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1789 PARM_DESC$="Do you require a 2nd set of Carton Label fields by Order Line item?",PARM_VAL$=MID(A$,252,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1790 PARM_DESC$="Calculate RON Suggested Reorder Qty based on Avg Monthly Usage?",PARM_VAL$=MID(A$,253,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1791 PARM_DESC$="When modifying an existing order line, retain entered selling price?",PARM_VAL$=MID(A$,254,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1792 PARM_DESC$="Notify operator order is bill as shipped in PO Receiving (P/O-P3)?",PARM_VAL$=MID(A$,255,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1793 PARM_DESC$="Allow Over Shipment?",PARM_VAL$=MID(A$,256,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1794 PARM_DESC$="Allow Exclusion of Invoice on Summary Bill?",PARM_VAL$=MID(A$,257,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1795 PARM_DESC$="Enable Backorder Fill Feature from Inventory Transactions?",PARM_VAL$=MID(A$,258,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1796 PARM_DESC$="Do not bring sell unit from lot to req line for customer owned?",PARM_VAL$=MID(A$,259,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1797 PARM_DESC$="Set U/M for N-other line type in O/P, O1 as 'M' rather than 'EACH'?",PARM_VAL$=MID(A$,260,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1798 PARM_DESC$="Automatically add freight from lots to order header freight field?",PARM_VAL$=MID(A$,261,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1799 PARM_DESC$="Display maximum when displaying location's req max exceed warning?",PARM_VAL$=MID(A$,262,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1800 PARM_DESC$="Retain message lines in order history?",PARM_VAL$=MID(A$,263,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1801 PARM_DESC$="Print the special shipping ship-to description on the invoice?",PARM_VAL$=MID(A$,264,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1802 PARM_DESC$="Do you allow entry of more than one quote per O/P, O1 order?",PARM_VAL$=MID(A$,265,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1803 PARM_DESC$="Do you wish to create PO#'s that do not update to the Order Book?",PARM_VAL$=MID(A$,266,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1804 PARM_DESC$="Enter PO#'s selected to bypass the order book update:",PARM_VAL$=MID(A$,267,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1805 PARM_DESC$="Send Pack List to print file during PO rec update if not printed yet?",PARM_VAL$=MID(A$,272,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1806 PARM_DESC$="Enable Repeat Order Feature?",PARM_VAL$=MID(A$,273,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1807 PARM_DESC$="Save all orders as repeat orders?",PARM_VAL$=MID(A$,274,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1808 PARM_DESC$="Display prompt in req lines entry to return to order header?",PARM_VAL$=MID(A$,275,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1809 PARM_DESC$="Upon entering existing order in O1 & D1, display existing notepad? Y",PARM_VAL$=MID(A$,276,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1810 PARM_DESC$="Format to use for PO Receiving Carton Labels?",PARM_VAL$=MID(A$,277,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1811 PARM_DESC$="During PO Receiving always default new items to 'Y' for lotted items?",PARM_VAL$=MID(A$,278,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1812 PARM_DESC$="Receiving department must be unique, allow entry in order entry?",PARM_VAL$=MID(A$,279,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1813 PARM_DESC$="Enable Inventory Costing Feature?",PARM_VAL$=MID(A$,280,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1814 PARM_DESC$="Display message in Req Entry if item is now below ROP?",PARM_VAL$=MID(A$,281,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1815 PARM_DESC$="Default ship from whse in req entry to whse with oldest lot?",PARM_VAL$=MID(A$,282,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1816 PARM_DESC$="Enable displaying of Customer Item Notes?",PARM_VAL$=MID(A$,283,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1817 PARM_DESC$="Use county from zip code file as billing dept during SJ update?",PARM_VAL$=MID(A$,284,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1818 PARM_DESC$="Should Packing List Printing recognize 1st digit of wrhse?",PARM_VAL$=MID(A$,285,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1819 PARM_DESC$="Force specification check if Last Order Date prior to:   /  /",PARM_VAL$=MID(A$,286,6); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1820 PARM_DESC$="Default print on field in requisition entry (O/P-D1) to:",PARM_VAL$=MID(A$,292,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1821 PARM_DESC$="Update unbilled cost when receiving Cust owned if different?",PARM_VAL$=MID(A$,297,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1822 PARM_DESC$="Update Line Cost & Order Booking upon receipt of vendor Inv?",PARM_VAL$=MID(A$,298,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1823 PARM_DESC$="Implement Freight Handling Rules by Order Feature?       Y",PARM_VAL$=MID(A$,299,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1824 PARM_DESC$="Create History for Special Charges added during Invoice Entry?",PARM_VAL$=MID(A$,300,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1825 PARM_DESC$="Default the ""Date Requested"" Field for W and R orders to date + num days",PARM_VAL$=MID(A$,301,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1826 PARM_DESC$="Use current commission codes when creating an order with a repeat?",PARM_VAL$=MID(A$,302,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1827 ! PARM_DESC$="Not Implemented",PARM_VAL$=MID(A$,303,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1828 PARM_DESC$="Allow entry of Custom Item contract expiration date for stock items?",PARM_VAL$=MID(A$,304,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1829 PARM_DESC$="Add line number option to reprint packing list prompt in OE?",PARM_VAL$=MID(A$,305,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1830 PARM_DESC$="Use FMS price from lot record",PARM_VAL$=MID(A$,306,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1831 PARM_DESC$="Number of months for suggested reorder qty in reorder notices",PARM_VAL$=MID(A$,307,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1832 PARM_DESC$="Use Companion Items logic in manual sales order entry (O/P,O1)?",PARM_VAL$=MID(A$,309,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1833 PARM_DESC$="Allow Entry of RC Number during TF Order Entry(O/P,O1)?",PARM_VAL$=MID(A$,310,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1834 PARM_DESC$="Allow Item Price Class pricing to override Lot Sales Price",PARM_VAL$=MID(A$,311,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1835 PARM_DESC$="Default Number of Days from Order Date to PO Ship Date",PARM_VAL$=MID(A$,312,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1836 PARM_DESC$="Force Entry of Credit Card Info on Credit Card Orders",PARM_VAL$=MID(A$,315,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1837 PARM_DESC$="Use Item Class from Lot Record for Pricing",PARM_VAL$=MID(A$,316,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1838 PARM_DESC$="Use Customer Terms Code when selecting repeat orders.",PARM_VAL$=MID(A$,317,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1839 PARM_DESC$="Allow entering multiple items with specs on same PO in O.E",PARM_VAL$=MID(A$,318,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1840 PARM_DESC$="Use TOD Packing List",PARM_VAL$=MID(A$,319,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1841 PARM_DESC$="Automatically reprint PO if restricted operator - PO Range Start",PARM_VAL$=MID(A$,320,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1842 PARM_DESC$="Automatically reprint PO if restricted operator - PO Range End",PARM_VAL$=MID(A$,321,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1843 PARM_DESC$="Don't delete existing EDW record when order line is deleted?",PARM_VAL$=MID(A$,322,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1844 PARM_DESC$="Create PO Acknowledgement data upon order exit?",PARM_VAL$=MID(A$,323,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1845 PARM_DESC$="Bypass auto lot selection during repeat order creation?",PARM_VAL$=MID(A$,324,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1846 PARM_DESC$="Display customer's Invoice Entry Message in PO Receiving?",PARM_VAL$=MID(A$,325,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1847 PARM_DESC$="Next Receiving Report Number",PARM_VAL$=MID(A$,326,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1848 PARM_DESC$="Use accumulated AMU for RON suggested order quantity calc?",PARM_VAL$=MID(A$,331,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1849 PARM_DESC$="For PO Standard Composition skip printing of fields set to No?",PARM_VAL$=MID(A$,332,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1850 PARM_DESC$="Update billing dept in iem location record with item's function field?",PARM_VAL$=MID(A$,333,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1851 PARM_DESC$="Allow access to Summary Bill flag in order entry?",PARM_VAL$=MID(A$,334,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1852 PARM_DESC$="Default reprint packing prompt in PO Receiving to No?",PARM_VAL$=MID(A$,335,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1853 PARM_DESC$="Require password entry to acknowledge Order Notepad display (CHUI only)",PARM_VAL$=MID(A$,336,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1854 PARM_DESC$="Activate Multiple Finders Fee Feature",PARM_VAL$=MID(A$,337,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1855 PARM_DESC$="Use Current Multi Finder Fees when creating an order from a repeat?",PARM_VAL$=MID(A$,338,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1856 PARM_DESC$="Allow print flag checkboxes on Summary Entry panel?",PARM_VAL$=MID(A$,339,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1857 PARM_DESC$="GUI Order Entry: trigger Order Notepad for new orders?",PARM_VAL$=MID(A$,340,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1858 PARM_DESC$="Adjust FMY/FMZ order type if blank and release from inventory?",PARM_VAL$=MID(A$,341,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1859 PARM_DESC$="If adjusting FMY/FMZ order type, Order type for customer owned:",PARM_VAL$=MID(A$,342,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1860 PARM_DESC$="If adjusting FMY/FMZ order type, Order type for distributor owned:",PARM_VAL$=MID(A$,343,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1861 PARM_DESC$="Default Country Code",PARM_VAL$=MID(A$,344,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1862 PARM_DESC$="Suppress specs on PO if spec URL present?",PARM_VAL$=MID(A$,346,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1863 PARM_DESC$="Number of Samples Requested",PARM_VAL$=STR(A[0]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1864 PARM_DESC$="Number of Days Quotes are Valid",PARM_VAL$=STR(A[1]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1865 PARM_DESC$="Standard Flat Charge-MFG",PARM_VAL$=STR(A[2]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1866 PARM_DESC$="Standard Running Charge-MFG",PARM_VAL$=STR(A[3]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1867 PARM_DESC$="Minimum Running Charge-MFG",PARM_VAL$=STR(A[4]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1868 PARM_DESC$="Minimum Quantity-MFG",PARM_VAL$=STR(A[5]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1869 PARM_DESC$="Carton label Adjustment Factor",PARM_VAL$=STR(A[6]); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1870 PARM_DESC$="Disable 10% overruns in PO Receiving?",PARM_VAL$=MID(A$,347,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT ! 307454
+1872 PARM_DESC$="Allow access to all warehouses even if security by operator division restriction?",PARM_VAL$=MID(A$,348,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT ! 307463
+1873 PARM_DESC$="Force carton label printing for all qualifying items?",PARM_VAL$=MID(A$,349,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT ! 307477
+1890 RETURN 
+1891 ! 
+1895 EXPORT_EC:
+1896 ! Export parameters: %C$+"E/C" 
+1897 MOD_CODE$="EC"; MOD_KEY$="E/C"; GOSUB OPEN_TEXT_FILE
+1898 IOL_E_C:IOLIST A$
+1899 DIM A$(1275); READ (ZZPARM,KEY=%C$+"E/C",DOM=*NEXT)IOL=IOL_E_C
+1900 PARM_DESC$="Company Name",PARM_VAL$=MID(A$,7,50); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1901 PARM_DESC$="HTML End of Line Marker (in hex)",PARM_VAL$=MID(A$,57,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1902 PARM_DESC$="Next Session ID",PARM_VAL$=MID(A$,65,7); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1903 PARM_DESC$="Template for invalid user/passwd:",PARM_VAL$=MID(A$,72,40); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1904 PARM_DESC$="Check for Expired Sessions (in minutes)",PARM_VAL$=MID(A$,112,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1905 PARM_DESC$="Next Worksheet ID",PARM_VAL$=MID(A$,115,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1906 PARM_DESC$="Oldest order to show status: (in number of days)",PARM_VAL$=MID(A$,125,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1907 PARM_DESC$="Template for template not found:",PARM_VAL$=MID(A$,128,40); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1908 PARM_DESC$="Text for-List price",PARM_VAL$=MID(A$,168,15); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1909 PARM_DESC$="Customer Price",PARM_VAL$=MID(A$,183,15); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1910 PARM_DESC$="Image path:",PARM_VAL$=MID(A$,198,60); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1911 PARM_DESC$="Default # Rows: Catalog:",PARM_VAL$=MID(A$,258,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1912 PARM_DESC$="Form Image User Definition - Image 1",PARM_VAL$=MID(A$,261,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1913 PARM_DESC$="Form Image User Definition - Image 2",PARM_VAL$=MID(A$,271,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1914 PARM_DESC$="Form Image User Definition - Image 3",PARM_VAL$=MID(A$,281,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1915 PARM_DESC$="Form Image User Definition - Image 4",PARM_VAL$=MID(A$,291,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1916 PARM_DESC$="Form Image User Definition - Image 5",PARM_VAL$=MID(A$,301,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1917 PARM_DESC$="HTML IMG SRC html tag:",PARM_VAL$=MID(A$,311,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1918 PARM_DESC$="HTML attributes:",PARM_VAL$=MID(A$,331,60); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1919 PARM_DESC$="HTML IMG SRC Closing tag:",PARM_VAL$=MID(A$,391,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1920 PARM_DESC$="Form image not on file:",PARM_VAL$=MID(A$,411,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1921 PARM_DESC$="Primary order sort definition:",PARM_VAL$=MID(A$,431,2); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1922 PARM_DESC$="Default # Rows: Order Status Page:",PARM_VAL$=MID(A$,433,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1923 PARM_DESC$="Default cust parm for ship-to restricted ship-via list",PARM_VAL$=MID(A$,436,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1924 PARM_DESC$="E-mails upgraded to 60 characters?",PARM_VAL$=MID(A$,440,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1925 PARM_DESC$="Form Image 1 Default Extension",PARM_VAL$=MID(A$,441,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1926 PARM_DESC$="Form Image 2 Default Extension",PARM_VAL$=MID(A$,451,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1927 PARM_DESC$="Form Image 3 Default Extension",PARM_VAL$=MID(A$,461,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1928 PARM_DESC$="Form Image 4 Default Extension",PARM_VAL$=MID(A$,471,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1929 PARM_DESC$="Form Image 5 Default Extension",PARM_VAL$=MID(A$,481,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1930 PARM_DESC$="Activate Office Supply Module",PARM_VAL$=MID(A$,491,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1931 PARM_DESC$="OS image path",PARM_VAL$=MID(A$,492,60); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1932 PARM_DESC$="Showif=?",PARM_VAL$=MID(A$,552,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1933 PARM_DESC$="Product catalog upgraded with alternate sort",PARM_VAL$=MID(A$,553,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1934 PARM_DESC$="Activate unlimited secure codes by item",PARM_VAL$=MID(A$,554,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1935 PARM_DESC$="Activate multiple carrier tracking",PARM_VAL$=MID(A$,555,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1936 PARM_DESC$="Recognize stock? Item flag on custom item master",PARM_VAL$=MID(A$,556,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1937 PARM_DESC$="Insert <BR> when populating qty breaks on product catalog",PARM_VAL$=MID(A$,557,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1938 PARM_DESC$="limit usage reporting on PC detail to activate ship-to",PARM_VAL$=MID(A$,558,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1939 PARM_DESC$="Default 'price source' for webec item parameters",PARM_VAL$=MID(A$,559,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1940 PARM_DESC$="Retain 'attention' with every change in ship-to",PARM_VAL$=MID(A$,560,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1941 PARM_DESC$="Order status (main): ordstat.htm",PARM_VAL$=MID(A$,561,35); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1942 PARM_DESC$="Default e-mail:",PARM_VAL$=MID(A$,596,60); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1943 PARM_DESC$="LOTTED REPORTING: terminology for committed lot record:",PARM_VAL$=MID(A$,656,15); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1944 PARM_DESC$="LOTTED REPORTING: terminology for non-committed lot record:",PARM_VAL$=MID(A$,671,15); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1945 PARM_DESC$="Suppress reporting duplicate items in multiple categories? N",PARM_VAL$=MID(A$,686,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1946 PARM_DESC$="Characters to filter out of product image names:",PARM_VAL$=MID(A$,687,19); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1947 PARM_DESC$="P/O Code range for WebEC orders: -start code",PARM_VAL$=MID(A$,706,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1948 PARM_DESC$="P/O Code range for WebEC orders: -end code",PARM_VAL$=MID(A$,707,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1949 PARM_DESC$="Activate e-Logistics controls?",PARM_VAL$=MID(A$,708,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1950 PARM_DESC$="Filter following line types from order status detail",PARM_VAL$=MID(A$,709,5); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1951 PARM_DESC$="Prevent order status line display with following PO codes",PARM_VAL$=MID(A$,714,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1952 PARM_DESC$="Terminology to be used for 'catalog'",PARM_VAL$=MID(A$,734,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1953 PARM_DESC$="Text to display for stock if no qty breaks",PARM_VAL$=MID(A$,754,35); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1954 PARM_DESC$="EOL for E-mail",PARM_VAL$=MID(A$,789,8); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1955 PARM_DESC$="Order status keyword search - oldest order to search",PARM_VAL$=MID(A$,797,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1956 PARM_DESC$="Order status keyword search - default",PARM_VAL$=MID(A$,800,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1957 PARM_DESC$="Order type description: Warehouse release",PARM_VAL$=MID(A$,803,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1958 PARM_DESC$="Sales order",PARM_VAL$=MID(A$,823,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1959 PARM_DESC$="Order Based: Order type",PARM_VAL$=MID(A$,843,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1960 PARM_DESC$="Order Based: Customer P/O",PARM_VAL$=MID(A$,853,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1961 PARM_DESC$="Item Based: Item Code DDL",PARM_VAL$=MID(A$,863,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1962 PARM_DESC$="Shipping Info Based: Ship-to code",PARM_VAL$=MID(A$,873,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1963 PARM_DESC$="Shipping Info Based: City",PARM_VAL$=MID(A$,883,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1964 PARM_DESC$="Shipping InfoBased: State",PARM_VAL$=MID(A$,893,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1965 PARM_DESC$="Shipping InfoBased: Zip Code",PARM_VAL$=MID(A$,903,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1966 PARM_DESC$="Order Based: Order date",PARM_VAL$=MID(A$,913,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1967 PARM_DESC$="Item Based: Item code pattern",PARM_VAL$=MID(A$,923,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1968 PARM_DESC$="Time window for purchasing credit card order",PARM_VAL$=MID(A$,933,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1969 PARM_DESC$="U.S. Vendor code",PARM_VAL$=MID(A$,936,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1970 PARM_DESC$="Activate order/approval functions",PARM_VAL$=MID(A$,946,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1971 PARM_DESC$="Activate unlimited categories by item",PARM_VAL$=MID(A$,947,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1972 PARM_DESC$="Ordering in M/1,000: Suppress extending qty times 1,000",PARM_VAL$=MID(A$,948,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1973 PARM_DESC$="Activate multiple source customers in catalog loading (c3)",PARM_VAL$=MID(A$,949,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1974 PARM_DESC$="Credit Card capture only - no 'ccaction' on pages",PARM_VAL$=MID(A$,950,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1975 PARM_DESC$="Company Image Name",PARM_VAL$=MID(A$,951,30); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1976 PARM_DESC$="Error Template",PARM_VAL$=MID(A$,981,40); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1977 PARM_DESC$="Purchase approval: Initial notification to purchasing agent:",PARM_VAL$=MID(A$,1021,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1978 PARM_DESC$="Purchase approval: Email notification that order approved:",PARM_VAL$=MID(A$,1031,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1979 PARM_DESC$="Purchase approval: Email notification of order rejection:",PARM_VAL$=MID(A$,1041,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1980 PARM_DESC$="Purchase approval: Order confirm template:",PARM_VAL$=MID(A$,1051,35); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1981 PARM_DESC$="Special address override handling (487)? N",PARM_VAL$=MID(A$,1086,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1982 PARM_DESC$="New/Repeat Field on PO Header for Variable Print Item",PARM_VAL$=MID(A$,1087,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1983 PARM_DESC$="Allow shipping information to be overridden with blanks?",PARM_VAL$=MID(A$,1088,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1984 PARM_DESC$="Unit of measure used for thousands:",PARM_VAL$=MID(A$,1089,4); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1985 PARM_DESC$="CC orders: Don't invoice lines with PO code?",PARM_VAL$=MID(A$,1093,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1986 PARM_DESC$="Use cost qty breaks from supplier record if order line has PO code?",PARM_VAL$=MID(A$,1094,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1987 PARM_DESC$="Generate random session id?",PARM_VAL$=MID(A$,1095,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1988 PARM_DESC$="Customer on credit hold template:",PARM_VAL$=MID(A$,1096,40); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1989 PARM_DESC$="Use nof image in product catalog?",PARM_VAL$=MID(A$,1136,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1990 PARM_DESC$="Create composite pdf for VP, send one vendor email per PO?",PARM_VAL$=MID(A$,1137,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1991 PARM_DESC$="Next Purchase Based Coupon number",PARM_VAL$=MID(A$,1138,10); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1992 PARM_DESC$="Second P/O Code range for WebEC orders: -start code",PARM_VAL$=MID(A$,1148,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1993 PARM_DESC$="Second P/O Code range for WebEC orders: -end code",PARM_VAL$=MID(A$,1149,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1994 PARM_DESC$="Auto save current worksheet when saved worksheet retrieved?",PARM_VAL$=MID(A$,1150,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1995 PARM_DESC$="Enable active items feature for multiple catalogs?",PARM_VAL$=MID(A$,1151,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1996 PARM_DESC$="Show active items for all buyer catalogs in active items category?",PARM_VAL$=MID(A$,1152,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1997 PARM_DESC$="Statistics tracking account number",PARM_VAL$=MID(A$,1153,20); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1998 PARM_DESC$="Create message lines for order approval comments?",PARM_VAL$=MID(A$,1173,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+1999 PARM_DESC$="Use as operator code on WebEC orders?",PARM_VAL$=MID(A$,1174,3); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2000 PARM_DESC$="Make WebEC revert back to using 7-char session ID",PARM_VAL$=MID(A$,1177,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2001 PARM_DESC$="Lookup sales tax code by ship-to state for WebEC orders",PARM_VAL$=MID(A$,1178,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2002 PARM_DESC$="Generate Ship Notice data during SJ update?",PARM_VAL$=MID(A$,1179,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2003 PARM_DESC$="Generate 3P Order Confirmation when order created?",PARM_VAL$=MID(A$,1180,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2004 PARM_DESC$="Generate AR Invoice data during SJ update?",PARM_VAL$=MID(A$,1181,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2005 PARM_DESC$="IMS price is associated with first alternate UM quantity?",PARM_VAL$=MID(A$,1182,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2006 PARM_DESC$="Bypass Build order status sort file (ECW) routine?",PARM_VAL$=MID(A$,1183,1); PRINT (OUTPUT)IOL=IOL_PARM_OUT
+2090 RETURN 
+2091 ! 
+7000 OPEN_TEXT_FILE:
+7010 IF FILE_OPENED THEN GOSUB BLANK_ROW; RETURN 
+7020 OPEN (HFN,OPT="TAB")"*EXCEL*;FILE=PARAMS_"+%C$+".xlsx;SHEET=Parameters;SHOW=YES"; OUTPUT=LFO
+7030 FILE_OPENED=1,%TF_TITLE$=""
+7045 RETURN 
+7099 ! 
+7100 BLANK_ROW:
+7110 PRINT (OUTPUT)DIM(4,$09$)
+7145 RETURN 
+8000 ! 8000 - iolists
+8010 IOL_PARM_OUT:IOLIST MOD_CODE$,$09$,MOD_KEY$,$09$,PARM_DESC$,$09$,PARM_VAL$,$09$
+8999 ! 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 CLOSE (ZZPARM); ZZPARM=0
+9905 IF FILE_OPENED THEN CLOSE (OUTPUT); OUTPUT=0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56001 REM "307366-DBD-192 - System parameter export utility                   
+56002 REM "307463 DBD-422-Allow access to all warehouses even if security by operator division restriction. 
+56003 REM "307477-Changes to Carton Label maintenance and Print               

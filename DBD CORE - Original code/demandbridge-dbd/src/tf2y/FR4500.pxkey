@@ -1,0 +1,379 @@
+<PxTable>
+ TableName=FR4500
+ TableKey=K971278418
+ FileCreate=KEYED "FR4500",8,0,-128,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR4_RptTemplate"
+    PHYSICALPATH$="="+QUO+"FR4"+QUO+"+%C$"
+    LASTCHANGEDATE$="2015/08/26 15:11:47-tma"
+    LASTCHANGEBY$="tma"
+    LASTUPDATEDFILE$="2024/07/05 11:32:31-LoriCave_aalhel"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(4)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Template code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Template code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST OPTIONS$:[LEN(SEP,SIZ=12)]"
+    NAME$="OPTIONS"
+    DESCRIPTION$="Options for future use"
+    TYPE$="S"
+    LENGTH$="12"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="1   "
+    TEMPLATE_CODE$="1   "
+    TF_DESC$="test                          "
+    OPTIONS$="            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUDT"
+    TEMPLATE_CODE$="BUDT"
+    TF_DESC$="bud test                      "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDP "
+    TEMPLATE_CODE$="EDP "
+    TF_DESC$="Balance Sheet                 "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I11 "
+    TEMPLATE_CODE$="I11 "
+    TF_DESC$="INCOME STATEMENT (BOSTON 11)  "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I12 "
+    TEMPLATE_CODE$="I12 "
+    TF_DESC$="INCOME STATEMENT (BEDFORD 12) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I13 "
+    TEMPLATE_CODE$="I13 "
+    TF_DESC$="INCOME STATEMENT (FLORIDA 13) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I14 "
+    TEMPLATE_CODE$="I14 "
+    TF_DESC$="INCOME STATEMENT (DENVER 14)  "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I15 "
+    TEMPLATE_CODE$="I15 "
+    TF_DESC$="INCOME STATEMENT (CHICAGO 15) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I17 "
+    TEMPLATE_CODE$="I17 "
+    TF_DESC$="INCOME STATMENT (L.A. 17)     "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I18 "
+    TEMPLATE_CODE$="I18 "
+    TF_DESC$="INCOME STATEMENT (NY 18)      "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I19 "
+    TEMPLATE_CODE$="I19 "
+    TF_DESC$="INCOME STATEMENT (BETHLEHEM 19"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I20 "
+    TEMPLATE_CODE$="I20 "
+    TF_DESC$="INCOME STATEMENT (ATLATNA 20) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I21 "
+    TEMPLATE_CODE$="I21 "
+    TF_DESC$="INCOME STATEMENT (MICHIGAN 21)"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I22 "
+    TEMPLATE_CODE$="I22 "
+    TF_DESC$="INCOME STATEMENT (HOUSTON 22) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I23 "
+    TEMPLATE_CODE$="I23 "
+    TF_DESC$="INCOME STATEMENT (MINNEAPOLIS)"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I24 "
+    TEMPLATE_CODE$="I24 "
+    TF_DESC$="INCOME STATEMENT (HARTFORD 24)"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I25 "
+    TEMPLATE_CODE$="I25 "
+    TF_DESC$="INCOME STATEMENT (PHILADELPHIA"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I26 "
+    TEMPLATE_CODE$="I26 "
+    TF_DESC$="INCOME STATEMENT (SYRACUSE 26 "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I29 "
+    TEMPLATE_CODE$="I29 "
+    TF_DESC$="INCOME STATEMENT (ALBANY 29)  "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I30 "
+    TEMPLATE_CODE$="I30 "
+    TF_DESC$="INCOME STATEMENT (SHELTON 30) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I31 "
+    TEMPLATE_CODE$="I31 "
+    TF_DESC$="INCOME STATEMENT (SHELTON 31) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I37 "
+    TEMPLATE_CODE$="I37 "
+    TF_DESC$="INCOME STATEMENT (ST. LOUIS 37"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I43 "
+    TEMPLATE_CODE$="I43 "
+    TF_DESC$="INCOME STATEMENT (DALLAS 43)  "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I60 "
+    TEMPLATE_CODE$="I60 "
+    TF_DESC$="INCOME STATEMENT (WASHINGTON) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I61 "
+    TEMPLATE_CODE$="I61 "
+    TF_DESC$="INCOME STATEMENT (WASHINGTON) "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I64 "
+    TEMPLATE_CODE$="I64 "
+    TF_DESC$="INCOME STATEMENT (SAN FRANSISC"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I65 "
+    TEMPLATE_CODE$="I65 "
+    TF_DESC$="INCOME STATEMENT (NAT'L BRANCH"
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I70 "
+    TEMPLATE_CODE$="I70 "
+    TF_DESC$="INCOME STATMENET (COPR)       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I98 "
+    TEMPLATE_CODE$="I98 "
+    TF_DESC$="INCOME STATEMENT (DSO)        "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="I99 "
+    TEMPLATE_CODE$="I99 "
+    TF_DESC$="Company Totals                "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01"
+    TEMPLATE_CODE$="IS01"
+    TF_DESC$="Income Statement              "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ISQT"
+    TEMPLATE_CODE$="ISQT"
+    TF_DESC$="Income Statement              "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL-A"
+    TEMPLATE_CODE$="PL-A"
+    TF_DESC$="Profit and Loss - Actual      "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R001"
+    TEMPLATE_CODE$="R001"
+    TF_DESC$="income statement              "
+    OPTIONS$="123456789012 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R002"
+    TEMPLATE_CODE$="R002"
+    TF_DESC$="income statement ver. 2       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R003"
+    TEMPLATE_CODE$="R003"
+    TF_DESC$="income statement ver. 3       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R004"
+    TEMPLATE_CODE$="R004"
+    TF_DESC$="income statement ver. 4       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R005"
+    TEMPLATE_CODE$="R005"
+    TF_DESC$="income statement ver. 5       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R006"
+    TEMPLATE_CODE$="R006"
+    TF_DESC$="income statement ver. 6       "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RO01"
+    TEMPLATE_CODE$="RO01"
+    TF_DESC$="Comparative Income Statement  "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP01"
+    TEMPLATE_CODE$="RP01"
+    TF_DESC$="dick's first test             "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP02"
+    TEMPLATE_CODE$="RP02"
+    TF_DESC$="dick's clone test             "
+    OPTIONS$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RQ01"
+    TEMPLATE_CODE$="RQ01"
+    TF_DESC$="ug95 demo practice like r001  "
+    OPTIONS$="             "
+   </RecordData>
+
+</Data>
+
+</PxTable>

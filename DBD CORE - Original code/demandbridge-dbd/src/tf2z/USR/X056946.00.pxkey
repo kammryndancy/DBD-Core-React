@@ -1,0 +1,1877 @@
+<PxTable>
+ TableName=X056946.00
+ TableKey=K1197492538
+ FileCreate=KEYED "X056946.00",9,0,-512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZYM_Memo_By_Oper"
+    PHYSICALPATH$="December 12,2007 3:49pm"
+    LASTCHANGEDATE$="jir"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST OPERATOR$:[LEN(3)]"
+    NAME$="OPERATOR"
+    DESCRIPTION$="=MSG("+QUO+"OPER"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST MEMO_DATE$:[LEN(6)]"
+    NAME$="MEMO_DATE"
+    DESCRIPTION$="=MSG("+QUO+"DATE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:2:A"
+    QUERY$="*ZZWQRY"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST OPERATOR$:[LEN(3,SEP=SEP)]"
+    NAME$="OPERATOR"
+    DESCRIPTION$="=MSG("+QUO+"OPER"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST MEMO_DATE$:[LEN(6,SEP=SEP)]"
+    NAME$="MEMO_DATE"
+    DESCRIPTION$="=MSG("+QUO+"DATE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:2:A"
+    QUERY$="*ZZWQRY"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_1$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_1"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 1"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_2$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_2"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 2"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_3$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_3"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 3"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_4$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_4"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 4"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_5$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_5"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 5"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_6$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_6"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 6"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_7$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_7"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 7"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_8$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_8"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 8"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST MEMO_DESC_LINE_9$:[LEN(32,SEP=SEP)]"
+    NAME$="MEMO_DESC_LINE_9"
+    DESCRIPTION$="=MSG("+QUO+"MEMO_DESC"+QUO+")+"+QUO+" 9"+QUO
+    TYPE$="S"
+    LENGTH$="32"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ASGI80122"
+    OPERATOR$="ASG"
+    MEMO_DATE$="I80122"
+    MEMO_DESC_LINE_1$="Donnie - 8:00-8:30 PM           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASGI80124"
+    OPERATOR$="ASG"
+    MEMO_DATE$="I80124"
+    MEMO_DESC_LINE_1$="Ron Wells, 4:00 PM              "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASGI80315"
+    OPERATOR$="ASG"
+    MEMO_DATE$="I80315"
+    MEMO_DESC_LINE_1$="Point4 Data - Flt# 504 @ 4:05PM "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="Pick up "+QUO+"buffy"+QUO+" at kennel.      "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="4:30 PM  Phone home.            "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="TMData Fax# 32-2-721-0484       "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASGI80316"
+    OPERATOR$="ASG"
+    MEMO_DATE$="I80316"
+    MEMO_DESC_LINE_1$="Meet with Point 4 all day.      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="Check with CCF re: ASG -2.9C    "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASGI80415"
+    OPERATOR$="ASG"
+    MEMO_DATE$="I80415"
+    MEMO_DESC_LINE_1$="Call AIM Systems                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII70601"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I70601"
+    MEMO_DESC_LINE_1$="Today was the first day of the  "
+    MEMO_DESC_LINE_2$="    rest of my life             "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="   Abby Danner was here!!!      "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII70602"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I70602"
+    MEMO_DESC_LINE_1$="Today was June 2!!!             "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="  Hi, Mom                       "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII90810"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I90810"
+    MEMO_DESC_LINE_1$="TETS                            "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII90915"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I90915"
+    MEMO_DESC_LINE_1$="Happy Birthday to Joe, Happy    "
+    MEMO_DESC_LINE_2$="Birthday to Joe, Happy Birthday "
+    MEMO_DESC_LINE_3$="dear Joe oh, Happy Birthday to  "
+    MEMO_DESC_LINE_4$="Joe.                            "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII90916"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I90916"
+    MEMO_DESC_LINE_1$="Go to the cleaners.             "
+    MEMO_DESC_LINE_2$="Clean up my desk                "
+    MEMO_DESC_LINE_3$="set up new files for customer   "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII91031"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I91031"
+    MEMO_DESC_LINE_1$="dial up on modem to Oliver      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII91106"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I91106"
+    MEMO_DESC_LINE_1$="Review memo function with all   "
+    MEMO_DESC_LINE_2$="employees                       "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII91114"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I91114"
+    MEMO_DESC_LINE_1$="Atlanta seminar                 "
+    MEMO_DESC_LINE_2$="Greensboro, NC February 8       "
+    MEMO_DESC_LINE_3$="Birmingham,Nashville, Chattanoog"
+    MEMO_DESC_LINE_4$="    in March                    "
+    MEMO_DESC_LINE_5$="Switch ad to testimonial in Form"
+    MEMO_DESC_LINE_6$="    we provide two color separ. "
+    MEMO_DESC_LINE_7$="Forms plus write up - So Data   "
+    MEMO_DESC_LINE_8$="    where are they?             "
+    MEMO_DESC_LINE_9$="A/R from Mary                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSII91115"
+    OPERATOR$="CSI"
+    MEMO_DATE$="I91115"
+    MEMO_DESC_LINE_1$="Class for Art PC - send Jeff    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ00417"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J00417"
+    MEMO_DESC_LINE_1$="Call Farwest for changes        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ00525"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J00525"
+    MEMO_DESC_LINE_1$="649.99 80 ESDI DRIVE            "
+    MEMO_DESC_LINE_2$="ST4097                          "
+    MEMO_DESC_LINE_3$="CONTROLLER: 149                 "
+    MEMO_DESC_LINE_4$="8003474381 SCO TECH HELP        "
+    MEMO_DESC_LINE_5$="ST251-1 28ms 309.99             "
+    MEMO_DESC_LINE_6$="Ctrlr = $99.                    "
+    MEMO_DESC_LINE_7$="cabling                         "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ00824"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J00824"
+    MEMO_DESC_LINE_1$="catch plane                     "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ20317"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J20317"
+    MEMO_DESC_LINE_1$="1                               "
+    MEMO_DESC_LINE_2$="2                               "
+    MEMO_DESC_LINE_3$="3                               "
+    MEMO_DESC_LINE_4$="4                               "
+    MEMO_DESC_LINE_5$="5                               "
+    MEMO_DESC_LINE_6$="6                               "
+    MEMO_DESC_LINE_7$="7                               "
+    MEMO_DESC_LINE_8$="8                               "
+    MEMO_DESC_LINE_9$="9                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ20929"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J20929"
+    MEMO_DESC_LINE_1$="this is a test                  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ40208"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J40208"
+    MEMO_DESC_LINE_1$="THIS IS A TEST                  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ50522"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J50522"
+    MEMO_DESC_LINE_1$="TRAINING                        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ50523"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J50523"
+    MEMO_DESC_LINE_1$="TRAINING                        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ50524"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J50524"
+    MEMO_DESC_LINE_1$="TRAINING                        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ50525"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J50525"
+    MEMO_DESC_LINE_1$="TRAINING                        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSIJ50531"
+    OPERATOR$="CSI"
+    MEMO_DATE$="J50531"
+    MEMO_DESC_LINE_1$="8:45 NITSA @ ENOSIS             "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KMCI70929"
+    OPERATOR$="KMC"
+    MEMO_DATE$="I70929"
+    MEMO_DESC_LINE_1$="School today from 10 to 12      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM I91215"
+    OPERATOR$="TM "
+    MEMO_DATE$="I91215"
+    MEMO_DESC_LINE_1$="Call Nick Bozzi-Delaware Bus    "
+    MEMO_DESC_LINE_2$="Forms                           "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM J11031"
+    OPERATOR$="TM "
+    MEMO_DATE$="J11031"
+    MEMO_DESC_LINE_1$="bb                              "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WMZI70601"
+    OPERATOR$="WMZ"
+    MEMO_DATE$="I70601"
+    MEMO_DESC_LINE_1$="THIS IS SOME TEXT FOR A MEMO ON "
+    MEMO_DESC_LINE_2$="IT TESTING IS SUCH FUN!!!       "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WMZI70827"
+    OPERATOR$="WMZ"
+    MEMO_DATE$="I70827"
+    MEMO_DESC_LINE_1$="Does Jeff have the TopForm paper"
+    MEMO_DESC_LINE_2$="?                               "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="al K20702"
+    OPERATOR$="al "
+    MEMO_DATE$="K20702"
+    MEMO_DESC_LINE_1$="TEST FOR DMTI                   "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40508"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40508"
+    MEMO_DESC_LINE_1$="Off to DFB                      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40514"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40514"
+    MEMO_DESC_LINE_1$="Pole Day                        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40521"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40521"
+    MEMO_DESC_LINE_1$="2nd Weekend of Practice         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40529"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40529"
+    MEMO_DESC_LINE_1$="Race Day!                       "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40726"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40726"
+    MEMO_DESC_LINE_1$="Call Braelinn                   "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40811"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40811"
+    MEMO_DESC_LINE_1$="Send Program tape from dev to   "
+    MEMO_DESC_LINE_2$="PFG                             "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40812"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40812"
+    MEMO_DESC_LINE_1$="Leave for Cincinnati 6:00 PM    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="cmrJ40815"
+    OPERATOR$="cmr"
+    MEMO_DATE$="J40815"
+    MEMO_DESC_LINE_1$="Call Keith re: conversion @ PFG "
+    MEMO_DESC_LINE_2$="Leave for Cleveland 3:00 PM     "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ01210"
+    OPERATOR$="csi"
+    MEMO_DATE$="J01210"
+    MEMO_DESC_LINE_1$="test                            "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ10820"
+    OPERATOR$="csi"
+    MEMO_DATE$="J10820"
+    MEMO_DESC_LINE_1$="Add test memo here - RS 8/20    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20216"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20216"
+    MEMO_DESC_LINE_1$="Warren's birthday               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20224"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20224"
+    MEMO_DESC_LINE_1$="Warren's birthday               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20513"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20513"
+    MEMO_DESC_LINE_1$="CHARLES CHIPS IS HERE           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20723"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20723"
+    MEMO_DESC_LINE_1$="LUNCH AT APPLEBEES WITH CHUCK   "
+    MEMO_DESC_LINE_2$="FMS MEETING AT 2:00             "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20724"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20724"
+    MEMO_DESC_LINE_1$="Today is the day that we go     "
+    MEMO_DESC_LINE_2$="home!!!  Minnesota, here we     "
+    MEMO_DESC_LINE_3$="come!!!!                        "
+    MEMO_DESC_LINE_4$="Watch out fellow QBFers!!!!!    "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="OK Top Gun here I come, be      "
+    MEMO_DESC_LINE_7$="prepared!!!                     "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ20929"
+    OPERATOR$="csi"
+    MEMO_DATE$="J20929"
+    MEMO_DESC_LINE_1$="teds bday                       "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40324"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40324"
+    MEMO_DESC_LINE_1$="today's memo                    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40328"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40328"
+    MEMO_DESC_LINE_1$="Test of F8 MEMO capability      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40615"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40615"
+    MEMO_DESC_LINE_1$="THIS IS A TEST FOR MICHELLE     "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40718"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40718"
+    MEMO_DESC_LINE_1$="IFS install at 4:30pm (41845)   "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40720"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40720"
+    MEMO_DESC_LINE_1$="Install 41452 at 1:30pm         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40817"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40817"
+    MEMO_DESC_LINE_1$="Release Install 3:00pm 41594    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ40831"
+    OPERATOR$="csi"
+    MEMO_DATE$="J40831"
+    MEMO_DESC_LINE_1$="Release Install 4:30pm 41285    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ41027"
+    OPERATOR$="csi"
+    MEMO_DATE$="J41027"
+    MEMO_DESC_LINE_1$="User Meeting @ Evergreen        "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ41108"
+    OPERATOR$="csi"
+    MEMO_DATE$="J41108"
+    MEMO_DESC_LINE_1$="this is a test of the alarm     "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ50421"
+    OPERATOR$="csi"
+    MEMO_DATE$="J50421"
+    MEMO_DESC_LINE_1$="Take out the trash              "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="csiJ60408"
+    OPERATOR$="csi"
+    MEMO_DATE$="J60408"
+    MEMO_DESC_LINE_1$="Liz from Data forms.  68137     "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="djsI90814"
+    OPERATOR$="djs"
+    MEMO_DATE$="I90814"
+    MEMO_DESC_LINE_1$=" HOW DO YOU USE THIS THING?     "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="djsI90816"
+    OPERATOR$="djs"
+    MEMO_DATE$="I90816"
+    MEMO_DESC_LINE_1$="meet with SATT TO DISCUSS FPF   "
+    MEMO_DESC_LINE_2$="FORMS     CONFIRM AIRLINE RESV. "
+    MEMO_DESC_LINE_3$=" RETURN UHAUL                   "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="djsI90818"
+    OPERATOR$="djs"
+    MEMO_DATE$="I90818"
+    MEMO_DESC_LINE_1$="CONFIRM ALAN TRIP               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="djsI90830"
+    OPERATOR$="djs"
+    MEMO_DATE$="I90830"
+    MEMO_DESC_LINE_1$="RIVERBEND SHIP TO-PERFECT PLASTI"
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="djsI91016"
+    OPERATOR$="djs"
+    MEMO_DATE$="I91016"
+    MEMO_DESC_LINE_1$="TODAY IS YOUR BIRTHDAY, HAPPY   "
+    MEMO_DESC_LINE_2$="BIRTHDAY TO YA DA NANANANANANA  "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="dlkJ20224"
+    OPERATOR$="dlk"
+    MEMO_DATE$="J20224"
+    MEMO_DESC_LINE_1$="Warren's birthday               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jasI90822"
+    OPERATOR$="jas"
+    MEMO_DATE$="I90822"
+    MEMO_DESC_LINE_1$="Check on Thomas & Kennedy A/P   "
+    MEMO_DESC_LINE_2$="Check at WATTS-800/233-1190     "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jasI91020"
+    OPERATOR$="jas"
+    MEMO_DATE$="I91020"
+    MEMO_DESC_LINE_1$="BABY IS DUE, OH NO, LOOK OUT.   "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jasJ10819"
+    OPERATOR$="jas"
+    MEMO_DATE$="J10819"
+    MEMO_DESC_LINE_1$="THIS IS A TEST.                 "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jgpJ20205"
+    OPERATOR$="jgp"
+    MEMO_DATE$="J20205"
+    MEMO_DESC_LINE_1$="Call Lomax before 10am          "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK40820"
+    OPERATOR$="jir"
+    MEMO_DATE$="K40820"
+    MEMO_DESC_LINE_1$="Direxions 2005 hasta el 24      "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50307"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50307"
+    MEMO_DESC_LINE_1$="Cumpleaño de Alex               "
+    MEMO_DESC_LINE_2$="Final Divorcio con Ivellies     "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50511"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50511"
+    MEMO_DESC_LINE_1$="Cumpleaño de Ivy                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50518"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50518"
+    MEMO_DESC_LINE_1$="Reunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50519"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50519"
+    MEMO_DESC_LINE_1$="Visita al Medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50525"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50525"
+    MEMO_DESC_LINE_1$="Reunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50601"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50601"
+    MEMO_DESC_LINE_1$="Reunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50607"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50607"
+    MEMO_DESC_LINE_1$="Cumpleaño de Jose Ignacio       "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50608"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50608"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50615"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50615"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50616"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50616"
+    MEMO_DESC_LINE_1$="Visita al Medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50622"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50622"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50627"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50627"
+    MEMO_DESC_LINE_1$="Graduacion de Gabriel           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50629"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50629"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50706"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50706"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50713"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50713"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50720"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50720"
+    MEMO_DESC_LINE_1$="Reunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50721"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50721"
+    MEMO_DESC_LINE_1$="Visita al Medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50723"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50723"
+    MEMO_DESC_LINE_1$="Cumpleaño de Gabriela           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50727"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50727"
+    MEMO_DESC_LINE_1$="REunion                         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50818"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50818"
+    MEMO_DESC_LINE_1$="Visita al Medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50820"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50820"
+    MEMO_DESC_LINE_1$="Start Direxions 2005            "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50824"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50824"
+    MEMO_DESC_LINE_1$="Ending Direxions 2005           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50910"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50910"
+    MEMO_DESC_LINE_1$="Mi Cumpleaño                    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK50915"
+    OPERATOR$="jir"
+    MEMO_DATE$="K50915"
+    MEMO_DESC_LINE_1$="Visita al medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK51013"
+    OPERATOR$="jir"
+    MEMO_DATE$="K51013"
+    MEMO_DESC_LINE_1$="Visita al medico                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK51103"
+    OPERATOR$="jir"
+    MEMO_DATE$="K51103"
+    MEMO_DESC_LINE_1$="Cumpleaño de Gabriel Alejandro  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK51117"
+    OPERATOR$="jir"
+    MEMO_DATE$="K51117"
+    MEMO_DESC_LINE_1$="visita al DR                    "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK60319"
+    OPERATOR$="jir"
+    MEMO_DATE$="K60319"
+    MEMO_DESC_LINE_1$="Fin Relacion con Gabriela       "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK60511"
+    OPERATOR$="jir"
+    MEMO_DATE$="K60511"
+    MEMO_DESC_LINE_1$="Cumpleaño de Ivy                "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK60607"
+    OPERATOR$="jir"
+    MEMO_DATE$="K60607"
+    MEMO_DESC_LINE_1$="Cumpleaño de Jose Ignacio       "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK60723"
+    OPERATOR$="jir"
+    MEMO_DATE$="K60723"
+    MEMO_DESC_LINE_1$="Cumpleaño de Gabriela           "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jirK61103"
+    OPERATOR$="jir"
+    MEMO_DATE$="K61103"
+    MEMO_DESC_LINE_1$="Cumpleaño de Gabriel Alejandro  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jrmJ20621"
+    OPERATOR$="jrm"
+    MEMO_DATE$="J20621"
+    MEMO_DESC_LINE_1$="Flight to Portland.             "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jwcI90815"
+    OPERATOR$="jwc"
+    MEMO_DATE$="I90815"
+    MEMO_DESC_LINE_1$="take proof and paper test to    "
+    MEMO_DESC_LINE_2$="Nordstrom for Contest Form      "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jwcI90816"
+    OPERATOR$="jwc"
+    MEMO_DATE$="I90816"
+    MEMO_DESC_LINE_1$="lunch with Diane and brother.   "
+    MEMO_DESC_LINE_2$="Work with steve                 "
+    MEMO_DESC_LINE_3$="Call Cliff Gray 2281818         "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jwcI90817"
+    OPERATOR$="jwc"
+    MEMO_DATE$="I90817"
+    MEMO_DESC_LINE_1$="Steve will work with  Mesick    "
+    MEMO_DESC_LINE_2$="and see Rainer Transportation & "
+    MEMO_DESC_LINE_3$="Factory Rep with Murray.        "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="jwcI90828"
+    OPERATOR$="jwc"
+    MEMO_DATE$="I90828"
+    MEMO_DESC_LINE_1$="Nordstrom buyers in town. In am "
+    MEMO_DESC_LINE_2$="need to take Diane 1 bdl of     "
+    MEMO_DESC_LINE_3$="childrens shop forms.           "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="lmsK21104"
+    OPERATOR$="lms"
+    MEMO_DATE$="K21104"
+    MEMO_DESC_LINE_1$="M                               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="lmsK50316"
+    OPERATOR$="lms"
+    MEMO_DATE$="K50316"
+    MEMO_DESC_LINE_1$="m                               "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="olsJ40718"
+    OPERATOR$="ols"
+    MEMO_DATE$="J40718"
+    MEMO_DESC_LINE_1$="THIS IS A TEST                  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="olsJ60806"
+    OPERATOR$="ols"
+    MEMO_DATE$="J60806"
+    MEMO_DESC_LINE_1$="THIS IS A TEST FOR BRET         "
+    MEMO_DESC_LINE_2$="MEMOS NOT DISPLAYING            "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="olsJ70121"
+    OPERATOR$="ols"
+    MEMO_DATE$="J70121"
+    MEMO_DESC_LINE_1$="TEST FOR ALARM                  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="rdsJ41224"
+    OPERATOR$="rds"
+    MEMO_DATE$="J41224"
+    MEMO_DESC_LINE_1$="Christmas Eve                   "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="skwJ90901"
+    OPERATOR$="skw"
+    MEMO_DATE$="J90901"
+    MEMO_DESC_LINE_1$="check line items 1,2,37         "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="tmaJ30208"
+    OPERATOR$="tma"
+    MEMO_DATE$="J30208"
+    MEMO_DESC_LINE_1$="THIS IS A TEST                  "
+    MEMO_DESC_LINE_2$="                                "
+    MEMO_DESC_LINE_3$="                                "
+    MEMO_DESC_LINE_4$="                                "
+    MEMO_DESC_LINE_5$="                                "
+    MEMO_DESC_LINE_6$="                                "
+    MEMO_DESC_LINE_7$="                                "
+    MEMO_DESC_LINE_8$="                                "
+    MEMO_DESC_LINE_9$="                                "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,23 @@
+0010 ! DBGMEN - Dashboards menu
+0035 REM "5.6 - 01/04/08 - 17.133055 - crg - SSP# 213352
+0037 REM "213352-Wish list to add to the dash board                          
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 BEGIN 
+0075 PRINT 'SHOW'(-1),
+0080 PROCESS "MENU","../DBG/DB.EN"
+0085 END 
+0100 INIT:! ^100,5 - Initialization Routine
+0105 IF DEC(MID(MSE,22,1))>0 THEN %WDX$="[WDX]" ELSE %WDX$=""
+0110 IF %WDX$<>"" THEN {
+0115 CALL %WDX$+"*WINDX.UTL;GET_LWD",%WINDX_DIR$
+0116 IF %WINDX_DIR$(LEN(%WINDX_DIR$),1)<>DLM THEN %WINDX_DIR$+=DLM
+0120  }
+0125 IF NOT(LEN(%WDX$)) THEN {
+0130 PICTURE$=".\tf_logo.bmp"
+0135  } ELSE {
+0140 PICTURE$=%WINDX$+%WINDX_DIR$+"topform\tf_logo.bmp"
+0145  }
+0150 EXIT 
+0155 END 
+9999 END 

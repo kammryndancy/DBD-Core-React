@@ -1,0 +1,20 @@
+0010 REM "Check who is on the system <ZZWHOS>
+0035 REM "3.5.0 - 03/16/92 - 12:23
+0040 REM "Copyright 1990 Basic Ideas, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 BEGIN 
+1010 U0$="?"
+1020 CALL "ZZUSER","",U0$,"CSI",Q0,Q1
+1040 OPEN (1)"ZZPARM"
+2000 REM 
+2010 L1=3; PRINT @(0,L1),'CE',
+2020 FOR X=1 TO LEN(U0$) STEP 14
+2120 PRINT @(L0,L1),U0$(X,2),"   ",U0$(4+X,2),"/",U0$(X+6,2),"/",U0$(3,2),"   ",FNT$(U0$(X+8,4))
+2140 FIND (1,KEY=U0$(X,2)+"      ",DOM=2300)X1$
+2160 PRINT @(L0+26,L1),"User: ",X1$(40,3),
+2165 FIND (1,KEY="o"+X1$(40,3),DOM=2166)Q$; PRINT "  ",Q$(5,30),
+2170 L1=L1+1
+2390 NEXT X
+2500 GOTO 9900
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+9999 END 

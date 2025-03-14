@@ -1,0 +1,112 @@
+0010 REM "Data Dict file export <ZZ2FLE>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 01/05/24 - 8.790224 - crg - SSP# 307459
+0037 REM "307459-DBD-414 Change to ZZWIOL                                    
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 SAVE_XI=PRM('XI'); SET_PARAM 'XI'
+0120 REM "Get Arguments
+0130 FOR I=0 TO NAR
+0140 TMP$=ARG(I)
+0150 IF MSK(UCS(TMP$),"LFILE=") THEN TABLE$=MID(TMP$,MSL+1); CONTINUE ! Set logical file to export
+0160 IF MSK(UCS(TMP$),"PFILE=") THEN PTABLE$=MID(TMP$,MSL+1); CONTINUE ! Set physical logical file to export
+0170 IF MSK(UCS(TMP$),"DIR=") THEN CONV_DIR$=MID(TMP$,MSL+1); CONTINUE ! Set export dir
+0180 IF MSK(UCS(TMP$),"TYPE=") THEN DB_TYPE$=MID(TMP$,MSL+1); CONTINUE ! database type
+0190 IF MSK(UCS(TMP$),"CTL=") THEN CTL$=MID(TMP$,MSL+1); CONTINUE ! control of generation of ".ctl" file
+0200 NEXT I
+0210 REM "FILES
+0220 DDF=HFN; OPEN (DDF,ERR=END_PROGRAM)"providex.ddf"
+0230 REM "
+0240 IF NUL(CONV_DIR$) OR NUL(PTABLE$) THEN GOTO END_PROGRAM
+0250 IF NUL(TABLE$) THEN TABLE$=PTABLE$
+0260 IF NUL(DB_TYPE$) THEN DB_TYPE$="M"
+0270 CALL "ZZ2FLE;EXPORT_DATA",ERR=*NEXT,CONV_DIR$,PTABLE$,TABLE$,DB_TYPE$,CTL$ ! 290215
+0280 ! 
+5000 REM "EOJ
+5040 GOTO 9900
+5099 ! 
+9000 REM "ERROR PROCESSING
+9005 IF NOT(BKG) THEN ESCAPE 
+9900 REM "END PROGRAM
+9902 END_PROGRAM:
+9905 SET_PARAM 'XI'=SAVE_XI
+9920 CLOSE (DDF)
+9925 IF BKG THEN RELEASE 
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 ! 
+10010 EXPORT_DATA:
+10020 ENTER CONV_DIR$,PTABLE$,TABLE$,DB_TYPE$,CTL$
+10030 TEMP$=CONV_DIR$
+10040 IF MID(TEMP$,LEN(TEMP$))<>"/" THEN CONV_DIR$=TEMP$+"/" ! REM add trailing slash if missing
+10050 DUMPDIR$=STP(CONV_DIR$),CTLSQL$="",ORA_IOL$="",PVX_IOL$=""
+10060 LOCAL TRANSLATE$ ! REM define a short local buffer for special character translations
+10070 IF DB_TYPE$="M" THEN {
+10080 ! handle any special characters for MySQL;
+10090 ! replace '  with  ''
+10100 ! replace "  with  ""
+10110 ! replace \ with \\
+10120 ! totally remove <backspace>, <tab>, <cr> and <lf>
+10130 ! this syntax is difficult -- test it thoroughly!
+10140 TRANSLATE$="'"+$02$+"''"+$22$+$02$+$22$+$22$+"\"+$02$+"\\"+$08$+$01$+" "+$09$+$01$+" "+$0D$+$01$+" "+$0A$+$01$+" "
+10150  }
+10160 ! 
+10170 IF DB_TYPE$="O" THEN {
+10180 ! handle any special characters for ORACLE;
+10190 ! ... same as MYSQL for now ...
+10200 TRANSLATE$=$22$+$02$+$22$+$22$ ! +"\"+$02$+"\\"+$08$+$01$+" "+$09$+$01$+" "+$0D$+$01$+" "+$0A$+$01$+" "
+10210  }
+10220 ! 
+10230 IF DB_TYPE$="S" THEN {
+10240 ! handle any special characters for SQLSERVER;
+10250 ! ... same as MYSQL for now ...
+10260 TRANSLATE$="" ! "'"+$02$+"''"+$22$+$02$+$22$+$22$+"\"+$02$+"\\"+$08$+$01$+" "+$09$+$01$+" "+$0D$+$01$+" "+$0A$+$01$+" "
+10270  }
+10280 ! create control file only if we were called from DR2EXP
+10290 IF CTL$="" THEN GOTO SKIP_CTL_FILE
+10300 CALL "DBSQLGEN",CTLSQL$,ERRMSG$,TABLE$,"*providex.ddf","","CTL",DB_TYPE$
+10310 SERIAL DUMPDIR$+TABLE$+".ctl",ERR=*NEXT
+10320 CTLCHAN=HFN; OPEN PURGE (CTLCHAN)DUMPDIR$+TABLE$+".ctl"
+10330 PRINT (CTLCHAN)SUB(CTLSQL$,"PVX2ORA",SUB(DUMPDIR$,"[wdx]",""))
+10340 CLOSE (CTLCHAN)
+10350 SKIP_CTL_FILE:
+10360 PVXCHAN=HFN; OPEN (PVXCHAN,IOL=*,ERR=ERR_PVX_READ)PTABLE$
+10370 SERIAL DUMPDIR$+TABLE$+".txt",ERR=*NEXT
+10380 TXTCHAN=HFN; OPEN PURGE (TXTCHAN,ISZ=1)DUMPDIR$+TABLE$+".txt"
+10390 CALL "DBSQLGEN",ORA_IOL$,ERRMSG$,TABLE$,"*providex.ddf","","IOL",DB_TYPE$
+10400 CALL "ZZWIOL",PVXCHAN,"B",PVX_IOL$
+10410 PVX_IOL$=CPL(PVX_IOL$)
+10420 ORA_IOL$=CPL(ORA_IOL$)
+10430 REC_COUNT=0
+10440 READ_LOOP:
+10450 READ (PVXCHAN,END=ERR_PVX_READ,ERR=ERR_PVX_READ)IOL=PVX_IOL$
+10460 PRINT (TXTCHAN)IOL=ORA_IOL$
+10470 REC_COUNT++
+10480 GOTO READ_LOOP
+10490 ! 
+10500 ERR_PVX_READ:
+10510 CLOSE (TXTCHAN),(PVXCHAN)
+10520 EXIT 
+10530 ! 
+10540 ! translate special chars to a char sequence that is legal for our chosen database;
+10550 ! databases include: MYSQL, ORACLE and SQLSERVER
+10560 DEF FN_TRANSLATE$(LOCAL X$)
+10570 TRANSLATE X$,TRANSLATE$
+10580 RETURN X$
+10590 END DEF
+24000 ! 
+24005 DEF FN_TFDATE$(LOCAL TFDATE$, LOCAL DATE_FORMAT$, LOCAL MODE)
+24010 LOCAL RET_VAL$
+24015 IF TFDATE$<>"" AND NUL(TFDATE$) THEN IF MODE=0 THEN IF DB_TYPE$<>"O" AND DB_TYPE$<>"S" THEN RET_VAL$="NULL" ELSE RET_VAL$=TFDATE$ END_IF ; GOTO END_TFDATE ELSE TFDATE$="G00101" ! If tfdate is "" or all spaces, then return the same number of spaces if not a key column else return "1960-01-01"
+24020 RET_VAL$=FN%PRINT_DATETIME$(FN%GET_DATETIME(TFDATE$,0),DATE_FORMAT$)
+24090 END_TFDATE:RETURN RET_VAL$
+24095 END DEF
+56001 REM "268710-Server status reporting framework - new file for servers to
+56002 REM "283979-Datareplication - Bulk load utility DR2EXP for MySQL data
+56003 REM "290215-ZZ2FLE data dump program failing since recent release       
+56004 REM "296394-Needs help exporting single tables from DBD                 
+56005 REM "307459-DBD-414 Change to ZZWIOL                                    

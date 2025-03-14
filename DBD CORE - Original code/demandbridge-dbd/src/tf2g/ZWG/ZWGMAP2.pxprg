@@ -1,0 +1,281 @@
+0010 REM + Support System: Detailed Requirements <ZWGMAP>
+0012 REM + Copyrigth 2006 TopForm Software Inc.; Norcross, Georgia
+0013 REM + Licensed Software - All Rights Reserved.
+0014 ! 
+0020 REM + Version:
+0021 ! !1.00.0
+0039 ! 
+0040 REM + Program Notes:
+0041 ! This program was created as an enhancement for the current Support 
+0042 ! System software. It will allow the user to create a more detailed
+0043 ! requirements document for an exsisting issue in the system. The user
+0044 ! will be able to export the document into MS Excel as well as create a 
+0045 ! work order in the current system. Users will be able to add subjects
+0046 ! and details for the issue. A preview window is displayed for the user
+0047 ! to review the detailed requirements document at any time.
+0098 REM + End of Program Notes
+0099 ! 
+0100 REM + Modification History:
+0101 ! !10/10/2006 : MHE : SSP# 200670
+0102 ! Program created.
+0103 ! 
+0450 IOLIST A$
+0500 ! 
+0501 ! 
+0502 REM + INIT_PROGRAM
+0503 ! Program initialization.
+0504 ! This routine is called berfore the GUI is created and displayed.
+0505 ! It handles any needed functions before the GUI is displayed
+0550 INIT_PROGRAM:
+0600 CON_DEL$="Confirm Deletion"
+0605 DEL_SUB_TEXT$="The subject has detail lines. Deleting the subject will also delete the corresponding detail lines. Are you sure?"
+0700 ISSUE_NUM$="200670"
+0705 ISSUE_DESC$="This is my first test with the new logical file 'ZWP_Require'. Hopefully all will go well. We shall see."
+0750 GOSUB OPEN_FILES ! open all files
+0799 RETURN 
+0800 ! 
+0801 ! 
+0802 REM + INIT_GUI
+0803 ! This routine will initialize the GUI.
+0850 INIT_GUI:
+0870 MULTI_LINE WRITE ML_ISSUE_NUMBER.CTL,ISSUE_NUM$ ! write the issue number
+0880 MULTI_LINE WRITE ML_DESCRIPTION.CTL,ISSUE_DESC$ ! write the issue brief description
+0900 CHECK_BOX READ CB_AUTO_REFRESH.CTL,ON_OFF$ ! determine if the checkbox is selected or not
+0940 GOSUB GET_ALL_SUBJECTS ! get all subjects and populate the list box
+0950 GOSUB BUILD_PREVIEW ! build the preview
+0960 GOSUB READ_FIRST
+0965 MULTI_LINE WRITE ML_PREVIEW.CTL,A$
+0999 RETURN 
+9000 ! 
+9001 ! 
+9002 REM + EXIT_PROGRAM
+9003 ! This routine will cleanup and exit the program
+9050 EXIT_PROGRAM:
+9080 IF OPENED THEN CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0 ! close all files
+9999 RETURN 
+10000 ! 
+10001 ! 
+10002 REM + GET_ALL_SUBJECTS
+10003 ! Retrieve all of the subjects for the current issue.
+10004 ! This routine reads through the ???????????????? file to retrieve
+10005 ! the subjects for the selected issue. It calls the
+10006 ! 'ADD_TO_SUBJECT_LIST' routine to add them to the subject box.
+10050 GET_ALL_SUBJECTS:
+10199 RETURN 
+10200 ! 
+10201 ! 
+10202 REM + ADD_TO_SUBJECT_LIST
+10203 ! Add an item to the subject list box.
+10204 ! This routine is called to add a subject to the subject list box.
+10250 ADD_TO_SUBJECT_LIST:
+10260 LIST_BOX LOAD LB_SUBJECTS.CTL,0,SUBJECT$ ! add subject to the list box
+10399 RETURN 
+10400 ! 
+10401 ! 
+10402 REM + DELETE_FROM_SUBJECT_LIST
+10403 ! This routine will remove an item from the subject list box.
+10450 DELETE_FROM_SUBJECT_LIST:
+10460 IF SUBJECT_INDEX>=0 THEN {! if an item has been selected
+10461 IF DETAIL_TOTAL>0 THEN {! if there are detail lines for the subject
+10462 MSGBOX DEL_SUB_TEXT$,CON_DEL$,"!,YESNO",X$ ! display warning msg box
+10463 IF X$="NO" THEN RETURN ! user clicks "No", do nothing
+10464  }
+10465 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove subject
+10466 MULTI_LINE WRITE ML_SUBJECT.CTL,"" ! clear the subject input field
+10470 CALL "*WINGRP;DISABLE",SUBJECT_GROUP.GRP$ ! disable subject_group
+10475 LIST_BOX LOAD LB_DETAILS.CTL,"" ! clear the details list box
+10476 MULTI_LINE WRITE ML_DETAIL.CTL,"" ! clear the details input field
+10480 SUBJECT_INDEX=-1 ! set the index 
+10485 SUBJECT_TOTAL=SUBJECT_TOTAL-1 ! decrement the subject total count
+10490  }
+10599 RETURN 
+10600 ! 
+10601 ! 
+10602 REM + GET_SELECTED_SUBJECT
+10603 ! This routine will get the selected subject from the subject list box.
+10650 GET_SELECTED_SUBJECT:
+10700 LIST_BOX READ LB_SUBJECTS.CTL,SUBJECT_INDEX ! get subject index value
+10705 LIST_BOX READ LB_SUBJECTS.CTL,SUBJECT_VALUE$ ! get subject value
+10710 ML_SUBJECT$=SUBJECT_VALUE$ ! set to subject value
+10715 MULTI_LINE WRITE ML_SUBJECT.CTL,ML_SUBJECT$ ! write subject to input box
+10735 CALL "*WINGRP;DISABLE",DETAIL_GROUP.GRP$ ! disable detail_goup
+10740 CALL "*WINGRP;ENABLE",SUBJECT_GROUP.GRP$ ! enable subject_group
+10760 GOSUB GET_ALL_DETAILS ! retrieve details for subject
+10799 RETURN 
+10800 ! 
+10801 ! 
+10802 REM + ADD_SUBJECT
+10803 ! This routine add as new subject.
+10850 ADD_SUBJECT:
+10870 IF ML_SUBJECT$<>"" THEN {! if a subject was entered
+10875 LIST_BOX LOAD LB_SUBJECTS.CTL,0,ML_SUBJECT$ ! add to subject list box
+10880 MULTI_LINE WRITE ML_SUBJECT.CTL,"" ! clear subject input
+10885 ML_SUBJECT$="" ! clear subject
+10886 MULTI_LINE GOTO ML_SUBJECT.CTL ! set focus to subject input
+10888 SUBJECT_TOTAL=SUBJECT_TOTAL+1 ! increment subject total
+10890  }
+10999 RETURN 
+11000 ! 
+11001 ! 
+11002 REM + MOVE_UP_SUBJECT_LIST
+11003 ! This routine moves the selected subject up in the list.
+11050 MOVE_UP_SUBJECT_LIST:
+11070 IF SUBJECT_INDEX>1 THEN {! a subject is selected
+11072 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove selected subject
+11074 SUBJECT_INDEX=SUBJECT_INDEX-1 ! decrement index by 1
+11085 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,SUBJECT_VALUE$ ! re-add subject
+11090 LIST_BOX WRITE LB_SUBJECTS.CTL,SUBJECT_VALUE$ ! set focus to subject
+11095  }
+11199 RETURN 
+11200 ! 
+11201 ! 
+11202 REM + MOVE_DOWN_SUBJECT_LIST
+11203 ! This routine moves the selected subject down in the list.
+11250 MOVE_DOWN_SUBJECT_LIST:
+11270 IF SUBJECT_INDEX<SUBJECT_TOTAL THEN {! if select subject is not the last one
+11275 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove subject
+11280 SUBJECT_INDEX=SUBJECT_INDEX+1 ! increment index
+11285 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,SUBJECT_VALUE$ ! write subject
+11290 LIST_BOX WRITE LB_SUBJECTS.CTL,SUBJECT_VALUE$ ! set focus to subject
+11295  }
+11399 RETURN 
+12000 ! 
+12001 ! 
+12002 REM + GET_ALL_DETAILS
+12003 ! This routine will get a list of all details that go with the
+12004 ! selected subject.
+12050 GET_ALL_DETAILS:
+12054 DETAIL_TOTAL=0 ! init detail total counter
+12055 LIST_BOX LOAD LB_DETAILS.CTL,"" ! clear the detail list box
+12095 RETURN 
+12200 ! 
+12201 ! 
+12202 REM + ADD_TO_DETAIL_LIST
+12203 ! This routine will add an item to the detail list box.
+12250 ADD_TO_DETAIL_LIST:
+12260 LIST_BOX LOAD LB_DETAILS.CTL,0,DETAIL$ ! add to the detail list box
+12399 RETURN 
+12400 ! 
+12401 ! 
+12402 REM + DELETE_FROM_DETAIL_LIST
+12403 ! This routine will delete an item from the detail list box.
+12450 DELETE_FROM_DETAIL_LIST:
+12455 IF DETAIL_INDEX>=0 THEN {! if a detai line is selected
+12460 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove from detail list box
+12461 MULTI_LINE WRITE ML_DETAIL.CTL,"" ! clear detail input field
+12462 CALL "*WINGRP;DISABLE",DETAIL_GROUP.GRP$ ! disable detail_group
+12465 DETAIL_INDEX=-1 ! set detail_index
+12466 DETAIL_TOTAL=DETAIL_TOTAL-1 ! decrement detail total
+12470  }
+12599 RETURN 
+12600 ! 
+12601 ! 
+12602 REM + GET_SELECTED_DETAIL
+12603 ! This routine will get the selected detail from the detail list box.
+12650 GET_SELECTED_DETAIL:
+12700 LIST_BOX READ LB_DETAILS.CTL,DETAIL_INDEX ! get selected detail index
+12705 LIST_BOX READ LB_DETAILS.CTL,DETAIL_VALUE$ ! get selected detail value
+12710 ML_DETAIL$=DETAIL_VALUE$ ! set selected detail value
+12715 MULTI_LINE WRITE ML_DETAIL.CTL,ML_DETAIL$ ! write detail to detail input
+12750 CALL "*WINGRP;ENABLE",DETAIL_GROUP.GRP$ ! enable detail group
+12799 RETURN 
+12800 ! 
+12801 ! 
+12802 REM + ADD_DETAIL
+12803 ! This routine will add a new detail.
+12850 ADD_DETAIL:
+12870 IF ML_DETAIL$<>"" THEN {! if a detail was entered
+12875 LIST_BOX LOAD LB_DETAILS.CTL,0,ML_DETAIL$ ! add detail to the list box
+12880 MULTI_LINE WRITE ML_DETAIL.CTL,"" ! clear detail input field
+12885 ML_DETAIL$="" ! clear detail
+12886 MULTI_LINE GOTO ML_DETAIL.CTL ! set focus on detail input field
+12888 DETAIL_TOTAL=DETAIL_TOTAL+1 ! increment detail total counter
+12890  }
+12999 RETURN 
+13000 ! 
+13001 ! 
+13002 REM + MOVE_UP_DETAIL_LIST
+13003 ! This routine moves the selected item up in the details list box.
+13050 MOVE_UP_DETAIL_LIST:
+13070 IF DETAIL_INDEX>1 THEN {! if a detail has been selected
+13072 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove detail from list box
+13074 DETAIL_INDEX=DETAIL_INDEX-1 ! decrement index
+13085 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,DETAIL_VALUE$ ! add detail to list box
+13090 LIST_BOX WRITE LB_DETAILS.CTL,DETAIL_VALUE$ ! set focus on detail
+13095  }
+13199 RETURN 
+13200 ! 
+13201 ! 
+13202 REM + MOVE_DOWN_DETAIL_LIST
+13203 ! This routine moves the selected item down in the details list box.
+13250 MOVE_DOWN_DETAIL_LIST:
+13270 IF DETAIL_INDEX<DETAIL_TOTAL THEN {! if selected detail is not the last one
+13275 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove detail from list box
+13280 DETAIL_INDEX=DETAIL_INDEX+1 ! increment index
+13285 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,DETAIL_VALUE$ ! add detail to list box
+13290 LIST_BOX WRITE LB_DETAILS.CTL,DETAIL_VALUE$ ! set focus on detail
+13295  }
+13399 RETURN 
+30000 ! 
+30001 ! 
+30002 REM + Open Files
+30003 ! This routine will open the ZWP_Require logical file.
+30050 OPEN_FILES:
+30060 DIM Z[255] ! dimension array
+30065 OPENED=0 ! init open file flag
+30070 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+30080 Z$="01S ZWP...  " ! create entry for ZWP_Require
+30085 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call ZZFLES to open the file
+30090 FILENO=Z[1] ! get the channel number the file is opened on
+30095 OPENED=1 ! set flag to sucessful open
+30199 RETURN 
+30200 ! 
+30201 ! 
+30202 REM + Read First
+30203 ! This routine reads the first record in the ZWP_Require file.
+30250 READ_FIRST:
+30260 PKEY$=KEF(FILENO,KNO=0,ERR=*NEXT)
+30270 READ (FILENO,KEY=PKEY$)IOL=0450
+30399 RETURN 
+30400 ! 
+30401 ! 
+30402 REM + Read Next
+30403 ! This routine reads the next record in the ZWP_Require file.
+30450 READ_NEXT:
+30599 RETURN 
+30600 ! 
+30601 ! 
+30602 REM + Read Previous
+30603 ! This routine reads the previous record in the ZWP_Require file.
+30650 READ_PREVIOUS:
+30799 RETURN 
+30800 ! 
+30801 ! 
+30802 REM + Read Last
+30803 ! This routine reads the last record in the ZWP_Require file.
+30850 READ_LAST:
+30999 RETURN 
+31000 ! 
+31001 ! 
+31002 REM + Write Record
+31003 ! This routine writes a new record to the ZWP_Require file.
+31050 WRITE_RECORD:
+31199 RETURN 
+31200 ! 
+31201 ! 
+31202 REM + Update Record
+31203 ! This routine updates a record that exists in the ZWP_Require file.
+31250 UPDATE_RECORD:
+31399 RETURN 
+31400 ! 
+31401 ! 
+31402 REM + Delete Record
+31403 ! This routine deletes a record that exists in the ZWP_Require file.
+31450 DELETE_RECORD:
+31599 RETURN 
+40000 ! 
+40001 ! 
+40002 REM + BUILD_PREVIEW
+40003 ! This routine clears, builds, and displays the preview.
+40050 BUILD_PREVIEW:
+40399 RETURN 

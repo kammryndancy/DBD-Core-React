@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="" MadCap:InPreviewMode="false" MadCap:PreloadImages="false" MadCap:RuntimeFileType="Topic" MadCap:TargetType="WebHelp" lang="en-us" xml:lang="en-us" class="" MadCap:PathToHelpSystem="../../" MadCap:HelpSystemFileName="Accounts Receivable.xml" MadCap:SearchType="Stem">
+    <!-- saved from url=(0016)http://localhost -->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Invoice Entry Header Fields</title>
+        <link href="../SkinSupport/Slideshow.css" rel="stylesheet" />
+        <link href="../SkinSupport/MadCap.css" rel="stylesheet" />
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js">
+        </script>
+        <script src="../SkinSupport/MadCapUtilities.js">
+        </script>
+        <script src="../SkinSupport/MadCapHighlighter.js">
+        </script>
+        <script src="../SkinSupport/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapAll.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapTopicAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p><a name="kanchor69"></a>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic_24x17.gif" style="width: 24;height: 17;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;">Invoice Entry Header Fields</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;margin-left: 0;margin-right: auto;">
+            <col style="width: 101px;" />
+            <col style="width: 546px;" />
+            <tbody>
+                <tr>
+                    <td style="font-size: 8pt;font-weight: bold;">Field</td>
+                    <td style="font-size: 8pt;font-weight: bold;">Description</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Fiscal Year</td>
+                    <td style="font-size: 8pt;">The Fiscal Year the invoice will be updated to. Should default based upon your AR&#160;parameters.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Accounting Period</td>
+                    <td style="font-size: 8pt;text-align: justify;">The Accounting Period the invoice will be updated to. Should default based upon your AR&#160;parameters.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Invoice Number</td>
+                    <td style="font-size: 8pt;text-align: justify;">You can manually type in an invoice number to be used, click the <b>Assign Next</b> button to have the system automatically assign the next invoice number (based upon your AR&#160;parameters), or you can use the lookup to select an existing invoice. <i>Note</i>: Since the invoices are entered by period, the lookup will only show invoices that have been entered into the batch for the specified period.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Order Number</td>
+                    <td style="font-size: 8pt;text-align: justify;">You can use the lookup to select an order number to create an invoice for. You can use the <b>Req Entry</b> button to setup a billable release to immediately bill. You can leave this blank to manually setup an invoice. If you are coming here after PO&#160;Receiving, the order number will default to the order that you just received.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Customer</td>
+                    <td style="font-size: 8pt;text-align: justify;">Enter in the customer code that the invoice is for, or select it from the lookup. If an order number was entered, the customer from that order will be displayed.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Ship-to Code</td>
+                    <td style="font-size: 8pt;">The primary ship-to code for the customer where the order was shipped.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Ship-to Address Lines</td>
+                    <td style="font-size: 8pt;text-align: justify;">The address, city, state, and zip code information for the ship-to code.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Type</td>
+                    <td style="font-size: 8pt;text-align: justify;">This will default to "invoice". You can also select "credit memo" or "debit memo". If "credit memo" is selected, an additional panel will display where you can list the reason for the credit memo being issued. This is for credit memo tracking.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Commission</td>
+                    <td style="font-size: 8pt;text-align: justify;">This is the default commission code to be used for the invoice. If paying commissions by line, the commission code listed on the individual lines can override this.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Terms</td>
+                    <td style="font-size: 8pt;text-align: justify;">The terms code to be applied to this invoice. This will determine the due date and if a discount is to be offered to the customer.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Sales Tax</td>
+                    <td style="font-size: 8pt;text-align: justify;">This is the default tax code to be applied to the order. The tax code and tax status can also be viewed on the individual lines of the invoice.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Salesperson(s)</td>
+                    <td style="font-size: 8pt;text-align: justify;">This will show all of the salespersons that are available to receive a commission on this invoice, and what percentage of the commission they will receive.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Invoice Date</td>
+                    <td style="font-size: 8pt;text-align: justify;">The date of the invoice used for calculating the invoice due date.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Customer PO</td>
+                    <td style="font-size: 8pt;text-align: justify;">The Customer PO&#160;related to this invoice. This will print on the invoice.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Ship Date</td>
+                    <td style="font-size: 8pt;">The date the items were shipped to the customer. This will print on the invoice.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Ship Via</td>
+                    <td style="font-size: 8pt;">
+                        <p>The method of how the items were shipped. This will print on the invoice.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Summary Bill</td>
+                    <td style="font-size: 8pt;">
+                        <p>Shows if this invoice will be added to the Summary Bill file.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Currency Desc</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">If a foreign currency code is to be used on the invoice, it will be displayed here, along with the exchange rate to be used.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Trading Partner</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">Trading partner?</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>Return to <a href="AR I1 Header.htm">Invoice Entry Header</a></p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007-2016 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

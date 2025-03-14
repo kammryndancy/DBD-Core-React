@@ -1,0 +1,63 @@
+0010 REM "PROGRAM DESCRIPTION <SM2SM4>                                     
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 05/12/06 - 16.649444 - kmc - SSP# 189024
+0037 REM "189024-Would like customer div, customer code added to SM4 file to 
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,SM4$,SM4{ALL}
+0100 SETERR 9000
+0110 X0$="SM2SM4",X1$="Add Data to SM4 record"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST FS1$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS1...  02O FT3...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+1000 REM "BEGIN MAIN PROCESS                                               
+1010 IF LEN(SM4$)>=345 THEN {
+1015 IF NUL(SM4$(328,10)) THEN {
+1020 DIM FS1$(400); FIND (Z[1],KEY=SM4$(1,8),DOM=*NEXT)FS1$; GOTO AFTER_FINDS
+1025 FIND (Z[2],KEY=SM4$(1,8),DOM=*NEXT)FS1$
+1030 AFTER_FINDS:
+1080 SM4$(328,10)=MID(FS1$,6,10)
+1090  }
+1095  }
+5000 REM "EOJ                                                              
+5040 GOTO 9900
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

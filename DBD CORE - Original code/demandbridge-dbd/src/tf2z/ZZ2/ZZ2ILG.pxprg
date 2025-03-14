@@ -1,0 +1,152 @@
+0010 REM "Archive Output Director Docs to Image Library"  <ZZ2ILG>
+0015 REM 
+0035 REM "5.7 - 07/02/09 - 11.034444 - crg - SSP# 230554
+0037 REM "230554-Output Director fails every other day
+0039 REM 
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM 
+0050 REM + Begin Program Notes
+0052 REM "This program will only be called if the Image
+0054 REM "Library Module is installed.
+0056 REM "This program is called from within itself in the
+0058 REM "Archive Documents routine. The Output Director
+0059 REM "Document Controller (DTGTOD) calls the Send Full
+0060 REM "Direcory routine, which performs a GOSUB to the
+0062 REM "Archive Documents routine.
+0069 REM 
+0070 REM "This program requires the following fields to be
+0072 REM "passed to it:
+0074 REM " OUTPUT_TYPE$ = output director document type
+0075 REM " ARCHIVE_LOC$ = archive directory
+0076 REM "    FILENAME$ = name of the document
+0078 REM 
+0080 REM "This program will return the following fields to
+0081 REM "the calling program:
+0083 REM "  RETURN_CODE = error code
+0084 REM " RETURN_DESC$ = error description
+0094 REM 
+0095 REM + End Program Notes
+0100 SETESC ESCAPE_PROCESSING; SETERR ERROR_PROCESSING
+0105 CLEAR 
+0110 ENTER OUTPUT_TYPE$,FROM_DIR$,ARCHIVE_LOC$,NEXT_FILE$,RETURN_CODE,RETURN_DESC$
+0120 X0$="ZZ2ILG" ! set the program name
+0125 X1$="Archive Output Director Docs to Image Library" ! set the program title
+0140 RETURN_CODE=0 ! init the return code
+0145 RETURN_DESC$="" ! init the return desc
+0500 REM + Open Files
+0510 OPEN_FILES:
+0520 IL1_CHN=HFN; IL1_NAME$="IL1"+%C$ ! set the channel and filename for IL1
+0525 OPEN (IL1_CHN,IOL=*,REC=IL1$)IL1_NAME$ ! open the IL1 file
+1000 REM + Program Main Routine
+1010 PROGRAM_MAIN:
+1100 GOSUB PARSE_FILENAME
+1110 GOSUB BUILD_TF_REF
+1120 GOSUB BUILD_IL1
+1999 GOTO PROGRAM_EXIT
+3000 REM + Parse Filename
+3010 PARSE_FILENAME:
+3020 TMP_FLD1$="" ! clear the temp field 1
+3025 TMP_FLD2$="" ! clear the temp field 2
+3030 TMP_POS=0 ! clear the temp position
+3035 TMP_FILENAME$=NEXT_FILE$(1,LEN(NEXT_FILE$)-4) ! remove the extension
+3040 TMP_POS=POS("_"=TMP_FILENAME$,-1) ! search for an underscore in the filename, starting from end
+3045 TMP_FILENAME$=TMP_FILENAME$(1,TMP_POS-1)
+3049 TMP_POS=POS("_"=TMP_FILENAME$) ! search for an underscore in the filename
+3050 IF TMP_POS=0 THEN {! if no underscore is found
+3055 TMP_FLD1$=TMP_FILENAME$ ! set the temp field 1 to the filename
+3060  } ELSE {! an underscore is found
+3065 TMP_FLD1$=TMP_FILENAME$(1,TMP_POS-1) ! set temp field 1 to the first part of the filename
+3070 TMP_FLD2$=TMP_FILENAME$(TMP_POS+1) ! set temp field 2 to the second part of the filename
+3090  }
+3195 RETURN 
+3200 REM + Build TF References
+3210 BUILD_TF_REF:
+3220 TMP_REF1$="" ! init temp ref 1
+3225 TMP_REF2$="" ! init temp ref 2
+3230 TMP_IMAGE_TYPE$="" ! init temp image type
+3290 TMP_OUTPUT_TYPE$=STP(OUTPUT_TYPE$) ! remove trailing spaces
+3300 SWITCH TMP_OUTPUT_TYPE$
+3350 CASE "CUST_INVOICE" ! customer invoice
+3355 TMP_REF1$="" ! set temp ref 1 to not used
+3360 TMP_REF2$=TMP_FLD1$+TMP_FLD2$ ! set temp ref 2 to customer + invoice
+3365 TMP_IMAGE_TYPE$="A0" ! set temp image type
+3395 BREAK
+3400 CASE "PURCHASE_ORDER" ! purchase order
+3405 TMP_REF1$=TMP_FLD1$ ! set temp ref 1 to not used
+3410 TMP_REF2$=TMP_FLD2$ ! set temp ref 2 to
+3415 TMP_IMAGE_TYPE$="A2" ! set temp image type
+3445 BREAK
+3450 CASE "WHS_PACKING_LIST" ! Warehouse Packing List
+3455 TMP_REF1$=TMP_FLD1$ ! set temp ref 1 to order number
+3460 TMP_REF2$=TMP_FLD2$ ! set temp ref 2 to warehouse type + code
+3465 TMP_IMAGE_TYPE$="A1" ! set temp image type
+3495 BREAK
+3900 DEFAULT 
+3910 BREAK
+3920 END SWITCH 
+3995 RETURN 
+4000 REM + Build IL1 Record
+4010 BUILD_IL1:
+4020 IMAGE_KEY$="" ! this will be assigned in ILGFUN;ADD_IMAGE
+4030 IMAGE_TYPE$=TMP_IMAGE_TYPE$ ! set the image type
+4040 TOPFORM_REF_1$=TMP_REF1$ ! set the reference 1
+4050 TOPFORM_REF_2$=TMP_REF2$ ! set the reference 1
+4060 IMAGE_PATH$=ARCHIVE_LOC$+"/"+NEXT_FILE$ ! set the image path
+4070 CALL "ILGFUN;ADD_IMAGE",IL1_CHN,IMAGE_KEY$,IMAGE_TYPE$,TOPFORM_REF_1$,TOPFORM_REF_2$,IMAGE_PATH$
+4080 IF %TOD_LOG THEN MSG$="ZZ2ILG|ILKEY|"+IMAGE_KEY$+"|ILTYPE|"+IMAGE_TYPE$+"|ILREF1|"+TOPFORM_REF_1$+"|ILREF2|"+TOPFORM_REF_2$+"|ILPATH|"+IMAGE_PATH$+"|"; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+4195 RETURN 
+8900 REM + Close Files
+8910 CLOSE_FILES:
+8920 CLOSE (IL1_CHN,ERR=*NEXT) ! close the IL1 file, continue if there is an error
+8995 RETURN 
+9000 REM + ERROR PROCESSING
+9010 ERROR_PROCESSING:
+9020 RETURN_CODE=-1 ! set the return code
+9030 RETURN_DESC$="ERR: "+STR(ERR)+"  line#: "+STR(TCB(5)) ! set the return message
+9080 GOSUB CLOSE_FILES ! close all files
+9090 EXIT ERR
+9300 REM + Escape Processing
+9310 ESCAPE_PROCESSING:
+9320 ESCAPE 
+9900 REM + END PROGRAM
+9910 PROGRAM_EXIT:
+9980 GOSUB CLOSE_FILES ! close all files
+9990 EXIT 
+9999 END 
+10000 REM + Archive Documents
+10010 ARCHIVE_DOCS:
+10015 MSG$="ZZ2ILG|DIR|"+FROM_DIR$; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10020 CMD_CHAN=UNT; OPEN (CMD_CHAN,ERR=*RETURN)FROM_DIR$
+10030 GET_NEXT_DOC:
+10040 READ (CMD_CHAN,END=END_OF_DOCS)NEXT_FILE$
+10050 IF NEXT_FILE$="." OR NEXT_FILE$=".." OR NEXT_FILE$(LEN(NEXT_FILE$)-3,4)=".bad" OR NEXT_FILE$(LEN(NEXT_FILE$)-3,4)=".err" THEN GOTO GET_NEXT_DOC
+10060 NEXT_FILE$=STP(NEXT_FILE$,3," ")
+10065 RETURN_CODE=0
+10067 MSG$="ZZ2ILG|OUTTYPE|"+OUTPUT_TYPE$+"|ARCHIVELOC|"+ARCHIVE_LOC$+"|NEXTFILE|"+NEXT_FILE$; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10070 IF %HAS_IMAGE_LIB THEN {
+10080 CALL "ZZ2ILG",OUTPUT_TYPE$,FROM_DIR$,ARCHIVE_LOC$,NEXT_FILE$,RETURN_CODE,RETURN_DESC$
+10085 MSG$="ZZ2ILG|RET|"+STR(RETURN_CODE)+"|"+RETURN_DESC$+"|"; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10090 IF RETURN_CODE<>0 THEN {
+10100 INVOKE "mv "+FROM_DIR$+"/"+NEXT_FILE$+" "+FROM_DIR$+"/"+NEXT_FILE$+".bad"
+10110  } ELSE {
+10120 INVOKE "mv "+FROM_DIR$+"/"+NEXT_FILE$+" "+ARCHIVE_LOC$+"/"+NEXT_FILE$
+10130  }
+10140  } ELSE {
+10150 INVOKE "mv "+FROM_DIR$+"/"+NEXT_FILE$+" "+ARCHIVE_LOC$+"/"+NEXT_FILE$
+10160  }
+10300 GOTO GET_NEXT_DOC
+10400 END_OF_DOCS:
+10410 CLOSE (CMD_CHAN)
+10420 MSG$="ZZ2ILG|DONE|"; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10495 RETURN 
+11000 REM + Send the Full Directory
+11010 SEND_FULL_DIR:
+11020 ENTER OUTPUT_TYPE$,DIRECTORY$,ARCHIVE_LOC$
+11030 FROM_DIR$=DIRECTORY$
+11050 GOSUB ARCHIVE_DOCS
+11090 EXIT 
+56000 REM + Modification History
+56001 REM "10/05/2007 : mhe : Program created for SSP-209370
+56002 REM "209370-Provide ability to store pdf documents to the Image
+56003 REM "230554-Output Director fails every other day

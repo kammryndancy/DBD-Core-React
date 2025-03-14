@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Purchase Order Reports" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Enhanced Backorder Fill Report</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;">
+            </col>
+            <col style="width: 511px;">
+            </col>
+            <col style="width: 86px;">
+            </col>
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;">
+                        </img>
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">Enhanced Backorder Fill Report</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif"></img></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;margin-left: 0;margin-right: auto;">
+            <tbody>
+                <tr>
+                    <td><span style="font-weight: bold;font-style: normal;font-size: 8pt;font-family: Verdana;">DB&#160;Distributor &gt; Order Processing &gt; Purchase Orders &gt; Processing &gt; Enhanced Backorder Fill Report (P/O P5)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav" style="font-weight: bold;font-style: italic;">&#160;</p>
+        <p class="Nav" style="text-align: justify;">The Enhanced Backorder Fill Report is used to fill backorders that can be processed if inventory has been received into the warehouse to fill the order. This report does not give you the same options that are available in the standard <a href="Backorder Fill.htm">Backorder Fill Report</a>. For this report, all that you will do is click on the <b>Print Report</b> button, and the following will occur:</p>
+        <p class="Nav" style="text-align: justify;">&#160;</p>
+        <p class="Nav" style="text-align: justify;">This program will read the order file.  If an order has a backordered line, the program will do one of the following:
+</p>
+        <ul>
+            <li style="text-align: justify;" value="1">If the order is in the invoicing process, the order will be printed on the report with the message *In Invoicing*.
+A packing slip will not print.
+
+</li>
+            <li style="text-align: justify;" value="2">If the order has any lines with lots committed, the order will be printed on the report with the message *Lots Committed".
+ A packing slip will not print.
+
+</li>
+            <li style="text-align: justify;" value="3">If the order has been suspended, the order will be printed on the report with the message "Suspended".
+A packing slip will not print.
+
+</li>
+            <li style="text-align: justify;" value="4">If the order is in a Purchase Order Receiving Batch, the order will be printed on the report with the message "In PO Receiving"
+A packing slip will not print.</li>
+            <li style="text-align: justify;" value="5">If the item on the order has available inventory specified by the Inventory by Location File, the program will commit the line.  The program will then read the rest of the order and commit any other lines with available inventory.  The order will be printed on the report with the message "Released".
+ A packing slip will print for the released items.
+</li>
+        </ul>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">
+        </p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2009 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

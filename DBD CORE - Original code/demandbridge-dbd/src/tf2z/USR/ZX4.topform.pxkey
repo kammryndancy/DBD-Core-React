@@ -1,0 +1,369 @@
+<PxTable>
+ TableName=ZX4.topform
+ TableKey=K1102613987
+ FileCreate=KEYED "ZX4.topform",[1:1:2]+[1:3:73],0,-512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZX4"
+    PHYSICALPATH$="August 9,2005 5:38pm"
+    LASTCHANGEDATE$="dmm"
+</TableInfo>
+
+<MetaData>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST MENU_NUM$:[LEN(2,SEP=SEP)]"
+    NAME$="MENU_NUM"
+    DESCRIPTION$="Placement on Menu"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST LEVEL$:[LEN(73,SEP=SEP)]"
+    NAME$="LEVEL"
+    DESCRIPTION$="Level"
+    TYPE$="S"
+    LENGTH$="73"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST APPLICATION_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="APPLICATION_CODE"
+    DESCRIPTION$="Application Code"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST UNUSED$:[LEN(SEP,SIZ=123)]"
+    NAME$="UNUSED"
+    DESCRIPTION$="Unused"
+    TYPE$="S"
+    LENGTH$="123"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST UNUSED_1"
+    NAME$="UNUSED_1"
+    DESCRIPTION$="Unused_1"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST UNUSED_2"
+    NAME$="UNUSED_2"
+    DESCRIPTION$="UNUSED_2"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST UNUSED_3"
+    NAME$="UNUSED_3"
+    DESCRIPTION$="UNUSED_3"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST UNUSED_4"
+    NAME$="UNUSED_4"
+    DESCRIPTION$="UNUSED_4"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST UNUSED_5"
+    NAME$="UNUSED_5"
+    DESCRIPTION$="UNUSED_5"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    MENU_NUM$="10"
+    LEVEL$="Setup|Electronic Forms Interface                                         "
+    APPLICATION_CODE$="EF"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="10"
+    LEVEL$="Setup|System Utility Functions                                           "
+    APPLICATION_CODE$="ZZ"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="10"
+    LEVEL$="Setup|Unix Fax Interface                                                 "
+    APPLICATION_CODE$="FX"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Accounts Payable                                                 "
+    APPLICATION_CODE$="AP"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Accounts Receivable                                              "
+    APPLICATION_CODE$="AR"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Bank Reconciliation                                              "
+    APPLICATION_CODE$="BS"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Contact Management                                               "
+    APPLICATION_CODE$="TM"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Executive Sales Analysis                                         "
+    APPLICATION_CODE$="EI"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|General Ledger                                                   "
+    APPLICATION_CODE$="GL"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Inventory Control                                                "
+    APPLICATION_CODE$="IC"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Order Processing                                                 "
+    APPLICATION_CODE$="OP"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Print Management                                                 "
+    APPLICATION_CODE$="FM"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="20"
+    LEVEL$="TopForm|Request For Quotation System                                     "
+    APPLICATION_CODE$="QS"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="30"
+    LEVEL$="TopForm e-Business|EC Promo                                              "
+    APPLICATION_CODE$="PP"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="30"
+    LEVEL$="TopForm e-Business|Sage                                                  "
+    APPLICATION_CODE$="SG"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="30"
+    LEVEL$="TopForm e-Business|TOPS                                                  "
+    APPLICATION_CODE$="OS"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="30"
+    LEVEL$="TopForm e-Business|WebEC                                                 "
+    APPLICATION_CODE$="EC"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Archive                                         "
+    APPLICATION_CODE$="ZR"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Bar Code Printing                               "
+    APPLICATION_CODE$="BC"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Data Replication                                "
+    APPLICATION_CODE$="DR"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|EDI                                             "
+    APPLICATION_CODE$="EM"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|FRAN                                            "
+    APPLICATION_CODE$="FR"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|IBSA                                            "
+    APPLICATION_CODE$="IB"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Image Library                                   "
+    APPLICATION_CODE$="IL"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Import Management                               "
+    APPLICATION_CODE$="IM"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|KIT                                             "
+    APPLICATION_CODE$="KT"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Shipping Management                             "
+    APPLICATION_CODE$="SM"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|VOILA                                           "
+    APPLICATION_CODE$="OF"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="40"
+    LEVEL$="TopForm Optional Modules|Warehouse Management System                     "
+    APPLICATION_CODE$="WW"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Cash Receipts                                           "
+    APPLICATION_CODE$="CR"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Contact List                                            "
+    APPLICATION_CODE$="CT"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Customer Invoicing                                      "
+    APPLICATION_CODE$="SP"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|General Ledger Posting                                  "
+    APPLICATION_CODE$="GG"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Order Entry                                             "
+    APPLICATION_CODE$="OF"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Product Catalog                                         "
+    APPLICATION_CODE$="PC"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    MENU_NUM$="50"
+    LEVEL$="TopForm Gateways|Vendor Invoicing                                        "
+    APPLICATION_CODE$="PA"
+    UNUSED$="                                                                                                                           "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,3 @@
+cd /usr/lib/pvx/z.kmc/www_dev
+
+send_xml_file -P 'customer_number=516984' -P 'password=testword'  -url 'https://www.greatland.com/products/external_order/test/list_ship_files.asp' 2> /dev/null

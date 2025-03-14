@@ -1,0 +1,316 @@
+<PxTable>
+ TableName=ZT0
+ TableKey=K1372704728
+ FileCreate=KEYED "ZT0",14,0,-384,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZT0_PrnSpecialEffects"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/ZT0"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:14-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:33-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST PRINTER_CODE$:[LEN(8)]"
+    NAME$="PRINTER_CODE"
+    DESCRIPTION$="=MSG("+QUO+"PRINT_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="P"
+    NOTES$="Printer code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST CHARACTERISTIC_CODE$:[LEN(6)]"
+    NAME$="CHARACTERISTIC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CHAR_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    NOTES$="Characteristic"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST PRINTER_CODE$:[LEN(8,SEP=SEP)]"
+    NAME$="PRINTER_CODE"
+    DESCRIPTION$="=MSG("+QUO+"PRINT_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Printer code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST CHARACTERISTIC_CODE$:[LEN(6,SEP=SEP)]"
+    NAME$="CHARACTERISTIC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CHAR_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Characteristic"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST CHARACTERISTIC_DESC$:[LEN(20,SEP=SEP)]"
+    NAME$="CHARACTERISTIC_DESC"
+    DESCRIPTION$="=MSG("+QUO+"CHAR_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST START_MODE_HEX_SEQ$:[LEN(58,SEP=SEP)]"
+    NAME$="START_MODE_HEX_SEQ"
+    DESCRIPTION$="=MSG("+QUO+"STAR_M_H_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="58"
+    INTERNALFORMAT$="S"
+    NOTES$="Start mode hex sequence"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST CANCEL_MODE_SEQ$:[LEN(SEP,SIZ=58)]"
+    NAME$="CANCEL_MODE_SEQ"
+    DESCRIPTION$="=MSG("+QUO+"CANC_M_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="58"
+    INTERNALFORMAT$="L"
+    NOTES$="Cancel mode seq"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST CHARACTERS_PER_INCH"
+    NAME$="CHARACTERS_PER_INCH"
+    DESCRIPTION$="=MSG("+QUO+"CHAR_P_I"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##.0-"
+    NOTES$="Characters per inch"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST LINES_PER_INCH"
+    NAME$="LINES_PER_INCH"
+    DESCRIPTION$="=MSG("+QUO+"LINE_P_I"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##.0-"
+    NOTES$="Lines Per Inch"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST ZT0_UNUSED_1"
+    NAME$="ZT0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="        EMPH  "
+    PRINTER_CODE$="        "
+    CHARACTERISTIC_CODE$="EMPH  "
+    CHARACTERISTIC_DESC$="                    "
+    START_MODE_HEX_SEQ$="ES4252                        ES4552                      "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EPSON   2W    "
+    PRINTER_CODE$="EPSON   "
+    CHARACTERISTIC_CODE$="2W    "
+    CHARACTERISTIC_DESC$="Double wide print   "
+    START_MODE_HEX_SEQ$="ES5701                        ES5700                      "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EPSON   BO    "
+    PRINTER_CODE$="EPSON   "
+    CHARACTERISTIC_CODE$="BO    "
+    CHARACTERISTIC_DESC$="Bold print          "
+    START_MODE_HEX_SEQ$="ES45                          ES46                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EPSON   CP    "
+    PRINTER_CODE$="EPSON   "
+    CHARACTERISTIC_CODE$="CP    "
+    CHARACTERISTIC_DESC$="Compressed Print    "
+    START_MODE_HEX_SEQ$="ES0F                          12                          "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=0.5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EPSON   IT    "
+    PRINTER_CODE$="EPSON   "
+    CHARACTERISTIC_CODE$="IT    "
+    CHARACTERISTIC_DESC$="Italics             "
+    START_MODE_HEX_SEQ$="ES34                          ES35                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EPSON   LQ    "
+    PRINTER_CODE$="EPSON   "
+    CHARACTERISTIC_CODE$="LQ    "
+    CHARACTERISTIC_DESC$="Letter Quality Mode "
+    START_MODE_HEX_SEQ$="ES7801                        ES7800                      "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  10CPI "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="10CPI "
+    CHARACTERISTIC_DESC$="10 CPI              "
+    START_MODE_HEX_SEQ$="1B50                                                      "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=10
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  12CPI "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="12CPI "
+    CHARACTERISTIC_DESC$="12 CPI              "
+    START_MODE_HEX_SEQ$="9B4D                                                      "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=12
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  17CPI "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="17CPI "
+    CHARACTERISTIC_DESC$="17 CPI              "
+    START_MODE_HEX_SEQ$="1B501B67                                                  "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=17
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  20CPI "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="20CPI "
+    CHARACTERISTIC_DESC$="20 CPI              "
+    START_MODE_HEX_SEQ$="1B4D1B67                                                  "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=20
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  BOLD  "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="BOLD  "
+    CHARACTERISTIC_DESC$="Bold                "
+    START_MODE_HEX_SEQ$="9B47                          9B48                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  EMPH  "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="EMPH  "
+    CHARACTERISTIC_DESC$="Emphasized printing "
+    START_MODE_HEX_SEQ$="1B45                          1B46                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  HIGH  "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="HIGH  "
+    CHARACTERISTIC_DESC$="Double high         "
+    START_MODE_HEX_SEQ$="1B7701                        1B7700                      "
+    CANCEL_MODE_SEQ$="                                                          "
+    LINES_PER_INCH=3
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  ITAL  "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="ITAL  "
+    CHARACTERISTIC_DESC$="Italics             "
+    START_MODE_HEX_SEQ$="1B34                          1B35                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  LQ    "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="LQ    "
+    CHARACTERISTIC_DESC$="Letter quality      "
+    START_MODE_HEX_SEQ$="9B7801                        9B7800                      "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  SUPSCR"
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="SUPSCR"
+    CHARACTERISTIC_DESC$="Superscript         "
+    START_MODE_HEX_SEQ$="1B5300                        1B54                        "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  ULINE "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="ULINE "
+    CHARACTERISTIC_DESC$="Underline           "
+    START_MODE_HEX_SEQ$="1B4501                        1B4500                      "
+    CANCEL_MODE_SEQ$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OKI393  WIDE  "
+    PRINTER_CODE$="OKI393  "
+    CHARACTERISTIC_CODE$="WIDE  "
+    CHARACTERISTIC_DESC$="Double wide         "
+    START_MODE_HEX_SEQ$="1B5701                        1B5700                      "
+    CANCEL_MODE_SEQ$="                                                          "
+    CHARACTERS_PER_INCH=-2
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,85 @@
+0010 REM "Export A/R Invoices <AR2XIA>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 03/19/99 - 17.06 - dmm - SSP# 101013
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "PARAM$=EXPORTAR parameters
+0071 REM "FILES[] 0=header file slot, 1=detail file slot
+0072 REM "INV$,INV[ALL]=APD info
+0075 REM "Z_CALLING[] = Z array from calling progam
+0076 REM "UPDATE$ = update info, (22,6)=audit control number
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PARAM$,FILES{ALL},INV$,INV{ALL},Z_CALLING{ALL},UPDATE$
+0100 SETERR 9000
+0110 X0$="AR2XIA",X1$="Export A/R Invoice Information"
+0120 IF FN%NEA("FILES",0)=0 THEN DIM FILES[9]
+0130 MASK_8$="-000000000",MASK_4$="0000"
+0300 REM "IOLISTS
+0310 AR1_IOLIST:IOLIST AR1$(1)
+0320 FS1_IOLIST:IOLIST FS1$
+0400 REM "Check for files, if not there then create
+0401 REM "if array values <>0 then we've already done this
+0405 IF FILES[0]<>0 THEN GOTO 0600
+0406 HEADER_FILE$=STP(PARAM$(13,8),1)
+0410 CLOSE (14); OPEN (14,ERR=0411)HEADER_FILE$; CLOSE (14); GOTO 0415
+0411 SERIAL HEADER_FILE$,0,0
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O "+HEADER_FILE$+" 02O FS1... 03O IE0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0524 REM "Close and re-open as text files, read to the end in case there ar"+"e existing entries, then save file slots in FILES[]
+0525 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")HEADER_FILE$; FILES[0]=Z[1]
+0530 READ (FILES[0],END=0531); GOTO 0530
+0540 FILES[1]=Z[2]; REM "Save file slot for FS1
+0550 FILES[2]=Z[3]; REM "WO101013
+0600 REM "
+1000 REM "Write Header Record
+1001 DIM HEADER$(131)
+1010 HEADER$(1,8)=INV$(15,10); REM "Customer Code, start as customer #, but read AR1 and get alternat"+          "e customer number, this is just in case we don't finde it, or it "+          "is blank
+1011 DIM AR1$(500); FIND (Z_CALLING[4],KEY=INV$(15,10),DOM=1012)IOL=AR1_IOLIST
+1012 IF STP(AR1$(411,20),3," ")="" THEN GOTO 1013 ELSE HEADER$(1,8)=AR1$(411,20)
+1015 HEADER$(9,6)=INV$(8,6),HEADER$(15,2)=INV$(267,2); REM "Invoice number(take last 6 digits of the 7 digit inv#), State
+1016 IF STP(HEADER$(15,2),3," ")="" THEN HEADER$(15,2)=AR1$(132,2); REM "If state is blank from invoice substitute state from customr m"+             "asterfile
+1020 HEADER$(17,5)=INV$(269,5),HEADER$(22,6)=FND$(INV$(86,6)); REM "Zip code, Invoice Date
+1021 IF STP(HEADER$(17,5),3," ")="" THEN HEADER$(17,5)=AR1$(134,9); REM "if zipcode is blank from invoice, substitute from customer mas"+             "terfile
+1024 DIM FS1$(200); FIND (FILES[1],KEY=INV$(92,8),DOM=1025)IOL=FS1_IOLIST; IF FS1$(182,1)="F" THEN GOTO 5000 ELSE IF FS1$(182,1)<>"P" THEN DIM IE0$(100); READ (FILES[2],KEY=INV$(15,10),DOM=1025)IE0$; IF IE0$(11,1)="F" THEN GOTO 5000; REM "Read in order to get the order date, also check Consolid"+                   "ated Order Type, if F=Full then we don't write this reco"+                   "rd, WO91521, added for WO101013, read IE0, if cust setup"+                   " as F type then don't write this record
+1025 IF STP(FS1$(16,6),3," ")="" THEN GOTO 1026 ELSE HEADER$(28,6)=FND$(FS1$(16,6)); REM "Order date
+1030 HEADER$(34,6)=INV$(92,8),HEADER$(40,6)=FND$(INV$(180,6)); REM "Order number, ship date
+1035 HEADER$(46,11)=INV$(100,15); REM "Customer P/O Number
+1040 HEADER$(57,10)=STR((INV[1]+INV[2])*100:MASK_8$),HEADER$(67,10)=STR((INV[4]+INV[6]+INV[8])*100:MASK_8$); REM "Sale amount (net+frt), tax amount (state+county+local)
+1045 HEADER$(77,10)=STR(INV[11]*100:MASK_8$),HEADER$(87,10)=STR(INV[9]*100:MASK_8$); REM "Cost amount, Invoice total amount
+1050 IF INV[3]+INV[5]+INV[7]=0 THEN TEMP=0 ELSE TEMP=INT((INV[4]+INV[6]+INV[8])*10000/(INV[3]+INV[5]+INV[7])) END_IF ; HEADER$(97,4)=STR(TEMP:MASK_4$); REM "Calculate tax rate used to 4 decimal places
+1055 HEADER$(101,10)=STR(INV[3]*100:MASK_8$),HEADER$(111,1)=" ",HEADER$(112,4)=INV$(133,4); REM "Taxable amount, blank field, 1st salesperson
+1060 HEADER$(116,16)=INV$(251,16); IF STP(HEADER$(116,16),3," ")="" THEN HEADER$(116,16)=AR1$(116,16); REM "Ship-to city, added ssp88803
+1100 REM "Write record
+1105 WRITE RECORD (FILES[0])HEADER$+$0D0A$; REM "Add LineFeed
+5000 GOTO 9900
+8955 DEF FND$(Z9$)=Z9$(3,4)+STR(MOD((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)),100):"0#")
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

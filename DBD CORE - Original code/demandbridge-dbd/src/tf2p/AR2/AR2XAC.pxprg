@@ -1,0 +1,88 @@
+0010 REM "Program to read/write/delete Accumulated GP files <AR2XAC>
+0035 REM "5.3 - 07/01/04 - 13.196944 - lms - SSP# 170568
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 DIM DET_OUT(7),DET_IN(7),STAT_IN(14),STAT_OUT(14)
+0100 SETERR 9000; SETESC 9300
+0120 ENTER X3$,X4$,RWD$,DET_IN$,DET_IN{ALL},DET_OUT$,DET_OUT{ALL},STAT_IN$,STAT_IN{ALL},STAT_OUT$,STAT_OUT{ALL},F_YEAR$,ACCT_PER$,TRANS_T$,AMOUNT,INDEX$,AUTO_REQ$,UNUSED1,UNUSED2
+0121 REM " RWD$= Flag, R=Read, W=Write, D= Delete,DET_IN$&DET_IN(ALL)=Information needed to read the file and add to an existing record, DET_OUT$ & DET_OUT(ALL)=Information to send back to the calling program,STAT_IN$&STAT_IN(ALL)=Information coming from calling program for stat file, STAT_OUT$&STAT_OUT(ALL)=Information to return for statistical file,F_YEAR$=the fiscal year to post to, ACCT_PER$=Accounting period, TRANS_T$=The transaction type I for invoice C for Charge back,AMOUNT=Amount to post,T$=E for extract, R for read no reason to lock record if only a read,UNUSED_1$,UNUSED_2$,UNUSED1,UNUSED2=2 available strings and 2 available numerics for future use
+0309 REM "IOLIST for AXN Detailed Accumulated GP File
+0310 IOLIST DET_OUT$,DET_OUT(0),DET_OUT(1),DET_OUT(2),DET_OUT(3),DET_OUT(4),DET_OUT(5),DET_OUT(6),DET_OUT(7)
+0319 REM "Iolist for statistical data file
+0320 IOLIST STAT_OUT$,STAT_OUT(0),STAT_OUT(1),STAT_OUT(2),STAT_OUT(3),STAT_OUT(4),STAT_OUT(5),STAT_OUT(6),STAT_OUT(7),STAT_OUT(8),STAT_OUT(9),STAT_OUT(10),STAT_OUT(11),STAT_OUT(12),STAT_OUT(13),STAT_OUT(14)
+0330 IOLIST DET_IN$,DET_IN(0),DET_IN(1),DET_IN(2),DET_IN(3),DET_IN(4),DET_IN(5),DET_IN(6),DET_IN(7)
+0500 REM "FILES                            
+0505 Z=NUM(X3$(60,3)); DIM Z[Z]
+0510 Z$="01O AXN...  02O ARA...  "
+0511 Z$=Z$+"13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0580 READ (Z[13],KEY="STATAR3")S9$
+0600 REM "                                                               
+0900 ON POS(RWD$="RWD",1) GOTO 1000,1000,2000,3000,1000
+1000 REM " Read the records in and send back
+1010 F0=Z[2],Q0$="G",Q1$=DET_IN$(1,4)+DET_IN$(5,4),Q1=NUM(DET_IN$(9,2)),T$="R"
+1020 GOSUB 7100
+1100 REM "Read the detail file in and send back
+1110 READ (Z(1),KEY=DET_IN$(1,22),DOM=1111)IOL=0310
+1999 GOTO 9900
+2000 REM " Write the records out
+2010 F0=Z[2],Q0$="G",Q1$=DET_IN$(1,4)+DET_IN$(5,4),Q1=NUM(DET_IN$(9,2)),T$="E"
+2020 GOSUB 7100
+2030 STAT_OUT[Q1]=STAT_OUT[Q1]+AMOUNT
+2040 Q=POS(Q0$=S9$(49),17); IF Q<>0 THEN GOSUB 7150
+2100 WRITE (Z[1],KEY=DET_IN$(1,22),DOM=2110)IOL=0330; GOTO 2999
+2120 SEQ$=STR(NUM(DET_IN$(20,3))+1:"000"); DET_IN$(20,3)=SEQ$; IF SEQ$>="999" THEN ESCAPE ; REM " Call support exceeded sequence counter
+2130 GOTO 2100
+2999 GOTO 9900
+3000 REM " Delete the information from the files
+3010 AMOUNT=0
+3100 READ (Z(1),KEY=DET_IN$(1,19),DOM=*NEXT)
+3110 DIM DET_OUT[7]; DET_KEY$=KEY(Z(1),END=3200); READ (Z(1),KEY=DET_KEY$)IOL=0310
+3120 IF DET_OUT$(1,19)<>DET_IN$(1,19) THEN GOTO 3200
+3130 IF INDEX$<>DET_OUT$(46,8) AND STP(INDEX$,3," ")<>"ALL" THEN GOTO 3110
+3140 AMOUNT=AMOUNT+DET_OUT(0)
+3150 REMOVE (Z(1),KEY=DET_KEY$)
+3160 GOTO 3110
+3210 F0=Z[2],Q0$="G",Q1$=DET_IN$(1,4)+DET_IN$(5,4),Q1=NUM(DET_IN$(9,2)),T$="R"
+3220 GOSUB 7100
+3230 STAT_OUT[Q1]=STAT_OUT[Q1]-AMOUNT
+3240 Q=POS(Q0$=S9$(49),17); IF Q<>0 THEN GOSUB 7150
+3999 GOTO 9900
+7100 REM "Read stats (Packed/Unpacked)                                   
+7105 Q=POS(Q0$=S9$(49),17); IF Q=0 THEN RETURN ELSE M0$=S9$(Q+48,17)
+7110 CALL "ZZPACK",X3$,T$,M0$(3,2),"",0,0,STAT_OUT{ALL},F0,Q0$,Q1$,S9$
+7140 GOTO 7190
+7170 REM "Write stats                                                    
+7180 CALL "ZZPACK",X3$,"W",M0$(3,2),"",0,0,STAT_OUT{ALL},F0,Q0$,Q1$,S9$
+7190 RETURN 
+9000 REM "ERROR PROCESSING                                
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                               
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9505 GOTO 6500
+9510 SETERR 9000; GOSUB 6500
+9520 ON C9 GOTO 1140,2040
+9750 REM 
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0
+9770 RETURN 
+9900 REM "END PROGRAM                                                          
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 EXIT 
+9940 BEGIN ; SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

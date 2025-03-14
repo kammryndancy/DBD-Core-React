@@ -1,0 +1,9 @@
+0010 REM "Purchase Order Defaults <PO2ODX>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.4 - 02/27/91 - 15.41
+0040 REM "Copyright 1991 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "This program required to set program name in X3$ for later use"
+0100 BEGIN 
+9900 RUN "FM2ODX"
+9999 END 

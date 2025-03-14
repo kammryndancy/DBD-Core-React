@@ -1,0 +1,44 @@
+0010 REM "<EC2EXP> Add Entry for Export File
+0015 REM "Prog Type: IP-3.1.2
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 02/28/07 - 16.071944 - mhe - SSP# 205471
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "IF EC_PARM$ is "" we will read EC parameters
+0071 REM "IF EC_FILE is 0 or name is not EC1 then open on EC1
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC_FILE,EC_TYPE$,KEY$
+0100 SETERR 9000
+0110 X0$="EC2EXP",X1$="Add Entry to Export File"
+0400 IF EC_PARM$<>"" THEN GOTO 0450
+0410 CLOSE (14); OPEN (14)"ZZPARM"
+0415 READ (14,KEY=X3$(9,3)+"E/C",DOM=9900)EC_PARM$
+0450 REM "check if we are exporting data, if not then leave
+0455 IF EC_PARM$(115,1)<>"Y" THEN GOTO 9900
+0500 REM "Check if EC_FILE is open on correct file, if  not open it
+0505 IF EC_FILE=0 THEN GOTO 0550 ELSE TMP$=FN%XFD$(EC_FILE,ERR=0550); TMP$=TMP$(9); IF LEN(TMP$)<3 THEN GOTO 0550 ELSE IF TMP$(1,3)="EC1" THEN GOTO 0600
+0550 REM "File needs to be opened
+0555 EC_FILE=0; INDEX=FN%FFN("EC1"+X3$(9,3)); IF INDEX<>0 THEN GOTO 0570 ELSE INDEX=FN%FFN("EC1"); IF INDEX<>0 THEN GOTO 0570 ! [205471]-changed FFN() to FN%FFN()
+0560 INDEX=UNT; IF UNT=14 THEN OPEN (14)FID(0); GOTO 0560
+0565 OPEN (INDEX,ERR=0566)"EC1"+X3$(9,3); GOTO 0570
+0566 OPEN (INDEX)"EC1"
+0570 EC_FILE=INDEX
+0900 ORIG_EC_TYPE$=EC_TYPE$
+1000 REM "OK, so write it out
+1010 WRITE (EC_FILE,KEY=EC_TYPE$+KEY$)
+1100 REM "Special processing section
+1105 P=POS(EC_TYPE$="CUSTPROD",4)
+1110 ON P GOTO 1300,1115,1120,1300
+1115 IF LEN(KEY$)=10 THEN EC_TYPE$="IACX"; GOTO 1000; REM "If CUST type and key len of 10 (means customer master record), output record for customer category
+1120 REM "For PROD types generate PRDR,ITEM,VITM, and CUCR  records. Actually do write here instead of looping back to 1000 because of all the record types involved causing convoluted logic problems
+1121 WRITE (EC_FILE,KEY="PRDR"+KEY$); WRITE (EC_FILE,KEY="ITEM"+KEY$); WRITE (EC_FILE,KEY="VITM"+KEY$); WRITE (EC_FILE,KEY="CUCR"+KEY$)
+1124 GOTO 1300
+1300 REM "End of special processing section
+1995 GOTO 9900
+9000 REM "ERROR PROCESSING
+9010 EXIT ERR
+9900 REM "END PROGRAM
+9930 SETERR 9940; EXIT 
+9950 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56002 REM "205471-Oracle - FFN usage in tf2g progs. to be replaced by FN%FFN  

@@ -1,0 +1,99 @@
+0010 REM "Load ZR1 info into CM1 for transfer to Master Location <ZR2UT1>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 04/20/95 - 15.44
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="ZR2UT1",X1$="Prepare Repository for Transfer to ML"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0210 IF Q1$="*" THEN X2=2
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 REM "Repository codes to transfer
+0660 T$="AR_INVOICESALES_JRNL"
+0900 READ (Z[1],KEY="",DOM=0901)
+1000 REM 
+1010 REM "Get each unprinted ZR1 record that has a repository code in the T$ list. Create an index K9 to be used as a "SHORT HAND" key. Use CM2AAA to write it to CM1. For each record in the corresponding respository file (A$(96,8)),write it out with the short hand key in place of its index. Use CM2AAA to write it out, however use ZR1 as the file, so these records will be together.
+1020 K$=KEY(Z[1],END=5000); READ RECORD (Z[1],KEY=K$)A$
+1025 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1039 REM "All records less than 129 chars in length are pre-secondary archive and will be skipped.
+1040 IF POS(A$(1,10)=T$,10)=0 THEN GOTO 1000 ELSE IF LEN(A$)<129 THEN GOTO 1000 ELSE IF POS(" "<>A$(122,10))<>0 THEN GOTO 1000
+1045 K9=K9+1,K9$=STR(K9:"00000")
+1050 CALL "CM2AAA",X3$,Z[1],4,K9$,A$,0
+1100 REM "Now transfer repository records, replacing index with shortkey K9$
+1105 IF A$(96,8)<>F0$ THEN Z$="02CU"+F0$+"  02O "+A$(96,8)+" "; GOSUB 9750; F0$=A$(96,8)
+1110 REM 'READ THRU FILE WITH INDEX FROM ZR1 (A$)
+1115 READ (Z[2],KEY=A$(104,5),DOM=1116)
+1120 K2$=KEY(Z[2],END=1190); IF K2$(1,5)<>A$(104,5) THEN GOTO 1190 ELSE READ RECORD (Z[2],KEY=K2$)B$
+1149 REM "Key is shorthand key + page # & line #
+1150 CALL "CM2AAA",X3$,Z[1],4,K9$+B$(6,7),B$,0
+1185 GOTO 1120
+1500 REM "Mark as being secondarily archived
+1510 A$(122,6)=X3$(21,6),T9=TIM,A$(128,4)=STR(INT(T9):"00")+STR(FPT(T9)*100:"00")
+1515 WRITE RECORD (Z[1],KEY=K$)A$
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"Now loading repository information for transfer to Master Location",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9750 REM "Files routine
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9795 RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

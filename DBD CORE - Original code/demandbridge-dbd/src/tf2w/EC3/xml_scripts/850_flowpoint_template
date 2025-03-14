@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cXML.org/schemas/cXML/1.2.021/cXML.dtd">
+<cXML version="1.2.021" xml:lang="en-US" payloadID="?tf?timestamp_random?@demandbridge.com" timestamp="?tf?timestamp_cxml?">
+   <Header>
+      <From>
+         <Credential domain="NetworkId">
+            <Identity>?tf?our_account_number?</Identity>
+         </Credential>
+      </From>
+      <To>
+         <Credential domain="NetworkId">
+            <Identity>vendor</Identity>
+         </Credential>
+      </To>
+      <Sender>
+         <Credential domain="NetworkId">
+            <Identity>?tf?our_account_number?</Identity>
+            <SharedSecret>password</SharedSecret>
+         </Credential>
+         <UserAgent>DB EC Server 5.7</UserAgent>
+      </Sender>
+   </Header>
+   <Request deploymentMode="test">
+      <OrderRequest>
+         <OrderRequestHeader orderID="?tf?po_number?" orderDate="?tf?po_date_yyyymmdd?" type="new">
+            <Total>
+               <Money currency="USD"></Money>
+            </Total>
+            <ShipTo>
+	       <Address>
+	          <Name xml:lang="en-US">?tf?formatted_cust_code?</Name>
+	          <PostalAddress name="?tf?gen_comp_name_to_ship_to?">
+	             <DeliverTo>?tf?gen_loc_attn_name?</DeliverTo>
+	             <Street>?tf?gen_loc_addr_1?</Street>
+	             <Street>?tf?gen_loc_addr_2?</Street>
+	             <City>?tf?gen_loc_city?</City>
+	             <State>?tf?gen_loc_st?</State>
+	             <PostalCode>?tf?gen_loc_zip_code?</PostalCode>
+	             <Country isoCountryCode="US">US</Country>
+	          </PostalAddress>
+	       </Address>
+            </ShipTo>
+            <BillTo>
+               <Address addressID="?tf?our_account_number?">
+                  <Name xml:lang="en-US">Distributor's Name</Name>
+                  <PostalAddress name="Distributor's Name">
+                     <DeliverTo></DeliverTo>
+                     <Street>Distributor Address</Street>
+                     <Street>Distributor Address</Street>
+                     <City>Distributor City</City>
+                     <State>Distributor State</State>
+                     <PostalCode>Distributor Zip</PostalCode>
+                     <Country isoCountryCode="US">US</Country>
+                  </PostalAddress>
+               </Address>
+            </BillTo>
+            <Shipping>
+               <Money currency="USD"></Money>
+               <Description xml:lang="en-US">?tf?gen_vendor_ship_via?</Description>
+            </Shipping>
+            <Tax>
+               <Money currency="USD"></Money>
+               <Description xml:lang="en-US"/>
+            </Tax>
+            <Comments xml:lang="en-US"/>
+            <Extrinsic name="AccountNumber">?tf?our_account_number?</Extrinsic>
+            <Extrinsic name="total_line_items">?tf?po_line_count?</Extrinsic>
+            <Extrinsic name="purchaseOrderType">?tf?new_repeat?</Extrinsic>
+            <Extrinsic name="quoteNumber">?tf?plant_quote_num?</Extrinsic>
+            <Extrinsic name="custPONumber">?tf?cust_po_number?</Extrinsic>
+            <Extrinsic name="shipViaDesc">?tf?gen_ship_via_desc?</Extrinsic>
+            <Extrinsic name="insideDelivery">?tf?gen_inside_delivery?</Extrinsic>
+            <Extrinsic name="shipWith">?tf?gen_ship_with?</Extrinsic>
+            <Extrinsic name="howToShipDesc">?tf?gen_how_to_ship_desc?</Extrinsic>
+            <Extrinsic name="fobDesc">?tf?gen_fob_desc?</Extrinsic>
+         </OrderRequestHeader>
+         ?tf?po_lines_start?
+         <ItemOut lineNumber="?tf?po_line_number?" quantity="?tf?quantity_in_eaches?" requestedDeliveryDate="?tf?date_requested_yyyymmdd?">
+            <ItemID>
+               <SupplierPartID>?tf?vendor_item_code?</SupplierPartID>
+               <SupplierPartAuxiliaryID>?tf?vendor_item_code?</SupplierPartAuxiliaryID>
+            </ItemID>
+            <ItemDetail>
+               <UnitPrice>
+                  <Money currency="USD"></Money>
+               </UnitPrice>
+               <Description xml:lang="en-US">?tf?po_line_desc?</Description>
+               <UnitOfMeasure>EA</UnitOfMeasure>
+               <Classification domain=""></Classification>
+               ?tf?3pinfostart?
+               <URL>?tf?proof_3_2_url?</URL>
+               ?tf?3pinfoend?
+               <Extrinsic name="Rush_Code">?tf?has_rush_charge?</Extrinsic>
+               <Extrinsic name="ReorderID">?tf?prev_job_num?</Extrinsic>
+               <Extrinsic name="ItemComments1">?tf?item_comments_1?</Extrinsic>
+               <Extrinsic name="ItemComments2">?tf?item_comments_2?</Extrinsic>
+               <Extrinsic name="ItemComments3">?tf?item_comments_3?</Extrinsic>
+               <Extrinsic name="ItemComments4">?tf?item_comments_4?</Extrinsic>
+               <Extrinsic name="ItemComments5">?tf?item_comments_5?</Extrinsic>
+               <Extrinsic name="ItemComments6">?tf?item_comments_6?</Extrinsic>
+               <Extrinsic name="ItemComments7">?tf?item_comments_7?</Extrinsic>
+               <Extrinsic name="ItemComments8">?tf?item_comments_8?</Extrinsic>
+               <Extrinsic name="extendedCost">?tf?po_line_ext?</Extrinsic>
+               <Extrinsic name="startingNumber">?tf?po_starting_number?</Extrinsic>
+            </ItemDetail>
+         </ItemOut>?tf?po_lines_end?
+      </OrderRequest>
+   </Request>
+</cXML>

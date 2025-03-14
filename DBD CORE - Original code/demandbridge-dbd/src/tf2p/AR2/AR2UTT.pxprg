@@ -1,0 +1,149 @@
+0010 REM "Rebuild Customer Sort files <AR2UTT>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 10/19/94 - 17.57 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Code to get ASF records and setup logic is in 7000's
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UTT",X1$="A/R Customer Sort Files Rebuild"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZE...  02O ZZF...  03O FR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM 
+1011 WRITE (Z[1],KEY="ASF   ")"ASF   A/R stats by slpsn,cust,prod code      0D2301280020ZZ2MDA023014                                                         
+1012 WRITE (Z[2],KEY="ASF   1  001")"ASF   1  001Salesperson                             SZ 004         AR3     SALESPERSON                                    
+1013 WRITE (Z[2],KEY="ASF   1  005")"ASF   1  005Customer code                           A  010A/R      AR1     CUSTOMER_CODE                                  
+1014 WRITE (Z[2],KEY="ASF   1  015")"ASF   1  015Product Code                            SZ 003         FMP     PRODUCT_CODE                                   
+1015 WRITE (Z[2],KEY="ASF   1  018")"ASF   1  018Reserved (for new/repeat flag)          S  001                 RESERVED                                       
+1016 WRITE (Z[2],KEY="ASF   1  019")"ASF   1  019Fiscal Year                             Z  004                 FISCAL_YEAR                                    
+1017 WRITE (Z[2],KEY="ASF   1  023")"ASF   1  023Balance Type: Sales,P=GP,No/invs,Comm   S  001         SPN     BALANCE_TYPE                                   
+1018 WRITE (Z[2],KEY="ASF   2  000")"ASF   2  000Opening Balance                         N  922                 OPENING_BALANCE                                
+1019 WRITE (Z[2],KEY="ASF   2  001")"ASF   2  001Period 1 amount                         N  922                 PERIOD_1_AMOUNT                                
+1020 WRITE (Z[2],KEY="ASF   2  002")"ASF   2  002Period 2 amount                         N  922                 PERIOD_2_AMOUNT                                
+1021 WRITE (Z[2],KEY="ASF   2  003")"ASF   2  003Period 3 amount                         N  922                 PERIOD_3_AMOUNT                                
+1022 WRITE (Z[2],KEY="ASF   2  004")"ASF   2  004Period 4 amount                         N  922                 PERIOD_4_AMOUNT                                
+1023 WRITE (Z[2],KEY="ASF   2  005")"ASF   2  005Period 5 amount                         N  922                 PERIOD_5_AMOUNT                                
+1024 WRITE (Z[2],KEY="ASF   2  006")"ASF   2  006Period 6 amount                         N  922                 PERIOD_6_AMOUNT                                
+1025 WRITE (Z[2],KEY="ASF   2  007")"ASF   2  007Period 7 amount                         N  922                 PERIOD_7_AMOUNT                                
+1026 WRITE (Z[2],KEY="ASF   2  008")"ASF   2  008Period 8 amount                         N  922                 PERIOD_8_AMOUNT                                
+1027 WRITE (Z[2],KEY="ASF   2  009")"ASF   2  009Period 9 amount                         N  922                 PERIOD_9_AMOUNT                                
+1028 WRITE (Z[2],KEY="ASF   2  010")"ASF   2  010Period 10 amount                        N  922                 PERIOD_10_AMOUNT                               
+1029 WRITE (Z[2],KEY="ASF   2  011")"ASF   2  011Period 11 amount                        N  922                 PERIOD_11_AMOUNT                               
+1030 WRITE (Z[2],KEY="ASF   2  012")"ASF   2  012Period 12 amount                        N  922                 PERIOD_12_AMOUNT                               
+1031 WRITE (Z[2],KEY="ASF   2  013")"ASF   2  013Period 13 amount                        N  922                 PERIOD_13_AMOUNT                               
+1032 WRITE (Z[3],KEY="ASFGP-YTD  ")"ASFGP-YTD  Gross Profit - YTD            DP     00  0  Y  C                                                                     Gross       Profit      YTD          
+1033 WRITE (Z[3],KEY="ASFGP_PTD  ")"ASFGP_PTD  Gross Profit - PTD            DP     00  0  N01C                                                                     G.P.        PTD                      
+1034 WRITE (Z[3],KEY="ASFGP_YTD  ")"ASFGP_YTD  Gross Profit YTD              DP     00  0  Y  C                                                                     G.P.        YTD                      
+1035 WRITE (Z[3],KEY="ASFPTD_AVG ")"ASFPTD_AVG PTD Average Invoice           F      0      N  S    SALES/PTD_INV                                                    Avg Inv Amt PTD                      
+1036 WRITE (Z[3],KEY="ASFPTD_GPP ")"ASFPTD_GPP Period to date Gross Profit % F             N       100*GP_PTD/SALES                                                 GP %        PTD                      
+1037 WRITE (Z[3],KEY="ASFPTD_INV ")"ASFPTD_INV PTD number of invoices        DN     00  0  N01S                                                                     # Invoices  PTD                      
+1038 WRITE (Z[3],KEY="ASFSALES   ")"ASFSALES                                 DS     00  0  N01                                                                      Sales       PTD                      
+1039 WRITE (Z[3],KEY="ASFSALES_LY")"ASFSALES_LY                              DS     0-1 0  N01                                                                      Sales LY    PTD                      
+1040 WRITE (Z[3],KEY="ASFSLS.01  ")"ASFSLS.01                                DS     10  1  N01                                                                      Period 1                             
+1041 WRITE (Z[3],KEY="ASFSLS.01L ")"ASFSLS.01L                               DS     1-1 1  N01                                                                      Sales LY    Period 1                 
+1042 WRITE (Z[3],KEY="ASFSLS.02  ")"ASFSLS.02                                DS     10  2  N                                                                        Period 2                             
+1043 WRITE (Z[3],KEY="ASFSLS.03  ")"ASFSLS.03                                DS     10  3                                                                           Period 3                             
+1044 WRITE (Z[3],KEY="ASFSLS.04  ")"ASFSLS.04  Sales - Period 4              DS     10  4  N                                                                        Period 4                             
+1045 WRITE (Z[3],KEY="ASFSLS.05  ")"ASFSLS.05                                DS     10  5  N                                                                        Period 5                             
+1046 WRITE (Z[3],KEY="ASFSLS.06  ")"ASFSLS.06  Sales - period 6              DS     10  06 N01C                                                                     Period 6                             
+1047 WRITE (Z[3],KEY="ASFSLS.07  ")"ASFSLS.07  Sales - period 7              DS     10  07 N01C                                                                     Period 7                             
+1048 WRITE (Z[3],KEY="ASFSLS.08  ")"ASFSLS.08  sales - period 8              DS     10  08 N01C                                                                     Period 8                             
+1049 WRITE (Z[3],KEY="ASFSLS.09  ")"ASFSLS.09  Sales - period 9              DS     10  9  N01C                                                                     Period 9                             
+1050 WRITE (Z[3],KEY="ASFSLS.10  ")"ASFSLS.10  Sales - period 10             DS     10  10 N01C                                                                     Period 10                            
+1051 WRITE (Z[3],KEY="ASFSLS.11  ")"ASFSLS.11  Sales - period 11             DS     10  11 N01C                                                                     Period 11                            
+1052 WRITE (Z[3],KEY="ASFSLS.12  ")"ASFSLS.12  Sales - Period 12             DS     10  12 N01C                                                                     Period 12                            
+1053 WRITE (Z[3],KEY="ASFSLS.PINC")"ASFSLS.PINCSales - period increase       F      0              SALES-SALES_LY                                                   Increase/DecPeriod Sales             
+1054 WRITE (Z[3],KEY="ASFSLS.YINC")"ASFSLS.YINCYTD Incr/Decr Sales           F             N       SLS_YTD-SLS_YTDL                                                 Increase/DecSales - YTD              
+1055 WRITE (Z[3],KEY="ASFSLS_YTD ")"ASFSLS_YTD Year to date Sales            DS     00  0  E  C                                                                     Sales       YTD                      
+1056 WRITE (Z[3],KEY="ASFSLS_YTDL")"ASFSLS_YTDLSales YTD last year           DS     0-1 0  E  C                                                                     Sales - LY  Year to Date             
+1057 WRITE (Z[3],KEY="ASFTITLE   ")"ASFTITLE                                 T                                                                                                                           
+1058 WRITE (Z[3],KEY="ASFYTD_AVG ")"ASFYTD_AVG Avg invoice - YTD             F             N       SLS_YTD/YTD_INV                                                  Avg Inv Amt YTD                      
+1059 WRITE (Z[3],KEY="ASFYTD_GPP ")"ASFYTD_GPP Year to date GP %             F             N       100*GP_YTD/SLS_YTD                                               G.P.%       YTD                      
+1060 WRITE (Z[3],KEY="ASFYTD_INV ")"ASFYTD_INV YTD number of invoices        DN     00  0  E  S                                                                     # Invoices  YTD                      
+1061 WRITE (Z[13],KEY="STATASF")"STATASFProd Code by sp&custASF...PFMP...00515   SN922Dollar salesPN922Gross profitNN902# Invoices                                                                                                                         AR2MPK 
+1062 WRITE (Z[13],KEY="STATRPTASF01")"STATRPTASF01ABC BY YTD SALES                   SALES   SALES_LYSLS.PINCSLS_YTD SLS_YTDLSLS.YINC                                                                        01D922 
+1063 WRITE (Z[13],KEY="STATRPTASF02")"STATRPTASF02Sales Report                       SALES   GP_PTD  PTD_GPP SLS_YTD GP_YTD  YTD_GPP PTD_INV PTD_AVG YTD_INV YTD_AVG                                         07D701 
+1064 WRITE (Z[13],KEY="STATRPTASF10")"STATRPTASF10Spread sheet (12 months)           SLS.01  SLS.02  SLS.03  SLS.04  SLS.05  SLS.06  SLS.07  SLS.08  SLS.09  SLS.10  SLS.11  SLS.12  SLS_YTD                 13A701 
+2000 REM "done
+2010 GOTO 5000
+5000 REM "EOJ
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility will setup the records needed for the Sales Analysis by Salesperson/Category/Customer and Product Code"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Logic to create lines @ 1000 -2000 from data in files.
+7010 DIM Z5$(80,$00$); N=1010
+7015 T$="ASF"
+7020 EXECUTE "DELETE 1001,1999"
+7050 REM 'DO FILES
+7055 F1=1; GOSUB 7800
+7060 F1=2; GOSUB 7800
+7065 F1=3; GOSUB 7800
+7070 F1=13; GOSUB 7800
+7090 PRINT N-1000," RECORDS LOADED"
+7095 ESCAPE 
+7800 REM "Get all records from file Z( F1 ) that contain T$
+7805 F0=Z[F1]
+7810 READ (F0,KEY="",DOM=7811)
+7815 K$=KEY(F0,END=7840); READ RECORD (F0,KEY=K$)R$
+7820 IF POS(T$=K$)=0 THEN GOTO 7815
+7825 R$=R$(1,POS(Z5$=R$+Z5$)-1),N=N+1; IF N=2000 THEN ESCAPE 
+7830 EXECUTE STR(N)+"WRITE (Z("+STR(F1)+"),KEY="+QUO+K$+QUO+") "+QUO+R$+QUO
+7835 GOTO 7815
+7845 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

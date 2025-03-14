@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="How To..." class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Postage</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">How to Handle Postage (Direct Mail Order with Prepaid Postage)</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b style="font-style: normal;">&#160;</b>
+        </p>
+        <p class="Nav" style="text-align: justify;">Use this procedure to track a direct mail order with prepaid postage and provide your customer with reports on these transactions.</p>
+        <h2 class="Nav">Prerequisite</h2>
+        <ol>
+            <li style="text-align: justify;" value="1">Set up a warehouse code to track the postage. This code is set up in the <a href="../Order Processing Setup/Locations.htm">Location Setup</a> panel in the Order Processing System Setup area.  You can use any code that begins with a nine that is not being used for other, more typical, customer-owned inventory.  For example, you might use 9500.  The description might be Customer Prepaid Postage.  This same warehouse will be used for all customers, so you need only set up one warehouse code.
+</li>
+            <li style="text-align: justify;" value="2">Set up a vendor in Vendor Setup and Inquiry for the U.S. Postal Service.  You will use this if the check was made payable directly to them.  If the customer made the check payable to you, set up a vendor for yourself in Vendor Setup and Inquiry.  This will allow you to also keep track of the source of the funds for inventory and transaction reporting. These two vendors will be used for all customers.</li>
+            <li style="text-align: justify;" value="3">Set up a <a href="../Order Processing Setup/Special Charges.htm">special charge</a> code of POST. The description should be “Additional Postage Required over Deposit.” </li>
+            <li style="text-align: justify;" value="4">Setup a General Ledger Account for the Customer Postage Deposits.</li>
+        </ol>
+        <h2>Tracking Prepaid Postage for a Customer</h2>
+        <ol>
+            <li style="text-align: justify;" value="1">Set up a vendor in Vendor Setup and Inquiry for your customer because you may need to issue a Postage Deposit Refund at some point in the future. You can also do this at the time a refund becomes necessary.
+</li>
+            <li style="text-align: justify;" value="2">Set up an item in inventory for Customer Prepaid Postage.  Set this item to track Lot Detail. This will assist in the tracking information in the reporting and transaction areas. You can also do this while recording the receipt because DB Distributor provides for automatic setup during entry.</li>
+        </ol>
+        <h2>Processing a Postage Deposit</h2>
+        <p style="text-align: justify;">At the time you get a postage deposit from your customer, enter a “T1” Inventory Transaction Entry (R-type for receipt) to record the receipt.  Enter the sales order in the job field so you can track each postage deposit separate from the others.  You will be receiving this monetary inventory into customer owned goods, so the T1 entry will not attempt to make any journal entry. </p>
+        <p style="text-align: justify;">If the check was made payable to the U.S. Postmaster, you will not need to make any other entry.  If the check was made payable to you, you will need to record the deposit in cash receipts.  In that instance you will post to the General Ledger account called Customer Postage Deposits. You can post directly to this account during cash receipts. When you view or print the detail of what has posted to this G/L account you will see the following data:</p>
+        <p style="text-align: justify;">Date - 	         	Source journal                   - Customer check # and name             - Amount
+</p>
+        <p style="text-align: justify;">03/01/2007 - AR  0007.02  CR - 019283 / 00001 American Advertising, Inc. -            $5,000</p>
+        <p style="text-align: justify;">03/05/2007 - AP  0027.02  MP - 900 US Postmaster  /I# American Adv -         $5,000
+
+</p>
+        <p style="text-align: justify;">The first line is an example of the deposit you made.  Note that it references the customer's check number and name. The second line is an example of the check you wrote to forward the postage dollars to either the U.S. Postmaster (as in this case) or the Mail Supply House if that was the payee.  By entering the Customer name in the invoice comment, you will also see on whose behalf the check was written. Again, this part of the procedure only applies when you have to deposit your customer’s check and then write a check on their behalf to someone else.
+
+</p>
+        <p style="text-align: justify;">In all instances, there are inventory reports that will show details regarding the activity by customer for postage, everything that came in through a Transaction entry and everything that went out through your final billing to the customer for the order or through the refund for the overpayment.  
+
+</p>
+        <p style="text-align: justify;">As postage is used, enter a line item in Order Entry and/or Billing to relieve the inventory of postage.  Since it is customer-owned, no dollar amount will extend or add to the invoice amount. </p>
+        <p style="text-align: justify;">If needed, enter a message line that tells the client the value of the prepaid postage being used with this order.</p>
+        <p style="text-align: justify;">If more postage is used than was on deposit, enter another line during Order Entry and/or Billing with the special charge code POST.  The description of “Additional Postage Required over Deposit” will automatically extend so that you do not have to enter any memo lines.  Enter the amount of the additional postage needed. </p>
+        <p style="text-align: justify;">&#160;</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2009 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

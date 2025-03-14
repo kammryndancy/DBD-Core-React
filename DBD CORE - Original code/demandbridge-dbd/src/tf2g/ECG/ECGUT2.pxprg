@@ -1,0 +1,151 @@
+0010 REM "Loading of EC Buyer File from AR1 <EC3UT2>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 07/31/13 - 13.573888 - dmm - SSP# 263687
+0037 REM "263687-Error generating DB/e orders. (016-EC3SOR-6720) **ECW full**
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "ECGUT2","../ECG/EC.EN"
+0060 EXIT 
+0080 INIT:
+0090 ! CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3UT2",X1$="Create EC Buyer from Customer Mstr"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,-1; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AR1...  02O ECA...  03O ECS...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 DIM EC_PARMS$(1275); FIND (Z[13],KEY=X3$(9,3)+"E/C",DOM=*NEXT)EC_PARMS$(1) ! SSP263687
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0650 DIM OPTIONS$(20)
+0670 NEXT_ID=REM_CREATE.CTL
+0675 IF Q1$="" THEN CALL "*WINGRP;ENABLE",BUTTON.GRP$ ! CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0791,9960
+0680 REFRESH_FLG=1
+0690 RETURN 
+0700 REM "update or remove
+0705 REMOVE_CREATE:
+0708 IF STP(REM_CREATE$)="" THEN RETURN ! X$="R=Remove matching buyer records   C=Create buyer records"
+0710 OPTIONS$(1,1)=REM_CREATE$ ! CALL "ZZENTR","SU",A{ALL},OPTIONS$,X4$,X3$,23,11,1,1,C0,"","{3"+X$,"","EC3MCC02","","",""
+0715 RETURN 
+0720 IF C0=4 THEN GOTO 9960
+0721 ON POS(OPTIONS$(1,1)="CR") GOTO 0700,0722,0723
+0722 TF_DESC$="Create"; GOTO 0730
+0723 TF_DESC$="Remove"; GOTO 0730
+0730 PRINT @(23,11),TF_DESC$,
+0745 REM "prefix
+0747 BUYER:
+0749 IF STP(BUYER_ID$)="" THEN RETURN ! X$="Enter prefix to be used for the buyer id"
+0750 OPTIONS$(2,5)=BUYER_ID$ ! CALL "ZZENTR","S",A{ALL},OPTIONS$,X4$,X3$,57,11,2,5,C0,"","{3"+X$,"","EC3MCC02","","",""
+0752 ! IF C0=4 THEN GOTO 9960
+0755 RETURN 
+0758 ACT_DATE:
+0759 IF STP(ACTIVATE_DATE$)="" THEN RETURN ! X$="Only load buyer if customer active after this date (blank=load all)"
+0760 OPTIONS$(7,6)=ACTIVATE_DATE$ ! CALL "ZZENTR","D",A{ALL},OPTIONS$,X4$,X3$,23,12,7,6,C0,"","{3"+X$,"","EC3MCC02","","",""
+0765 RETURN 
+0780 PROCEED_ENABLE:
+0790 IF Q1$="" THEN CALL "*WINGRP;ENABLE",BUTTON.GRP$ ! CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0791,9960
+0798 REFRESH_FLG=1
+0799 RETURN 
+0800 REM 'GET THE DEFAULT RECORD
+0801 PROCEED:
+0805 DFLTKEY$=PAD("DEFAULT",15)
+0810 READ RECORD (Z[2],KEY=DFLTKEY$)BUYER$
+0812 BUYER_PREFIX$=STP(OPTIONS$(2,5),2)
+0820 REM "get the default customer
+0830 DIM CUSTOMER$(1024)
+0840 READ RECORD (Z[3],KEY=DIM(10))CUSTOMER$
+1000 REM "BEGIN MAIN PROCESS
+1007 CALL "*PROGBAR;init",MSG$,45,25,18
+1010 K$=KEY(Z[1],END=3000); READ RECORD (Z[1],KEY=K$)A$
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1050 GOSUB 6200
+1060 IF OPTIONS$(7,6)=DIM(6) THEN GOTO 1100
+1062 IF A$(379,6)<OPTIONS$(7,6) THEN GOTO 1010; REM "do not set up if not active
+1100 REM 'CK FOR EXISTING RECORD
+1101 CKKEY$=BUYER_PREFIX$+CUSTCD$,CKKEY$=PAD(CKKEY$,15)
+1105 ON POS(OPTIONS$(1,1)="CR")-1 GOTO 1110,1106
+1106 REMOVE (Z[2],KEY=CKKEY$,DOM=1600); GOTO 1600
+1110 FIND (Z[2],KEY=CKKEY$,DOM=1111); GOTO 1300
+1200 REM "change buyer infor to include customer
+1215 CB$=BUYER$
+1220 CB$(1,15)=CKKEY$,CB$(16,35)=A$(11,35),CB$(51,10)=K$
+1250 WRITE RECORD (Z[2],KEY=CB$(1,15))CB$
+1300 REM "set up customer parameters
+1310 NEWCUST$=CUSTOMER$,NEWCUST$(1,10)=K$
+1320 WRITE RECORD (Z[3],KEY=K$,DOM=1321)NEWCUST$
+1600 GOTO 1010
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5015 CALL "*PROGBAR;WRAP_UP"
+5020 IF Q1$="" THEN MSGBOX MSG("PROC_C"),MSG("FYI"),"!" ! CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 CMD_STR$="END" ! GOTO 9900
+5080 REFRESH_FLG=1
+5090 EXIT 
+6000 REM "BACKGROUND
+6005 ! PRINT (0,ERR=6016)'SB',
+6020 ! PRINT @(0,3),"This utility will setup a Buyer and Customer record for all AR customer records",@(0,4),"for which an existing Buyer record is not on file. The buyer record",@(0,5),"will be set up with the customer code as the key and any prefix specified below.",@(0,6),"The system will use the buyer record 'DEFAULT' for the overall buyer",@(0,7),"parameters. To set up the default customer parameter setting, enter option",@(0,8),"E/C-S2 and press F10 at the customer code.",@(0,9),"NOTE: You will be prompted at completion to rebuild the order status sorts.",@(0,10),"This should be done each time."
+6022 ! PRINT @(5,11),"Remove or Create?",@(40,11),"Buyer id prefix:",@(1,12),"Activity date cutoff:",
+6165 ! PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM 'FORMAT / DISPLAY DATA
+6220 CALL "ZZDISP","AX",K$,"A/R",X3$,CUSTCD$,"",1,10,X4$
+6290 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PROC_REC=T ! PRINT @(0,13),"There are "+STR(T)+" records to process"
+8120 MSG$=MSG("THERE_ARE")+" "+STR(T:"####")+" "+MSG("REC_TO_P")
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8140 REFRESH_FLG=1
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 ! CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8160 CALL "*PROGBAR;UPDATE_PERCENT",ERR=*BREAK,"",C/T*100
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 WRAPUP:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 IF EC_PARMS$(1183,1)<>"Y" THEN RUN "ECGUT8" ! SSP263687, was on line 9950
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9960 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9970 EXIT ! RUN "ZMENU"
+9999 END 
+56000 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+56002 REM "263687-Error generating DB/e orders. (016-EC3SOR-6720) **ECW full**

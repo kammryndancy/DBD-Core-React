@@ -1,0 +1,61 @@
+0010 REM "Account type parameter change <ZZACCT>
+0020 REM "Adds, Deletes, & Changes to Account Parameter Record"
+0035 REM "3.5 - 03/02/92 - 16.01
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0110 SETESC 9300; SETERR 9000
+0500 DIM S0$(12)
+0990 SETERR 1020
+1000 ENTER X3$,A$,O$,S$,P$
+1001 REM "X3$=System Parameters,O$=Option(Add, Delete, List),S$=System Code,P$=Account Parameters"
+1002 REM "Adding a parameter already there, changes it"
+1003 REM "List  will list the params for the company in X3$"
+1020 SETERR 9000
+1200 Z$="01O ZZPARM  "
+1205 DIM Z[15]
+1210 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1300 A$=X3$(9,3)+"ZZP"; READ (Z[1],KEY=A$,DOM=1301)A$
+1350 ON POS(O$="ADLl")-1 GOTO 1400,1500,1600,1600
+1400 REM "A option"
+1410 I=POS(S$=A$(7),12)
+1420 IF I=0 THEN A$=A$+S$+P$+S0$(1,9-LEN(P$)) ELSE A$(I+9,9)=P$
+1450 WRITE (Z[1],KEY=X3$(9,3)+"ZZP")A$
+1460 EXTRACT (Z[1],KEY=X3$(1,8))X3$,M1$,*,D0$,D1$,D2$
+1470 WRITE (Z[1])X3$,M1$,A$,D0$,D1$,D2$
+1490 GOTO 9900
+1500 REM "D option"
+1510 I=POS(S$=A$(7),12)
+1520 IF I=0 THEN GOTO 9900
+1530 A$=A$(1,I-1)+A$(I+12)
+1590 GOTO 1450
+1600 REM "L option"
+1605 J=5,B$=A$(7); PRINT @(0,J+1),'CE',
+1606 IF B$="" THEN GOTO 1690
+1610 FOR I=1 TO LEN(B$) STEP 12
+1614 IF J>=24 THEN EXITTO 1671
+1615 J=J+1,L=0,I$=B$(I,12); PRINT @(3,J),I$(1,3)," -  ",
+1620 FOR K=5 TO 11 STEP 2
+1630 IF I$(K,1)=" " THEN EXITTO 1651 ELSE PRINT I$(K+1,1),; L=L+NUM(I$(K+1,1),ERR=1640)
+1640 ON POS(I$(K,1)="ZASzas") GOTO 1641,1642,1641,1643,1649
+1641 PRINT " alpha-Z,  ",; GOTO 1650
+1642 PRINT " z-fill, ",; GOTO 1650
+1643 PRINT " Alpha, ",; GOTO 1650
+1649 PRINT " no-see, ",; GOTO 1650
+1650 NEXT K
+1660 PRINT "fill with ",I$(4,1),"'s",
+1670 NEXT I
+1680 IF O$="L" THEN PRINT @(10,J+2),"Press <RETURN> to continue ",; INPUT *
+1690 GOTO 9900
+7000 REM "Handle not on file case"
+7010 IF O$<>"A" THEN GOTO 9900 ELSE A$=X3$(9,3)+"ZZP"; GOTO 1301
+9000 REM "ERROR PROCESSING
+9010 E0=ERR,E1=TCB(5)
+9040 CALL "ZZERRM",E0$,"ZZACCT",E1$,X3$,E0,E1,E2,E3,0
+9050 ON E2 GOTO 9060,9100,9900,9070
+9080 SETERR 9000; RETRY 
+9300 RETURN 
+9800 REM "ABNORMAL EXIT
+9810 Z0=1; EXIT 
+9900 REM "END PROGRAM
+9920 EXIT 
+9999 END 

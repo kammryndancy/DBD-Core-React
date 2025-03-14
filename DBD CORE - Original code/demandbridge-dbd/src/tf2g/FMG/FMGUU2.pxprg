@@ -1,0 +1,138 @@
+0010 ! FMGUU2 - Rebuild F/M sort by customer group-FSU
+0020 SETESC 9300; SETERR 9000
+0035 ! "6.0 - 02/03/04 - 15.308888 - jir
+0040 ! "Copyright 2004 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 PROCESS "FMGUU2","../FMG/FM.EN"
+0060 EXIT 
+0088 REM "Copied from FM2UTT
+0089 REM "We will use the bargraph logic based on size of FMC, even though, not all records will be processed, we will show 100% when done
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0101 INIT:
+0110 X0$="FM2UU2",X1$="Rebuild F/M sort by customer group-FSU",K9$="",K9=0
+0120 DIM S$(20)
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31],A[32],A[33],A[34],A[35],A[36],A[37],A[38],A[39],A[40],A[41],A[42],A[43],A[44],A[45],A[46],A[47],A[48],A[49],A[50],A[51],A[52],A[53],A[54],A[55],A[56],A[57],A[58],A[59],A[60],A[61],A[62],A[63],A[64],A[65],A[66],A[67],A[68],A[69],A[70],A[71],A[72],A[73],A[74],A[75]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01L FMC...  02L FSU...  03O FMP...  04O FMG...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 NEXT_ID=BT_PROCEED.CTL; EXIT 
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0710 Q$=STR(Z[2]:"00")
+0740 CALL "ZZINIT",Q$
+0980 READ (Z[1],KEY="",DOM=0981)
+1000 REM 
+1010 DIM A$(98),A[75]
+1020 READ (Z[1],END=5000)IOL=0310
+1025 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1030 IF A$(1,10)<>MID(CUST_PARM$,2,10) THEN GOSUB 7500; IF CREATE$<>"Y" THEN GOTO 1000
+1034 CALL "ZZDISP","AX",A$(1,10),"A/R",X3$,X$,"",0,0,X4$
+1035 ML_MESS1.CTL'VALUE$="Customer : "+X$
+1040 GOSUB 7600; REM "Get reorder grouping code info
+1045 IF A[5]<0 THEN A[5]=0
+1046 IF A[5]>999 THEN A[5]=999
+1050 K1$=A$(1,10)+C1$+STR(A[5]:"000")+A$(11,10)+DIM(10)+A$(21,5); REM "Modeled after 5250 in FM2RUA
+1060 GOSUB 2000; REM "Write FSU record
+1070 GOSUB 3000; REM "Get other customers using this item - 5400's in FM2RUA
+1600 GOTO 1000
+2000 REM "Write FSU
+2050 FOR Z0=1 TO LEN(CUST_GROUPS$) STEP 3
+2055 FSU$=CUST_GROUPS$(Z0,3)+K1$(11)+K1$(1,10)
+2060 IF FSU$(41,10)=FSU$(56,10) THEN FSU$(41,10)=""
+2065 WRITE (Z[2],KEY=FSU$)
+2070 NEXT Z0
+2095 RETURN 
+3000 REM "Get other customers using this item
+3010 READ (Z[4],KEY=A$(1,20),DOM=3011)
+3015 FMG$=KEY(Z[4],END=3090); READ (Z[4]); IF A$(1,20)<>FMG$(1,20) THEN GOTO 3090
+3030 K1$(48,10)=FMG$(21,10)
+3035 IF FMG$(21,10)<>A$(1,10) THEN GOSUB 2000
+3050 GOTO 3015
+3090 REM "GOSUB 02000
+3095 RETURN 
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN MSGBOX "Sort file rebuild complete",MSG("CONFIRMING"),"~,TIM=5"
+5030 CMD_STR$="E"; EXIT 
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 GOTO 6190
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program will process the F/M report info by item file and rebuild the F/M  sort file FSU by customer group."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "New customer, check defaults for group
+7505 CREATE$="N",CUST_GROUPS$=""; DIM CUST_PARM$(242),GROUP$(116)
+7510 READ (Z[3],KEY="D"+A$(1,10),DOM=7511)CUST_PARM$
+7515 IF CUST_PARM$(130,3)="   " THEN CREATE$="N"; GOTO 7540; REM "No group for this customer, position file and return
+7520 READ (Z[3],KEY="g"+CUST_PARM$(130,3),DOM=7550)GROUP$
+7522 CUST_GROUPS$=CUST_PARM$(130,3)
+7525 FOR X=0 TO 1
+7526 Q$=GROUP$(110+X*3,3); IF Q$<>"   " THEN IF POS(Q$=CUST_GROUPS$,3)=0 THEN CUST_GROUPS$=CUST_GROUPS$+Q$
+7527 NEXT X
+7530 CREATE$="Y"
+7540 IF CREATE$="N" THEN READ (Z[1],KEY=A$(1,10)+$FF$,DOM=7581)
+7545 RETURN 
+7550 REM "Got the dom at 7520, no such group, modeled after 8800's in FM2RUA
+7560 CALL "ZZPROM","4",X3$,0,"For customer "+A$(1,2)+"-"+A$(3,8)+", group code "+CUST_PARM$(130,3)+" is not setup","","",0
+7570 GOTO 9900
+7600 REM "Get reorder grouping code info
+7605 DIM C1$(24); C1$(1,3)=A$(42,3)
+7610 DIM RGC$(40); FIND (Z[3],KEY="G"+C1$(1,3),DOM=7611)RGC$
+7615 IF RGC$(35,1)="1" THEN C1$(4,3)=A$(45,3); REM "Product code
+7620 IF RGC$(36,1)="1" THEN C1$(7,8)=A$(48,8); REM "Left-right
+7625 IF RGC$(37,1)="1" THEN C1$(15,8)=A$(56,8); REM "Top-bottom
+7630 IF RGC$(38,1)="1" THEN C1$(23,2)=A$(64,2); REM "Plys
+7645 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ML_MESS.CTL'VALUE$="There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 END_PRG:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

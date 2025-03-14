@@ -1,0 +1,119 @@
+0010 REM "Get info from Inventory Costing Records <FM2ICB>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 07/10/02 - 11.883333 - tma - SSP# 150756
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "PROG$ is program we are coming from, KEY$ is either order number or order number/line number to lookup in either FTE or FTF (length of key will determine which), TYPE$ is which piece of record we want, DATA$ is info to send back to calling program, WO111482
+0082 REM "TYPE$=P=Product code, W=Warehouse, D=User asking to delete, T="CREATE UPDATED TRANSACTION(S) FOR DELETE WITH ACT IN PROG MOVING TO UNALLOCATED
+0085 REM "SSP129790, coming from FM2ODM, if user wants to delete order, check for any pending amounts and if any send back message to not allow delete.  Also check for any invoice costs to date, if yes then send back message to ask if delete should continue, if user says yes then call again to create transaction moving invoiced cost to unallocated and set flag to print on report.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,KEY$,TYPE$,DATA$
+0100 SETERR 9000
+0110 X0$="FM2ICB",X1$="Get info from Inventory Costing Records"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST FTE$,FTE[0],FTE[1],FTE[2],FTE[3],FTE[4],FTE[5],FTE[6],FTE[7],FTE[8],FTE[9],FTE[10],FTE[11],FTE[12],FTE[13],FTE[14],FTE[15]
+0320 IOLIST FTF$,FTF[0],FTF[1],FTF[2],FTF[3],FTF[4],FTF[5],FTF[6],FTF[7],FTF[8],FTF[9],FTF[10],FTF[11],FTF[12],FTF[13],FTF[14],FTF[15]
+0325 IOLIST FTF_1$,FTF_1[0],FTF_1[1],FTF_1[2],FTF_1[3],FTF_1[4],FTF_1[5],FTF_1[6],FTF_1[7],FTF_1[8],FTF_1[9],FTF_1[10],FTF_1[11],FTF_1[12],FTF_1[13],FTF_1[14],FTF_1[15]
+0330 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FTE...  02O FTF...  03O FS2...  04O FS1...  05OSFTF...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0650 IF LEN(TYPE$)>1 THEN OTHER$=TYPE$(2),TYPE$=TYPE$(1,1)
+0695 IF POS(TYPE$="DT")<>0 THEN SEQ$=OTHER$; GOTO 0701; REM "Coming from FM2ODM, order is already extracted, we send in the seq number to use 
+0700 DIM FS1$(350); READ (Z[4],KEY=KEY$(1,8),DOM=9900)FS1$; SEQ$=FS1$(237,3)
+0900 IF LEN(KEY$)=8 THEN GOTO 1000 ELSE GOTO 2000
+1000 REM "Need information from FTE record
+1005 DIM FTE$(150),FTE[15]
+1010 EXTRACT (Z[1],KEY=KEY$+SEQ$,DOM=9900)IOL=0310
+1020 IF TYPE$="P" THEN DATA$=FTE$(46,3); GOTO 1090; REM "Product code
+1030 IF TYPE$="W" THEN DATA$=FTE$(54,4); GOTO 1090; REM "Warehouse
+1040 IF TYPE$="D" THEN GOSUB 7500; GOTO 1090; REM "User as king to delete order
+1050 IF TYPE$="T" THEN GOSUB 7600; GOTO 1090; REM "Create updated transactions for order being deleted with invoiced costs
+1090 GOTO 9900
+2000 REM "Need infomation from FTF record
+2005 DIM FTF$(150),FTF[15]
+2190 GOTO 9900
+5000 REM "EOJ
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "User asking to delete order, check for pending if any don't allow delete.  If not go on and check to see ifany invoiced to date, if so ask if they still want to delete, if yes create transaction moving inventory in progress to unallocated.
+7510 FOR X=6 TO 8
+7515 IF FTE[X]<>0 THEN DATA$="PENDING"; EXITTO 7590
+7520 NEXT X
+7530 REM "No pending, now check for invoiced costs
+7540 IF FTE[4]<>0 THEN DATA$="INVOICED" ELSE DATA$=""
+7590 RETURN 
+7600 REM "Deleting order with actual in progress, need to create updated transaction(s) moving to unallocated
+7610 READ (Z[2],KEY=FTE$(1,11),DOM=7611)
+7615 DIM FTF$(150),FTF[15],FTF_1$(150),FTF_1[15]; K$=KEY(Z[2],END=7690); EXTRACT (Z[2],KEY=K$)IOL=0320
+7620 IF K$(1,11)<>FTE$(1,11) THEN GOTO 7690
+7625 IF K$(15,3)<>"000" THEN READ (Z[2],KEY=K$); GOTO 7615
+7630 IF FTF[5]=0 THEN READ (Z[2],KEY=K$); GOTO 7615
+7635 FTF_1$(1,14)=FTF$(1,14); REM "Order number, sequence, line number
+7640 FTF_1$(15,3)=STR(NUM(FTE$(58,3))+1:"000")
+7645 WRITE (Z[5],KEY=FTF_1$(1,17),DOM=7646); EXTRACT (Z[5],KEY=FTF_1$(1,17)); FTE$(58,3)=FTF_1$(15,3); GOTO 7650
+7646 IF NUM(FTF_1$(15,3))=999 THEN ESCAPE ELSE FTF_1$(15,3)=STR(NUM(FTF_1$(15,3))+1:"000"); GOTO 7645
+7650 FTF_1$(18,11)=FTF$(18,11); REM "PO code, vendor code
+7653 FTF_1$(39,6)=X3$(21,6); REM "Set transaction date to system date
+7655 FTF_1$(51,4)=FTF$(51,4),FTF_1[0]=FTF[0],FTF_1$(55,1)="U"; REM "COST U/M, QTY PER UNIT, STATUS IS UPDATED
+7656 FTF_1$(56,12)=FTF$(56,12); REM "G/L account number
+7657 FTF_1$(68,10)=FTF$(68,10),FTF_1[1]=FTF[1]; REM "Item code or special charge code, qty ordered
+7660 FTF_1[5]=-FTF[5],FTF_1[6]=FTF[5],FTF[5]=0,FTF[6]=FTF[6]+FTF_1[6]
+7665 FTE$(61,1)="Y",FTE$(58,3)=FTF_1$(15,3)
+7670 WRITE (Z[2],KEY=FTF$(1,17))IOL=0320
+7675 WRITE (Z[5],KEY=FTF_1$(1,17))IOL=0325
+7680 WRITE (Z[1],KEY=FTE$(1,11))IOL=0310; EXTRACT (Z[1],KEY=FTE$(1,11))IOL=0310
+7685 GOTO 7615
+7690 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

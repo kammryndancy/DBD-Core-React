@@ -1,0 +1,251 @@
+<PxTable>
+ TableName=ZD2
+ TableKey=K971278664
+ FileCreate=KEYED "ZD2",14,0,-666,BSZ=4,OPT="0"
+ MaxFields=00006
+
+<Data>
+
+   <RecordData>
+    ExternalKey$=" CHG      "
+    FIELD_1$=" CHG      Add suite number              Here, we will enter the suite number for this customer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+    FIELD_2$="18"
+    FIELD_3$="12"
+    FIELD_4$="40"
+    FIELD_5$="5"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" CHG1     "
+    FIELD_1$=" CHG1     After chg suite #             Now, the address has been entered for this customer, but    if we made a typing mistake, we can use the arrow keys      (right-arrow and delete keys) to correct the entry without  re-typing the entire field.                                                                                                                                                                                                                                                                                                                                                                                                          "
+    FIELD_2$="17"
+    FIELD_3$="12"
+    FIELD_4$="44"
+    FIELD_5$="9"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" HELP     "
+    FIELD_1$=" HELP                                   This is a help text window.  Help text is accessable from   any data field in the system.  Multiple levels of           help are available, allowing additional detail to be        displayed when desired.                                                                                                                                                                                                                                                                                                                                                                                                              "
+    FIELD_2$="3"
+    FIELD_3$="4"
+    FIELD_4$="20"
+    FIELD_5$="15"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" LOGIN1   "
+    FIELD_1$=" LOGIN1   Operator codes                Operator codes and optional passwords are required          of all users of the system.  This allows for various        levels of security to be implemented, as well as to         provide parameters which differ by user.  A user code       is three characters long, and the password is up to six     characters.  The password is not displayed on the screen    as it is input by the operator.                                                                                                                                                                                                                  "
+    FIELD_2$="47"
+    FIELD_3$="4"
+    FIELD_4$="32"
+    FIELD_5$="18"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" LOGIN2   "
+    FIELD_1$=" LOGIN2                                 After entry of the operator code, system and operator       parameters are read and combined in a special format        for use by all programs in the system.                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$="53"
+    FIELD_3$="7"
+    FIELD_4$="20"
+    FIELD_5$="15"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" LOOK2    "
+    FIELD_1$=" LOOK2    Lookup after changes to data  As you can see, the changes made to the customers name      are now permanent.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$="12"
+    FIELD_3$="12"
+    FIELD_4$="30"
+    FIELD_5$="6"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" LOOKUP   "
+    FIELD_1$=" LOOKUP   Info on the Lookup feature                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+    FIELD_2$="45"
+    FIELD_3$="5"
+    FIELD_4$="33"
+    FIELD_5$="15"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" MENU     "
+    FIELD_1$=" MENU     Main menu code                The main selection menu shows the options available to the  user.  Some users will not see the main menu, but will be   taken immediately to their own application menu, such as    Payroll or Accounts Receivable clerks.  This serves as a    security function.\\We will now select option "+QUO+"S"+QUO+" from this menu to access the sample application menu.                                                                                                                                                                                                                                                                  "
+    FIELD_2$="35"
+    FIELD_3$="4"
+    FIELD_4$="38"
+    FIELD_5$="17"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" MENU0    "
+    FIELD_1$=" MENU0    Sample application menu       This menu is called a "+QUO+"daughter"+QUO+" menu.  From this menu we   may access other menus or return to the parent menu.  In    this way, access to software is designed to present only themost important options on the primary menus and the less    important options on daughter and granddaughter menus.\\We  will select the Customer Setup program from this menu by    entering "+QUO+"S1"+QUO+" and pressing the return/enter key.                                                                                                                                                                                                 "
+    FIELD_2$="18"
+    FIELD_3$="6"
+    FIELD_4$="55"
+    FIELD_5$="14"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" NEXT     "
+    FIELD_1$=" NEXT     Next Record                   To get the next successive record in the file, the user     merely presses the down arrow key again.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+    FIELD_2$="12"
+    FIELD_3$="16"
+    FIELD_4$="40"
+    FIELD_5$="7"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" PROG0    "
+    FIELD_1$=" PROG0    Customer Setup - Screen 0     This program represents a standard "+QUO+"setup"+QUO+" type program. It is used to access masterfile data: add entries, display     existing entries, make changes if needed or delete an entry.\\We will use the scroll feature to browse through the file,looking at successive records.  To browse forward through   the file, we merely press the Down Arrow key on the keyboard                                                                                                                                                                                                                                                 "
+    FIELD_2$="12"
+    FIELD_3$="8"
+    FIELD_4$="60"
+    FIELD_5$="12"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" PROG1    "
+    FIELD_1$=" PROG1    "+QUO+"Lets modify during scroll"+QUO+"   If we want to change some information displayed on the      screen, we would press either the F9 key or type "+QUO+"M"+QUO+" for    modify.  The program will position the cursor at the first  data field on the screen.  We may either change the field bytyping in the new value or press return to retain the       existing value. The cursor moves on to each field, allowing changes.  If at any field we do not wish to make any furtherchanges, we may press the F4 key.                                                                                                                                                    "
+    FIELD_2$="5"
+    FIELD_3$="8"
+    FIELD_4$="70"
+    FIELD_5$="10"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" PROG2    "
+    FIELD_1$=" PROG2    "+QUO+"no more changes"+QUO+"             At this point, we have no more changes to make, so we will  press the F4 key.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "
+    FIELD_2$="12"
+    FIELD_3$="10"
+    FIELD_4$="25"
+    FIELD_5$="7"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" PROG3    "
+    FIELD_1$=" PROG3    "+QUO+"Modified std prompt"+QUO+"         At this point, when we continue, the program will update anychanges we have made to the data, making the information    available to all the other users.  If there had been some   mistake, we could select the "+QUO+"Reset Changes"+QUO+" option, and ourchanges would be lost.\\Here, we will continue bu pressing  Return.                                                                                                                                                                                                                                                                                                      "
+    FIELD_2$="18"
+    FIELD_3$="4"
+    FIELD_4$="40"
+    FIELD_5$="14"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" PROG5    "
+    FIELD_1$=" PROG5    ,                             Lets now return to the menu program                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
+    FIELD_2$="15"
+    FIELD_3$="7"
+    FIELD_4$="60"
+    FIELD_5$="5"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TEST     "
+    FIELD_1$=" TEST                                   THIS IS A TEST                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$="10"
+    FIELD_3$="10"
+    FIELD_4$="20"
+    FIELD_5$="5"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-1    "
+    FIELD_1$=" TFD-1    Initial Window                Welcome to TopForm Productivity Software!\                  This demonstration will familiarize you with the            capabilities of the Bert Reporting Tool.                                                                                                                                                                                                                                                                                                                                                                                                                                                         "
+    FIELD_2$="5"
+    FIELD_3$="4"
+    FIELD_4$="70"
+    FIELD_5$="6"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-1A   "
+    FIELD_1$=" TFD-1A   Second screen                 This demo is self running, and will pause long enough for   you to read the text before continuing.  To stop the demo atany frame, press Control-C.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
+    FIELD_2$="5"
+    FIELD_3$="4"
+    FIELD_4$="70"
+    FIELD_5$="6"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-2    "
+    FIELD_1$=" TFD-2    Menu System                   TopForm software is easily accessed through a tree          structured menu system.  Programs are grouped according to  their functionality and frequency of use.  Options are      selected by entering the one or two character option code.                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$="45"
+    FIELD_3$="9"
+    FIELD_4$="33"
+    FIELD_5$="13"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-3    "
+    FIELD_1$=" TFD-3    Select BERT menu              We will be selecting option A for Bert Reporting Tool.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+    FIELD_2$="45"
+    FIELD_3$="10"
+    FIELD_4$="30"
+    FIELD_5$="10"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-4    "
+    FIELD_1$=" TFD-4    Bert Menu                     From the Bert menu, we will now select the option to setup  a new Bert report.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$="45"
+    FIELD_3$="7"
+    FIELD_4$="33"
+    FIELD_5$="13"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-5    "
+    FIELD_1$=" TFD-5    Bert Submenu 1                For each Bert entry, there are several parts to the         definition.  At a minimum, the first two screens are        required.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+    FIELD_2$="0"
+    FIELD_3$="7"
+    FIELD_4$="19"
+    FIELD_5$="10"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" TFD-6    "
+    FIELD_1$=" TFD-6                                  Now we will select General Information screen from          the submenu screen.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+    FIELD_2$="0"
+    FIELD_3$="7"
+    FIELD_4$="19"
+    FIELD_5$="10"
+    FIELD_6$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" X        "
+    FIELD_1$=" X        (SHOW WINDOW HERE)            A window with the appropriate text would be displayed here. This will explain the current screen status.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+    FIELD_2$="5"
+    FIELD_3$="3"
+    FIELD_4$="24"
+    FIELD_5$="16"
+    FIELD_6$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

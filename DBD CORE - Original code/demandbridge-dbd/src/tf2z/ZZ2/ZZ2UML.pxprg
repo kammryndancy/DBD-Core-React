@@ -1,0 +1,18 @@
+0010 REM "Check for UNIX mail flag <ZZ2UML>
+0035 REM "3.7 - 08/12/93 - 16.56 - jsc
+0040 REM "Copyright 1993 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0101 REM "Checks the UNIX system flag
+0990 D0$="UTILS/"
+0995 D1$="TMPML"+FID(0)
+1020 ENTER X3$,M0$
+1040 M0$=""
+2005 S0$="umask 0;"
+2010 S0$="echo "+$2222$+">"+D0$+D1$+";"
+2020 S0$=S0$+"[ -s "+$22$+"$MAIL"+$22$+" ] && echo "+$22$+"MAIL "+$22$+">"+D0$+D1$
+2040 INVOKE S0$
+2220 CLOSE (14); OPEN (14,ERR=2300)D1$
+2240 READ RECORD (14)Q$
+2250 M0$=Q$(1,POS($0A$=Q$)-1)
+9940 EXIT 
+9999 END 

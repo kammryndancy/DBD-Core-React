@@ -1,0 +1,277 @@
+0010 REM "Create Order Line <GB2RTO>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 12/08/04 - 16.805277 - dmm - SSP# 178277
+0036 REM "ADD LINE 2385 FOR 'C' TYPE WHSE 9XXX
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0059 REM "Create order line from B$ and B[ALL] in CS2 format, A$ is existing order number
+0060 REM "a '$' in OPTION$ means treat qty as dollars, setup qty of 1, u/m eaches, unit price and ext = qty
+0061 REM " A 'N' in OPTION$ means find next highest unused line number
+0062 REM " A 'p' in OPTION$ means don't print on packing list
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,A$,B$,B{ALL},OPTION$
+0100 SETERR 9000
+0110 X0$="GB2RTO"
+0120 DIM S0$(80)
+0130 LAST_WHSE$="0001"; REM "Used for message lines
+0200 REM 
+0310 IOLIST A$(1),A[0],A[1]
+0320 IOLIST B$,B[0],B[1]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6]
+0340 IOLIST D$
+0350 IOLIST E$
+0370 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29],G[30],G[31],G[32],G[33],G[34],G[35],G[36],G[37],G[38],G[39],G[40]
+0380 IOLIST H$,H[0],H[1],H[2],H[3],H[4],H[5],H[6],H[7],H[8],H[9],H[10],H[11],H[12],H[13]
+0390 IOLIST L$,L[0],L[1],L[2],L[3],L[4],L[5],L[6],L[7],L[8],L[9],L[10],L[11],L[12],L[13],L[14],L[15],L[16],L[17],L[18],L[19],L[20],L[21],L[22],L[23],L[24],L[25],L[26],L[27],L[28],L[29]
+0400 IOLIST S$,S[0],S[1],S[2],S[3]
+0410 IOLIST FM1$,FM1[0],FM1[1],FM1[2],FM1[3],FM1[4],FM1[5],FM1[6],FM1[7],FM1[8],FM1[9],FM1[10],FM1[11],FM1[12],FM1[13],FM1[14],FM1[15],FM1[16],FM1[17],FM1[18],FM1[19],FM1[20],FM1[21],FM1[22],FM1[23],FM1[24],FM1[25],FM1[26],FM1[27],FM1[28],FM1[29],FM1[30]
+0420 IOLIST L0$
+0430 IOLIST RS3$,RS3[0],RS3[1],RS3[2],RS3[3],RS3[4]
+0440 IOLIST RSL$,RSL[0],RSL[1],RSL[2],RSL[3],RSL[4],RSL[5],RSL[6],RSL[7],RSL[8],RSL[9],RSL[10],RSL[11],RSL[12]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="03O AR1...  04O AR3...  05O FMP...  06O FM1...  07O IC0...  08O FS1...  09O FS2...  10O PO3...  11O FSH...  12O FM0...  13O ZZPARM  18O FO7...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 CLOSE (14); OPEN (14)"ZZPARM"
+0535 READ (14,KEY=X3$(9,3)+"I/C")P9$
+0536 READ (14,KEY=X3$(9,3)+"F/M")P8$
+0537 READ (14,KEY=X3$(9,3)+"AR1")P7$
+0540 DIM M6[1]; M6$="###,###.00-",M6[0]=621,M6[1]=2; IF P9$(45,1)>"2" THEN DIM M6$(11,"0"); M6[1]=NUM(P9$(45,1)),M6$(1,10-M6[1])="##########",M6$(POS("0"=M6$),1)=".",M6[0]=(10-M6[1])*100+M6[1]*10
+1000 REM "Load FS1 header, IF NOT FOUND THEN LEAVE
+1020 DIM H$(200),H[13]
+1021 FIND (Z[8],KEY=A$,DOM=9900)IOL=0380
+1100 REM "Read other data needed
+1105 DIM C$(400),C[6]; FIND (Z[3],KEY=H$(6,10),DOM=1106)IOL=0330; REM "Customer Data
+1500 REM "Next higher line number
+1501 REM "search thru lines to find 1st unused line number
+1505 IF POS("N"=OPTION$)=0 THEN GOTO 1525
+1509 LAST_LINE_USED=0
+1510 READ (Z[9],KEY=A$,DOM=1511)
+1515 KEY_9$=KEY(Z[9],END=1520); IF KEY_9$(1,8)<>A$ THEN GOTO 1520 ELSE READ (Z[9]); IF NUM(KEY_9$(9,3))<>LAST_LINE_USED+1 THEN GOTO 1520 ELSE LAST_LINE_USED=NUM(KEY_9$(9,3)); GOTO 1515
+1520 B$(25,3)=STR(LAST_LINE_USED+1:"000")
+2000 REM "Process Lines from CS2
+2003 LINE_NO=1,WRITE_FS2$="Y"; REM "Even though we get the line numbers from the Z[2] file records, if we are doing the don't write any backorder thing in 8300's we may not want to write out an FS2 record, so we will control the line numbers in this program regardless of what was sent in, we may also be doing the check another whse if not enough found in sent in/default whse
+2004 F9$=""
+2005 IF POS("$"=OPTION$)<>0 THEN DOLLARS=B[0],B[0]=1,B[1]=1,B$(107,4)="EACH"
+2016 IF LEN(B$)<165 THEN LEN_B=LEN(B$),DIFF_B=165-LEN_B,B$=B$+DIM(DIFF_B); REM "Record coming from OLS or Restocking, add blanks for now, WO91521
+2017 FIRST_TIME$="Y",WHSE_LIST$="",QTY_BO=0,QTY_FOUND=0,FIRST_WHSE$="",WRITE_BO_LINE$=""; REM "This will be the first time thru for this item
+2020 GOSUB 7500; REM "Convert B[0] to quantity in eaches
+2025 GOSUB 2100; REM "Create an FS2 line from CS2 info
+2030 REM "IF B$(28,1)="I" THEN LET F9$="*",moved to 2178
+2040 IF QTY_BO>0 THEN B[0]=QTY_BO,FIRST_TIME$="N"; IF WHSE_LIST$>"" THEN B$(111,4)=WHSE_LIST$(1,4); GOTO 2025 ELSE B$(111,4)=FIRST_WHSE$,WRITE_BO_LINE$="Y"; GOTO 2025; REM "We have a BO, set qty and check the whse list, if more to check then set ship from whse to next one else set to first one for BO line write
+2082 IF P9$(50,1)="Y" AND F9$="*" THEN CALL "FM2OA5",X3$,H$,M6[1]
+2095 GOTO 9900
+2100 REM "Create a line from CS2 info
+2105 DIM L$(356),L[29]
+2107 L$(147,8)=H$(118,8)
+2108 REM "We used to set L$(4,1) to "Y", fixed price, but took this out when enhancing the pricing routines because this would stop QBG from kicking in
+2110 L$(3,1)="Y",L$(4,1)="N",L$(6,3)=B$(25,3),L$(18,1)="N",L$(19,10)=B$(39,10),L$(124,4)=B$(107,4),L$(156,5)="SPI",L$(161,10)=B$(29,10),L[0]=B[0],L[10]=B[0],L[5]=B[1]
+2112 IF POS("p"=OPTION$)<>0 THEN L$(156,5)="SI"
+2115 L$(136,1)=H$(86,1)
+2120 L$(155,1)=B$(28,1)
+2125 L$(128,5)=H$(97,5)
+2150 ON POS(B$(28,1)="MCI") GOSUB 2200,2200,2300,2300
+2175 REM CALL "FM2ODL",X3$,1,L$,L(ALL),H$ -3.3
+2178 IF WRITE_FS2$="Y" THEN IF B$(28,1)="I" OR L$(10,1)<"9" THEN F9$="*"; REM "Was on 2030 & 2385, moved here so F9$ will only get set if actually writing the line
+2180 IF WRITE_FS2$="Y" THEN WRITE (Z[9],KEY=L$(147,8)+L$(6,3))IOL=0390; LINE_NO=LINE_NO+1; GOSUB 8500 ELSE WRITE_FS2$="Y"
+2195 RETURN 
+2200 REM "Message
+2210 L$(14,1)="N"
+2215 L$(50,40)=B$(67,40)
+2220 L$(10,4)=LAST_WHSE$; REM "Will use whse from previous line written or default from line 130
+2295 RETURN 
+2300 REM "I/C item
+2305 DIM G$(188),G[40]
+2310 READ (Z[7],KEY=B$(29,20),DOM=2395)IOL=0370
+2320 IF B$(28,1)="C" THEN L$(14,1)="N" ELSE L$(14,1)="N"
+2325 L$(29,3)=G$(61,3),L$(32,58)=G$(64,18)+G$(21,40),L$(90,14)=G$(92,4)+G$(82,10),L$(128,5)=H$(97,5),L$(2,1)=G$(112,1)
+2330 L[1]=G[18],L$(120,4)=G$(124,4),L$(198,7)=STR(G[16]:"0000000"),L[2]=G[15]
+2340 GOSUB 7600; REM "Load pricing array
+2350 L[12]=G[19]
+2365 GOSUB 7800; REM "Set commission code & P/C defaults
+2368 REM "Set ship from location (L$(10,4)) here
+2371 IF POS(" "<>B$(111,4))<>0 THEN L$(10,4)=B$(111,4); GOTO 2380; REM "If whse set by operator then use it
+2372 DIM L0$(300); FIND (Z[12],KEY="C"+H$(6,10)+L$(111,4),DOM=2373)IOL=0420
+2375 IF POS(" "<>L0$(284,4))=0 THEN L$(10,4)="0001" ELSE L$(10,4)=L0$(284,4)
+2380 IF B$(28,1)="I" AND L$(10,1)="9" THEN L$(10,1)="0"
+2381 LAST_WHSE$=L$(10,4); REM "See 2220, message lines
+2384 IF L$(10,1)="9" THEN L[1]=0,L[3]=0,L[4]=0,L[6]=0
+2385 REM "IF L$(10,1)<"9" THEN LET F9$="*",moved to 2178
+2388 IF FIRST_TIME$="Y" THEN WHSE_LIST$=L$(10,4),FIRST_WHSE$=L$(10,4); REM "List of warehouses to check, sent in/default will always be first
+2392 REM " If lot param set & auto distribute is set and this is a lotted item, auto distribute lots
+2393 IF P9$(44,1)="Y" AND POS(P9$(52,1)="AB")<>0 AND G$(112,1)="Y" THEN GOSUB 2400
+2394 IF L$(10,1)<>"9" THEN GOSUB 8000; GOSUB 8100; REM "Pick a price, extend price and cost
+2395 RETURN 
+2400 REM "If lots need to be done, then call the lot routine to auto-distribute, if b/o's needed, then set the backorder field
+2405 L$(2,1)="Y"
+2410 S1=0,Q0=L[0],F=0; CALL "IC2LCA",X3$,X4$,P9$(52,1),0,L$(161,10)+L$(19,10)+L$(10,4)+L$(147,8)+L$(6,3),Q0,C,F,S1,S1$,S2,S3$,S3,S4
+2415 IF Q0=-1 THEN Q0=0; GOTO 2445
+2417 GOSUB 7900
+2419 REM "Set lots gotten into unbilled shipments?
+2420 L[7]=Q0; GOSUB 2450
+2422 REM "Set open quantity and updated backordered lots flag in CS0
+2423 IF LEN(WHSE_LIST$)>4 THEN WHSE_LIST$=WHSE_LIST$(5) ELSE WHSE_LIST$=""
+2425 IF L[7]=L[0] THEN QTY_BO=0,WHSE_LIST$=""; GOTO 2440
+2428 QTY_BO=L[0]-L[7],QTY_FOUND=QTY_FOUND+L[7]
+2429 IF WHSE_LIST$>"" THEN IF L[7]>0 THEN L[0]=L[7],L[10]=L[7]; GOTO 2440 ELSE WRITE_FS2$="N"; GOTO 2440
+2433 IF FIRST_TIME$<>"Y" THEN WRITE_FS2$="N"; GOTO 2440
+2440 REM "Set #labels to the number actually shipped, not the number req'ed
+2441 IF E$(22,1)<>"N" THEN IF L[12]=0 THEN L[9]=0 ELSE L[9]=INT(L[7]/L[12]*1.1+.9); IF L[9]<0 THEN L[9]=0
+2445 RETURN 
+2450 REM "Set unit cost into L(1) from total cost of lots C
+2451 REM "Set unit sell into L[4],qty per sell/unit into L[5],and selling unit
+2453 REM "Skip cost if customer owned inventory
+2455 IF L$(10,1)="9" THEN GOTO 2495
+2456 IF C=0 THEN GOTO 2475
+2457 CLOSE (14); OPEN (14)"ZZPARM"
+2459 REM "Calculate unit cost
+2460 CALL "FM2EXT",14,1,L$(120,4),L[2],Q0,U,C,M6[1]
+2465 L[1]=U
+2475 IF S1=0 THEN GOTO 2495
+2480 L$(124,4)=S1$,L[5]=S2,L[4]=S1
+2495 RETURN 
+3500 REM "Next order number
+3510 EXTRACT (Z[11],KEY=A$(1,2),DOM=3540)N$
+3515 IF POS(" "<>N$(116,8))=0 THEN N0=3,N1=5 ELSE N0=116,N1=118
+3520 O$=N$(N0,8)
+3525 P0=NUM(N$(N1,6)),P0=P0+1; IF P0>999999 THEN P0=1
+3526 N$(N1,6)=STR(P0:"000000"); WRITE (Z[11],KEY=A$(1,2))N$
+3530 FIND (Z[8],KEY=O$,DOM=3531); GOTO 3520
+3540 RETURN 
+7500 REM "Convert B(0) quantity to Quantity in eaches
+7505 DIM M$(21),M[1]
+7507 IF B$(107,4)="M   " THEN M$(20,1)="Y"
+7510 FIND (Z[13],KEY="U/M"+B$(107,4),DOM=7511)M$
+7520 IF M$(20,1)<>"Y" THEN B[0]=B[0]*B[1]
+7525 ORG_QTY=B[0]
+7545 RETURN 
+7600 REM "Load pricing array
+7605 IF POS(" "<>G$(168,20))<>0 THEN DIM P[12,1]; RETURN 
+7608 PRECISION M6[1]
+7610 DIM P[12,1]; P[0,1]=G[0]
+7620 FOR I=1 TO 6; P[I,0]=G[1+(I-1)*2],P[I,1]=G[2+(I-1)*2],P[I+6,0]=G[21+(I-1)*2],P[I+6,1]=G[22+(I-1)*2]; NEXT I
+7625 IF POS(" "<>G$(109,3)+C$(398,3))>0 THEN X$=$7E$+G$(109,3)+C$(398,3)+G$(1,20); DIM Q[35]; CALL "IC2ICF",X3$,Z[5],X$,L[5],G[15],G[14],G[0],G[18],G[17],G[20],Q{ALL}
+7626 PRECISION 2
+7627 IF X$="" THEN L$(214,1)="N"; RETURN ELSE L$(143,1)="Y"
+7630 DIM P[12,1]; P[0,1]=Q[0]
+7635 FOR I=0 TO 11; P[I+1,0]=Q[I*2+1],P[I+1,1]=Q[I*2+2]; NEXT I
+7645 RETURN 
+7650 REM "Feature Driven pricing
+7655 A1$=L$(94,10)+G$(168,20)
+7660 C0$=L$(120,4),C0=L[2],P0$=L$(124,4),P0=L[5],Q=L[0],C1=0,P1=0
+7665 CALL "FM2OB9",X3$,A1$,C0$,C0,P0$,P0,Q,C1,P1
+7670 L[1]=C1,L[4]=P1
+7695 RETURN 
+7700 REM "Retrieve Ship-to Address
+7705 IF STP(A$(11,4),3," ")="" THEN S$(12,1)="M",S$(46,87)=A$(218,87),S$(225,35)=A$(351,35); GOTO 7790; REM "If blank set manual ship-to info
+7710 DIM L0$(522); FIND (Z[12],KEY="C"+A$(1,14),DOM=7790)IOL=0420
+7720 S$(46,87)=L0$(51),S$(225,35)=L0$(16)
+7730 IF POS(" "<>A$(351,35))>0 THEN S$(225,35)=A$(351,35); REM "Allow address override from GOR, WO91521
+7735 IF POS(" "<>A$(218,87))>0 THEN S$(46,87)=A$(218,87); REM "WO91521
+7790 RETURN 
+7800 REM "set the commission code and P/C defaults
+7810 DIM E$(30); READ (Z[5],KEY="T"+L$(29,3),DOM=7811)IOL=0350
+7820 IF E$(22,1)<>"N" THEN IF L[12]=0 THEN L[9]=0 ELSE L[9]=INT(L[0]/L[12]*1.1+.9); IF L[9]<0 THEN L[9]=0
+7850 Z$="04C AR3...  04O AR4...  "
+7855 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7860 C3$="*"+B$(28,1)+X3$(9,3)+H$(97,5); REM "Since Customers can't DIRect ship, P/O code is not used
+7865 CLOSE (14); OPEN (14)"ZZPARM"
+7870 CALL "AR2COM","DEFAULT",C3$,L{ALL},14,0,0
+7875 L$(128,5)=C3$
+7880 IF P8$(186,1)="Y" AND POS(" "<>E$(38,5))>0 THEN L$(128,5)=E$(38,5)
+7885 Z$="04C AR4...  04O AR3...  "
+7890 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7895 RETURN 
+7900 REM "Process data received from Lot Records
+7910 IF FNS$(S3$(9,3))>"" THEN L$(29,3)=S3$(9,3); GOSUB 7800
+7920 IF FNS$(S3$(12,5))>"" THEN L$(128,5)=S3$(12,5)
+7930 IF P8$(261,1)="Y" THEN L[17]=F; REM "wo92395,94420
+7940 RETURN 
+8000 REM "Pick a price
+8002 IF POS(" "<>G$(168,20))>0 THEN GOTO 7650
+8003 IF POS("$"=OPTION$)<>0 THEN L[4]=DOLLARS; GOTO 8049
+8005 IF S1<>0 AND L$(2,1)="Y" THEN GOTO 8048
+8008 PRECISION M6[1]
+8009 IF G[14]=0 THEN G[14]=1
+8010 L[4]=P[0,1]*L[5]/G[14]; IF P[1,0]=0 THEN GOTO 8045
+8020 FOR I=1 TO 12
+8030 IF ABS(L[0])<P[I,0] THEN I=99; GOTO 8040
+8035 IF P[I,0]<>0 THEN L[4]=P[I,1]*L[5]/G[14]
+8040 NEXT I
+8045 PRECISION 2
+8047 IF POS(X3$(9,3)="049500",3)>0 THEN IF NUM(C$(398,3),ERR=8048)>0 THEN L[4]=L[4]*(100-NUM(C$(398,3)))*.01
+8048 GOSUB 8050
+8049 RETURN 
+8050 REM "Contract price from item master
+8052 IF P8$(225,1)<>"Y" THEN GOTO 8095
+8055 DIM FM1$(449),FM1[30]; READ (Z[6],KEY=B$(1,10)+L$(19,10),DOM=8095)IOL=0410
+8060 IF FM1$(105,1)<>"Y" OR FM1[3]=0 OR FM1[4]=0 THEN GOTO 8095
+8065 L[4]=FM1[3]*L[5]/FM1[4]
+8095 RETURN 
+8100 REM "Extend price and cost
+8105 CLOSE (14); OPEN (14)"ZZPARM"
+8110 REM "Cost extension
+8115 J0=L[2],J1=L[0],J2=L[1]; CALL "FM2EXT",14,0,L$(120,4),J0,J1,J2,J3,0; L[3]=J3
+8120 REM "Price extension
+8125 J0=L[5],J1=L[0],J2=L[4]; CALL "FM2EXT",14,0,L$(124,4),J0,J1,J2,J3,0; L[6]=J3
+8145 RETURN 
+8250 REM "Write record to RS2 file for Restocking Gateway Checklist printing
+8255 DIM RS2$(77)
+8260 DIM FM0$(522); FIND (Z[12],KEY="C"+A$(1,14),DOM=8295)FM0$
+8265 RS2$(1,14)=A$(1,14); REM "Customer code, ship to code
+8270 RS2$(15,8)=H$(118,8); REM "Order number
+8275 RS2$(23,20)=FM0$(382,20); REM "Receiving department
+8280 RS2$(43,35)=FM0$(16,35); REM "Ship to description
+8285 WRITE (Z[15],KEY=RS2$(1,14))RS2$
+8295 RETURN 
+8300 REM "Write record to RS3 file for Restocking Gateway Exception printing and adjust order line as necessary for no backorders
+8305 DIM RS3$(62),RS3[4]
+8310 RS3$(1,10)=A$(1,10),RS3$(11,10)=L$(19,10),RS3$(21,4)=A$(11,4); REM "Customer,item,ship-to
+8315 RS3$(25,20)=L0$(382,20); REM "Department
+8320 RS3[2]=ORG_QTY,RS3[3]=QTY_FOUND,RS3[4]=QTY_BO; REM "Original ordered, new ordered, unfilled
+8325 DIM RSL$(60),RSL[12]; FIND (Z[17],KEY="R"+A$(1,14)+L$(19,10),DOM=8326)IOL=0440; GOTO 8330
+8326 FIND (Z[17],KEY="S"+A$(1,14)+L$(19,10),DOM=8395)IOL=0440
+8330 RS3[0]=RSL[0],RS3[1]=RSL[12]; REM "Count, restock quantity
+8335 ORDER$=""; CALL "FM2UZP",X3$,L$(161,10)+L$(19,10),"*",0,0,0,0,A0,A1,A0{ALL},ORDER$; REM "Get the first open PO we find with an open qty
+8340 RS3$(45,9)=ORDER$
+8345 L[0]=L[7],L[10]=L[7]; REM "Set open qty & org qty ordered to what we are actually shipping
+8350 IF L[0]=0 THEN WRITE_FS2$="N"; REM "If we are shipping some we will go back into the regular logic and still write out this FS2 line, otherwise we don't want to write an FS2 line
+8355 IF QTY_FOUND>0 THEN RS3$(54,8)=L$(147,8); REM "If we found any, order #
+8360 QTY_BO=0
+8390 WRITE (Z[16],KEY=RS3$(1,24))IOL=0430
+8395 RETURN 
+8500 REM "Write future shipment confirmation record if applicable, wo91521
+8510 IF STP(B$(115,50),3," ")="" THEN GOTO 8540
+8520 FO7$=L$(147,8)+L$(6,3)+B$(115,50); WRITE (Z[18],KEY=FO7$(1,11))FO7$
+8525 H$(182,1)="F"; IF POS(X3$(9,3)="434500",3)<>0 THEN IF FO7$(46,1)="N" THEN H$(182,1)="P"; REM "F=Full, P=Partial, P means this is not going to need the auto cash receipt/do not create sales interface record logic during the SJ update, but still need the shipment confirmation record created
+8535 WRITE (Z[8],KEY=H$(118,8))IOL=0380
+8540 RETURN 
+8955 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 IF F0$(1,4)="TMPH" THEN F0$=H$(118,8); REM "If called from FO2UAA then send order number back
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

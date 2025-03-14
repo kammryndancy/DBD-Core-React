@@ -1,0 +1,446 @@
+0010 REM "Load O/P info from a CS0 header <FM2RTO>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 07/09/19 - 14.332222 - dmm - SSP# 307181
+0036 REM "ADD LINE 2385 FOR 'C' TYPE WHSE 9XXX
+0037 REM "307181-DBD-51; Finders Fees don't populate for Restocking Gateway  
+0040 REM "Copyright 2019 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0086 REM "This program is called from CS2LOP,CS2RAA,FM2SRA,FO2UAA,RS2RAA
+0087 REM "C0=command, 0=add,-1=delete
+0088 REM "A$=sales order data
+0089 REM "OPTION$ added, WO#84245, 4/18/97
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,C0,A$,A{ALL},F0$,F1$,OPTION$
+0091 REM "G in OPTION$, then option (2,48) has a string of warehouses to use for WHSE_LIST
+0092 REM "C in OPTION$, write RS2 file for GRS checklist report
+0093 REM "E in OPTION$, write RS3 file for GRS exception report, also no backorders, can also come from GOR, WO95642
+0094 REM "W in OPTION$, check other warehouses if not enough in sent in/default warehouse, ssp#84694, 5/5/97,for Restocking Gateway
+0095 REM "Now using a string of warehouses to check for inventory if doing lots and not enough in sent in/default whse, 5/5/97
+0096 REM "R in OPTION$, set FS1(181,1) to R for auto req type, will use to default ship date to next business day after the order date in invoice entry, ssp#85281
+0097 ! A in OPTION$, use alternate order number sequence which is next character in OPTION$ after A, WO157163
+0100 SETERR 9000
+0110 X0$="FM2RTO"
+0120 DIM S0$(80)
+0130 LAST_WHSE$="0001"; REM "Used for message lines
+0200 REM 
+0210 IF F0$="" THEN F0$="CS0...  "
+0215 IF F1$="" THEN F1$="CS2...  "
+0220 IF LEN(A$)<426 THEN LEN_A=LEN(A$),DIFF=426-LEN_A,A$=A$+DIM(DIFF),OLS$="Y"; REM "Record coming from either OLS or restocking report, add blanks for now, will strip blanks off before writing record back out - SSP# 139226
+0225 IF F0$(1,3)="ECK" THEN WKSHT$=F0$(7),F0$=F0$(1,6); REM "128591 If from E/C, then worksheet number is on file name, needed in 8550's for EC7/EC8 processing
+0310 IOLIST A$(1),A[0],A[1]
+0320 IOLIST B$,B[0],B[1]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6]
+0340 IOLIST D$
+0350 IOLIST E$
+0354 IOLIST FMPX$,FMPX[0],FMPX[1],FMPX[2],FMPX[3]
+0370 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29],G[30],G[31],G[32],G[33],G[34],G[35],G[36],G[37],G[38],G[39],G[40]
+0380 IOLIST H$,H[0],H[1],H[2],H[3],H[4],H[5],H[6],H[7],H[8],H[9],H[10],H[11],H[12],H[13]
+0390 IOLIST L$,L[0],L[1],L[2],L[3],L[4],L[5],L[6],L[7],L[8],L[9],L[10],L[11],L[12],L[13],L[14],L[15],L[16],L[17],L[18],L[19],L[20],L[21],L[22],L[23],L[24],L[25],L[26],L[27],L[28],L[29]
+0400 IOLIST S$,S[0],S[1],S[2],S[3]
+0410 IOLIST FM1$,FM1[0],FM1[1],FM1[2],FM1[3],FM1[4],FM1[5],FM1[6],FM1[7],FM1[8],FM1[9],FM1[10],FM1[11],FM1[12],FM1[13],FM1[14],FM1[15],FM1[16],FM1[17],FM1[18],FM1[19],FM1[20],FM1[21],FM1[22],FM1[23],FM1[24],FM1[25],FM1[26],FM1[27],FM1[28],FM1[29],FM1[30]
+0420 IOLIST L0$
+0430 IOLIST RS3$,RS3[0],RS3[1],RS3[2],RS3[3],RS3[4]
+0440 IOLIST RSL$,RSL[0],RSL[1],RSL[2],RSL[3],RSL[4],RSL[5],RSL[6],RSL[7],RSL[8],RSL[9],RSL[10],RSL[11],RSL[12]
+0450 IOLIST EC7$,EC7[0],EC7[1]; REM "128591
+0451 IOLIST EC8$,EC8[0],EC8[1]; REM "128591
+0496 IOLIST TAX$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X "+F0$+" "+"02O "+F1$+" "+"03O AR1...  04O AR3...  05O FMP...  06O FM1...  07O IC0...  08O FS1...  09O FS2...  10O PO3...  11O FSH...  12O FM0...  13O ZZPARM  18O FO7...  19O FSO...  320 AR5...  "
+0515 IF POS("C"=OPTION$)>0 THEN RS2_FILE$="RS2"+FID(0)+" "; Z$=Z$+"15O "+RS2_FILE$+"  ",RS2_OPEN$="Y"
+0516 IF POS("E"=OPTION$)>0 THEN RS3_FILE$="RS3"+FID(0)+" "; Z$=Z$+"16O "+RS3_FILE$+"  17O RSL...  ",RS3_OPEN$="Y"
+0517 IF F0$(1,3)="ECK" THEN Z$=Z$+"20O EC7... 21O EC8... "; REM "128591
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 CLOSE (14); OPEN (14)"ZZPARM"
+0535 READ (14,KEY=X3$(9,3)+"I/C")P9$
+0536 READ (14,KEY=X3$(9,3)+"F/M")P8$
+0537 READ (14,KEY=X3$(9,3)+"AR1")P7$
+0538 READ (14,KEY=X3$(9,3)+"A/R")ARPARM$
+0539 READ (14,KEY=X3$(9,3)+"AR3",DOM=*NEXT)ARPARM3$ ! SSP247628
+0540 DIM M6[1]; M6$="###,###.00-",M6[0]=621,M6[1]=2; IF P9$(45,1)>"2" THEN DIM M6$(11,"0"); M6[1]=NUM(P9$(45,1)),M6$(1,10-M6[1])="##########",M6$(POS("0"=M6$),1)=".",M6[0]=(10-M6[1])*100+M6[1]*10
+0542 MFF_PARM=0; IF MID(P8$,337,1)="Y" THEN MFF_PARM=1 ! SSP 276772
+0545 CHK_SB$="N"; IF MID(P8$,334,1)="Y" THEN CHK_SB$="Y" ! WO 255959
+0550 DIM GRS$(1024); READ (14,KEY=X3$(9,3)+"GRS",DOM=*NEXT)GRS$(1) ! WO286437
+0551 DEPT$=GRS$(7,1); IF DEPT$=DIM(1) THEN DEPT$="R" ! WO286437, R=Receiving Dept (default-original version), C=Customer Location
+1000 REM "Load FS1 header & write out
+1005 REM "IF X3$(9,3)<>"434" THEN GOTO 01015 ELSE IF A$(1,10)<>"0039301000" THEN GOTO 01015 ELSE READ (Z[19],KEY=A$(1,10)+A$(15,10)+A$(138,5),DOM=01006)
+1006 REM "LET FSO$=KEY(Z[19],END=01012); IF FSO$(1,25)=A$(1,10)+A$(15,10)+A$(138,5) THEN LET LOG2_REC$=CDS+"|"+A$(15,10)+A$(138,5)+"|"+FSO$(26,8)+"|"+A$(305,7)+"|"+"`DATE`"+"|"+FID(0); LET CALL2$="ECHO "+QUO+LOG2_REC$+QUO+" >> "+hwd+dlm+"CONS2_LOG"; SYSTEM CALL2$; GOTO 09900; REM "CHECK FSO, IF PO USED THEN WRITE LOG AND GET OUT
+1010 REM "Use alternate sort to lookup and extract exist FS1 record if it exists
+1011 REM "If it does the set O$ order number from it, call FM2ODJ to get old alt sort key, and jump to 1020
+1012 REM "IF X3$(9,3)<>"434" THEN GOTO 01015 ELSE IF A$(1,10)<>"0039301000" THEN GOTO 01015 ELSE LET DMM$=CGV("CUST_PO",ERR=01013); IF DMM$=A$(15,10)+A$(138,5) THEN GOTO 09900 ELSE LET DMM$=CGV("CUST_PO",A$(15,10)+A$(138,5)); GOTO 01015
+1013 REM "LET DMM$=CGV("CUST_PO",A$(15,10)+A$(138,5))
+1015 GOSUB 3500; REM "Set O$ (order #) based on customer divsion
+1020 DIM H$(606),H[13] ! WO212768, expand FS1 string to 606
+1022 H$(2,1)="Y"; REM "Background processing?, will look at this when checking for suspend packing list printing parameter and not ask if this is set to Y
+1023 IF POS("R"=OPTION$)>0 THEN H$(181,1)="R"; REM "Auto req type
+1025 H$(118,8)=O$,H$(6,10)=A$(1),H$(16,6)=A$(33),H$(28,15)=A$(15,10)+A$(138,5),H$(47,1)="R",H$(55,6)=A$(84); REM "Order #, cust code, order date, cust PO #, order type, date requested
+1026 IF H$(55,6)=DIM(6) THEN H$(55,6)=H$(16,6) END_IF ; GOSUB SET_REQUIRED_DATE ! SSP247664
+1027 H$(129,20)=A$(143,20); REM "Ordered by
+1029 REM "Load Customer info
+1030 DIM C$(400),C[6]; FIND (Z[3],KEY=A$(1,10),DOM=1031)IOL=0330
+1032 H$(76,10)=A$(340,10); IF STP(H$(76,10),3," ")="" THEN H$(76,10)=C$(235); REM "Sales tax code
+1035 H$(87,2)=C$(359),H$(93,4)=C$(278,4),H$(102,16)=C$(282,16); REM "Terms code, salespersons
+1037 IF C$(245,1)="Y" OR A$(350,1)="N" THEN H$(86,1)="N" ELSE H$(86,1)="Y"; REM "Taxable?
+1040 FOR I=1 TO 5; H[I]=C[I-1]; NEXT I; REM "Salesperson comm split %
+1044 REM "Load commission code
+1045 DIM D$(225); READ (Z[4],KEY=H$(93,4),DOM=1046)IOL=0340
+1050 H$(97,5)=D$(219,5)
+1055 IF P7$(68,1)="Y" AND POS(" "<>C$(262,5))>0 THEN H$(97,5)=C$(262,5)
+1060 DIM E$(243),CUST_DFLT$(243); READ (Z[5],KEY="D"+A$(1,10),DOM=1061)IOL=0350; CUST_DFLT$=E$; REM "Was line 1130, 185273 to prevent error 47's
+1065 IF P8$(160,1)="A" OR (P8$(160,1)="S" AND E$(66,1)="Y") THEN H$(53,1)="Y"; REM "Consolidated pick list, ssp108829
+1070 GOSUB CHK_SUMM_BILL ! WP 255959
+1080 IF P8$(273,1)="Y" THEN IF POS(P8$(274,1)="YA",1)>0 THEN H$(184,1)="Y" ELSE IF P8$(274,1)="O" THEN H$(184,1)="O" ELSE H$(184,1)="N" ! Save as repeat SSP#265691
+1090 WRITE (Z[8],KEY=H$(118,8))IOL=0380
+1095 IF RS2_OPEN$="Y" THEN GOSUB 8250; REM "Write record to RS2 file for GRS checklist printing
+1100 REM "Create PO3 General Shipping Record
+1105 DIM S$(428),S[3]; REM " SSP# 139226
+1109 REM "Preread if necessary
+1110 READ (Z[10],KEY=H$(118,8)+S0$(1,5),DOM=1111)IOL=0400
+1115 S$(166,8)=H$(118),S$(11,1)="C",S$(12,4)=A$(11),S$(16,30)=A$(39),S$(210,15)=A$(69)
+1120 S$(46,87)=C$(56),S$(225,35)=C$(11)
+1125 S$(299,40)=A$(386,40); REM " Email address - SSP# 139226
+1129 REM "Read O/P defaults
+1132 S$(133,1)=E$(28); REM "FOB
+1135 IF A$(164,1)=" " THEN S$(134,1)=E$(29) ELSE S$(134,1)=A$(164,1); REM "How to ship code
+1137 IF STP(A$(180,15),3," ")="" THEN S$(135,15)=E$(30) ELSE S$(135,15)=A$(180,15); REM "Inside delivery
+1140 S$(151,15)=A$(195,15),S$(175,35)=A$(305,35); IF A$(163,1)<>" " THEN S$(150,1)=A$(163,1) ELSE S$(150,1)=E$(45,1); REM "Ship via code, Ship with, Mark for
+1147 GOSUB 7700; REM "Possible overrides from shipto record
+1150 WRITE (Z[10],KEY=S$(166,9)+S$(7,4))IOL=0400
+1200 REM 
+1210 A$(26,1)="Y"
+1215 IF OLS$="Y" THEN A$=A$(1,LEN_A)
+1220 WRITE (Z[1],KEY=A$(1,24))IOL=0310
+2000 REM "Process Lines from CS2
+2003 LINE_NO=1,WRITE_FS2$="Y"; REM "Even though we get the line numbers from the Z[2] file records, if we are doing the don't write any backorder thing in 8300's we may not want to write out an FS2 record, so we will control the line numbers in this program regardless of what was sent in, we may also be doing the check another whse if not enough found in sent in/default whse
+2004 F9$=""
+2005 READ (Z[2],KEY=A$(1,24),DOM=2006)
+2010 DIM B$(232),B[1]; READ (Z[2],END=2080)IOL=0320; REM " SSP# 139226
+2015 IF B$(1,24)<>A$(1,24) THEN GOTO 2080
+2016 IF LEN(B$)<232 THEN LEN_B=LEN(B$),DIFF_B=232-LEN_B,B$=B$+DIM(DIFF_B); REM "Record coming from OLS or Restocking, add blanks for now, WO91521 - SSP# 139226
+2017 FIRST_TIME$="Y",WHSE_LIST$="",QTY_BO=0,QTY_FOUND=0,FIRST_WHSE$="",WRITE_BO_LINE$=""; REM "This will be the first time thru for this item
+2020 GOSUB 7500; REM "Convert B[0] to quantity in eaches
+2025 GOSUB 2100; REM "Create an FS2 line from CS2 info
+2030 REM "IF B$(28,1)="I" THEN LET F9$="*",moved to 2178
+2040 IF QTY_BO>0 THEN B[0]=QTY_BO,FIRST_TIME$="N"; IF WHSE_LIST$>"" THEN B$(111,4)=WHSE_LIST$(1,4); GOTO 2025 ELSE B$(111,4)=FIRST_WHSE$,WRITE_BO_LINE$="Y"; GOTO 2025; REM "We have a BO, set qty and check the whse list, if more to check then set ship from whse to next one else set to first one for BO line write
+2065 READ (Z[2],KEY=B$(1,27),DOM=2066)
+2070 GOTO 2010
+2080 IF LINE_NO=1 THEN GOSUB 8400; GOTO 2094; REM "We didn't write out any lines so we need to remove the FS1,PO3,RS2 records
+2082 IF P9$(50,1)="Y" AND F9$="*" THEN CALL "FM2OA5",X3$,H$,M6[1]
+2083 CALL "FM2ODH",X3$,1,H$,H{ALL}
+2085 IF F9$="*" THEN H$(47,1)="W"; GOSUB CHK_SUMM_BILL; WRITE (Z[8],KEY=H$(118,8))IOL=0380 ! WO 255959
+2094 IF X3$(9,3)="434" AND A$(1,10)="0039301000" THEN LOG_REC$=FN%CDS$+"|"+H$(28,15)+"|"+H$(118,8)+"|"+S$(175,7)+"|"+"`date`"+"|"+FID(0),CALL$="echo "+QUO+LOG_REC$+QUO+" >> "+HWD+DLM+"CONS_LOG"; INVOKE CALL$
+2095 GOTO 9900
+2100 REM "Create a line from CS2 info
+2105 DIM L$(356),L[29]
+2107 L$(147,8)=H$(118,8)
+2108 REM "We used to set L$(4,1) to "Y", fixed price, but took this out when enhancing the pricing routines because this would stop QBG from kicking in
+2110 L$(3,1)="Y",L$(4,1)="N",L$(6,3)=STR(LINE_NO:"000"),L$(18,1)="N",L$(19,10)=B$(39,10),L$(124,4)=B$(107,4),L$(156,5)="SPI",L$(161,10)=B$(29,10),L[0]=B[0],L[10]=B[0],L[5]=B[1]; IF X3$(9,3)<>"449" THEN L[7]=B[0] ! SSP191856
+2115 L$(136,1)=H$(86,1)
+2120 L$(155,1)=B$(28,1)
+2125 L$(128,5)=H$(97,5)
+2126 IF STP(MID(B$,228,5),1)<>"" THEN L$(156,5)=B$(228,5); REM "Print flag override
+2150 ON POS(B$(28,1)="MCIS") GOSUB 2200,2200,2300,2300,2500,2200
+2151 DIM FM1$(449),FM1[30]; READ (Z[6],KEY=B$(1,10)+L$(19,10),DOM=*NEXT)IOL=0410
+2155 IF MFF_PARM THEN FINDER$=H$(6,10)+L$(29,3)+L$(161,10)+L$(19,10); CALL "FS2MFF",X3$,X4$,FINDER$,FINDER,L$(147,8)+L$(6,3); GOTO 2175 ! SSP 276772
+2162 IF B$(28,1)="M" THEN GOTO 2175 ! SSP307181 IF LEN(FM1$)=0 OR (CUST_DFLT$(12,1)="" OR CUST_DFLT$(12,1)=" ") OR (FM1$(115,1)=" ") THEN GOTO 2175
+2163 FINDER$=H$(6,10)+L$(29,3)+L$(161,10)+L$(19,10); CALL "FS2DAF",X3$,X4$,FINDER$,FINDER
+2164 IF FINDER$>"" THEN L$(135,1)=FINDER$(11,1),L$(137,10)=FINDER$(1,10),L[11]=FINDER; GOTO 2166
+2165 L$(135,1)=CUST_DFLT$(12,1),L$(137,10)=CUST_DFLT$(13,10); REM "FiNder's fee and vendor code SSP307181, change E$ to CUST_DFLT$
+2175 REM CALL "FM2ODL",X3$,1,L$,L(ALL),H$ -3.3
+2178 IF WRITE_FS2$="Y" THEN IF B$(28,1)="I" OR L$(10,1)<"9" THEN F9$="*"; REM "Was on 2030 & 2385, moved here so F9$ will only get set if actually writing the line
+2180 IF WRITE_FS2$="Y" THEN WRITE (Z[9],KEY=L$(147,8)+L$(6,3))IOL=0390; LINE_NO=LINE_NO+1; GOSUB 8500; GOSUB 8550 ELSE WRITE_FS2$="Y"; REM "128591
+2195 RETURN 
+2200 REM "Message
+2210 L$(14,1)="N"
+2215 L$(50,40)=B$(67,40)
+2220 L$(10,4)=LAST_WHSE$; REM "Will use whse from previous line written or default from line 130
+2295 RETURN 
+2300 REM "I/C item
+2305 DIM G$(188),G[40]
+2310 READ (Z[7],KEY=B$(29,20),DOM=2395)IOL=0370
+2320 IF B$(28,1)="C" THEN L$(14,1)="N" ELSE L$(14,1)="N"
+2325 L$(29,3)=G$(61,3),L$(32,58)=G$(64,18)+G$(21,40),L$(90,14)=G$(92,4)+G$(82,10),L$(128,5)=H$(97,5),L$(2,1)=G$(112,1)
+2330 L[1]=G[18],L$(120,4)=G$(124,4),L$(198,7)=STR(G[16]:"0000000"),L[2]=G[15]
+2340 GOSUB 7600; REM "Load pricing array
+2350 L[12]=G[19]
+2365 GOSUB 7800; REM "Set commission code & P/C defaults
+2368 REM "Set ship from location (L$(10,4)) here
+2369 IF STP(B$(111,4),3," ")="" AND POS("G"=OPTION$)>0 THEN B$(111,4)=B$(165,4); REM "if whse group options set and there is a warehouse in the list and the warehouse is not set on the line then fill with first warehouse and bypass looking at shipto & customer defaults
+2371 IF POS(" "<>B$(111,4))<>0 THEN L$(10,4)=B$(111,4); GOTO 2380; REM "If whse set by operator then use it
+2372 DIM L0$(618); FIND (Z[12],KEY="C"+A$(1,14),DOM=2373)IOL=0420
+2375 IF POS(" "<>L0$(284,4))>0 THEN L$(10,4)=L0$(284,4) ELSE IF POS(" "<>CUST_DFLT$(238,4))>0 THEN L$(10,4)=CUST_DFLT$(238,4) ELSE L$(10,4)="0001"; REM "Changed to set to cust default if shipto default blank on 109567
+2380 IF B$(28,1)="I" AND L$(10,1)="9" THEN L$(10,1)="0"
+2381 LAST_WHSE$=L$(10,4); REM "See 2220, message lines
+2384 IF L$(10,1)="9" THEN L[1]=0,L[3]=0,L[4]=0,L[6]=0
+2385 REM "IF L$(10,1)<"9" THEN LET F9$="*",moved to 2178
+2386 IF FIRST_TIME$="Y" THEN WHSE_LIST$=L$(10,4),FIRST_WHSE$=L$(10,4); REM "List of warehouses to check, sent in/default will always be first
+2389 IF FIRST_TIME$="Y" AND POS("W"=OPTION$)>0 AND B$(28,1)="C" THEN IF L$(10,1)="9" THEN WHSE_LIST$=WHSE_LIST$+"0"+L$(11,3) ELSE WHSE_LIST$=WHSE_LIST$+"9"+L$(11,3); REM "ssp#84694, comp 449, check same physical whse if not enough in sent in/default whse for customer specific items
+2390 IF FIRST_TIME$="Y" AND POS("G"=OPTION$)>0 THEN WHSE_LIST$=STP(B$(165,48),1)
+2392 REM " If lot param set & auto distribute is set and this is a lotted item, auto distribute lots
+2393 IF P9$(44,1)="Y" AND (POS(P9$(52,1)="ABO")<>0 OR POS(P9$(70,1)="AB")<>0) AND G$(112,1)="Y" THEN GOSUB 2400
+2394 IF L$(10,1)<>"9" THEN GOSUB 8000; GOSUB 8100; REM "Pick a price, extend price and cost
+2395 RETURN 
+2400 REM "If lots need to be done, then call the lot routine to auto-distribute, if b/o's needed, then set the backorder field
+2405 L$(2,1)="Y"
+2407 IF WRITE_BO_LINE$="Y" THEN IF RS3_OPEN$="Y" OR G$(117,1)="Y" THEN GOSUB 8300; GOTO 2440 ELSE L[7]=0,L[8]=QTY_BO,QTY_BO=0,A$(27,1)="Y"; WRITE (Z[1],KEY=A$(1,24))IOL=0310; GOTO 2440
+2409 LOT_SELECTION$=P9$(52,1); IF P9$(70,1)<>" " THEN LOT_SELECTION$=P9$(70,1); REM "SSP129078,DMM
+2410 S1=0,Q0=L[0],F=0; CALL "IC2LCA",X3$,X4$,LOT_SELECTION$,0,L$(161,10)+L$(19,10)+L$(10,4)+L$(147,8)+L$(6,3),Q0,C,F,S1,S1$,S2,S3$,S3,S4
+2415 IF Q0=-1 THEN Q0=0; GOTO 2445
+2417 GOSUB 7900
+2419 REM "Set lots gotten into unbilled shipments?
+2420 L[7]=Q0; GOSUB 2450
+2422 REM "Set open quantity and updated backordered lots flag in CS0
+2423 IF LEN(WHSE_LIST$)>4 THEN WHSE_LIST$=WHSE_LIST$(5) ELSE WHSE_LIST$=""
+2425 IF L[7]>=L[0] THEN QTY_BO=0,WHSE_LIST$=""; GOTO 2440
+2428 QTY_BO=L[0]-L[7],QTY_FOUND=QTY_FOUND+L[7]; IF QTY_BO<0 THEN QTY_BO=0; REM "ssp# 93815 OLS reqs creating negative backorders
+2429 IF WHSE_LIST$>"" THEN IF L[7]>0 THEN L[0]=L[7],L[10]=L[7]; GOTO 2440 ELSE WRITE_FS2$="N"; GOTO 2440
+2433 IF FIRST_TIME$<>"Y" THEN WRITE_FS2$="N"; GOTO 2440
+2435 IF FIRST_TIME$="Y" THEN IF RS3_OPEN$="Y" OR G$(117,1)="Y" THEN GOSUB 8300; GOTO 2440 ELSE L[8]=QTY_BO,QTY_BO=0,A$(27,1)="Y"; WRITE (Z[1],KEY=A$(1,24))IOL=0310; GOTO 2440
+2440 REM "Set #labels to the number actually shipped, not the number req'ed
+2441 IF E$(22,1)<>"N" THEN IF L[12]=0 THEN L[9]=0 ELSE L[9]=INT(L[7]/L[12]*1.1+.9); IF L[9]<0 THEN L[9]=0
+2445 RETURN 
+2450 REM "Set unit cost into L(1) from total cost of lots C
+2451 REM "Set unit sell into L[4],qty per sell/unit into L[5],and selling unit
+2453 REM "Skip cost if customer owned inventory
+2455 IF L$(10,1)="9" THEN GOTO 2495
+2456 IF C=0 THEN GOTO 2475
+2457 CLOSE (14); OPEN (14)"ZZPARM"
+2459 REM "Calculate unit cost
+2460 CALL "FM2EXT",14,1,L$(120,4),L[2],Q0,U,C,M6[1]
+2465 L[1]=U
+2475 IF S1=0 THEN GOTO 2495
+2480 L$(124,4)=S1$,L[5]=S2,L[4]=S1
+2495 RETURN 
+2500 REM "Special Charges
+2510 L$(4,1)="Y"; REM "Fixed price
+2512 L$(10,4)=LAST_WHSE$; REM "Use from last line written or default
+2514 L$(14,1)=""; REM "Custom?
+2516 L$(18,1)="N"; REM "Special Shipping
+2530 REM "Read Special Charge
+2535 DIM FMPX$(61),FMPX[3]
+2540 READ (Z[5],KEY="X"+L$(19,10),DOM=2541)IOL=0354
+2550 IF STP(B$(67,40),1)<>"" THEN L$(50,40)=B$(67,40) ELSE L$(50,40)=FMPX$(12,40); REM "Special charge description
+2552 L$(29,3)=FMPX$(52,3); REM "Product code
+2554 L$(133,1)=FMPX$(59,1); REM "Keep order history
+2556 L[0]=0,L[10]=0; REM "Clear open & original qty
+2558 REM "***** freight flag (60,1) ?
+2560 L$(120,4)=FMPX$(55,4),L[2]=FMPX[0],L[1]=FMPX[2]; REM "Cost unit / Qty in unit / Cost
+2561 IF B$(107,4)<>DIM(4) THEN L$(124,4)=B$(107,4),L[5]=B[1] ELSE L$(124,4)=FMPX$(55,4),L[5]=FMPX[0]; REM "Set selling unit etc.
+2562 IF B[0]<>0 THEN L[22]=B[0] ELSE L[22]=FMPX[1]; REM "Price
+2564 L[23]=0; REM "***** Need to check for this   Line item discount %
+2566 L[4]=L[22]-L[22]*L[23]*.01; REM "Unit Selling price
+2570 IF FMPX$(61,1)="Y" THEN L[6]=L[4],L[3]=L[1],L[4]=0,L[1]=0 ELSE L[6]=L[4],L[3]=L[1],L[0]=1,L[10]=1; REM "IF not extension only, then the quantity x price is already done, so act like they ordered 1
+2599 RETURN 
+3500 REM "Next order number; 277659 - Alphanumeric sequences and called program logic
+3505 ALT_ORD$="N",SEQ_TYPE$="",P=POS("A"=OPTION$); IF P>0 THEN ALT_ORD$="Y"
+3510 FIND (Z[11],KEY=A$(1,2),DOM=3540)N$
+3514 IF POS(" "<>N$(116,8))=0 THEN SEQ_TYPE$=" " ELSE SEQ_TYPE$="R"
+3515 ! IF POS(" "<>N$(116,8))=0 THEN N0=3,N1=5 ELSE N0=116,N1=118
+3516 IF ALT_ORD$="Y" THEN ALT_SEQ=NUM(OPTION$(P+1,1),ERR=*NEXT); GOTO 3520
+3517 ! IF ALT_ORD$="Y" THEN ALT_SEQ=NUM(OPTION$(P+1,1),ERR=*NEXT),N0=138+(ALT_SEQ-1)*6,N1=N0; GOTO 3520
+3518 ALT_ORD$="N"
+3520 IF ALT_ORD$="Y" THEN SEQ_TYPE$=STR(ALT_SEQ) ! O$=A$(1,2)+N$(N0,6) ELSE O$=N$(N0,8)
+3525 ! P0=NUM(N$(N1,6)),P0=P0+1; IF P0>999999 THEN P0=1
+3526 ! N$(N1,6)=STR(P0:"000000"); WRITE (Z[11],KEY=A$(1,2))N$
+3528 ERRMSG$=""; CALL "FMGMPB;GET_NEXT_ORDERNUM",Z[11],A$(1,2),SEQ_TYPE$,"",O$,ERRMSG$ ! Request order number for division and specified seq type
+3535 FIND (Z[8],KEY=O$,DOM=*NEXT); GOTO 3528
+3540 RETURN 
+3800 CHK_SUMM_BILL:! WO255959
+3820 IF CHK_SB$="Y" THEN SBILL$=""; CALL "UPDFS1;CHECK_SUMM_BILL",Z[5],H$(6,10),H$(47,1)," ",SBILL$; H$(503,1)=SBILL$ ! WO 255959
+3850 RETURN 
+7500 REM "Convert B(0) quantity to Quantity in eaches
+7505 DIM M$(21),M[1]
+7506 IF B$(28,1)="S" OR B$(28,1)="M" THEN GOTO 7545; REM "Skip if spl chg or message
+7507 IF B$(107,4)="M   " THEN M$(20,1)="Y"
+7510 FIND (Z[13],KEY="U/M"+B$(107,4),DOM=7511)M$
+7519 REM IF F0$(1,3)="ECK" AND X3$(9,3)<>"288" THEN GOTO 07521
+7520 IF M$(20,1)<>"Y" THEN B[0]=B[0]*B[1]
+7525 ORG_QTY=B[0]
+7545 RETURN 
+7600 REM "Load pricing array
+7605 IF POS(" "<>G$(168,20))<>0 THEN DIM P[12,1]; RETURN 
+7608 PRECISION M6[1]
+7610 DIM P[12,1],Q[35]; P[0,1]=G[0]
+7620 FOR I=1 TO 6; P[I,0]=G[1+(I-1)*2],P[I,1]=G[2+(I-1)*2],P[I+6,0]=G[21+(I-1)*2],P[I+6,1]=G[22+(I-1)*2]; NEXT I
+7625 IF POS(" "<>G$(109,3)+C$(398,3))>0 THEN X$=$7E$+G$(109,3)+C$(398,3)+G$(1,20); DIM Q[35]; CALL "IC2ICF",X3$,Z[5],X$,L[5],G[15],G[14],G[0],G[18],G[17],G[20],Q{ALL}; IF X$="" THEN L$(214,1)="N" ELSE L$(214,1)="Y" ! SSP167712, modeled after FM2OB0 line 8745
+7626 PRECISION 2
+7627 IF P9$(71,1)="Y" THEN L$(214,1)="N" ! SSP167712, modeled after FM2OB0 line 8746
+7628 IF X$="" THEN RETURN ! SSP247616
+7630 DIM P[12,1]; P[0,1]=Q[0]
+7635 FOR I=0 TO 11; P[I+1,0]=Q[I*2+1],P[I+1,1]=Q[I*2+2]; NEXT I
+7645 RETURN 
+7650 REM "Feature Driven pricing
+7655 A1$=L$(94,10)+G$(168,20)
+7660 C0$=L$(120,4),C0=L[2],P0$=L$(124,4),P0=L[5],Q=L[0],C1=0,P1=0
+7665 CALL "FM2OB9",X3$,A1$,C0$,C0,P0$,P0,Q,C1,P1
+7670 L[1]=C1,L[4]=P1
+7695 RETURN 
+7700 REM "Retrieve Ship-to Address
+7705 IF STP(A$(11,4),3," ")="" THEN S$(12,1)="M",S$(46,87)=A$(218,87),S$(225,35)=A$(351,35); GOTO 7790; REM "If blank set manual ship-to info
+7710 DIM L0$(618); FIND (Z[12],KEY="C"+A$(1,14),DOM=7790)IOL=0420; REM " SSP# 139226
+7720 S$(46,87)=L0$(51),S$(225,35)=L0$(16)
+7730 IF POS(" "<>A$(351,35))>0 THEN S$(225,35)=A$(351,35) ELSE IF POS(" "<>L0$(248,35))>0 THEN S$(225,35)=L0$(248,35); REM "Allow address override from GOR, WO91521 else if ship to has name override description, SSP110430
+7735 IF POS(" "<>A$(218,87))>0 THEN S$(46,87)=A$(218,87); REM "WO91521
+7740 REM "SSP109567, check for ship-to stuff which would override customer, however if sent in don't change
+7745 IF STP(S$(16,30),3," ")="" THEN S$(16,30)=L0$(160,20); REM "If blank use ship-to attention
+7750 IF A$(163,1)=" " THEN IF L0$(305,1)<>" " THEN S$(150,1)=L0$(305,1); REM "Ship via code
+7752 IF S$(150,1)<>" " THEN IF STP(A$(69,15),3," ")="" THEN READ (Z[5],KEY="S"+S$(150,1),DOM=7753)VIA_DESC$; S$(210,15)=VIA_DESC$(3,15); REM "Ship via description
+7755 IF A$(164,1)=" " THEN IF L0$(289,1)<>" " THEN S$(134,1)=L0$(289,1); REM "How to ship code
+7760 IF STP(A$(180,15),3," ")="" THEN IF POS(" "<>L0$(290,15))>0 THEN S$(135,15)=L0$(290,15); REM "Inside delivery
+7765 IF L0$(288,1)<>" " THEN S$(133,1)=L0$(288,1); REM "FOB code
+7770 IF STP(A$(340,10))>"" THEN GOTO 7798 ELSE IF POS(" "<>L0$(224,10))>0 THEN H$(76,10)=L0$(224,10); END_IF ; IF (POS(X3$(9,3)="101118590",3)>0 OR MID(ARPARM3$,9,1)="Y") AND MID(L0$,224,7)=S$(122,7) THEN GOTO 7798 ! SSP247628, if sales tax code passed in then no overrides, else if shipto has sales tax code then set it, if activated and first 7 of shipto tax code equals state and first 5 of zip from PO3 then no overrides
+7771 IF ARPARM$(134,1)<>"Y" THEN GOTO 7798
+7772 READ (Z[32],KEY=C$(235,10),KNO=0,DOM=*NEXT)CUST_TAX$
+7773 IF MID(CUST_TAX$,182,1)="Y" THEN GOTO 7798
+7774 READ (Z[32],KEY=L0$(224,10),KNO=0,DOM=*NEXT)SHIP_TAX$
+7775 IF MID(SHIP_TAX$,182,1)="Y" THEN GOTO 7798
+7776 IF S$(122,2)+S$(124,5)=DIM(7) THEN H$(76,10)=C$(235,10); GOTO 7798 ! SSP247628, If shipping information has NO state/zip default to cust master
+7778 ! SSP247628-Lookup tax code using city, state and zip using called program - removed lines 7778-7782, replaced with line 7780
+7780 DIM G1$(190); CALL "TW2FUN;LOOKUP_TAX_CODE",ERR=7783,X3$,X4$,S$(122,2),S$(124,5),S$(106,16),"",T$,T{ALL}; G1$(1)=T$(1); GOTO 7784
+7783 H$(76,10)=C$(235,10); GOTO 7785 ! SSP247628, If by this time, no sales tax found, default to AR1 default sales tax.
+7784 H$(76,10)=G1$(1,10) ! SSP247628
+7785 IF POS(X3$(9,3)="101")<>0 AND H$(6,2)="13" AND G1$(1,10)="IL"+DIM(8) THEN H$(76,10)="ILCH"+DIM(6) ! SSP247628
+7798 WRITE (Z[8],KEY=H$(118,8))IOL=0380; REM "Sales tax code
+7799 RETURN 
+7800 REM "set the commission code and P/C defaults
+7810 DIM E$(30); READ (Z[5],KEY="T"+L$(29,3),DOM=7811)IOL=0350
+7820 IF E$(22,1)<>"N" THEN IF L[12]=0 THEN L[9]=0 ELSE L[9]=INT(L[0]/L[12]*1.1+.9); IF L[9]<0 THEN L[9]=0
+7850 Z$="04C AR3...  04O AR4...  "
+7855 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7860 C3$="*"+B$(28,1)+X3$(9,3)+H$(97,5); REM "Since Customers can't direct ship, P/O code is not used
+7865 CLOSE (14); OPEN (14)"ZZPARM"
+7870 CALL "AR2COM","DEFAULT",C3$,L{ALL},14,0,0
+7875 L$(128,5)=C3$
+7880 IF P8$(186,1)="Y" AND LEN(E$)>=42 AND POS(" "<>E$(38,5))>0 THEN L$(128,5)=E$(38,5)
+7885 Z$="04C AR4...  04O AR3...  "
+7890 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7895 RETURN 
+7900 REM "Process data received from Lot Records
+7910 IF FNS$(S3$(9,3))>"" THEN L$(29,3)=S3$(9,3); GOSUB 7800
+7920 IF FNS$(S3$(12,5))>"" THEN L$(128,5)=S3$(12,5)
+7930 IF P8$(261,1)="Y" THEN L[17]=F; REM "wo92395,94420
+7940 RETURN 
+8000 REM "Pick a price
+8002 IF POS(" "<>G$(168,20))>0 THEN GOTO 7650
+8005 IF S1<>0 AND L$(2,1)="Y" AND NOT(L$(214,1)="Y" AND MID(P8$,311,1)="Y") THEN GOTO 8048 ! 185554 If S1 sales price and lotted item skip pricing UNLESS Item Price Class and param set to override lot sales price
+8008 PRECISION M6[1]
+8009 IF G[14]=0 THEN G[14]=1
+8010 L[4]=P[0,1]*L[5]/G[14]; IF P[1,0]=0 THEN GOTO 8045
+8020 FOR I=1 TO 12
+8030 IF ABS(L[0])<P[I,0] THEN I=99; GOTO 8040
+8035 IF P[I,0]<>0 THEN L[4]=P[I,1]*L[5]/G[14]
+8040 NEXT I
+8045 PRECISION 2
+8047 IF POS(X3$(9,3)="049500",3)>0 THEN IF NUM(C$(398,3),ERR=8048)>0 THEN L[4]=L[4]*(100-NUM(C$(398,3)))*.01
+8048 GOSUB 8050
+8049 RETURN 
+8050 REM "Contract price from item master
+8052 IF P8$(225,1)<>"Y" THEN GOTO 8095
+8055 DIM FM1$(449),FM1[30]; READ (Z[6],KEY=B$(1,10)+L$(19,10),DOM=8095)IOL=0410
+8060 IF FM1$(105,1)<>"Y" OR FM1[3]=0 OR FM1[4]=0 THEN GOTO 8095
+8065 L[4]=FM1[3]*L[5]/FM1[4]
+8095 RETURN 
+8100 REM "Extend price and cost
+8105 CLOSE (14); OPEN (14)"ZZPARM"
+8110 REM "Cost extension
+8115 J0=L[2],J1=L[0],J2=L[1]; CALL "FM2EXT",14,0,L$(120,4),J0,J1,J2,J3,0; L[3]=J3
+8120 REM "Price extension
+8125 J0=L[5],J1=L[0],J2=L[4]; CALL "FM2EXT",14,0,L$(124,4),J0,J1,J2,J3,0; L[6]=J3
+8145 RETURN 
+8250 REM "Write record to RS2 file for Restocking Gateway Checklist printing
+8255 DIM RS2$(77)
+8260 DIM FM0$(522); FIND (Z[12],KEY="C"+A$(1,14),DOM=8295)FM0$
+8262 DIM DEPT_CODE$(20); IF DEPT$="R" THEN DEPT_CODE$=FM0$(382,20) ELSE IF DEPT$="C" THEN DEPT_CODE$(1,9)=FM0$(214,9) ! WO286437
+8265 RS2$(1,14)=A$(1,14); REM "Customer code, ship to code
+8270 RS2$(15,8)=H$(118,8); REM "Order number
+8275 RS2$(23,20)=DEPT_CODE$ ! WO286437 FM0$(382,20); REM "Receiving department
+8280 RS2$(43,35)=FM0$(16,35); REM "Ship to description
+8285 WRITE (Z[15],KEY=RS2$(1,14))RS2$
+8295 RETURN 
+8300 REM "Write record to RS3 file for Restocking Gateway Exception printing and adjust order line as necessary for no backorders
+8303 IF RS3_OPEN$<>"Y" THEN GOTO 8345; REM "WO105428
+8305 DIM RS3$(62),RS3[4]
+8306 DIM DEPT_CODE$(20); IF DEPT$="R" THEN DEPT_CODE$=L0$(382,20) ELSE IF DEPT$="C" THEN DEPT_CODE$(1,9)=L0$(214,9) ! WO286437
+8310 RS3$(1,10)=A$(1,10),RS3$(11,10)=L$(19,10),RS3$(21,4)=A$(11,4); REM "Customer,item,ship-to
+8315 RS3$(25,20)=DEPT_CODE$ ! WO286437 L0$(382,20); REM "Department
+8320 RS3[2]=ORG_QTY,RS3[3]=QTY_FOUND,RS3[4]=QTY_BO; REM "Original ordered, new ordered, unfilled
+8325 DIM RSL$(60),RSL[12]; FIND (Z[17],KEY="R"+A$(1,14)+L$(19,10),DOM=8326)IOL=0440; GOTO 8330
+8326 FIND (Z[17],KEY="S"+A$(1,14)+L$(19,10),DOM=8327)IOL=0440
+8330 RS3[0]=RSL[0],RS3[1]=RSL[12]; REM "Count, restock quantity
+8335 ORDER$=""; CALL "FM2UZP",X3$,L$(161,10)+L$(19,10),"*",0,0,0,0,A0,A1,A0{ALL},ORDER$; REM "Get the first open PO we find with an open qty
+8340 RS3$(45,9)=ORDER$
+8345 L[0]=L[7],L[10]=L[7]; REM "Set open qty & org qty ordered to what we are actually shipping
+8350 IF L[0]=0 THEN WRITE_FS2$="N"; REM "If we are shipping some we will go back into the regular logic and still write out this FS2 line, otherwise we don't want to write an FS2 line
+8351 IF RS3_OPEN$<>"Y" THEN QTY_BO=0; GOTO 8395
+8355 IF QTY_FOUND>0 THEN RS3$(54,8)=L$(147,8); REM "If we found any, order #
+8360 QTY_BO=0
+8390 WRITE (Z[16],KEY=RS3$(1,24))IOL=0430
+8395 RETURN 
+8400 REM "Ended up not writing out any FS2 lines so we need to remove the header record, and the PO3 record, and the RS2 record if applicable
+8410 REMOVE (Z[8],KEY=H$(118,8),DOM=8411)
+8420 REMOVE (Z[10],KEY=S$(166,9)+S$(7,4),DOM=8421)
+8430 IF RS2_OPEN$="Y" THEN REMOVE (Z[15],KEY=RS2$(1,14),DOM=8431)
+8490 RETURN 
+8500 REM "Write future shipment confirmation record if applicable, wo91521
+8510 IF STP(B$(115,50),3," ")="" THEN GOTO 8540
+8515 READ (Z[13],KEY=X3$(9,3)+"EXPORTAR",DOM=8540)EXPORT$; IF EXPORT$(21,1)<>"Y" THEN GOTO 8540; REM "WO119820, now using VER 200 for EDI, don't do this part unless 'Export Shipment Confirmation Records' set to Y
+8520 FO7$=L$(147,8)+L$(6,3)+B$(115,50); WRITE (Z[18],KEY=FO7$(1,11))FO7$
+8525 H$(182,1)="F"; IF POS(X3$(9,3)="434500",3)<>0 THEN IF FO7$(46,1)="N" THEN H$(182,1)="P"; REM "F=Full, P=Partial, P means this is not going to need the auto cash receipt/do not create sales interface record logic during the SJ update, but still need the shipment confirmation record created
+8535 WRITE (Z[8],KEY=H$(118,8))IOL=0380
+8540 RETURN 
+8550 REM "128591 Update from EC7 to EC8 based on new line number
+8555 IF F0$(1,3)<>"ECK" THEN GOTO 8595; REM "Skip if not E/C transaction
+8560 DIM EC7$(200),EC7[1],EC8$(200),EC8[1]
+8565 FIND (Z[20],KEY=WKSHT$+B$(25,3),DOM=8595)IOL=0450
+8580 EC8$(1,8)=L$(147,8),EC8$(9,3)=L$(6,3),EC8$(12)=EC7$(14),EC8[0]=EC7[0],EC8[1]=EC7[1]
+8585 WRITE (Z[21],KEY=EC8$(1,11))IOL=0451
+8595 RETURN 
+8600 SET_REQUIRED_DATE:! SSP247664 - Default the "Date Requested" Field for W and R orders to X - O/P system parameter - original SSP154324
+8605 IF POS(P8$(301,1)="FS")=0 THEN RETURN 
+8610 CALL "ZZDAYT",H$(16,6),DAY_NUM
+8615 IF P8$(301,1)="F" AND DAY_NUM>0 AND DAY_NUM<6 THEN DAYS_TO_ADD=1 ELSE IF P8$(301,1)="F" AND DAY_NUM=6 THEN DAYS_TO_ADD=3 ELSE IF P8$(301,1)="F" AND DAY_NUM=7 THEN DAYS_TO_ADD=2 ELSE IF P8$(301,1)="S" AND DAY_NUM=7 THEN DAYS_TO_ADD=2 ELSE IF P8$(301,1)="S" AND DAY_NUM=1 THEN DAYS_TO_ADD=1
+8620 CALL "ZZDATE",X3$,"",H$(16,6),REQUIRED_DATE$,DAYS_TO_ADD,0,0,0,0,0,0,"","",""
+8625 H$(55,6)=REQUIRED_DATE$
+8645 RETURN 
+8649 ! 
+8955 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 IF F0$(1,4)="TMPH" OR F0$(1,3)="ECK" THEN IF LEN(H$)>125 THEN F0$=H$(118,8); REM "If called from FO2UAA then send order number back, added LEN check on ssp108901
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "191856-Back ordered items are printing on packing list.            
+56002 REM "212768-Add Blanket PO feature to work with the Contract feature. 
+56004 REM "247616-Order Req GW creating order lines with zero price.  246131  
+56006 ! 247664-Date Requested not being set. Together with 247616.
+56007 REM "255959-Field in Order Header for Summary Bill Y/N which will carry 
+56008 REM "260701-Order Req GW; Have valid sales tax code in file but it does 
+56010 REM "247628-FM2RTO; Needs updated sales tax interface logic. Used for   
+56011 REM "265691-Buyer only sees one sales after the merge in the order statu
+56012 REM "277659-Modify Division Next Order# sequence logic, allow for alpha 
+56013 REM "276772-Multiple Finder's Fees per Customer/Item/Order Line.        
+56014 REM "286437-Restocking GW; use customer location code not receiving dept
+56016 REM "307181-DBD-51; Finders Fees don't populate for Restocking Gateway  

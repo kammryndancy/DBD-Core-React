@@ -1,0 +1,52 @@
+0010 REM "Convert BMP format for Sato Printer <BC2BMC>
+0035 REM "5.0 - 01/11/02 - 10.895555 - plh - SSP# 142887
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0170 IF POS("MS"=UCS(SYS)) THEN ISWIN=1 ELSE ISWIN=0
+1000 REM 
+1010 PRINT 'CS'
+1015 INPUT @(0,15),"BMP file name: ",F$
+1020 INPUT @(0,17),"Converted file name: ",F0$
+3100 REM "BMP - Download BMP file as graphic
+3105 CLOSE (14); OPEN (14,ERR=3145)F$
+3106 REM "Read file into B0$
+3107 B0=0,B0$=""
+3108 READ RECORD (14,IND=B0,END=3110)B1$; B0$=B0$+B1$,B0=B0+1; GOTO 3108
+3110 B0$=B0$+B1$
+3112 REM "Get offset B8 to start of graphics image from file (1st) header
+3115 B1$=B0$(11,4),B1$=B1$(2,1)+B1$(1,1)+B1$(4,1)+B1$(3,1); B8=DEC(B1$(1,2)); REM "Load into B1$ then do byte swap since INTEL ordered backwards then load into B1
+3117 REM "Get width of bitmap B1 and height B2 from image (2nd) header
+3118 B1$=B0$(15,16),B1=DEC(B1$(6,1)+B1$(5,1)),B2=DEC(B1$(10,1)+B1$(9,1)); REM "Have to reverse bytes because of INTEL byte ordering
+3119 B4=(INT(B1/8/4)+1)*4; REM "B4 is the width of a line, in bytes, as stored in bitmap, the line is padded to a 4 byte boundary (ie the width of the line is evenly diable by 4)
+3120 B5=(INT(B2/8)+1)*8; REM "B5 Is the height,in  bits, rounded up to an 8 bit boundary as required by the printer.
+3122 B6=(INT(B1/8)+1)*8; REM "B6 is the width, in bits, rounded up to an 8 bit boundary as required by the printer
+3125 REM "Now we are ready to begin, 1st send command to start the graphic
+3127 D1$=$1B$+"GH"+STR(INT(B6/8):"000")+STR(INT(B5/8):"000")
+3130 REM "Ok, now send the data row by row, the data is B4 bytes wide in the BMP bitmap and B2 rows long. This will need to be B6 BITS (or B6/8 bytes) wide when written out and B5 rows will need to be sent.
+3132 DIM B6$(B4,$FF$); REM "string to use later to flip the bits
+3133 IF B4>=INT(B6/8) THEN B4$="" ELSE DIM B4$(INT(B6/8)-B4,$FF$); REM " To pad lines from bitmap out to length needed for output
+3134 FOR B9=1 TO B2
+3135 REM "Oh yeah, the top of the B0$ bitmap is actually the last line, so we have to process the array from the end of B0$ back to the front to put it out in the correct order for the printer
+3136 B3$=HTA(XOR(B6$,$FF$+B0$(B8+B4*B2-B9*B4+1,B4-1)+B4$)); REM "Get line, use B6$ to flip bits from 1 to 0 and 0 to 1
+3138 FOR I3=1 TO LEN(B3$) STEP 2; J$=B3$(I3,1),B3$(I3,1)=B3$(I3+1,1),B3$(I3,1)=J$; NEXT I3; REM "Swap bytes because INTEL stores them out of order
+3139 D1$=D1$+B3$(1,INT(B6/8)*2); REM "Add to string
+3140 NEXT B9
+3142 IF LEN(D1$)-9<B5*INT(B6/8)*2 THEN DIM B3$(INT(B6/8)*2,"0"); D1$=D1$+B3$; GOTO 3142
+3143 REM PRINT "B1=",B1," B2=",B2," B3=",B3," B4=",B4," B5=",B5," B6=",B6," D1$=",LEN(D1$); INPUT *
+3144 GOSUB 3200
+3145 GOTO 9900
+3200 REM "Write D1$ out to F0$
+3204 CLOSE (13)
+3205 IF LEN(D1$)<256 THEN WRITE (13)D1$; GOTO 3245
+3206 ERASE F0$,ERR=3207
+3207 IF ISWIN=0 THEN INVOKE "touch "+HWD+DLM+"UTILS/"+F0$
+3208 OPEN (13,ISZ=1024)F0$
+3210 FOR I=1 TO INT(LEN(D1$)/1024)*1024 STEP 1024
+3215 WRITE RECORD (13)D1$(I,1024); PRINT "*",
+3220 NEXT I
+3230 IF I<LEN(D1$) THEN WRITE (13)D1$(I)
+3245 RETURN 
+9900 REM 
+9910 ESCAPE 
+9940 RUN "ZMENU"
+9999 END 

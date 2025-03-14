@@ -1,0 +1,441 @@
+<PxTable>
+ TableName=ZP.EN.CUST.jir
+ TableKey=K1234474683
+ FileCreate=KEYED "ZP.EN.CUST.jir",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0000"
+    FIELD_1$="ZP4_Contact"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="90"
+    FIELD_5$="33"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"CONTACTS"+QUO+")"
+    FIELD_8$="4"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"ZP4"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2009/02/12 16:38 jir"
+    FIELD_21$="R"
+    FIELD_23$="U0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.CONT_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0001"
+    FIELD_1$="CONT_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0002"
+    FIELD_1$="CONT_PERSON"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_P"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0003"
+    FIELD_1$="CONT_LONG_CITY"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_CITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0004"
+    FIELD_1$="CONT_ST"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_ST"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0005"
+    FIELD_1$="CONT_PHONE"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="(XXX)XXX-XXXX.XXXX"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0006"
+    FIELD_1$="CONT_ADDR_1"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_A_1"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0007"
+    FIELD_1$="CONT_ADDR_2"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_A_2"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0008"
+    FIELD_1$="CONT_ZIP_CODE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ZIP_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="XXXXX.XXXX"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0009"
+    FIELD_1$="CONT_GREETING"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_G"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="20"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0010"
+    FIELD_1$="CONT_CODE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0011"
+    FIELD_1$="CONT_LONG_LOOKUP_SEQ"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="20"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0012"
+    FIELD_1$="SRC_OF_LEAD"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SRC_O_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0013"
+    FIELD_1$="CONT_CATEGORY"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CONT_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0014"
+    FIELD_1$="STND_IND_CLASS_CODE"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"STND_I_C_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="5"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0015"
+    FIELD_1$="SEL_CODE_01"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0016"
+    FIELD_1$="SEL_CODE_02"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0017"
+    FIELD_1$="SEL_CODE_03"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0018"
+    FIELD_1$="SEL_CODE_04"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0019"
+    FIELD_1$="SEL_CODE_05"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0020"
+    FIELD_1$="SEL_CODE_06"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0021"
+    FIELD_1$="SEL_CODE_07"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0022"
+    FIELD_1$="SEL_CODE_08"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0023"
+    FIELD_1$="SEL_CODE_09"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0024"
+    FIELD_1$="SEL_CODE_10"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0025"
+    FIELD_1$="SEL_CODE_11"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SELE_C"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0026"
+    FIELD_1$="LAST_CONT_DATE"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LST_CNT_DT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0027"
+    FIELD_1$="LAST_CONT_ACTION"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LAST_C_A"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0028"
+    FIELD_1$="FOLLOW_UP_DATE"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FOLL_U_D"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0029"
+    FIELD_1$="BAROMETER"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"BAROMETER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0030"
+    FIELD_1$="SPER_CODE"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SPER_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0031"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0032"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    0033"
+    FIELD_1$="EMAIL_ADDRESS"
+    FIELD_4$="60"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"EMAIL_A"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="60"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    F001"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZP4B    SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%list_type_code$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

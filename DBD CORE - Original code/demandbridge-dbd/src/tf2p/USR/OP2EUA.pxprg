@@ -1,0 +1,71 @@
+0010 REM "Export Office Products Order Solution <OP2EUA>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 07/29/98 - 13.93 - cwj - SSP# 101029
+0040 REM "Copyright 1998 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "Transfer data from     to                             and from     to                            . No X3$ support.
+0100 SETERR 9000
+0105 CLOSE (14); OPEN (14,ERR=9930)"DA"; CLOSE (14); REM "If DIRectory not defined then don't process
+0110 X0$="OP2EUA",X1$="Export Office Products Order Process"
+0115 DIM Z1$(300," ")
+0120 CURR_DIR$=LWD
+0400 REM "OPEN MISC FILES - X3$ NOT SUPPORTED
+0500 REM "Open ZZPARM and look for OPS records to tell which companies to process. These will also provide the parameters. The records (keyed company_code + "OPS" like normal param records) are repeated as "OPS"+company_code so we can find them. Build COMP_LIST$ array, we'll hardcode for 100 now and leave the option to make it dynamic (via NEA & INSERT ARRAY) later
+0505 DIM Z[13],COMP_LIST$[100]; COMP_COUNT=0,CURRENT_COMP=0
+0510 Z[13]=UNT; OPEN (Z[13])"ZZPARM"
+0515 READ (Z[13],KEY="OPS",DOM=0516)
+0519 COMP_COUNT=COMP_COUNT+1; COMP_LIST$[COMP_COUNT]=OP_PARM$
+0520 READ (Z[13],END=0525)OP_PARM$; IF LEN(OP_PARM$)<6 THEN GOTO 0525 ELSE IF OP_PARM$(4,3)<>"OPS" THEN GOTO 0525 ELSE COMP_COUNT=COMP_COUNT+1; COMP_LIST$[COMP_COUNT]=OP_PARM$; GOTO 0520
+0525 IF COMP_COUNT=0 THEN GOTO 9900
+0530 START_A_COMPANY:REM "Come to here to get the next company
+0532 CURRENT_COMP=CURRENT_COMP+1; IF CURRENT_COMP>COMP_COUNT THEN CURRENT_COMP=1
+0535 OP_PARM$=COMP_LIST$[CURRENT_COMP]
+0536 TEXT$=""
+0540 IF STP(OP_PARM$(67,12),3," ")="" THEN GOTO 9900
+0550 REM "Check for export flag file, if there then wait until it is gone
+0552 CWDIR STP(OP_PARM$(7,60),1); REM " so we will search the correct DIRectory
+0554 IF STP(OP_PARM$(163,12),3," ")="" THEN GOTO 0567; REM "Skip checking for and creating flag file if file name is blank
+0555 CLOSE (14); OPEN (14,ERR=0560)STP(OP_PARM$(163,12),1); CLOSE (14); REM "If not found we ar ok so go to 560, be sure to close flag file so it can be erased
+0556 REM "Here we need to loop until free, give message, wait 1 so we dont waste a lot of cpu trying then try again
+0557 WAIT 1; GOTO 0555
+0560 REM "If here, there is no file now, so make one in the appropiate DIRectory, if we get ERR 12, someone else has slipped in ahead, so go back and wait
+0565 CWDIR STP(OP_PARM$(7,60),1); SERIAL OP_PARM$(163,12),10,0,ERR=0566; GOTO 0570
+0566 IF ERR=12 THEN GOTO 0557 ELSE SERIAL STP(OP_PARM$(163,12),1),10,0; REM "If file exists someone else got there first, loop until clear, else try again and get err
+0600 REM "Open header & detail files, create if necessary
+0605 REM "If no '*' in header name to indicate use order number, then create the header file if needed.
+0610 IF POS("*"=OP_PARM$(67,12))=0 THEN FILE_NAME$=OP_PARM$(67,12); GOSUB CREATE_FILE; TEXT$=FILE_NAME$
+0650 GOSUB OPEN_FILE
+0700 REM "Open Source files
+0703 CWDIR CURR_DIR$; REM "Make sure we're set back or we may not be able to find the files.
+0705 Z[2]=UNT; OPEN (Z[2],ERR=0706)"PO1"+OP_PARM$(1,3); GOTO 0707
+0706 OPEN (Z[2],ERR=9900)"PO1"+OP_PARM$(1,3)
+0710 Z[3]=UNT; OPEN (Z[3],ERR=0711)"PO2"+OP_PARM$(1,3); GOTO 0712
+0711 OPEN (Z[3],ERR=9900)"PO2"+OP_PARM$(1,3)
+1000 REM "BEGIN MAIN PROCESS
+1100 REM "Write Headers and corresponding detail lines
+1105 PO1_KEY$=KEY(Z[2],END=1295); EXTRACT (Z[2],KEY=PO1_KEY$)PO1$
+1200 REM "Detail Lines
+1220 READ (Z[3],KEY=PO1_KEY$,DOM=1121)
+1225 PO2_KEY$=KEY(Z[3],END=1180); IF PO2_KEY$(1,LEN(PO1_KEY$))<>PO1_KEY$ THEN GOTO 1180
+1230 EXTRACT (Z[3],KEY=PO2_KEY$,DOM=1125)PO2$
+1985 TEXT$=""; DETAIL$=""; FOR I=2 TO 5; IF Z[I]<>0 THEN CLOSE (Z[I]) END_IF ; NEXT I
+1990 IF STP(OP_PARM$(163,12),3," ")="" THEN GOTO 1991 ELSE ERASE STP(OP_PARM$(163,12),1),ERR=1991; REM "Remove flag file
+1992 WAIT 60; REM "Give scale a chance to get in
+1995 GOTO 0530
+7500 CREATE_FILE:REM "Setup text file FILE_NAME$ in export DIRectory
+7505 ERASE FILE_NAME$,ERR=7506; GOTO 7505
+7510 CWDIR STP(OP_PARM$(7,60),1); SERIAL FILE_NAME$,10,0,ERR=7511
+7515 CWDIR CURR_DIR$; REM "Current DIR set above
+7545 CREATE_FILE_END:RETURN 
+7550 OPEN_FILE:REM "Open Text file for transmission
+7555 IF TEXT$<>"" THEN IF Z[4]<>0 THEN CLOSE (Z[4]) END_IF ; Z[4]=UNT; OPEN LOCK (Z[4],OPT="TEXT")TEXT$
+7595 OPEN_FILE_END:RETURN 
+9000 REM "ERROR PROCESSING
+9002 CWDIR CURR_DIR$
+9900 REM "END PROGRAM
+9901 IF LEN(OP_PARM$)>=174 THEN IF STP(OP_PARM$(163,12),3," ")="" THEN GOTO 9902 ELSE ERASE STP(OP_PARM$(163,12),1),ERR=9902; REM "Remove flag file
+9902 CWDIR CURR_DIR$; CWDIR CURR_DIR$
+9903 CLOSE (Z[4],ERR=9904)
+9904 CLOSE (Z[5],ERR=9905)
+9950 RELEASE 
+9999 END 

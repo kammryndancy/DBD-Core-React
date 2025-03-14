@@ -1,0 +1,160 @@
+REM ** @Name DBFILE - DemandBridge File Manager
+REM ** @Author mhe 
+REM ** @OutputFile DBFILE.pvc 
+REM "5.6 - 11/27/07 - 14.379722 - mhe - SSP# 203099
+REM "203099-Enhancements to Output Director.  Provide ability for       
+REM "Copyright 2007 DemandBridge, Inc.; Norcross, Georgia
+REM "        Licensed Software - All Rights Reserved.
+! 
+! 
+DEF CLASS "DBFILE"
+! 
+LOCAL _CHANNELNUMBER
+LOCAL _KEYNUMBER
+! 
+! 
+! READFIRST()
+! This method retrieves the first key in the file and reads that record
+! 
+FUNCTION READFIRST()
+_TMPKEY$=KEF(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! READNEXT()
+! This method retrieves the next key in the file and reads the record
+! 
+FUNCTION READNEXT()
+_TMPKEY$=KEY(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! READPREVIOUS()
+! This method reads the previous key in the file and reads the record
+! 
+FUNCTION READPREVIOUS()
+_TMPKEY$=KEP(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! READLAST()
+! This mehtod reads the last key in the file and reads the record
+! 
+FUNCTION READLAST()
+_TMPKEY$=KEL(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! READBYKEY(TMPKEY$)
+! This method reads the record based upon the key passed to it
+! 
+FUNCTION READBYKEY(TMPKEY$)
+ENTER _TMPKEY$
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! READBYKEY(TMP_KNO, TMPKEY$)
+! This method reads the record based upon the alternate key number
+! and key passed to it
+! 
+FUNCTION READBYKEY(TMP_KNO,TMPKEY$)
+ENTER _TMPKNO,_TMPKEY$
+READ (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_TMPKNO,DOM=DOMERROR,ERR=READERROR)
+RETURN 1
+! 
+! 
+! EXTRACTNEXT() ! 268942
+! This method is used to extract the next available record in the current file
+FUNCTION EXTRACTNEXT()
+_TMPKEY$=KEY(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+DO_EXT:EXTRACT (_CHANNELNUMBER,KEY=_TMPKEY$,KNO=_KEYNUMBER,DOM=DOMERROR,ERR=READERROR,BSY=*NEXT,TIM=0); GOTO EXT_DONE
+_TMPKEY$=KEN(_CHANNELNUMBER,KNO=_KEYNUMBER,END=ENDOFFILEERROR,ERR=READERROR)
+GOTO DO_EXT
+EXT_DONE:
+RETURN 1
+! 
+! INSERT(TMPKEY$)
+! This method inserts a new record in the file using the key passed to it
+! 
+FUNCTION INSERT(TMPKEY$)
+ENTER PRIMEKEY$
+WRITE (_CHANNELNUMBER,KEY=PRIMEKEY$,DOM=DOMERROR,ERR=INSERTERROR)
+RETURN 1
+! 
+! 
+! UPDATE()
+! This method updates the existing record
+! 
+FUNCTION UPDATE()
+WRITE (_CHANNELNUMBER,ERR=UPDATEERROR)
+RETURN 1
+! 
+! 
+! DELETE()
+! This method deletes the exisiting record
+! 
+FUNCTION DELETE()
+REMOVE (_CHANNELNUMBER,ERR=DELETEERROR)
+RETURN 1
+! 
+! 
+! DELETEERROR
+! This routine is called when there is an error deleting a record
+! 
+DELETEERROR:
+RETURN 0
+! 
+! 
+! DOMERROR
+! This routine is called when there is a DOM error
+! 
+DOMERROR:
+RETURN 0
+! 
+! 
+! ENDOFFILEERROR
+! This routine is called when trying to read past the end of the file
+! 
+ENDOFFILEERROR:
+RETURN 0
+! 
+! 
+! INSERTERROR
+! This routine is called when trying to insert a new record into the file
+! 
+INSERTERROR:
+RETURN 0
+! 
+! 
+! KEYERROR
+! This routine is called when there is an error retrieving a key
+! 
+KEYERROR:
+RETURN 0
+! 
+! 
+! READERROR
+! This routine is called when there is an error reading the record
+! 
+READERROR:
+RETURN 0
+! 
+! 
+! UPDATEERROR
+! This routine is called when there is an error updating the record
+! 
+UPDATEERROR:
+RETURN 0
+! 
+! 
+END DEF
+! 
+! 
+REM ** @ModificationHistory         
+REM "Class created. 11/27/2007 - MHE
+REM "203099-Enhancements to Output Director.  Provide ability for       

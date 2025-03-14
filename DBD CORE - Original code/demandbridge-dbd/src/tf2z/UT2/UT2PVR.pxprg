@@ -1,0 +1,39 @@
+0010 REM "Print variable sizes
+0020 REM "Uses I,J,K,L,M
+0100 PRINT 'CS','SB',; FOR I=0 TO 9; PRINT @(16+I*6,0),I:"0",; NEXT I; PRINT 'SF',
+0500 REM 
+0505 K=1,L=0
+0510 FOR I=ASC("A") TO ASC("Z")
+0520 PRINT @(3,K),CHR(I),"$=",
+0530 EXECUTE "PRINT @(7,K),LEN("+CHR(I)+"$):"+QUO+"#,###"+QUO+","
+0535 EXECUTE "L=L+LEN("+CHR(I)+"$)"
+0540 FOR J=0 TO 9
+0550 EXECUTE "PRINT @("+STR(13+J*6)+",K),LEN("+CHR(I)+STR(J:"0")+"$):"+QUO+"#,###"+QUO+","
+0555 EXECUTE "L=L+LEN("+CHR(I)+STR(J:"0")+"$)"
+0560 NEXT J
+0580 K=K+1; IF K>16 THEN INPUT @(0,21),"Return to continue ",*; K=1; PRINT 'CF',
+0590 NEXT I
+0594 PRINT @(0,20),"Total length of strings = ",L:"##,###",
+0595 INPUT @(0,21),"Return to continue ",*
+1000 REM "Numerics
+1005 J=3,K=0,L=0
+1007 PRINT 'CS',
+1010 FOR I=ASC("A") TO ASC("Z")
+1020 GOSUB 1500
+1030 IF M<>0 THEN K=K+1; EXECUTE "PRINT @(J,K),"+QUO+CHR(I)+"() = "+STR(M+1:"#,##0")+" elements = "+STR(SGN(M)*18+M*8:"##,##0")+" bytes"+QUO
+1032 L=L+SGN(M)*18+M*8
+1035 IF K>18 THEN K=1,J=40
+1040 NEXT I
+1055 PRINT @(0,20),"Total size of arrays = ",L:"##,###",
+1060 INPUT @(0,21),"Return to continue ",*
+1100 REM "END
+1101 ESCAPE 
+1500 REM "Calculate number of elements 
+1501 SETERR 1530
+1505 M=0
+1510 EXECUTE CHR(I)+"("+STR(M:"0")+")="+CHR(I)+"("+STR(M:"0")+")"
+1515 M=M+1
+1520 GOTO 1510
+1530 SETERR 0000
+1590 RETURN 
+9999 END 

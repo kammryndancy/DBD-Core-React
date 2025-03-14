@@ -1,0 +1,36 @@
+<PxTable>
+ TableName=ZA5
+ TableKey=K1007399597
+ FileCreate=KEYED "ZA5",3,10,78,BSZ=1,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="D3 "
+    FIELD_1$="D3 Convert 3char YMD packed date ADD_ON_DATE               D     006     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="D6 "
+    FIELD_1$="D6 Convert MMDDYY dates          UPPER_CASE                D     006     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N1 "
+    FIELD_1$="N1                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P2 "
+    FIELD_1$="P2 Packed numeric, 2 places      PACKED_2                  N        0922 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="Y-B"
+    FIELD_1$="Y-BYes/No to Boolean             YN_TO_BOOLEAN             B     001     "
+   </RecordData>
+
+</Data>
+
+</PxTable>

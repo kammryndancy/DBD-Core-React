@@ -1,0 +1,152 @@
+<PxTable>
+ TableName=IC.EN.CUST.csi
+ TableKey=K1602530836
+ FileCreate=KEYED "IC.EN.CUST.csi",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0000"
+    FIELD_1$="IC0_Item"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="90"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"IC0"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2017/12/28 10:02 tma"
+    FIELD_21$="R"
+    FIELD_23$="U0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.ITEM_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0001"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0002"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0003"
+    FIELD_1$="ITEM_CODE"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="10"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0004"
+    FIELD_1$="ITEM_DESC"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="35"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0005"
+    FIELD_1$="PROD_CODE"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0006"
+    FIELD_1$="LEFT_RIGHT"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LEFT_RIGHT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0007"
+    FIELD_1$="TOP_BOTTOM"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TOP_BOTTOM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 0008"
+    FIELD_1$="PLYS"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PLYS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 F001"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="AR1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC0.1.2 SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%CUSTOMER$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

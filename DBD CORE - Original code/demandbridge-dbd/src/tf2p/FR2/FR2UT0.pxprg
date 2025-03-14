@@ -1,0 +1,31 @@
+0010 REM "Process old column format to new <GFR2UT0>
+0035 REM "3.9 - 05/15/96 - 16.43 - jrh
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0120 DIM S$(20)
+0410 OPEN (1)"FR3.OLD"; GOTO 0420
+0420 OPEN (2)"FR3"; CALL "ZZINIT","02"
+1000 REM "Process
+1010 PRINT 'LF',"Processing FR3..."
+1020 K$=KEY(1,END=1400); READ (1)A$,A,B,C
+1025 PRINT ".",
+1040 K$=K$(1,5)+STR(A:"000")
+1050 A$=K$+A$(8)
+1080 WRITE (2,KEY=K$,DOM=1200)A$
+1090 GOTO 1020
+1200 REM "DUPLICATE
+1220 REM PRINT 'LF',"DUPLICATE KEY: ",K$
+1290 GOTO 1020
+1400 REM "Process report template detail file
+1405 PRINT 'LF',"Processing FR5..."
+1410 CLOSE (1); CLOSE (2)
+1415 OPEN (1)"FR5.OLD"; OPEN (2)"FR5"; CALL "ZZINIT","02"
+1420 K$=KEY(1,END=1600); READ (1)A$,A,B
+1425 PRINT ".",
+1430 K1$=K$(1,8)+K$(9,2)+S$(1,10)
+1440 B$=A$,B$(22,40)=A$(12,50),B$(1,20)=K1$
+1445 B$(21,1)=A$(9,1)
+1480 WRITE (2,KEY=K1$)B$,B
+1590 GOTO 1420
+9999 END 

@@ -1,0 +1,62 @@
+0010 REM "<FO2SDA> GOR Status Code Descriptions
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 08/13/02 - 13.838888 - kmc - SSP# 145202
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FO2SDA",X1$="GOR Status Code Descriptions"
+1000 IF Q0$="0" THEN A1$="OK"
+1010 IF Q0$="1" THEN A1$="Invalid Customer Code: Set up customer or delete req"
+1020 IF Q0$="2" THEN A1$="Invalid Location Code: Set up location or delete req"
+1030 IF Q0$="3" THEN A1$="Invalid Customer & Location Codes: Set up codes or delete req"
+1040 IF Q0$="4" THEN A1$="Invalid Item Code: Not found using alt. inv. customer code, customer code or stock item"
+1050 IF Q0$="5" THEN A1$="Invalid Item Code: Not found using imported customer code"
+1060 IF Q0$="6" THEN A1$="Invalid Item Code: Found using imported data but does not match alt. inv. cust. code or cust. code"
+1070 IF Q0$="7" THEN A1$="Invalid Item Code: Not found after req was maintained"
+1080 IF Q0$="8" THEN A1$="Customer parameters do not allow stock requisitioning"
+1090 IF Q0$="9" THEN A1$="Secure Item: Check parameters & req access on item"
+1200 IF Q0$="A" THEN A1$="No item master for this customer specific item"
+1210 IF Q0$="B" THEN A1$="Quantity ordered is over limit per customer parameters"
+1219 REM "C thru H added with version 1.01 of FO1 file, 10/31/96
+1220 IF Q0$="C" THEN A1$="Blank location code for FMS customer not allowed, delete req"
+1230 IF Q0$="D" THEN A1$="Invalid customer code with invalid blank location code,delete req"
+1235 IF Q0$="E" THEN A1$="Blank loc. code, no manual ship info, no default ship, no cust. master address"
+1240 IF Q0$="F" THEN A1$="Invalid customer code with blank location code, no manual ship-to info,delete req"
+1250 IF Q0$="G" THEN A1$="Invalid sales tax code"
+1265 IF Q0$="H" THEN A1$="Invalid sales tax code & other invalid data"
+1270 IF Q0$="I" THEN A1$="Invalid blank location code after maintained: Delete req"
+1275 IF Q0$="J" THEN A1$="Quantity ordered is over location requisition maximum"
+1280 IF Q0$="K" THEN A1$="Quantity ordered is over requisition maximum by form"; REM "SSP131690
+1285 IF Q0$="L" THEN A1$="Requested Order number is already in use"; REM "Ssp #137783 & 145202
+2000 GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 REM "CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z[ALL],0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

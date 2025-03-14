@@ -1,0 +1,771 @@
+<PxTable>
+ TableName=ZA2WAB
+ TableKey=K1007399585
+ FileCreate=KEYED "ZA2WAB",20,2000,312,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_MASTER* "
+    FIELD_1$="AR_CUSTOMER_MASTER* Link to customer master                 *                                                                                                              AR_CUSTOMER_MASTER=CUSTOMER_CODE                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_CODE       "
+    FIELD_1$="CUSTOMER_CODE       Customer code                           A        010    A/R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_01   "
+    FIELD_1$="GROSS_PROFIT_%_01   Gross profit % 01                       NF          0320   07Gross                         Profit                        %  01                         @PERCENT_OF(PROFIT_01,SALES_01)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_02   "
+    FIELD_1$="GROSS_PROFIT_%_02   Gross profit % 02                       NF          0320   07Gross                         Profit                        %  02                         @PERCENT_OF(PROFIT_02,SALES_02)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_03   "
+    FIELD_1$="GROSS_PROFIT_%_03   Gross profit % 03                       NF          0320   07Gross                         Profit                        %  03                         @PERCENT_OF(PROFIT_03,SALES_03)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_04   "
+    FIELD_1$="GROSS_PROFIT_%_04   Gross profit % 04                       NF          0320   07Gross                         Profit                        % 04                          @PERCENT_OF(PROFIT_04,SALES_04)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_05   "
+    FIELD_1$="GROSS_PROFIT_%_05   Gross profit % 05                       NF          0320   07Gross                         Profit                        % 05                          @PERCENT_OF(PROFIT_05,SALES_05)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_06   "
+    FIELD_1$="GROSS_PROFIT_%_06   Gross profit % 06                       NF          0320   07Gross                         Profit                        % 06                          @PERCENT_OF(PROFIT_06,SALES_06)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_07   "
+    FIELD_1$="GROSS_PROFIT_%_07   Gross profit % 07                       NF          0320   07Gross                         Profit                        % 07                          @PERCENT_OF(PROFIT_07,SALES_07)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_08   "
+    FIELD_1$="GROSS_PROFIT_%_08   Gross profit % 08                       NF          0320   07Gross                         Profit                        % 08                          @PERCENT_OF(PROFIT_08,SALES_08)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_09   "
+    FIELD_1$="GROSS_PROFIT_%_09   Gross profit % 09                       NF          0320   07Gross                         Profit                        % 09                          @PERCENT_OF(PROFIT_09,SALES_09)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_10   "
+    FIELD_1$="GROSS_PROFIT_%_10   Gross profit % 10                       NF          0320   07Gross                         Profit                        % 10                          @PERCENT_OF(PROFIT_10,SALES_10)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_11   "
+    FIELD_1$="GROSS_PROFIT_%_11   Gross profit % 11                       NF          0320   07Gross                         Profit                        % 11                          @PERCENT_OF(PROFIT_11,SALES_11)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GROSS_PROFIT_%_12   "
+    FIELD_1$="GROSS_PROFIT_%_12   Gross profit % 12                       NF          0320   07Gross                         Profit                        % 12                          @PERCENT_OF(PROFIT_12,SALES_12)                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OPENING_BAL_P       "
+    FIELD_1$="OPENING_BAL_P       Opening bal p                           N           0922   15Opening                       Balance                       Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OPENING_BAL_S       "
+    FIELD_1$="OPENING_BAL_S       Opening bal s                           N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_01           "
+    FIELD_1$="PROFIT_01           PROFIT_01                               N           0621   11Period                        01                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_02           "
+    FIELD_1$="PROFIT_02           Profit 02                               N           0621   11Period                        02                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_03           "
+    FIELD_1$="PROFIT_03           Profit 03                               N           0621   11Period                        03                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_04           "
+    FIELD_1$="PROFIT_04           profit 04                               N           0621   11Period                        04                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_05           "
+    FIELD_1$="PROFIT_05           Profit 05                               N           0621   11Period                        05                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_06           "
+    FIELD_1$="PROFIT_06           Profit 06                               N           0621   11Period                        06                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_07           "
+    FIELD_1$="PROFIT_07           Profit 07                               N           0621   11Period                        07                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_08           "
+    FIELD_1$="PROFIT_08           Profit 08                               N           0621   11Period                        08                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_09           "
+    FIELD_1$="PROFIT_09           Profit 09                               N           0621   11Period                        09                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_10           "
+    FIELD_1$="PROFIT_10           Profit 10                               N           0621   11Period                        10                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_11           "
+    FIELD_1$="PROFIT_11           Profit 11                               N           0621   11Period                        11                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_12           "
+    FIELD_1$="PROFIT_12           Profit 12                               N           0621   11Period                        12                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_13           "
+    FIELD_1$="PROFIT_13           Profit 13                               N           0922   14Period                        13                            Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PROFIT_TYPE_P       "
+    FIELD_1$="PROFIT_TYPE_P       Profit type p                           S        001       06Profit                        Type                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_OPENING_BAL_P    "
+    FIELD_1$="PY_OPENING_BAL_P    Prior Year's Opening Balance P          N           0922   15Opening                       Balance                       Prior Year                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_OPENING_BAL_S    "
+    FIELD_1$="PY_OPENING_BAL_S    Prior Year's Opening Balance            N           0922   15Prior Year                    Opening                       Balance                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_01        "
+    FIELD_1$="PY_PROFIT_01        Prior Year Period 01 Profit             N           0922   14Prior Year                    Period 01                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_02        "
+    FIELD_1$="PY_PROFIT_02        Prior Year Period 02 Profit             N           0922   14Prior Year                    Period 02                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_03        "
+    FIELD_1$="PY_PROFIT_03        Prior Year Period 03 Profit             N           0922   14Prior Year                    Period 03                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_04        "
+    FIELD_1$="PY_PROFIT_04        Prior Year Period 04 Profit             N           0922   14Prior Year                    Period 04                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_05        "
+    FIELD_1$="PY_PROFIT_05        Prior Year Period 05 Profit             N           0922   14Prior Year                    Period 05                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_06        "
+    FIELD_1$="PY_PROFIT_06        Prior Year Period 06 Profit             N           0922   14Prior Year                    Period 06                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_07        "
+    FIELD_1$="PY_PROFIT_07        Prior Year Period 07 Profit             N           0922   14Prior Year                    Period 07                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_08        "
+    FIELD_1$="PY_PROFIT_08        Prior Year Period 08 Profit             N           0922   14Prior Year                    Period 08                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_09        "
+    FIELD_1$="PY_PROFIT_09        Prior Year Period 09 Profit             N           0922   14Prior Year                    Period 09                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_10        "
+    FIELD_1$="PY_PROFIT_10        Prior Year Period 10 Profit             N           0922   14Prior Year                    Period 10                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_11        "
+    FIELD_1$="PY_PROFIT_11        Prior Year Period 11 Profit             N           0922   14Prior Year                    Period 11                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_12        "
+    FIELD_1$="PY_PROFIT_12        Prior Year Period 12 Profit             N           0922   14Prior Year                    Period 12                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_PROFIT_13        "
+    FIELD_1$="PY_PROFIT_13        Prior Year Period 13 Profit             N           0922   14Prior Year                    Period 13                     Profit                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_01         "
+    FIELD_1$="PY_SALES_01         Prior Year Sales Period 01              N           0922   14Prior Year                    Period 01                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_02         "
+    FIELD_1$="PY_SALES_02         Prior Year Sales Period 02              N           0922   14Prior Year                    Period 02                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_03         "
+    FIELD_1$="PY_SALES_03         Prior Year Sales Period 03              N           0922   14Prior Year                    Period 03                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_04         "
+    FIELD_1$="PY_SALES_04         Prior Year Sales Period 04              N           0922   14Prior Year                    Period 04                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_05         "
+    FIELD_1$="PY_SALES_05         Prior Year Sales Period 05              N           0922   14Prior Year                    Period 05                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_06         "
+    FIELD_1$="PY_SALES_06         Prior Year Sales Period 06              N           0922   14Prior Year                    Period 06                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_07         "
+    FIELD_1$="PY_SALES_07         Prior Year Sales Period 07              N           0922   14Prior Year                    Period 07                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_08         "
+    FIELD_1$="PY_SALES_08         Prior Year Sales Period 08              N           0922   14Prior Year                    Period 08                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_09         "
+    FIELD_1$="PY_SALES_09         Prior Year Sales Period 09              N           0922   14Prior Year                    Period 09                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_10         "
+    FIELD_1$="PY_SALES_10         Prior Year Sales Period 10              N           0922   14Prior Year                    Period 10                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_11         "
+    FIELD_1$="PY_SALES_11         Prior Year Sales Period 11              N           0922   14Prior Year                    Period 11                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_12         "
+    FIELD_1$="PY_SALES_12         Prior Year Sales Period 12              N           0922   14Prior Year                    Period 12                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY_SALES_13         "
+    FIELD_1$="PY_SALES_13         Prior Year Sales Period 13              N           0922   14Prior Year                    Period 13                     Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALESPERSON_CODE    "
+    FIELD_1$="SALESPERSON_CODE    Salesperson Code                        S        004       12Sales Person                  Code                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_01            "
+    FIELD_1$="SALES_01            Sales 01                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_02            "
+    FIELD_1$="SALES_02            Sales 02                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_03            "
+    FIELD_1$="SALES_03            Sales 03                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_04            "
+    FIELD_1$="SALES_04            Sales 04                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_05            "
+    FIELD_1$="SALES_05            Sales 05                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_06            "
+    FIELD_1$="SALES_06            Sales 06                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_07            "
+    FIELD_1$="SALES_07            Sales 07                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_08            "
+    FIELD_1$="SALES_08            Sales 08                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_09            "
+    FIELD_1$="SALES_09            Sales 09                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_10            "
+    FIELD_1$="SALES_10            Sales 10                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_11            "
+    FIELD_1$="SALES_11            Sales 11                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_12            "
+    FIELD_1$="SALES_12            Sales 12                                N           0621                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_13            "
+    FIELD_1$="SALES_13            Sales 13                                N           0922   14Period                        13                            Sales                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_PTD           "
+    FIELD_1$="SALES_PTD           Sales - Month to date                   NM          0922   15Sales - Month to date                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_TYPE_P        "
+    FIELD_1$="SALES_TYPE_P        Sales type p                            S        001                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES_TYPE_S        "
+    FIELD_1$="SALES_TYPE_S        Sales type s                            S        001                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNUSED_BUT_NEEDED_1 "
+    FIELD_1$="UNUSED_BUT_NEEDED_1 Unused but needed 1                     N           0922   14Unused                        But                           Needed                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_P              "
+    FIELD_1$="YEAR_P              Year p                                  Z        004       06Profit                        Year                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_S              "
+    FIELD_1$="YEAR_S              Year s                                  Z        004       05Sales                         Year                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_TO_DATE_PROFIT "
+    FIELD_1$="YEAR_TO_DATE_PROFIT Year to date profit                     NF          0922   11Year-                         to-Date                       Profit                        PROFIT_01+PROFIT_02+PROFIT_03+PROFIT_04+PROFIT_05+PROFIT_06+     PROFIT_07+PROFIT_08+PROFIT_09+PROFIT_10+PROFIT_11+PROFIT_12       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_TO_DATE_SALES  "
+    FIELD_1$="YEAR_TO_DATE_SALES  Year to date Sales                      NF          0922   12Year To Date                     Sales                                                    SALES_01+SALES_02+SALES_03+SALES_04+SALES_05+SALES_06+           SALES_07+SALES_08+SALES_09+SALES_10+SALES_11+SALES_12             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_01          "
+    FIELD_1$="YTD_GP%_01          Ytd gp% 01                              NF          0320   07YTD GP%                       Period                        01                            @PERCENT_OF(YTD_PROFIT_01,YTD_SALES_01)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_02          "
+    FIELD_1$="YTD_GP%_02          Ytd gp% 02                              NF          0320   07YTD GP%                       Period                        02                            @PERCENT_OF(YTD_PROFIT_02,YTD_SALES_02)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_03          "
+    FIELD_1$="YTD_GP%_03          Ytd gp% 03                              NF          0320   07YTD GP%                       Period                        03                            @PERCENT_OF(YTD_PROFIT_03,YTD_SALES_03)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_04          "
+    FIELD_1$="YTD_GP%_04          Ytd gp% 04                              NF          0320   07YTD GP%                       Period                        04                            @PERCENT_OF(YTD_PROFIT_04,YTD_SALES_04)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_05          "
+    FIELD_1$="YTD_GP%_05          Ytd gp% 05                              NF          0320   07YTD GP%                       Period                        05                            @PERCENT_OF(YTD_PROFIT_05,YTD_SALES_05)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_06          "
+    FIELD_1$="YTD_GP%_06          Ytd gp% 06                              NF          0320   07YTD GP%                       Period                        06                            @PERCENT_OF(YTD_PROFIT_06,YTD_SALES_06)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_07          "
+    FIELD_1$="YTD_GP%_07          Ytd gp% 07                              NF          0320   07YTD GP%                       Period                        07                            @PERCENT_OF(YTD_PROFIT_07,YTD_SALES_07)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_08          "
+    FIELD_1$="YTD_GP%_08          Ytd gp% 08                              NF          0320   07YTD GP%                       Period                        08                            @PERCENT_OF(YTD_PROFIT_08,YTD_SALES_08)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_09          "
+    FIELD_1$="YTD_GP%_09          Ytd gp% 09                              NF          0320   07YTD GP%                       Period                        09                            @PERCENT_OF(YTD_PROFIT_09,YTD_SALES_09)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_10          "
+    FIELD_1$="YTD_GP%_10          Ytd gp% 10                              NF          0320   07YTD GP%                       Period                        10                            @PERCENT_OF(YTD_PROFIT_10,YTD_SALES_10)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_11          "
+    FIELD_1$="YTD_GP%_11          Ytd gp% 11                              NF          0320   07YTD GP%                       Period                        11                            @PERCENT_OF(YTD_PROFIT_11,YTD_SALES_11)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_12          "
+    FIELD_1$="YTD_GP%_12          Ytd gp% 12                              NF          0320   07YTD GP%                       Period                        12                            @PERCENT_OF(YTD_PROFIT_12,YTD_SALES_12)                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_01       "
+    FIELD_1$="YTD_GP%_PY_01       Ytd gp% py 01                           NF          0320   07YTD GP%                       Period                        03 PY                         @PERCENT_OF(YTD_PROFIT_PY_01,YTD_SALES_PY_01)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_02       "
+    FIELD_1$="YTD_GP%_PY_02       Ytd gp% py 02                           NF          0320   07YTD GP%                       Period                        02 PY                         @PERCENT_OF(YTD_PROFIT_PY_02,YTD_SALES_PY_02)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_03       "
+    FIELD_1$="YTD_GP%_PY_03       Ytd gp% py 03                           NF          0320   07YTD GP%                       Period                        03 PY                         @PERCENT_OF(YTD_PROFIT_PY_03,YTD_SALES_PY_03)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_04       "
+    FIELD_1$="YTD_GP%_PY_04       Ytd gp% py 04                           NF          0320   07YTD GP%                       Period                        04 PY                         @PERCENT_OF(YTD_PROFIT_PY_04,YTD_SALES_PY_04)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_05       "
+    FIELD_1$="YTD_GP%_PY_05       Ytd gp% py 05                           NF          0320   07YTD GP%                       Period                        05 PY                         @PERCENT_OF(YTD_PROFIT_PY_05,YTD_SALES_PY_05)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_06       "
+    FIELD_1$="YTD_GP%_PY_06       Ytd gp% py 06                           NF          0320   07YTD GP%                       Period                        06 PY                         @PERCENT_OF(YTD_PROFIT_PY_06,YTD_SALES_PY_06)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_07       "
+    FIELD_1$="YTD_GP%_PY_07       Ytd gp% py 07                           NF          0320   07YTD GP%                       Period                        07 PY                         @PERCENT_OF(YTD_PROFIT_PY_07,YTD_SALES_PY_07)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_08       "
+    FIELD_1$="YTD_GP%_PY_08       Ytd gp% py 08                           NF          0320   07YTD GP%                       Period                        08 PY                         @PERCENT_OF(YTD_PROFIT_PY_08,YTD_SALES_PY_08)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_09       "
+    FIELD_1$="YTD_GP%_PY_09       Ytd gp% py 09                           NF          0320   07YTD GP%                       Period                        09 PY                         @PERCENT_OF(YTD_PROFIT_PY_09,YTD_SALES_PY_09)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_10       "
+    FIELD_1$="YTD_GP%_PY_10       Ytd gp% py 10                           NF          0320   07YTD GP%                       Period                        10 PY                         @PERCENT_OF(YTD_PROFIT_PY_10,YTD_SALES_PY_10)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_11       "
+    FIELD_1$="YTD_GP%_PY_11       Ytd gp% py 11                           NF          0320   07YTD GP%                       Period                        11 PY                         @PERCENT_OF(YTD_PROFIT_PY_11,YTD_SALES_PY_11)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_GP%_PY_12       "
+    FIELD_1$="YTD_GP%_PY_12       Ytd gp% py 12                           NF          0320   07YTD GP%                       Period                        12 PY                         @PERCENT_OF(YTD_PROFIT_PY_12,YTD_SALES_PY_12)                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_01       "
+    FIELD_1$="YTD_PROFIT_01       Ytd profit 01                           NF          0922   14YTD Profit                    Period 01                                                   PROFIT_01                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_02       "
+    FIELD_1$="YTD_PROFIT_02       Ytd profit 02                           NF          0922   14YTD Profit                    Period 02                                                   YTD_PROFIT_01+PROFIT_02                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_03       "
+    FIELD_1$="YTD_PROFIT_03       Ytd profit 03                           NF          0922   14YTD Profit                    Period 03                                                   YTD_PROFIT_02+PROFIT_03                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_04       "
+    FIELD_1$="YTD_PROFIT_04       Ytd profit 04                           NF          0922   14YTD Profit                    Period 04                                                   YTD_PROFIT_03+PROFIT_04                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_05       "
+    FIELD_1$="YTD_PROFIT_05       Ytd profit 05                           NF          0922   14YTD Profit                    Period 05                                                   YTD_PROFIT_04+PROFIT_05                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_06       "
+    FIELD_1$="YTD_PROFIT_06       Ytd profit 06                           NF          0922   14YTD Profit                    Period 06                                                   YTD_PROFIT_05+PROFIT_06                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_07       "
+    FIELD_1$="YTD_PROFIT_07       Ytd profit 07                           NF          0922   14YTD Profit                    Period 07                                                   YTD_PROFIT_06+PROFIT_07                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_08       "
+    FIELD_1$="YTD_PROFIT_08       Ytd profit 08                           NF          0922   14YTD Profit                    Period 08                                                   YTD_PROFIT_07+PROFIT_08                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_09       "
+    FIELD_1$="YTD_PROFIT_09       Ytd profit 09                           NF          0922   14YTD Profit                    Period 09                                                   YTD_PROFIT_08+PROFIT_09                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_10       "
+    FIELD_1$="YTD_PROFIT_10       Ytd profit 10                           NF          0922   14YTD Profit                    Period 10                                                   YTD_PROFIT_09+PROFIT_10                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_11       "
+    FIELD_1$="YTD_PROFIT_11       Ytd profit 11                           NF          0922   14YTD Profit                    Period 11                                                   YTD_PROFIT_10+PROFIT_11                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_12       "
+    FIELD_1$="YTD_PROFIT_12       Ytd profit 12                           NF          0922   14YTD Profit                    Period 12                                                   YTD_PROFIT_11+PROFIT_12                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_01    "
+    FIELD_1$="YTD_PROFIT_PY_01    Ytd profit py 01                        NF          0922   14YTD Profit                    Period 01                     Prior Year                    PY_PROFIT_01                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_02    "
+    FIELD_1$="YTD_PROFIT_PY_02    Ytd profit py 02                        NF          0922   14YTD Profit                    Period 02                     Prior Year                    YTD_PROFIT_PY_01+PY_PROFIT_02                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_03    "
+    FIELD_1$="YTD_PROFIT_PY_03    Ytd profit py 03                        NF          0922   14YTD Profit                    Period 03                     Prior Year                    YTD_PROFIT_PY_02+PY_PROFIT_03                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_04    "
+    FIELD_1$="YTD_PROFIT_PY_04    Ytd profit py 04                        NF          0922   14YTD Profit                    Period 04                     Prior Year                    YTD_PROFIT_PY_03+PY_PROFIT_04                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_05    "
+    FIELD_1$="YTD_PROFIT_PY_05    Ytd profit py 05                        NF          0922   14YTD Profit                    Period 05                     Prior Year                    YTD_PROFIT_PY_04+PY_PROFIT_05                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_06    "
+    FIELD_1$="YTD_PROFIT_PY_06    Ytd profit py 06                        NF          0922   14YTD Profit                    Period 06                     Prior Year                    YTD_PROFIT_PY_05+PY_PROFIT_06                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_07    "
+    FIELD_1$="YTD_PROFIT_PY_07    Ytd profit py 07                        NF          0922   14YTD Profit                    Period 07                     Prior Year                    YTD_PROFIT_PY_06+PY_PROFIT_07                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_08    "
+    FIELD_1$="YTD_PROFIT_PY_08    Ytd profit py 08                        NF          0922   14YTD Profit                    Period 08                     Prior Year                    YTD_PROFIT_PY_07+PY_PROFIT_08                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_09    "
+    FIELD_1$="YTD_PROFIT_PY_09    Ytd profit py 09                        NF          0922   14YTD Profit                    Period 09                     Prior Year                    YTD_PROFIT_PY_08+PY_PROFIT_09                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_10    "
+    FIELD_1$="YTD_PROFIT_PY_10    Ytd profit py 10                        NF          0922   14YTD Profit                    Period 10                     Prior Year                    YTD_PROFIT_PY_09+PY_PROFIT_10                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_11    "
+    FIELD_1$="YTD_PROFIT_PY_11    Ytd profit py 11                        NF          0922   14YTD Profit                    Period 11                     Prior Year                    YTD_PROFIT_PY_10+PY_PROFIT_11                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_PROFIT_PY_12    "
+    FIELD_1$="YTD_PROFIT_PY_12    Ytd profit py 12                        NF          0922   14YTD Profit                    Period 12                     Prior Year                    YTD_PROFIT_PY_11+PY_PROFIT_12                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_01        "
+    FIELD_1$="YTD_SALES_01        Ytd sales 01                            NF          0922   14YTD Sales                     Period 01                                                   SALES_01                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_02        "
+    FIELD_1$="YTD_SALES_02        Ytd sales 02                            NF          0922   14YTD Sales                     Period 02                                                   YTD_SALES_01+SALES_02                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_03        "
+    FIELD_1$="YTD_SALES_03        Ytd sales 03                            NF          0922   14YTD Sales                     Period 03                                                   YTD_SALES_02+SALES_03                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_04        "
+    FIELD_1$="YTD_SALES_04        Ytd sales 04                            NF          0922   14YTD Sales                     Period 04                                                   YTD_SALES_03+SALES_04                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_05        "
+    FIELD_1$="YTD_SALES_05        Ytd sales 05                            NF          0922   14YTD Sales                     Period 05                                                   YTD_SALES_04+SALES_05                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_06        "
+    FIELD_1$="YTD_SALES_06        Ytd sales 06                            NF          0922   14YTD Sales                     Period 06                                                   YTD_SALES_05+SALES_06                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_07        "
+    FIELD_1$="YTD_SALES_07        Ytd sales 07                            NF          0922   14YTD Sales                     Period 07                                                   YTD_SALES_06+SALES_07                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_08        "
+    FIELD_1$="YTD_SALES_08        Ytd sales 08                            NF          0922   14YTD Sales                     Period 08                                                   YTD_SALES_07+SALES_08                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_09        "
+    FIELD_1$="YTD_SALES_09        Ytd sales 09                            NF          0922   14YTD Sales                     Period 09                                                   YTD_SALES_08+SALES_09                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_10        "
+    FIELD_1$="YTD_SALES_10        Ytd sales 10                            NF          0922   14YTD Sales                     Period 10                                                   YTD_SALES_09+SALES_10                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_11        "
+    FIELD_1$="YTD_SALES_11        Ytd sales 11                            NF          0922   14YTD Sales                     Period 11                                                   YTD_SALES_10+SALES_11                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_12        "
+    FIELD_1$="YTD_SALES_12        Ytd sales 12                            NF          0922   14YTD Sales                     Period 12                                                   YTD_SALES_11+SALES_12                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_01     "
+    FIELD_1$="YTD_SALES_PY_01     Ytd sales py 01                         NF          0922   14YTD Sales                     Period 01                     Prior Year                    PY_SALES_01                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_02     "
+    FIELD_1$="YTD_SALES_PY_02     Ytd sales py 02                         NF          0922   14YTD Sales                     Period 02                     Prior Year                    YTD_SALES_PY_01+PY_SALES_02                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_03     "
+    FIELD_1$="YTD_SALES_PY_03     Ytd sales py 03                         NF          0922   14YTD Sales                     Period 03                     Prior Year                    YTD_SALES_PY_02+PY_SALES_03                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_04     "
+    FIELD_1$="YTD_SALES_PY_04     Ytd sales py 04                         NF          0922   14YTD Sales                     Period 04                     Prior Year                    YTD_SALES_PY_03+PY_SALES_04                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_05     "
+    FIELD_1$="YTD_SALES_PY_05     Ytd sales py 05                         NF          0922   14YTD Sales                     Period 05                     Prior Year                    YTD_SALES_PY_04+PY_SALES_05                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_06     "
+    FIELD_1$="YTD_SALES_PY_06     Ytd sales py 06                         NF          0922   14YTD Sales                     Period 06                     Prior Year                    YTD_SALES_PY_05+PY_SALES_06                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_07     "
+    FIELD_1$="YTD_SALES_PY_07     Ytd sales py 07                         NF          0922   14YTD Sales                     Period 07                     Prior Year                    YTD_SALES_PY_06+PY_SALES_07                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_08     "
+    FIELD_1$="YTD_SALES_PY_08     Ytd sales py 08                         NF          0922   14YTD Sales                     Period 08                     Prior Year                    YTD_SALES_PY_07+PY_SALES_08                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_09     "
+    FIELD_1$="YTD_SALES_PY_09     Ytd sales py 09                         NF          0922   14YTD Sales                     Period 09                     Prior Year                    YTD_SALES_PY_08+PY_SALES_09                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_10     "
+    FIELD_1$="YTD_SALES_PY_10     Ytd sales py 10                         NF          0922   14YTD Sales                     Period 10                     Prior Year                    YTD_SALES_PY_09+PY_SALES_10                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_11     "
+    FIELD_1$="YTD_SALES_PY_11     Ytd sales py 11                         NF          0922   14YTD Sales                     Period 11                     Prior Year                    YTD_SALES_PY_10+PY_SALES_11                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YTD_SALES_PY_12     "
+    FIELD_1$="YTD_SALES_PY_12     Ytd sales py 12                         NF          0922   14YTD Sales                     Period 12                     Prior Year                    YTD_SALES_PY_11+PY_SALES_12                                                                                                        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

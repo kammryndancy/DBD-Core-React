@@ -1,0 +1,19 @@
+0010 ! RTGPRM - Get Remote Telemarketing Parameters
+0100 ! ^100,5 - Call/Enter string
+0105 SETERR 0200; ENTER R$
+0200 ! ^100,5 - Determine if parameters already known
+0205 IF %RT_PARAMETERS$<>"" THEN R$=%RT_PARAMETERS$; GOTO WRAPUP
+0210 IF R$="!!!" THEN R$=""; GOTO 0525
+0500 ! 500,5 - Open files
+0505 OPEN (HFN,ERR=*NEXT)"RT0"; CLOSE (LFO); GOTO 0525
+0510 OPEN (HFN,ERR=*NEXT)"RT0"+%C$; CLOSE (LFO); GOTO 0525
+0515 ! Didn't find the files, they must not have it yet
+0520 R$=""; GOTO WRAPUP
+0525 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"
+1000 ! ^1000,5 - Read record
+1005 READ (ZZPARM,KEY=%C$+"R/T",DOM=*NEXT)R$
+1010 %RT_PARAMETERS$=R$
+9700 WRAPUP:! 9700,5 - Close files and clean up
+9705 IF ZZPARM THEN CLOSE (ZZPARM)
+9998 ! 9998,1 - End
+9999 END 

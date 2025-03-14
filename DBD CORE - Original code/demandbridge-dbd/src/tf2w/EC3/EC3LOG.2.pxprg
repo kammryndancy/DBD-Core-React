@@ -1,0 +1,66 @@
+0010 REM "EC Logger Utility - Version 2 - DATA$ only<EC3LOG.2>"
+0020 SETESC 9300; SETERR 9000
+0035 ! "5.6 - 01/29/09 - 9.569166 - dmm
+0037 REM "204760-EC logger utility created for debugging purposes
+0040 ! "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0045 ! SSP225697 - ship via code blank sometimes from shipping.html
+0080 LOG_EC_ENV:
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3LOG",X1$="EC Logger Utility"
+0500 ! 
+0510 EXT$=".dbg" ! change from .dmp to .dbg so they are different
+0520 REM "Open .dbg file
+0530 ++SEQ; IF SEQ>9999 THEN ESCAPE 12; END_IF ; DMP_FILE$=%SERVER_DIR$+%WEBEC_FILE_NAME$+"."+STR(SEQ:"0000")+EXT$
+0540 SERIAL DMP_FILE$,ERR=0530
+0550 DMP_CHAN=HFN; OPEN PURGE (DMP_CHAN,ERR=0530)DMP_FILE$
+1500 ! 
+1505 GOTO 3000 ! Just want the DATA$ info
+1510 MX=FNDMP("X3$",X3$)
+1520 MX=FNDMP("X4$",X4$)
+1530 MX=FNDMP("EC_PARM$",EC_PARM$)
+1540 ! 
+1610 REM "Number of entries in DATA${ALL}
+1620 MX=FNDMP("NUM_ENTRIES",STR(NUM_ENTRIES))
+1630 ! 
+1640 REM "Output file
+1650 MX=FNDMP("Output channel",PTH(OUTPUT))
+1660 ! 
+3000 REM "Process DATA array
+3010 FOR I=1 TO NUM_ENTRIES
+3020 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+3030 MX=FNDMP("DATA$["+STR(I)+",0]",TAG$)
+3040 MX=FNDMP("DATA$["+STR(I)+",1]",VALUE$)
+3050 NEXT I
+3060 ! 
+3090 GOTO 5000 ! just want DATA$ info
+3100 REM "Dump scheduled jobs for EC Server
+3105 MX=FNDMP("Scheduled Jobs: ","Start")
+3110 JOBCHAN=33018,JOBNUM=0
+3130 READ (33018,KEY="",DOM=*NEXT)
+3140 READ (33018,END=3190)SCHED$
+3150 MX=FNDMP("Job: "+STR(++JOBNUM:"###0"),SCHED$)
+3160 GOTO 3140
+3190 MX=FNDMP("Scheduled Jobs: ","Done")
+3195 ! 
+5010 REM "End of data dump to file
+5020 GOTO 9900
+5030 ! 
+8750 FNDMP:
+8751 DEF FNDMP(LOCAL NAME$, LOCAL DATA$)
+8760 PRINT (DMP_CHAN)NAME$,":-->:",DATA$,"|=|"
+8790 RETURN 0
+8791 END DEF
+8799 ! ********************************************************
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9905 IF DMP_CHAN<>0 THEN CLOSE (DMP_CHAN,ERR=*NEXT)
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 ! Program changes starting 02/09/07
+56002 ! 225697 - copy EC3LOG to EC3LOG.2, will use in EC3WS1 to capture the DATA$ array

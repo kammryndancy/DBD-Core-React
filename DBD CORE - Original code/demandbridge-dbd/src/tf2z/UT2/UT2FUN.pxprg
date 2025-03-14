@@ -1,0 +1,220 @@
+0010 REM "FUD Proccessing <UT2FUN> Run Customer Number Change thru Cron job   
+0035 REM "5.3 - 08/09/04 - 8.865277 - tma - SSP# 159045
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0081 REM "Only does one at a time now, BUT you MUST run at least the          
+0082 REM "selection screen, because the one to do is picked up from the rep   ort parameters.This is meant to follow UT2FUR                            
+0083 REM "Now handles "MERGING" of Statistic type files                       
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 SETERR 9000; SETESC 9300
+0110 X0$="UT2FUN",X1$="File Update/Delete Proccessing"
+0120 DIM A$(37),A[1],B$(161),B[1],S$(20)
+0160 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0175 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0200 REM "                                                                    
+0210 ERASE "UT3.S",ERR=0211
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 0992
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "I/O lists                                                       
+0305 REM "IOLIST FOR UT3 - FUD Command List                               
+0310 IOLIST A$
+0315 REM "IOLIST FOR UT1 - FUD Group Codes                                
+0320 IOLIST B$,B[0],B[1]
+0325 REM "IOLIST FOR UT2 - FUD File List                                  
+0330 IOLIST C$(1),C[0],C[1]
+0490 IOLIST R2$,R0$,W$,W[0],W[1],W[2],W[3],W[4]
+0500 REM "Files                                                           
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01O UT3...  02O UT1    03O UT2     "
+0515 Y$=Y$+"13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0530 V2$="AR1AR1"
+0540 READ (Z[2],KEY=V2$(1,3))IOL=0320
+0590 GOSUB 7800; REM "Get stat file names                                
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0680 GOSUB 7600
+0900 REM 
+0903 DIM C$(37," "),C[1]
+0905 GOSUB 7650
+1000 REM "Read next record                                                 
+1005 Q5=0; READ (Z[3],KEY=B$(1,3),DOM=1006)
+1010 READ (Z[3],END=4900)IOL=0330; IF C$(1,3)<>B$(1,3) THEN GOTO 4900
+1020 IF C$(4,6)=L0$ AND C$(4,3)<>"FMP" THEN K[L0]=C[0],D[L0]=C[1],L0=L0+1; R1$=R1$+C$(12,8); GOTO 1010
+1025 IF POS(" "<>L0$)=0 THEN GOSUB 7650; GOTO 1020; REM "First time thru 
+1100 REM "If here time to go to work for this file                         
+1105 CALL "UT2CHK",X3$,L0$,Z0; IF Z0=0 THEN CLOSE (14); GOTO 1106 ELSE GOTO 1180
+1109 Y$="10O "+L0$+"  "
+1110 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 1111,1180
+1114 STAT_FILE=0; TMPS=POS(L0$(1,3)=STAT$,3); IF TMPS<>0 THEN STAT_FILE=1; STAT_REC$=STAT$[(TMPS+2)/3]; GOTO 1126
+1115 REM "Set F9 flag by attempting write of bogus record. If error = 2 thenF9 =1 remove first then write, else F9=0 write then remove.          
+1117 F9=0; GOTO 1126
+1120 WRITE (Z[10],KEY="!^",ERR=1121,DOM=1125); GOTO 1125
+1121 IF ERR=2 THEN F9=1; GOTO 1126 ELSE IF ERR=17 THEN F9=0; GOTO 1135 ELSE IF ERR=13 THEN F9=0; GOTO 1135 ELSE GOTO 9000
+1125 F9=0; REMOVE (Z[10],KEY="!^",DOM=1126)
+1126 READ (Z[10],KEY="",DOM=1127,ERR=1127); REM "WO88868, reposition key          
+1135 CALL "ZZINFO",Z[10],T9,X3$,T6,T7,K,B,D,S0,S1,F0$
+1140 I0=L0-1
+1160 IF K=0 THEN GOSUB 2200 ELSE IF B=0 THEN GOSUB 2100 ELSE GOSUB 2000
+1175 Y$="10C "+L0$+"  "; CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+1195 IF Q5=1 THEN GOTO 5000 ELSE GOSUB 7650; K[L0]=C[0],D[L0]=C[1],L0=L0+1; GOTO 1010
+2000 REM "Do Direct file                                                   
+2005 DIM K1$(23); K1$(1,3)=B$(1,3)
+2007 IF L0$(1,3)="FMP" THEN READ (Z[10],KEY=PREFIX$,DOM=2008)
+2010 K$=KEY(Z[10],END=2080); IF STAT_FILE THEN GOSUB 7900 ELSE READ RECORD (Z[10],KEY=K$)R$
+2011 K0$=K$,C2=0,C=C+1; IF MOD(C,T0)=1 THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+2020 FOR I=0 TO I0
+2022 P9=LEN(STP(R1$(I*8+1,8),1))
+2025 IF K[I]<=0 OR K[I]+B[0]-1>LEN(K$) THEN GOTO 2040 ELSE K1$(4)=K$(K[I],B[0]); READ (Z[1],KEY=K1$,DOM=2060)A$
+2026 IF L0$(1,3)="FM1" AND D[I]=185 AND A$(4,1)="D" THEN GOTO 2060
+2027 IF L0$(1,3)="FMP" AND PREFIX$<>R$(1,1) THEN GOTO 2060
+2028 IF P9>0 THEN C2=1; GOSUB 7700; GOTO 2060
+2030 IF A$(4,1)="D" THEN REMOVE (Z[10],KEY=K$,DOM=2060); EXITTO 2061 ELSE C2=1,K0$(K[I],B[0])=A$(25,B[0]); IF D[I]>0 THEN R$(D[I],B[0])=A$(25,B[0]); GOTO 2060 ELSE GOTO 2060
+2040 IF D[I]<=0 THEN GOTO 2060 ELSE K1$(4)=R$(D[I],B[0]); READ (Z[1],KEY=K1$,DOM=2060)A$
+2050 IF P9>0 THEN C2=1; GOSUB 7700; GOTO 2060
+2051 IF L0$(1,3)="FM1" AND D[I]=185 AND A$(4,1)="D" THEN GOTO 2060
+2052 IF L0$(1,3)="FMP" AND PREFIX$<>R$(1,1) THEN GOTO 2060
+2055 IF A$(4,1)="D" THEN REMOVE (Z[10],KEY=K$,DOM=2060); EXITTO 2061 ELSE C2=1,R$(D[I],B[0])=A$(25,B[0])
+2060 NEXT I
+2061 REM PRINT @(0,5),"F0$=",F0$,'LF'," K$=",K$,'LF',"K0$=",K0$,'LF',"K1$=",K1$,'LF'," A$=",A$,'LF',"C2=",C2; INPUT *                            
+2065 IF C2=0 THEN GOTO 2010 ELSE IF STAT_FILE THEN GOSUB 7850 ELSE IF K0$=K$ THEN WRITE RECORD (Z[10],KEY=K$)R$ ELSE IF F9=1 THEN REMOVE (Z[10],KEY=K$); WRITE RECORD (Z[10],KEY=K0$)R$; READ (Z[10],KEY=K$,DOM=2068) ELSE WRITE RECORD (Z[10],KEY=K0$)R$; REMOVE (Z[10],KEY=K$)
+2068 IF K0$>K$ THEN T=T+1
+2075 GOTO 2010
+2095 RETURN 
+2100 REM "Do Sort File                                                     
+2105 DIM K1$(23); K1$(1,3)=B$(1,3)
+2110 K$=KEY(Z[10],END=2180); READ (Z[10]); K0$=K$,C2=0,C=C+1; IF MOD(C,T0)=1 THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+2120 FOR I=0 TO I0
+2123 P9=LEN(STP(R1$(I*8+1,8),1))
+2125 IF K[I]<=0 OR K[I]+B[0]-1>LEN(K$) THEN GOTO 2160 ELSE K1$(4)=K$(K[I],B[0]); READ (Z[1],KEY=K1$,DOM=2160)A$
+2127 IF P9>0 THEN C2=1; GOSUB 7700; GOTO 2160
+2130 IF A$(4,1)="D" THEN REMOVE (Z[10],KEY=K$,DOM=2160); EXITTO 2161 ELSE C2=1,K0$(K[I],B[0])=A$(25,B[0])
+2160 NEXT I
+2165 IF C2=0 THEN GOTO 2110 ELSE IF F9=1 THEN REMOVE (Z[10],KEY=K$); WRITE (Z[10],KEY=K0$); READ (Z[10],KEY=K$,DOM=2166) ELSE WRITE (Z[10],KEY=K0$); REMOVE (Z[10],KEY=K$)
+2168 IF K0$>K$ THEN T=T+1
+2175 GOTO 2110
+2195 RETURN 
+2200 REM "Do Index file                                                     
+2201 REM "Doesn't do Delete, will skip the first BusBASIC field if length o f it is < B(0) by creating offset M                                    
+2205 DIM K1$(23); K1$(1,3)=B$(1,3),I5=0
+2210 I5=I5+1; READ RECORD (Z[10],IND=I5,END=2280)R$; C2=0,C=C+1; IF MOD(C,T0)=1 THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+2215 M=POS($8A$=R$); IF M>B[0] THEN M=0
+2240 FOR I=0 TO I0
+2243 P9=LEN(STP(R1$(I*8+1,8),1))
+2245 IF D[I]<=0 THEN GOTO 2260 ELSE K1$(4)=R$(D[I]+M,B[0]); READ (Z[1],KEY=K1$,DOM=2260)A$
+2247 IF P9>0 THEN C2=1; GOSUB 7700; GOTO 2260
+2250 IF A$(4,1)<>"D" THEN C2=1,R$(D[I]+M,B[0])=A$(25,B[0])
+2260 NEXT I
+2265 IF C2=0 THEN GOTO 2210 ELSE WRITE RECORD (Z[10],IND=I5)R$; GOTO 2210
+2295 RETURN 
+4900 REM "finish up last one,                                               
+4910 Q5=1; GOTO 1100
+5000 REM "End of Print                                                      
+5010 REM "LET C=T; CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C                   
+5020 FOR I=0 TO 19
+5025 IF POS(" "<>B$(38+I*6,6))<>0 THEN CALL B$(38+I*6,6),ERR=5026,X3$,X4$,"JS","*"
+5030 NEXT I
+5045 X2=-1; CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+5050 IF Q1$="" THEN PRINT @(0,3),'CE'; CALL "ZZPROM",".4",X3$,0,"Process Complete!!","","",0
+5099 GOTO 9900
+5200 REM "                                                                  
+5290 GOTO 9900
+6000 REM "BACKGROUND                                                        
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,6),"This CSI utility program Update and Delete Data for FUD Group:",@(20,7),B$(1,3),"-",B$(4,30),
+7400 REM "Read report selection parameters"                          
+7410 Z$="12O ZZP   15O ZZS... "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7440 Q1$=Q1$+S$
+7451 DIM W[4]; READ (Z[15],KEY="UT2FUR"+Q1$(2,12),DOM=7452)IOL=0490
+7460 V2$=W$
+7480 REM "LET X3$(178,7)=Y4$, V0=NUM(V0$(71,1)), W3$=V0$(19,POS("   "=V0$(19,40)+"  ")-1)                                                        
+7490 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES                                      
+7525 REM "Modified stmts:                                                  
+7550 REM "Added stmts:                                                     
+7560 V2$=W$
+7575 REM "Deleted stmts:                                                   
+7600 REM "Find out how many records we will have to go through so we can report on our progress. Remember, only find UNIQUE file names, file names with more than one UT2 records will be done in one pass on the file.
+7605 DIM C$(11),C[1]; T=0,C=0,C1=0,C1$="-\|/",L0$=""
+7607 PRINT @(19,21),"Initialization in Progress   ",
+7610 READ (Z[3],KEY=B$(1,3),DOM=7611)
+7615 READ (Z[3],END=7640)IOL=0330; IF C$(1,3)<>B$(1,3) THEN GOTO 7640 ELSE IF C$(4,6)=L0$ THEN GOTO 7615 ELSE L0$=C$(4,6)
+7618 C1=C1+1; PRINT @(46,21),C1$(MOD(C1,3)+1,1),
+7620 F0$=C$(4,6)
+7622 REM "We will try to open ... ended files with comp code, first, if tha t doesn't work we'll try with blanks, if still here try with the name.  IF not ending in ... just try the name.                               
+7623 CALL "UT2CHK",X3$,F0$,X0
+7631 IF X0=1 THEN GOTO 7615
+7633 CALL "ZZINFO",14,T9,X3$,T5,T0,K,B,D,S0,S1,F0$; IF K=0 THEN T=T+T0 ELSE T=T+T5
+7636 GOTO 7615
+7640 PRINT @(19,21),'CE',
+7642 IF T>1000 THEN T0=100 ELSE T0=INT(T*.02); IF T0<=1 THEN T0=2
+7645 RETURN 
+7650 REM "Setup for new file, set L0$, clear Key and Data arrays (hardcoded  to 100 max records per file name)                                     
+7655 L0=0,L0$=C$(4,6),R1$=C$(12,8),PREFIX$=C$(20,1); DIM K[100],D[100]
+7695 RETURN 
+7700 REM "ROUTINE SPECIFIED TO BE CALLED, CALL IT THEN RETURN               
+7710 F1$=STP(R1$(I*8+1,8),1)
+7750 CALL F1$,X3$,X4$,R$,A$,K0$,L0$,B$(1,3),K[I],D[I],B[0]
+7790 RETURN 
+7800 REM "Get list of STAT type file names into STAT$ and records into STAT $[]                                                                    
+7805 STAT$=""; DIM STAT$[50]
+7809 READ (Z[13],KEY="STAT",DOM=7810)
+7810 READ (Z[13],END=7820)ST$; IF LEN(ST$)<8 THEN GOTO 7820 ELSE IF ST$(1,4)<>"STAT" THEN GOTO 7820 ELSE IF ST$(5,3)="RPT" THEN GOTO 7810
+7815 STAT$=STAT$+ST$(28,3)
+7816 STAT$[(POS(ST$(28,3)=STAT$,3)+2)/3]=ST$
+7819 GOTO 7810
+7845 RETURN 
+7850 REM "Check key to see if duplicate exists, if not just write out the record, else extract existing add and put back                         
+7852 U0$=K0$(LEN(K0$),1),KP0$=K0$(1,LEN(K0$)-1),P0=POS(U0$=STAT_REC$(49),17); IF P0=0 THEN M$="922" ELSE M$=STAT_REC$(50+P,3)
+7855 FIND (Z[10],KEY=K0$,DOM=7870); REM "if not on file goto 7870 to write out, else read old and update                                       
+7860 CALL "ZZPACK",X3$,"E",M$,P8$,0,0,EXIST{ALL},Z[10],U0$,KP0$,STAT_REC$
+7861 M$=M0$; REM "Restore m$, changed in zzpack                        
+7865 FOR II=0 TO 20; R[II]=R[II]+EXIST[II]; NEXT II
+7870 REM "write out record                                                 
+7872 CALL "ZZPACK",X3$,"W",M$,P7$,0,0,R{ALL},Z[10],U0$,KP0$,STAT_REC$
+7874 REM "Remove old record and reposition file                            
+7875 REMOVE (Z[10],KEY=K$,DOM=7876)
+7899 RETURN 
+7900 REM "Read Stat record info for key K$                                 
+7905 REM "Get Usage type, U$, and mask for usage type M$, and Key, KP$     
+7910 U$=K$(LEN(K$),1),KP$=K$(1,LEN(K$)-1)
+7915 P=POS(U$=STAT_REC$(49),17); IF P=0 THEN M$="922" ELSE M$=STAT_REC$(50+P,3)
+7920 M0$=M$; DIM R[20],EXIST[20]
+7930 CALL "ZZPACK",X3$,"R",M$,P9$,0,0,R{ALL},Z[10],U$,KP$,STAT_REC$
+7935 R$=K$; REM "set record part = key part for stat files              
+7949 RETURN 
+9000 REM "ERROR PROCESSING                                                  
+9010 Y5=ERR,Y6=TCB(5)
+9011 IF MID(Q0$,1,2)="JS" THEN A1$=$FF$+X0$+"|Group|"+Q1$+"|Error|"+STR(Y5)+"|Line|"+STR(Y6)+"|"+"Q1$="+Q1$+"L0$="+L0$+"|"; GOTO 9900
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL 
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program                                      
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9921 GOTO 9960
+9925 RENAME "UT3","UT3.S"
+9930 ERASE "UT3",ERR=9940; GOTO 9930
+9950 DIRECT "UT3",27,0,64,0,0
+9960 SETERR 9961; Q1$=A1$; EXIT 
+9970 EXIT 
+9999 END 

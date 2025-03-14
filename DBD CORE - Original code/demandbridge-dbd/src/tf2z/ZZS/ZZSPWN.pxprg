@@ -1,0 +1,13 @@
+0035 REM "5.7 - 10/08/14 - 9.067777 - crg - SSP# 273109
+0037 REM "273109-New release; for WO271988 and other.                        
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 ENTER LPG$,INI$,FID0$,NO_CMDARGS,ERR=*NEXT
+0091 SETERR 9999
+0100 TARG$=""; IF NOT(NO_CMDARGS) AND NAR>0 THEN FOR LOCAL A=1 TO NAR; TARG$+=QUO+ARG(A)+QUO+" "; NEXT A
+0140 CMD$+=LPG$; IF NOT(NUL(TARG$)) THEN CMD$+=" -arg "+TARG$
+0150 IF NUL(INI$) THEN PERFORM "ZZ2WDX;GET_INI_INFO" ! Get client Windx INI info
+0170 CALL "*windx.utl;spawn_nohup",CMD$,INI$,FID0$
+9900 EXIT 
+9999 END 
+56002 REM "269390-Having slowness when using GUI.                             

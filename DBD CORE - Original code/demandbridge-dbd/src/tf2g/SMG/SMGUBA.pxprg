@@ -1,0 +1,178 @@
+0010 ! SMGUBA> Import Customer Invoicing Gateway File
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/16/17 - 23.26 - crg - SSP# 291110
+0037 REM "291110-Modify SM files three character BOX_NUMBER to sequence using
+0040 REM "Copyright 2017 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 ! ******* This program is no longer Used - see SM2UBA ********;!SSP 257952
+0048 EXIT ! SSP 257952
+0050 PROCESS "SMGUBA","../SMG/SM.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="SM2UBA",X1$="Import Customer Invoicing Gateway File"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13]
+0330 IOLIST C$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O SM0... 03O FS2... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0560 DIM SH_PARM$(202); FIND (Z[13],KEY=X3$(9,3)+"S/H",DOM=0561)SH_PARM$
+0600 REM "
+0610 GOSUB 6000
+0630 RETURN 
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0900 DIM A[12]
+1000 REM "Get list of SM1 files to process
+1010 CALL "ZZ2BLS","D0:SM1*","S",F$
+1015 P=POS(":"=F$); IF P=0 THEN GOTO 5000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1050 Z$="01CU 01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN (Z[1],ISZ=512)F1$; REM "Open for reading raw file
+1075 ML_MESS.CTL'VALUE$="Processing: "+F1$
+1080 GOSUB 8100; GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0
+1110 GOSUB 7700 ! READ NEXT RECORD
+1120 IF MOD(I9,T0)=1 THEN GOSUB 8150
+1125 IF LEN(I$)<160 THEN I9$=I$; DIM I$(160); I$(1)=I9$; REM "Correct length if short
+1126 REM PRINT @(0,3),'CE',@(0,4),I$; INPUT *
+1140 DIM A$(345),A[12]; F8=0
+1150 A$(1,9)=I$(1,9); REM "P/O number
+1152 A$(10,3)=I$(10,3); REM "P/O line number
+1154 A$(13,1)=I$(13,1); REM "Ship to code
+1158 Q$=I$(48,8); GOSUB 7500; A$(15,6)=Q0$; REM "Shipped on date
+1160 Q$=I$(56,8); GOSUB 7550; A$(21,4)=Q0$; REM "Shipped on time
+1162 A$(25,6)=I$(64,6); REM "Est Arrival
+1164 A$(31,6)=I$(14,6); REM "Carrier id
+1166 A$(37,12)=I$(94,12); REM "Carrier name
+1168 A$(49,20)=I$(111,20); REM "Tracking number
+1170 A$(69,16)=I$(70,16); REM "Pickup number
+1172 A$(85,9)=I$(106,5); REM "Zip code
+1174 A$(94,3)=I$(86,3); REM "Zone
+1176 A$(97,3)="NNN"; REM "Order updated? & P/O received? & Don'tBill?
+1177 REM "Set 97,1 98,1 and 100,1 (order updated, po recv, inv) if update mask from shipping parameters has a corresponding yes
+1178 IF SH_PARM$(199,1)="Y" THEN A$(97,1)="Y" END_IF ; IF SH_PARM$(201,1)="Y" THEN A$(98,1)="Y" END_IF ; IF SH_PARM$(200,1)="Y" THEN A$(100,1)="Y" END_IF 
+1180 A[0]=NUM(I$(89,5),ERR=1181); REM "Quantity
+1182 A[1]=NUM(I$(30,10),ERR=1183); REM "Actual weight
+1184 A[2]=NUM(I$(40,8),ERR=1185); REM "Shipping weight
+1186 A[3]=NUM(I$(20,10),ERR=1187); REM "Total cost for pkg
+1375 IF POS(" "<>I$(131))=0 THEN GOSUB 7600; GOTO 1380; REM "If no special instructions the write out the one record and go on
+1377 REM "Special instructions are 10 chars long each and start at pos 131 to the end of the record
+1380 FOR I0=131 TO LEN(I$)-9 STEP 10; GOSUB 7650; NEXT I0
+1395 GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to SM2 for archiving. Erase an existing SM2 file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$=F1$; F2=POS("SM1"=F2$); IF F2=0 THEN GOTO 1995 ELSE F2$(F2,3)="SM2"
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 ERASE J$+DLM+F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$
+1995 GOTO 1015
+5000 REM "EOJ
+5030 MSGBOX "Process complete!!",MSG("CONFIRMING"),"INFO,TIM=3"
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Shipping Manifest Information"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Convert date q$ into q0$
+7501 REM "Q$ in YYYYMMDD format
+7505 Q0$=""
+7510 IF LEN(Q$)<8 THEN GOTO 7545 ELSE Q1$=Q$(7,2)
+7515 IF Q1$<"50" THEN Q1$="20"+Q1$ ELSE Q1$="19"+Q1$
+7520 Q0$=CHR(NUM(Q1$(1,3),ERR=7521)-125)+Q1$(4,1)+Q$(1,2)+Q$(4,2)
+7545 RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2)
+7595 RETURN 
+7600 REM "Write out an A$ record
+7602 A$(124,3)="001"
+7603 IF F8>0 THEN DIM N[3]; FOR N0=1 TO 3; N[N0]=A[N0],A[N0]=0; NEXT N0; REM "If record already written once, don't duplicate the frt amount  and weights.
+7604 F9=0; IF A$(9,1)=" " THEN GOSUB 7800; REM "Get P/O code from S/O # & line # if blank
+7605 WRITE (Z[2],KEY=A$(1,13)+A$(124,3),DOM=7606)IOL=0310; GOTO 7640
+7609 REM "Increment sequence number and try again until no dup
+7610 A$(124,3)=FN%INCR$(A$(124,3)); GOTO 7605 ! 291110 - STR(NUM(A$(124,3))+1:"000")
+7640 IF F9=1 THEN A$(9,1)=" "; REM "F9=1 means the p/o code was blank and we fixed it for this line, so set it back to blank for any further processing
+7641 IF F8=0 THEN F8=1 ELSE FOR N0=1 TO 3; A[N0]=N[N0]; NEXT N0; REM "If first time set F8 flag, else restore frt and weight amounts.
+7645 RETURN 
+7650 REM "Given I0 as index to 10 char special instruction field, reset A$ then interperet special inst, make changes to A$ then write it out. If spec inst blank, then skip whole thing
+7655 IF POS(" "<>I$(I0,10))=0 THEN GOTO 7695 ELSE A$(124,3)="001",A$(99,1)=" ",A[0]=0; REM "If we have spec inst, clear seq num to blank, set don't bill flag to blank, and quantity to 0
+7659 REM "Ignore whitespace, pull off tokens. If token starts with L it is line number, if it is a P means partial bill, if number it is quantity
+7660 T$=I$(I0,10),T1=0
+7662 IF LEN(T$)=0 THEN GOTO 7680 ELSE IF T$(1,1)=" " THEN T$=T$(2); GOTO 7662
+7664 T0=POS(" "=T$); IF T0=0 THEN T0$=T$,T$="" ELSE T0$=T$(1,T0-1),T$=T$(T0)
+7666 IF T0$(1,1)="L" THEN A$(10,3)=STR(NUM(T0$(2),ERR=7670):"000"),T1=1 ELSE IF T0$="P" THEN A$(99,1)="Y",T1=1 ELSE A[0]=NUM(T0$,ERR=7670)*1000,T1=1
+7670 GOTO 7662
+7675 REM " I don't think we need this->IF I0=228 AND POS(" "<>I$(238,10))<>0 THEN LET A$(99,1)="Y"; REM "IF FIRST LINE AND THERE IS A SECOND LINE, THEN DON'T BILL ON THE FIRST LINE, BILL ON THE SECOND
+7680 IF T1=1 THEN GOSUB 7600; REM " If any changes made then write out record
+7695 RETURN 
+7700 REM "Read next record
+7705 IF LEN(I0$)<130 OR POS($0A$=I0$)=0 THEN READ RECORD (Z[1],IND=I9,END=7750)I1$; I0$=I0$+I1$,I9=I9+1; GOTO 7705
+7710 IF POS($00$<>I0$)=0 THEN GOTO 7750 ELSE I1=POS($0A$=I0$); IF I1=1 THEN I0$=I0$(2); GOTO 7710 ELSE I$=I0$(1,I1-1),I0$=I0$(I1+1)
+7745 RETURN 
+7750 REM "End of file
+7795 GOTO 1900
+7800 REM "fill in P/O code from Sales order # and sales order line #
+7810 FIND (Z[3],KEY=A$(1,8)+A$(10,3),DOM=7845)IOL=0330
+7830 A$(9,1)=C$(9,1),F9=1; REM "F9 means we fixed the p/o code
+7845 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F2$
+8112 T=T0
+8115 REM PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 END_PROC: CMD_STR$="E"
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "257952-Need larger tracking number field to replace 20 character   

@@ -1,0 +1,188 @@
+0010 REM "<ZZFLES> File Handling Routine
+0030 REM "(C) 1985,1986 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "5.7 - 07/27/11 - 18.083055 - crg - SSP# 248257
+0037 REM "248257-Modify the Error Handler program, report more information   
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0110 SETESC 9300
+0620 DEF FNS$(Q$)=Q$(1,POS(" "=Q$+" ")-1)
+1010 ! Y0$ is list of files opened at this level, Y1$ is list of files closed in order to free up file slots to open files at this level, at an "END" they should be reopened. we are not using that feature at this point YET.
+1011 ! P0$ is incoming list, with each entry in the format "CCOOfilename " whereCC is mandatory 2 digit file slot to open on, OO is mandatory 2 character options field, and variable length filename which is terminated by one or more spaces.
+1020 ENTER X3$,Y1$,Y0$,P0$,Z{ALL},Z0,Z1; F$=P0$
+1025 IF X3$="" THEN IF %X3_SET THEN X3$=%X3$ ELSE GOTO 9920
+1030 SETERR 9000
+1035 Z0=0 ! Clear err indicator
+1110 IF Y0$="" THEN %ZZFLES_LEVEL+=1 ! Y0$="" is the trigger that says we need to move up a level
+1130 IF F$="END" OR F$="CLOSE" THEN GOTO CLOSE_ALL_FILES
+1405 ! If batch files enabled [X3$(145,1)="1"] then get list of "batchable" files
+1410 IF X3$(145,1)="1" THEN IF NUL(%BATCH_FILES$) THEN SELECT BATCH_FILES$ FROM "ZZPARM" BEGIN "BATCH" END "BATCH"; %BATCH_FILES$=BATCH_FILES$(6); NEXT RECORD ! get record, remove key part to leave the file list only
+1610 IF LEN(F$)<5 THEN GOTO WRAP_UP ELSE CHANNEL=0,COMMAND_OPT$="",FILE_OPENED$="",USED_ALREADY_OPEN_FILE=0; FILE_SLOT$=F$(1,2),COMMAND$=UCS(STP(F$(3,2))),FILE_NAME$=FNS$(F$(5)),HAS_DOTS=POS("..."=FILE_NAME$),FILE_SLOT=-1,FILE_SLOT=NUM(FILE_SLOT$,ERR=1611)
+1612 IF HAS_DOTS THEN FILE_ROOT$=STP(SUB(FILE_NAME$,"...","")) ELSE FILE_ROOT$=STP(FILE_NAME$)
+1615 IF COMMAND$="" THEN GOTO 1900 ELSE COMMAND_OPT$=COMMAND$(2),COMMAND$=COMMAND$(1,1)
+1620 IF COMMAND$="S" THEN COMMAND$="O",COMMAND_OPT$+="S" ! Open on second channel can come in as "OS" or "S ", or possibly with another option
+1630 IF X3$(145,1)="1" THEN IF HAS_DOTS THEN IF X3$(174,4)<>DIM(4) THEN IF %BATCH_FILES$>"" THEN GOSUB 6000
+1649 ! FILE_NAME$ is original file name, If HAS_DOTS, then FILE_1$ is name with company code, FILE_2$ is name without, ELSE FILE_1$ is same as FILE_NAME$ and FILE_2$ is ''
+1650 IF HAS_DOTS THEN FILE_1$=SUB(FILE_NAME$,"...",X3$(9,3)),FILE_2$=SUB(FILE_NAME$,"...","") ELSE FILE_1$=FILE_NAME$,FILE_2$=""
+1720 SWITCH COMMAND$
+1725 CASE "O","X","0"; GOSUB OPEN_FILE; BREAK
+1730 CASE "L","U"; GOSUB LOCK_UNLOCK_FILE; BREAK
+1735 CASE "C"; GOSUB CLOSE_FILE; BREAK
+1740 CASE "I","E"; GOSUB INIT_FILE; BREAK
+1770 END SWITCH 
+1900 GOTO_NEXT_FILE:! Prepare for next file
+1940 F$=F$(5+POS(" "=F$(5)+" ")-1); IF F$>"" THEN F$=STP(F$,0)
+1950 GOTO 1600
+2000 OPEN_FILE:! Open a file, mark exclusive if X opt
+2005 IF POS(COMMAND_OPT$="S")>0 THEN GOTO OPEN_THE_FILE
+2010 ! IF COMMAND$="L" OR COMMAND_OPT$="L" OR FILE_SLOT=0 THEN GOTO *NEXT ELSE GOTO OPEN_THE_FILE ! For now we won't reuse open files unless lock is needed or file_slot 0 which means find out slot it is open on already->IF POS(COMMAND_OPT$="S")>0 THEN GOTO OPEN_THE_FILE
+2019 ! See if file open, also if it has a RECORD PREFIX [OPENed with REC= option] then pretend it was not already open. If it was really open [X <> -1] and was skipped because it had a RECORD PREFIX, then don't try second file name [this is reason for X=-1 in IF with HAS_DOTS]
+2020 X=FN%FFN(FILE_1$); REC_PREFIX$=""; REC_PREFIX$=REC(FILE X,ERR=*PROCEED); IF X>-1 AND X<>14 AND REC_PREFIX$="" THEN CHANNEL=X,FILE_OPENED$=FILE_1$,USED_ALREADY_OPEN_FILE=1; GOTO FILE_OPENED ELSE IF HAS_DOTS AND X=-1 THEN X=FN%FFN(FILE_2$); REC_PREFIX$=""; REC_PREFIX$=REC(FILE X,ERR=*PROCEED); IF X>-1 AND X<>14 AND REC_PREFIX$="" THEN CHANNEL=X,FILE_OPENED$=FILE_2$,USED_ALREADY_OPEN_FILE=1; GOTO FILE_OPENED ! 175767 if file is open on channel 14, act as if it is not really open as channel 14 is the temp file channel
+2030 ! if here then file was not open already, so open it
+2050 OPEN_THE_FILE:! file needs to be opened, so do it
+2055 OPEN (14,ERR=*NEXT)FID(0) ! open something on 14 so we don't use it, as it is reserved for temp files
+2056 OPEN (13,ERR=*NEXT)FID(0) ! open something on 13 so we don't use it, as it is reserved for ZZPARM - SSP 217392
+2060 CHANNEL=UNT
+2065 IF COMMAND_OPT$="r" THEN OPEN INPUT (CHANNEL,IOL=*,ERR=*NEXT)FILE_1$ ELSE OPEN (CHANNEL,IOL=*,ERR=*NEXT)FILE_1$ END_IF ; FILE_OPENED$=FILE_1$; GOTO FILE_OPENED ! if open is successful, then skip to FILE_OPENED
+2068 ! if ERR is 84 then no dictionary on file open with IOL=*
+2069 IF ERR=84 OR ERR=81 THEN IF COMMAND_OPT$="r" THEN OPEN INPUT (CHANNEL,ERR=*NEXT)FILE_1$ ELSE OPEN (CHANNEL,ERR=*NEXT)FILE_1$ END_IF ; FILE_OPENED$=FILE_1$; GOTO FILE_OPENED ! if open is successful, then skip to FILE_OPENED
+2070 FO_ERR=ERR ! we had an err, if 0, give file in use, if 12 and HAS_DOTS, then try second file name, else error out
+2074 IF FO_ERR<>0 AND FO_ERR<>12 THEN FILE_ERROR_NAME$=FILE_1$; GOTO SIGNAL_ERROR
+2075 IF FO_ERR=0 THEN IF POS("Q"=COMMAND_OPT$)<>0 THEN GOTO 9800 ELSE X$="+("+FILE_1$+") "+FN%TCB87$("%p, %U"); CALL "ZZPROM","X0ZZFLES",X3$,S3,X$,"","",0; ON S3 GOTO OPEN_THE_FILE,9800 ! 248257
+2077 ! If here and we don't have second file name then file not found!
+2078 IF NOT(HAS_DOTS) THEN FO_ERR=12,FILE_ERROR_NAME$=FILE_1$; GOTO SIGNAL_ERROR
+2079 OPEN_THE_2ND_FILE:! If here, and we have second file name, we need to try it
+2080 IF COMMAND_OPT$="r" THEN OPEN INPUT (CHANNEL,IOL=*,ERR=*NEXT)FILE_2$ ELSE OPEN (CHANNEL,IOL=*,ERR=*NEXT)FILE_2$ END_IF ; FILE_OPENED$=FILE_2$; GOTO FILE_OPENED ! If successful, skip down
+2082 ! If err 84 then no dictionary, so don't open with IOL=*
+2083 IF ERR=84 OR ERR=81 THEN IF COMMAND_OPT$="r" THEN OPEN INPUT (CHANNEL,ERR=*NEXT)FILE_2$ ELSE OPEN (CHANNEL,ERR=*NEXT)FILE_2$ END_IF ; FILE_OPENED$=FILE_2$; GOTO FILE_OPENED ! If successful, skip down
+2085 FO_ERR=ERR; IF FO_ERR<>0 THEN FILE_ERROR_NAME$=FILE_2$; GOTO SIGNAL_ERROR ! on second one, if anything other than busy then signal error
+2090 IF FO_ERR=0 THEN IF POS("Q"=COMMAND_OPT$)<>0 THEN GOTO 9800 ELSE X$="+("+FILE_2$+") "+FN%TCB87$("%p, %U"); CALL "ZZPROM","X0ZZFLES",X3$,S3,X$,"","",0; ON S3 GOTO OPEN_THE_2ND_FILE,9800 ! 248257
+2100 FILE_OPENED:! If here file FILE_OPENED$ is open on CHANNEL
+2101 SETERR 2104
+2102 ! IF %HAS_DR AND POS("FMP"=FILE_OPENED$)<>0 THEN SETDEV (CHANNEL) PROGRAM "DR2EDA" SSP185523, NO LONGER NEEDED WILL NOW HAVE NEW FILES FOR FMP DATA
+2104 SETERR 9000
+2105 Z[FILE_SLOT]=CHANNEL
+2120 IF COMMAND$="X" THEN COMMAND_OPT$+="X"
+2150 Y0_FILE$=FILE_OPENED$; DIM Y0_OPT$(2); Y0_OPT$(1)=COMMAND_OPT$,Y0_OPT$(2)=STR(USED_ALREADY_OPEN_FILE); GOSUB ADD_Y0_ENTRY
+2160 GOSUB SET_GLOBAL_VARS
+2195 RETURN 
+2199 ! 
+2400 LOCK_UNLOCK_FILE:! Lock or Unlock file
+2410 IF FILE_NAME$="" AND FILE_SLOT<=0 THEN GOTO 2490
+2420 Y0_FILE$=FILE_1$; GOSUB FIND_Y0_ENTRY; IF Y0_FILE_SLOT=-1 AND FILE_2$<>"" THEN Y0_FILE$=FILE_2$; GOSUB FIND_Y0_ENTRY ! try with FILE_1$, if not found and we have second file then try it
+2425 IF Y0_FILE_SLOT=-1 THEN GOSUB OPEN_FILE; Y0_FILE$=FILE_OPENED$; GOSUB FIND_Y0_ENTRY; IF Y0_FILE_SLOT=-1 THEN F0_ERR=14,FILE_ERROR_NAME$=FILE_1$; GOTO SIGNAL_ERROR ! if file not found then go and open it
+2435 IF Z[FILE_SLOT]=0 THEN Z[FILE_SLOT]=Y0_CHANNEL ! If L is command and not the option, file may have already been opened and then was not getting marked in Z[]
+2440 IF COMMAND$="L" THEN LOCK (Y0_CHANNEL,ERR=2445); GOTO 2460 ELSE IF COMMAND$="U" THEN UNLOCK (Y0_CHANNEL,ERR=2445); GOTO 2490
+2445 E0=ERR; IF E0=14 THEN UNLOCK (Y0_CHANNEL,ERR=2446); LOCK (Y0_CHANNEL,ERR=2446); GOTO 2490
+2448 IF E0<>0 THEN PMESS$="" ELSE PMESS$=" in use by process: "+FN%TCB87$("%p, %U") ! 248257
+2450 P9$="X9ZZFLES",X$="+("+FILE_1$+", "+STR(E0)+", "+STR(Y0_CHANNEL)+PMESS$+")"; IF E0=0 THEN P9$(1,2)="X1"
+2455 IF %IN_JOBSTREAM THEN EXIT 1001 ELSE CALL "ZZPROM",P9$,X3$,S3,X$,"","",0; IF S3=1 THEN GOTO 9800 ELSE GOTO 2440
+2460 ! Used to mark exclusive access here
+2490 RETURN 
+2500 CLOSE_FILE:
+2505 IF Z[FILE_SLOT]=0 THEN RETURN ELSE Y0_FILE_SLOT=FILE_SLOT; GOSUB FIND_Y0_ENTRY_WITH_FILE_SLOT
+2509 ! See also logic in CLOSE_ALL_FILES for close stuff
+2510 CLOSE (Z[FILE_SLOT],ERR=*NEXT)
+2515 GOSUB DELETE_Y0_ENTRY
+2520 ! GOSUB CLEAR_GLOBAL_VARS ! SSP 215664
+2540 RETURN 
+2600 INIT_FILE:! Please use ZZINITZ or ZZINIT
+2605 TMP$="The I and E function not supported, Please call DemandBridge Support"; REM ssp 221339
+2610 CALL "ZZPROM",".4",X3$,S3,TMP$,"","",0
+2690 RETURN 
+3000 ! Y0$ string has entries of the form [fs]99999ooffffff| where
+3001 ! fs is file slot, 99999 is channel number in positions 1-5
+3002 ! oo is options in pos 6,2 and ffff is file name starting at pos 7
+3003 ! and going until the | File name can be of any length
+3100 ADD_Y0_ENTRY:! add an entry to y0$ given FILE_SLOT, CHANNEL, and Y0_OPT$ and Y0_FILE$
+3110 GOSUB DELETE_Y0_ENTRY ! If it is already there, then delete
+3120 Y0$=Y0$+"["+STR(FILE_SLOT)+"]"+STR(CHANNEL:"00000")+PAD(Y0_OPT$,2)+Y0_FILE$+"|"
+3195 RETURN 
+3199 ! 
+3200 DELETE_Y0_ENTRY:! delete entry from y0$ given FILE_SLOT
+3210 DINDEX=MSK(Y0$,"\["+STR(FILE_SLOT)+"\][^\|]*\|"); IF DINDEX=0 THEN GOTO 3295
+3240 Y0$=MID(Y0$,1,DINDEX-1)+MID(Y0$,DINDEX+MSL)
+3295 RETURN 
+3299 ! 
+3300 FIND_Y0_ENTRY:! Given Y0_FILE$ return Y0_FILE_SLOT, -1 = NOT FOUND, Y0_CHANNEL,Y0_OPT$
+3305 Y0_FILE_SLOT=-1
+3310 FINDEX=MSK(Y0$,"\[[^\|]*"+Y0_FILE$+"\|"); IF FINDEX=0 THEN GOTO 3345 ELSE Y0_ENTRY$=Y0$(FINDEX,MSL)
+3315 FINDEX=POS("]"=Y0_ENTRY$)
+3320 Y0_FILE_SLOT=NUM(MID(Y0_ENTRY$,2,FINDEX-2),ERR=*NEXT)
+3325 Y0_CHANNEL=NUM(MID(Y0_ENTRY$,FINDEX+1,5),ERR=*NEXT)
+3330 Y0_OPT$=MID(Y0_ENTRY$,FINDEX+6,2)
+3345 RETURN 
+3349 ! 
+3350 FIND_Y0_ENTRY_WITH_FILE_SLOT:! Given Y0_FILE_SLOT, return Y0_FILE$ (="" if not found),Y0_CHANNEL, & Y0_OPT$
+3355 Y0_FILE$=""
+3360 FINDEX=MSK(Y0$,"\["+STR(Y0_FILE_SLOT)+"\][^|]*\|"); IF FINDEX=0 THEN GOTO 3395 ELSE Y0_ENTRY$=Y0$(FINDEX,MSL)
+3365 FINDEX=POS("]"=Y0_ENTRY$)
+3370 Y0_FILE$=STP(MID(Y0_ENTRY$,FINDEX+8),1,"|") ! Rest of string, strip trailing '|'
+3375 Y0_CHANNEL=NUM(MID(Y0_ENTRY$,FINDEX+1,5),ERR=*NEXT)
+3380 Y0_OPT$=MID(Y0_ENTRY$,FINDEX+6,2)
+3395 RETURN 
+3399 ! 
+3500 SET_GLOBAL_VARS:! setup global vars, using FILE_ROOT$, ex: XXX file, %XXX$=actual name opened on,incl batch or comp ext, %XXX_IOL$ - compiled IOLIST for use in dimming record variables
+3510 VAR_NAME$="%"+FILE_ROOT$+"$"; EXECUTE "VIA VAR_NAME$=FILE_OPENED$",ERR=*NEXT
+3515 VAR_NAME$="%"+FILE_ROOT$+"_IOL$"; IF NOT(NUL(EVS(VAR_NAME$,ERR=3545))) THEN GOTO 3545 ! SSP 215664
+3520 IF CHANNEL>0 THEN FID$=FN%FID$(CHANNEL); IF HTA(MID(FID$,10,1))="00" OR LEN(FID$)=2 THEN GOTO *NEXT ELSE TMP_IOL$=""; CALL "ZZWIOL",ERR=*NEXT,CHANNEL,"B",TMP_IOL$ ! SSP165969, Only do this if not an indexed file
+3525 VAR_NAME$="%"+FILE_ROOT$+"_IOL$"; EXECUTE "VIA VAR_NAME$=TMP_IOL$",ERR=*NEXT
+3545 RETURN 
+3549 ! 
+3550 CLEAR_GLOBAL_VARS:! Clear global vars, using FILE_ROOT$, see SET_GLOBAL_VARS
+3560 VAR_NAME$="%"+FILE_ROOT$+"$"; EXECUTE "VIA VAR_NAME$=DIM(0)",ERR=*NEXT
+3575 VAR_NAME$="%"+FILE_ROOT$+"_IOL$"; EXECUTE "VIA VAR_NAME$=DIM(0)",ERR=*NEXT
+3595 RETURN 
+3599 ! 
+6000 REM "BATCH FILES
+6005 IF POS(FILE_NAME$=%BATCH_FILES$,8)=0 THEN GOTO 6090
+6010 IF HAS_DOTS THEN FILE_NAME$=SUB(FILE_NAME$,"...","") ! ZZFDEF always puts the batch name on the end, so if ... not on the end, may be strange results
+6020 CALL "ZZFDEF",X3$,FILE_NAME$,-1,0,0,0,0,0,"",X0,X1
+6030 IF X0=1 AND (X1<=0 OR X1=12) THEN HAS_DOTS=0 ELSE FILE_NAME$=FILE_NAME$(1,HAS_DOTS-1)+"..."+FILE_NAME$(HAS_DOTS)
+6090 RETURN 
+7500 CLOSE_ALL_FILES:! Process Y0$ to clear files opened on this level, and then reduce %ZZFLES_LEVEL by one. We rely on Y0$ because it orginally did and seemed to work ok. We will clear corresponding %ZZFLES_LEVEL_n as well, close ZZCOMP window and reset if this was the level it was opened on.
+7510 WHILE Y0$>""
+7515 P=POS("|"=Y0$); IF P=0 THEN Y0$=""; CONTINUE ELSE Y0_ENTRY$=Y0$(1,P),Y0$=MID(Y0$,P+1)
+7520 FINDEX=POS("]"=Y0_ENTRY$)
+7525 CHANNEL=NUM(MID(Y0_ENTRY$,FINDEX+1,5),ERR=*NEXT),USED_ALREADY_OPEN_FILE=0,USED_ALREADY_OPEN_FILE=NUM(MID(Y0_ENTRY$,FINDEX+7,1))
+7530 IF CHANNEL>0 AND NOT(USED_ALREADY_OPEN_FILE) THEN {
+7535 CLOSE (CHANNEL,ERR=*NEXT)
+7540 Y0_FILE$=STP(MID(Y0_ENTRY$,FINDEX+8),1,"|") ! Rest of string, strip trailing '|'
+7545 IF Y0_FILE$="ZZPARM" THEN FILE_ROOT$="ZZPARM" ELSE FILE_ROOT$=MID(Y0_FILE$,1,3) ! Not always accurate, but best guess we got
+7550 ! GOSUB CLEAR_GLOBAL_VARS ! SSP 215664
+7555  }
+7560 WEND 
+7570 L$="%ZZFLES_LEVEL_"+STR(%ZZFLES_LEVEL)+"$"; VIA L$=""
+7575 %ZZFLES_LEVEL-=1
+7580 IF %ZZCOMP_WIN_LEVEL=TCB(12) THEN PERFORM "ZZCOMP;GUI_WINDOW_DROP"
+7595 GOTO 9900 ! we're done here
+7599 ! 
+7600 WRAP_UP:! set %ZZFLES_LEVEL_n and we can leave
+7630 ! To support legacy apps, if nothing is open on Z[13], and ZZPARM is open , the open it on Z[13]
+7635 IF POS("[13]"=Y0$)=0 AND FFN("ZZPARM")<>0 THEN {
+7640 Z[13]=FFN("ZZPARM"),FILE_SLOT=13,CHANNEL=Z[13]; Y0_FILE$="ZZPARM"; DIM Y0_OPT$(2); Y0_OPT$(2)="1"; GOSUB ADD_Y0_ENTRY
+7645  }
+7670 L$="%ZZFLES_LEVEL_"+STR(%ZZFLES_LEVEL)+"$"; VIA L$=Y0$
+7695 GOTO 9900
+7699 ! 
+8600 SIGNAL_ERROR:! Signal error FO_ERR on FILE_ERROR_NAME$
+8615 IF %IN_WEBEC$="Y" THEN LAST_WEBEC_ERR$="Error in ZZFLES: "+STR(FO_ERR)+"  ["+FILE_ERROR_NAME$+"]"; LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); GOTO 9800 ! 165766
+8620 IF FO_ERR=12 THEN P9$="X4ZZFLES",X$="+("+FILE_ERROR_NAME$+")" ELSE P9$="X9ZZFLES",X$="+("+STR(FO_ERR)+","+FILE_ERROR_NAME$+")"
+8625 IF POS("Q"=COMMAND_OPT$)=0 THEN CALL "ZZPROM",P9$,X3$,Z,X$,"","",0
+8630 GOTO 9800
+8635 ! 
+9000 ! ERRORS
+9010 E0=ERR,E1=TCB(5),Z1=E1+E0/100
+9040 CALL "ZZERRM",E0$,"ZZFLES",E1$,X3$,E0,E1,E2,E3,0
+9050 ON E2 GOTO 9060,9100,9800,9070
+9080 SETERR 9000; RETRY 
+9300 RETURN 
+9810 Z0=1; EXIT 
+9900 ! Done
+9920 SETERR 0000; EXIT 
+9930 REM SETERR 09000; EXIT
+9999 END 
+56002 REM "205455-Oracle - FFN usage in TopForm to be replaced with FN%FFN    
+56003 REM "215664-Optimize ZZFLES to reduce calls to ZZWIOL.                  
+56004 REM "217392-ZZFLES and ZZCOMP interaction scrambles file opened on 13.  
+56005 REM "221339-Change Fax Request Inquiry to say DemandBridge and not      
+56006 REM "248257-Modify the Error Handler program, report more information   

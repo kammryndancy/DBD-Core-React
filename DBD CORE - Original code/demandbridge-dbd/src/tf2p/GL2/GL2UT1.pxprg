@@ -1,0 +1,118 @@
+0010 REM "Build Open balance from previous years <GL2UT1>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/22/12 - 17.199722 - crg - SSP# 218038
+0037 REM "218038-Errors during Fiscal year utility, better error handling
+0040 REM "Copyright 2012 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,Q4$; REM "ADDED Q4$ ON 09/12/97
+0100 SETERR 9000
+0110 X0$="GL2UT1",X1$="Rebuild GL Balances from Previous Years"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O GL3...  02OSGL3...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 READ (Z[13],KEY=X3$(9,3)+"G/L")P0$
+0560 READ (Z[13],KEY="STATG/L")S9$
+0600 REM "
+0605 N0$=Q4$; REM LET N0$="1995"  ; CHGED TO N0$=Q4$ ON 09/12/97
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 READ (Z[1],KEY="",DOM=0901)
+1000 REM 
+1020 K$=KEY(Z[1],END=5000); READ RECORD (Z[1],KEY=K$)A$; REM CHG 09/24/97
+1022 IF K$(1,12)>=P0$(89,12) THEN GOTO 5000
+1025 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1050 REM "Check to see if the next year can be found, if not we don't do this one
+1055 REM "Only check if the current year is less than year N0$, we will make records for some older years
+1060 K0$=K$(1,12)+STR(NUM(K$(13,4))+1:"0000")+K$(17)
+1070 IF K0$(13,4)>N0$ THEN FIND (Z[1],KEY=K0$,DOM=1000)
+1100 REM 
+1104 REM "Read the current year
+1105 Q0$=K$(17,1),Q1$=K$(1,16)
+1110 GOSUB 7000
+1119 REM "Read the next year
+1120 Q1$=K0$(1,16)
+1125 GOSUB 7100
+1140 REM "Cal open balance then add to K(0) & write out
+1145 T9=0
+1150 FOR I=0 TO 13; T9=T9+J[I]; NEXT I
+1160 K[0]=T9
+1170 GOSUB 7150
+1190 READ (Z[1],KEY=K$); REM REPOSITION FILE
+1195 GOTO 1000
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This utility program will rebuild the balances in the General Ledger Account Balance File (GL3) by adding the opening balance plus activity for each year and posting the amount to the open balance of the next year, if the next year has activity."
+6025 CALL "ZZDISP","AX",P0$(89,12),"G/L",X3$,X$,"",0,0,X4$
+6030 PRINT @(0,8),"For accounts upto but not including ",X$,
+6040 PRINT @(0,12),"Will create following year records for years upto "+N0$,
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Read stats for reference into J()
+7005 Q=POS(Q0$=S9$(49),17); IF Q=0 THEN EXITTO 7090 ELSE M0$=S9$(Q+48,17)
+7007 DIM J[14]
+7010 CALL "ZZPACK",X3$,"E",M0$(3,2),"",0,0,J{ALL},Z[2],Q0$,Q1$,S9$
+7045 RETURN 
+7100 REM "Read stats (Packed/Unpacked)
+7105 Q=POS(Q0$=S9$(49),17); IF Q=0 THEN EXITTO 7090 ELSE M0$=S9$(Q+48,17)
+7107 DIM K[14]
+7110 CALL "ZZPACK",X3$,"E",M0$(3,2),"",0,0,K{ALL},Z[2],Q0$,Q1$,S9$
+7135 GOTO 7190
+7150 REM "Write stats
+7160 CALL "ZZPACK",X3$,"W",M0$(3,2),"",0,0,K{ALL},Z[2],Q0$,Q1$,S9$
+7190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,9),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "218038-Errors during Fiscal year utility, better error handling

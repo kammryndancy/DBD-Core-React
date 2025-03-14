@@ -1,0 +1,125 @@
+0010 REM "<IM2P00> Pre-process-GRS-Tully-Wihr
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/24/21 - 13.635334 - dmm - SSP# 307338
+0037 REM "307338-DBSPT-113793; Restocking GW FTP password change             
+0040 REM "Copyright 2021 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "Pre-process, will run before doing actual import
+0075 REM " Copied from IM2F00, ssp#85785
+0080 REM "OPTION$ -> IF ='?' THEN return WHO AM I ELSE Options if needed to control operation
+0081 REM "ORIGINAL$ -> Import code which contains alternate customer code for customer we are processing
+0082 REM "FORMATTED$ -> Won't return anything here
+0083 REM "RET_CODE -> 0=ok,1=not ok
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,OPTION$,ORIGINAL$,FORMATTED$,FORMAT_ARRAY${ALL},RET_CODE
+0100 SETERR 9000
+0110 X0$="IM2P00",X1$="Pre-process-GRS-Tully-Wihr"
+0200 REM "Initialization
+0205 RET_CODE=0
+0310 IOLIST RS5$,RS5[0]
+0400 REM "Where to go
+0405 IF OPTION$="?" THEN GOTO WHO_AM_I
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O RS5...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 GOTO FORMAT_ORIGINAL
+0600 WHO_AM_I:REM "Return in FORMATTED$ a description of this method
+0605 REM "Description should be no longer than 28 for display purposes
+0610 FORMATTED$="Pre-process-GRS-Tully-Wihr"
+0695 WHO_AM_I_END:GOTO 9900
+1000 FORMAT_ORIGINAL:REM " Perform all pre-processing, if problems set RET_CODE to 1
+1005 ALT_CODE$=ORIGINAL$(5,6)
+1010 CALL "IM2F03",X3$,X4$,"",ALT_CODE$,CUST_CODE$,ARRAY${ALL},RETURN_CODE
+1012 FILE$=UCS(ALT_CODE$(1,1))+ALT_CODE$(3,2)
+1014 REM "Move old files for this customer to archive DIRectory
+1015 SYS_CALL$="/usr/lib/pvx/mvitP2 "+FILE$+" 2> /dev/null"
+1017 INVOKE SYS_CALL$
+1019 REM "Transfer files for this customer from Novell Server to Unix box
+1020 GOSUB NEW_FTP ! gosub 7500 ! SSP199397          
+1059 REM "Move any $w... files to tw... files
+1060 REM SYS_CALL4$="cd /usr/lib/pvx/occ_in;find . -name "+QUO+"$"+QUO+QUO+"*"+ QUO+" -exec /usr/lib/pvx/mvit {} \;"                                       
+1061 SYS_CALL4$="cd /usr/lib/pvx; ./mvit"
+1062 INVOKE SYS_CALL4$
+1069 REM "Get number of records, read RS5 file for corresponding out file, if not equal then set RET_CODE to 1
+1070 CLOSE (14); OPEN (14)"< wc -l /usr/lib/pvx/occ_in/TW"+FILE$+"?.DAT"
+1075 READ (14,ERR=FORMAT_ORIGINAL_END)FILE_COUNT$; REM "If there is only 1 file and we've read that line in, when we come back here we will get an error 2
+1076 FILE_COUNT$=STP(FILE_COUNT$,0); REM "Strip off leading spaces
+1078 IF FILE_COUNT$(1,2)="wc" THEN RET_CODE=1; CALL "ZZPROM",".4",X3$,Z,"No files for this customer","","",0; GOTO FORMAT_ORIGINAL_END; REM "If no files like this it will say wc: some error number then cannot open
+1080 P=POS(" "=FILE_COUNT$),COUNT$=FILE_COUNT$(1,P-1),FILE_NAME$=FILE_COUNT$(P+1),P2=POS("TW"=FILE_NAME$); IF P2=0 THEN GOTO FORMAT_ORIGINAL_END END_IF ; FILE_NAME$=FILE_NAME$(P2),P1=POS("."=FILE_NAME$); IF P1=0 THEN GOTO FORMAT_ORIGINAL_END ELSE FILE_NOX$=UCS(FILE_NAME$(1,P1-1)); REM "Files will look like twc10a.dat, wc -l command will return a total when all matching are done
+1082 DIM RS5$(22),RS5[1]; READ (Z[1],KEY=CUST_CODE$+FILE_NOX$,DOM=1083)IOL=0310; GOTO 1085
+1083 RET_CODE=1; CALL "ZZPROM",".4",X3$,Z,"No outgoing count record found for "+FILE_NAME$+", cannot process","","",0; GOTO FORMAT_ORIGINAL_END
+1085 IF NUM(COUNT$)<>RS5[0] THEN RET_CODE=1; CALL "ZZPROM",".4",X3$,Z,"Outgoing count is "+STP(STR(RS5[0]:"#####0"),0)+", incoming count is "+COUNT$+" for "+FILE_NAME$+", cannot process","","",0; GOTO FORMAT_ORIGINAL_END ELSE GOTO 1075
+1095 FORMAT_ORIGINAL_END:GOTO 9900
+7500 REM "Create .netrc file and do ftp to get files
+7501 ! NOT USED - SEE NEW_FTP
+7510 IF X3$(9,3)="500" THEN MACHINE$="tftech",LOGIN$="root",PASSWORD$="",REMOTE_DIR$="/usr/dmm/dmmporting",LOCAL_DIR$="/usr/lib/pvx/occ_in"
+7520 IF X3$(9,3)="449" THEN MACHINE$="twis2",LOGIN$="occ2",PASSWORD$="T\$G_dbD_2021",REMOTE_DIR$="/twdata/twis/occ",LOCAL_DIR$="/usr/lib/pvx/occ_in" ! SSP307320-DBSPT-107347, password was tfocc SSP307338-DBSPT-113793 password was T$GdbD20
+7530 SYS_CALL2$="echo -E"+QUO+"machine "+MACHINE$+"\nlogin "+LOGIN$+"\npassword "+PASSWORD$+"\nmacdef init\ncd "+REMOTE_DIR$+"\nlcd "+LOCAL_DIR$+"\npwd\nbin\nprompt\nmget *W"+FILE$+"*.DAT\nquit\n\n"+QUO+" > $HOME/.netrc;chmod 600 $HOME/.netrc"; REM SSP 193555
+7531 REM SYS_CALL2$="echo "+QUO+"machine "+MACHINE$+"\nlogin "+LOGIN$+"\npassword "+PASSWORD$+"\nmacdef init\ncd "+REMOTE_DIR$+"\nlcd "+LOCAL_DIR$+"\npwd\nbin\nprompt\nmget *W"+FILE$+"*.DAT\nquit\n\n"+QUO+" > $HOME/.netrc;chmod 600 $HOME/.netrc"
+7535 INVOKE SYS_CALL2$
+7540 SYS_CALL3$="umask 0;ftp "+MACHINE$+" >/dev/null 2>&1;rm -f $HOME/.netrc"; REM SSP 193555
+7541 REM SYS_CALL3$="umask 0;ftp "+MACHINE$+" >/dev/null;rm -f $HOME/.netrc"
+7545 INVOKE SYS_CALL3$
+7590 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 NEW_FTP:
+10050 INVOKE "rm -f $HOME/.netrc"
+10060 TMP_RC$="netrc"+X3$(40,3)+FID(0),TMP_SCR$="ftpscript"+X3$(40,3)+FID(0) ! SSP265631, add operator code to file names to avoid permissions issue on erase
+10070 ERASE TMP_RC$,ERR=*NEXT
+10080 SERIAL TMP_RC$
+10090 ERASE TMP_SCR$,ERR=*NEXT
+10100 SERIAL TMP_SCR$
+10110 TMP_CH=UNT; OPEN LOCK (TMP_CH,OPT="TEXT")TMP_RC$
+10120 TMP_CH_PTH$=PTH(TMP_CH)
+10130 PRINT (TMP_CH)"machine thesourcinggroup.files.com" ! SSP307221-DBSPT-72255 change machine from twis2
+10140 PRINT (TMP_CH)"login occ2"
+10150 PRINT (TMP_CH)"password T\$G_dbD_2021" ! SSP307320-DBSPT-107347, was tfocc SSP307338-DBSPT-113793 password was T$GdbD20
+10160 CLOSE (TMP_CH); OPEN LOCK (TMP_CH,OPT="TEXT")TMP_SCR$
+10170 PRINT (TMP_CH)"mv "+TMP_CH_PTH$+" $HOME/.netrc"
+10180 PRINT (TMP_CH)"chmod 600 $HOME/.netrc"+EOL$
+10190 PRINT (TMP_CH)"ftp -i thesourcinggroup.files.com << EOF"+EOL$ ! SSP307221-DBSPT-72255 change from twis2
+10210 PRINT (TMP_CH)"binary"+EOL$
+10220 PRINT (TMP_CH)"cd /twdata/twis/occ/"
+10225 PRINT (TMP_CH)"lcd /usr/lib/pvx/occ_in"
+10230 ! PRINT (TMP_CH)"prompt"
+10235 PRINT (TMP_CH)"mget *W*.DAT"
+10240 PRINT (TMP_CH)"EOF"+EOL$
+10260 TMP_CH$=PTH(TMP_CH)
+10270 CLOSE (TMP_CH)
+10280 INVOKE "chmod 700 "+TMP_CH$
+10290 INVOKE TMP_CH$
+10390 RETURN 
+56000 REM "199397-Restocking Gateway, GRS P2, not finding any records to      
+56002 REM "265631-Restocking GW; P2 error sometimes (012-IM2P00-10100).       
+56004 REM "307221-DBSPT-72255; Restocking Gateway, change FTP machine name.   
+56006 REM "307320-DBSPT-107347;Change password in Restocking GW for 449       
+56008 REM "307338-DBSPT-113793; Restocking GW FTP password change             

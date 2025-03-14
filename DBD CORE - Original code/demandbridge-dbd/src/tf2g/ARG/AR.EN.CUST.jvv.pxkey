@@ -1,0 +1,177 @@
+<PxTable>
+ TableName=AR.EN.CUST.jvv
+ TableKey=K1522868607
+ FileCreate=KEYED "AR.EN.CUST.jvv",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0000"
+    FIELD_1$="AR1_Cust"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2018/04/12 09:08 jvv"
+    FIELD_19$="ARGMAB"
+    FIELD_21$="R"
+    FIELD_23$="U0000000"
+    FIELD_24$="2"
+    FIELD_29$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0001"
+    FIELD_1$="CUST_LOOKUP"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="10"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0002"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0003"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0004"
+    FIELD_1$="SPER_NAME"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SPER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="AR3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0005"
+    FIELD_1$="Formula:STP(_MN_.CUST_ADDR_1$)+"+QUO+","+QUO+"+STP(_MN_.CUST_ADDR_2$)+"+QUO+","+QUO+"+STP(_MN_.CUST_CITY$)+"+QUO+", "+QUO+"+_MN_.CUST_ST$+"+QUO+" "+QUO+"+STP(_MN_.CUST_ZIP_CODE$)"
+    FIELD_4$="40"
+    FIELD_6$="+"
+    FIELD_7$="Address"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0006"
+    FIELD_1$="CUST_PHONE"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="=%PHONE_MASK$+"+QUO+"XXXX"+QUO
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0007"
+    FIELD_1$="CUST_BAL"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_BAL"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##,###,###.00-"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0008"
+    FIELD_1$="STAX_CODE"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"STAX_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="10"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0009"
+    FIELD_1$="TAX_EXEMPT"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TAX_EXEMPT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0010"
+    FIELD_1$="RESALE_NUM"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"RESALE_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="16"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   F001"
+    FIELD_1$="AR3_Slsperson"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR3"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.SPER_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="AR3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=pad(DIM(2,"+QUO+"0"+QUO+"),ABS(%ar_diV_LEN-2))"
+    FIELD_13$="C"+QUO+"UPDSYO;VAL_QRY_LIST"+QUO+",REPS$,_MN_.SPER_CODE$,_MN_.SPER_CODE_2$,_MN_.SPER_CODE_3$,_MN_.SPER_CODE_4$,_MN_.SPER_CODE_5$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

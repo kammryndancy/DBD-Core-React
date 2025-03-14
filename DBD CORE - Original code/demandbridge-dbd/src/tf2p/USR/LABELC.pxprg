@@ -1,0 +1,79 @@
+0020 REM "LABELC - PRINT Customer Barcoded LABELS
+0080 REM "R1$=Customer (10)
+0081 REM "If no printer set,will ask for printer on line 21. If other varia"+"bles not provided then will ask for all
+0085 CLEAR 
+0090 SETERR 0095; ENTER W9,R1$,R2$,R3$,R4,R5; GOTO 0100
+0095 F=1; REM "F=1 means get values from screen
+0100 SETERR 0000
+0105 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9900; REM "Get Company Code
+0120 REM "--------MAINLINE---------"
+0130 IF R2$="" THEN R2$=DAY
+0145 IF F=1 THEN PRINT 'CS','SB',"Customer Labels",@(60,0),"(ED) ",DAY,'SF'
+0146 IF F=1 THEN PRINT @(10,4),"Customer Code:",@(16,5),"",@(14,6),"",@(13,7),"",@(4,8),"Number of labels to print:",@(33,5),"",
+0149 IF W9<>0 THEN GOTO 0156 ELSE W9=13
+0150 INPUT @(10,21),"Printer code (P1,P2,etc. or END): ",W9$; W9$=UCS(W9$); PRINT @(44,21),W9$
+0151 IF W9$="END" THEN GOTO 9900
+0155 CLOSE (W9); OPEN (W9,ERR=0150)W9$
+0200 OPEN (1)"AR1500"
+0300 REM "Input values
+0308 PRINT @(33,4),'CL',@(50,4),"Type in END to exit"
+0310 N$=R1$,X=33,Y=4,L=10; GOSUB 7050; R1$=N$; IF R1$="END" OR R1$="end" THEN GOTO 9900 ELSE DIM ITEM$(10); ITEM$(1)=PAD(R1$,10,"0"),R1$=ITEM$; R6$="Customer Number"; PRINT @(45,4),R6$,
+0313 READ (1,KEY=R1$)A1$; R6$=A1$(11,35)
+0315 REM "N$=R2$,      X=33,      Y=5,      L=8;      GOSUB 07050;      R2$"+"=N$;      REM "DATE RECEIVED
+0320 REM " N$=R3$,      X=33,      Y=6,      L=6;      GOSUB 07050;      R3"+"$=N$;      REM "RECEIVER NUMBER
+0325 REM "N=R4,      X=33,      Y=7,      L=5;      GOSUB 07000;      R4=N;"+"      REM "QUANTITY PER BOX
+0330 N=R5,X=33,Y=8,L=4; GOSUB 7000; R5=N; REM "Number of labels to print
+0350 INPUT @(10,15),"Correct? (Y/N/END) ",I$,; I$=UCS(I$)
+0360 IF I$="N" THEN GOTO 0300 ELSE IF I$="END" THEN GOTO 9900
+0370 IF I$<>"Y" THEN GOTO 0350
+0400 REM "Generate labels
+0410 REM "constants
+0415 H0=3
+0490 PRINT (W9)$02$,"f","260",$0D$,; REM "Go forward so label can be peeled off
+0515 REM OPEN (W9) "PA"
+0520 PRINT (W9)$02$,"L",$0D$,
+0523 L1=1,L2$="a",L3=5,L4=2,L5=50,L6=190,L7=25,L$=STR(R4:"00000"); REM "GOSUB 07300;      REM "QUANTITY BARCODED
+0525 L1=1,L2$="9",L3=2,L4=1,L5=H0,L6=155,L7=25,L$=STR(R4:"    0"); REM "GOSUB 07300;      REM "QUANTITY
+0530 L1=1,L2$="9",L3=1,L4=1,L5=H0+1,L6=200,L7=250,L$=R2$; GOSUB 7300; REM "Date received
+0535 L1=1,L2$="9",L3=1,L4=1,L5=H0+1,L6=160,L7=270,L$=R3$; GOSUB 7300; REM "Receiver Number
+0540 L1=1,L2$="9",L3=1,L4=1,L5=H0+1,L6=110,L7=25,L$=R1$; GOSUB 7300; REM "Raw Material number
+0545 L1=1,L2$="9",L3=1,L4=1,L5=H0-1,L6=90,L7=25,L$=R6$; GOSUB 7300; REM "Description
+0550 L1=1,L2$="a",L3=5,L4=2,L5=75,L6=10,L7=25,L$=R1$; GOSUB 7300; REM "Raw material number barcoded
+0580 PRINT (W9)"Q"+STR(R5:"0000"),$0D$,"E",$0D$,
+0581 REM CLOSE (W9);ESCAPE
+0582 PRINT (W9)'LF',; REM "Print LF so basic will think we have done a line and not give us "+          "an error 1, the printer will ignore this character
+1000 REM "End
+1010 IF F=0 THEN GOTO 9900 ELSE GOTO 0300
+7000 REM "Input numeric value N at position X,Y length L
+7001 REM "keep value of N if just return hit
+7005 DIM M$(L,"0"); N$=""
+7010 INPUT @(X,Y),N$,
+7015 DIM S$(LEN(N$))
+7016 IF N$="" THEN GOTO 7030
+7020 N=NUM(N$,ERR=7021); GOTO 7022
+7021 PRINT @(X,Y),S$,; GOTO 7005
+7025 IF LEN(N$)>L THEN GOTO 7021
+7030 PRINT @(X,Y),STR(N:M$),
+7045 RETURN 
+7050 REM "Input alpha numeric value N$ at position X,Y length L
+7051 REM "Keep value of N$ if just return hit
+7055 DIM M$(L,"0"); N0$=""
+7060 INPUT @(X,Y),N0$,
+7065 DIM S$(LEN(N0$))
+7066 IF N0$="" THEN GOTO 7090
+7067 IF POS("E"=N0$)<>0 THEN GOTO 7071; REM "If it has an 'E' in it, it will be mistaken for a number, so s"+             "kip NUM check
+7070 REM "N=NUM(N0$,ERR=07071);GOTO 07075
+7071 IF LEN(N0$)>L THEN N$=N0$(1,L); PRINT @(X,Y),S$,@(X,Y),N$; GOTO 7080 ELSE N$=N0$; GOTO 7080
+7075 IF LEN(N0$)>L THEN PRINT @(X,Y),S$,; GOTO 7055
+7076 N$=STR(N)
+7079 PRINT @(X,Y),STR(N:M$),
+7095 RETURN 
+7300 REM "Print a field on the label,L1=rotation, L2$=Font/BARCODE, L3=Widt"+"h Multiply (or Wide bar width), L4=Height Multiply (or narrow bar"+" width), L5=Bar code height (or font 9 point size), L6= Row posit"+"ion, 1/100s/inch up from bottom, L7=Column position, 1/100's inch"+" right from left side, L$=data string
+7310 PRINT (W9)L1:"0",L2$,L3:"0",L4:"0",L5:"000",L6:"0000",L7:"0000",L$,$0D$,
+7345 RETURN 
+9900 REM "End
+9905 IF W9$<>"" THEN CLOSE (W9); REM "If we opened it in here, then close it in here
+9940 SETERR 9950; EXIT 
+9950 CLOSE (W9)
+9955 RUN "ZMENU"
+9999 END 

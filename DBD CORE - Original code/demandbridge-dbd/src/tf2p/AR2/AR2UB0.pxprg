@@ -1,0 +1,120 @@
+0010 REM "Build ASF from Order History <AR2UB0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.9 - 11/29/95 - 10.63 - wmz
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UB0",X1$="Build ASF from Order History"
+0120 DIM Z0$(80,"-"),Z1$(20,"0"),S$(40)
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8]
+0330 IOLIST C$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X FS6...  03O AR1...  05O ASF...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0540 READ (Z[13],KEY=X3$(9,3)+"F/M")F0$
+0550 READ (Z[13],KEY=X3$(9,3)+"AR1")P1$
+0585 READ (Z[13],KEY="STATASF",DOM=0586)S3$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 IF P0$(112,1)<>"Y" THEN CALL "ZZPROM",".4",X3$,0,"A/R System Parameter not enabled for use of this feature","","",0; GOTO 9900
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0660 CALL "ZZPROM",".Y",X3$,Z,"Clear TopForm files ASF","","",0; ON Z GOTO 0661,0701
+0670 CALL "ZZPROM",".Y",X3$,Z,"Are you sure you want to clear?","","",0; ON Z GOTO 0671,0701
+0700 CALL "ZZINIT",STR(Z[5]:"00")
+0900 DIM A[8]
+1000 REM "Read Data file
+1100 READ (Z[1],END=5000)IOL=0310
+1200 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1300 READ (Z[3],KEY=A$(1,10),DOM=1100)IOL=0330
+1320 IF POS(" "<>A$(48,6))=0 THEN GOTO 1000
+1340 IF A[6]=0 AND A[7]=0 THEN GOTO 1000
+1400 CALL "ZZ2FYP",X3$,A$(48,6),A9$
+1420 IF A9$="" THEN GOTO 1000
+3080 F0=Z[5],S9$=S3$
+3090 FOR I=9 TO POS(" "=P1$(9,10)+" ")+7
+3100 Q1$=C$(278,4)+A$(1,10)+A$(31,3)+" "+A9$(1,4),Q1=NUM(A9$(5,2)),Q0$=P1$(I,1)
+3150 ON POS(Q0$="SPCN") GOTO 3180,3155,3160,3165,3170
+3155 Q0=A[6]; GOTO 3175
+3160 Q0=A[6]-A[7]; GOTO 3175
+3165 GOTO 3180
+3170 Q0=1; GOTO 3175
+3175 IF F9$<>"*" THEN GOSUB 7000
+3185 NEXT I
+3190 DIM T[0]
+3290 GOTO 1000
+5000 REM "EOJ
+5010 GOSUB 8150
+5020 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program builds the ASF statistics file from the invoiced order history records contained in FS6.  The statistics first by Salesperson, then Customer, then Product Code."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Update stats q0$ in period q1 with data q0
+7005 IF Q0=0 THEN GOTO 7090
+7010 DIM K[14]; P9$=Q1$+Q0$
+7020 GOSUB 7100
+7040 K[Q1]=K[Q1]+Q0
+7060 GOSUB 7150
+7090 RETURN 
+7100 REM "Read stats (Packed/Unpacked)
+7105 Q=POS(Q0$=S9$(49),17); IF Q=0 THEN EXITTO 7090 ELSE M0$=S9$(Q+48,17)
+7110 CALL "ZZPACK",X3$,"E",M0$(3,2),"",0,0,K{ALL},F0,Q0$,Q1$,S9$
+7135 GOTO 7190
+7150 REM "Write stats
+7160 CALL "ZZPACK",X3$,"W",M0$(3,2),"",0,0,K{ALL},F0,Q0$,Q1$,S9$
+7190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8970 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

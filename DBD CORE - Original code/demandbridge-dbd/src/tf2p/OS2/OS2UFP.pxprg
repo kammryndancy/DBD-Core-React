@@ -1,0 +1,15 @@
+0010 REM "<OS2UFP> import prices
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 05/03/06 - 12.763611 - lms - SSP# 194734
+0037 REM "194734-Create a program to read the Featured prices from United    
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0150 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access TopForm to Access this program"; IF TCB(13)=1 THEN BEGIN ; RUN "ZMENU" ELSE EXIT 
+0170 %GUI=1
+0200 CALL "OSGUFP",ERR=*NEXT
+0210 %GUI=0
+0250 RUN "ZMENU"
+9999 END 
+56000 REM "189013-Multiple problems due to NT                                 
+56010 REM "192936-Create a new TOPS program to allow Tops Clients to copy   

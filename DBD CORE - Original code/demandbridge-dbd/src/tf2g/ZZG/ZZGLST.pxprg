@@ -1,0 +1,25 @@
+0010 ! ZZGLST - Pop a Panel to POPULATE LIST BOX
+0035 ! "6.0 - 08/07/03 - 14.643888 - kmc
+0040 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0085 ! ARGUMENTS:
+0086 ! ARG_1$=value to get, ARG_2$=Title of panel, ARG_3$=Tag on panel
+0087 ! ARG_4$=Program Refrerence
+0088 ! ARG_5$=Default Selection, ARG_6$=Call Program to populate List box
+0100 INIT:
+0195 RETURN 
+0199 ! 
+0500 MAIN_POST_DISPLAY:
+0520 PRG_LIST$=ARG_4$
+0530 SEL_DFLT$=ARG_1$
+0540 CALL_PGM$=ARG_6$
+0548 RPT_SELECT1$=SEL_DFLT$
+0550 CALL CALL_PGM$,RPT_SELECT1.CTL,PRG_LIST$
+0560 ! DROP_BOX WRITE RPT_SELECT1.CTL,SEL_DFLT$
+0570 REFRESH_FLG=1
+0595 RETURN 
+0599 ! 
+9900 WRAPUP:
+9905 ARG_1$=RPT_SELECT1$
+9910 CMD_STR$="END"
+9995 RETURN 

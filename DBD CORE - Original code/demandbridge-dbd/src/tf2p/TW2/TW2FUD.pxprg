@@ -1,0 +1,159 @@
+0010 REM "Process Taxware file and generate new tax codes <TW2FUD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 11/18/08 - 10.324722 - jir - SSP# 224798
+0040 REM "Copyright 2008 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF %GUI THEN PROCESS "TWGFUD","../TWG/TW.EN"; EXIT 
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 INIT:
+0100 SETERR 9000
+0110 X0$="TW2FUD",X1$="Generate new Tax Codes"
+0120 DIM Z0$(80,"-"),Z1$(20,"0"),C[15]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0210 IF %GUI THEN X0=-1
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0250 PRECISION 9
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0297 IF %GUI THEN CALL "ZZ2PRP","TW",TAX_FILE$,""; IF TAX_FILE$<>"Y" THEN MSGBOX "ACCESS DENIED!!"+SEP+SEP+"The Sales Tax File Download System is not an installed Module.",MSG("WARNING"),"!,TIM=5"; CMD_STR$="E"; EXIT 
+0299 CALL "ZZ2PRP","TW",TAX_FILE$,""; IF TAX_FILE$<>"Y" THEN CALL "ZZPROM",".4",X3$,Z,"ACCESS DENIED!! The Sales Tax File Download System is not an installed Module.","","",0; GOTO 9900; REM " SSP # 149046                       
+0300 REM "IOLISTS
+0310 IOLIST A$
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15]
+0400 REM "CREATE TEMPORARY FILE
+0405 ERASE "TEMPFILE",ERR=*NEXT; GOTO *SAME
+0410 IF ERR<>12 THEN GOTO 9000
+0415 REM "SORT FILE, KEY = 36
+0420 DIRECT "TEMPFILE",36,0,0
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O TEMPFILE  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0531 IF %GUI THEN RETURN 
+0535 FILE_NAME$="taxfile"; INPUT EDIT (0,ERR=0535)@(5,6),"File Name : ",FILE_NAME$
+0536 Z(1)=HFN
+0537 IF CTL=4 THEN GOTO 9900
+0540 REM "CLOSE (Z[1]); OPEN (Z[1],ISZ=200)"taxfile"
+0541 CLOSE (Z[1]); OPEN (Z[1],OPT="TEXT",ERR=0535)FILE_NAME$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8200
+0630 GOSUB 8100
+0635 IF %GUI THEN RETURN 
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 PROCEED:
+0710 IF %GUI THEN CALL "$CTL-10;PB_CREATE",0,0,1,7.5; Z(1)=HFN
+0800 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT",ERR=NO_FILE)FILE_NAME$
+0810 IF %GUI THEN GOSUB 8200; GOSUB 8100; CALL "$CTL-10;PB_CREATE",0,0,1,7.5
+0900 REM 
+0920 H0$=$0A$
+1000 REM "Read Data file
+1100 READ (Z[1],END=5000)R$
+1102 REM "IF R$(3,5)=DIM(5) THEN GOTO 1100
+1105 R$=UCS(R$)
+1110 REM "IF R$(2,2)="99" THEN GOSUB 8250; GOTO 5000
+1170 C1=C1+1
+1175 IF %GUI THEN CALL "$CTL-10;PB_VALUE",C1
+1180 GOSUB 2000
+1300 IF %GUI=0 AND MOD(C2,T0)=1 THEN GOSUB 8150; REM "PRINT @(0,14),'LD',@(15,20),A$(1,2)+"-"+A$(3,5)+"-"+A$(8,3)+"  "+A$(11,25),
+1900 GOTO 1000
+2000 REM "Initialize TopForm Record
+2100 DIM A$(35)
+2110 IF R$(1,1)=$1A$ THEN GOTO 5000
+2200 REM "Update control and date fields
+2230 A$(8,25)=R$(10,25); REM "CITY NAME
+2250 A$(1,2)=R$(1,2); REM "STATE CODE
+2255 A$(3,5)=R$(3,5)
+2260 A$(33,3)=R$(8,2)+"0"
+4900 REM "Write file(s)
+4901 C2=C2+1
+4905 REM "IF POS(" "<>A$(11))=0 THEN GOTO 4915
+4910 WRITE (Z[2],KEY=A$(1,35)); C2=C2+1
+4920 RETURN 
+5000 REM "EOJ
+5010 REM "IF T9$<>"Y" THEN X$=STR(C1)+" records done. Did not find a valid trailer record, data is incomplete!!!"; CALL "ZZPROM",".4",X3$,Z,X$,"","",0; GOTO 5021
+5015 X$="Process complete - "+STR(C1)+" of "+STR(T)+" records loaded."
+5016 IF %GUI THEN MSGBOX X$,"F.Y.I","!,TIM=5"; CMD_STR$="E"; EXIT 
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+5200 REM "COMPLETE CYCLE
+5290 RETURN 
+6000 REM "BACKGROUND
+6001 IF %GUI THEN RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program creates a cross-reference Tax Data from a file named 'taxfile'  ",'LF',"which is the VeraTax File ",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8110 REM "CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8112 REM "T=INT(T0*B/200.0046)
+8113 CALL "ZZ2FNC;SERIALRECCNT",Z[1],T
+8114 IF %GUI THEN ML_MESS.CTL'VALUE$="There are "+STR(T)+" records to process"; GOTO 8129
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",12,10,50,T1,T,C1
+8195 RETURN 
+8200 REM "Read first record and print file header information
+8205 READ RECORD (Z[1],END=8206,ERR=*NEXT)H$; GOTO 8210
+8206 MSG$="There are no records in the file!!!"
+8207 IF %GUI THEN MSGBOX MSG$,MSG("WARNING"),"!,TIM=5"; CMD_STR$="E"; EXIT ELSE CALL "ZZPROM",".4",X3$,0,MSG$,"","",0; GOTO 9900
+8210 REM "IF POS("VERTEX 'SALESTAX' TAX RATE FILE"=H$)=0 THEN PRINT @(0,15),H$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Header Information!!!","","",0; GOTO 9900
+8214 REM "H0$ is date of tape, H1$ is update number
+8215 REM "H0$=FNE$(NUM(H$(15,2),ERR=8216))+H$(17,4)
+8220 REM "H1$=H$(21,4)
+8240 REM "PRINT @(25,8),"Update Number: ",@(40,8),H1$,@(25,9),"Date produced: "
+8241 REM "CALL "ZZDISP","D",H0$,"",X3$,"","",40,9,X4$
+8245 RETURN 
+8250 REM "Check out trailer record, set T9$ to "Y" if it is ok
+8260 IF POS("9"<>R$(1,10))<>0 OR POS("VERTEX 'SALESTAX' TAX RATE FILE"=R$)=0 THEN PRINT @(0,15),R$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Trailer Information!!!","","",0; GOTO 8295
+8280 T9$="Y"
+8295 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8950 DEF FNS(Z9$)=POS(" "<>Z9$)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 IF %GUI THEN CMD_STR$="E"; EXIT 
+9905 END_PROC:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 NO_FILE:
+10010 MSGBOX "File Name : "+FILE_NAME$+" not found",MSG("WAARNING"),"!,TIM=5)"
+10020 NEXT_ID=FILE_NAME.CTL; EXIT 
+56000 ! "224798-Veratax in GUI: Create new optional module GUI menu for T/W 

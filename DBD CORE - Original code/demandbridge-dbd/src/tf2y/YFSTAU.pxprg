@@ -1,0 +1,7 @@
+0010 REM "@@FORM_STATUS_DESCRIPTION: Form Status Field Description <YFSTAU>
+0015 REM "Prog Type: M -360016  
+1020 ENTER X3$,Z0$,Z1$
+1210 Z1$=""; IF Z0$="0" THEN Z1$="New Form" ELSE IF Z0$="1" THEN Z1$="O.K." ELSE IF Z0$="2" THEN Z1$="(Reserved 1)" ELSE IF Z0$="3" THEN Z1$="Reorder Notice" ELSE IF Z0$="4" THEN Z1$="Sales Order" ELSE IF Z0$="5" THEN Z1$="(Reserved 2)" ELSE IF Z0$="6" THEN Z1$="Obsolete Form" ELSE IF Z0$="7" THEN Z1$="Analyst Review"
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

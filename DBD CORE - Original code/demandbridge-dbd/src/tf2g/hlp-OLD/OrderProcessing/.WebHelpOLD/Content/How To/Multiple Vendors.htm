@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="How To..." class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Product With Multiple Vendors</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;">
+                        </img>
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #224386;">How to Enter an Order for a Product with Multiple Vendors</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.topform.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b style="font-style: normal;">&#160;</b>
+        </p>
+        <p>To enter an order for a product with multiple vendors, use a Sales Order and multiple Purchase Orders to the manufacturers for the total of the goods to be produced, then enter the remaining Order Header Information. 
+
+</p>
+        <p>In the lines section, enter the Item Code for the first vendor  as Line 001. Enter the quantity that needs to be produced. If you are entering an order for the production of a single product where multiple vendors will perform a process, this will be the finished item.  It will also be the line item that displays on the customer invoice. Set the Sell Price to the total price that you will charge your client. Enter the cost for the item from this first vendor.  Since you will need the first vendor to send the goods to the second vendor, set the Special Shipping Flag to Y to ensure that the Special Shipping Panel is displayed.</p>
+        <p>On the Special Shipping Panel, enter the first Shipping Point sequence.  Select Customer as the Location type (for the character-based user interface enter C).  This will be the customer location for the final delivery of the finished product.  Enter the quantity to ship.</p>
+        <p>In the Vendor Code field, enter the Vendor Code for the next vendor in line.  Enter the Plant Code if necessary.   When the Purchase Order prints, it will substitute the Vendor’s (or Plant's) Address as the ship-to location when it prints the purchase order. The order is still listed as being shipped to the client in the end.  At invoicing time, the Customer location prints on the customer invoice.
+ </p>
+        <p />
+        <p>For example, line 002 on the order might be a special charge for the type of service that is required from the second vendor. Enter a different PO Code so that a new Purchase Order will be created. The Line Type will be Special Charge (in the character-based user interface, set the line type to “S” for Special Charge).  You may not want this line to print on the ultimate customer invoice.  Set the Print On flag accordingly. Enter the Special Charge Code and the Supplier. If you are charging the customer for the total finished item on line 1, do not enter an additional sales price here.  Enter the cost from the Supplier in the cost field.</p>
+        <p>The Sales Order Summary Panel displays both of the lines entered. Use this to double-check the accuracy of your order. </p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 TopForm Software, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

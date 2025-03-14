@@ -1,0 +1,10 @@
+0010 REM "Requistion Entry Defaults <FS2DAX>
+0015 REM "Prog Type: I -3.0A    
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.0
+0040 REM "Copyright 1986-1989 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "This program required to set program name in X3$ for later use"
+0100 BEGIN 
+9900 RUN "FM2ODX"
+9999 END 

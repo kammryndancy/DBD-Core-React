@@ -1,0 +1,9 @@
+0010 REM "Call Support Routine <UT2SSP>
+0035 REM "5.0 - 03/27/02 - 9.485 - tma - SSP# 142887
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9000
+1010 ENTER X3$,X4$,Q0$,Q1$
+1020 INVOKE "support"
+9940 EXIT 
+9999 END 

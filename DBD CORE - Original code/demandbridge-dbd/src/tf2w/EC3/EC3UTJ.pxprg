@@ -1,0 +1,133 @@
+0010 REM "Build Alt selling unit with pack or price uom
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 09/19/02 - 19.161944 - wab - SSP# 152912
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3UTJ",X1$="Load Alternate Unit-of-Issue"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST FM1$,FM1[0],FM1[1],FM1[2],FM1[3],FM1[4],FM1[5],FM1[6],FM1[7],FM1[8],FM1[9],FM1[10],FM1[11],FM1[12],FM1[13],FM1(14),FM1(15),FM1(16),FM1(17),FM1(18),FM1(19),FM1(20),FM1(21),FM1(22),FM1(23),FM1(24),FM1(25),FM1(26),FM1(27),FM1(28),FM1(29),FM1(30),FM1(31)
+0320 IOLIST B$
+0350 IOLIST ICF$,ICF(0),ICF(1),ICF(2),ICF(3),ICF(4),ICF(5),ICF(6),ICF(7),ICF(8),ICF(9),ICF(10),ICF(11),ICF(12)
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))],FM1[31],ECS$(200),ICF(12)
+0510 Z$="01O FM1...  02O AR1...  04O ECS...  05O ICF...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "SELECTED CUSTOMER
+0710 IF LEN(Q1$)=10 THEN CUSTOMER$=Q1$; GOTO 0740
+0715 DIM CUSTOMER$(10),CP$(10),CP(1)
+0720 PRINT @(12,8),"Enter the customer or leave blank for all:",@(10,10),"Use carton pack as first source for Alt uom?",@(27,11),"Overwrite existing Alt uom?",
+0730 DIM W0$(10); CALL "ZZENTR","AXU",A{ALL},CUSTOMER$,X4$,X3$,55,8,1+K9,10,C0,"A/R","{1"+X$,"","AR2MAA00","AR1","",""
+0740 IF CUSTOMER$=DIM(10) THEN GOTO 0760
+0742 FIND (Z[2],KEY=CUSTOMER$,DOM=0700)AR1$; PRINT @(30,9),AR1$(11,35),
+0744 FIND (Z[4],KEY=CUSTOMER$,DOM=0745)ECS$; GOTO 0760
+0746 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Customer has no WebEC parameters","","",0; GOTO 0700
+0750 REM "ck if carton pack to be used
+0755 X$="N=use price uom if alt uom blank   Y=use carton pack then price if alt uom blank"
+0760 CALL "ZZENTR","Y",CP{ALL},CP$,X4$,X3$,55,10,1,1,C0,"","{1"+X$,"","","","",""
+0768 X$="N=if alt uom set then no change  Y=reset alt uom"
+0770 CALL "ZZENTR","Y",CP{ALL},CP$,X4$,X3$,55,11,2,1,C0,"","{1"+X$,"","","","",""
+0780 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Correct?","","",0; ON Z GOTO 0781,0700
+0950 IF CUSTOMER$<>DIM(10) THEN READ (Z(1),KEY=CUSTOMER$,DOM=0951)
+1000 REM "BEGIN MAIN PROCESS
+1020 K$=KEY(Z(1),END=2000); IF CUSTOMER$<>DIM(10) THEN IF CUSTOMER$<>K$(1,10) THEN GOTO 2000
+1021 READ (Z(1),KEY=K$)IOL=0310
+1032 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1040 FIND (Z(4),KEY=K$(1,10),DOM=1000); REM "if no webec parms then bypass
+1050 IF FM1$(238,4)<>DIM(4) AND CP$(2,1)<>"Y" THEN GOTO 1000; REM "if alt pack set and not set to overwrite then bypass
+1060 GOSUB 7000; REM "get lot information
+1070 IF PACK(1)<>0 THEN GOTO 1300
+1090 EXTRACT (Z(1),KEY=K$)IOL=0310
+1100 REM "ck if carton pack to be used
+1110 IF CP$(1,1)<>"Y" THEN GOTO 1200
+1120 IF FM1(0)=0 THEN GOTO 1200 ELSE FM1$(238,4)="CASE",FM1(25)=FM1(0); GOTO 1400
+1200 REM "load with sell price
+1210 FM1$(238,4)=FM1$(100,4),FM1(25)=FM1(4)
+1220 GOTO 1400
+1300 REM "use lot information
+1310 FM1$(238,4)=PACK$[1],FM1(25)=PACK(1)
+1320 IF PACK(2)<>0 THEN FM1$(242,4)=PACK$[2],FM1(26)=PACK(2)
+1330 IF PACK(3)<>0 THEN FM1$(246,4)=PACK$[3],FM1(27)=PACK(3)
+1340 IF PACK(4)<>0 THEN FM1$(250,4)=PACK$[4],FM1(28)=PACK(4)
+1400 REM "write form
+1410 WRITE (Z(1),KEY=K$)IOL=0310
+1450 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This utility will load the alternate selling unit using the carton pack",@(0,5),"or price unit-of-measure as the source",
+6030 PRINT @(30,8),"Customer code"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "gather pack information from lot records
+7002 DIM PACK(4),PACK$[4]; REM "pack(x) = holds qty per  PACK$[X] = holds uom
+7005 READ (Z(5),KEY=K$,DOM=7006)
+7010 ICFKEY$=KEY(Z(5),END=7090); IF ICFKEY$(1,LEN(K$))<>K$ THEN GOTO 7090 ELSE READ (Z(5),KEY=ICFKEY$)IOL=0350
+7012 IF ICF$(155,1)="Y" THEN GOTO 7010; REM "skip all runts
+7020 IF PACK(1)=0 THEN PACK(1)=ICF(3),PACK$[1]=ICF$(121,4); GOTO 7010
+7030 IF PACK(1)<=ICF(3) THEN GOTO 7010; REM "current lot pack is greater so skip
+7032 FOR X=4 TO 2 STEP -1; PACK(X)=PACK(X-1),PACK$[X]=PACK$[X-1]; NEXT X
+7034 PACK(1)=ICF(3),PACK$[1]=ICF$(121,4)
+7038 GOTO 7010
+7090 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8500 SET_READONLY:REM "Set the PRM READONLY to on
+8510 SAVE_XI=PRM('XI'); SET_PARAM 'XI' ! Ignore exclusive locks, save previous setting
+8525 SET_READONLY_END:RETURN 
+8530 CLEAR_READONLY:REM "Restore previous setting
+8535 SET_PARAM 'XI'=SAVE_XI ! restore previous setting
+8545 CLEAR_READONLY_END:RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

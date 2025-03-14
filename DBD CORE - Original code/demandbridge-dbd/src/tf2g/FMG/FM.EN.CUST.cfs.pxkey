@@ -1,0 +1,223 @@
+<PxTable>
+ TableName=FM.EN.CUST.cfs
+ TableKey=K1305034767
+ FileCreate=KEYED "FM.EN.CUST.cfs",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0000"
+    FIELD_1$="FS6_OrderHis"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="99"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"FMGIAH"+QUO+")+"+QUO+" ** "+QUO+"+fn%zzdisp$(%customer$,"+QUO+"A/R"+QUO+")+"+QUO+" - "+QUO+"+STP(%CUST_NAME$)+"+QUO+" **"+QUO
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FS6"+QUO+"+%C$"
+    FIELD_18$="2011/05/10 09:39 lmc"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.CUST_DIV$+_MN_.CUST_CODE$+_MN_.HIST_TYPE$+_MN_.ITEM_CODE$+_MN_.ORDER_DIV$+_MN_.ORDER_NUM$+_MN_.SEQ_NUM$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0001"
+    FIELD_1$="ORDER_DATE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ORDER_DATE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0002"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.ORDER_DIV$+_MN_.ORDER_NUM$,"+QUO+"O/P"+QUO+")"
+    FIELD_4$="8"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ODM_DB_O"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0003"
+    FIELD_1$="CUST_PO"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_PO"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0004"
+    FIELD_1$="ITEM_CODE"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0005"
+    FIELD_1$="Formula:STP(%ITEM_DESC$)"
+    FIELD_4$="30"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0006"
+    FIELD_1$="Formula:FN%QTY_IN_UM(_MN_.SELL_QTY,_MN_.SELL_UM$,_MN_.QTY_PER)"
+    FIELD_4$="11"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"QTY"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"###,###,###-"+QUO
+    FIELD_21$="T"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0007"
+    FIELD_1$="UNIT_PRICE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"UNIT_PRICE"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="#,###,###.00-"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0008"
+    FIELD_1$="Formula:STP(STP(_MN_.SELL_UM$)+"+QUO+" / "+QUO+"+STP(STR(_MN_.QTY_PER:"+QUO+"##,###"+QUO+")))"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"UM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0009"
+    FIELD_1$="UNIT_COST"
+    FIELD_4$="13"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"UNIT_COST"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="#,###,###.00-"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0010"
+    FIELD_1$="HIST_TYPE"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"HIST_TYPE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0011"
+    FIELD_1$="Formula:STP(%TYPE_DESC$)"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"HIST_TYPE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0012"
+    FIELD_1$="Formula:STP(%MSG_1$)"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ORDER_TYPE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0013"
+    FIELD_1$="SEQ_NUM"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SEQ_1"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0014"
+    FIELD_1$="Formula:STP(%BL$)"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"STATUS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0015"
+    FIELD_1$="VEND_DIV"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_DIV"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="2"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     0016"
+    FIELD_1$="VEND_CODE"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="8"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AIH     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%CUSTOMER$"
+    FIELD_13$="C"+QUO+"FMGIAH;SEL_RECORD"+QUO+",_MN_.HIST_TYPE$,_MN_.ORDER_TYPE$,_MN_.ITEM_CODE$,_MN_.SELL_QTY,_MN_.SELL_UM$,_MN_.QTY_PER,_MN_.ORDER_DIV$,_MN_.ORDER_NUM$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

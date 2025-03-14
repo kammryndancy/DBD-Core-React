@@ -1,0 +1,7 @@
+0010 REM "@MONTH_IN: Return month of a date <YMONTH>
+0015 REM "Prog Type: M -3.0A    
+1020 ENTER X3$,Z0$,Z1$
+1210 Z1$=Z0$(3,2)
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

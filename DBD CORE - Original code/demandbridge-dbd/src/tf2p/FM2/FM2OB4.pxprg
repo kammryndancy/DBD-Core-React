@@ -1,0 +1,38 @@
+0010 REM "Calculations for FM2OB0 <FM2OB4>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 02/02/99 - 16.09 - kmc - SSP# 100164
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "X0$ is program to return to, Z8$ is program to run
+0100 SETERR 9000
+0120 ENTER A{ALL},S{ALL},T{ALL},M0$,M1$,M2$,M3$,S5$,T5$,L$,A$,I$
+0505 REM "DIM Z[20]; REM "JEL 100164 - GOLDBOND
+0510 CLOSE (3204); OPEN (3204)"ZZPARM"; REM "jel 100164 - GoldBond; kmc added CLOSE
+0520 FIND (3204,KEY=FID(0)+"      ")VAR$; REM "JEL- 100164 GOLDBOND
+0540 DIM SEC$(255); FIND (3204,KEY="osec"+VAR$(40,3),DOM=0541)SEC$; REM "jel 100164 GoldBond; kmc changed DOM from 731 to 541
+0550 CLOSE (3204)
+7900 REM "Calc ext & labels, note - divide is before mult on unfixed items, after mult on fixed UM's
+7905 IF A$(155,1)="S" THEN IF I$(61,1)="Y" THEN GOTO 7911
+7909 IF S[2]=0 THEN S[2]=1
+7910 IF MID(S5$,21,1)<>"Y" THEN A[6]=A[0]/S[2]*A[4]; IF S[0]<>0 THEN A[6]=A[6]/S[0]
+7911 A[10]=A[0]+A[14]
+7912 IF A$(155,1)="S" THEN IF I$(61,1)="Y" THEN GOTO 7916
+7914 IF T[2]=0 THEN T[2]=1
+7915 IF MID(T5$,21,1)<>"Y" THEN A[3]=A[0]/T[2]*A[1]; IF T[0]<>0 THEN A[3]=A[3]/T[0]
+7920 IF L$="N" THEN A[9]=0 ELSE IF A[12]=0 THEN A[9]=0 ELSE A[9]=INT(A[0]/A[12]*1.1+.9); IF A[9]<0 THEN A[9]=0
+7930 GOSUB 8025
+7935 GROSS=A[6]-A[3],COSTEXT=A[3],COST=A[1]; IF SEC$(63,1)<>"Y" THEN GOTO 7936 ELSE GROSS=0,COSTEXT=0,COST=0; REM "jel 100164 - GoldBond
+7940 PRINT @(33,13),A[4]:M1$,@(44,13),A[6]:M0$,@(59,13),GROSS:M0$(4),@(33,14),COST:M1$,@(44,14),COSTEXT:M0$,@(27,15),A[9]:"##0",@(31,15),A$(1,1),
+7941 IF SEC$(63,1)="Y" THEN PRINT @(70,13),GROSS:M3$,"%",; GOTO 7943; REM "jel 100164 - GoldBond
+7942 IF A[6]<>0 THEN PRINT @(70,13),(A[6]-A[3])*100/A[6]:M3$,"%",
+7945 GOTO 9900
+8025 REM "Display Cost dependent quantities
+8030 IF T[2]=0 THEN T[2]=1; RETURN 
+8040 PRINT @(19,14),A[0]/T[2]:M0$,
+8049 RETURN 
+9000 REM "ERROR PROCESSING
+9010 EXIT ERR
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9950 EXIT 
+9999 END 

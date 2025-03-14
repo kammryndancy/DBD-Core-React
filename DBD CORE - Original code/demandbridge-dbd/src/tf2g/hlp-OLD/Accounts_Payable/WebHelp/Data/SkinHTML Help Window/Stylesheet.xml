@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Stylesheet>
+    <!-- saved from url=(0014)about:internet -->
+    <Styles>
+        <Style Name="Frame">
+            <Classes>
+                <StyleClass Name="Toolbar">
+                    <Properties>
+                        <Property Name="Height">28px</Property>
+                        <Property Name="BackgroundGradient">solid #9a1b38 #9a1b38</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="AccordionTOC">
+                    <Properties>
+                        <Property Name="BackgroundColor">#224386</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="AccordionIndex">
+                    <Properties>
+                        <Property Name="BackgroundColor">#224386</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="AccordionSearch">
+                    <Properties>
+                        <Property Name="BackgroundColor">#d3d3d3</Property>
+                    </Properties>
+                </StyleClass>
+            </Classes>
+        </Style>
+        <Style Name="ToolbarItem">
+            <Classes>
+                <StyleClass Name="Home">
+                    <Properties>
+                        <Property Name="Icon">url('Home.gif')</Property>
+                        <Property Name="PressedIcon">url('Home.gif')</Property>
+                        <Property Name="HoverIcon">url('HomeHover2.gif')</Property>
+                        <Property Name="ControlType">Home</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectTOC">
+                    <Properties>
+                        <Property Name="Icon">url('Contents.gif')</Property>
+                        <Property Name="PressedIcon">url('Contents.gif')</Property>
+                        <Property Name="HoverIcon">url('ContentsHover4.gif')</Property>
+                        <Property Name="ControlType">SelectTOC</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectIndex">
+                    <Properties>
+                        <Property Name="Icon">url('Index.gif')</Property>
+                        <Property Name="PressedIcon">url('Index.gif')</Property>
+                        <Property Name="HoverIcon">url('IndexHover2.gif')</Property>
+                        <Property Name="ControlType">SelectIndex</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectSearch">
+                    <Properties>
+                        <Property Name="Icon">url('Search.gif')</Property>
+                        <Property Name="PressedIcon">url('Search.gif')</Property>
+                        <Property Name="HoverIcon">url('SearchHover2.gif')</Property>
+                        <Property Name="ControlType">SelectSearch</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Print">
+                    <Properties>
+                        <Property Name="Icon">url('Print.gif')</Property>
+                        <Property Name="PressedIcon">url('Print.gif')</Property>
+                        <Property Name="HoverIcon">url('PrintHover2.gif')</Property>
+                        <Property Name="ControlType">Print</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Logo">
+                    <Properties>
+                        <Property Name="Icon">none</Property>
+                        <Property Name="ControlType">Logo</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="AccordionTitle">
+                    <Properties>
+                        <Property Name="FontFamily">Verdana</Property>
+                        <Property Name="Color">#991b38</Property>
+                        <Property Name="ControlType">AccordionTitle</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="RemoveHighlight">
+                    <Properties>
+                        <Property Name="Icon">url('Remove.gif')</Property>
+                        <Property Name="PressedIcon">url('Remove.gif')</Property>
+                        <Property Name="HoverIcon">url('RemoveHover2.gif')</Property>
+                        <Property Name="ControlType">RemoveHighlight</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="QuickSearch">
+                    <Properties>
+                        <Property Name="ControlType">QuickSearch</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="ExpandAll">
+                    <Properties>
+                        <Property Name="ControlType">ExpandAll</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="CollapseAll">
+                    <Properties>
+                        <Property Name="ControlType">CollapseAll</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="ToggleNavigationPane">
+                    <Properties>
+                        <Property Name="ControlType">ToggleNavigationPane</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Back">
+                    <Properties>
+                        <Property Name="ControlType">Back</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Forward">
+                    <Properties>
+                        <Property Name="ControlType">Forward</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Stop">
+                    <Properties>
+                        <Property Name="ControlType">Stop</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Refresh">
+                    <Properties>
+                        <Property Name="ControlType">Refresh</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectFavorites">
+                    <Properties>
+                        <Property Name="ControlType">SelectFavorites</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectGlossary">
+                    <Properties>
+                        <Property Name="ControlType">SelectGlossary</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="SelectBrowseSequence">
+                    <Properties>
+                        <Property Name="ControlType">SelectBrowseSequence</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="AddTopicToFavorites">
+                    <Properties>
+                        <Property Name="ControlType">AddTopicToFavorites</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Separator">
+                    <Properties>
+                        <Property Name="ControlType">Separator</Property>
+                    </Properties>
+                </StyleClass>
+            </Classes>
+        </Style>
+        <Style Name="AccordionItem">
+            <Classes>
+                <StyleClass Name="TOC">
+                    <Properties>
+                        <Property Name="Label">Contents</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Search">
+                    <Properties>
+                        <Property Name="Label">Search</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Index">
+                    <Properties>
+                        <Property Name="Label">Index</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="IconTray">
+                    <Properties>
+                        <Property Name="BackgroundGradient">vertical #c2e7f7 #f7f8fc</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Favorites">
+                    <Properties>
+                        <Property Name="Label">Favorites</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="Glossary">
+                    <Properties>
+                        <Property Name="Label">Glossary</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+                <StyleClass Name="BrowseSequence">
+                    <Properties>
+                        <Property Name="Label">Browse Sequences</Property>
+                        <Property Name="ItemHeight">28px</Property>
+                    </Properties>
+                </StyleClass>
+            </Classes>
+            <Properties>
+                <Property Name="ItemHeight">28px</Property>
+            </Properties>
+        </Style>
+        <Style Name="IndexEntry">
+            <Properties>
+                <Property Name="Color">#f7f7f7</Property>
+                <Property Name="SelectionColor">#f7f7f7</Property>
+                <Property Name="SelectionBackgroundColor">#224386</Property>
+            </Properties>
+        </Style>
+        <Style Name="TocEntry">
+            <Properties>
+                <Property Name="Color">#f7f7f7</Property>
+                <Property Name="BookIcon">url('TOCBook.gif')</Property>
+                <Property Name="BookOpenIcon">url('TOCBookOpen.gif')</Property>
+            </Properties>
+        </Style>
+        <Style Name="Control">
+            <Classes>
+                <StyleClass Name="SearchResults">
+                    <Properties>
+                        <Property Name="RankLabel">Rank</Property>
+                        <Property Name="TitleLabel">Title</Property>
+                    </Properties>
+                </StyleClass>
+            </Classes>
+        </Style>
+    </Styles>
+    <Resources>
+    </Resources>
+    <ResourcesInfo>
+        <Resource Name="Home.gif" Width="61" Height="24" />
+        <Resource Name="Contents.gif" Width="83" Height="24" />
+        <Resource Name="Index.gif" Width="61" Height="24" />
+        <Resource Name="Search.gif" Width="69" Height="24" />
+        <Resource Name="Print.gif" Width="63" Height="24" />
+        <Resource Name="Hand.gif" Width="30" Height="30" />
+        <Resource Name="TOC Icon.gif" Width="18" Height="14" />
+        <Resource Name="TOC Icon2.gif" Width="18" Height="10" />
+        <Resource Name="TOCIcon3.gif" Width="12" Height="7" />
+        <Resource Name="TOCIcon4.gif" Width="6" Height="4" />
+        <Resource Name="TOCIconDown.gif" Width="17" Height="6" />
+        <Resource Name="TOCIconDown2.gif" Width="9" Height="6" />
+        <Resource Name="TOCIconDown3.gif" Width="7" Height="5" />
+        <Resource Name="TOCIconDown4.gif" Width="9" Height="6" />
+        <Resource Name="TOCIconDown5.gif" Width="9" Height="5" />
+        <Resource Name="tf_logo.gif" Width="69" Height="24" />
+        <Resource Name="HomeHover.gif" Width="61" Height="24" />
+        <Resource Name="HomeHover2.gif" Width="61" Height="24" />
+        <Resource Name="TOCBook.gif" Width="16" Height="16" />
+        <Resource Name="TOCBookOpen.gif" Width="16" Height="16" />
+        <Resource Name="ContentsHover.gif" Width="61" Height="24" />
+        <Resource Name="ContentsHover2.gif" Width="83" Height="24" />
+        <Resource Name="ContentsHover3.gif" Width="83" Height="24" />
+        <Resource Name="ContentsHover4.gif" Width="83" Height="24" />
+        <Resource Name="IndexHover.gif" Width="61" Height="24" />
+        <Resource Name="IndexHover2.gif" Width="61" Height="24" />
+        <Resource Name="SearchHover.gif" Width="69" Height="24" />
+        <Resource Name="SearchHover2.gif" Width="69" Height="24" />
+        <Resource Name="PrintHover.gif" Width="63" Height="24" />
+        <Resource Name="PrintHover2.gif" Width="63" Height="24" />
+        <Resource Name="QuestionMark.gif" Width="10" Height="10" />
+        <Resource Name="Remove.gif" Width="69" Height="24" />
+        <Resource Name="RemoveHover.gif" Width="69" Height="24" />
+        <Resource Name="RemoveHover2.gif" Width="69" Height="24" />
+    </ResourcesInfo>
+</Stylesheet>

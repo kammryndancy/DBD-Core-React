@@ -1,0 +1,186 @@
+0010 REM "Modify SM Files for lenth increase of Tracking Number SM2UTT"
+0035 REM "5.7 - 01/25/13 - 10.95 - tma - SSP# 260869
+0037 REM "260869-Program SM2UTT has a display issue                          
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "This program will copy old tracking number field (49,20) to
+0051 REM "new field (383,60) in Files SM0,SMI,SM4,SM7
+0052 REM "
+0100 REM + Program Initialization
+0120 ! SETESC ESCAPE_ROUTINE
+0125 ! SETERR ERROR_ROUTINE
+0130 ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0140 X0$="SM2UTT"; X1$="Update SM Files for Tracking Number Field"
+0150 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0198 ! 
+0199 ! 
+0200 REM + Define Variables
+0210 DIM Z[255]
+0230 FL$="NNNNNNN"
+0298 ! 
+0299 ! 
+0300 REM + Initialize IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15] ! WO244750, expand SM4
+0320 IOLIST ZZK$,ZZK1$,ZZK2$,ZZK3$
+0398 ! 
+0399 ! 
+0500 REM + Open Files
+0510 Z$="01O SM0...  02O SM4...  03O SM7...  04O SMI...  05O SMD...  06O DTU...  07O DTI...  13O ZZPARM  "
+0550 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0560 ! 
+0698 ! 
+0699 ! 
+0800 REM + Screen Display
+0820 GOSUB BACKGROUND
+0870 IF Q1$="*" THEN GOTO MAIN_LOOP
+0875 CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0
+0880 ON S0 GOTO MAIN_LOOP,END_PROGRAM
+0898 ! 
+0899 ! 
+1000 MAIN_LOOP:
+1010 ! Check if this routine has been run already
+1020 ZZ_KEY$=%C$+"SMUPD",ZZK$=ZZ_KEY$
+1030 FIND (Z[13],KEY=ZZ_KEY$,DOM=PROCESS_FILES)*
+1035 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process has already been run!!","","",0
+1040 GOTO END_PROGRAM
+1090 ! 
+1100 PROCESS_FILES:
+1120 FOR X=1 TO 7
+1125 SM_CHL=Z[X]
+1130 READ RECORD (SM_CHL,KEY="",DOM=*NEXT)
+1135 SP=49,EP=383
+1140 IF X=5 THEN SP=114,EP=171
+1142 IF X=6 THEN SP=154,EP=228
+1145 IF X=7 THEN SP=2444,EP=2464
+1150 GOSUB INIT_BAR_GRAPH
+1160 GOSUB NEXT_KEY
+1170 FL$(X,1)="C",ZZK1$=FL$
+1175 WRITE (Z[13],KEY=ZZ_KEY$)IOL=0320
+1180 NEXT X
+1190 GOSUB END_OF_PROCESS; GOTO END_PROGRAM
+1199 ! 
+1200 NEXT_KEY:
+1210 SM_KEY$=KEY(SM_CHL,END=END_OF_FILE)
+1230 READ RECORD (SM_CHL,KEY=SM_KEY$)A$
+1240 IF STP(A$(SP,20),2)<>"" THEN A$(EP,60)=MID(A$,SP,20)
+1250 WRITE RECORD (SM_CHL,KEY=SM_KEY$)A$
+1360 SM_CTR+=1 ! increment the counter
+1370 IF MOD(SM_CTR,T2)=1 THEN GOSUB UPDATE_BAR_GRAPH
+1380 GOTO NEXT_KEY
+1390 ! 
+1400 END_OF_FILE:
+1420 RETURN 
+1490 ! 
+2000 ! FILES SM0, SM4,SM7,SMI
+2010 IF STP(A$(49,20),2)="" THEN RETURN 
+2020 A$(383,60)=MID(A$,49,20)
+2030 WRITE (SM_CHL,KEY=SM_KEY$)IOL=0310
+2050 RETURN 
+2100 ! FILE SMD
+2110 IF STP(A$(49,20),2)="" THEN RETURN 
+2120 A$(383,60)=MID(A$,49,20)
+2130 WRITE (SM_CHL,KEY=SM_KEY$)IOL=0310
+2150 RETURN 
+2200 ! FILE DTI
+2210 IF STP(A$(49,20),2)="" THEN RETURN 
+2220 A$(383,60)=MID(A$,49,20)
+2230 WRITE (SM_CHL,KEY=SM_KEY$)IOL=0310
+2250 RETURN 
+2300 ! FILE DTU
+2310 IF STP(A$(49,20),2)="" THEN RETURN 
+2320 A$(383,60)=MID(A$,49,20)
+2330 WRITE (SM_CHL,KEY=SM_KEY$)IOL=0310
+2350 RETURN 
+5000 END_OF_PROCESS:
+5010 C=T; GOSUB UPDATE_BAR_GRAPH
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5030 ZZK2$=DAY; WRITE (Z[13],KEY=ZZ_KEY$)IOL=0320
+5040 RETURN 
+5090 ! 
+6000 BACKGROUND:
+6001 REM "These lines are available for any notes"
+6002 REM "regarding the routine"
+6020 PRINT (0,ERR=*NEXT)'SB', ! set the focus to the background
+6030 PRINT @(0,3),'CE' ! clear the screen starting at line 3
+6032 PRINT @(0,3),"This program will copy the Tracking Number Field in"
+6034 PRINT @(0,4),"all SM Files from position 49,20 to 383,60 to cater"
+6036 PRINT @(0,5),"for increase in Field Size"
+6280 PRINT (0,ERR=*NEXT)'SF', ! set focus to the foreground
+6290 RETURN 
+6298 ! 
+6299 ! 
+8100 INIT_BAR_GRAPH:
+8101 ! GOSUB here, once, at the beginning, after the background is
+8102 ! set and before the Proceed? question. Set T to total # to do
+8103 ! (by calling ZZINFO) and T2 to the reporting interval
+8104 ! (report every T2 number of records) this is typically 2% of
+8105 ! total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",SM_CHL,T9,X3$,T,T2,K,B,D,S0,S1,F$ ! SSP#260869
+8115 PRINT @(0,8),"There are "+STR(T)+" records to process"
+8125 ! Set T2, we make sure T2 is > 1, because later on we MOD
+8126 ! and look for a value of 1. IF T2 is 1, then nothing would
+8127 ! get reported. We look fora result of 1 because this causes
+8128 ! the first record to automatically start the reporting instead
+8129 ! of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8145 RETURN 
+8148 ! 
+8149 ! 
+8150 UPDATE_BAR_GRAPH:
+8151 ! Call this each time to update the bar graph.
+8152 ! Display horiz. bar graph 8150: given total #, T and current #
+8153 ! , C, and time counter T1 (T1 is init'ed here and used here,
+8154 ! just don't use it somewhere else)
+8175 CALL "ZZBARG",X3$,"HG",21,10,50,T1,T,SM_CTR
+8195 RETURN 
+8198 ! 
+8199 ! 
+8800 DISPLAY_BAR_PROGRESS:
+8801 ! Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 ! PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+8998 ! 
+8999 ! 
+9000 ERROR_ROUTINE:
+9001 ! Error Processing Routine
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR ERROR_ROUTINE
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_ROUTINE; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 ESCAPE_ROUTINE:
+9305 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR ERROR_ROUTINE; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR ERROR_ROUTINE; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 END_PROGRAM:
+9901 ! End Program
+9905 PRINT @(0,20),'CL',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+55998 ! 
+55999 ! 
+56000 REM + Modification History
+56001 REM " Program created on 02/13/2008 : mhe
+56002 REM "227714-WMS: Change the WMS user setup, allow multiple WMS roles to 

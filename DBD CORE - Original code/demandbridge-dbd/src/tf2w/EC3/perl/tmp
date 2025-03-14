@@ -1,0 +1,46 @@
+#
+# Version 2.0 
+#	If no parameters are passed, then we will return an html page giving information about us
+#	Delay connection to server so we can return page even if not connected
+#
+
+##########
+# Initilization section
+##########
+$ec_ver = "2.0";
+$ec_date = "August 8, 2001";
+
+
+# Gather info from CGI call first, then open connection to the 
+# server to print it out
+
+# Get CGI info
+$in = new CGI;
+
+
+#
+# If no values then print About info
+#
+
+if ( $in->param == 0 ) {
+	print $in->header (), $in->start_html( -title => 'ecclient version: ' . $ec_ver ) ;
+	print $in->h1( "ecclient by TopForm Software, Inc" );
+	print $in->h1( "Version: ", $ec_ver );
+	print $in->h1( "Date: ",$ec_date );
+	print $in->h1( "Sending requests to: ", $peer_addr );
+	print $in->h1( "Using port: ",$peer_port );
+	print $in->h1( "Put files into: ", $send_to_dir );
+	print $in->h1( "Suffix to use: ",$send_suffix );
+
+	if ( open_server() ) {
+		print $in->h1( "Server response: ",$server_response );
+	}
+	else	{
+		print $in->h1( "Server unavailable!!!: ",$err_message );
+	}
+
+	print $in->end_html;
+	exit;
+}
+
+

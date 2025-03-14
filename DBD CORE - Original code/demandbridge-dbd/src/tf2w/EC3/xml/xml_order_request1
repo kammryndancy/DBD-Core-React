@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<cXML version="1.2.001" payloadID="20AD5D0A-81FE-4BEC-89D1CB9A38CEFCD0@" timestamp="4/9/2001 6:37:41 PM" xml:lang="en-US">
+   <Header>
+      <From>
+         <Credential domain="test@test.com">
+            <Identity>test</Identity>
+         </Credential>
+         <Credential companyname="compname">
+            <Identity>compname-id</Identity>
+         </Credential>
+      </From>
+      <To>
+         <Credential domain="sendto.com">
+            <Identity>sendto.com</Identity>
+         </Credential>
+      </To>
+      <Sender>
+         <Credential domain="test.com">
+            <Identity>test.com</Identity>
+            <SharedSecret>Password</SharedSecret>
+         </Credential>
+         <UserAgent>WildFire</UserAgent>
+      </Sender>
+   </Header>
+   <Request deploymentMode="test">
+      <OrderRequest>
+         <OrderRequestHeader orderID="1005" orderDate="2001-04-09T18:37:41" type="new">
+            <Total>
+               <Money currency="USD"/>
+            </Total>
+            <BillTo>
+               <Address>
+                  <Name xml:lang="en-US"/>
+                  <PostalAddress name="">
+                     <Street>1689 Nonconnah Blvd.</Street>
+                     <Street>Suite 107</Street>
+                     <City>Memphis</City>
+                     <State>TN</State>
+                     <PostalCode>38132</PostalCode>
+                     <Country isoCountryCode="US"/>
+                  </PostalAddress>
+                  <Phone name="Scott Turner">
+                     <TelephoneNumber>
+                        <CountryCode/>
+                        <AreaOrCityCode>901</AreaOrCityCode>
+                        <Number>3484362</Number>
+                     </TelephoneNumber>
+                  </Phone>
+               </Address>
+            </BillTo>
+            <Shipping>
+               <Money currency="USD">0</Money>
+            </Shipping>
+            <Tax>
+               <Money currency="USD">0</Money>
+               <Description/>
+            </Tax>
+         </OrderRequestHeader>
+         <ItemOut lineNumber="1" quantity="500.0000" requestedDeliveryDate="2001-04-27T00:00:00">
+            <ItemID>
+               <SupplierPartID>M-312</SupplierPartID>
+               <SupplierPartAuxiliaryID>M-312</SupplierPartAuxiliaryID>
+            </ItemID>
+            <ItemDetail>
+               <UnitPrice>
+                  <Money currency="USD">0</Money>
+               </UnitPrice>
+               <UnitOfMeasure>EACH</UnitOfMeasure>
+               <Description>Work Order</Description>
+               <Classification>Forms</Classification>
+            </ItemDetail>
+            <ShipTo>
+               <Address addressID="Express Airlines I, Inc.">
+                  <Name xml:lang="en-US">Express Airlines I, Inc.</Name>
+                  <PostalAddress name="Express Airlines I, Inc.">
+                     <Street>1689 Nonconnah Blvd.</Street>
+                     <Street>Suite 107</Street>
+                     <City>Memphis</City>
+                     <State>TN</State>
+                     <PostalCode>38132</PostalCode>
+                     <Country isoCountryCode="US">US</Country>
+                  </PostalAddress>
+               </Address>
+            </ShipTo>
+         </ItemOut>
+         <ItemOut lineNumber="2" quantity="500.0000" requestedDeliveryDate="2001-04-27T00:00:00">
+            <ItemID>
+               <SupplierPartID>PC01</SupplierPartID>
+               <SupplierPartAuxiliaryID>PC01</SupplierPartAuxiliaryID>
+            </ItemID>
+            <ItemDetail>
+               <UnitPrice>
+                  <Money currency="USD">0</Money>
+               </UnitPrice>
+               <UnitOfMeasure>EACH</UnitOfMeasure>
+               <Description>Non-Aircraft Purchase Requisition</Description>
+               <Classification>Forms</Classification>
+            </ItemDetail>
+            <ShipTo>
+               <Address addressID="Express Airlines I, Inc.">
+                  <Name xml:lang="en-US">Express Airlines I, Inc.</Name>
+                  <PostalAddress name="Express Airlines I, Inc.">
+                     <Street>1689 Nonconnah Blvd.</Street>
+                     <Street>Suite 107</Street>
+                     <City>Memphis</City>
+                     <State>TN</State>
+                     <PostalCode>38132</PostalCode>
+                     <Country isoCountryCode="US">US</Country>
+                  </PostalAddress>
+               </Address>
+            </ShipTo>
+         </ItemOut>
+      </OrderRequest>
+   </Request>
+</cXML>

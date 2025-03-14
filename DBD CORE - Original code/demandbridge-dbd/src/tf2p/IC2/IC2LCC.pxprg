@@ -1,0 +1,98 @@
+0010 REM "Write key with sequence # <IC2LCC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 07/22/09 - 17.967777 - crg - SSP# 231659
+0037 REM "231659-Fix for issue where the system runs out of sequence numbers 
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 REM "FILE_SLOT is slot the file is open on
+0061 REM "START_POS is the starting position of the sequence number in the key
+0062 REM "SEQ_LEN is the length of the sequence number part of the key
+0063 REM "LAST_ONE$ is the last key and sequence number used, should be preserved by the callling program. if '' then must start at beginning of the sequence
+0064 REM "KEY$ is the non-sequence part of the key
+0080 REM "This routine will manage the sequence number portion of the key for the file open on FILE_SLOT. If LAST_ONE$ is '' then the sequence will start at 1 for seq of len 1, 01 for seq of len 2, 001 for sequence of length 3, etc. The key will be incremented by one, using numerics only until reaching the sequence of all 9's. After that then alphanumerics will be used. If LAST_ONE$ is set then it will be used as the starting point for finding new sequence numbers.
+0081 REM "****NOTE: This program does NOT write the data, but retreives the next sequence number at that moment. It is possible that another task can get the same sequence number. After getting the sequence number, the calling program should write the data with a DOM back to this routine in case another task has used the sequence number in the short, short time between this routine finding it and the calling routine writing out the record.
+0082 REM "****NOTE: This routine changes the file pointer to the file open on FILE_SLOT
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,FILE_SLOT,START_POS,SEQ_LEN,LAST_ONE$,KEY$
+0100 SETERR 9000
+0110 X0$="IC2LCC",X1$="Write Key With Sequence Number"
+0600 REM "Verify / Fix parameters
+0605 IF START_POS<1 OR SEQ_LEN<1 OR FILE_SLOT=0 THEN Y5=999,Y6=605; GOTO 9015
+0610 IF START_POS>1 THEN IF LEN(KEY$)<START_POS THEN KEY$=KEY$+DIM(START_POS-LEN(KEY$)-1); REM "Key should be at least as long as the non-sequence part
+0619 REM "Check LAST_ONE$, if it contains the prev key used then strip it down to just the seq no part. If the prev key doesn't match the current key then start from scratch!
+0620 IF LEN(LAST_ONE$)<START_POS THEN LAST_ONE$="" ELSE IF KEY$(1,START_POS)<>LAST_ONE$(1,START_POS) THEN LAST_ONE$="" ELSE LAST_ONE$=LAST_ONE$(START_POS)
+1000 REM "Start process
+1010 IF LEN(KEY$)>=START_POS THEN KEY$=KEY$(1,START_POS-1); REM "Cut off any existing sequence part
+1020 IF LEN(LAST_ONE$)<SEQ_LEN THEN DIM LAST_ONE$(SEQ_LEN,"0"); REM "Initialize LAST_ONE$ if not set
+1100 REM "Increment LAST_ONE$ by 1
+1101 REM "If seq_len=1 then range 1-9,A-Z is used, if seq_len>1 then the sequence will be kept numeric until all possible numeric only values are used, then thesequence will switch to alphanumeric. Seq_len 1 gives 35 possible values (since 0 is not used), Seq_len 2 gives (36*26)-1(since 00 not used) = 925 values and Seq_len 3 gives (36*26*26)-1 = 24335 values
+1105 IF LAST_ONE$=DIM(SEQ_LEN,"Z") THEN IF ROLLED_OVER THEN GOSUB HANDLE_ROLLOVER; IF HANDLED_OK THEN GOTO *NEXT END_IF ; Y5=999,Y6=1105; GOTO 9015 ELSE DIM LAST_ONE$(SEQ_LEN,"0"); ROLLED_OVER=1; REM "In all cases check to see if at end of sequence. If haven't rolled over yet then start from beg to make one more pass thru.IF at the end of that pass, then signal error
+1115 IF LAST_ONE$<DIM(SEQ_LEN,"9") THEN LAST_ONE$=STR(NUM(LAST_ONE$)+1:DIM(SEQ_LEN,"0")); GOTO 1200; REM "If still in the numeric part then just to numericadd
+1120 REM "Need to do alphanumeric type add, work from right to left, don't worryabout final carry, we've already checked at line 1105 that we're not at the end of sequence
+1155 FOR INDEX=SEQ_LEN TO 1 STEP -1
+1160 IF LAST_ONE$(INDEX,1)="Z" THEN LAST_ONE$(INDEX,1)="0" ELSE IF LAST_ONE$(INDEX,1)="9" THEN LAST_ONE$(INDEX,1)="A"; EXITTO 1166 ELSE LAST_ONE$(INDEX,1)=CHR(ASC(LAST_ONE$(INDEX,1))+1); EXITTO 1166; REM "If no CARRY needed then exit loop
+1165 NEXT INDEX
+1200 REM "See if key exists, if not send out LAST_ONE$ its the correct one, tack LAST_ONE$ onto the end of KEY$ so the key is correct. If key exists then back to 1100 to increment and try again
+1210 FIND (FILE_SLOT,KEY=KEY$+LAST_ONE$,DOM=1300); GOTO 1100
+1300 REM "LAST_ONE$ is the correct sequence number, so build key and leave.
+1310 KEY$=KEY$+LAST_ONE$,LAST_ONE$=KEY$
+1995 GOTO 9900
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 REM "Sequence rolled over-no more keys. Handle it by changing date.
+10001 HANDLE_ROLLOVER:
+10005 HANDLED_OK=0; NEW_DATE$=DIM(6)
+10010 OPEN (HFN,ERR=HANDLE_DONE)"ZZPARM"; ZZCHAN=LFO
+10015 READ (ZZCHAN,KEY=X3$(9,3)+"A/R",ERR=*NEXT)ARPARM$
+10018 IF POS(MID(ARPARM$,255,1)="YA")=0 THEN GOTO HANDLE_DONE ! Feature is not enabled
+10020 IF LEN(KEY$)>6 THEN ROLL_DATE$=MID(KEY$,-6) ELSE GOTO *RETURN END_IF ; IF NUL(ROLL_DATE$) THEN GOTO *RETURN ! Get date segment in key; abort if it is not present
+10025 IF %IN_WEBEC$="Y" OR %FORCE_IC2LCC_ROLLOVER OR MID(ARPARM$,255,1)="A" THEN GOTO HANDLE_BACKGROUND ELSE GOTO HANDLE_INTERACTIVE
+10026 ! 
+10029 HANDLE_BACKGROUND:
+10030 P0=-1 ! Decrement date by 1 day
+10035 CALL "ZZDATE",X3$,"",ROLL_DATE$,NEW_DATE$,P0,0,0,0,0,0,0,"","",""
+10039 GOTO HANDLE_DONE
+10040 ! 
+10045 HANDLE_INTERACTIVE:
+10046 P0=-1; CALL "ZZDATE",X3$,"",ROLL_DATE$,TMPDATE1$,P0,0,0,0,0,0,0,"","",""
+10047 IF X3$(48,1)="2" THEN DTFMT$="DD/MM/YYYY" ELSE DTFMT$="MM/DD/YYYY"
+10049 PRINT 'DIALOGUE'(20,10,75,8,MSG("IC2LCC_01"),'CS'+'_WHITE'+'BLACK'),'SF',@(1,0),'CS',MSG("IC2LCC_02",FN%FMT_TFDATE$(ROLL_DATE$,DTFMT$),FN%FMT_TFDATE$(TMPDATE1$,DTFMT$))
+10050 DIM NEW_DATE[1]; CALL "ZZENTR","DX",NEW_DATE{ALL},NEW_DATE$,X4$,X3$,1,4,1,6,C0,"","","","","","",""
+10053 IF NUL(NEW_DATE$) THEN NEW_DATE$=ROLL_DATE$
+10055 PRINT (0,ERR=*PROCEED)'POP',
+10075 GOTO HANDLE_DONE
+10076 ! 
+10079 HANDLE_DONE:
+10080 IF NUL(NEW_DATE$) OR LEN(NEW_DATE$)<>6 THEN GOTO *RETURN
+10082 IF ZZCHAN THEN CLOSE (ZZCHAN,ERR=*PROCEED); ZZCHAN=0
+10084 IF NUL(NEW_DATE$) OR LEN(NEW_DATE$)<>6 THEN GOTO *RETURN
+10085 KEY$(LEN(KEY$)-5,6)=NEW_DATE$; HANDLED_OK=1
+10090 IF HANDLED_OK THEN DIM LAST_ONE$(SEQ_LEN,"0"); ROLLED_OVER=1
+10095 RETURN 
+10099 ! 
+56002 REM "231659-Fix for issue where the system runs out of sequence numbers 

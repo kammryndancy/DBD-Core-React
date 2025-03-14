@@ -1,0 +1,36 @@
+0010 REM "Compute Extension/Unit Price <FM2EXT>
+0035 REM "3.6 - 06/29/92 - 15.23
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0990 SETERR 9000
+1000 ENTER F,T,U$,C,Q,U,E,P9
+1020 REM "U$=Unit of Measure, C=quantity per unit, Q=quantity in eaches, U=unit price/cost E=extension, F=file for ZZPARM
+1030 REM "T=Type of calculation  0=extension; 1=unit price; 2=quantity
+1040 REM "P9=Precision for unit price (type 1) - added 3.1.2
+1050 U9=U
+2000 DIM A[2]; FIND (F,DOM=2010,KEY="U/M"+U$)A$,A[0],A[1],A[2]; GOTO 2020
+2010 READ (F,KEY="U/MM   ")A$,A[0],A[1],A[2]
+2020 IF A[0]=0 THEN A[0]=1
+2030 IF A[1]=0 THEN A[1]=1
+2050 ON T GOTO 2100,2500,3000
+2100 IF A$(21,1)="Y" THEN GOTO 5000
+2200 IF A$(20,1)="Y" THEN E=Q/A[1]*U/A[0]; GOTO 5000
+2300 IF C*U=0 THEN E=0 ELSE E=Q/C*U; IF Q/C=0 THEN E=U*Q/C
+2320 GOTO 5000
+2500 REM "Compute unit price, then recompute extension
+2600 IF A$(21,1)="Y" THEN U=0; GOTO 5000
+2700 IF A$(20,1)<>"Y" THEN GOTO 2800 ELSE IF Q<>0 THEN E1=E*A[0],Q1=Q/A[1]; PRECISION P9; U=E1/Q1; PRECISION 2 ELSE U=0
+2720 GOTO 2100
+2800 IF Q=0 OR C=0 THEN U=0; GOTO 2820
+2805 Q1=Q/C; IF Q1<>0 THEN PRECISION P9; U=E/Q1; PRECISION 2; GOTO 2820
+2810 PRECISION 14; Q1=Q/C,U=E/Q1; PRECISION P9; U=U+0; PRECISION 2
+2820 GOTO 2100
+3000 IF A$(21,1)="Y" OR A$(20,1)="Y" THEN GOTO 5000
+3010 IF C<>0 THEN Q=Q/C
+3020 GOTO 5000
+5000 REM "END
+5010 IF T=1 AND U=U9 THEN U=U9; REM "IF is in Precision 2, LET is in Precision 3
+5100 GOTO 9900
+9000 EXIT ERR
+9900 EXIT 
+9999 END 

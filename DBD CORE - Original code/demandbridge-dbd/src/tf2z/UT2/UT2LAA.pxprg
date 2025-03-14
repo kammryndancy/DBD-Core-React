@@ -1,0 +1,266 @@
+0010 REM "Line File Analysis <UT2LAA>
+0020 SETESC 9300; SETERR 9000
+0025 REM "(C) Copyright 1986 - All Rights Reserved
+0040 REM "Copyright 1986 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 BEGIN 
+0100 REM SETERR 9000
+0110 X0$="UT2LAA",X1$="Line File Analysis"
+0120 DIM Z0$(80,"-")
+0130 W=999
+0135 C9=-1,W3=130
+0140 Z1$="###,##0-"
+0145 DIM T1$(W3,"-"),Y5$(W3),Y6$(W3)
+0160 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0180 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0285 DELETE 0340
+0286 DELETE 0380
+0290 IOLIST L0,L1,L2,L3,L4
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1)
+0360 IOLIST F$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "Meaning of control variables
+0605 REM "A(0,B0)$ = Name of lines file
+0610 REM "A(1,B0)$ = List of header file names
+0620 REM "A(2,B0)$ = Line descriptor file name (e.g. GL1) if "" no verify 
+0630 REM "A(0  = Len. of key part in lines, if 0 no check against headerkey
+0640 REM "A(1  = Starting pos. of line descriptor, if 0 no check
+0650 REM "A(2  = Len. of line descriptor ( e.g. G/L number )
+0660 REM "A(3  = Amount bucket holding header total, if 0 no check made
+0670 REM "A(4  = Amount bucket in line
+0680 REM "A(5  = Minimum len. of line string, if 0 no check made
+0690 REM "A(6  = Number of buckets in line
+0700 REM "A(7  = Bucket in header with pointer to lines
+0710 REM "A(8  = If -1 then line totals are be the reverse of header totals
+1000 REM "
+1010 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1035 DIM A$(1+K9)
+1060 PRINT @(0,3),'CE',; GOSUB 6000
+1100 REM "KEY SEQ
+1110 X0=-1,C0=0,X1=0,C9=0,Z9=0
+1120 C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 9900
+1140 ON X0 GOTO 1200,1500
+1200 REM "
+1205 A$="  "
+1210 CALL "ZZENTR","ZX",A{ALL},A$,X4$,X3$,49,20,1,2,C0,"",X$,"","UT2LAA(0,B0)0","","",""
+1215 IF C0<0 THEN GOTO 9800
+1240 GOTO 1120
+1500 REM "
+1510 ON NUM(A$) GOTO 1200,1520,1530,1540,1200
+1520 REM "A/R Open Invoice G/L Detail Lines
+1524 DIM A[9,2]
+1525 A0$="ARO",A1$="AR6",A2$="GL1",W0$="A/R Invoice G/L Detail File Analysis",A[0,1]=18,A[0,2]=18,A[1,1]=40,A[1,2]=40,A[2,1]=12,A[2,2]=12,A[3,1]=9,A[3,2]=-1,A[4,1]=3,A[4,2]=3,A[5,1]=60,A[5,2]=60,A[6,1]=8,A[6,2]=8,A[7,1]=0,A[7,2]=0,A[8,1]=-1,A[8,2]=0
+1529 GOTO 1590
+1530 REM "A/P Open Invoice G/L Detail Lines
+1534 DIM A[9,2]
+1535 A0$="APK",A1$="API",A2$="GL1",W0$="A/P Invoice G/L Detail File Analysis",A[0,1]=20,A[1,1]=40,A[2,1]=12,A[3,1]=13,A[4,1]=3,A[5,1]=48,A[6,1]=8,A[7,1]=1,A[8,1]=0
+1539 GOTO 1590
+1540 REM "A/P Check Invoice G/L Detail Lines
+1544 DIM A[9,2]
+1545 A0$="APO",A1$="APN",A2$="GL1",W0$="A/P Check Invoice G/L Detail File Analysis",A[0,1]=27,A[1,1]=28,A[2,1]=12,A[3,1]=1,A[4,1]=3,A[5,1]=48,A[6,1]=8,A[7,1]=0,A[8,1]=0
+1549 GOTO 1590
+1590 PRINT @(0,3),'CE',@(40-INT(LEN(W0$)/2),3),W0$,@(26,5),"Processing file information",
+1600 REM "Initialize
+1610 Z$="01O "+A0$+"...  10O ZZE     "
+1620 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1621,9900
+1625 DIM V3$(30)
+1630 V3$(1)="ILP    NNN"
+1640 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 1641,9900
+1700 REM "Print  file information
+1710 CALL "ZZINFO",Z[1],Z0,X3$,R1,R0,K,B,D,S0,S1,""
+1715 DIM F$(136); FIND (Z[10],KEY=A0$+"   ",DOM=1716)IOL=0360
+1750 IF W+5>W0 THEN GOSUB 6200
+1760 Y5$(1)="Analyzing file "+A0$+" - "+FNS$(F$(7,40)); GOSUB 7300; GOSUB 7300
+1765 Y5$(15)="Defined on disc: "+STR(D:Z1$),Y5$(50)="Starting at sector: "+STR(S1:Z1$); GOSUB 7300
+1770 Y5$(14)="Bytes per record: "+STR(B:Z1$),Y5$(45)="Total number of sectors: "+STR(S0:Z1$); GOSUB 7300
+1775 Y5$(5)="Number of records in file: "+STR(R0:Z1$); GOSUB 7300
+1800 REM "Read zero record, print info then analyse
+1810 READ (Z[1],IND=0)IOL=0290
+1820 GOSUB 7300; GOSUB 7300
+1825 Y5$(6)="Number of records in use: "+STR(L0:Z1$); GOSUB 7300
+1826 Y5$(7)="Link to deleted records: "+STR(L1:Z1$); GOSUB 7300
+1827 Y5$(11)="First virgin record: "+STR(L2:Z1$); GOSUB 7300
+1828 Y5$(5)="Number of records in file: "+STR(L3+1:Z1$); GOSUB 7300
+1829 Y5$(21)="Busy flag: "+STR(L4:Z1$); GOSUB 7300
+1830 REM "Check for errors
+1831 GOSUB 7300
+1832 E1$="Number of records used "
+1835 E0=L0; GOSUB 7500; GOSUB 7520
+1836 IF L0>L2 THEN E$=E1$+"is greater than the first virgin record"
+1840 E1$="Link to deleted records "
+1841 E0=L1; GOSUB 7500; GOSUB 7520
+1850 E1$="First virgin record "
+1851 E0=L2; GOSUB 7500; GOSUB 7520
+1860 E1$="Number of records in file "
+1861 IF L3+1<>R0 THEN E$=E1$+"is not equal to the real number of records in file"; GOSUB 7400
+1870 E1$="Busy flag "
+1871 IF L4=-2 THEN E$=E1$+"is set to busy"; GOSUB 7400 ELSE IF L4<>-1 THEN E$=E1$+"is an undefined value"; GOSUB 7400
+1890 GOSUB 7450
+1895 Y5$=T1$; GOSUB 7300
+1900 REM "Set up Index string I$, Check deleted list
+1910 DIM I$(R0-1)
+1920 I1=L1,I4=1,I1$="D",L1$="Delete chain"
+1925 PRINT @(0,4),'CE',@(30,5),"Delete chain:",
+1930 IF I1<=0 THEN GOTO 1990
+1940 L$=STR(I1),E0=I1; GOSUB 7700
+1945 PRINT @(44,5),I1:Z1$,
+1950 GOSUB 8000; IF E1=1 THEN GOTO 1990
+1960 I1=I3
+1970 GOTO 1930
+1990 I4=0
+1995 GOSUB 7750; GOSUB 7450
+1996 Y5$=T1$; GOSUB 7300
+2000 REM "Process header files
+2005 Z$=""
+2010 FOR B0=1 TO LEN(A1$)/3
+2015 IF B0>1 THEN Z$="02C "+B1$+"...  "
+2020 B1$=A1$((B0-1)*3+1,3),Z$=Z$+"02O "+B1$+"...  "; IF A2$<>"" THEN Z$=Z$+"03O "+A2$+"...  "
+2025 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 2026,9900
+2030 READ (Z[10],KEY=B1$+"   ",DOM=2031)IOL=0360
+2035 B2$=FNS$(F$(7,40))
+2040 PRINT @(0,4),'CE',@(35-INT(LEN(B2$)/2),5),"Processing ",B2$,
+2045 Y5$(1)="Analyzing file "+B1$+" - "+FNS$(B2$); GOSUB 7300; GOSUB 7300; GOSUB 7300
+2050 CALL "ZZINFO",Z[2],Z0,X3$,R2,R3,0,0,0,0,0,""
+2060 GOSUB 2100
+2070 GOSUB 7300; Y5$=T1$; GOSUB 7300
+2090 NEXT B0
+2093 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+2095 GOTO 0001
+2100 REM "Process a header file
+2104 I1$=STR(B0:"0"),I4=0,N=0
+2105 READ (Z[2],KEY="",DOM=2106)
+2109 IF A[3,B0]>A[7,B0] THEN H0=A[3,B0] ELSE H0=A[7,B0]
+2110 B$="380 IOLIST H$"; IF H0+1<1 THEN GOTO 2115
+2112 FOR I=1 TO H0+1; B$=B$+",H("+STR(I-1)+")"; NEXT I
+2115 EXECUTE B$
+2120 B$="340 IOLIST D$"; IF A[6,B0]<=0 THEN GOTO 2124
+2122 FOR I=1 TO A[6,B0]; B$=B$+",D("+STR(I-1)+")"; NEXT I
+2124 EXECUTE B$
+2125 DIM H[H0+1]
+2130 READ (Z[2],END=2190)IOL=0380
+2140 I1=H[A[7,B0]],L1$=H$(1,A[0,B0]),N=N+1; IF A[3,B0]<>-1 THEN N0=H[A[3,B0]],N1=0
+2145 PRINT @(42-A[0,B0],7),N*100/R2:"##0.00%",@(50-A[0,B0],7),'CL',H$(1,A[0,B0]),
+2150 IF I1<1 THEN GOTO 2180
+2155 PRINT @(51,7),I1:Z1$,
+2160 L$=STR(I1),E0=I1; GOSUB 7700
+2165 GOSUB 8000; IF E1=1 THEN GOTO 2182
+2170 GOSUB 2200; IF E1=1 THEN GOTO 2182
+2175 I1=I3
+2179 GOTO 2150
+2180 IF A[3,B0]<>-1 THEN IF N0<>N1 THEN E$="Totals do not match!  Header: "+STR(N0)+"  Lines: "+STR(N1); GOSUB 7400
+2182 GOSUB 7750; GOSUB 7450
+2185 GOTO 2125
+2190 RETURN 
+2200 REM "Check line for other things wrong
+2205 E1$="Line "+STR(I1)+" ",E1=0
+2209 REM "check amounts
+2210 IF A[3,B0]<>-1 THEN IF A[8,B0]=-1 THEN N1=N1-D[A[4,B0]] ELSE N1=N1+D[A[4,B0]]
+2214 REM "check min length
+2215 IF A[5,B0]<>0 THEN IF LEN(D$)<A[5,B0] THEN E1=1,E$=E1$+"Length of line("+STR(LEN(D$))+") is less than the minimum"; GOSUB 7400; GOTO 2290
+2219 REM "check key parts
+2220 IF A[0,B0]<>0 THEN IF H$(1,A[0,B0])<>D$(1,A[0,B0]) THEN E$=E1$+"Key part does not match! Header: "+H$(1,A[0,B0])+"  Line: "+D$(1,A[0,B0]); GOSUB 7400
+2229 REM "check line descriptor
+2230 IF A2$="" THEN GOTO 2240
+2235 FIND (Z[3],KEY=D$(A[1,B0],A[2,B0]),DOM=2236); GOTO 2240
+2236 E$=E1$+D$(A[1,B0],A[2,B0])+" is not on file"; GOSUB 7400
+2290 RETURN 
+5999 ESCAPE 
+6000 REM "BACKGROUND
+6005 Z8=20,Z9=0; PRINT (0,ERR=6016)'SB',
+6010 Z9=Z9+1; PRINT @(Z8,3+Z9),"1. A/R Open Invoice G/L Detail Lines",
+6015 Z9=Z9+1; PRINT @(Z8,3+Z9),"2. A/P Open Invoice G/L Detail Lines",
+6020 Z9=Z9+1; PRINT @(Z8,3+Z9),"3. A/P Check Invoice G/L Detail Lines",
+6160 PRINT @(30,20),"File to examine:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "Page header
+6210 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6215 ON W5 GOTO 6216,9900
+6240 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Add E$ to error list E0$
+7410 E0$=E0$+E$+$00$
+7440 RETURN 
+7450 REM "Print out error list E0$
+7460 I0=POS($00$=E0$)
+7465 IF I0=0 THEN GOSUB 7300; GOTO 7490
+7470 IF W+1>W0 THEN GOSUB 6200
+7475 Y5$(7)="**** "+E0$(1,I0-1),E0$=E0$(I0+1); GOSUB 7300
+7480 GOTO 7460
+7490 RETURN 
+7500 REM "Check if E0 is negative, E1$=desc, set E1
+7504 E1=0
+7505 IF E0<0 THEN E1=1,E$=E1$+"is a negative number"; GOSUB 7400
+7510 RETURN 
+7520 REM "Check if E0 is > R0 # recs in file, set E1
+7524 E1=0
+7525 IF E0>R0 THEN E1=1,E$=E1$+"is greater than the number of records in the file"; GOSUB 7400
+7530 RETURN 
+7700 REM "Add L$ to list L0$
+7710 L0$=L0$+L$+$00$
+7740 RETURN 
+7750 REM "Print out list L0$, headed by L1$
+7755 I2=LEN(L1$)+5,Y5$(1)=L1$
+7760 I0=POS($00$=L0$)
+7765 IF I0=0 THEN GOSUB 7300; GOTO 7790
+7770 IF W+1>W0 THEN GOSUB 6200
+7775 IF I2+I0-1>W3 THEN GOSUB 7300; I2=LEN(L1$)+5
+7780 Y5$(I2)=L0$(1,I0-1),L0$=L0$(I0+1),I2=I2+I0+1
+7785 GOTO 7760
+7790 RETURN 
+8000 REM "Read a line pointed to by I1 into D$ and D array
+8001 REM "before read check I1 <1,>max, set E1 if true and exit
+8002 REM " if > virgin or already used set err message but read any way, Don't set E1
+8003 REM " if err on read set message & E1 * new index in I3
+8004 REM "if I4=1 then only read for index,   mark I$ with char in I1$
+8005 E0=I1,E1=0,E1$="Line "+STR(I1)+" "
+8010 GOSUB 7520; IF E1>1 THEN GOTO 8090
+8015 IF I1<1 THEN E1=1,E$=E1$+"is less than one"; GOSUB 7400; GOTO 8090
+8020 IF I$(I1,1)<>" " THEN E$=E1$+"is pointing to a line already in use"; GOSUB 7400
+8025 IF I1>L2 THEN E$=E1$+"is pointing past the first virgin record"; GOSUB 7400
+8035 IF I4=1 THEN READ (Z[1],IND=I1,ERR=8100)I3 ELSE D$=""; DIM D[A[6,B0]]; READ (Z[1],IND=I1,ERR=8100)I3,IOL=0340
+8050 I$(I1,1)=I1$
+8090 RETURN 
+8100 REM "Error on read, mark spot in I$
+8110 E1=1,I$(I1,1)="E",E$=E1$+"error "+STR(ERR)+" occurred on the read"; GOSUB 7400
+8120 GOTO 8090
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

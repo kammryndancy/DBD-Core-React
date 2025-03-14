@@ -1,0 +1,220 @@
+0010 REM "Printer Option Package for Sato M-8450 <BC2P02>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 08/09/02 - 11.926666 - dff - SSP# 150785
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0069 REM "IF P$='?' THEN P$ is returned with description of printer driver
+0070 REM "P$ is ptr string from ZZPARM if not found, we'll try to read a hard coded one
+0071 REM "D$ is the data to printe
+0072 REM "O$ is option code string, each option code is 5 chars long
+0073 REM "Q$ is for future sturff
+0074 REM "D1$ is string to print including print codes, etc.
+0075 REM "L0$ is for stuff that must go on  front of line, and applies to whole line, L1$ goes on end of line to turn off L0$
+0085 REM "Formula for find # dots given a value (V) in inches = V*25.4(mm/in)*8 dots/mm = # dots
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,P$,D$,O$,Q$,D1$,L0$,L1$
+0100 SETERR 9000
+0105 IF P$="?" THEN P$="Sato M-8450 Printer Driver"; GOTO 9920; REM "SKIP ZZFLES CALL @ 9910
+0110 X0$="BC2P02",X1$="Printer Option Package for Sato M-8450"
+0120 DIM S$(80)
+0550 REM "At least pass the data back, no matter what happens
+0551 D1$=D$,L0$="",L1$=""
+0600 REM "If no printer codes record given try and read one
+0603 P$=STP(P$,1)
+0605 IF P$<>"" THEN GOTO 0621
+0610 CLOSE (14); OPEN (14)"ZZPARM"
+0620 FIND (14,KEY="ptrSATO8450",DOM=9900)P$
+1000 REM "Look at each option, add codes to front & back of D1$ as needed
+1010 FOR I=1 TO LEN(O$)-20+1 STEP 20
+1015 O1$=O$(I+5,15)
+1020 P=POS(O$(I,5)="DBLHTBOLD UNDRLPSTNTBC39 EAN8 EAN13UPC-AUPC-E2OF5 C128AC128BC128CL_POSL_BEGL_ENDFONT EXPNDVFONTBOX  BMP  BMPX "); IF P>0 THEN P=INT((P+4)/5)
+1025 ON P GOSUB 2000,2100,2150,2200,2250,2300,2350,2400,2450,2500,2550,2600,2650,2700,2750,2800,2850,2900,2950,3000,3050,3100,3150,2000
+1190 NEXT I
+1195 GOTO 9900
+2000 REM 'DO NOTHING SUBROUTINE
+2095 RETURN 
+2100 REM "DBLHT - Double height on for field then off
+2115 D1$=$1B$+"L0102"+D1$+$1B$+"L0101"
+2145 RETURN 
+2150 REM "BOLD - Bold printing
+2195 RETURN 
+2200 REM "UNDRL - Underline
+2245 RETURN 
+2250 REM "PSTNT - PostNet code
+2255 D1$=$1B$+"BP"+D$
+2295 RETURN 
+2300 REM "BC39 - Barcode 3 of 9
+2305 C5$="1",D1$="*"+D$+"*"; GOSUB 7550; REM "Add start/stop characters
+2345 RETURN 
+2350 REM "EAN8  - EAN 8 digit barcode
+2395 RETURN 
+2400 REM "EAN13 - EAN 13 digit barcode
+2405 C5$="3"; GOSUB 7550
+2445 RETURN 
+2450 REM "UPC-A - UPC-A 10 digit barcode
+2455 C5$="3"; GOSUB 7550
+2495 RETURN 
+2500 REM "UPC-E - UPC-E 6 digit barcode
+2505 C5$="E"; GOSUB 7550
+2545 RETURN 
+2550 REM "2OF5 - Interleaved 2 of 5 barcode
+2555 C5$="2"; GOSUB 7550
+2595 RETURN 
+2600 REM "C128A - Code 128 set A
+2605 C5$="9"; GOSUB 7550
+2645 RETURN 
+2650 REM "C128B - Code 128 Set B
+2655 C5$="9"; GOSUB 7550
+2695 RETURN 
+2700 REM "C128C - Code 128 Set C
+2705 C5$="9"; GOSUB 7550
+2745 RETURN 
+2750 REM "L_POS - position field on Label O1$=xxxxyyyy x=horiz, y=vertical
+2755 X9=0,Y9=0; IF LEN(O1$)<8 THEN GOTO 2795
+2759 REM "Currenlty X and Y are in 10'ths of an inch, convert to dots, given 8 dots per millimeter
+2760 X9=INT(NUM(O1$(1,4),ERR=2795)/10*25.4*8),Y9=INT(NUM(O1$(5,4),ERR=2795)/10*25.4*8)
+2775 D1$=$1B$+"H"+STR(X9:"000")+$1B$+"V"+STR(Y9:"0000")+D1$
+2795 RETURN 
+2800 REM "L_BEG - Start of label indicator
+2810 D1$=$02$+$1B$+"A"
+2815 REM "Make it horizontal
+2816 D1$=D1$+$1B$+"N"+$1B$+"R"+$1B$+"R"+$1B$+"R"
+2820 REM "Set base reference point
+2825 D1$=D1$+$1B$+"A3H001V0001"
+2845 RETURN 
+2850 REM "L_END - End of lable indicator
+2854 REM "Specify 1 lable or doesn't print correctly, Add 5 'X's, sato spec padding chars between jobs
+2855 D1$=$1B$+"Q1"+$1B$+"Z"+$03$+"XXXXX"
+2895 RETURN 
+2900 REM "FONT  - Change font on this field
+2905 O2$=""
+2910 FOR O=1 TO 2
+2915 IF O1$(O,1)<>" " THEN O2$=O2$+O1$(O,1)
+2920 NEXT O
+2934 REM "Set to param font, at end return to default font 'S'
+2935 D1$=$1B$+O2$+D1$+$1B$+"S"
+2945 RETURN 
+2950 REM "EXPND - Expand character size
+2955 DIM O[2]; O[1]=NUM(O1$(1,2),ERR=2956)
+2956 O[2]=NUM(O1$(3,2),ERR=2957)
+2960 IF O[1]<=0 THEN O[1]=1
+2965 IF O[2]<=0 THEN O[2]=1
+2970 D1$=$1B$+"L"+STR(O[1]:"00")+STR(O[2]:"00")+D1$+$1B$+"L0101"
+2995 RETURN 
+3000 REM "VFONT - Vector Font
+3005 O2$=""; REM "Get Font type (A or B)
+3006 FOR O=1 TO 3
+3007 IF O1$(O,1)<>" " THEN O2$=O2$+O1$(O,1)
+3008 NEXT O
+3009 DIM O[4]; IF LEN(O2$)<>1 OR POS(O2$="AB")=0 THEN O2$="B"; REM "Default Font type if not correct
+3010 O[2]=NUM(O1$(4,3),ERR=3011)
+3011 O[3]=NUM(O1$(7,3),ERR=3012)
+3012 O[4]=NUM(O1$(10,3),ERR=3013)
+3020 IF O[2]<24 THEN O[2]=24; REM "If no value, default is 24
+3021 IF O[3]<24 THEN O[3]=24; REM "IF no value default is 24
+3030 D1$=$1B$+"$"+O2$+","+STR(O[2])+","+STR(O[3])+","+STR(O[4])+$1B$+"$="+D1$
+3045 RETURN 
+3050 REM "BOX - Draw Box
+3051 REM "Paramters Width horz line, Length horiz line, Width Vert line, Length Vert line, all in 10'ths of an inch
+3055 DIM O[4]
+3057 FOR O=1 TO 4; O[O]=1; NEXT O; REM "Default all to 1
+3059 REM "O(1) and O(3) are already in dots, Convert O(2) and O(4) from 10'ths of an inch to dots based on 8 dots per millimeter
+3060 O[1]=NUM(O1$(1,2),ERR=3061)
+3062 O[2]=INT(NUM(O1$(3,2),ERR=3063)/10*25.4*8)
+3064 O[3]=NUM(O1$(5,2),ERR=3065)
+3066 O[4]=INT(NUM(O1$(7,2),ERR=3067)/10*25.4*8)
+3085 D1$=$1B$+"FW"+STR(O[1]:"00")+STR(O[3]:"00")+"H"+STR(O[2])+"V"+STR(O[4])+D1$
+3095 RETURN 
+3100 REM "BMP - Download BMP file as graphic
+3105 CLOSE (14); OPEN (14,ERR=3145)O$(I+5,15)
+3106 REM "Read file into B0$
+3107 B0=0,B0$=""
+3108 READ RECORD (14,IND=B0,END=3110)B1$; B0$=B0$+B1$,B0=B0+1; GOTO 3108
+3110 B0$=B0$+B1$
+3112 REM "Get offset B8 to start of graphics image from file (1st) header
+3115 B1$=B0$(11,4),B1$=B1$(2,1)+B1$(1,1)+B1$(4,1)+B1$(3,1); B8=DEC(B1$(1,2)); REM "Load into B1$ then do byte swap since INTEL ordered backwards then load into B1
+3117 REM "Get width of bitmap B1 and height B2 from image (2nd) header
+3118 B1$=B0$(15,16),B1=DEC(B1$(6,1)+B1$(5,1)),B2=DEC(B1$(10,1)+B1$(9,1)); REM "Have to reverse bytes because of INTEL byte ordering
+3119 B4=(INT(B1/8/4)+1)*4; REM "B4 is the width of a line, in bytes, as stored in bitmap, the line is padded to a 4 byte boundary (ie the width of the line is evenly diable by 4)
+3120 B5=(INT(B2/8)+1)*8; REM "B5 Is the height,in  bits, rounded up to an 8 bit boundary as required by the printer.
+3122 B6=(INT(B1/8)+1)*8; REM "B6 is the width, in bits, rounded up to an 8 bit boundary as required by the printer
+3125 REM "Now we are ready to begin, 1st send command to start the graphic
+3127 D1$=$1B$+"GH"+STR(INT(B6/8):"000")+STR(INT(B5/8):"000")
+3130 REM "Ok, now send the data row by row, the data is B4 bytes wide in the BMP bitmap and B2 rows long. This will need to be B6 BITS (or B6/8 bytes) wide when written out and B5 rows will need to be sent.
+3132 DIM B6$(B4,$FF$); REM "string to use later to flip the bits
+3133 IF B4>=INT(B6/8) THEN B4$="" ELSE DIM B4$(INT(B6/8)-B4,$FF$); REM " To pad lines from bitmap out to length needed for output
+3134 FOR B9=1 TO B2
+3135 REM "Oh yeah, the top of the B0$ bitmap is actually the last line, so we have to process the array from the end of B0$ back to the front to put it out in the correct order for the printer
+3136 B3$=XOR(B6$,$FF$+B0$(B8+B4*B2-B9*B4+1,B4-1)+B4$); REM "Get line, use B6$ to flip bits from 1 to 0 and 0 to 1
+3137 B3$=HTA(B3$)
+3138 FOR I3=1 TO LEN(B3$) STEP 2; J$=B3$(I3,1),B3$(I3,1)=B3$(I3+1,1),B3$(I3,1)=J$; NEXT I3; REM "Swap bytes because INTEL stores them out of order
+3139 D1$=D1$+B3$(1,INT(B6/8)*2); REM "Add to string
+3140 NEXT B9
+3142 IF LEN(D1$)-9<B5*INT(B6/8)*2 THEN DIM B3$(INT(B6/8)*2,"0"); D1$=D1$+B3$; GOTO 3142
+3143 REM PRINT "B1=",B1," B2=",B2," B3=",B3," B4=",B4," B5=",B5," B6=",B6," D1$=",LEN(D1$); INPUT *
+3145 RETURN 
+3150 REM "BMPX - Download preconverted BMP file as graphic\
+3155 CLOSE (14); OPEN (14,ISZ=1024,ERR=3195)O$(I+5,8)
+3160 B0=0
+3165 READ RECORD (14,IND=B0,END=3170)B1$; D1$=D1$+B1$,B0=B0+1; GOTO 3165
+3170 D1$=D1$+B1$
+3190 REM PRINT "LEN(D1$)=",LEN(D1$)," B0=",B0,; INPUT *
+3195 RETURN 
+7500 REM "Decode expected NUMERIC parameters from O1$ into O() array, current maximum # of parameters is set to 10. Positionality will be maintained. Array vluase of -9999 indicate parameters was blank or not a number. O1 is  highest parameter found, O2 is number of valid parameters found
+7510 DIM O[10]; O1=0,O2=0,W$=O1$; REM "W$ is work string containing O1$
+7515 IF W$="" THEN GOTO 7535
+7520 IF LEN(W$)<=3 THEN W0$=W$,W$="" ELSE W0$=W$(1,3),W$=W$(4)
+7525 O1=O1+1; O[O1]=0; IF POS(" "<>W0$)=0 THEN GOTO 7515
+7530 O[O1]=NUM(W0$,ERR=7510),O2=O2+1; GOTO 7515
+7534 REM "Set defaults
+7535 IF O[1]=0 AND O[2]=0 THEN O[1]=1,O[2]=2; REM "Height in dots
+7537 IF O[4]=0 THEN O[4]=4; REM "Narrow bar width in dots
+7545 RETURN 
+7550 REM "All barcodes have the same params etc, only a code changes, so, given code C5$ print a barcode
+7555 GOSUB 7500
+7560 REM "Convert O(1) and O(2) to decimal # representing height in dots
+7562 Q9=O[1]*10+O[2]; Q8=INT(Q9*6*25.4*8/72)
+7575 D1$=$1B$+"B"+C5$+STR(O[4]:"00")+STR(Q8:"000")+D1$
+7595 RETURN 
+8000 REM "TESTING- Print string D1$, skipping 'es'
+8003 PRINT @(0,18),'CE'
+8005 FOR D=1 TO LEN(D1$)
+8010 IF D1$(D,1)=$1B$ THEN PRINT "<ESC>", ELSE PRINT D1$(D,1),
+8020 NEXT D
+8040 INPUT *
+8045 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

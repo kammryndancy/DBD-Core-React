@@ -1,0 +1,45 @@
+0010 REM "Get info from Inventory Costing Records <FMGICB>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 07/01/10 - 9.720555 - jvv - SSP# 222976
+0037 REM "222976-Job Costing and special charges - with multiple receipts    
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "PROG$ is program we are coming from, KEY$ is either order number or order number/line number to lookup in either FTE or FTF (length of key will determine which), TF_TYPE$ is which piece of record we want, DATA$ is info to send back to calling program, WO111482
+0082 REM "TYPE$=P=Product code, W=Warehouse, D=User asking to delete, T="CREATE UPDATED TRANSACTION(S) FOR DELETE WITH ACT IN PROG MOVING TO UNALLOCATED
+0085 REM "SSP129790, coming from FM2ODM, if user wants to delete order, check for any pending amounts and if any send back message to not allow delete.  Also check for any invoice costs to date, if yes then send back message to ask if delete should continue, if user says yes then call again to create transaction moving invoiced cost to unallocated and set flag to print on report.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,KEY$,TF_TYPE$,DATA$
+0100 SETERR 9000
+0105 CALL "FM2ICB",X3$,X4$,PROG$,KEY$,TF_TYPE$,DATA$ ! SSP 222976 USE CHUI PGM
+0108 EXIT ! SSP 222976
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+56002 REM "222976-Job Costing and special charges - with multiple receipts    

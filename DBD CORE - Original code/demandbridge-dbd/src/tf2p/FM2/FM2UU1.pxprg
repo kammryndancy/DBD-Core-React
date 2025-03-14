@@ -1,0 +1,108 @@
+0010 REM "Set counted flag in FM4 <FM2UU1>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 02/12/97 - 19.38 - kmc
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FM2UU1",X1$="Set Counted flag in FM4 records"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FM4...  02O AR1...  03O FM0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 DIM N$(24),B$(100),C$(100); GOSUB 7000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM "Preposition
+0910 READ (Z[1],KEY=N$(1,10),DOM=0911)
+1000 REM "BEGIN MAIN PROCESS
+1005 K$=KEY(Z[1],END=5000)
+1010 READ RECORD (Z[1],KEY=K$)A$
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1030 IF A$(1,10)<>N$(1,10) THEN GOTO 5000 ELSE IF A$(21,4)<>N$(11,4) THEN GOTO 1005
+1050 A$(26,1)=N$(15,1); REM "Set counted flag
+1060 WRITE RECORD (Z[1],KEY=K$)A$; IF RT_PARM$<>"" THEN CUST$=K$(1,10); CALL "RT2WOC",ERR=1061,X3$,X4$,CUST$,"FM4...","U",K$
+1095 GOTO 1000
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility will set the counted flag as indicated in all forms at a location."
+6030 PRINT @(21,9),"Customer:",@(21,10),"Location:",@(10,11),"Set counted flag to:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "Show Whole Screen
+6405 PRINT @(0,3),'CE',
+6410 GOSUB 6000
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+7000 REM "input values
+7010 CALL "ZZENTR","AU",N{ALL},N$,X4$,X3$,31,9,1,10,C0,"A/R",X$,"","FM2UU102","AR1","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 7010,7011
+7011 IF ABS(C0)=4 THEN GOTO 9900
+7015 FIND (Z[2],KEY=N$(1,10),DOM=7010)B$
+7020 PRINT @(45,9),B$(11,33),
+7055 J$="C"+N$(1,10)
+7060 CALL "ZZENTR","SZU",N{ALL},N$,X4$,X3$,31,10,11,4,C0,"",X$,J$,"FM2UU104","FM0C","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 7060,7061
+7065 IF ABS(C0)=2 THEN GOTO 7000 ELSE IF ABS(C0)=4 THEN GOTO 9900
+7070 FIND (Z[3],KEY="C"+N$(1,14),DOM=7060)C$
+7075 PRINT @(45,10),C$(16,30),
+7110 CALL "ZZENTR","Y",N{ALL},N$,X4$,X3$,31,11,15,1,C0,"",X$,"","FM2UU106","","",""
+7111 IF ABS(C0)=2 THEN GOTO 7050
+7195 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9515 GOTO 7000
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

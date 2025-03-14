@@ -1,0 +1,979 @@
+<PxTable>
+ TableName=ZAB
+ TableKey=K1007399604
+ FileCreate=SORT "ZAB",40
+ MaxFields=01000
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="                    FM_CUST_CONTACT     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="                    TEST                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP0...              AP_DIVISIONS        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP2...              AP_TERMS_CODES      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP4...              AP_VENDOR_MASTER    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP5...              AP_VENDOR_STATUS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP6...              AP_VENDOR_ALPHA     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP7...              AP_VENDOR_CATEG     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP8...              AP_VENDOR_MESSAGES  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP9...              AP_VENDOR_PURCHASES "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APC...              AP_CHECK_REGISTER   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="API...              AP_OPEN_INVOICES    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APM...              AP_MONTHLY_DISB     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APN...              AP_MTH_DISB_DTL     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APP...              AP_INV_BY_BANK      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APQ...              AP_INVOICE_HIST     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APY...              AP_MTH_CKS_BY_CKNO  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR0...              AR_CUST_CREDIT      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR1...              AR_CUSTOMER_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR100A              CA2_AR1             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2...              AR_TERMS_CODES      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR3...              AR_SLS_MASTER       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR3...              SALESPERSON_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR4...              AR_COMMISSION_CODES "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR5...              AR_SALES_TAX_CODES  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR6...              AR_OPEN_INVOICES    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR7...              AR_TRANSACTIONS     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR8...              AR_INVOICE_HISTORY  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR9...              AR_CUST_STATS_P     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR9...              AR_CUST_STATS_S     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR9...              AR_CUST_STATS_SALES "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR9...              AR_CUST_STATS_SPRIOR"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARA...              AR_SLS_STATS        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARA...              AR_SLS_STATS_P      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARA...              AR_SLS_STATS_S      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARB...              AR_INV_HDR          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARE...              AR_CUST_BY_LOOKUP   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARF...              AR_SLS_BY_LOOKUP    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARG...              AR_CUSTOMER_CATEG   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARG...              AR_CUST_CATEGORY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARH...              AR_DIVISIONS        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARI...              AR_GL_INTERFACE     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARK...              AR_COMM_PEND        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARL...              AR_SALES_TX_PBL     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARM-01              ON_CUSTOMER_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARM-06              CUST_PMT_SUMMARY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARM-06              ON_CUSTOMER_PY_SUM  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARM...              AR_COMM_PAY         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARM...              AR_COMM_PAYABLE     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARN...              AR_INV_BY_INV_DATE  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARP...              AR_CASH_REC_CHK_HDR "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ART...              AR_INV_PRT_DETAIL   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARU...              AR_CUST_BY_SLS      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARV...              AR_SALES_DIST       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARX...              AR_CUSTOMER_SALES   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARX...              AR_STATS_PROFIT     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARZ...              CREDIT_CARD_INFO    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARZ...              CUST_CREDIT_CARDS   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AS0...              COMMISSION_CHG_BACK "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AS4...              COMMISSION_BY_LINE  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AS9...              AR_COMM_BY_LINE     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASP...              CREDIT_CARD_TYPE    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASV...              AR_CREDIT_REASON    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASV...              USER_DEFINED_FIELDS "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASW...              CUST_USER_DEFINED   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASX...              CUST_USER_DEF_SORT  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASZ...              EMPLOYEE_CODES      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AT1...              AR_CREDIT_MEMO      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BR0...              BR_DETAIL           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CM4...              NET_PROC_DETL       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CM5...              NET_PROC_SORT       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CR1                 CASH_REC_GATEWAY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS0...              REQUISITIONS_HDR    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS1...              REQUISITION_DETL    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS2...              CS2                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS5...              REORDER_DATA        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CTM                 TM_CONT_MANAG_GW    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DR0...              DATAREP_TARGET      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DR1...              DATAREP_TABLE       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ECG...              EC_CATALOG_CATEGORY "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ECH...              EC_CATALOG          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDD                 EDD_CREDIT_CARD     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FC1                 FMS_COUNT_ENTRY_GW  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FEA...              EQ_PROSPECT         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM0...              AP_VENDOR_PLANTS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM0...              FM_SHIP_TOS         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM0...              FM_WAREHOUSES       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM1...              FM_CUST_JOB_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM3...              FM_USAGE_BY_LOCATION"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM4...              FM_LOCATION_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM5...              FM_RON_DATA         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMC...              FM_REPORT_SUMMARY   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMD...              FORMS_MGT_DATA      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMD...              FORMS_MGT_REPORTS   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMG...              FM_LOC_BY_CT_CYCLE  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMN...              OP_ORDER_NOTEPAD    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMO...              FM_PMS_COLORS       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              FM_CUST_CONTACTS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              FM_CUST_DEFAULTS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              FM_PRODUCT_CODES    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              FM_REPORT_PARAMS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              IC_PRODUCT_CODES    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMP...              OP_PRODUCT_CODE     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMS...              FM_FORM_SPEC_COMP   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMU...              FORM_SPEC_PLY       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMV...              FORM_SPEC_COMMENT   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMY...              SUMMARY_BILL        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMZ...              FMZ                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMZ...              FM_SHIPMNT_DETAIL   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1                 ORDER_REQ_GATEWAY   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1                 ORDER_REQ_GATEWAY_2 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1                 ORDER_REQ_GATEWAY_3 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO1                 ORDER_REQ_GATEWAY_4 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FS1...              OP_OPEN_ORDER       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FS2...              OP_OPEN_ORD_LN      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FS6...              OP_ORDER_HISTORY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSD...              OP_MTHLY_BOOKINGS   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSE...              FORM_TEMPLATE       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSE...              TEMPLATE            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSM...              REQUISITION         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSN...              REQUISITION_LINE    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FSY...              OP_ORD_HIST_BY_DAT  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FT0...              FORM_SPEC_OTHER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FTL...              FORM_USER_DEFINED   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FTM...              FORM_USER_DEF_SORT  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FX0...              FAX_REQUEST_INFO    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FX0...              FIXED_ASSETS        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FX1...              FIXED_ASSET_II      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL1...              GL_CHART_OF_ACCTS   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL2...              GL_DETAIL_FILE      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL3...              GL_SUMMARY_DATA     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL4...              GL_ACCT_BREAKS      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL5...              GL_JOURNALS         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GLD...              GL_DEPARTMENTS      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC0...              IC_ITEM_MASTER      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC1...              IC_ITEM_LOCATION    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC2...              SUPPLIER_PRICE      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC4...              IC_ITEMS_BY_VENOR   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC5...              IC_ITEM_BY_PCODE    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC6...              IC_LOC_PC_ITEM_SORT "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC8...              IC_DETAIL_TRANS     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC9...              IC_ITEM_STATS       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ICF...              IC_LOT_MASTER       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ICL...              IC_LOT_DETAIL       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IE0...              CONS_ORDER_CUSTOMERS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KS0...              TEXT_CONVERSION     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KS1...              KRAMER_DATA_SETS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OS4...              OS_ERR_REP          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PA1                 AP_GATEWAY          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PC1                 PRODUCT_CATALOG_GW  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO1...              PO_HEADER           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2...              PO_DETAIL           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO3...              OP_SHIPPING         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO4...              PO_SORT_BY_VENDOR   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO5...              PO_SRT_BY_ITEM      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="POF...              CARTON_LABEL        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PRM-01              EMPLOYEE_MASTER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PRT-01              EMPLOYEE_DETAIL     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PRT-01              EMPLOYEE_HISTORY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QS1...              RFQ_MASTER          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP1                 CIG_PLUS            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RS1                 RESTOCKING_GW       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00002              S00002              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00044              S00044              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00047              S00047              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00048              S00048              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00057              S00057              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00062              S00062              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00102              S00102              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00105              S00105              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00125              S00125              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00129              S00129              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00131              S00131              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00139              S00139              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00140              S00140              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00142              S00142              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00143              S00143              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00145              S00145              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00233              S00233              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00408              S00408              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SH8...              SM_SHIPPING_INFO    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM0...              SM_MANIFEST_INFO    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM4...              SM_ORDER_HISTORY    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS1...              TF_CUST_MASTER      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS7...              3P_SW               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS8                 TF_MODEM_PROFILE    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SSA                 TF_SOFTWARE         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SSB...              TF_SOFTWARE_MODULES "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK0                 TK_CLIENT           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK1                 TK_SERVICE          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK2                 TK_LOG              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK3                 TK_BY_PROJECT       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK4                 TK_BY_CLIENT        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK5                 TK_IN_OUT_LOG       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP0...              CUSTOMER_MASTER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP1...              TP1                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP2...              TP2                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP3...              SALESMAN_MASTER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPN...              TPN                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPO...              TPO                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TT0                 TIME_CATEGORIES     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TT3...              TIME_LOG            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="U01...              CFS_COMMISSIONS     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="U01...              SEQ_COMM            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA0...              DATABASE_MASTER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA1...              DATA_DICTIONARY_MSTR"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZAA...              DATABASE_BY_FIELD   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZAE                 BERT_ERROR_MSG_MSTR "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZE0...              AR_ART_CHARGE       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZE0...              EXT_INVOICE_CHGS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP0...              TM_LIST_MASTER      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP1...              TM_CONT_CAT_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2...              TM_CONT_SOURCE_MAST "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP4...              TM_CONT_MASTER      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP6...              TM_SEL_CODE_MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP7...              TM_SALES_MASTER     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZT0...              PRINTER_CONTROLS    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW0...              SOFTWARE_ISSUES     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW1...              ZW1                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW2...              SUPPORT_ISSUES      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW2...              TF_SUPPORT          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW4...              ONLINE_DOC_HDR      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW7...              SSP_PERSON          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW8...              ISSUES_STATUS       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW9...              ISSUE_CATEGORY      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWA...              TF_AUTH_CONTROL     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWB...              CSI_CLIENT_MASTER   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWB...              TOPFORM_CLIENTS     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWC...              CSI_STAFFING        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWD...              ZWD                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWG...              ZWG                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWL                 ZWL                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWR...              CLIENT_MANUAL_DATA  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWR...              MANUAL_DATA         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWS...              SCHEDULING_DATA     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZY6...              FLEX FORMAT         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZY7...              FLEX TEXT DETAIL    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZY8...              ZY8                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZYF...              FAX_LOG             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZYL...              ACTIVITY_LOG        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZPARM              CUSTOMER_MENU       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZPARM              OPERATOR_CODES      "
+   </RecordData>
+
+</Data>
+
+</PxTable>

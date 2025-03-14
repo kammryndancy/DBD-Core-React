@@ -1,0 +1,149 @@
+REM "ILPARA - Image Library Parameters (IL0)
+! 
+DEF CLASS "OBJMHE" CREATE REQUIRED DELETE REQUIRED 
+! 
+! 
+! CLEARREC
+! This method will init the current record
+FUNCTION CLEARREC()
+_OBJ'SET_IMAGETYPE$("")
+_OBJ'SET_CURRENTDIRECTORY$("")
+_OBJ'SET_IMAGEFORMAT$("")
+_OBJ'SET_SCANNEROPTIONS$("")
+_OBJ'SET_ONLYSAVELATEST$("")
+_OBJ'SET_ACCESSLEVEL$("")
+_OBJ'SET_ADDFORMAT$("")
+RETURN 1
+! 
+! 
+! DISPLAYREC
+! This method will display the current record
+FUNCTION DISPLAYREC()
+PRINT 
+PRINT "       Image Type: "+_OBJ'GET_IMAGETYPE$()
+PRINT "Current Directory: "+_OBJ'GET_CURRENTDIRECTORY$()
+PRINT "     Image Format: "+_OBJ'GET_IMAGEFORMAT$()
+PRINT "  Scanner Options: "+_OBJ'GET_SCANNEROPTIONS$()
+PRINT " Only Save Latest: "+_OBJ'GET_ONLYSAVELATEST$()
+PRINT "     Access Level: "+_OBJ'GET_ACCESSLEVEL$()
+PRINT "       Add Format: "+_OBJ'GET_ADDFORMAT$()
+PRINT 
+RETURN 1
+! 
+! 
+! 
+! 
+! Getter / Setter Methods 
+! 
+! 
+! GET_IMAGETYPE
+! This method returns the image type
+FUNCTION GET_IMAGETYPE$()
+RETURN IMAGE_TYPE$
+! 
+! 
+! SET_IMAGETYPE
+! This method sets the image type
+FUNCTION SET_IMAGETYPE(IMG_TYPE$)
+ENTER IMG_TYPE$
+IMAGE_TYPE$=IMG_TYPE$
+RETURN 1
+! 
+! 
+! GET_CURRENTDIRECTORY
+! This method returns the current directory
+FUNCTION GET_CURRENTDIRECTORY$()
+RETURN CURRENT_DIRECTORY$
+! 
+! 
+! SET_CURRENTDIRECTORY
+! This method sets the current directory
+FUNCTION SET_CURRENTDIRECTORY(CUR_DIR$)
+ENTER CUR_DIR$
+CURRENT_DIRECTORY$=CUR_DIR$
+RETURN 1
+! 
+! 
+! GET_IMAGEFORMAT
+! This method returns the image format
+FUNCTION GET_IMAGEFORMAT$()
+RETURN IMAGE_FORMAT$
+! 
+! 
+! SET_IMAGEFORMAT
+! This method sets the image format
+FUNCTION SET_IMAGEFORMAT(IMG_FMT$)
+ENTER IMG_FMT$
+IMAGE_FORMAT$=IMG_FMT$
+RETURN 1
+! 
+! 
+! GET_SCANNEROPTIONS
+! This method returns the scanner options
+FUNCTION GET_SCANNEROPTIONS$()
+RETURN SCANNER_OPTIONS$
+! 
+! 
+! SET_SCANNEROPTIONS
+! This method sets the scanner options
+FUNCTION SET_SCANNEROPTIONS(SCN_OPT$)
+ENTER SCN_OPT$
+SCANNER_OPTIONS$=SCN_OPT$
+RETURN 1
+! 
+! 
+! GET_ONLYSAVELATEST
+! This method returns only save latest
+FUNCTION GET_ONLYSAVELATEST$()
+RETURN ONLY_SAVE_LATEST$
+! 
+! 
+! SET_ONLYSAVELATEST
+! This method sets the only save latest
+FUNCTION SET_ONLYSAVELATEST(ONLY_SAVE$)
+ENTER ONLY_SAVE$
+ONLY_SAVE_LATEST$=ONLY_SAVE$
+RETURN 1
+! 
+! 
+! GET_ACCESSLEVEL
+! This method returns the access level
+FUNCTION GET_ACCESSLEVEL$()
+RETURN ACCESS_LEVEL$
+! 
+! 
+! SET_ACCESSLEVEL
+! This method sets the access level
+FUNCTION SET_ACCESSLEVEL(ACC_LVL$)
+ENTER ACC_LVL$
+ACCESS_LEVEL$=ACC_LVL$
+RETURN 1
+! 
+! 
+! GET_ADDFORMAT
+! This method returns the add format
+FUNCTION GET_ADDFORMAT$()
+RETURN ADD_FORMAT$
+! 
+! 
+! SET_ADDFORMAT
+! This method sets the add format
+FUNCTION SET_ADDFORMAT(ADD_FMT$)
+ENTER ADD_FMT$
+ADD_FORMAT$=ADD_FMT$
+RETURN 1
+! 
+! 
+END DEF
+! 
+! 
+! Constructor
+ON_CREATE:
+ENTER FILENO
+STATIC IOL=IOL(FILENO)
+RETURN 
+! 
+! 
+! Destructor
+ON_DELETE:
+RETURN 

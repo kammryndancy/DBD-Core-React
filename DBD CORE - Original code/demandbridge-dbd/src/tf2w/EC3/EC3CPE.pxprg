@@ -1,0 +1,183 @@
+0010 REM "EC Create Coupon to Buyer<EC3CPE>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/24/09 - 13.610555 - crg - SSP# 232226
+0037 REM "232226-Programming changes to allow customized interfacing with    
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3CPE",X1$="Create Coupon Email to Buyer"
+0120 EOL$=$0D0A$; REM EOL$=ATH(STP(EC_PARM$(57,8),1))
+0127 HTML_TEXT$="Content-type: text/html"
+0130 MASK1$="#,###,###.00-"
+0150 REM "EC$[1]=ESB session record, EC$[2]=client number        , ec$[3]=message from server to called program, EC$[4]=formatted date, EC$[5]=formatted time EC$[6]=ECA2$ available web catalogs (concatonated string) EC$[7]=customer webec parms (ECS)  EC$[8]=image path (customer if set otherwise from ec_parm) EC$[9]=ST_LIST sort code record EC$[10]=reporting whse list EC$[11]=(1,4)warehouse code to use for o/e FM2RT0  (5,4)=would contain the 'other'warehouse for availability checking o/e messaging <not passed to FM2RT0, EC$[12]=email params,see 8000s [13] UNUSED ,[14]=ECY$, [15]=inventory system parameters [16]=Credict Card code/desc list [17]=active webcode [18-20] unused                                                                 
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EDZ... 02OSECA... 13O ZZPARM " ! need S on ECA open to make sure we get it opened with IOL=* option
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0900 PRINT_DOC=0
+1000 REM "Process DATA array
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1025 SWITCH TAG$ ! 1185 end switch
+1030 CASE "print_doc"; PRINT_DOC=1; BREAK
+1035 CASE "template"; TEMPLATE$=VALUE$; BREAK
+1040 CASE "coupon_number"; COUPON_NUMBER$=VALUE$; BREAK
+1045 CASE "buyer"; BUYER_ID$=VALUE$; BREAK
+1185 END SWITCH ! 1050
+1190 NEXT I
+1195 DIM BYBINFO$[5]; BYBINFO$[1]=PGN,BYBINFO$[2]="177733.20050202",BYBINFO$[3]=TEMPLATE$,BYBOPTIONS$=""
+1200 ! Get coupon and read corresponding buyer info, don't send if buyer and coupon buyer don't match
+1205 DIM EDZ$:IOL(Z[1]); READ DATA FROM DIM(LEN(EDZ$)),REC=EDZ$ TO IOL=IOL(EDZ$)
+1210 FIND (Z[1],KEY=COUPON_NUMBER$,DOM=COUPON_NOT_FOUND,REC=EDZ$)
+1215 IF EDZ.BUYER_ID$<>BUYER_ID$ THEN GOTO BUYER_DOESNT_MATCH
+1220 DIM ECA$:IOL(Z[2]); READ DATA FROM DIM(LEN(ECA$)),REC=ECA$ TO IOL=IOL(ECA$)
+1225 FIND (Z[2],KEY=BUYER_ID$,REC=ECA$,DOM=*NEXT)
+1230 EMAIL_ADDR$=STP(ECA.EMAIL_BUYER$); IF NUL(EMAIL_ADDR$) THEN GOTO BLANK_EMAIL
+1250 TMP=FN%_LOG_MESSAGE("MESG","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|COUPON_NUMBER|"+COUPON_NUMBER$+"|EMAIL ADDRESS|"+EMAIL_ADDR$+"|COUPON_AMOUNT|"+STP(STR(EDZ.COUPON_AMOUNT:MASK1$),2)+"|")
+1262 ! Get COUPON subject line in COUPON_TEXT$[1] and COUPON email body in COUPON_TEXT$[2]
+1264 DIM COUPON_TEXT$[4]; BYF_OPTIONS$="Y",ETEXT_NEEDED$=PAD("COUPON",10)+"00001"+PAD("COUPON",10)+"00002"+PAD("COUPON",10)+"00003"+PAD("COUPON",10)+"00004"; CALL "EC3BYF",X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,ETEXT_NEEDED$,COUPON_TEXT${ALL},BYF_OPTIONS$; REM "COUPON_TEXT 1=subject line, 2=email body
+1266 ! Get Email start and Email end text
+1268 ! Process COUPON_TEXT, setting SUBJECT$ to results of COUPON_TEXT[1], then process EMAIL_TEXT, then write out to temp file, and send 
+1270 TEXT_TO_DO$=COUPON_TEXT$[2]; GOSUB PROCESS_TEXT; SUBJECT$=TEXT_DONE$
+1272 TEXT_TO_DO$=COUPON_TEXT$[3]; GOSUB PROCESS_TEXT; EMAIL_BODY$=TEXT_DONE$
+1274 TEXT_TO_DO$=COUPON_TEXT$[1]; GOSUB PROCESS_TEXT; EMAIL_HEADER$=TEXT_DONE$ ! requires SUBJECT$ to be set by now
+1276 TEXT_TO_DO$=COUPON_TEXT$[4]; GOSUB PROCESS_TEXT; EMAIL_FOOTER$=TEXT_DONE$
+1300 ! Create email file
+1305 TMP_CHAN=HFN
+1310 PRECISION 5; TMP_FILE$=%SERVER_DIR$+"COUPON_"+STR(INT(RND*100000)); PRECISION 2; SERIAL TMP_FILE$,ERR=*SAME
+1315 OPEN (TMP_CHAN)TMP_FILE$
+1319 TMP=FN%_LOG_MESSAGE("MESG","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|COUPON_NUMBER|"+COUPON_NUMBER$+"|TEMP FILE NAME|"+TMP_FILE$+"|")
+1320 WRITE RECORD (TMP_CHAN)EMAIL_HEADER$
+1325 WRITE RECORD (TMP_CHAN)EMAIL_BODY$
+1330 WRITE RECORD (TMP_CHAN)EMAIL_FOOTER$
+1345 CLOSE (TMP_CHAN)
+1350 ! Send the email
+1355 ! CMD$="/usr/lib/sendmail -t < "+TMP_FILE$
+1360 ! INVOKE CMD$
+1361 CALL "EC3EML",X3$,X4$,EC_PARM$,TMP_FILE$ ! 232226
+1363 TMP=FN%_LOG_MESSAGE("MESG","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|COUPON_NUMBER|"+COUPON_NUMBER$+"|TEMP FILE NAME|"+TMP_FILE$+"|SEND_DONE|")
+1365 ! ERASE TMP_FILE$,ERR=*NEXT ! 232226
+1480 EMAIL_COMPLETE:
+1495 GOTO 9900
+1499 ! *********************************************************
+1500 PROCESS_TEXT:
+1501 ! Modified to call routine, will take in TEXT_TO_DO$ and return TEXT_DONE$ with tags replaced by values
+1502 ! put list of tags in DATA statement at line 2805 for PRINT_DOC processing
+1503 ! status and status_msg are given as examples
+1510 IF PRINT_DOC THEN READ DATA LINE$,ERR=2950 ELSE LINE$=TEXT_TO_DO$,TEXT_TO_DO$=""; GOSUB BYB_PROCESSING
+1515 CHKTAG=1
+1520 WHILE CHKTAG ! 2800 wend
+1522 P1=MSK(LINE$,"\?tf\?[^?]*\?"); IF P1=0 THEN CHKTAG=0; BREAK
+1530 TAG$=LINE$(P1,MSL); LINE1$=LINE$(1,P1-1),LINE2$=MID(LINE$,P1+MSL)
+1600 SWITCH TAG$ ! 2790 end switch
+1610 CASE "?tf?status?"
+1615 IF PRINT_DOC THEN TAGDESC$="Status code, 0=ok"; GOSUB 5000 ELSE LINE$=LINE1$+STR(STATUS)+LINE2$
+1619 BREAK
+1620 CASE "?tf?status_msg?"
+1625 IF PRINT_DOC THEN TAGDESC$="Status message relating to status code"; GOSUB 5000 ELSE LINE$=LINE1$+STR(STATUS_MSG$)+LINE2$
+1629 BREAK
+1630 CASE "?tf?subject?"
+1632 IF PRINT_DOC THEN TAGDESC$="Subject line of email for Coupon"; GOSUB 5000 ELSE LINE$=LINE1$+SUBJECT$+LINE2$
+1634 BREAK
+1635 CASE "?tf?email?"
+1637 IF PRINT_DOC THEN TAGDESC$="COUPON Email Address for Buyer on this Coupon"; GOSUB 5000 ELSE LINE$=LINE1$+EMAIL_ADDR$+LINE2$
+1639 BREAK
+1640 CASE "?tf?coupon_number?"
+1642 IF PRINT_DOC THEN TAGDESC$="Coupon number of the coupon emailed"; GOSUB 5000 ELSE LINE$=LINE1$+COUPON_NUMBER$+LINE2$
+1644 BREAK
+1645 CASE "?tf?date_issued?"
+1647 IF PRINT_DOC THEN TAGDESC$="Date Coupon was issued"; GOSUB 5000 ELSE IF NUL(EDZ.DATE_ISSUED$) THEN FMT_DATE$="" ELSE CALL "ZZDISP","DX",EDZ.DATE_ISSUED$,"",X3$,FMT_DATE$,"",0,0,X4$ END_IF ; LINE$=LINE1$+FMT_DATE$+LINE2$
+1649 BREAK
+1650 CASE "?tf?date_redeemed"
+1652 IF PRINT_DOC THEN TAGDESC$="Date Coupon was redeemed"; GOSUB 5000 ELSE IF NUL(EDZ.DATE_REDEEMED$) THEN FMT_DATE$="" ELSE CALL "ZZDISP","DX",EDZ.DATE_REDEEMED$,"",X3$,FMT_DATE$,"",0,0,X4$ END_IF ; LINE$=LINE1$+FMT_DATE$+LINE2$
+1654 BREAK
+1655 CASE "?tf?used_on_worksheet?"
+1657 IF PRINT_DOC THEN TAGDESC$="Worksheet that this coupon was used on"; GOSUB 5000 ELSE LINE$=LINE1$+EDZ.WORKSHEET$+LINE2$
+1659 BREAK
+1660 CASE "?tf?used_on_order?"
+1662 IF PRINT_DOC THEN TAGDESC$="TopForm order that this coupon was used on"; GOSUB 5000 ELSE LINE$=LINE1$+FN%ZZDISP$(EDZ.ORDER_DIV$+EDZ.ORDER_NUM$,"O/P")+LINE2$
+1664 BREAK
+1665 CASE "?tf?coupon_amount?"
+1667 IF PRINT_DOC THEN TAGDESC$="Amount of this coupon"; GOSUB 5000 ELSE LINE$=LINE1$+STP(STR(EDZ.COUPON_AMOUNT:MASK1$),2)+LINE2$
+1669 BREAK
+1670 CASE "?tf?trigger_amount?"
+1672 IF PRINT_DOC THEN TAGDESC$="Amount of purchases that triggered this coupon"; GOSUB 5000 ELSE LINE$=LINE1$+STP(STR(EDZ.TRIGGER_AMOUNT:MASK1$),2)+LINE2$
+1674 BREAK
+1690 CASE "?tf?linestart?"
+1691 IF PRINT_DOC THEN TAGDESC$="Start of repeated template for multiple coupons"; GOSUB 5000; BREAK
+1692 GOSUB PROCESS_LINE_TEXT; LINE$=LINE1$+LINES_SECTION$+LINE2$
+1694 BREAK
+2785 DEFAULT ; LINE$=LINE1$+LINE2$
+2790 END SWITCH ! 1600
+2800 WEND ! 1520
+2805 DATA "?tf?status?","?tf?status_msg?","?tf?subject?","?tf?email?","?tf?linestart?","?tf?coupon_number?","?tf?date_issued?","?tf?date_redeemed?","?tf?used_on_worksheet?","?tf?used_on_order?","?tf?coupon_amount?","?tf?trigger_amount?"
+2990 TEXT_DONE$=LINE$,LINE$=""
+2995 RETURN 
+2999 ! ********************************************************
+5000 REM print tag desc html         
+5010 LINE$=TAG$+" "+TAGDESC$
+5090 RETURN 
+5100 ADD_MSG_TO_LOG:! Add message to log file
+5110 MOUT$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|WORKSHEET|"+ECD$(1,10)+"|LINE|"+ECE$(25,3)+"|MESSAGE NO|"+STR(MESSAGE_NO:"00000")+"|MESSAGE|"+MESSAGE$+"|"
+5135 MX=FN%_LOG_MESSAGE("MESG",MOUT$)
+5145 RETURN 
+5149 ! 
+5500 PROCESS_LINE_TEXT:
+5505 ! Copied from PROCESS_TEXT section for WO178946.  We will do one email per vendor, they need linestart/lineend in body template.  Some of these tags don't make sense for this section, just left them in.
+5510 ! put list of tags in DATA statement at line 6805 for PRINT_DOC processing
+5515 ! status and status_msg are given as examples
+5516 P2=POS("?tf?lineend?"=LINE2$)
+5517 LS_TEMPLATE$=LINE2$(1,P2-1),LINE2$=LINE2$(P2+12)
+5520 LINES_SECTION$=""
+5525 GOSUB GET_LINE_DATA
+5530 LS$=LS_TEMPLATE$
+5535 GOSUB LINE_BYB_PROCESSING
+5580 LINE_CHKTAG=1
+5585 WHILE LINE_CHKTAG ! 6800 wend
+5590 P1=MSK(LS$,"\?tf\?[^?]*\?"); IF P1=0 THEN LINE_CHKTAG=0; BREAK
+5595 TAG$=LS$(P1,MSL); LS1$=LS$(1,P1-1),LS2$=MID(LS$,P1+MSL)
+5600 SWITCH TAG$ ! 2790 end switch
+5605 CASE "?tf?status?"
+5610 IF PRINT_DOC THEN TAGDESC$="Status code, 0=ok"; GOSUB 5000 ELSE LS$=LS1$+STR(STATUS)+LS2$
+5615 BREAK
+5620 CASE "?tf?status_msg?"
+5625 IF PRINT_DOC THEN TAGDESC$="Status message relating to status code"; GOSUB 5000 ELSE LS$=LS1$+STR(STATUS_MSG$)+LS2$
+5630 BREAK
+5635 CASE "?tf?subject?"
+5640 IF PRINT_DOC THEN TAGDESC$="Subject line of email for Coupon"; GOSUB 5000 ELSE LS$=LS1$+SUBJECT$+LS2$
+5645 BREAK
+5650 CASE "?tf?email?"
+5655 IF PRINT_DOC THEN TAGDESC$="PROOF Email Address for Vendor on this Order Line"; GOSUB 5000 ELSE LS$=LS1$+EMAIL_ADDR$+LS2$
+5660 BREAK
+6785 DEFAULT ; LS$=LS1$+LS2$
+6790 END SWITCH ! 1600
+6800 WEND ! 5585
+6805 DATA "?tf?status?","?tf?status_msg?"
+6990 LINES_SECTION$=LINES_SECTION$+LS$; IF END_OF_RECORDS OR DONE_WITH_VENDOR THEN GOTO *RETURN ELSE GOTO 5525
+6995 RETURN 
+7700 GET_LINE_DATA:
+7790 RETURN 
+7795 ! 
+8150 BYB_PROCESSING:! Send LINE$ to EC3BYB for generic fields processing
+8160 CALL "EC3BYB",ERR=8161,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,LINE$,BYBINFO${ALL},BYBOPTIONS$
+8195 RETURN 
+8250 LINE_BYB_PROCESSING:! Send linestart/lineend portion to EC3BYB for generic fields processing
+8260 CALL "EC3BYB",ERR=8161,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,LS$,BYBINFO${ALL},BYBOPTIONS$
+8290 RETURN 
+8295 ! 
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9200 ! Handle exceptions
+9210 COUPON_NOT_FOUND: TMP=FN%_LOG_MESSAGE("EXCP","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|COUPON NOT FOUND|COUPON_NUMBER|"+COUPON_NUMBER$+"|"); GOTO 9900
+9215 BUYER_DOESNT_MATCH: TMP=FN%_LOG_MESSAGE("EXCP","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|BUYER DOES NOT MATCH|COUPON_NUMBER|"+COUPON_NUMBER$+"|BUYER ON COUPON|"+STP(EDZ.BUYER_ID$)+"|BUYER REQUESTED|"+STP(BUYER_ID$)+"|"); GOTO 9900
+9220 BLANK_EMAIL: TMP=FN%_LOG_MESSAGE("MESG","SESSION ID|"+EC$[1](1,7)+"|BUYER ID|"+STP(EC$[1](8,15))+"|EC3CPE|Requested coupon email|BUYER EMAIL IS BLANK|COUPON_NUMBER|"+COUPON_NUMBER$+"|"); GOTO 9900
+9900 REM "End
+9905 IF MEM>0 THEN CLOSE (MEM)
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56001 REM "232226-Programming changes to allow customized interfacing with    

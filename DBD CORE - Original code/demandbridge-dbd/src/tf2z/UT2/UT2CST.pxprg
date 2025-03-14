@@ -1,0 +1,230 @@
+0010 REM + Customer Rebuilding   <UT2CST>
+0035 REM "5.5 - 01/23/07 - 10.968611 - mhe - SSP# 204055
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM "
+0050 REM + Begin Program Notes
+0051 REM "The purpose of this program is to initialize and re-populate the
+0052 REM "following files from the FMP file:
+0055 REM "    XP2 - Customer Departments
+0056 REM "    XP7 - Count Stops
+0057 REM "    XP9 - Customer Cost Centers
+0058 REM "    XPA - Customer Contacts
+0059 REM "    XPD - Customer Defaults
+0060 REM "    XPE - Customer Fiscal Year
+0061 REM "    XPG - Customer Group
+0062 REM "    XPR - Customer Requisition Charges
+0063 REM "    XPZ - More Customer Defaults
+0079 REM "
+0080 REM "This program will initialize all of the files listed above and
+0081 REM "then will read through the FMP file, calling the UPDFMP program
+0082 REM "to update the above files when an appropriate record is read.
+0099 REM + End Program Notes
+0100 REM + Begin Program Initialization
+0110 CLEAR 
+0130 ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0140 SETERR ERROR_PROCESSING
+0150 SETESC ESCAPE_PROCESSING
+0200 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0299 REM + End Program Initialization
+0300 REM + Begin String and Variable Declaration
+0305 X0$=PGN
+0310 X1$="Customer FMP Rebuilding"
+0315 DIM A[255]
+0320 DIM Z[255]
+0499 REM + End String and Variable Declaration
+0500 REM + Begin Open Files
+0505 Z$=""
+0510 Z$+="01O FMP...  " ! FMP File
+0512 Z$+="02O XPA...  " ! Customer Contacts
+0514 Z$+="03O XP7...  " ! Count Stops
+0516 Z$+="04O XP2...  " ! Customer Departments
+0518 Z$+="05O XP9...  " ! Customer Cost Centers
+0520 Z$+="06O XPD...  " ! Customer Defaults
+0522 Z$+="07O XPE...  " ! Customer Fiscal Year
+0524 Z$+="08O XPG...  " ! Customer Group
+0526 Z$+="09O XPR...  " ! Customer Requisition Charges
+0528 Z$+="10O XPZ...  " ! More Customer Defaults
+0600 GOSUB OPEN_FILES ! call ZZFLES
+0610 FMP_LFN=Z[1] ! FMP File
+0612 XPA_LFN=Z[2] ! Customer Contacts
+0614 XP7_LFN=Z[3] ! Count Stops
+0616 XP2_LFN=Z[4] ! Customer Departments
+0618 XP9_LFN=Z[5] ! Customer Cost Centers
+0620 XPD_LFN=Z[6] ! Customer Defaults
+0622 XPE_LFN=Z[7] ! Customer Fiscal Year
+0624 XPG_LFN=Z[8] ! Customer Group
+0626 XPR_LFN=Z[9] ! Customer Requisition Charges
+0628 XPZ_LFN=Z[10] ! More Customer Defaults
+0799 REM + End Open Files
+0800 REM + Begin IOLISTs
+0810 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5] ! Customer Defaults
+0812 IOLIST A$ ! Customer Contacts
+0814 IOLIST A$ ! Count Stops
+0816 IOLIST A$ ! Customer Cost Centers
+0818 IOLIST A$ ! Customer Fiscal Year
+0820 IOLIST A$ ! Customer Departments
+0822 IOLIST A$ ! Customer Group
+0824 IOLIST A$,A[0],A[1],A[2],A[3],A[4] ! Customer Requisition Charges
+0826 IOLIST A$,A[0],A[1],A[2],A[3] ! More Customer Defaults
+0999 REM + End IOLISTs
+1000 PROGRAM_MAIN:
+1020 GOSUB INIT_FILES ! clear all files for rebuilding
+1030 FMP_KEY$=KEF(FMP_LFN,ERR=END_PROGRAM) ! get the first key, if the file is empty then exit
+1050 READ (FMP_LFN,KEY=FMP_KEY$)C$ ! read the FMP record
+1055 GOSUB FMP_PROCESS ! process the FMP records
+1060 FMP_KEY$=KEY(FMP_LFN,ERR=END_PROGRAM) ! get the next key
+1095 GOTO 1050 ! process the record
+2000 INIT_FILES:
+2010 CALL "ZZINIT",STR(XPA_LFN:"00") ! Customer Contacts
+2012 CALL "ZZINIT",STR(XP7_LFN:"00") ! Count Stops
+2014 CALL "ZZINIT",STR(XP2_LFN:"00") ! Customer Departments
+2016 CALL "ZZINIT",STR(XP9_LFN:"00") ! Customer Cost Centers
+2018 CALL "ZZINIT",STR(XPD_LFN:"00") ! Customer Defaults
+2020 CALL "ZZINIT",STR(XPE_LFN:"00") ! Customer Fiscal Year
+2022 CALL "ZZINIT",STR(XPG_LFN:"00") ! Customer Group
+2024 CALL "ZZINIT",STR(XPR_LFN:"00") ! Customer Requisition Charges
+2026 CALL "ZZINIT",STR(XPZ_LFN:"00") ! More Customer Defaults
+2095 RETURN 
+9000 ERROR_PROCESSING:
+9005 Y5=ERR,Y6=TCB(5)
+9010 IF Y5=68 OR Y5=69 THEN GOTO CTRL_LOGIC
+9015 SETERR 9040
+9020 Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,TRANSFER_CONTROL,EXIT_PROGRAM,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_PROCESSING
+9085 RETRY 
+9090 SETERR 0000
+9095 RETRY 
+9100 TRANSFER_CONTROL:
+9120 ON Y8 GOTO END_PROGRAM,PROGRAM_MAIN,9920
+9180 GOTO PROGRAM_MAIN
+9190 GOTO EXIT_PROGRAM
+9300 ESCAPE_PROCESSING:
+9305 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN {
+9320 RETURN 
+9325  } ELSE {
+9330 SETESC 0000
+9335 RETURN 
+9340  }
+9350 SETERR ERROR_PROCESSING
+9360 SETESC ESCAPE_PROCESSING
+9395 RETURN 
+9500 CTRL_LOGIC:
+9510 SETERR ERROR_PROCESSING
+9515 GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 CLOSE_FILES:
+9710 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9740 RETURN 
+9750 OPEN_FILES:
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 EXIT_PROGRAM:
+9900 END_PROGRAM:
+9905 Y8=2
+9910 GOSUB CLOSE_FILES
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+15000 REM + Begin FMP Processing
+15001 FMP_PROCESS:
+15005 A$="" ! init the string
+15010 SWITCH C$(1,1) ! record type
+15015 CASE "D" ! Customer Defaults
+15020 GOSUB CUSTOMER_DEFAULTS ! Update XPD
+15025 BREAK
+15090 CASE "a" ! Customer Contacts
+15095 GOSUB CUSTOMER_CONTACTS ! Update XPA
+15100 BREAK
+15105 CASE "d" ! Count Stops
+15110 GOSUB COUNT_STOPS ! Update XP7
+15115 BREAK
+15135 CASE "c" ! Customer Cost Centers
+15140 GOSUB CUST_COST_CENTERS ! Update XP9
+15145 BREAK
+15150 CASE "E" ! Customer Fiscal Year
+15155 GOSUB CUST_FISCAL_YEAR ! Update XPE
+15160 BREAK
+15225 CASE "f" ! Customer Departments
+15230 GOSUB CUSTOMER_DEPARTMENTS ! Update XP2
+15235 BREAK
+15240 CASE "g" ! Customer Group
+15245 GOSUB CUSTOMER_GROUP ! Update XPG
+15250 BREAK
+15330 CASE "R" ! Customer Requisition Charges
+15335 GOSUB CUST_REQUISITION_CHARGES ! Update XPR
+15340 BREAK
+15375 CASE "A" ! More Customer Defaults
+15380 GOSUB MORE_CUST_DEFAULTS ! Update XPZ
+15385 BREAK
+15390 DEFAULT ! Default Action
+15395 BREAK
+15400 END SWITCH 
+15405 RETURN 
+15499 REM + End FMP Processing
+20000 CUSTOMER_DEFAULTS:
+20010 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0810 ! read the FMP record
+20040 CALL "UPDFMP;DUPLICATE_XPD",XPD_LFN,A$,A{ALL},"U" ! write the record to the new file
+20095 RETURN 
+20099 REM + End Customer Defaults (XPD)
+20500 REM + Begin Customer Contacts (XPA)
+20501 CUSTOMER_CONTACTS:
+20510 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0812 ! read the FMP record
+20540 CALL "UPDFMP;DUPLICATE_XPA",XPA_LFN,A$,A{ALL},"U" ! write the record to the new file
+20595 RETURN 
+20599 REM + End Customer Contacts (XPA)
+20600 REM + Begin Count Stops (XP7)
+20601 COUNT_STOPS:
+20610 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0814 ! read the FMP record
+20640 CALL "UPDFMP;DUPLICATE_XP7",XP7_LFN,A$,A{ALL},"U" ! write the record to the new file
+20695 RETURN 
+20699 REM + End Count Stops (XP7)
+20800 REM + Begin Customer Cost Centers (XP9)
+20801 CUST_COST_CENTERS:
+20810 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0816 ! read the FMP record
+20840 CALL "UPDFMP;DUPLICATE_XP9",XP9_LFN,A$,A{ALL},"U" ! write the record to the new file
+20895 RETURN 
+20899 REM + End Customer Cost Centers (XP9)
+20900 REM + Begin Customer Fiscal Year (XPE)
+20901 CUST_FISCAL_YEAR:
+20910 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0818 ! read the FMP record
+20940 CALL "UPDFMP;DUPLICATE_XPE",XPE_LFN,A$,A{ALL},"U" ! write the record to the new file
+20995 RETURN 
+20999 REM + End Customer Fiscal Year (XPE)
+21400 REM + Begin Customer Departments (XP2)
+21401 CUSTOMER_DEPARTMENTS:
+21410 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0820 ! read the FMP record
+21440 CALL "UPDFMP;DUPLICATE_XP2",XP2_LFN,A$,A{ALL},"U" ! write the record to the new file
+21495 RETURN 
+21499 REM + End Customer Departments (XP2)
+21500 REM + Begin Customer Group (XPG)
+21501 CUSTOMER_GROUP:
+21510 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0822 ! read the FMP record
+21540 CALL "UPDFMP;DUPLICATE_XPG",XPG_LFN,A$,A{ALL},"U" ! write the record to the new file
+21595 RETURN 
+21599 REM + End Customer Group (XPG)
+22100 REM + Begin Customer Requisition Charges (XPR)
+22101 CUST_REQUISITION_CHARGES:
+22110 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0824 ! read the FMP record
+22140 CALL "UPDFMP;DUPLICATE_XPR",XPR_LFN,A$,A{ALL},"U" ! write the record to the new file
+22195 RETURN 
+22199 REM + End Customer Requisition Charges (XPR)
+22400 REM + Begin More Customer Defaults (XPZ)
+22401 MORE_CUST_DEFAULTS:
+22410 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0826 ! read the FMP record
+22440 CALL "UPDFMP;DUPLICATE_XPZ",XPZ_LFN,A$,A{ALL},"U" ! write the record to the new file
+22495 RETURN 
+22499 REM + End More Customer Defaults (XPZ)
+56000 REM + Modification History
+56001 REM "02/13/2007 : Program created by MHE
+56002 REM "204055-Create programs to rebuild Customer & Vendor specific files.

@@ -1,0 +1,57 @@
+0010 REM "Order Line Releated Maintenance <FM2ODZ>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 09/16/08 - 12.245277 - crg - SSP# 180159
+0037 REM "180159-Consolidate FM2ODH and FMGODH, FM2ODZ and FMGODZ into one   
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,C0,A$,A{ALL},B$
+0100 SETERR 9000
+0105 CALL "FM2ODZ",X3$,C0,A$,A{ALL},B$ ! 180159
+0106 EXIT 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9049 REM "132100
+9050 ON Y7 GOTO 9060,9100,9910,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9902 IF DID_GOSUB THEN RETURN 
+9905 IF F9$="Y" AND P$>"" THEN CALL "POGMAH",X3$,"C"+STR(C0:"00"),"!"+B$(118,8)+P$(1,1),STR(SGN(C0)); P$=P$(2); GOTO 9905
+9906 IF W$<>"" THEN CALL "FW2ODL",X3$,C0,W$
+9907 ANSWER$=DIM(10),ANSWER$=GBL("ANSWER",ANSWER$); REM "SSP118724
+9908 IF FID_0$(1,1)<>"G" THEN PRINT @(0,22),'CE',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56001 REM "193611-Stopover order. When you enter several messages lines tied  
+56002 REM "200137-GUI Panel question 'Suspend Packing List Printing' should   
+56003 REM "203181-IOLIST and DIM incorrect in FMGODZ writing out short        
+56004 REM "200130-Storage Expiration Date (SED) needs to be entered at the    
+56005 REM "203894-Urgent - WMS pick queue update is not in FMGODZ             
+56006 REM "205491-GUI order entry is not creating PO6 records for Packing list
+56008 REM "206519-15 minutes to access 200 line order                         
+56009 REM "208056-PE in Sales Order Entry - Need Program Assistance           
+56011 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+56012 REM "216139-Packing Lists will not print.                               
+56013 ! "220814-Order 01-565090 was entered and received in gui. The order  
+56014 REM "180159-Consolidate FM2ODH and FMGODH, FM2ODZ and FMGODZ into one   

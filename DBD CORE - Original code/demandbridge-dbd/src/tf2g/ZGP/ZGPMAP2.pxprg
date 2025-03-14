@@ -1,0 +1,784 @@
+0010 REM + Support System: Detailed Requirements   <ZGPMAP>
+0011 ! 
+0035 REM "5.5 - 10/25/06 - 12.660833 - mhe - SSP# 200670
+0037 REM "200670-Issue tracking system will be modified with a new
+0039 ! 
+0090 ENTER ISSUE_NUM$,SUM1$,SUM2$
+0100 PROCESS "ZGPMAP","../ZGP/ZG.EN",ISSUE_NUM$,SUM1$,SUM2$
+0110 EXIT 
+0300 ! 
+0301 ! 
+0350 IOLIST ZWTREC$
+0400 ! 
+0401 ! 
+0402 REM + INIT_PROGRAM
+0403 ! Program initialization.
+0404 ! This routine is called before the GUI is created and displayed.
+0405 ! It handles any needed functions before the GUI is displayed
+0450 INIT_PROGRAM:
+0455 ISSUE_NUM$=ARG_1$,ISSUE_DESC$=ARG_2$+ARG_3$ ! init the strings
+0480 DIM ORIG_REC$[1000]; DIM NEW_REC$[1000] ! dimension arrays
+0485 DIM Z[255] ! dimension array and set default flag
+0490 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0495 Z$="01S ZGP...  20S ZWT...  "" ! set string for opening ZGP"
+0500 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0505 ZGP=Z[1],ZWT=Z[20]
+0510 CON_DEL$="Confirm Deletion"
+0515 DEL_SUB_TEXT$="The subject has detail lines. Deleting the subject will also delete the corresponding detail lines. Are you sure?"
+0520 WO_TEXT$="The work order for issue "+ISSUE_NUM$+" has been created."
+0525 WO_CREATE$="Work Order Created"
+0530 ISS_LEN=6; SUB_LEN=40; DTLIX_LEN=4; SUBIX_LEN=4; TXT_LEN=80
+0599 RETURN 
+0600 ! 
+0601 ! 
+0602 REM + INIT_GUI
+0603 ! GUI initialization.
+0604 ! This routine will initialize the GUI. It will display the issue
+0605 ! number, brief description, build a list and display the subjects,
+0606 ! and call the program 'UDPZGP' to build and then display the preview.
+0650 INIT_GUI:
+0670 ML_ISSUE_NUMBER.CTL'VALUE$=ISSUE_NUM$ ! write the issue number
+0680 ML_DESCRIPTION.CTL'VALUE$=ISSUE_DESC$ ! write the issue brief description
+0740 GOSUB GET_ALL_SUBJECTS ! get all subjects and populate the list box
+0750 GOSUB AUTO_PREVIEW_CHECK ! check the status of the auto refresh preview checkbox
+0799 RETURN 
+0800 ! 
+0801 ! 
+0802 REM + EXIT_PROGRAM
+0803 ! Program exit.
+0804 ! This routine will perform any needed actions or cleanup before
+0805 ! finishing.
+0850 EXIT_PROGRAM:
+0900 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0 ! close all files
+0999 RETURN 
+10000 ! 
+10001 ! 
+10002 REM + GET_ALL_SUBJECTS
+10003 ! Retrieve all of the subjects for the current issue.
+10004 ! This routine calls the UPDZGP program to retrieve
+10005 ! the subjects for the selected issue. It calls the
+10006 ! 'ADD_TO_SUBJECT_LIST' routine to add them to the subject box.
+10050 GET_ALL_SUBJECTS:
+10060 SUBJECT_VALUE$="" ! clear the subject 
+10075 GOSUB BUILD_SUBJECT_LIST ! Build Subject List
+10199 RETURN 
+10200 ! 
+10201 ! 
+10202 REM + ADD_TO_SUBJECT_LIST
+10203 ! Add an item to the subject list box.
+10204 ! This routine is called to add a subject to the subject list box.
+10250 ADD_TO_SUBJECT_LIST:
+10260 LIST_BOX LOAD LB_SUBJECTS.CTL,0,SUBJECT_VALUE$ ! add subject to the list box
+10399 RETURN 
+10400 ! 
+10401 ! 
+10402 REM + DELETE_FROM_SUBJECT_LIST
+10403 ! Remove selected item from the subject list box.
+10404 ! This routine will remove an item from the subject list box.
+10450 DELETE_FROM_SUBJECT_LIST:
+10460 IF LB_SUBJECTS.CTL'SELECTITEM>=0 THEN {! if an item has been selected
+10465 IF LB_DETAILS.CTL'ITEMCOUNT>0 THEN {! if there are detail lines for the subject
+10470 MSGBOX DEL_SUB_TEXT$,CON_DEL$,"!,YESNO",X$ ! display warning msg box
+10475 IF X$="NO" THEN RETURN ! user clicks "No", do nothing
+10480  }
+10482 DETAIL_INDEX=0 ! set index to 0 to delete the first record
+10483 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the subject index
+10485 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove subject
+10490 GOSUB DELETE_SUBJECT ! reads through and deletes all records with the selected subject
+10495 LIST_BOX LOAD LB_DETAILS.CTL,"" ! clear the details list box
+10500 ML_SUBJECT.CTL'VALUE$="" ! clear the subject input field
+10505 ML_DETAIL_EDIT.CTL'VALUE$="" ! clear the details input field
+10510 CALL "*WINGRP;DISABLE",SUBJECT_GROUP.GRP$ ! disable subject_group
+10512 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+10515  }
+10599 RETURN 
+10600 ! 
+10601 ! 
+10602 REM + GET_SELECTED_SUBJECT
+10603 ! Retrieve the selected subject.
+10604 ! This routine will get the selected subject from the subject list box.
+10650 GET_SELECTED_SUBJECT:
+10705 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get subject value
+10735 CALL "*WINGRP;DISABLE",DETAIL_GROUP.GRP$ ! disable detail_goup
+10740 CALL "*WINGRP;ENABLE",DETAIL_INPUT_GROUP.GRP$ ! enable detail_input_group
+10745 CALL "*WINGRP;ENABLE",SUBJECT_GROUP.GRP$ ! enable subject_group
+10760 GOSUB GET_ALL_DETAILS ! retrieve details for subject
+10799 RETURN 
+10800 ! 
+10801 ! 
+10802 REM + ADD_SUBJECT
+10803 ! Add a new subject.
+10804 ! This routine add as new subject.
+10850 ADD_SUBJECT:
+10860 IF ML_SUBJECT.CTL'VALUE$<>"" THEN {! if a subject was entered
+10865 SUBJECT_VALUE$=ML_SUBJECT.CTL'VALUE$ ! set the subject
+10870 SUBJECT_INDEX=LB_SUBJECTS.CTL'ITEMCOUNT+1 ! get the total amount of items in the list box
+10875 DETAIL_INDEX=0 ! set the detail index
+10880 LINE1$="" ! text 1
+10885 LINE2$="" ! text 2
+10890 LINE3$="" ! text 3
+10895 LINE4$="" ! text 4
+10900 GOSUB PACK_RECORD ! pads the fields
+10902 GOSUB BUILD_RECORD ! build the record for writing
+10905 GOSUB UPDATE_RECORD ! update the record
+10910 GOSUB ADD_TO_SUBJECT_LIST ! add to subject list box
+10915 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+10920 ML_SUBJECT.CTL'VALUE$="" ! clear subject input
+10925 ML_SUBJECT.CTL'FOCUS=1 ! set focus to subject input
+10930  }
+10999 RETURN 
+11000 ! 
+11001 ! 
+11002 REM + MOVE_UP_SUBJECT_LIST
+11003 ! Move subject up.
+11004 ! This routine moves the selected subject up in the list.
+11050 MOVE_UP_SUBJECT_LIST:
+11060 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the index
+11065 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the value
+11070 IF SUBJECT_INDEX>1 THEN {! a subject is selected
+11075 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove selected subject
+11080 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX-1,SUBJECT_VALUE$ ! re-add subject
+11085 LIST_BOX WRITE LB_SUBJECTS.CTL,SUBJECT_VALUE$ ! set focus to subject
+11090 ARR_CTR=0 ! init the array counter
+11095 DETAIL_INDEX=0 ! init the detail index
+11100 GOSUB BUILD_KEY_2 ! build the alternate key
+11105 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the record
+11110 GOSUB UNPACK_RECORD ! unpack the record
+11112 SUBJECT_INDEX=SUBJECT_INDEX-1 ! decrement the subject index
+11115 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+11117 ARR_CTR=ARR_CTR+1 ! increment the array counter
+11120 ORIG_REC$[ARR_CTR]=A$ ! save the original record
+11125 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+11130 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! pad the string
+11135 A$(51,4)=_SUBJECT_INDEX$ ! update the subject sequence
+11140 NEW_REC$[ARR_CTR]=A$ ! save the new record
+11145 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+11147 IF FOUND=0 THEN BREAK ! BOF reached
+11150 GOSUB UNPACK_RECORD ! unpack the record
+11160 WEND 
+11165 DETAIL_INDEX=0 ! init the detail index
+11170 SUBJECT_INDEX=SUBJECT_INDEX+1 ! increment the subject index
+11175 GOSUB BUILD_KEY_2 ! build the alternate key
+11180 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the record
+11185 CALL "UPDZGP;READPREV",ZGP,A$,A{ALL},FOUND ! read the previous reacord
+11190 GOSUB UNPACK_RECORD ! unpack the record
+11195 SUBJECT_VALUE$=_SUBJECT$ ! set the second subject
+11200 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+11205 ARR_CTR=ARR_CTR+1 ! increment the array counter
+11210 ORIG_REC$[ARR_CTR]=A$ ! save the original record
+11215 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+11220 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! pad the string
+11225 A$(51,4)=_SUBJECT_INDEX$ ! update the subject sequence
+11230 NEW_REC$[ARR_CTR]=A$ ! save the new record
+11235 CALL "UPDZGP;READPREV",ZGP,A$,A{ALL},FOUND ! read the next record
+11240 IF FOUND=0 THEN BREAK ! EOF reached
+11245 GOSUB UNPACK_RECORD ! unpack the record
+11250 WEND 
+11255 FOR AB%=1 TO ARR_CTR ! loop throught the records
+11260 A$=ORIG_REC$[AB%] ! restore the original record for deleting
+11265 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+11270 NEXT AB%
+11275 FOR AB%=1 TO ARR_CTR ! loop through the records
+11280 A$=NEW_REC$[AB%] ! restore the new record for updating
+11285 GOSUB UPDATE_RECORD ! write the record
+11290 NEXT AB%
+11295 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+11300  }
+11399 RETURN 
+11400 ! 
+11401 ! 
+11402 REM + MOVE_DOWN_SUBJECT_LIST
+11403 ! Move subject down.
+11404 ! This routine moves the selected subject down in the list.
+11450 MOVE_DOWN_SUBJECT_LIST:
+11460 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the index
+11465 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the value
+11470 IF SUBJECT_INDEX<LB_SUBJECTS.CTL'ITEMCOUNT THEN {! if select subject is not the last one
+11475 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX,* ! remove subject
+11480 LIST_BOX LOAD LB_SUBJECTS.CTL,SUBJECT_INDEX+1,SUBJECT_VALUE$ ! write subject
+11485 LIST_BOX WRITE LB_SUBJECTS.CTL,SUBJECT_VALUE$ ! set focus to subject
+11490 ARR_CTR=0 ! init the array counter
+11495 DETAIL_INDEX=0 ! init the detail index
+11500 GOSUB BUILD_KEY_2 ! build the alternate key
+11505 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the record
+11510 GOSUB UNPACK_RECORD ! unpack the record
+11512 SUBJECT_INDEX=SUBJECT_INDEX+1 ! increment the subject index
+11515 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+11517 ARR_CTR=ARR_CTR+1 ! increment the array counter
+11520 ORIG_REC$[ARR_CTR]=A$ ! save the original record
+11525 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+11530 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! pad the string
+11535 A$(51,4)=_SUBJECT_INDEX$ ! update the subject sequence
+11540 NEW_REC$[ARR_CTR]=A$ ! save the new record
+11545 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+11550 GOSUB UNPACK_RECORD ! unpack the record
+11560 WEND 
+11565 SUBJECT_VALUE$=_SUBJECT$ ! set the second subject
+11567 SUBJECT_INDEX=SUBJECT_INDEX-1 ! decrement the subject index
+11570 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+11572 ARR_CTR=ARR_CTR+1 ! increment the array counter
+11575 ORIG_REC$[ARR_CTR]=A$ ! save the original record
+11580 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+11585 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! pad the string
+11590 A$(51,4)=_SUBJECT_INDEX$ ! update the subject sequence
+11595 NEW_REC$[ARR_CTR]=A$ ! save the new record
+11600 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+11602 IF FOUND=0 THEN BREAK ! EOF reached
+11605 GOSUB UNPACK_RECORD ! unpack the record
+11615 WEND 
+11620 FOR AB%=1 TO ARR_CTR ! loop throught the records
+11625 A$=ORIG_REC$[AB%] ! restore the original record for deleting
+11630 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+11635 NEXT AB%
+11640 FOR AB%=1 TO ARR_CTR ! loop through the records
+11645 A$=NEW_REC$[AB%] ! restore the new record for updating
+11650 GOSUB UPDATE_RECORD ! write the record
+11655 NEXT AB%
+11660 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+11695  }
+11699 RETURN 
+12000 ! 
+12001 ! 
+12002 REM + GET_ALL_DETAILS
+12003 ! Retrieve all of the details for the selected subject for
+12004 ! the current issue.
+12005 ! This routine calls the UPDZGP program to retrieve the 
+12006 ! details for the selected subject and issue. It calls the
+12007 ! 'ADD_TO_DETAIL_LIST' routine to add them to the subject box.
+12050 GET_ALL_DETAILS:
+12055 LIST_BOX LOAD LB_DETAILS.CTL,"" ! clear the detail list box
+12056 ML_DETAIL_EDIT.CTL'VALUE$="" ! clear the detail edit box
+12080 GOSUB BUILD_DETAIL_LIST ! read the file and build the list of details
+12095 RETURN 
+12200 ! 
+12201 ! 
+12202 REM + ADD_TO_DETAIL_LIST
+12203 ! This routine will add an item to the detail list box.
+12250 ADD_TO_DETAIL_LIST:
+12260 LIST_BOX LOAD LB_DETAILS.CTL,0,DETAIL_VALUE$ ! add to the detail list box
+12399 RETURN 
+12400 ! 
+12401 ! 
+12402 REM + DELETE_FROM_DETAIL_LIST
+12403 ! This routine will delete an item from the detail list box.
+12450 DELETE_FROM_DETAIL_LIST:
+12455 IF LB_DETAILS.CTL'SELECTITEM>=0 THEN {! if a detail line is selected
+12457 DETAIL_INDEX=LB_DETAILS.CTL'SELECTITEM ! get the detail sequence
+12458 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the subject value
+12460 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove from detail list box
+12465 GOSUB DELETE_DETAIL ! delete the record for this detail
+12470 ML_DETAIL_EDIT.CTL'VALUE$="" ! clear detail input field
+12475 CALL "*WINGRP;DISABLE",DETAIL_GROUP.GRP$ ! disable detail_group
+12478 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+12480  }
+12599 RETURN 
+12600 ! 
+12601 ! 
+12602 REM + GET_SELECTED_DETAIL
+12603 ! This routine will get the selected detail from the detail list box.
+12650 GET_SELECTED_DETAIL:
+12705 DETAIL_VALUE$=LB_DETAILS.CTL'VALUE$ ! get selected detail value
+12715 ML_DETAIL_EDIT.CTL'VALUE$=DETAIL_VALUE$ ! write detail to detail input
+12750 CALL "*WINGRP;ENABLE",DETAIL_GROUP.GRP$ ! enable detail group
+12799 RETURN 
+12800 ! 
+12801 ! 
+12802 REM + ADD_DETAIL
+12803 ! This routine will add a new detail.
+12850 ADD_DETAIL:
+12860 IF ML_DETAIL_ADD.CTL'VALUE$<>"" THEN {! if a detail was entered
+12865 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the subject value
+12870 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the subject sequence
+12880 DETAIL_VALUE$=ML_DETAIL_ADD.CTL'VALUE$ ! get the detail value
+12885 DETAIL_INDEX=LB_DETAILS.CTL'ITEMCOUNT+1 ! get the total amount of items in the list box
+12890 GOSUB PARSE_DETAIL ! parse the detail for writing to the file
+12895 GOSUB PACK_RECORD ! pads the fields
+12897 GOSUB BUILD_RECORD ! build the record for writing
+12900 GOSUB UPDATE_RECORD ! update the record
+12905 LIST_BOX LOAD LB_DETAILS.CTL,0,DETAIL_VALUE$ ! add detail to the list box
+12908 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+12910 ML_DETAIL_EDIT.CTL'VALUE$="" ! clear detail edit input field
+12915 ML_DETAIL_ADD.CTL'VALUE$="" ! clear the detail add input field
+12920 MULTI_LINE GOTO ML_DETAIL_ADD.CTL ! set focus on detail add input field
+12925  }
+12999 RETURN 
+13000 ! 
+13001 ! 
+13002 REM + MOVE_UP_DETAIL_LIST
+13003 ! This routine moves the selected item up in the details list box.
+13050 MOVE_UP_DETAIL_LIST:
+13060 DETAIL_INDEX=LB_DETAILS.CTL'SELECTITEM ! get the index
+13065 DETAIL_VALUE$=LB_DETAILS.CTL'VALUE$ ! get the value
+13070 IF DETAIL_INDEX>1 THEN {! if a detail has been selected
+13071 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove detail from list box
+13072 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX-1,DETAIL_VALUE$ ! add detail to list box
+13073 LIST_BOX WRITE LB_DETAILS.CTL,DETAIL_VALUE$ ! set focus on detail
+13075 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the selected subject index
+13080 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the selected subject value
+13085 GOSUB BUILD_KEY_2 ! build the alternate key
+13090 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the record
+13095 ORIG_REC$[0]=A$ ! save the original record
+13100 DETAIL_INDEX=DETAIL_INDEX-1 ! decrement the detail seq ctr
+13105 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+13110 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+13115 A$(47,4)=_DETAIL_INDEX$ ! update the detail sequence
+13120 NEW_REC$[0]=A$ ! save the new record
+13125 CALL "UPDZGP;READPREV",ZGP,A$,A{ALL},FOUND ! read the previous reacord
+13130 ORIG_REC$[1]=A$ ! save the original record
+13135 DETAIL_INDEX=DETAIL_INDEX+1 ! increment the detail seq ctr
+13140 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+13145 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+13150 A$(47,4)=_DETAIL_INDEX$ ! update the detail sequence
+13155 NEW_REC$[1]=A$ ! save the new record
+13160 A$=ORIG_REC$[0] ! restore record for deletion
+13165 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+13170 A$=ORIG_REC$[1] ! restore record for deletion
+13175 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+13180 A$=NEW_REC$[0] ! set new record
+13185 GOSUB UPDATE_RECORD ! write the new record
+13190 A$=NEW_REC$[1] ! set new record
+13195 GOSUB UPDATE_RECORD ! write the new record
+13200 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+13205  }
+13399 RETURN 
+13400 ! 
+13401 ! 
+13402 REM + MOVE_DOWN_DETAIL_LIST
+13403 ! This routine moves the selected item down in the details list box.
+13450 MOVE_DOWN_DETAIL_LIST:
+13460 DETAIL_INDEX=LB_DETAILS.CTL'SELECTITEM ! get the index
+13465 DETAIL_VALUE$=LB_DETAILS.CTL'VALUE$ ! get the value
+13470 IF DETAIL_INDEX<LB_DETAILS.CTL'ITEMCOUNT THEN {! if selected detail is not the last one
+13471 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! remove detail from list box
+13472 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX+1,DETAIL_VALUE$ ! add detail to list box
+13473 LIST_BOX WRITE LB_DETAILS.CTL,DETAIL_VALUE$ ! set focus on detail
+13475 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the selected subject index
+13480 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the selected subject value
+13485 GOSUB BUILD_KEY_2 ! build the alternate key
+13490 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the record
+13495 ORIG_REC$[0]=A$ ! save the original record
+13500 DETAIL_INDEX=DETAIL_INDEX+1 ! increment the detail seq ctr
+13505 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+13510 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+13515 A$(47,4)=_DETAIL_INDEX$ ! update the detail sequence
+13520 NEW_REC$[0]=A$ ! save the new record
+13525 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next reacord
+13530 ORIG_REC$[1]=A$ ! save the original record
+13535 DETAIL_INDEX=DETAIL_INDEX-1 ! decrement the detail seq ctr
+13540 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+13545 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+13550 A$(47,4)=_DETAIL_INDEX$ ! update the detail sequence
+13555 NEW_REC$[1]=A$ ! save the new record
+13560 A$=ORIG_REC$[0] ! restore record for deletion
+13565 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+13570 A$=ORIG_REC$[1] ! restore record for deletion
+13575 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+13580 A$=NEW_REC$[0] ! set new record
+13585 GOSUB UPDATE_RECORD ! write the new record
+13590 A$=NEW_REC$[1] ! set new record
+13595 GOSUB UPDATE_RECORD ! write the new record
+13600 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+13605  }
+13699 RETURN 
+15000 ! 
+15001 ! 
+15002 ! Build Subject List
+15003 ! This routine will read through the ZGP_Require file and retrieve
+15004 ! all of the subjects for the selected issue.
+15005 ! Fields used by the 'UPDZGP:READBYKEY' routine:
+15050 BUILD_SUBJECT_LIST:
+15055 PREV_SUBJECT$="" ! init field
+15057 SUBJECT_INDEX=0; DETAIL_INDEX=0 ! init the fields
+15060 GOSUB BUILD_KEY_2 ! build the alternate key
+15070 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the key
+15072 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+15073 IF FOUND=0 THEN RETURN ! no valid records found, return
+15074 GOSUB UNPACK_RECORD ! unpack the record
+15075 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ ! while the issue numbers match
+15077 IF _DETAIL_INDEX$="0000" THEN {! if this is a new subject
+15078 SUBJECT_VALUE$=_SUBJECT$ ! set the subject value
+15079 PREV_SUBJECT$=_SUBJECT$ ! set prev_subject to make sure each subject is only added once
+15080 GOSUB ADD_TO_SUBJECT_LIST ! add the subject to the list box
+15082  }
+15085 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next reacord
+15086 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+15087 GOSUB UNPACK_RECORD ! unpack the record
+15090 WEND 
+15199 RETURN 
+15200 ! 
+15201 ! 
+15202 ! Build Detail List
+15203 ! This routine will read throught the ZGP_Require file and retrieve
+15204 ! all of the detail lines for the selected subject.
+15250 BUILD_DETAIL_LIST:
+15255 DETAIL_INDEX=0 ! init the field
+15260 GOSUB BUILD_KEY_1 ! build the alternate key
+15261 CALL "UPDZGP;READBYKEY",ZGP,0,ZGPKEY1$,"","","","",A$,A{ALL},FOUND ! find the key
+15265 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+15266 IF FOUND=0 THEN RETURN ! no valid records found, return
+15267 GOSUB UNPACK_RECORD ! unpack the record
+15275 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+15290 DETAIL_VALUE$=_TEXT1$+" "+_TEXT2$+" "+_TEXT3$+" "+_TEXT4$ ! append the 4 text fields
+15295 GOSUB ADD_TO_DETAIL_LIST ! add the detail to the list box
+15300 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+15304 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+15305 GOSUB UNPACK_RECORD ! unpack the record
+15310 WEND 
+15399 RETURN 
+15400 ! 
+15401 ! 
+15402 REM + Delete Subject
+15403 ! This routine will read through the ZGP_Require file and delete all
+15404 ! of the records that go with the selected subject.
+15450 DELETE_SUBJECT:
+15455 GOSUB BUILD_KEY_1 ! build the alternate key
+15465 CALL "UPDZGP;READBYKEY",ZGP,0,ZGPKEY1$,"","","","",A$,A{ALL},FOUND ! find the key
+15475 IF FOUND=0 THEN RETURN ! no valid records found, return
+15480 GOSUB UNPACK_RECORD ! unpack the record
+15485 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+15490 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+15495 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+15500 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+15505 GOSUB UNPACK_RECORD ! unpack the record
+15510 WEND 
+15520 GOSUB RENUMBER_SUBJECTS ! renumber the subject sequence numbers
+15599 RETURN 
+15600 ! 
+15601 ! 
+15602 REM + Delete Detail
+15603 ! This routine will read through the ZGP_Require file and delete the
+15604 ! selected detail line for the selected subject.
+15650 DELETE_DETAIL:
+15660 GOSUB BUILD_KEY_1 ! build the alternate key
+15665 CALL "UPDZGP;READBYKEY",ZGP,0,ZGPKEY1$,"","","","",A$,A{ALL},FOUND ! find the key
+15685 IF FOUND=0 THEN RETURN ! no valid records found, return
+15690 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+15700 GOSUB RENUMBER_DETAILS ! renumber the detail sequence numbers
+15799 RETURN 
+15800 ! 
+15801 ! 
+15802 REM + Update Detail
+15803 ! This routine will update the modified detail lines.
+15850 UPDATE_DETAIL:
+15860 IF ML_DETAIL_EDIT.CTL'VALUE$<>"" AND LB_DETAILS.CTL'SELECTITEM THEN {! if a detail was entered
+15865 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the subject value
+15870 SUBJECT_INDEX=LB_SUBJECTS.CTL'SELECTITEM ! get the subject sequence
+15880 DETAIL_VALUE$=ML_DETAIL_EDIT.CTL'VALUE$ ! get the detail value
+15885 DETAIL_INDEX=LB_DETAILS.CTL'SELECTITEM ! get the total amount of items in the list box
+15890 GOSUB PARSE_DETAIL ! parse the detail for writing to the file
+15895 GOSUB PACK_RECORD ! pads the fields
+15898 GOSUB BUILD_RECORD ! build the record for writing
+15900 GOSUB UPDATE_RECORD ! update the record
+15905 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,* ! delete the old record
+15910 LIST_BOX LOAD LB_DETAILS.CTL,DETAIL_INDEX,DETAIL_VALUE$ ! add the new detail back to the list box
+15912 GOSUB AUTO_PREVIEW_CHECK ! refresh the preview if the checkbox is checked
+15915 ML_DETAIL_EDIT.CTL'VALUE$="" ! clear detail edit input field
+15920 ML_DETAIL_ADD.CTL'VALUE$="" ! clear the detail add input field
+15925 MULTI_LINE GOTO ML_DETAIL_EDIT.CTL ! set focus on detail edit input field
+15930  }
+15999 RETURN 
+16000 ! 
+16001 ! 
+16002 REM + Renumber Subjects 
+16003 ! This routine will go through and renumber all of the subject sequence
+16004 ! numbers when a subject is deleted.
+16050 RENUMBER_SUBJECTS:
+16055 DETAIL_INDEX=0 ! clear so we start with the first record
+16060 SUBJECT_INDEX=0 ! clear so we start with the first record
+16065 SUBJECT_VALUE$="" ! clear so we start with the first record
+16070 GOSUB BUILD_KEY_2 ! build the alternate key
+16075 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the first record
+16080 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+16085 IF FOUND THEN {! if a valid record is found
+16090 GOSUB UNPACK_RECORD ! unpack the record
+16095 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ ! while the issue numbers match
+16100 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+16102 IF _DETAIL_INDEX$="0000" THEN {! next subject, increment the subject seq ctr
+16105 SUBJECT_INDEX=SUBJECT_INDEX+1 ! increment the subject seq ctr
+16106  }
+16110 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+16115 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! subject index
+16120 A$(51,4)=_SUBJECT_INDEX$ ! update the subject sequence
+16125 GOSUB UPDATE_RECORD ! update the record        	  
+16130 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+16135 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+16140 GOSUB UNPACK_RECORD ! unpack the record
+16150 WEND 
+16160  }
+16399 RETURN 
+16400 ! 
+16401 ! 
+16402 REM + Renumber Details
+16403 ! This routine will go through and renumber all of the detail sequence
+16404 ! numbers when a detail is deleted.
+16450 RENUMBER_DETAILS:
+16455 DETAIL_INDEX=0 ! set to 0 so we find the first record
+16460 SUBJECT_VALUE$=LB_SUBJECTS.CTL'VALUE$ ! get the subject value
+16465 GOSUB BUILD_KEY_1 ! build the primary key
+16470 CALL "UPDZGP;READBYKEY",ZGP,0,ZGPKEY1$,"","","","",A$,A{ALL},FOUND ! find the first record
+16475 IF FOUND THEN {! the first record was found
+16480 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+16485 GOSUB UNPACK_RECORD ! unpack the record
+16490 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ AND SUBJECT_VALUE$=_SUBJECT$ ! while the issue numbers and subjects match
+16495 CALL "UPDZGP;DELETE",ZGP,A$,A{ALL},FOUND,BUSY ! delete the record
+16500 DETAIL_INDEX=DETAIL_INDEX+1 ! increment the detail seq ctr
+16505 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+16507 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+16510 A$(47,4)=_DETAIL_INDEX$ ! update the detail sequence
+16515 GOSUB UPDATE_RECORD ! update the record        	  
+16520 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+16525 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+16530 GOSUB UNPACK_RECORD ! unpack the record
+16535 WEND 
+16540  }
+16599 RETURN 
+30000 ! 
+30001 ! 
+30002 REM + Build Key 1
+30003 ! This routine builds the primary key.
+30050 BUILD_KEY_1:
+30075 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+30080 ZGPKEY1$=PAD(ISSUE_NUM$,ISS_LEN)+PAD(SUBJECT_VALUE$,SUB_LEN)+PAD(DETAIL_INDEX$,DTLIX_LEN) ! build the index
+30199 RETURN 
+30200 ! 
+30201 ! 
+30202 REM + Build Key 2
+30203 ! This routine builds the alternate key.
+30204 ! Key layout: issue number, subject sequence, detail sequence, subject
+30250 BUILD_KEY_2:
+30270 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+30275 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+30280 ZGPKEY2$=PAD(ISSUE_NUM$,ISS_LEN)+PAD(SUBJECT_INDEX$,SUBIX_LEN)+PAD(DETAIL_INDEX$,DTLIX_LEN)+PAD(SUBJECT_VALUE$,SUB_LEN) ! build the index
+30304 ! for writing the records to the file.
+30399 RETURN 
+30400 ! 
+30401 ! 
+30402 REM + Build Record
+30403 ! This routine builds the alternate key.
+30404 ! Key layout: issue number, subject sequence, detail sequence, subject
+30450 BUILD_RECORD:
+30460 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+30470 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+30480 A$=_ISSUE_NUMBER$+_SUBJECT$+_DETAIL_INDEX$+_SUBJECT_INDEX$+_TEXT1$+_TEXT2$+_TEXT3$+_TEXT4$
+30599 RETURN 
+30600 ! 
+30601 ! 
+30602 REM + Pack Record
+30603 ! This routine will format all of the fields correctly
+30650 PACK_RECORD:
+30655 SUBJECT_INDEX$=STR(SUBJECT_INDEX:"0000") ! convert numeric to string
+30658 DETAIL_INDEX$=STR(DETAIL_INDEX:"0000") ! convert numeric to string
+30660 _ISSUE_NUMBER$=PAD(ISSUE_NUM$,ISS_LEN) ! issue number
+30670 _SUBJECT$=PAD(SUBJECT_VALUE$,SUB_LEN) ! subject
+30680 _DETAIL_INDEX$=PAD(DETAIL_INDEX$,DTLIX_LEN) ! detail index
+30690 _SUBJECT_INDEX$=PAD(SUBJECT_INDEX$,SUBIX_LEN) ! subject index
+30700 _TEXT1$=PAD(TEXT1$,TXT_LEN) ! text 1
+30710 _TEXT2$=PAD(TEXT2$,TXT_LEN) ! text 2
+30720 _TEXT3$=PAD(TEXT3$,TXT_LEN) ! text 3
+30730 _TEXT4$=PAD(TEXT4$,TXT_LEN) ! text 4
+30799 RETURN 
+30800 ! 
+30801 ! 
+30802 REM + Unpack Record
+30803 ! 
+30850 UNPACK_RECORD:
+30855 BPOS=1 ! begin at position 1
+30860 _ISSUE_NUMBER$=STP(A$(BPOS,ISS_LEN)) ! issue number
+30865 BPOS=BPOS+ISS_LEN ! increment the beginning position counter
+30870 _SUBJECT$=STP(A$(BPOS,SUB_LEN)) ! subject
+30875 BPOS=BPOS+SUB_LEN ! increment the beginning position counter
+30880 _DETAIL_INDEX$=STP(A$(BPOS,DTLIX_LEN)) ! detail index
+30885 BPOS=BPOS+DTLIX_LEN ! increment the beginning position counter
+30890 _SUBJECT_INDEX$=STP(A$(BPOS,SUBIX_LEN)) ! subject index
+30895 BPOS=BPOS+SUBIX_LEN ! increment the beginning position counter
+30900 _TEXT1$=STP(A$(BPOS,TXT_LEN)) ! text 1
+30905 BPOS=BPOS+TXT_LEN ! increment the beginning position counter
+30910 _TEXT2$=STP(A$(BPOS,TXT_LEN)) ! text 2
+30915 BPOS=BPOS+TXT_LEN ! increment the beginning position counter
+30920 _TEXT3$=STP(A$(BPOS,TXT_LEN)) ! text 3
+30925 BPOS=BPOS+TXT_LEN ! increment the beginning position counter
+30930 _TEXT4$=STP(A$(BPOS,TXT_LEN)) ! text 4
+30999 RETURN 
+31000 ! 
+31001 ! 
+31002 ! Parse Detail
+31003 ! This routine will parse through the detail entered by the user
+31004 ! and place it in the proper fields for writing to the file.
+31050 PARSE_DETAIL:
+31052 TEXT1$=""; TEXT2$=""; TEXT3$=""; TEXT4$="" ! clear all fields
+31053 DETAIL_VALUE$=STP(DETAIL_VALUE$,1,$8A$) ! truncate the details
+31054 DETAIL_VALUE$=STP(DETAIL_VALUE$) ! truncate the details
+31055 DTL_CNT=(LEN(DETAIL_VALUE$)/TXT_LEN)+1 ! calculate number of text lines needed
+31057 DTL_CNT=INT(DTL_CNT) ! get int value
+31060 IF DTL_CNT=5 THEN DTL_CNT=4 ! if all 320 are used, set number to 4
+31065 SWITCH DTL_CNT ! on the total number of text lines needed
+31070 CASE 1 ! if 1 is needed
+31075 TEXT1$=DETAIL_VALUE$ ! set the value
+31080 BREAK ! exit switch
+31085 CASE 2 ! if 2 are needed
+31090 BPOS=1 ! set the beginning position
+31095 TEXT1$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31100 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31105 TEXT2$=DETAIL_VALUE$(BPOS) ! set the value
+31110 BREAK ! exit switch
+31115 CASE 3 ! if 3 are needed
+31120 BPOS=1 ! set the beginning position
+31125 TEXT1$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31130 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31135 TEXT2$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31140 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31145 TEXT3$=DETAIL_VALUE$(BPOS) ! set the value
+31150 BREAK ! exit switch
+31155 CASE 4 ! if all 4 are needed
+31160 BPOS=1 ! set the beginning position
+31165 TEXT1$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31170 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31175 TEXT2$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31180 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31185 TEXT3$=DETAIL_VALUE$(BPOS,TXT_LEN) ! set the value
+31190 BPOS=BPOS+TXT_LEN ! increment the beginning position by the text length
+31195 TEXT4$=DETAIL_VALUE$(BPOS) ! set the value
+31200 BREAK ! exit switch
+31205 DEFAULT ! default
+31210 TEXT1$=""; TEXT2$=""; TEXT3$=""; TEXT4$="" ! clear all fields
+31215 END SWITCH 
+31399 RETURN 
+33000 ! 
+33001 ! 
+33002 REM + Update Record
+33003 ! This routine will either insert a new record or update the
+33004 ! existing record.
+33050 UPDATE_RECORD:
+33070 CALL "UPDZGP;UPDATE",ZGP,A$,A{ALL},BUSY_FLG
+33199 RETURN 
+33200 ! 
+33201 ! 
+33202 REM + Auto Preview Check
+33203 ! This routine will check the value of the auto refresh preview
+33204 ! checkbox. If it is checked ("1") then the preview is updated.
+33250 AUTO_PREVIEW_CHECK:
+33260 IF CB_AUTO_REFRESH.CTL'VALUE$="1" THEN {! if the auto refresh prefiew is checked
+33270 GOSUB BUILD_PREVIEW ! clear, build, and display the preview
+33280  }
+33399 RETURN 
+40000 ! 
+40001 ! 
+40002 REM + BUILD_PREVIEW
+40003 ! This routine clears, builds, and displays the preview if the
+40004 ! checkbox is checked.
+40050 BUILD_PREVIEW:
+40060 PREVIEW_VALUE$="" ! init the string
+40065 PREVIEW_VALUE$="TopForm Software, Inc. - Detailed Requirements"+SEP+SEP ! append the co
+40100 SUBJECT_INDEX=0; DETAIL_INDEX=0 ! init the fields
+40110 GOSUB BUILD_KEY_2 ! build the alternate key
+40120 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the key
+40130 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+40140 IF FOUND THEN {! no valid records found
+40150 GOSUB UNPACK_RECORD ! unpack the record
+40160 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ ! while the issue numbers match
+40170 IF _DETAIL_INDEX$="0000" THEN {! if this is a new subject
+40175 PREVIEW_VALUE$+=STR(NUM(_SUBJECT_INDEX$):"###0. ") ! append the subject index
+40180 PREVIEW_VALUE$+=_SUBJECT$+SEP ! append the subject 
+40190  } ELSE {! this is a detail line
+40192 DETAIL_VALUE$=_TEXT1$+" "+_TEXT2$+" "+_TEXT3$+" "+_TEXT4$ ! append the 4 text fields
+40194 PREVIEW_VALUE$+=STR(NUM(_DETAIL_INDEX$):"      ###0. ") ! append the detail index
+40198 PREVIEW_VALUE$+=DETAIL_VALUE$+SEP ! append the detail lines
+40199  }
+40200 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next reacord
+40210 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+40220 GOSUB UNPACK_RECORD ! unpack the record
+40230 WEND 
+40240  }
+40375 ML_PREVIEW.CTL'FONT$="Courier New" ! set the font
+40380 ML_PREVIEW.CTL'VALUE$=PREVIEW_VALUE$ ! display the preview
+40399 RETURN 
+41000 ! 
+41001 ! 
+41002 REM + Print the report
+41003 ! Print the detailed requirements.
+41004 ! This routine will generate a report and print it.
+41005 ! This function is initially disabled and will be added
+41006 ! at a later date.
+41050 PRINT_REPORT:
+41299 RETURN 
+42000 ! 
+42001 ! 
+42002 REM + Create Work order
+42003 ! Create a work order for the support issue.
+42004 ! This routine will first check in the ZWT file to determine
+42005 ! if there are any recrods already entered for this issue. It 
+42006 ! does this by setting the key to read the first key AFTER the
+42007 ! last record and then reading the previous key. This will
+42008 ! determine if there are any records present and if so, will get
+42009 ! the last sequence number used. IF no records are present, the
+42010 ! routine will set the sequence number to 1.
+42011 ! The routine then reads through the ZGP_Require file and writes
+42012 ! the data to the ZWT file.
+42050 CREATE_WORK_ORDER:
+42055 SEQ_NO=1 ! default seq no to 1
+42060 _ISSUE_NUM$=PAD(ISSUE_NUM$,ISS_LEN) ! format the issue number
+42065 _UNUSED$=PAD("",33) ! pad the unused area
+42070 ZWTKEY$=_ISSUE_NUM$+"999999" ! build the key
+42075 READ (ZWT,KNO=0,KEY=ZWTKEY$,DOM=*NEXT)IOL=0350 ! find the last record for the issue
+42080 K$=""; K$=KEP(ZWT,END=*NEXT) ! get the previous key
+42082 IF LEN(K$) THEN {! if there is a key
+42085 IF ISSUE_NUM$=STP(K$(1,ISS_LEN)) THEN {! if the issue numbers match
+42090 SEQ_NO=NUM(K$(ISS_LEN+1,6))+1 ! increment the sequence number
+42095  }
+42097  }
+42100 _TEXT$="*w/o*begin*" ! format the note
+42105 GOSUB ADD_ZWT ! add the record
+42110 SUBJECT_INDEX=0; DETAIL_INDEX=0; SUBJECT_VALUE$="" ! init the fields
+42115 GOSUB BUILD_KEY_2 ! build the alternate key
+42120 CALL "UPDZGP;READBYKEY",ZGP,1,ZGPKEY2$,"","","","",A$,A{ALL},FOUND ! find the key
+42125 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next record
+42130 IF FOUND THEN {! no valid records found, return
+42135 GOSUB UNPACK_RECORD ! unpack the record
+42140 WHILE ISSUE_NUM$=_ISSUE_NUMBER$ ! while the issue numbers match
+42145 IF _DETAIL_INDEX$="0000" THEN {! if this is a new subject
+42150 _TEXT$=_SUBJECT$ ! format the note
+42155 GOSUB ADD_ZWT ! add the record
+42160  } ELSE {! a detail
+42165 IF LEN(_TEXT1$) THEN {! if there is text in line 1
+42170 _TEXT$=_TEXT1$ ! format the note
+42175 GOSUB ADD_ZWT ! add the record
+42180  }
+42185 IF LEN(_TEXT2$) THEN {! if there is text in line 2
+42190 _TEXT$=_TEXT2$ ! format the note
+42195 GOSUB ADD_ZWT ! add the record
+42200  }
+42205 IF LEN(_TEXT3$) THEN {! if there is text in line 3
+42210 _TEXT$=_TEXT3$ ! format the note
+42215 GOSUB ADD_ZWT ! add the record
+42220  }
+42225 IF LEN(_TEXT4$) THEN {! if there is text in line 4
+42230 _TEXT$=_TEXT4$ ! format the note
+42235 GOSUB ADD_ZWT ! add the record
+42240  }
+42245  }
+42250 CALL "UPDZGP;READNEXT",ZGP,A$,A{ALL},FOUND ! read the next reacord
+42255 IF FOUND=0 THEN BREAK ! EOF or no more records found, exit the while loop
+42260 GOSUB UNPACK_RECORD ! unpack the record
+42265 WEND 
+42270  }
+42275 _TEXT$="*w/o*end*" ! format the note
+42280 GOSUB ADD_ZWT ! add the record
+42290 MSGBOX WO_TEXT$,WO_CREATE$,"INFO,OK",X$ ! display completed msg box
+42399 RETURN 
+42500 ! 
+42501 ! 
+42502 REM + Add ZWT Record
+42503 ! This routine will build the ZWT records and add them.
+42550 ADD_ZWT:
+42560 _SEQ_NO$=STR(SEQ_NO:"000000") ! format the sequence number
+42570 ZWTREC$=_ISSUE_NUM$+_SEQ_NO$+PAD(_TEXT$,80)+_UNUSED$ ! build the record
+42575 ZWTKEY$=_ISSUE_NUM$+_SEQ_NO$ ! build the key
+42580 WRITE (ZWT,KEY=ZWTKEY$)IOL=0350 ! write the record
+42590 SEQ_NO=SEQ_NO+1 ! increment the sequence number
+42699 RETURN 
+56000 ! 
+56001 ! 
+56002 REM + Modification History:
+56005 REM "5.5 - 10/25/06 - 12.660833 - mhe - SSP# 200670
+56006 REM "200670-Issue tracking system will be modified with a new
+56999 ! 

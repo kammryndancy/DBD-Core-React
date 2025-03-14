@@ -1,0 +1,22 @@
+0010 REM DTGRBD - rebuild DT6 queue
+0015 BEGIN 
+0020 OPEN (1)"DT6"+%C$
+0030 OPEN (2)"DTI"+%C$
+0035 REM "5.5 - 07/17/07 - 12.070277 - jme - SSP# 209675
+0037 REM "209675-Output Directory                                            
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 OPEN (3)"DTU"+%C$
+0500 FOR J=2 TO 3
+1000 READ (J,END=1100)A$
+1010 IF Q$="" THEN Q$=A$(21,10)+A$(1,20) ELSE IF POS(A$(21,10)+A$(1,20)=Q$,30)=0 THEN Q$=Q$+A$(21,10)+A$(1,20)
+1020 GOTO 1000
+1100 NEXT J
+1300 FOR J=1 TO LEN(Q$) STEP 30
+1310 DIM DT6$(530)
+1320 DT6$(1,30)=Q$(J,30)
+1330 WRITE (1,KEY=DT6$(J,10))DT6$
+1350 NEXT J
+1500 BEGIN 
+1600 RUN "ZMENU"
+9999 END 

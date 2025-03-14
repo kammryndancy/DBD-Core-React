@@ -1,0 +1,14 @@
+0010 REM "Unix Demo File Restore <UT2DM9>
+0040 REM "Copyright 1986-1989 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0200 D1$="/u/tfdd"
+0500 PRINT 'CS',"Restore Demo Files Utility - Unix Version",'LF'
+0600 INPUT "Enter Directory name or <RET> to use /u/tfdd (F4 to End):",D$
+0620 IF CTL=4 THEN GOTO 9000
+0640 IF D$="" THEN D$=D1$
+0800 INVOKE "cp "+D$+"/* tf2d"
+1000 INPUT "Demo file restore complete - <Ret> to continue ",'RB',*
+9000 BEGIN 
+9020 RUN "ZSTART"
+9999 END 

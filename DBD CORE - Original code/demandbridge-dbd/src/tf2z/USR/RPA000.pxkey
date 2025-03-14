@@ -1,0 +1,560 @@
+<PxTable>
+ TableName=RPA000
+ TableKey=K1307968758
+ FileCreate=KEYED "RPA000",10,[1:271:2]+[1:1:10],0,-1024,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="RPA_ReportMst"
+    PHYSICALPATH$="2010/07/21 11:43"
+    LASTCHANGEDATE$=":37-Chaitanya Guntur"
+    LASTUPDATEDFILE$="2015/06/09 17:02:29-root"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST RPT_ID$:[LEN(10)]"
+    NAME$="RPT_ID"
+    DESCRIPTION$="=MSG("+QUO+"RPT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="Report Id"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST RPT_ID$:[LEN(10,SEP=SEP)]"
+    NAME$="RPT_ID"
+    DESCRIPTION$="=MSG("+QUO+"RPT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Id"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST RPT_NAME$:[LEN(40,SEP=SEP)]"
+    NAME$="RPT_NAME"
+    DESCRIPTION$="=MSG("+QUO+"RPT_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Name"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST RPT_DESC$:[LEN(100,SEP=SEP)]"
+    NAME$="RPT_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="S"
+    NOTES$="Long Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST FILE_NAME$:[LEN(120,SEP=SEP)]"
+    NAME$="FILE_NAME"
+    DESCRIPTION$="=MSG("+QUO+"FILE_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="120"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Filename"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ACCESS_LEVEL$:[LEN(2,SEP=SEP)]"
+    NAME$="ACCESS_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"ACCE_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Access Level (0 - 99)"
+    KEYDEFINITION$="2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST RPT_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="RPT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"RPT_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST RPA_UNUSED$:[LEN(SEP,SIZ=499)]"
+    NAME$="RPA_UNUSED"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="499"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="0000000100"
+    RPT_ID$="0000000100"
+    RPT_NAME$="All Orders by CSR - Summary             "
+    RPT_DESC$="Display all orders by CSR for a specified Year and Accounting Period                                "
+    FILE_NAME$="dbreport_all_orders_by_csr_summary.rptdesign                                                                            "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000101"
+    RPT_ID$="0000000101"
+    RPT_NAME$="AP Open Invoice                         "
+    RPT_DESC$="Display a list of open Accounts Payable vendor accounts                                             "
+    FILE_NAME$="dbreport_ap_open_invoice.rptdesign                                                                                      "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000102"
+    RPT_ID$="0000000102"
+    RPT_NAME$="AR Aging Detail                         "
+    RPT_DESC$="Display detailed account status, ordered by Salespersn, in 30 / 60 / 90 and 120 day bins            "
+    FILE_NAME$="dbreport_ar_aging_detail.rptdesign                                                                                      "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000103"
+    RPT_ID$="0000000103"
+    RPT_NAME$="AR Collection Summary                   "
+    RPT_DESC$="Display customer account status in 45 / 60 / 90 and over-90 day bins                                "
+    FILE_NAME$="dbreport_ar_collection_summary.rptdesign                                                                                "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000104"
+    RPT_ID$="0000000104"
+    RPT_NAME$="AR Open Balances by Customer            "
+    RPT_DESC$="Display list of all open orders by Customer for a specified Salesperson                             "
+    FILE_NAME$="dbreport_ar_open_balances_by_customer.rptdesign                                                                         "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000105"
+    RPT_ID$="0000000105"
+    RPT_NAME$="AR Open Balances by Division            "
+    RPT_DESC$="Display a list of all open orders by Division                                                       "
+    FILE_NAME$="dbreport_ar_open_balances_by_division.rptdesign                                                                         "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000106"
+    RPT_ID$="0000000106"
+    RPT_NAME$="AR Open Balances by Salesperson         "
+    RPT_DESC$="Display a list of all open orders by Salesperson                                                    "
+    FILE_NAME$="dbreport_ar_open_balances_by_salesperson.rptdesign                                                                      "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000107"
+    RPT_ID$="0000000107"
+    RPT_NAME$="AR Open Invoice                         "
+    RPT_DESC$="Display a list of open Accounts Receivable customer accounts                                        "
+    FILE_NAME$="dbreport_ar_open_invoice.rptdesign                                                                                      "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000108"
+    RPT_ID$="0000000108"
+    RPT_NAME$="Customer Sales Analysis - Detail        "
+    RPT_DESC$="Display sales analysis by customer, with current and prior MTD, and current and prior YTD data      "
+    FILE_NAME$="dbreport_customer_sales_analysis_detail.rptdesign                                                                       "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000109"
+    RPT_ID$="0000000109"
+    RPT_NAME$="Customer Sales Analysis - Summary       "
+    RPT_DESC$="Display sales data by salesperson, with Sales and GP info for current and prior YTD                 "
+    FILE_NAME$="dbreport_customer_sales_analysis_summary.rptdesign                                                                      "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000110"
+    RPT_ID$="0000000110"
+    RPT_NAME$="Customer Statements                     "
+    RPT_DESC$="Display detailed monthly customer statements                                                        "
+    FILE_NAME$="dbreport_customer_statement.rptdesign                                                                                   "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000111"
+    RPT_ID$="0000000111"
+    RPT_NAME$="Detail Shipment Listing by Customer     "
+    RPT_DESC$="Display early/ontime/late order status for a specified customer and range of dates                  "
+    FILE_NAME$="dbreport_detail_shipment_listing_by_customer.rptdesign                                                                  "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000112"
+    RPT_ID$="0000000112"
+    RPT_NAME$="Detail Shipment Listing by Warehouse    "
+    RPT_DESC$="Display early/ontime/late order status for a specified warehouse and range of dates                 "
+    FILE_NAME$="dbreport_detail_shipment_listing_by_warehouse.rptdesign                                                                 "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000113"
+    RPT_ID$="0000000113"
+    RPT_NAME$="Finders Fee                             "
+    RPT_DESC$="Display a  finders-fee report for a specified Year and Accounting Period                            "
+    FILE_NAME$="dbreport_finders_fee.rptdesign                                                                                          "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000114"
+    RPT_ID$="0000000114"
+    RPT_NAME$="GL Income Snapshot                      "
+    RPT_DESC$="Display income by fiscal year                                                                       "
+    FILE_NAME$="dbreport_gl_income_snapshot.rptdesign                                                                                   "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000115"
+    RPT_ID$="0000000115"
+    RPT_NAME$="Inventory Detail                        "
+    RPT_DESC$="Display parameterized report showing inventory detail (committed & uncommitted) by division and cust"
+    FILE_NAME$="dbreport_inventory_detail.rptdesign                                                                                     "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000116"
+    RPT_ID$="0000000116"
+    RPT_NAME$="Item Status                             "
+    RPT_DESC$="Display item status by division and customer                                                        "
+    FILE_NAME$="dbreport_item_status.rptdesign                                                                                          "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000117"
+    RPT_ID$="0000000117"
+    RPT_NAME$="New Accounts                            "
+    RPT_DESC$="Display new accounts registered since a specified Year and Accounting Period                        "
+    FILE_NAME$="dbreport_new_accounts.rptdesign                                                                                         "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000118"
+    RPT_ID$="0000000118"
+    RPT_NAME$="Ontime Shipments                        "
+    RPT_DESC$="Display early/ontime/late shipment status for a specified range of dates                            "
+    FILE_NAME$="dbreport_ontime_shipments.rptdesign                                                                                     "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119"
+    RPT_ID$="0000000119"
+    RPT_NAME$="Open Orders by Salesperson              "
+    RPT_DESC$="Display a list of current Open Orders by Salesperson                                                "
+    FILE_NAME$="dbreport_open_orders_by_salesperson.rptdesign                                                                           "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000120"
+    RPT_ID$="0000000120"
+    RPT_NAME$="Open Orders by CSR                      "
+    RPT_DESC$="Display a list of current Open Orders by Customer Service Rep                                       "
+    FILE_NAME$="dbreport_open_orders_by_csr.rptdesign                                                                                   "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121"
+    RPT_ID$="0000000121"
+    RPT_NAME$="Order History by Cost Center            "
+    RPT_DESC$="Display detailed order history by Cost Center, for a specified Customer and date range.             "
+    FILE_NAME$="dbreport_order_history_by_costcenter.rptdesign                                                                          "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000122"
+    RPT_ID$="0000000122"
+    RPT_NAME$="Order History by Item and Order Date    "
+    RPT_DESC$="Display detailed order history, by product,, for a specified Customer and Order date range          "
+    FILE_NAME$="dbreport_order_history_by_item.rptdesign                                                                                "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000123"
+    RPT_ID$="0000000123"
+    RPT_NAME$="Order History by Item and Invoice Date  "
+    RPT_DESC$="Display detailed order history, by product, for a specified Customer and Invoice Date range         "
+    FILE_NAME$="dbreport_order_history_by_item_and_invdate.rptdesign                                                                    "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000124"
+    RPT_ID$="0000000124"
+    RPT_NAME$="Order Information (standalone)          "
+    RPT_DESC$="Display total counts of Orders and Lines for day/week/month, plus a bar chart of top-10 performers  "
+    FILE_NAME$="dbreport_order_information.rptdesign                                                                                    "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000125"
+    RPT_ID$="0000000125"
+    RPT_NAME$="Order Information by Day                "
+    RPT_DESC$="Display total counts of Orders and Lines for today (drilldown for Order Information)                "
+    FILE_NAME$="dbreport_order_information_day.rptdesign                                                                                "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000126"
+    RPT_ID$="0000000126"
+    RPT_NAME$="Order Information by Month              "
+    RPT_DESC$="Display total counts of Orders and Lines for this month (drilldown for Order Information)           "
+    FILE_NAME$="dbreport_order_information_month.rptdesign                                                                              "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000127"
+    RPT_ID$="0000000127"
+    RPT_NAME$="Order Information by Week               "
+    RPT_DESC$="Display total counts of Orders and Lines for this week (drilldown for Order Information)            "
+    FILE_NAME$="dbreport_order_information_week.rptdesign                                                                               "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000128"
+    RPT_ID$="0000000128"
+    RPT_NAME$="Summary Bill                            "
+    RPT_DESC$="Display parameterized report by customer, fiscal year and summary bill reference                    "
+    FILE_NAME$="dbreport_summary_bill.rptdesign                                                                                         "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000129"
+    RPT_ID$="0000000129"
+    RPT_NAME$="Top 10 AP                               "
+    RPT_DESC$="Display list of top-10 AP vendor accounts (drilldown for AR/AP Top 10 standalone)                   "
+    FILE_NAME$="dbreport_ap_top10.rptdesign                                                                                             "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000130"
+    RPT_ID$="0000000130"
+    RPT_NAME$="Top 10 AR                               "
+    RPT_DESC$="Display list of top-10 AR customer accounts (drilldown for AR/AP  Top 10 standalone)                "
+    FILE_NAME$="dbreport_ar_top10.rptdesign                                                                                             "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000131"
+    RPT_ID$="0000000131"
+    RPT_NAME$="Top 10 AR/AP (standalone)               "
+    RPT_DESC$="Display graphs top-10 AR customer accounts and top-10 AP vendor accounts, with drill-down to details"
+    FILE_NAME$="dbreport_ar_ap_top10.rptdesign                                                                                          "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000132"
+    RPT_ID$="0000000132"
+    RPT_NAME$="Trending Low Sales Report               "
+    RPT_DESC$="Display low performing accounts over a year for specified Accounting Period and Year                "
+    FILE_NAME$="dbreport_trending_low_sales.rptdesign                                                                                   "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000133"
+    RPT_ID$="0000000133"
+    RPT_NAME$="Trending No Sales Report                "
+    RPT_DESC$="Display non-performing accounts over a year for specified Accounting Period and Year                "
+    FILE_NAME$="dbreport_trending_no_sales.rptdesign                                                                                    "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000134"
+    RPT_ID$="0000000134"
+    RPT_NAME$="SPECIAL All Orders by CSR - Summary     "
+    RPT_DESC$="Display all orders by CSR for a specified Year and Accounting Period                                "
+    FILE_NAME$="dbreport_all_orders_by_csr_summary.rptdesign                                                                            "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000135"
+    RPT_ID$="0000000135"
+    RPT_NAME$="Trending No Sales Report                "
+    RPT_DESC$="Display non-performing accounts over a year for specified Accounting Period and Year                "
+    FILE_NAME$="dbreport_trending_no_sales.rptdesign                                                                                    "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000001"
+    RPT_ID$="8340000001"
+    RPT_NAME$="SPECIAL All Orders by CSR - Summary     "
+    RPT_DESC$="Display all orders by CSR for a specified Year and Accounting Period                                "
+    FILE_NAME$="dbreport_all_orders_by_csr_summary.rptdesign                                                                            "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$=" "
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000002"
+    RPT_ID$="8340000002"
+    RPT_NAME$="SPECIAL report #2                       "
+    RPT_DESC$="this is a test of report #2                                                                         "
+    FILE_NAME$="SortTable.rptdesign                                                                                                     "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$="R"
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000003"
+    RPT_ID$="8340000003"
+    RPT_NAME$="SPECIAL report #3                       "
+    RPT_DESC$="this is a test of report #2                                                                         "
+    FILE_NAME$="SortTable.rptdesign                                                                                                     "
+    ACCESS_LEVEL$="00"
+    RPT_TYPE$="R"
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000004"
+    RPT_ID$="8340000004"
+    RPT_NAME$="SPECIAL report #4                       "
+    RPT_DESC$="shis is special 34                                                                                  "
+    FILE_NAME$="                                                                                                                        "
+    ACCESS_LEVEL$="  "
+    RPT_TYPE$="R"
+    RPA_UNUSED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+</Data>
+
+</PxTable>

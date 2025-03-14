@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="How To..." class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Stopovers</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">How to Enter an Order for a Stopover</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b style="font-style: normal;">&#160;</b>
+        </p>
+        <p class="Nav" style="text-align: justify;">Stopovers are orders that will be delivered to your warehouse but are not received into your inventory. To conveniently accomplish this, the purchase order printed and sent to the vendor must have the distributor’s address.  When the product arrives at the warehouse, instructions are needed on what to do without having to refer back to the order entry department.  A packing list needs to be printed so the shipment will be sent with the customer ship-to and the quantity being delivered. </p>
+        <p class="Nav" style="text-align: justify;">There are a couple of Order Processing parameters that must be defined to take advantage of this process:</p>
+        <ul style="text-align: justify;">
+        </ul>
+        <ul>
+            <li value="1" style="text-align: justify;"> Ask suspend packing list question at order entry?  Must be set to Yes. (This is located in O/P-SM-S1-Screen IV)</li>
+            <li value="2" style="text-align: justify;">Print packing list at PO receiving if not previously printed? Must also be set to Yes.  (This is located in O/P-SM-S1-Screen VI)</li>
+        </ul>
+        <p class="Nav" style="text-align: justify;">If the majority of the orders entered are stopovers, it would probably be a good idea to set the Print On default parameter on screen IV to Invoices and Packing Lists (IP) so that the packing list is automatically set to print.  In order entry, you would then take off the Packing List (P) if the shipment did not require it.  Even if the P were left on the order, this may still be better than not having a packing list print when one is needed. To have a packing list print for an order line, you will need to set the print on field to Invoice and Packing List (IP).</p>
+        <p style="text-align: justify;">In the shipping instructions, you will place the warehouse code in the Warehouse field. This will generate the Purchase order to print to ship to the warehouse instead of the customer ship to. The invoice will print the customer ship to as normal when generated.</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2009 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

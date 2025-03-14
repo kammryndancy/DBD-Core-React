@@ -1,0 +1,9 @@
+0010 REM "AP2MAB intermediary <AP2UTE>
+0035 REM "3.6 - 12/15/92 - 16.22
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ENTER X3$,X4$,Q0$,Q1$
+0200 Q1$="*"
+0300 CALL "AP2MAB",X3$,X4$,Q0$,Q1$
+9900 EXIT 
+9999 END 

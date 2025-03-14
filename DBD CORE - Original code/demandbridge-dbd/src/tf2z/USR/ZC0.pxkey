@@ -1,0 +1,795 @@
+<PxTable>
+ TableName=ZC0
+ TableKey=K1037804781
+ FileCreate=KEYED "ZC0",40,[1:21:20]+[1:1:20],0,512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZC0_OSCommands"
+    PHYSICALPATH$="2006/08/21 17:42"
+    LASTCHANGEDATE$=":19-csc"
+    LASTUPDATEDFILE$="2007/12/18 12:49:24-tma"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST OS_CODE$:[LEN(20)]"
+    NAME$="OS_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OS_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST CMD_CODE$:[LEN(20)]"
+    NAME$="CMD_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CMD_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:2:A,2:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST OS_CODE$:[LEN(20,SEP=SEP)]"
+    NAME$="OS_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OS_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST CMD_CODE$:[LEN(20,SEP=SEP)]"
+    NAME$="CMD_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CMD_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:2:A,2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST CMD_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="CMD_DESC"
+    DESCRIPTION$="=MSG("+QUO+"CMD_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST CMD_SEC$:[LEN(3,SEP=SEP)]"
+    NAME$="CMD_SEC"
+    DESCRIPTION$="=MSG("+QUO+"CMD_SEC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST CMD_INT$:[LEN(1,SEP=SEP)]"
+    NAME$="CMD_INT"
+    DESCRIPTION$="=MSG("+QUO+"CMD_INT"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST CMD_IGNORE$:[LEN(1,SEP=SEP)]"
+    NAME$="CMD_IGNORE"
+    DESCRIPTION$="=MSG("+QUO+"CMD_IGNORE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST CMD_KEEP$:[LEN(1,SEP=SEP)]"
+    NAME$="CMD_KEEP"
+    DESCRIPTION$="=MSG("+QUO+"CMD_KEEP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST CMD_UNUSED$:[LEN(24,SEP=SEP)]"
+    NAME$="CMD_UNUSED"
+    DESCRIPTION$="=MSG("+QUO+"CMD_UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="24"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST CMD_STRING$:[LEN(SEP,SIZ=180)]"
+    NAME$="CMD_STRING"
+    DESCRIPTION$="=MSG("+QUO+"CMD_STRING"+QUO+")"
+    TYPE$="S"
+    LENGTH$="180"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          CC_AUTH_100         "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="CC_AUTH_100         "
+    CMD_DESC$="Credit Card Utility, ver 1.0.0"
+    CMD_SEC$="090"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="C:\pvx\java\ccauth\runccauth.bat [1]                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          IL_PS_TO_PDF        "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="IL_PS_TO_PDF        "
+    CMD_DESC$="Image Library:ps2pdf process  "
+    CMD_SEC$="   "
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$="Y"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="C:\JetForm\Central\bin\il.cmd                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          TEST                "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="TEST                "
+    CMD_DESC$="TEST COMMAND                  "
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="DIR C:\                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_CANCEL_FAX_3     "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_CANCEL_FAX_3     "
+    CMD_DESC$="Cancel VsiFax Request (v 3+)  "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxcancel -U vsifax [1]                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_DUMP_LOG_3       "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_DUMP_LOG_3       "
+    CMD_DESC$="Dump VsiFax Log to file (v3+) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxolog -U vsifax -f [1]                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_FAX_STAT_3       "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_FAX_STAT_3       "
+    CMD_DESC$="VsiFax Fax Status (v 3+)      "
+    CMD_SEC$="020"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxstat                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_PURGE_OLOG       "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_PURGE_OLOG       "
+    CMD_DESC$="Purge the Output Log          "
+    CMD_SEC$="020"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxpurge -o 99                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_SCHED_START_3    "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_SCHED_START_3    "
+    CMD_DESC$="Start VsiFax Scheduler (vr 3+)"
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxsched start                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_STAT_REQ_3       "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_STAT_REQ_3       "
+    CMD_DESC$="Request Status (v 3+)         "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxstat -U vsifax [1]                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VF_VIEW_LOG_4       "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VF_VIEW_LOG_4       "
+    CMD_DESC$="View VsiFax Log (version 4)   "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="vfxolog -U vsifax                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          VSI_FAX             "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="VSI_FAX             "
+    CMD_DESC$="VSI-FAX agent for Windows     "
+    CMD_SEC$="180"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="C:\Jetform\Central\bin\jetform_fax_30.cmd                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          WEBEC_CLEAR_STOP    "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="WEBEC_CLEAR_STOP    "
+    CMD_DESC$="Clear stop command to Web.ec  "
+    CMD_SEC$="001"
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="del [4]                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          WEBEC_KILL_SERVER   "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="WEBEC_KILL_SERVER   "
+    CMD_DESC$=QUO+"Kill"+QUO+" Web.ec Server          "
+    CMD_SEC$="001"
+    CMD_INT$="Y"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="x=DLL("+QUO+"user32.dll"+QUO+","+QUO+"SendMessageA"+QUO+", DLL("+QUO+"user32.dll"+QUO+",        "+QUO+"FindWindowA"+QUO+",0,"+QUO+"[1] Web.ec Server"+QUO+"+$00$), 1047,0,0)                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          WEBEC_RESTART_SERVER"
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="WEBEC_RESTART_SERVER"
+    CMD_DESC$="Send Restart Command to Web.ec"
+    CMD_SEC$="001"
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="echo > [5]                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          WEBEC_RUN_SERVER    "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="WEBEC_RUN_SERVER    "
+    CMD_DESC$="Run Web.ec server             "
+    CMD_SEC$="005"
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="C:\PVX\PVXWIN32.EXE EC3SRV -ARG id=[1] env=[2]                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS-WINDOWS          WEBEC_STOP_SERVER   "
+    OS_CODE$="MS-WINDOWS          "
+    CMD_CODE$="WEBEC_STOP_SERVER   "
+    CMD_DESC$="Send Server Stop Command      "
+    CMD_SEC$="001"
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="echo > [4]                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                CC_AUTH_100         "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="CC_AUTH_100         "
+    CMD_DESC$="Credit Card Utility, ver 1.0.0"
+    CMD_SEC$="090"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/java/ccauth/runccauth [1]                                                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                CC_VAULT_100        "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="CC_VAULT_100        "
+    CMD_DESC$="Credit Card Vault Utility 1.00"
+    CMD_SEC$="090"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/java/ccvault/runccauth [1]                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                HD_DEALER_INFO      "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="HD_DEALER_INFO      "
+    CMD_DESC$="H-D Webservices - GetDlrInfo  "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="Y"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/crg/getdealerinfo [1]                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                HTTPS               "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="HTTPS               "
+    CMD_DESC$="Send Secure HTTPS request     "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[wdx]C:\wget\wget.exe -q -O- "+QUO+"[1]"+QUO+"                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                MAIL_CRG            "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="MAIL_CRG            "
+    CMD_DESC$="Send email to crg             "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/crg/mailme.sh                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                PDF_TO_POSTSCRIPT   "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="PDF_TO_POSTSCRIPT   "
+    CMD_DESC$="Conver PDF file to Postscript "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/tf2p/USR/tf_pdf_to_postscript [1] [2]                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                PRINT_POSTSCRIPT    "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="PRINT_POSTSCRIPT    "
+    CMD_DESC$="Print Postscript File         "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="lpr -P[1] [2] > /dev/null                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                PXPSQL              "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="PXPSQL              "
+    CMD_DESC$="Execute PxPlus ODBC SQL Query "
+    CMD_SEC$="000"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/pvxsql/pxpsql --column-names -c "+QUO+"DSN=[1]"+QUO+" "+QUO+"[2]"+QUO+"        2>&1 | tr "+QUO+"|"+QUO+" "+QUO+"$(echo -e '\t')"+QUO+"                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                TEST_RENAME         "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="TEST_RENAME         "
+    CMD_DESC$="Test rename script            "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/crg/rename.sh                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_CANCEL_FAX_2     "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_CANCEL_FAX_2     "
+    CMD_DESC$="Cancel VsiFax Request (v 2)   "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax/bin/fxcancel [1]                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_CANCEL_FAX_3     "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_CANCEL_FAX_3     "
+    CMD_DESC$="Cancel VsiFax Request (v 3+)  "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[2]/bin/vfxcancel -U vsifax [1]                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_DUMP_LOG_2       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_DUMP_LOG_2       "
+    CMD_DESC$="Dump VsiFax Log to file (v2)  "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax/bin/flog -d                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_DUMP_LOG_3       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_DUMP_LOG_3       "
+    CMD_DESC$="Dump VsiFax Log to File (v3+) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[2]/bin/vfxolog -U vsifax -f [1]                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_DUMP_LOG_42      "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_DUMP_LOG_42      "
+    CMD_DESC$="Vsifax log 4.2.2 >            "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[2]/bin/vfxolog -U vsifax -f [1] -F pipe                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_FAX              "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_FAX              "
+    CMD_DESC$="Vsifax - Send Fax             "
+    CMD_SEC$="030"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax3/bin/vfx -n [1] -F ps [2]                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_FAX_STAT_2       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_FAX_STAT_2       "
+    CMD_DESC$="VsiFax Fax Status (v 2)       "
+    CMD_SEC$="020"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax/bin/fxstat                                                                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_FAX_STAT_3       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_FAX_STAT_3       "
+    CMD_DESC$="VsiFax Fax Status (v 3+)      "
+    CMD_SEC$="020"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxstat                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_SCHED_START_2    "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_SCHED_START_2    "
+    CMD_DESC$="Start VsiFax Scheduler (v 2)  "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax/bin/fxsched                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_SCHED_START_3    "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_SCHED_START_3    "
+    CMD_DESC$="Start VsiFax Scheduler (v 3+) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxsched/start                                                                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_STAT_REQ_2       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_STAT_REQ_2       "
+    CMD_DESC$="Status Request (v 2)          "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/vsifax/bin/exreq [1]                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_STAT_REQ_3       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_STAT_REQ_3       "
+    CMD_DESC$="Status Request (v 3+)         "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[2]/bin/vfxstat -U vsifax [1]                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_VIEW_LOG_2       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_VIEW_LOG_2       "
+    CMD_DESC$="View VsiFax Log (Version 2)   "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="umask 0; cd /usr/vsifax/bin; flog                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_VIEW_LOG_3       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_VIEW_LOG_3       "
+    CMD_DESC$="View VsiFax Log (version 3.0) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxolog -r -U vsifax                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_VIEW_LOG_33      "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_VIEW_LOG_33      "
+    CMD_DESC$="View VsiFax Log (Version 3.3) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxolog -U vsifax                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_VIEW_LOG_35      "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_VIEW_LOG_35      "
+    CMD_DESC$="View VsiFax Log (version 3.5) "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxolog                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                VF_VIEW_LOG_4       "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="VF_VIEW_LOG_4       "
+    CMD_DESC$="View VsiFax Log (Version 4)   "
+    CMD_SEC$="030"
+    CMD_INT$=" "
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="[1]/bin/vfxolog -U vsifax                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_CLEAR_STOP    "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_CLEAR_STOP    "
+    CMD_DESC$="Clear Stop Command for Web.ec "
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="rm -r [4]                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_FAIL_NOTIFY   "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_FAIL_NOTIFY   "
+    CMD_DESC$="Notify of failed Web.ec server"
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="echo "+QUO+"[6]"+QUO+" | mail -s "+QUO+"[7]"+QUO+"  [8]                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_KILL_SERVER   "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_KILL_SERVER   "
+    CMD_DESC$="Kill a Web.ec server          "
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="kill -9 [3]                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_RESTART_SERVER"
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_RESTART_SERVER"
+    CMD_DESC$="Send Restart Command to Web.ec"
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="touch [5]                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_RUN_SERVER    "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_RUN_SERVER    "
+    CMD_DESC$="Run Web.ec Server             "
+    CMD_SEC$="005"
+    CMD_INT$="N"
+    CMD_IGNORE$="Y"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="echo /usr/lib/pvx/runwebec [1] env=[2] [9] | at now                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_SEND_MAIL     "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_SEND_MAIL     "
+    CMD_DESC$="Webec Sendmail Command        "
+    CMD_SEC$="090"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/sendmail -t < [1]                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBEC_STOP_SERVER   "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBEC_STOP_SERVER   "
+    CMD_DESC$="Send Stop Command to Web.ec   "
+    CMD_SEC$="010"
+    CMD_INT$="N"
+    CMD_IGNORE$=" "
+    CMD_KEEP$=" "
+    CMD_UNUSED$="                        "
+    CMD_STRING$="touch [4]                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNIX                WEBSVC_UPD_INV      "
+    OS_CODE$="UNIX                "
+    CMD_CODE$="WEBSVC_UPD_INV      "
+    CMD_DESC$="Webservice: Update Prod Inv   "
+    CMD_SEC$="180"
+    CMD_INT$="N"
+    CMD_IGNORE$="N"
+    CMD_KEEP$="N"
+    CMD_UNUSED$="                        "
+    CMD_STRING$="/usr/lib/pvx/java/httputil/runhttp -url [1] -F [2] -H [3]                                                                                                                           "
+   </RecordData>
+
+</Data>
+
+</PxTable>

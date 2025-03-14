@@ -1,0 +1,47 @@
+0010 REM "Add/Delete Inventory Costing Records-Po Rec <FMGICC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/23/10 - 14.580833 - jvv - SSP# 222976
+0037 REM "222976-Job Costing and special charges - with multiple receipts    
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Coming from PO2MAU or PO2MAG or PO2MAB to either delete or add FTF records, WO111482
+0081 REM "A$ & A[ALL] is PO7 record, B$ and B[ALL] is PO2 record or blank
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,C0,A$,A{ALL},B$,B{ALL}
+0100 SETERR 9000
+0105 CALL "FM2ICC",X3$,X4$,PROG$,C0,A$,A{ALL},B$,B{ALL} ! SSP 222976 USE CHUI PGM
+0108 EXIT ! SSP 222976
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 ! "186105-GUI-Inventory Job Costing-Will not value correctly when have
+56001 ! "       several vendor invoices. Inventory value is corrupted
+56002 REM "218237-If you zero out all information on a line receiving a BAS   
+56003 REM "220282-Issue with Est. Cost moving to Act. on the Inventory Costing
+56005 REM "222976-Job Costing and special charges - with multiple receipts    

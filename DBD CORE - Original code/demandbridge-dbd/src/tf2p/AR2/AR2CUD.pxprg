@@ -1,0 +1,64 @@
+0010 REM "Move AS3 records if sales tax when invoice payed <AR2CUD>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 10/03/94 - 10.65 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Update the fiscal Year /accounting period of Alternate Sales Tax Detail file if using it and pay tax when invoice is paid.
+0060 REM "K$ is key to current AS3 record - 1,6=fy+ap, 7,10=salestax code, 17,8=invoice number - There may be more than one record
+0061 REM "N$ is new fiscal year & accounting period.
+0070 REM "Write out new record for new fy/ap and remove old record, continue on and do nothing if they are the same.
+0090 CLEAR ; SETERR 0100; ENTER X3$,K$,N$
+0110 X0$="AR2CUD",X1$="Adjust Detail Sales Tax If Paid when Paid"
+0120 DIM S$(40)
+0200 REM "Check here to see if different, if not let's just go on back to caller
+0205 IF N$=K$(1,6) THEN GOTO 9900
+0300 REM "IOLISTS
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9]
+0320 IOLIST B$,B[0],B[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AS3...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+1000 REM "Process AS3 for records matching K$, change, write out and remove ld
+1010 READ (Z[1],KEY=K$,DOM=1011)
+1030 K9$=KEY(Z[1],END=1100); IF K9$(1,LEN(K$))<>K$ THEN GOTO 1100 ELSE EXTRACT RECORD (Z[1],KEY=K9$)A$
+1050 A$(1,6)=N$; WRITE RECORD (Z[1],KEY=A$(1,LEN(K9$)))A$
+1060 REMOVE (Z[1],KEY=K9$)
+1090 GOTO 1030
+1100 REM 
+1110 GOTO 9900
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

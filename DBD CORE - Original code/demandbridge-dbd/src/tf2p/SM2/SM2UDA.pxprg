@@ -1,0 +1,342 @@
+0010 REM "<SM2UDA> Import Customer Invoicing Gateway Plus File
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 01/18/23 - 10.899531 - dmm - SSP# 307432
+0037 REM "307432-DBSPT-154390; CIGP PO Number input to Uppercase             
+0040 REM "Copyright 2023 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,SEL_FILES$
+0100 SETERR 9000
+0110 X0$="SM2UDA",X1$="Import Customer Invoicing Plus Gateway File"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0150 IF MID(Q1$,1,5)="[RP1]" THEN I$=MID(Q1$,6),ONE_REC=1; IF MID(I$,1,4)="[TO]" THEN I$=MID(I$,5),TRACKING_INFO_ONLY=1
+0200 REM "
+0240 IF NOT(ONE_REC) THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0320 IOLIST SM7$,SM7[0],SM7[1],SM7[2],SM7[3],SM7[4],SM7[5],SM7[6],SM7[7],SM7[8],SM7[9],SM7[10],SM7[11],SM7[12],SM7[13],SM7[14],SM7[15] ! WO244750, expand SM7
+0340 IOLIST PO1$
+0350 IOLIST PO2$,PO2[0],PO2[1],PO2[2],PO2[3],PO2[4],PO2[5],PO2[6],PO2[7],PO2[8],PO2[9],PO2[10],PO2[11],PO2[12],PO2[13],PO2[14],PO2[15],PO2[16],PO2[17],PO2[18],PO2[19],PO2[20],PO2[21],PO2[22],PO2[23],PO2[24],PO2[25],PO2[26],PO2[27]
+0400 IOLIST SMP_PARM$,SMP_PARM[0],SMP_PARM[1],SMP_PARM[2]
+0410 IOLIST SMA$,SMA[0],SMA[1],SMA[2]
+0420 IOLIST SM71$,SM71[0],SM71[1],SM71[2],SM71[3],SM71[4],SM71[5],SM71[6],SM71[7],SM71[8],SM71[9],SM71[10],SM71[11],SM71[12]
+0430 IOLIST PO3$,PO3[0],PO3[1],PO3[2],PO3[3]
+0440 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0450 IOLIST SMB$,SMB[0],SMB[1],SMB[2]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O SM7...  04O PO1...  05O API...  06O APQ...  07O SMA...  08O SM9...  09O PO2...  10O PO3...  11O FS1...  12O FS2...  13O ZZPARM  14O SMB...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 DIM M6[1]; CALL "IC2PRE",X3$,Z[13],M6$,M6{ALL},"",0,"",0
+0560 DIM SH_PARM$(202); FIND (Z[13],KEY=X3$(9,3)+"S/H",DOM=0561)SH_PARM$
+0565 DIM SMP_PARM$(50),SMP_PARM[2]; FIND (Z[13],KEY=X3$(9,3)+"SMP",DOM=0566)IOL=0400
+0600 REM "
+0605 BTCHNO$=MID(X3$,174,4) ! SSP 270121
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 DIM SM7[15] ! WO244750, expand SM7
+0905 REC_SIZE=240
+1000 REM "Get list of RP1 files to process
+1005 IF ONE_REC THEN GOTO 1120
+1010 CALL "ZZ2BLS","D0:RP1*","S",F$
+1012 IF X3$(77,1)="U" THEN CALL "ZZ2BLS","D0:rp1*","S",F_LOWER$; F$=F$+F_LOWER$
+1013 IF SEL_FILES$="Y" THEN CALL "ZZ2BLS;SELECT_FILES",F$,"D0:","" ! 260723
+1015 P=POS(":"=F$); IF P=0 THEN GOTO 5000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1050 REM Z$="01CU 01O "+F1$+" "
+1055 REM CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 REM CLOSE (Z[1]); OPEN (Z[1],OPT="TEXT",ERR=5000)F1$; REM "Open for reading text file
+1061 OPEN LOCK (32000,OPT="TEXT",ERR=5000)F1$; REM "Need to allow for more than 8 chars in file name so open without using ZZFLES
+1063 CLOSE (13); OPEN (13)"ZZPARM"
+1075 IF NOT(ONE_REC) THEN PRINT @(15,15),'CE',"Processing: "+F1$,
+1080 GOSUB 8100; GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",PRODUCT$="N",DELIM$=""; DIM LAST_ORDER$(9)
+1110 READ (32000,END=1900)I$; I9=I9+1
+1113 I$=STP(I$,3,*$EFBBBF$); IF STP(I$,3," ")="" OR I$="" THEN GOTO 1110 ELSE IF I9=1 AND (I$(4,1)="," OR I$(4,1)=$09$) THEN DELIM$=I$(4,1) ! SSP#292770, 295101
+1114 IF NOT(NUL(DELIM$)) THEN RETURN$=""; GOSUB 4100; I$=RETURN$ ! 295101
+1117 IF MOD(I9,T0)=1 THEN GOSUB 8150
+1118 IF I$(4,3)="101" THEN NL=60 ELSE NL=0 ! SSP257952
+1120 I$=PAD(I$,REC_SIZE+NL); REM "Correct length if short
+1125 DIM SM7$(700),SM7[15] ! WO244750, expand SM7
+1130 SM7$(1,9)=UCS(I$(7,9)); REM "P/O number - ** Required ** SSP307432-DBSPT-154390 Uppercase the input
+1131 IF LEN(STP(SM7$(1,9),1))=7 THEN SM7$(1,9)="00"+STP(SM7$(1,9),1)
+1132 SM7$(10,3)=I$(16,3); IF I$(16,3)<>"   " THEN SM7$(10,3)=STR(NUM(I$(16,3),ERR=1133):"000"); REM "P/O line number - ** Required ** - may be special charge code rather than line number
+1134 SM7$(13,1)=I$(19,1); REM "Ship to sequence code
+1136 Q$=I$(223,8); GOSUB 7500; SM7$(15,6)=Q0$; IF STP(SM7$(15,6),1)="" THEN SM7$(15,6)=X3$(21,6); REM "Shipped on date or default to today
+1138 SM7$(21,4)=I$(231,4); REM "Shipped on time
+1140 SM7$(25,6)=I$(235,6); REM "Estimated arrival
+1142 SM7$(31,6)=I$(177,6); REM "Carrier ID/name
+1144 SM7$(37,12)=I$(183,12); REM "Carrier name
+1146 SM7$(49,20)=I$(157,20); REM "Old TRacking number
+1147 SM7$(49,20)=DIM(20); IF I$(4,3)="101" THEN SM7$(383,60)=MID(I$,241,60) ELSE SM7$(383,60)=I$(157,20); REM "Tracking number  SSP257952  
+1148 SM7$(69,16)=I$(195,16); REM "Pickup number
+1150 SM7$(85,9)=I$(211,9); REM "Zip Code
+1152 SM7$(94,3)=I$(220,3); REM "Zone
+1154 SM7$(97,3)="NNN"; REM "Order updated? & P/O received? & Don't Bill?
+1155 REM "Set 97,1 98,1 and 100,1 (order updated, po recv, inv) if update m"+"ask from shipping parameters has a corresponding yes
+1156 REM "IF SH_PARM$(199,1)="Y" THEN LET SM7$(97,1)="Y" END_IF ; IF SH_PARM$(201,1)="Y" THEN LET SM7$(98,1)="Y" END_IF ; IF SH_PARM$(200,1)="Y" THEN LET SM7$(100,1)="Y" END_IF
+1158 SM7$(147,9)=I$(77,9); REM "Ending Number
+1160 SM7$(266,10)=UCS(I$(25,10)); REM "Vendor Invoice Number - ** Required **, must be uppercase
+1162 Q$=I$(35,8); GOSUB 7500; SM7$(276,6)=Q0$; IF STP(SM7$(276,6),1)="" THEN SM7$(276,6)=X3$(15,6); REM "Vendor Invoice Date or default to Acct Date
+1164 Q$=I$(43,8); GOSUB 7500; SM7$(282,6)=Q0$; IF STP(SM7$(282,6),1)="" THEN SM7$(282,6)=SM7$(15,6); REM "Receipt Date or default to Ship Date
+1166 SM7$(288,4)=I$(51,4); REM "Fiscal Year
+1168 SM7$(292,2)=I$(55,2); REM "Accounting Period - If blank default in SM2UAA
+1170 SM7$(294,12)=I$(57,12); REM "Factory Job Number
+1172 Q$=I$(69,8); GOSUB 7500; SM7$(306,6)=Q0$; REM "Factory Job Date
+1173 SM7$(312,1)=I$(86,1); IF SM7$(312,1)="Y" THEN SM7$(316,1)="N"; REM "Complete Flag
+1174 SM7[3]=NUM(I$(119,8),ERR=1175); REM "Total Freight
+1176 SM7[11]=NUM(I$(105,7),ERR=1177); REM "Backordered
+1178 SM7[12]=NUM(I$(112,7),ERR=1179); REM "Carton Pack
+1180 QTY_REC=NUM(I$(98,7),ERR=1181); REM "Quantity
+1185 GOSUB 4000; REM "Validate required fields
+1187 DIM SMA$(90),SMA[2]; FIND (Z[7],KEY=PO1$(7,10),DOM=1188)IOL=0410
+1190 GOSUB 2000; REM "Set u/m, qty per unit, extended cost
+1192 IF SM7$(312,1)<>"Y" AND SM7[11]=0 AND SM7$(315,1)=" " THEN GOSUB 8000; REM "See if line should be marked complete provided the vendor didn't already say complete, the vendor did not set a BO amount and we don't have any previous errors
+1193 IF SM7$(312,1)="Y" AND PO2[9]>0 THEN SM7$(316,1)="Y"; REM " If complete and we have previously received vendor invoicing, then set partial flag to Y so it will print on the report and user can check invoice to make sure everything is billing properly
+1194 READ (Z[10],KEY=SM7$(1,9)+DIM(4),DOM=1195)PO3$; IF PO3$(11,1)="D" THEN SM7$(318,1)="Y"; IF PO2[6]>0 AND PO2[6]=SM7[0] THEN SM7$(312,1)="Y" ELSE SM7$(312,1)="N"; REM " Shipping to distributor warehouse, need flag set for call to PO2MAL in SM2UAA, will set PO7 records to vendor invoice only, no receiving.  If received previously is same as vendor shipped qty then set comlete flag to Y else set to N.
+1196 IF PO2$(14,1)="Y" AND SM7$(315,1)=" " THEN GOSUB 8200 ELSE GOSUB 7600; REM "If special shipping and no errors found then write out multiple records else just Write out SM7 record
+1198 IF PRODUCT_FOUND$="Y" THEN PRODUCT$="Y",PRODUCT_FOUND$="N"
+1199 IF ONE_REC THEN GOTO 9900 ELSE GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to RP2 for archiving. Erase an existing RP2 file, "+"if same name
+1905 REM Z$="01CU"+F1$+" "
+1906 REM CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1907 ! CLOSE (32000); !WO 270121
+1910 F2$=F1$; IF F2$ LIKE "[Rr][Pp]1*" THEN F2$(1,3)="RP2",F2$=F2$+"_"+BTCHNO$ ELSE GOTO 1995
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 ERASE J$+DLM+F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$
+1995 CLOSE (32000); GOTO 1015 ! WO 270121
+2000 REM "Format Variables
+2010 QTY_PER_UM=0,UNIT_COST=0,EXT_COST=0; DIM UOM$(4)
+2020 UOM$=I$(87,4); REM "Unit of Measure
+2023 IF UOM$=DIM(4) THEN IF POS(PO2$(77,4)="M   EACH",4)>0 THEN UOM$=PO2$(77,4); QTY_PER_UM=PO2[2]; GOTO 2041 ELSE UOM$="EACH"
+2030 DIM PARM_UM$(22),PARM_UM[2]; READ (Z[13],KEY="U/M"+UOM$,DOM=2031)PARM_UM$,PARM_UM[0],PARM_UM[1]; GOTO 2032; REM "READ FOR U/M INFO
+2031 UOM$=DIM(4); GOTO 2023; REM "Invalid unit of mreasure
+2040 IF PARM_UM$(20,1)="Y" THEN IF PARM_UM[0]<>0 THEN QTY_PER_UM=PARM_UM[0] ELSE QTY_PER_UM=PARM_UM[1] END_IF ELSE QTY_PER_UM=NUM(I$(91,7),ERR=2041); REM "QTY PER UM
+2045 IF QTY_PER_UM=0 THEN QTY_PER_UM=1
+2050 UNIT_COST=NUM(I$(127,10),ERR=2051); REM "UNIT COST
+2060 EXT_COST=NUM(I$(137,10),ERR=2081); REM "Extended cost
+2095 IF EXT_COST<>0 THEN GOTO 2130; REM "Calc total cost if not given
+2100 REM "Calculate Extension
+2120 CALL "FM2EXT",Z[13],0,UOM$,QTY_PER_UM,QTY_REC,UNIT_COST,EXT_COST,M6[1]
+2130 SM7$(174,4)=UOM$
+2140 SM7[0]=QTY_REC; REM "QUANTITY RECEIVED - ** REQUIRED **
+2150 SM7[4]=EXT_COST
+2160 SM7[8]=QTY_PER_UM
+2170 IF UNIT_COST=0 AND EXT_COST>0 THEN CALL "FM2EXT",Z[13],1,UOM$,QTY_PER_UM,QTY_REC,UNIT_COST,EXT_COST,M6[1]
+2175 IF SM7$(315,1)=" " THEN GOSUB 7900; REM "Check unit cost using system or vendor parameter unless we are already in an error situation
+2180 IF SM7$(315,1)=DIM(1) AND SM7$(9,1)<>DIM(1) THEN GOSUB CHECK_CUST_PARMS ! WO235823
+2190 RETURN 
+4000 REM "VALIDATE REQUIRED DATA FIELDS
+4001 DIM PO1$(383),PO2$(170),PO2[27]
+4010 IF SM7$(1,9)=DIM(9) THEN SM7$(315,1)="1"; GOTO 4095; REM " NO P/O NUMBER GIVEN
+4020 IF LEN(STP(SM7$(1,9),1))=7 THEN SM7$(1,9)="00"+STP(SM7$(1,9),1)
+4025 DIM PO1$(383); FIND (Z[4],KEY=SM7$(1,9),DOM=4026)IOL=0340; GOTO 4027
+4026 SM7$(315,1)="3"; GOTO 4095; REM "INVALID PO NUMBER
+4027 IF SM7$(1,9)<>LAST_ORDER$ THEN LAST_ORDER$=SM7$(1,9),PRODUCT$="N"
+4028 IF SM7$(10,3)=DIM(3) THEN GOSUB 7800; IF PRODUCT_FOUND$="N" THEN SM7$(315,1)="2"; GOTO 4095; REM "No P/O Line Number
+4029 IF SM7$(10,1)="D" THEN GOTO 4035
+4030 DIM PO2$(170),PO2[27]; FIND (Z[9],KEY=SM7$(1,9)+SM7$(10,3),DOM=4031)IOL=0350; GOTO 4034 ! WO235823, correct DIM, was FS2[27] changed to PO2[27]
+4031 GOSUB 7700; IF SPECIAL_FOUND$="Y" THEN GOTO 4030
+4032 SM7$(315,1)="4"; GOTO 4095; REM "Invalid P/O Line Number
+4034 IF NUL(SM7$(266,10)) AND TRACKING_INFO_ONLY THEN SM7$(99,1)="Y"; GOTO 4060 ! If no vendor info and tracking only enabled, set don't bill flag and skip veendor inv checks
+4035 IF SM7$(266,10)=DIM(10) THEN SM7$(315,1)="5"; GOTO 4095; REM "NO VENDOR INVOICE NUMBER
+4040 FIND (Z[5],KEY=PO1$(7,10)+SM7$(266,10),DOM=4041); SM7$(315,1)="6"; GOTO 4095; REM "VENDOR/INVOICE IN USE - A/P OPEN INVOICE FILE
+4045 FIND (Z[6],KEY=PO1$(7,10)+SM7$(266,10),DOM=4046); SM7$(315,1)="7"; GOTO 4095; REM "Vendor/Invoice is use - A/P Invoice History File
+4050 IF QTY_REC=0 THEN SM7$(315,1)="8"; GOTO 4095; REM "Missing Quantity Received
+4054 IF PO2$(10,1)="S" AND PO2[1]=0 THEN PO2[1]=1; REM "Special charge extnesion only type
+4055 IF PO2$(10,1)<>"S" THEN IF PO2[1]>0 THEN IF QTY_REC>PO2[1]*1.1 THEN SM7$(315,1)="9"; GOTO 4095; REM "Quantity received is more than 10% overrun over open quantity.  Don't check if S type line.
+4095 RETURN 
+4100 REM "BREAK OUT IF COMMA DELIMITED
+4110 F_NUM=34,F_LEN$="03030903010510080804021208090104070707070810101020061216090308040660"
+4120 DIM FIELDS[F_NUM]
+4130 FOR F_LOOP=1 TO F_NUM
+4140 FIELDS[F_LOOP]=NUM(F_LEN$(2*F_LOOP-1,2))
+4150 NEXT F_LOOP
+4160 CALL "ZZ2DLM","","",STP(I$,1,$0D$),DELIM$,FIELDS{ALL},"",RETURN$,FIELDS_FOUND
+4199 RETURN 
+5000 REM "EOJ
+5010 IF NOT(ONE_REC) THEN PRINT @(0,15),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 IF NOT(ONE_REC) THEN PRINT (0,ERR=6016)'SB',
+6020 IF NOT(ONE_REC) THEN PRINT @(10,5),"Importing PO Receiving Information"
+6165 IF NOT(ONE_REC) THEN PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Convert date q$ into q0$
+7501 REM "Q$ in YYYYMMDD format or YYMMDD
+7505 Q0$=""
+7506 Q$=STP(Q$,1)
+7507 IF Q$="" THEN GOTO 7545
+7510 IF LEN(Q$)=8 THEN GOTO 7520 ELSE IF LEN(Q$)=6 THEN D1$=STR(NUM(Q$(1,2)):"00") ELSE GOTO 7545
+7515 IF D1$<"50" THEN Q$="20"+Q$ ELSE Q$="19"+Q$
+7520 Q0$=CHR(NUM(Q$(1,3),ERR=7521)-125)+Q$(4,1)+Q$(5,2)+Q$(7,2)
+7545 RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2); X9=NUM(Q0$,ERR=*NEXT); GOTO 7595 ! SSP#267009       
+7556 Q0$=DIM(4) ! SSP#267009                                                  
+7595 RETURN 
+7600 REM "Write out an SM7$ record
+7601 IF NUL(SM7$(1,13)) THEN GOTO 7640 ! ssp 201195
+7602 SM7$(124,3)="001"
+7604 IF NUL(SM7$(324,4)) THEN SM7$(324,4)=FN_REC_NUM$(Z[2]) ! If nul rec_number then get next rec_num from file
+7605 WRITE (Z[2],KEY=SM7$(1,13)+SM7$(124,3),DOM=7606)IOL=0320; GOTO 7640
+7609 REM "Increment sequence number and try again until no dup
+7610 SM7$(124,3)=FN%INCR$(SM7$(124,3)); GOTO 7605 ! 291110 ! STR(NUM(SM7$(124,3))+1:"000") 
+7645 RETURN 
+7700 REM "See if line number is vendor special charge code, if so then look through PO lines to see if we have a match, if found then replace line number, otherwise error situation
+7705 SPECIAL_FOUND$="N"
+7710 READ (Z[8],KEY=PO1$(7,10)+SM7$(10,3),DOM=7711)
+7715 K$=KEY(Z[8],END=7790); READ (Z[8])
+7720 IF K$(1,13)=PO1$(7,10)+SM7$(10,3) THEN SPECIAL$=K$(14,10) ELSE GOTO 7790
+7730 READ (Z[9],KEY=SM7$(1,9),DOM=7731)
+7735 READ (Z[9],END=7715)IOL=0350
+7740 IF PO2$(82,9)<>SM7$(1,9) THEN GOTO 7715
+7745 IF PO2$(101,10)=SPECIAL$ THEN SM7$(10,3)=PO2$(7,3),SPECIAL_FOUND$="Y"; GOTO 7790
+7750 GOTO 7735
+7790 RETURN 
+7800 REM "Line number in record is blank, try to find product line and if found then set that line number
+7805 PRODUCT_FOUND$="N"
+7807 IF PRODUCT$="Y" THEN GOTO 7845
+7810 READ (Z[9],KEY=SM7$(1,9),DOM=7811)
+7815 READ (Z[9],END=7845)IOL=0350
+7820 IF PO2$(82,9)<>SM7$(1,9) THEN GOTO 7845
+7825 IF POS(PO2$(10,1)="SM")=0 THEN PRODUCT_FOUND$="Y",PRODUCT$="Y",SM7$(10,3)=PO2$(7,3); GOTO 7845 ELSE GOTO 7815
+7845 RETURN 
+7900 REM "Check unit cost against system or vendor parameters to see if over percentage allowed, if so place on hold
+7901 IF POS(X3$(9,3)="088")<>0 THEN GOTO 7940; REM "GONNA CHECK FOR EXACT MATCH FOR Worrell 208290 - marina asked to have this removed
+7910 PERCENT=0,PO2_UNIT_COST=0
+7925 IF SMA[0]<>0 THEN PERCENT=SMA[0] ELSE PERCENT=SMP_PARM[0]
+7930 IF PERCENT=0 OR UNIT_COST=0 THEN GOTO 7995
+7935 IF PO2[1]=0 THEN PO2[1]=1; REM " Open qty on po line, if extension only type special this is 0, need to set to 1
+7940 CALL "FM2EXT",Z[13],1,UOM$,QTY_PER_UM,PO2[1],PO2_UNIT_COST,PO2[4],M6[1]; REM "Calculate PO line unit cost based on u/m being used here
+7941 IF POS(X3$(9,3)="088")<>0 AND UNIT_COST<>PO2_UNIT_COST THEN SM7$(315,1)="A"; GOTO 7995; REM "GONNA CHECK FOR EXACT MATCH Worrell 280290 marina asked to have this removed
+7945 PRECISION 4; PERCENT=PERCENT/100+1; PRECISION 2
+7950 IF UNIT_COST>PO2_UNIT_COST*PERCENT THEN SM7$(315,1)="A"
+7995 RETURN 
+8000 REM "If vendor didn't set line to complete then check to see if we should
+8010 TOTAL_REC=PO2[9]+SM7[0]; REM "Invoiced previously plus qty rec'd now
+8012 IF PO2[11]=0 THEN PO2[11]=1; REM "In case it's an extension only special charge
+8015 IF PO2$(10,1)<>"S" THEN IF TOTAL_REC>PO2[11]*1.1 THEN SM7$(315,1)="B"; GOTO 8045; REM "Check total received against original qty ordered to see if over 10% overrun.  Don't check if S type line.
+8020 IF TOTAL_REC>=PO2[11] THEN SM7$(312,1)="Y",SM7$(316,1)="N" ELSE SM7[11]=PO2[11]-TOTAL_REC,SM7$(316,1)="Y"; IF SM7[11]<0 THEN SM7[11]=0
+8045 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set a"+"nd before the Proceed? question. Set T to total # to do (by calli"+"ng ZZINFO) and T0 to the reporting interval (report every T0 numb"+"er of records) this is typically 2% of total; This also prints a "+"message (@8115),so adjust accordingly
+8107 T=0
+8113 CALL "ZZ2FNC;SERIALRECCNT",32000,T
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar g"+"raph given total #, T and current #, C, and time counter T1 (T1 i"+"s init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8200 REM "If PO line has special shipping then create multiple SM7 records, one for each shipping point for that line, string part of record will be the same with the exception of the ship point (10,1), buckets 0,3,4,11 will change.  Bucket 3 is freight, put the whole amount in the first record, zero in the remaining records.  If the re is an overrun, quantities will be applied based on parameter.  First we will collect all PO3 data and decide how to apply the received quantity, then after making sure we have used it all we will write out the individual SM7 records.
+8205 IF SMA$(11,1)<>" " THEN METHOD$=SMA$(11,1) ELSE IF SMP_PARM$(7,1)<>" " THEN METHOD$=SMP_PARM$(7,1) ELSE METHOD$="S"; REM "Split shipping overrun method, S=Standard (prorate), L=Last shipping point
+8210 COMMAND_LIST$="I",KEY_SIZE=16,NUM_BUCKETS=12,SM71_KEY$="",SM71$="",TMP$="",RETURN_CODE=0,FIRST_TIME$="Y",Q=0,E=0,B=0,QTY_DIFF=0,EXT_DIFF=0,BO_DIFF=0; DIM SM71[15],TMP2$[1],TMP[1],TMP3$[1]; CALL "ZZRCAP",X3$,X4$,COMMAND_LIST$,KEY_SIZE,NUM_BUCKETS,SM71_KEY$,SM71$,SM71{ALL},TMP$,TMP2${ALL},TMP{ALL},TMP3${ALL},RETURN_CODE; REM "Initialize, WO244750, expand SM7
+8215 COMPLETE$=SM7$(312,1); REM "Complete flag SSP249208, was COMPETE$ 
+8220 IF PO1$(173,1)="C" THEN PO3_KEY$=SM7$(1,8)+" "+SM7$(10,3) ELSE PO3_KEY$=SM7$(1,9)+SM7$(10,3)
+8222 DIM PO3$(299),PO3[3]; READ (Z[10],KEY=PO3_KEY$,DOM=8223)
+8225 READ (Z[10],END=8255)IOL=0430
+8227 IF PO3$(166,9)+PO3$(7,3)<>PO3_KEY$ THEN GOTO 8255
+8228 IF SM7$(13,1)<>" " AND PO3$(10,1)<>SM7$(13,1) THEN GOTO 8225 ! SSP#252573
+8230 DIM SM71$(700),SM71[15] ! WO244750, expand SM7
+8232 SM71$=SM7$,SM71$(13,1)=PO3$(10,1)
+8235 FOR X=0 TO 15; SM71[X]=SM7[X]; NEXT X ! WO244750, expand SM7
+8237 IF FIRST_TIME$="Y" THEN FIRST_TIME$="N",SM71[3]=SM7[3] ELSE SM71[3]=0; REM "Freight
+8240 IF SM7$(13,1)=" " THEN SM71[0]=PO3[0]*SM7[0]/PO2[11] ELSE SM71[0]=SM7[0] ! ssp#252573
+8242 IF METHOD$="L" THEN IF SM7[0]>PO2[11]-PO2[9] THEN SM71[0]=PO3[0]-PO3[2]; REM " If using last shipto method,don't apply overrun to each shipto, all will go to the last one
+8244 Q=Q+SM71[0]; REM "Quantity
+8245 PRECISION 4; FACTOR=SM7[4]/SM7[0]; PRECISION 2; SM71[4]=SM71[0]*FACTOR,E=E+SM71[4]; PRECISION 4; FACTOR2=SM71[0]/SM7[0]; PRECISION 0; SM71[11]=SM7[11]*FACTOR2,B=B+SM71[11]; PRECISION 2; REM "Extended cost,backordered amount
+8247 IF PO3$(11,1)="D" THEN SM71$(318,1)="Y"; IF PO3[2]>0 AND PO3[2]=SM71[0] THEN SM71$(312,1)="Y" ELSE SM71$(312,1)="N",COMPLETE$="N"; REM "Distributor warehosue,need to set flag when going into PO2MAL in SM2UAA so PO7 record will be set to vendor invoice buckets only, no 'real'po receiving.  If received to date for this shipping point is equal to vendor invoice qty for this shipping point then set complete flag to Y else set to N, if N then we need to set all remaining for this line to N
+8248 SM71$(312,1)=COMPLETE$,SM71_KEY$=SM71$(1,13)+SM71$(124,3),COMMAND_LIST$="A",RETURN_CODE=0; CALL "ZZRCAP",X3$,X4$,COMMAND_LIST$,KEY_SIZE,NUM_BUCKETS,SM71_KEY$,SM71$,SM71{ALL},TMP$,TMP2${ALL},TMP{ALL},TMP3${ALL},RETURN_CODE
+8250 GOTO 8225
+8255 IF FIRST_TIME$="Y" THEN SM7$(315,1)="C"; GOSUB 7600; GOTO 8295; REM "Never found any special shipping PO3 records for this order/line
+8257 IF Q<>SM7[0] THEN QTY_DIFF=SM7[0]-Q; REM "Check total quantity
+8258 IF E<>SM7[4] THEN EXT_DIFF=SM7[4]-E; REM "Check total extended cost
+8259 IF B<>SM7[11] THEN BO_DIFF=SM7[11]-B; REM "Check total backordered
+8263 C=0
+8265 DIM SM71_KEY$(16),SM71$(700),SM71[15]; COMMAND_LIST$="R,"+STR(C),RETURN_CODE=0 ! WO244750, expand SM7
+8270 CALL "ZZRCAP",X3$,X4$,COMMAND_LIST$,KEY_SIZE,NUM_BUCKETS,SM71_KEY$,SM71$,SM71{ALL},TMP$,TMP2${ALL},TMP{ALL},TMP3${ALL},RETURN_CODE
+8272 IF RETURN_CODE=1 THEN GOTO 8285 ELSE IF C<>0 THEN GOSUB 7600; REM "No more records or if not first time thru then write out last record before going on
+8275 DIM SM7$(700),SM7[15]; SM7$=SM71$ ! WO244750, expand SM7
+8277 FOR X=0 TO 15; SM7[X]=SM71[X]; NEXT X ! WO244750, expand SM7
+8282 C=C+1; GOTO 8265
+8285 SM7[0]=SM7[0]+QTY_DIFF,SM7[4]=SM7[4]+EXT_DIFF,SM7[11]=SM7[11]+BO_DIFF; GOSUB 7600; REM "Write out last record after adding any leftovers
+8295 RETURN 
+8300 CHECK_CUST_PARMS:! WO235823
+8310 DIM FS1$(606); FIND (Z[11],KEY=SM7$(1,8),DOM=*RETURN)FS1$(1)
+8315 DIM SMB$(90),SMB[2]; FIND (Z[14],KEY=FS1$(6,10),DOM=*NEXT)IOL=0450
+8320 MIN_GP_PERC=SMP_PARM[1]; IF SMB[0]>0 THEN MIN_GP_PERC=SMB[0] ELSE IF SMB[0]=-99.99 THEN MIN_GP_PERC=0 ! SSP243010 - if customer parm set to -99.99 then we want to ignore the minimum GP% logic, should trigger return on 8325
+8325 IF MIN_GP_PERC=0 THEN GOTO *RETURN
+8330 DIM FS2$(356),FS2[29]; FIND (Z[12],KEY=SM7$(1,8)+SM7$(10,3),DOM=*RETURN)IOL=0440
+8332 IF FS2$(155,1)="S" AND SMP_PARM$(13,1)="Y" THEN GOTO *RETURN ! WO 293829
+8335 UNIT_SELL=FS2[4],SELL_UOM$=FS2$(124,4),SELL_QTY_PER_UM=FS2[5]; IF SELL_QTY_PER_UM=0 THEN SELL_QTY_PER_UM=1
+8340 EXT_SELL=0; CALL "FM2EXT",Z[13],0,SELL_UOM$,SELL_QTY_PER_UM,QTY_REC,UNIT_SELL,EXT_SELL,M6[1]
+8345 GP=EXT_SELL-EXT_COST; IF EXT_SELL=0 THEN GP_PERCENT=0 ELSE GP_PERCENT=GP*100/EXT_SELL
+8350 IF GP_PERCENT<MIN_GP_PERC THEN SM7$(315,1)="F"
+8395 RETURN 
+8399 ! 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 DEF FN_REC_NUM$(LOCAL CHANNEL) ! Set 319,4, RECORD_NUMBER based on next record available
+10005 LOCAL CURKNO,LAST_REC_NUM$,REC_NUM$
+10010 DIM LAST_REC_NUM$(4),REC_NUM$(4)
+10015 CURKNO=NUM(FIN(CHANNEL,"CURKNO",ERR=FN_RN_END),ERR=FN_RN_END)
+10020 LAST_REC_NUM$(1)=KEL(CHANNEL,KNO=2,ERR=FN_RN_END)
+10025 IF NUL(LAST_REC_NUM$) THEN DIM LAST_REC_NUM$(LEN(LAST_REC_NUM$),$00$) ! if blank then set to nulls to trigger getting lowest possible key
+10030 REC_NUM$(1)=FN%NEXT_SEQ$(LAST_REC_NUM$,0)
+10035 XTMP$=KEY(CHANNEL,KNO=CURKNO,ERR=FN_RN_END) ! Reset current key number
+10090 FN_RN_END:RETURN REC_NUM$
+10095 END DEF
+10099 ! **********************************************************
+56000 REM " SSP 184766 Check for exact match on cost for United Invoices coming for Solion
+56002 REM "201195-[DT1] ASNs and Invoices are not flowing into TopForm        
+56003 REM "208290-Importing United Invoices 
+56004 REM "235823-Create a new error for CIG Plus, GP% is >= 20%.  Print on
+56006 REM "243010-CIGP Customer Parameter - Minimum GP%, allow entry of -99.99
+56008 REM "244750-Inbound Freight processing in the Customer Invoicing Gateway
+56010 REM "249208-See 248897/288; CIGP special shipping logic with complete   
+56012 REM "257952-Need larger tracking number field to replace 20 character   
+56013 REM "260723-Import Module/Cash Receipts GW/CIG Plus; Allow selection of 
+56014 REM "267009-Invoicing gateways pulling in invalid characters into       
+56015 REM "267009-Invoicing gateways pulling in invalid characters into       
+56016 REM "252573-CIG+ - when importing file.  When special shipping point    
+56017 REM "292770-P/E during CIG+ import  S/M-P5-P1                           
+56018 REM "295105-Modify CIG Plus import feature to support comma separator.  
+56019 REM "293829-CIG Plus: System parameter related to Minimum GP%, exclude  
+56020 REM "307432-DBSPT-154390; CIGP PO Number input to Uppercase             

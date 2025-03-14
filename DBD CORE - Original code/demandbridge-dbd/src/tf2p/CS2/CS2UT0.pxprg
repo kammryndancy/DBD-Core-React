@@ -1,0 +1,80 @@
+0010 REM "Rebuild Requisition Entry files <CS2UT0>
+0035 REM "5.5 - 03/06/07 - 9.837777 - mhe - SSP# 205703
+0037 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0110 X0$="CS2UT0",X1$="Rebuild Requistion Entry Information"
+0120 DIM Z0$(80,"-")
+0130 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2
+0200 REM 
+0205 PRINT @(16,8),"Current company is ",X3$(9,3),
+0220 INPUT @(8,10),"Company number to rebuild? ",C0$,
+0222 IF C0$="" THEN GOTO 9950
+0225 C0$=STR(NUM(C0$):"000"); PRINT @(35,10),'CL',C0$,
+0246 GOSUB 7500
+0250 CLOSE (1)
+0275 OPEN (1)"CS0"+C0$
+0276 LOCK (1,ERR=8900)
+0295 INPUT (0,ERR=0295)@(10,20),"Are you sure that you wish to rebuild these files? ",A$:("Y"=0296,"y"=0296,"N"=9930,"n"=9930)
+0296 PRINT @(0,20),'CE',
+0300 REM 
+0310 PRINT @(0,3),'CE',@(23,10),"Clearing sort files",
+0320 F$="CS3"+C0$; GOSUB 7000
+0600 REM 
+0610 CLOSE (2)
+0620 OPEN (2)"CS3"+C0$
+1000 REM 
+1010 PRINT @(0,10),'CE',@(20,10),"Rebuilding Requisition Entry Information",
+1020 K1$=KEY(1,END=1090); READ (1)
+1035 PRINT @(30,12),K1$,
+1040 WRITE (2,KEY=K1$(1,10)+K1$(15,10)+K1$(11,4))
+1060 GOTO 1020
+1199 GOTO 9900
+4000 REM "Update AR1
+4005 C$=""; DIM C[15]
+4010 EXTRACT (6,KEY=S$(6,10),DOM=4040)IOL=0405
+4020 C[13]=C[13]+L[6]
+4025 IF C[13]<0 THEN C[13]=0
+4030 WRITE (6,KEY=S$(6,10))IOL=0405
+4040 RETURN 
+4050 REM "Update FS5
+4055 IF POS(L$(155,1)="IC")<>0 THEN GOTO 4065
+4056 REM "if not inv check to see if custom item that is also customer inv.
+4057 IF L$(14,1)<>"Y" THEN GOTO 4090
+4059 L$(161,10)=S$(6,10)
+4060 READ (12,KEY=L$(161,10)+L$(19,10),DOM=4090)
+4065 IF L$(155,1)="I" THEN DIM L0$(20); L0$(11,10)=L$(19,10) ELSE L0$=L$(161,10)+L$(19,10)
+4070 L0$=L0$+L$(10,4)+L$(147,8)+L$(6,3)
+4075 WRITE (9,KEY=L0$)
+4080 GOSUB 4100
+4090 RETURN 
+4100 REM "Update IC1
+4105 READ (7,KEY=L0$(1,24),DOM=4140)IOL=0505
+4110 I[7]=I[7]+L[0]; IF I[7]<0 THEN I[7]=0
+4135 WRITE (7,KEY=L0$(1,24))IOL=0505
+4140 RETURN 
+7000 REM "Erase and redefine a file
+7004 PRINT @(30,12),'CE',F$,
+7005 CLOSE (5); OPEN (5)F$
+7010 F0$=FN%FID$(5); CLOSE (5) ! [205703]-changed FID() to FN%FID$()
+7015 ERASE F0$(4,6),ERR=7016; GOTO 7015
+7020 FILE F0$
+7040 RETURN 
+7500 F$="CS0"
+7510 E$="Required Files cannot be locked"
+7520 FOR I=1 TO LEN(F$) STEP 3
+7530 CLOSE (1); OPEN (1,ERR=8900)F$(I,3)+C0$; LOCK (1,ERR=8900)
+7540 NEXT I
+7550 RETURN 
+8900 REM "Error messages
+8910 PRINT @(0,20),'CE',@(20,20),E$," ",
+8920 INPUT *
+8930 GOTO 9950
+9900 REM 
+9910 PRINT @(0,3),'CE',
+9920 INPUT @(20,10),"Process complete - <Return> to continue ",*
+9950 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56002 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$

@@ -1,0 +1,29 @@
+0010 REM "EC Check Export File <EC2UAB>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 08/11/98 - 19.64 - kmc - SSP# 098699
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "Find number of records in EC1, return value in COUNT$
+0071 REM "If file locked then we are adding to it, so wait
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,COUNT$,Q1$
+0100 SETERR 9000
+0110 X0$="EC2UAB",X1$="EC Check Export File"
+1000 REM "Open file
+1005 COUNT$="0"
+1010 INDEX=UNT; IF INDEX=14 THEN OPEN (14)FID(0); GOTO 1010
+1020 OPEN (INDEX,ERR=1021)"EC1"+X3$(9,3); GOTO 1100
+1025 IF ERR=0 THEN COUNT$="-1"; GOTO 9900; REM "If file locked, return -1 as a flag to say the file is busy now
+1030 OPEN (INDEX,ERR=1031)"EC1"; GOTO 1100; REM "iF not error 0, then try without company code
+1035 IF ERR=0 THEN COUNT$="-1"; GOTO 9900; REM "If file locked, return -1 as a flag to say the file is busy now
+1040 GOTO 9000; REM "If still here then some other error, so goto error logic
+1100 REM "File is open on INDEX so get number of records to put into count$
+1120 TMP$=FN%XFD$(INDEX,10); COUNT$=STR(DEC($00$+TMP$))
+1195 GOTO 9900
+9000 REM "Error
+9010 COUNT$="ERROR # "+STR(ERR)+" @ LINE "+STR(TCB(5))+" IN "+X0$
+9020 EXIT ERR
+9900 REM "END PROGRAM
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

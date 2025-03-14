@@ -1,0 +1,114 @@
+0010 REM "Rebuild ship-to sort by location <FM2UTT>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 05/27/14 - 15.504722 - tma - SSP# 269040
+0037 REM "269040-Modify Rebuild Ship-to Sorts utility with ability to run as 
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 REM "Added ASR sort rebuild on WO103371
+0046 REM "Added FTD sort rebuild on WO101301
+0089 REM "We will use the bargraph logic based on size of FM0, even though, not all records will be processed, the bulk of them should be C type records, we will show 100% when done
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FM2UTT",X1$="Rebuild Ship-to Sorts",K9$="",K9=0
+0120 DIM S$(20)
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 IF %IN_JOBSTREAM THEN Z$="01O FM0...  02O FMM...  03O ASR...  04O FTD...  13O ZZPARM  " ELSE Z$="01L FM0...  02L FMM...  03L ASR...  04L FTD...  13O ZZPARM  " ! SSP#269040
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0590 DIM OP_PARM$(512); READ (Z[13],KEY=X3$(9,3)+"F/M")OP_PARM$(1)
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0710 Q$=STR(Z[2]:"00"),Q2$=STR(Z[3]:"00"),Q3$=STR(Z[4]:"00")
+0740 IF NOT(%IN_JOBSTREAM) THEN CALL "ZZINIT",Q$; CALL "ZZINIT",Q2$; CALL "ZZINIT",Q3$ ! SSP#269040
+0980 READ (Z[1],KEY="C",DOM=0981)
+0990 IF Q1$<>"*" THEN PRINT @(10,13),"Customer:", ! SSP#269040
+1000 REM 
+1020 READ RECORD (Z[1],END=5000)A$
+1022 IF A$(1,1)<>"C" THEN GOTO 5000
+1025 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1030 Q=0; IF A$(214,9)=S$(1,9) THEN A$(214,9)=A$(12,4),Q=1
+1035 IF POS(OP_PARM$(279,1)="YF")<>0 AND STP(A$(382,20),3," ")="" THEN A$(382,20)=A$(12,4),Q=1
+1040 A2$=A$(1,11)+A$(214,9)+A$(12,4)
+1045 IF Q=1 THEN WRITE RECORD (Z[1],KEY=A$(1,15))A$; IF RT_PARM$<>"" THEN CUST$=A$(2,10); CALL "RT2WOC",ERR=1046,X3$,X4$,CUST$,"FM0...","U",A$(1,15)
+1055 A3$=A$(200,10)+A$(1,15)
+1060 A4$=A$(1,11)+A$(382,20)+A$(12,4)
+1070 WRITE (Z[2],KEY=A2$)
+1075 WRITE (Z[3],KEY=A3$)
+1080 IF POS(OP_PARM$(279,1)="YF")<>0 THEN WRITE (Z[4],KEY=A4$); REM "WO101301
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5015 IF %IN_JOBSTREAM THEN GOSUB 7000 ! SSP#269040
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Sort file rebuild complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 IF Q1$<>"*" THEN PRINT (0,ERR=6016)'SB', ! SSP#269040
+6020 IF Q1$<>"*" THEN PRINT @(0,4),"This program will process the Customer Ship-to Master file and rebuild the alternate sort file FMM by location code and the sort file ARS by phone number." ! SSP#269040
+6165 IF Q1$<>"*" THEN PRINT (0,ERR=6166)'SF', ! SSP#269040
+6190 RETURN 
+7000 REM "If in Job Stream Mode remove invalid records !ssp#269040
+7010 READ (Z[2],KEY="",DOM=*NEXT)
+7020 FMM_KEY$=KEY(Z[2],END=7060); READ (Z[2])
+7030 READ (Z[1],KEY=FMM_KEY$(1,1)+FMM_KEY$(2,10)+FMM_KEY$(21,4),DOM=*NEXT); GOTO 7020
+7040 REMOVE (Z[2],KEY=FMM_KEY$)
+7050 GOTO 7020
+7060 READ (Z[3],KEY="",DOM=*NEXT)
+7070 ASR_KEY$=KEY(Z[3],END=7100); READ (Z[3])
+7080 READ (Z[1],KEY=ASR_KEY$(11,1)+ASR_KEY$(12,10)+ASR_KEY$(22,4),DOM=*NEXT); GOTO 7070
+7090 REMOVE (Z[3],KEY=ASR_KEY$)
+7095 GOTO 7070
+7100 READ (Z[4],KEY="",DOM=*NEXT)
+7110 FTD_KEY$=KEY(Z[4],END=7190); READ (Z[4])
+7120 READ (Z[1],KEY=FTD_KEY$(1,1)+FTD_KEY$(2,10)+FTD_KEY$(32,4),DOM=*NEXT); GOTO 7110
+7130 REMOVE (Z[4],KEY=FTD_KEY$)
+7140 GOTO 7110
+7190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 IF Q1$<>"*" THEN PRINT @(0,7),"There are "+STR(T)+" records to process" ! SSP#269040
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9011 IF MID(Q0$,1,2)="JS" THEN A1$=$FF$+X0$+"|Error|"+STR(Y5)+"|Line|"+STR(Y6)+"|"; GOTO 9900 ! SSP#269040
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

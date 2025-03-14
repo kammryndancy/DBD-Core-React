@@ -1,0 +1,144 @@
+<PxTable>
+ TableName=ZS0500
+ TableKey=K971278644
+ FileCreate=KEYED "ZS0500",15,0,-26,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZS0_MenuSec"
+    PHYSICALPATH$="="+QUO+"ZS0"+QUO+"+%C$"
+    LASTCHANGEDATE$="2006/08/21 08:58:29-lms"
+    LASTUPDATEDFILE$="2024/07/05 11:32:57-LoriCave_aalhel"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST MENU_CODE$:[LEN(3)]"
+    NAME$="MENU_CODE"
+    DESCRIPTION$="=MSG("+QUO+"MENU_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Menu code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST OPT_CODE_TO_SECURE$:[LEN(2)]"
+    NAME$="OPT_CODE_TO_SECURE"
+    DESCRIPTION$="=MSG("+QUO+"OPT_C_T_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Option code to secure"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST ZS0_UNUSED_1$:[LEN(6)]"
+    NAME$="ZS0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    NOTES$="(Unused key - for future use)"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST MENU_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="MENU_CODE"
+    DESCRIPTION$="=MSG("+QUO+"MENU_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Menu code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST OPT_CODE_TO_SECURE$:[LEN(2,SEP=SEP)]"
+    NAME$="OPT_CODE_TO_SECURE"
+    DESCRIPTION$="=MSG("+QUO+"OPT_C_T_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Option code to secure"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST ZS0_UNUSED_1$:[LEN(6,SEP=SEP)]"
+    NAME$="ZS0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="(Unused key - for future use)"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST PASSWORD$:[LEN(6,SEP=SEP)]"
+    NAME$="PASSWORD"
+    DESCRIPTION$="=MSG("+QUO+"PASSWORD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Password (blank = none)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST MIN_ACCESS_LEVEL$:[LEN(SEP,SIZ=2)]"
+    NAME$="MIN_ACCESS_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"MIN_A_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="L"
+    NOTES$="Minimum Access Level (blank=none)"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="A/RI3      "
+    MENU_CODE$="A/R"
+    OPT_CODE_TO_SECURE$="I3"
+    ZS0_UNUSED_1$="      "
+    PASSWORD$="      "
+    MIN_ACCESS_LEVEL$="90 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZX        "
+    MENU_CODE$="ZZX"
+    OPT_CODE_TO_SECURE$="  "
+    ZS0_UNUSED_1$="      "
+    PASSWORD$="      "
+    MIN_ACCESS_LEVEL$="90 "
+   </RecordData>
+
+</Data>
+
+</PxTable>

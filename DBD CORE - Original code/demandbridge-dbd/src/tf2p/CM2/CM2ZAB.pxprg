@@ -1,0 +1,17 @@
+0010 REM "Return Fee Parameters for R/L Company <CM2ZAB>
+0035 REM "3.8 - 07/13/94 - 13.56
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1010 REM "F0 is file for ZZPARM if open
+1011 REM "C0$ is source company code
+1012 REM C(0)=SERVICE FEE %, C(1)=AD FEE %, C(2)=DA TOTAL PERCENTAGE OF NP
+1020 ENTER X3$,F0,C0$,C{ALL}
+1025 IF F0=0 THEN EXIT 99
+1200 REM 
+1210 DIM C[10]
+1220 READ (F0,KEY="R/L"+C0$)C1$,*,Q0,Q1
+1230 C[2]=Q0+Q1
+1240 FIND (F0,KEY="ROYALTY"+C1$(58,3))*,Q0,*,*,*,*,*,*,*,*,Q1
+1260 C[0]=Q0,C[1]=Q1
+9940 EXIT 
+9999 END 

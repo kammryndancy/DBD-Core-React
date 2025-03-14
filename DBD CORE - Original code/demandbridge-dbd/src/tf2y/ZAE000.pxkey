@@ -1,0 +1,196 @@
+<PxTable>
+ TableName=ZAE000
+ TableKey=K1007399607
+ FileCreate=KEYED "ZAE000",8,50,134,BSZ=3,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="C0999   "
+    FIELD_1$="C0999   Starting / Ending range info or sort data                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1120020"
+    FIELD_1$="C1120020Source file key / perm. sort file invalid.                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1285026"
+    FIELD_1$="C1285026Error in disk number for work files.                        Change parameters and retry.                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1310011"
+    FIELD_1$="C1310011Control record for definition not present.                  Call up the selection and re-try.                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1399   "
+    FIELD_1$="C1399   Problem with Selection Criteria Specification               Check Criteria and Recompile                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1799   "
+    FIELD_1$="C1799   Problem in output of selected data field                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C1999   "
+    FIELD_1$="C1999   Calculation of totals for primary database output           Check definitio of numeric fields which are being totaled.   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C2620011"
+    FIELD_1$="C2620011The specified field could not be found.                     Check the fields in your selection and retry.                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C3990   "
+    FIELD_1$="C3990   Error in creating selection program.                        Check parameters to ensure correct disk number.              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C4699   "
+    FIELD_1$="C4699   Form type: Output of a selected data field                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C4799   "
+    FIELD_1$="C4799   Form Type: Format change                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C4899   "
+    FIELD_1$="C4899   Form Type: Test Pattern                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C5926041"
+    FIELD_1$="C5926041Data field position exceeds line length                     Reposition field or put fields on multiple lines             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C6050   "
+    FIELD_1$="C6050   Page heading / Printing labels                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C6199   "
+    FIELD_1$="C6199   Output of Titles/Headings                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C6999   "
+    FIELD_1$="C6999   Temporary alternate sort creation                           Check sort elements for validity                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7020   "
+    FIELD_1$="C7020   Undetermined problem with formula data type.                Check formulated data types for validity and re-compile.     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7020098"
+    FIELD_1$="C7020098Data element not valid for open databases.                  Check selection criteria and formulated data fields.         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7099   "
+    FIELD_1$="C7099   Totals calculation                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7199   "
+    FIELD_1$="C7199   Output of Totals                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7399   "
+    FIELD_1$="C7399   Sending line to Printer/Output Device                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C7999   "
+    FIELD_1$="C7999   Calculating Formula type data field                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C8099   "
+    FIELD_1$="C8099   Reading data from other databases                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C8999   "
+    FIELD_1$="C8999   Macro definition, Function type                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E0990047"
+    FIELD_1$="E0990047Starting point for range                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E1150000"
+    FIELD_1$="E1150000The masterfile record is being modified.                    Retry or Ignore                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E1150026"
+    FIELD_1$="E1150026Problem reading the primary database.                       Resort and retry. If problem persists, check data dictionary "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E1520041"
+    FIELD_1$="E1520041Possible invalid print position for first field.            Check field tab position and re-compile.                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E3622011"
+    FIELD_1$="E3622011Field in sort / subtotal not defined in database.           Correct database and retry.                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6040066"
+    FIELD_1$="E6040066User break requested.                                       Press Ctrl-C to break.                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6915000"
+    FIELD_1$="E6915000A record is busy (extracted) in the source file.            Retry or Exit and retry later.                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6932046"
+    FIELD_1$="E6932046Error writing temp sort key.                                Global and data dictionary lengths might not be the same     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6970   "
+    FIELD_1$="E6970   Error in creating temporary sort file.                      Check parameters for correct disk number.                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6970012"
+    FIELD_1$="E6970012Temp sort file already exists and could not be erased.      If UNIX/Xenix, check permissions.  Exit and retry.           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E6970041"
+    FIELD_1$="E6970041Source file is empty.                                       Check files                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E7460047"
+    FIELD_1$="E7460047Run time options need to be set!                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="E9999   "
+    FIELD_1$="E9999   End of Program Section                                                                                                   "
+   </RecordData>
+
+</Data>
+
+</PxTable>

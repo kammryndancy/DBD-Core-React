@@ -1,0 +1,170 @@
+0010 REM "EC VieW a File Function <EC3VWF>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 12/10/12 - 12.778333 - crg - SSP# 259622
+0037 REM "259622-EC RFQ, View Item Specifications, get err 12-EC3VWF-1505.
+0040 REM "Copyright 2012 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3VWF",X1$="EC VieW a File Function"
+0120 EOL$=$0D0A$; REM EOL$=ATH(STP(EC_PARM$(57,8),1))
+0127 HTML_TEXT$="Content-type: text/html"
+0140 DIM MESS_INFO$[20]
+0150 REM "EC$[1]=ESB session record, EC$[2]=client number        , ec$[3]=message from server to called program, EC$[4]=formatted date, EC$[5]=formatted time EC$[6]=ECA2$ available web catalogs (concatonated string) EC$[7]=customer webec parms (ECS)  EC$[8]=image path (customer if set otherwise from ec_parm) EC$[9]=ST_LIST sort code record EC$[10]=reporting whse list EC$[11]=(1,4)warehouse code to use for o/e FM2RT0  (5,4)=would contain the 'other'warehouse for availability checking o/e messaging <not passed to FM2RT0, EC$[12]=email params,see 8000s [13] UNUSED ,[14]=ECY$, [15]=inventory system parameters [16]=Credict Card code/desc list [17]=active webcode [18-20] unused
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+1000 REM "Process DATA array
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1020 T_IN=POS("."=TAG$); IF T_IN THEN TAG_PARM$=MID(TAG$,T_IN+1),TAG$=MID(TAG$,1,T_IN-1) ELSE TAG_PARM$=""
+1025 SWITCH TAG$ ! 1185 end switch
+1035 CASE "template"; TEMPLATE$=VALUE$; BREAK
+1040 CASE "file_name"; BREAK ! FILE_NAME$=VALUE$; BREAK  ! 201473
+1045 CASE "mime_type"; MIME_TYPE$=VALUE$; BREAK
+1050 CASE "rfq_number"; RFQ_NUMBER$=VALUE$; BREAK
+1055 CASE "il_type"; IMAGE_LIB_TYPE$=VALUE$; BREAK
+1060 CASE "il_ref_1"; IMAGE_LIB_REF_1$=VALUE$; BREAK
+1065 CASE "il_ref_2"; IMAGE_LIB_REF_2$=VALUE$; BREAK
+1070 CASE "nof_template"; NOF_TEMPLATE$=VALUE$; BREAK
+1180 DEFAULT ; VIA TAG$=VALUE$; BREAK ! Set to same name variable as TAG$
+1185 END SWITCH ! 1050
+1190 NEXT I
+1195 DIM BYBINFO$[5]; BYBINFO$[1]=PGN,BYBINFO$[2]="184999.20050615",BYBINFO$[3]=TEMPLATE$,BYBOPTIONS$=""
+1210 ! perform any data creation function here - update a worksheet, etc
+1215 IF NOT(NUL(RFQ_NUMBER$)) THEN FILE_NAME$="/usr/lib/pvx/archive/"+X3$(9,3)+"/RFQ/"+RFQ_NUMBER$+".pdf"
+1400 ! If we have a FILE_NAME$ by this point, then we will process it here and leave, else continue on to 1500 to fill in a template
+1410 IF NOT(NUL(FILE_NAME$)) THEN {
+1420 FILE_CHAN=HFN; OPEN (FILE_CHAN,ISZ=8000,ERR=ERR_ON_FILE_OPEN)FILE_NAME$
+1425 CONTENT_LENGTH=0; FILE_FIB$=FIB(FILE_CHAN,ERR=*NEXT); CONTENT_LENGTH=DEC($00$+MID(FILE_FIB$,12,3),ERR=*NEXT)
+1430 GOSUB RESET_OUTPUT_FILE
+1435 GOSUB SET_MIME_TYPE
+1438 MX=FN%_LOG_MESSAGE("MESG","SESSION_ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|EC3VWF|STARTING FILE|FILE_NAME|"+FILE_NAME$+"|CONTENT_LENGTH|"+STR(CONTENT_LENGTH)+"|MIME_TYPE|"+MIME_TYPE$+"|")
+1440 IF NO_HEADER$<>"Y" THEN GOSUB MAKE_HEADER
+1470 READ RECORD (FILE_CHAN,END=DONE_WITH_FILE)OUT$; WRITE RECORD (OUTPUT)OUT$; GOTO *SAME
+1475 DONE_WITH_FILE:
+1490 GOTO 9900 ! We're done
+1495  }
+1499 ! *****************************************************
+1500 PROCESS_TEMPLATE:! Fill in a template
+1503 ! status and status_msg are given as examples
+1504 IF NOT(NUL(%BASIC2$)) THEN GOTO 2990 ! Skip outputting template if additional program to be done
+1505 CLOSE (100); OPEN (100,OPT="TEXT",ERR=9000)TEMPLATE$
+1510 READ (100,END=2950)LINE$; LINE$=FNBYB$(LINE$)
+1515 NAME$=MID(FILE_NAME$,POS(DLM=FILE_NAME$,-1)+1) ! Name of file minus directories
+1519 CHKTAG=1
+1520 WHILE CHKTAG ! 2800 wend
+1522 P1=MSK(LINE$,"\?tf\?[^?]*\?"); IF P1=0 THEN CHKTAG=0; BREAK
+1530 TAG$=LINE$(P1,MSL); LINE1$=LINE$(1,P1-1),LINE2$=MID(LINE$,P1+MSL)
+1600 SWITCH TAG$ ! 2790 end switch
+1610 CASE "?tf?status_msg?"; NN=FNN(STR(STATUS)); BREAK
+1615 CASE "?tf?template?"; NN=FNN(TEMPLATE$); BREAK
+1620 CASE "?tf?file_name?"; NN=FNN(FILE_NAME$); BREAK
+1625 CASE "?tf?mime_type?"; NN=FNN(MIME_TYPE$); BREAK
+1630 CASE "?tf?rfq_number?"; NN=FNN(RFQ_NUMBER$); BREAK
+1635 CASE "?tf?il_type?"; NN=FNN(IMAGE_LIB_TYPE$); BREAK
+1640 CASE "?tf?il_ref_1?"; NN=FNN(IMAGE_LIB_REF_1$); BREAK
+1645 CASE "?tf?il_ref_2?"; NN=FNN(IMAGE_LIB_REF_2$); BREAK
+1650 CASE "?tf?nof_template?"; NN=FNN(NOF_TEMPLATE$); BREAK
+2785 DEFAULT ; LINE$=LINE1$+LINE2$ ! didn't match existing tag, so remove it
+2790 END SWITCH ! 1600
+2800 WEND ! 1520
+2810 IF LINE$<>"" THEN PRINT (OUTPUT)LINE$
+2900 GOTO 1510; REM next read
+2990 GOTO 9900
+5100 ADD_MSG_TO_LOG:! Add message to log file
+5105 ! Add other info as needed here
+5110 MOUT$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|"
+5135 MX=FN%_LOG_MESSAGE("MESG",MOUT$)
+5145 RETURN 
+5149 ! 
+7000 ERR_ON_FILE_OPEN:! We had an error opening the requested file
+7010 IF NOT(NUL(NOF_TEMPLATE$)) THEN {
+7015 CALL "EC3SVT",X3$,X4$,EC_PARM$,EC${ALL},NOF_TEMPLATE$
+7020 TEMPLATE$=NOF_TEMPLATE$
+7030 MX=FN%_LOG_MESSAGE("EXCP","SESSION_ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|EC3VWF|CONTENT FILE NOT FOUND|FILE_NAME|"+FILE_NAME$+"|NOF TEMPLATE|"+TEMPLATE$+"|")
+7040 GOTO PROCESS_TEMPLATE
+7045  } ELSE {
+7046 MX=FN%_LOG_MESSAGE("EXCP","SESSION_ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|EC3VWF|CONTENT FILE NOT FOUND|FILE_NAME|"+FILE_NAME$+"|NO NOF TEMPLATE TO SHOW|")
+7047 GOTO 9900
+7048  }
+7049 ! ******************************************************
+7050 RESET_OUTPUT_FILE:! so we don't require a no_header flag, erase & redefine the output file and reopen as binary file
+7055 OUT_FILE$=PTH(OUTPUT); CLOSE (OUTPUT)
+7060 ERASE OUT_FILE$,ERR=*NEXT
+7065 SERIAL OUT_FILE$,ERR=*NEXT
+7080 OPEN (OUTPUT,ISZ=1)OUT_FILE$
+7095 RETURN 
+7099 ! ******************************************************
+7100 SET_MIME_TYPE:! if MIME_TYPE$ is not set, then attempt to set it here based on file ext (new types added as needed) or default to html
+7105 IF NUL(MIME_TYPE$) THEN {! If MIME_TYPE$ is set then we will skip this part
+7110 EXT_POS=POS("."=FILE_NAME$,-1) ! look for the 'last' period
+7115 IF EXT_POS>0 THEN {
+7120 EXT$=LCS(MID(FILE_NAME$,EXT_POS+1))
+7125 SWITCH EXT$
+7127 CASE "pdf"; MIME_TYPE$="application/pdf"; BREAK
+7129 CASE "doc"; MIME_TYPE$="application/msword"; BREAK
+7130 CASE "xls"; MIME_TYPE$="application/vnd.ms-excel"+EOL$+"Content-Disposition: inline;filename="+NAME$; BREAK
+7132 CASE "ppt"; MIME_TYPE$="application/powerpoint"; BREAK
+7134 CASE "gz"; MIME_TYPE$="application/x-gzip"; BREAK
+7136 CASE "zip"; MIME_TYPE$="application/zip"; BREAK
+7138 CASE "jar"; MIME_TYPE$="application/x-java-archive"; BREAK
+7140 CASE "bin","exe"; MIME_TYPE$="application/octet-stream"; BREAK
+7141 CASE "tif","tiff"; MIME_TYPE$="image/tiff"; BREAK
+7142 CASE "gif","png"; MIME_TYPE$="image/"+EXT$; BREAK ! General image handling
+7143 CASE "jpg","jpeg","jpe"; MIME_TYPE$="image/jpeg"; BREAK
+7144 CASE "wav"; MIME_TYPE$="audio/x-wav"; BREAK
+7146 CASE "mid"; MIME_TYPE$="audio/x-midi"; BREAK
+7148 CASE "txt"; MIME_TYPE$="text/plain"; BREAK
+7150 CASE "rtf"; MIME_TYPE$="text/richtext"; BREAK
+7152 CASE "htm","html"; MIME_TYPE$="text/html"; BREAK
+7154 CASE "xml"; MIME_TYPE$="text/xml"; BREAK
+7156 CASE "mpg","mpeg","mpe"; MIME_TYPE$="video/mpeg"; BREAK
+7158 CASE "avi"; MIME_TYPE$="video/x-msvideo"; BREAK
+7160 CASE "qt","mov"; MIME_TYPE$="video/quicktime"; BREAK
+7170 END SWITCH ! EXT$
+7180  } ! EXT_POS>0
+7185  } ! NUL(MIME_TYPE$)
+7190 IF NUL(MIME_TYPE$) THEN MIME_TYPE$="text/html"
+7195 RETURN 
+7199 ! *****************************************************
+7200 MAKE_HEADER:! Write header out based on MIME_TYPE$ and CONTENT_LENGTH
+7210 WRITE RECORD (OUTPUT)"Content-Type: "+MIME_TYPE$+EOL$
+7215 IF CONTENT_LENGTH THEN WRITE RECORD (OUTPUT)"Content-Length: "+STR(CONTENT_LENGTH)+EOL$
+7235 WRITE RECORD (OUTPUT)EOL$
+7245 RETURN 
+7249 ! *******************************************************
+8800 DEF FNBYB$(LOCAL DATA$)
+8801 ! Send DATA$ through EC3BYB
+8820 CALL "EC3BYB",ERR=*NEXT,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,DATA$,BYBINFO${ALL},BYBOPTIONS$
+8840 RETURN DATA$
+8845 END DEF
+8849 ! *****************************************************
+8850 DEF FNM$(LOCAL AMOUNT, LOCAL MASK$)
+8855 ! if AMOUNT is 0 then return null string, else STR AMOUNT with MASK and strip leading and trailing blanks
+8860 IF AMOUNT=0 THEN RETURN "" ELSE RETURN STP(STR(AMOUNT:MASK$),2)
+8895 END DEF
+8899 ! **********************************************************
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+8920 DEF FNN(LOCAL DATA$)
+8925 LINE$=LINE1$+DATA$+LINE2$
+8930 RETURN 0
+8949 ! *****************************
+8950 ! FND$ - Standard date routine
+8955 DEF FND$(LOCAL DATE_IN$, LOCAL SPECIAL_FORMAT$)
+8960 LOCAL DATE_OUT$
+8965 IF NUL(DATE_IN$) THEN DATE_OUT$="" ELSE IF NOT(NUL(SPECIAL_FORMAT$)) THEN DATE_OUT$=FN%FMT_TFDATE$(DATE_IN$,SPECIAL_FORMAT$) ELSE CALL "ZZDISP","DX",DATE_IN$,"",X3$,DATE_OUT$,"",0,0,X4$
+8970 RETURN DATE_OUT$
+8975 END DEF
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 REM "201473-EC3SRV and EC3VWF allows any aribitrary file on the TopForm
+56002 REM "208625-Turn off printing header in EC3VWF if no_header=Y present
+56004 REM "259622-EC RFQ, View Item Specifications, get err 12-EC3VWF-1505.

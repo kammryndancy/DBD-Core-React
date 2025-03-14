@@ -1,0 +1,7 @@
+0010 REM "@LOC_CODE: Set location code for FMloc to 001 <YLOCCD>
+0015 REM "Prog Type: M -360016  
+1020 ENTER X3$,Z0$,Z1$,Z2$
+1210 Z2$=Z0$+Z1$+"0001"
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

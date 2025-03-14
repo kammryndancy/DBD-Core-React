@@ -1,0 +1,11 @@
+0010 ! Salesperson/Product Code Commission Setup <ARGMQA>
+0020 ! Works with  MNT_ASQ for button lookup
+0035 ! "6.0 - 06/18/02 - 8.960555 - dmm
+0040 ! "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0100 LOOKUP:
+0110 PROCESS "QRY_ASQ","../ARG/AR.EN",X$
+0120 READ DATA FROM X$ TO SALESPERSON_CODE$,PRODUCT_CODE$
+0130 _EOM$=$0D$,_ENABLE_FLG=1,_KCNT=_NUMKEYS
+0190 LOOKUP_END:RETURN 
+9999 END 

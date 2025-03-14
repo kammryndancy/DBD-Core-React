@@ -1,0 +1,132 @@
+0010 REM "transfer files in/out of inbox/outbox <CM2TRN>
+0011 REM "remote customer site.
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 04/07/03 - 13.141388 - dmm - SSP# 159455
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 REM 
+0050 REM "F0$=filename in TopForm
+0051 REM "F1$=filename externally
+0052 REM "C0=control 0= transfer to outbox, 1=transfer from inbox, 2=Put string F0$ into file F1$ in outbox, 3=list of files matching F0$ pattern in the inbox (returned in F2$), 4=Remove F1$ from inbox, 5=Move F0$ to F1$ in inbox
+0053 REM " F2$ is return string if used
+0054 REM "F3$ is  spare
+0090 CLEAR ; SETERR 0100; ENTER X3$,C0,F0$,F1$,F2$,F3$
+0100 SETERR 9000
+0110 X0$="CM2TRN"
+0120 DIM S0$(40)
+0700 REM "Constants
+0705 IF X3$(77,1)="D" THEN S1$="\" ELSE S1$="/"
+0710 D1$="comm"+S1$+"inbox"
+0715 D2$="comm"+S1$+"prooffice" ! D2$="comm"+S1$+"outbox" WO159455
+0900 REM "Decide where to go
+0910 ON C0 GOTO 1000,1500,2000,2500,3000,4000,9900
+1000 REM "Transfer file F0$ to file F1$ in outbox
+1010 ON POS(X3$(77,1)="UD") GOTO 9900,1015,1020,9900
+1015 C$="umask 0;cp ",C0$=" > /dev/null"; GOTO 1030; REM "Unix System
+1020 C$="copy ",C0$=""; GOTO 1030; REM " Dos System
+1030 GOSUB 7500; REM "Get data DIRectory into D0$
+1049 REM "Build command line from data DIR to outbox (D2$)
+1050 C$=C$+D0$+S1$+F0$+" "+D2$+S1$+F1$+C0$
+1060 INVOKE C$
+1495 GOTO 9900
+1500 REM "Transfer file F1$ in inbox to data DIRectory as file F0$
+1510 ON POS(X3$(77,1)="UD") GOTO 9900,1515,1520,9900
+1515 C$="umask 0; cp "; GOTO 1530; REM "unix
+1520 C$="copy "; GOTO 1530; REM "dos
+1530 GOSUB 7500; REM "DATA DIR INTO D0$
+1535 IF X3$(77,1)="U" AND X3$(30,1)="M" AND F0$(1,3)="TMP" THEN C$=C$+D1$+S1$+F1$+" "+D0$+S1$+"TMP"+S1$+F0$; GOTO 1550; REM "if unix & master system and tmp file then transfer to usr DIR so basic can find it
+1540 C$=C$+D1$+S1$+F1$+" "+D0$+S1$+F0$
+1545 CLOSE (14); WAIT 1; ERASE F0$,ERR=1546; WAIT 2
+1550 INVOKE C$
+1995 GOTO 9900
+2000 REM "Put string F0$ into file F1$ in outbox
+2010 ON POS(X3$(77,1)="UD") GOTO 9900,2015,2020,9900
+2015 C$="umask 0;echo "+QUO+F0$+QUO+" > "+D2$+S1$+F1$; GOTO 2100; REM "Unix
+2020 C$="echo "+QUO+F0$+QUO+" > "+D2$+S1$+F1$; GOTO 2100; REM "DOS
+2100 REM 
+2110 INVOKE C$
+2495 GOTO 9900
+2500 REM "Return string (F2$) of file names matching pattern F0$ in the inbox
+2501 REM "string is file names seperated by "|"s
+2505 GOSUB 7500
+2510 ON POS(X3$(77,1)="UD") GOTO 9900,2515,2520,9900
+2515 C$="ls ",S$=$0A$,C1$=" 2> /dev/null"; GOTO 2530; REM "Unix
+2520 C$="DIR ",S$=$0A0D$,C1$=""; GOTO 2530; REM "DOS
+2530 IF X3$(30,1)="M" THEN C$=C$+D1$+S1$+F0$+" > "+D0$+S1$+"TMP"+S1$+"TMP"+FID(0)+C1$ ELSE C$=C$+D1$+S1$+F0$+" > "+D0$+S1$+"TMP"+FID(0)+C1$
+2535 INVOKE C$
+2550 CLOSE (14); OPEN (14)"TMP"+FID(0)
+2555 DIM Z5$(512,$00$)
+2560 F2$=""
+2565 READ RECORD (14,END=2570)R$; R$=R$+$0A$,F2$=F2$+R$; GOTO 2565
+2570 F2$=F2$(1,POS(Z5$=F2$+Z5$)-1)
+2574 IF X3$(77,1)="D" THEN GOTO 2590
+2575 REM " REMOVE SEPERATORS - S$ UNIX
+2580 P=POS(S$=F2$)
+2585 IF P=0 THEN GOTO 2600 ELSE IF P=1 THEN F2$=F2$(LEN(S$)+1) ELSE IF P+LEN(S$)=LEN(F2$) THEN F2$=F2$(1,LEN(F2$)-LEN(S$))+"|" ELSE F2$=F2$(1,P-1)+"|"+F2$(P+LEN(S$))
+2586 GOTO 2580
+2590 REM "Get files - DOS
+2591 F4$=""
+2592 P=POS("CM"=F2$)
+2594 IF P=0 THEN F2$=F4$; GOTO 2600 ELSE F4$=F4$+FNS$(F2$(P,8))+"."+F2$(P+9,3)+"|",F2$=F2$(P+12); GOTO 2592
+2600 REM "For  unix remove /s in file names leaving only the names
+2605 IF X3$(77,1)<>"U" THEN GOTO 2650
+2610 J$=F2$,F2$=""
+2615 P=POS("|"=J$); IF P=0 THEN GOTO 2650
+2620 J0$=J$(1,P-1); IF P=LEN(J$) THEN J$="" ELSE J$=J$(P+1)
+2625 P1=POS("/"=J0$); IF P1<>0 THEN J0$=J0$(P1+1); GOTO 2625
+2630 F2$=F2$+J0$+"|"
+2635 GOTO 2615
+2995 GOTO 9900
+3000 REM "Remove file F1$ from the inbox
+3010 ON POS(X3$(77,1)="UD") GOTO 9900,3015,3020,9900
+3015 C$="rm "; GOTO 3030; REM "Unix
+3020 C$="del "; GOTO 3030; REM "Dos
+3050 C$=C$+D1$+S1$+F1$
+3060 INVOKE C$
+3495 GOTO 9900
+4000 REM "Move the file F0$ back to the inbox as F1$
+4010 ON POS(X3$(77,1)="UD") GOTO 9900,4020,4030,9900
+4020 C$="umask 0; cp ",C0$=" > /dev/null"; GOTO 4040
+4030 C$="copy ",C0$=""; GOTO 4040
+4040 GOSUB 7500; REM GET DATA DIRECTORY
+4050 REM BUILD COMMAND LINE
+4060 IF X3$(77,1)="U" AND X3$(30,1)="M" AND F0$(1,3)="TMP" THEN C$=C$+D0$+S1$+"TMP"+S1$+F0$+" "+D1$+S1$+F1$; GOTO 4080
+4070 C$=C$+D0$+S1$+F0$+" "+D1$+S1$+F1$
+4080 INVOKE C$
+4100 GOTO 9900
+7500 REM "Get data DIRectory and put into D0$, D0 is assumed to be disk with  data
+7515 D0$=%DATAPATH$
+7545 RETURN 
+8900 REM 
+8910 DEF FNS$(Z9$)=Z9$(1,POS(S0$=Z9$+S0$)-1)
+9000 REM "ERROR PROCESSING
+9001 PRINT "ERR: "+STR(ERR)
+9002 PRINT "TCB: "+STR(TCB(5))
+9003 EXIT 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

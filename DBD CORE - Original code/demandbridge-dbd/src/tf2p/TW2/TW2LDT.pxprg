@@ -1,0 +1,236 @@
+0010 REM "Process Taxware file and update Topform <TW2LDT>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 04/07/17 - 15.308888 - crg - SSP# 290466
+0037 REM "290466-Recognize TW3 Download parameter by State
+0040 REM "Copyright 2017 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF %GUI THEN PROCESS "TWGLDT","../TWG/TW.EN"; PROCESS "ARGUXL","../ARG/AR.EN"; EXIT 
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="TW2LDT",X1$="Convert Taxware Records"
+0120 DIM Z0$(80,"-"),Z1$(20,"0"),C[15]
+0130 K0=20,K1=1
+0135 C9=-1
+0140 M0$="-###.000",M1$="-#,###.00",M2$="-##.000" ! 233585
+0200 REM "
+0210 IF %GUI THEN X0=-1
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0250 PRECISION 9
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0297 IF %GUI THEN CALL "ZZ2PRP","TW",TAX_FILE$,""; IF TAX_FILE$<>"Y" THEN MSGBOX "ACCESS DENIED!!"+SEP+SEP+"The Sales Tax File Download System is not an installed Module.",MSG("WARNING"),"!,TIM=5"; CMD_STR$="E"; EXIT 
+0299 CALL "ZZ2PRP","TW",TAX_FILE$,""; IF TAX_FILE$<>"Y" THEN CALL "ZZPROM",".4",X3$,Z,"ACCESS DENIED!! The Sales Tax File Download System is not an installed Module.","","",0; GOTO 9900; REM " SSP # 149046                       
+0300 REM "IOLISTS
+0310 IOLIST A$,A{ALL}
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O AR5...  05O AX3...  06O AX4...  07O TW3...  10O TW4...  11O TW5...  13O ZZPARM  15O ZY1...  " ! SSP 225427
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 READ (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0530 READ (Z[13],KEY=X3$(9,3)+"T/W",DOM=*NEXT)TW_PARMS$
+0531 IF %GUI THEN RETURN 
+0532 GOSUB 6000
+0535 FILE_NAME$="taxfile"; INPUT EDIT (0,ERR=0535)@(1,7),"File Name : ",FILE_NAME$
+0536 Z(1)=HFN
+0537 IF CTL=4 THEN GOTO 9900
+0540 REM "CLOSE (Z[1]); OPEN (Z[1],ISZ=200)"taxfile"
+0541 CLOSE (Z[1]); OPEN (Z[1],OPT="TEXT",ERR=0535)FILE_NAME$
+0600 REM "
+0610 ! GOSUB 6000
+0620 GOSUB 8200
+0630 GOSUB 8100
+0635 IF %GUI THEN RETURN 
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0651 IF FILE_NAME$="" AND %GUI=1 THEN FILE_NAME$="taxfile"
+0660 IF %GUI THEN CALL "$CTL-10;PB_CREATE",0,0,1,7.5; Z(1)=HFN; OPEN LOCK (Z[1],OPT="TEXT",ERR=NO_FILE)FILE_NAME$; GOTO 0900
+0800 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT",ERR=NO_FILE)FILE_NAME$
+0900 REM 
+0910 IF %GUI THEN GOSUB 8200; GOSUB 8100
+0920 H0$=$0A$
+1000 REM "Read Data file
+1100 READ (Z[1],END=5000)R$
+1101 TOTAL=0
+1105 R$=UCS(R$)
+1110 REM "IF R$(2,2)="99" THEN GOSUB 8250; GOTO 5000
+1170 C1=C1+1; IF MOD(C1,T0)=1 THEN GOSUB 8150
+1180 GOSUB 2000
+1300 IF MOD(C2,T0)=1 THEN GOSUB 8150; REM "PRINT @(0,14),'LD',@(15,20),A$(1,2)+"-"+A$(3,5)+"-"+A$(8,3)+"  "+A$(11,25),
+1900 GOTO 1000
+2000 REM "Initialize TopForm Record
+2100 DIM A$(400),A[15]; REM "WO91564, DIM was 55, changed to 119
+2110 IF R$(1,1)=$1A$ THEN GOTO 5000
+2115 TW3$=""; FIND (Z[7],KEY=R$(1,2),DOM=*NEXT)TW3$; IF MID(TW3$,33,1)<>"Y" THEN GOTO *RETURN ! WO290466-State disabled
+2120 IF R$(3,2)="  " THEN STATE_RATE=NUM(R$(36,7)),STATE_RATE=STATE_RATE*100; STATE$=R$(10,25); REM "GOTO 4915
+2140 A$(1,10)=R$(1,9)+"0"; REM "TAX CODE
+2141 IF A$(3,1)=" " THEN A$(10,1)=" "
+2145 REM "IF R$(11,1)="1" THEN A$(3)=""
+2150 REM "IF R$(11,1)="2" THEN A$(7)=""
+2159 REM "Set tax freight flag here, if record exists it will override this default setting.
+2160 A$(36,1)="N",A$(154,3)="NNN"; REM "TAX FREIGHT DEFAULT TO N
+2161 IF POS(X3$(9,3)="590")<>0 THEN A$(36,1)="Y",A$(154,3)="YYY"; REM "TAX FREIGHT DEFAULT TO YES for Merrill for tax codes in Washington State ssp 219276
+2164 REM "See if record already exists, if so read in and update info in it.
+2165 READ (Z[2],KEY=A$(1,10),DOM=2166)IOL=0310
+2166 DIM TAX$(400); READ (Z[2],KEY=A$(1,2)+DIM(8),DOM=2170)TAX$
+2167 A$(55,24)=TAX$(55,24)
+2168 IF A$(146,4)=DIM(4) THEN A$(146,4)=MID(R$,137,4); REM Merrill downloaded location code
+2170 REM "Q$=R$(1,2)+R$(10,11)+R$(64,11); CALL "ZZCASE",Q$,Q1$; R$(25,20)=Q1$
+2171 IF POS(X3$(9,3)="590")<>0 AND A$(1,2)="WA" AND A$(55,24)=DIM(24) AND P0$(119,1)="Y" THEN A$(55,12)="226000000000",A$(67,12)="226000000000"; REM SSP 219276 if GL account is blank and it's Merrill and WA state and the A/R parameter is turned on the have the GL accounts by Tax code, default them
+2174 IF A$(11,25)=DIM(25) AND R$(3,1)<>DIM(1) THEN A$(11,25)=R$(1,2)+"-"+STP(R$(64,10),1)+"-"+STP(R$(10,10),1); REM "OVERALL DESCRIPTION SSP 219276
+2175 IF A$(11,25)=DIM(25) AND R$(3,1)=DIM(1) THEN A$(11,25)=STATE$; REM "OVERALL DESCRIPTION SSP 219276
+2176 IF A$(3,1)=" " AND A$(11,25)=DIM(25) THEN A$(11,25)=R$(10,25)
+2180 REM "IF R$(11,1)="1" THEN A[0]=NUM(R$(45,5))/1000 ELSE IF R$(11,1)="2" THEN A[0]=NUM(R$(45,5))/1000 ELSE IF R$(11,1)="3" THEN A[0]=NUM(R$(50,5))/1000 ELSE A[0]=NUM(R$(50,5))/1000
+2200 REM "Update control and date fields
+2210 A$(37,6)=X3$(21,6); REM "DEFAULT TO SYSTEM DATE
+2215 REM "A$(43,6)=H1$
+2220 REM "A$(49,6)=FNE$(NUM(R$(16,2),ERR=2221))+R$(18,4)
+2230 IF A$(79,25)=DIM(25) THEN A$(79,25)=R$(10,25); REM "CITY NAME keep if already there
+2231 IF A$(3,1)=" " THEN A$(79,25)=DIM(25)
+2235 IF A$(157,25)=DIM(25) THEN A$(157,25)=STATE$; REM "STATE 
+2240 A$(109,10)=R$(3,5)+DIM(5)
+2250 A$(119,2)=R$(1,2); REM "STATE CODE
+2260 IF A$(121,25)=DIM(25) THEN A$(121,25)=R$(64,25); REM "COUNTY DESCRIPTION
+2261 IF A$(3,1)=" " THEN A$(121,25)=DIM(25)
+2270 A$(151,3)=R$(134,3); REM "COUNTY CODE
+2271 IF A$(3,1)=" " THEN A$(151,3)=DIM(3)
+2275 COUNTY_RATE=NUM(R$(90,7))*100; REM "COUNTY RATE
+2280 A[2]=COUNTY_RATE; REM " COUNTY RATE
+2290 A[3]=STATE_RATE
+2295 TOTAL=NUM(R$(118,7))*100
+2301 A$(183,7)=STR(TOTAL:M2$) ! 233585
+2304 CITY_RATE=NUM(R$(36,7))*1000
+2306 CITY_RATE=CITY_RATE/10
+2310 CITY_TRANSIT=NUM(R$(43,7))*100
+2315 COUNTY_TRANSIT=NUM(R$(97,7))*100
+2320 CITY_RATE=CITY_RATE+CITY_TRANSIT
+2325 A[0]=CITY_RATE
+2340 A[2]=A[2]+COUNTY_TRANSIT
+2341 IF A$(3,1)=" " THEN A[0]=0,A[1]=0,A[2]=0
+2342 IF POS(X3$(9,3)="524")<>0 AND POS(A$(1,2)="NYPACTMA",2)=0 THEN A[0]=0,A[1]=0,A[2]=0,A[3]=0,A[4]=0,A[5]=0,A[6]=0,A[7]=0
+2343 IF POS(X3$(9,3)="583")<>0 AND POS(A$(1,2)="NYMA",2)=0 THEN A[0]=0,A[1]=0,A[2]=0,A[3]=0,A[4]=0,A[5]=0,A[6]=0,A[7]=0
+2345 A[7]=A[0]+A[2]+A[3]
+2350 REM "IF TOTAL<>(A[0]+A[2]+A[3]) THEN ESCAPE 
+3000 REM "RECORD FOR ZY1
+3020 DIM ZY1$(255) ! SSP#259222
+3025 IF A$(3,1)=" " THEN GOTO 4900
+3030 ZY1$(1,9)=A$(3,5)+"    "
+3040 ZY1$(10,16)=A$(79,16)
+3050 ZY1$(26,2)=A$(119,2)
+3060 ZY1$(28,12)=A$(121,12)
+3070 ZY1$(40,3)="   "
+3080 ZY1$(43,28)=A$(79,25)+"   "
+4900 REM "Write file(s)
+4901 C2=C2+1
+4903 IF POS(X3$(9,3)="101")<>0 AND POS(A$(1,2)="IL",2)<>0 AND A$(3,1)<>" " THEN GOTO 4920; REM SSP 207882 
+4905 REM "IF POS(" "<>A$(11))=0 THEN GOTO 4915
+4909 GOSUB GET_MAX_TAX_AMT ! SSP 225427
+4910 WRITE (Z[2],KEY=A$(1,10))IOL=0310; C2=C2+1
+4911 IF POS(X3$(9,3)="590")=0 AND A$(3,2)=DIM(2) THEN A$(3,3)="w/o"; A$(121,25)="CASH RECEIPTS WRITE OFF  "; A$(79,25)="CASH RECEIPTS WRITE OFF   "; GOTO 4910; REM SSP 219276 - remove the write offs
+4912 WRITE (Z[5],KEY=A$(109,10)+A$(8,3)+A$(1,10)); REM "SORT FILE
+4913 IF POS(X3$(9,3)="590118")=0 THEN WRITE (Z[15],KEY=ZY1$(1,9))ZY1$; REM DON'[T UPDATE THE ZIP CODE FILE FOR MERRILL!! SSP 219276,SSP#229125
+4914 WRITE (Z[6],KEY=A$(119,2)+A$(121,25)+A$(79,25)+A$(1,10)); REM "SORT FILE
+4915 A[0]=0,A[1]=0,A[2]=0,A[4]=0,A[5]=0,A[6]=0,A[7]=0
+4916 A[3]=0
+4920 IF A$(3,1)=" " THEN REMOVE (Z[2],KEY=A$(1,9)+"0",DOM=*NEXT)
+4922 IF A$(3,1)=" " THEN REMOVE (Z[5],KEY=A$(109,10)+A$(8,3)+A$(1,9)+"0",DOM=*NEXT)
+4924 IF A$(3,1)=" " THEN REMOVE (Z[6],KEY=A$(119,2)+A$(121,25)+A$(79,25)+A$(1,9)+"0",DOM=*NEXT)
+4999 RETURN 
+5000 REM "EOJ
+5010 REM "IF T9$<>"Y" THEN X$=STR(C1)+" records done. Did not find a valid trailer record, data is incomplete!!!"; CALL "ZZPROM",".4",X3$,Z,X$,"","",0; GOTO 5021
+5015 X$="Process complete - "+STR(C1)+" of "+STR(T)+" records loaded."
+5018 IF %GUI THEN MSGBOX X$,"F.Y.I","!,TIM=10"; CMD_STR$="E"; EXIT 
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+5200 REM "COMPLETE CYCLE
+5290 RETURN 
+6000 REM "BACKGROUND
+6001 IF %GUI THEN RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program loads the Vera-Tax Taxware Tax Data from a file named 'taxfile'  ",'LF',"into the DB Distributor Sales Tax File (AR5)",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8110 REM "CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8112 REM "T=INT(T0*B/200.0046)
+8113 CALL "ZZ2FNC;SERIALRECCNT",Z[1],T
+8114 REM 'SUBTRACT 2 , 1 FOR HEADER & 1 FOR TRAILER
+8115 IF NOT(%GUI) THEN PRINT @(0,7),"There are "+STR(T)+" records to process" ELSE ML_MESS.CTL'VALUE$="There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF NOT(%GUI) THEN CALL "ZZBARG",X3$,"HG",12,10,50,T1,T,C1 ELSE CALL "$CTL-10;PB_VALUE",C1
+8195 RETURN 
+8200 REM "Read first record and print file header information
+8205 READ RECORD (Z[1],END=8206)H$; GOTO 8210
+8206 IF %GUI THEN MSGBOX "There are no records in the file!!!",MSG("WARNING"),"!,TIM=10"; CMD_STR$="E"; EXIT 
+8207 CALL "ZZPROM",".4",X3$,0,"There are no records in the file!!!","","",0; GOTO 9900
+8210 REM "IF POS("VERTEX 'SALESTAX' TAX RATE FILE"=H$)=0 THEN PRINT @(0,15),H$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Header Information!!!","","",0; GOTO 9900
+8214 REM "H0$ is date of tape, H1$ is update number
+8215 REM "H0$=FNE$(NUM(H$(15,2),ERR=8216))+H$(17,4)
+8220 REM "H1$=H$(21,4)
+8240 REM "PRINT @(25,8),"Update Number: ",@(40,8),H1$,@(25,9),"Date produced: "
+8241 REM "CALL "ZZDISP","D",H0$,"",X3$,"","",40,9,X4$
+8245 RETURN 
+8250 REM "Check out trailer record, set T9$ to "Y" if it is ok
+8260 IF POS("9"<>R$(1,10))<>0 OR POS("VERTEX 'SALESTAX' TAX RATE FILE"=R$)=0 THEN PRINT @(0,15),R$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Trailer Information!!!","","",0; GOTO 8295
+8280 T9$="Y"
+8295 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8950 DEF FNS(Z9$)=POS(" "<>Z9$)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 IF %GUI THEN CMD_STR$="E"
+9905 END_PROC:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "AR2UXL"
+9999 END 
+10000 NO_FILE:
+10010 MSGBOX "File : "+FILE_NAME$+" not found",MSG("WARNING"),"!,TIM=10"
+10020 NEXT_ID=FILE_NAME.CTL
+10030 RETURN 
+11000 GET_MAX_TAX_AMT:! SSP 225427
+11020 IF A[3]<>0 THEN CALL "TWGMAA;GET_MAX_TAX_AMT",A$(1,2),Z[7],0,A[3],RE; A[4]=RE
+11030 IF A[2]<>0 THEN CALL "TWGMAA;GET_MAX_TAX_AMT",A$(1,2),Z[7],1,A[2],RE; A[5]=RE
+11040 IF A[0]<>0 THEN CALL "TWGMAA;GET_MAX_TAX_AMT",A$(1,2),Z[7],2,A[0],RE; A[6]=RE
+11050 RETURN 
+56000 REM "207882-Needs to setup their Illinois customers to have correct 
+56001 REM "219276-Veratax enhancements related to new taxing requirements  
+56010 ! "224798-Veratax in GUI: Create new optional module GUI menu for T/W 
+56011 ! "225427-Florida Sales Tax - each county can set a sales tax percent,
+56012 REM "233585-Sales tax issue with override ship to-Order was invoiced at 
+56014 REM "249775-Changes to sales tax parameters and tax calculations to     
+56015 REM "259222-Trying to enter a new ship to, getting error.               
+56016 REM "290466-Recognize TW3 Download parameter by State

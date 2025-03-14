@@ -1,0 +1,150 @@
+0010 ! DRGINI - Data Replication Initialzation
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 11/29/10 - 15.091944 - crg - SSP# 242259
+0037 REM "242259-Initializing file in datarep, process repeats inifinitely
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "DRGINI","../DRG/DR.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0101 INIT:
+0105 SAVE_XI=PRM('XI')
+0110 X0$="DR2INI",X1$="Data Replication Initialization"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1,X0=-1,X1=-1
+0200 REM "                                                                 
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01OSDR1...  02O DR0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0603 GOSUB 6000
+0605 DIM A$(30),A[1]; X$="Leave blank for all defined tables"
+0606 RETURN 
+0608 TARGET:
+0609 A$(1,20)=TARGET_CODE$; IF STP(A$(1,20))="" THEN TARGET_DESC.CTL'VALUE$="All Targets"
+0611 DIM DR0$(500); IF STP(A$(1,20))<>"" THEN FIND (Z[2],KEY=A$(1,20),DOM=*RETURN)DR0$; TARGET_DESC.CTL'VALUE$=DR0$(21,30)
+0613 REFRESH_FLG=1
+0615 RETURN 
+0618 TABLE:
+0620 A$(21,8)=MID(TABLE_CODE$,1,8); TABLE_CODE$=A$(21,8)
+0622 IF STP(A$(21,8))="" THEN TABLE_DESC.CTL'VALUE$="All Tables"
+0624 DIM DR1$(500); IF STP(A$(21,8))<>"" THEN READ (Z[1],KEY=A$(21,8),DOM=*PROCEED); A$(21,10)=KEY(Z[1],END=0630); FIND (Z[1],KEY=A$(21,10),DOM=0630)DR1$; TABLE_DESC.CTL'VALUE$=DR1$(11,30)
+0626 GOSUB 8100
+0628 REFRESH_FLG=1
+0630 RETURN 
+0640 IF Q1$="" THEN CALL "ZZPROM","0",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900,0605
+0650 PROCEED:
+0900 ! init
+0910 IF STP(A$)<>"" THEN T0=1,T=1
+0915 EXTRACT (Z[1],KEY=A$(21,10),DOM=*NEXT)
+0930 IF NOT(NUL(A$(1,20))) THEN %DR_TARGET_SPECIFIC$=A$(1,20)
+0950 GOSUB 8150
+1000 REM "BEGIN MAIN PROCESS                                               
+1005 DR1_KEY$=KEY(Z[1],END=5000); READ (Z[1],END=5000)DR1$
+1010 IF STP(A$(1,20))<>"" THEN IF DR1$(41,20)<>A$(1,20) THEN GOTO 1000 ! If replicating specific target, skip current table if no match on target
+1015 IF STP(A$(21,10))<>"" THEN IF DR1$(1,8)<>A$(21,8) THEN GOTO 1000 ! If replicating specific table, skip current table if no match on table
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1025 IF DR1$(301,1)<>"Y" THEN GOTO 1000 ! Table not being replicated currently
+1100 ! Process file
+1110 DR=HFN; OPEN (DR,ERR=FILE_OPEN_ERR)STP(DR1$(1,8))
+1115 GOSUB 8200
+1120 DRK$=KEY(DR,END=1150); EXTRACT RECORD (DR,KEY=DRK$,DOM=1120)DRR$
+1125 DC=DC+1; IF MOD(DC,DT0)=1 THEN GOSUB 8250
+1130 WRITE RECORD (DR,KEY=DRK$)DRR$
+1135 GOTO 1120
+1150 ! PRINT @(0,9),'CL',@(0,10),'CL',@(0,11),'CL',@(0,12),'CL',
+1155 CLOSE (DR)
+1200 ! update information
+1205 EXTRACT (Z[1],KEY=DR1_KEY$,DOM=1300)DR1$
+1210 DR1$(308,6)=X3$(21,6)
+1215 WRITE (Z[1],KEY=DR1_KEY$)DR1$
+1220 REM "Position DR1 pointer at next data rep file
+1225 IF NUL(A$(1,20)) THEN READ (Z[1],KEY=MID(DR1_KEY$,1,8)+$FFFF$,ERR=*NEXT,DOM=*NEXT)
+1600 GOTO 1000
+5000 REM "EOJ                                                              
+5010 C=T; GOSUB 8150
+5020 MSGBOX "Process complete!!","F.Y.I",("!,TIM=10")
+5030 CMD_STR$="E"; EXIT 
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,4),"This TopForm Utility initializes a single table or ",
+6022 PRINT @(10,5),"all tables set up in the Data Replication Module",
+6025 PRINT @(9,7),"TopForm Table:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6445 RETURN 
+7500 FILE_OPEN_ERR:! Error opening file
+7505 FOE=ERR
+7510 MSGBOX "Error "+STR(FOE)+" occurred on file "+STP(DR1$(1,10)),"F.Y.I.","!,TIM=2"
+7545 GOTO 1600
+7549 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ! PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",12.5,1,20,T1,T,C
+8195 RETURN 
+8200 ! bar for file
+8210 CALL "ZZINFO",DR,DT9,X3$,DT,DT0,DK,DB,DD,DS0,DS1,DF$
+8212 DC=0
+8215 ML_MSG.CTL'VALUE$=STP(DF$)+" - There are "+STR(DT)+" records to process",REFRESH_FLG=1
+8230 DT0=INT(DT*.02); IF DT0<=1 THEN DT0=2
+8245 RETURN 
+8250 ! 
+8255 CALL "ZZBARG",X3$,"HG",11,1,20,DT1,DT,DC
+8295 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9515 GOTO 0610
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9901 END_PROG:
+9905 SET_PARAM 'XI'=SAVE_XI
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 %DR_TARGET_SPECIFIC$="" ! Used in DR2EDA
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "209252-Modify Data Rep to allow output to multiple database        
+56003 REM "229312-Datareplication enhancement for selective replication of    
+56004 REM "242259-Initializing file in datarep, process repeats inifinitely

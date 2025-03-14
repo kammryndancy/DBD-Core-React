@@ -1,0 +1,91 @@
+0010 REM "Repeat Order Sort Files <FM2RSF>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 01/26/99 - 11.35 - dmm - SSP# 105287
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "This program will be called from FM2ODE to write and/or remove records from FTB and FTC, repeat order sort files
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,FT7$,COMMAND$
+0100 SETERR 9000
+0110 X0$="FM2RSF",X1$="Repeat Order Sort Files"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FTB...  02O FTC...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 REM "GOSUB 06000
+0620 REM "GOSUB 08100
+0640 REM "IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"PROCEED?","","",0; ON Z GOTO 00641,09900
+1000 REM "BEGIN MAIN PROCESS
+1020 REM "LET C=C+1; IF MOD(C,T0)=1 THEN GOSUB 08150
+1050 IF COMMAND$="1" THEN GOTO 1100; REM "Remove from FTB/FTC
+1055 IF COMMAND$="2" THEN GOTO 1200; REM "Remove from FTC
+1060 IF COMMAND$="3" THEN GOTO 1300; REM "Write FTC
+1100 REM "Remove from FTB/FTC
+1110 REMOVE (Z[1],KEY=FT7$(1,10)+FT7$(69,8)+FT7$(11,8),DOM=1111)
+1120 REMOVE (Z[2],KEY=FT7$(1,10)+FT7$(19,15)+FT7$(11,8),DOM=1121)
+1190 GOTO 9900
+1200 REM "Remove from FTC
+1210 REMOVE (Z[2],KEY=FT7$(1,10)+FT7$(19,15)+FT7$(11,8),DOM=1211)
+1290 GOTO 9900
+1300 REM "Write FTC
+1310 WRITE (Z[2],KEY=FT7$(1,10)+FT7$(19,15)+FT7$(11,8))
+1390 GOTO 9900
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

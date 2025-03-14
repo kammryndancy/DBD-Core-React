@@ -1,0 +1,357 @@
+0010 REM "Add/Delete Companion Product lines for Non-WebEC Order <FM2OBD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 12/04/18 - 9.9575 - jvv - SSP# 304758
+0037 REM "304758-Their Multi commission does not appear to be calculating    
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Original workorder 178277/074
+0060 ! Most of the line setup logic is modeled from OF2UAA
+0070 ! CO<0 = Delete (2000), C0>0 = Add (1000)
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,FS2_KEY$,FS1$,C0
+0100 SETERR 9000
+0110 X0$="FM2OBD",X1$="Add/Delete Companion Product lines for Non-WebEC Order"
+0200 REM "                                                                 
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS                                                          
+0310 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29] ! Master line read
+0320 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29] ! Companion line read
+0330 IOLIST A$,A[0],STR(A[1]),A[2],A[3],STR(A[4]),A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],STR(A[15]),A[16],A[17],STR(A[18]),A[19],A[20],A[21],STR(A[22]),A[23],A[24],A[25],A[26],A[27],A[28],A[29] ! Companion line write
+0340 IOLIST EDV$,EDV[0],EDV[1],EDV[2],EDV[3],EDV[4],EDV[5],EDV[6],EDV[7]
+0350 IOLIST FMPD$,FMPD[0],FMPD[1],FMPD[2],FMPD[3],FMPD[4],FMPD[5]
+0360 IOLIST FMPX$,FMPX[0],FMPX[1],FMPX[2],FMPX[3]
+0370 IOLIST IC0$,IC0[0],IC0[1],IC0[2],IC0[3],IC0[4],IC0[5],IC0[6],IC0[7],IC0[8],IC0[9],IC0[10],IC0[11],IC0[12],IC0[13],IC0[14],IC0[15],IC0[16],IC0[17],IC0[18],IC0[19],IC0[20],IC0[21],IC0[22],IC0[23],IC0[24],IC0[25],IC0[26],IC0[27],IC0[28],IC0[29],IC0[30],IC0[31],IC0[32],IC0[33],IC0[34],IC0[35],IC0[36],IC0[37],IC0[38],IC0[39],IC0[40]
+0380 IOLIST FM1$,FM1[0],FM1[1],FM1[2],FM1[3],FM1[4],FM1[5],FM1[6],FM1[7],FM1[8],FM1[9],FM1[10],FM1[11],FM1[12],FM1[13],FM1[14],FM1[15],FM1[16],FM1[17],FM1[18],FM1[19],FM1[20],FM1[21],FM1[22],FM1[23],FM1[24],FM1[25],FM1[26],FM1[27],FM1[28],FM1[29],FM1[30],FM1[31]
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS2...  02O EDV...  03O FMP...  04O AR1...  05O IC0...  06O AR4...  07O FM1...  08O ASQ...  09O EDC...  10O IC1...  13O ZZPARM  14O AP4...  " ! SSP 224042
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 READ (Z[13],KEY=X3$(9,3)+"F/M")OPS_PARM$
+0615 MFF_PARM=0; IF MID(OPS_PARM$,337,1)="Y" THEN MFF_PARM=1 ! SSP 276772
+0620 IF OPS_PARM$(309,1)<>"Y" THEN GOTO 9900
+0621 IF FS1$(250,15)<>DIM(15) THEN GOTO 9900; REM "SSP 105563 Don't remove lines and put them back if order was entered via web ec
+0625 IF FS1$(54,1)="B" THEN GOTO 9900 ! SSP222662 jdf
+0630 READ (Z[13],KEY=X3$(9,3)+"I/C")ICPARM$; IF NUL(ICPARM$(70,1)) THEN LOT_SELECTION$=ICPARM$(52,1) ELSE LOT_SELECTION$=ICPARM$(70,1)
+0635 DIM M6[1]; M6$="###,###.00-",M6[0]=621,M6[1]=2; IF ICPARM$(45,1)>"2" THEN DIM M6$(11,"0"); M6[1]=NUM(ICPARM$(45,1)),M6$(1,10-M6[1])="##########",M6$(POS("0"=M6$),1)=".",M6[0]=(10-M6[1])*100+M6[1]*10
+0640 READ (Z[13],KEY=X3$(9,3)+"A/R")ARPARM2$
+0645 REMOVE_ADD=0
+0650 READ (Z[13],KEY=X3$(9,3)+"AR1")ARPARM1$ ! ssp 224042"
+0900 ON C0 GOTO 2000,1000
+1000 ! Add companion product order lines
+1005 IF FS1$(48,1)="Y" THEN GOTO 9900 ! SSP192375, if order has already gone through billing, then don't attempt to remove/add back companion item lines
+1010 DIM FS2[29]; READ (Z[1],KEY=FS2_KEY$,DOM=9900)IOL=0310
+1015 DIM FMPD$(243),FMPD[5]; READ (Z[3],KEY="D"+FS1$(6,10),DOM=*NEXT)IOL=0350
+1016 DIM AR1$(599); READ (Z[4],KEY=FS1$(6,10),DOM=*NEXT)AR1$
+1017 WHSE$=FMPD$(238,4); IF MID(FS2$,10,4)<>DIM(4) AND MID(FS2$,10,4)<>"DS  " THEN WHSE$=MID(FS2$,10,4); IF STP(WHSE$,3)="" THEN WHSE$="0001" ! SSP222068 jdf !SSP#236734
+1018 GOSUB 3550 ! See if there is a warehouse group for this customer
+1020 IF FS2$(229,1)="Y" THEN REMOVE_ADD=1; GOSUB 3000 ! Existing order line with comp product lines written out prior, remove them first
+1025 IF FS2$(155,1)="I" THEN ITEM_KEY$=DIM(10)+FS2$(19,10) ELSE IF STP(FS2$(161,10),1)>"" THEN ITEM_KEY$=FS2$(161,10)+FS2$(19,10) ELSE ITEM_KEY$=FS1$(6,10)+FS2$(19,10)
+1030 DIM EDV[7]; MASTER_LINE$=FS2_KEY$(9,3),LAST_LINE$=FS2_KEY$(9,3),LINES_WRITTEN=0
+1035 READ (Z[2],KEY=ITEM_KEY$,DOM=*NEXT)
+1040 K1$=KEY(Z[2],END=1180)
+1045 IF K1$(1,20)<>ITEM_KEY$ THEN GOTO 1180
+1050 READ (Z[2],KEY=K1$)IOL=0340
+1052 IF REMOVE_ADD AND EDV$(35,1)="M" THEN LINES_WRITTEN+=1,LAST_LINE$=STR(NUM(LAST_LINE$)+1:"000"); GOTO 1040 ! SSP193198, if in remove/add mode, and comp item is M type, then don't write it
+1055 DIM A$(356),A[29]
+1060 A$(147,8)=FS2_KEY$(1,8),A$(6,3)=STR(NUM(LAST_LINE$)+1:"000"),A$(230,3)=MASTER_LINE$
+1065 A$(155,1)=EDV$(35,1),A$(161,10)=EDV$(38,10),A$(19,10)=EDV$(48,10),A$(156,5)=EDV$(58,5),A$(50,40)=EDV$(169,40) ! Line type, customer number for item, item code, print flags, description
+1070 A$(3,1)="N",A$(4,1)="N" ! Order line complete, fixed price
+1075 IF EDV$(63,1)="Y" AND POS(A$(155,1)="MS")>0 THEN A$(9,1)=FS2$(9,1) ! PO Code
+1080 IF A$(156,5)<>DIM(5) THEN GOTO 1090 ELSE IF MID(FMPD$,105,1)="A" THEN IF A$(9,1)=" " THEN A$(156,5)="SIP" ELSE A$(156,5)="SI" END_IF ; GOTO 1090 ! If not setting print flags from EDV record, then set accordingly
+1085 IF A$(9,1)=" " THEN A$(156,5)="IP" ELSE A$(156,5)="I" ! Print flags for no sales order thank you letter
+1090 A$(136,1)=FS1$(86,1); REM IF AR1$(245,1)="Y" THEN A$(136,1)="N" ! Line taxable
+1095 A$(128,5)=FS1$(97,5) ! Commission code
+1100 ON POS(A$(155,1)="MSIC") GOSUB 3100,3100,3200,3300,3300
+1110 IF ARPARM2$(122,1)="Y" THEN FIND (Z[8],KEY=FS1$(93,4)+A$(29,3),DOM=*NEXT)ASQ$; A$(128,5)=ASQ$(8,5); REM " Substitute commission code by productcode by salesperson.
+1112 IF A$(9,1)<>" " AND A$(155,1)<>"M" THEN IF STP(ARPARM1$(75,1),2)<>"" AND ARPARM1$(76,1)<>"Y" THEN GOSUB 8800 ! SSP 217566, SSP 222237 SSP 224042
+1115 IF A$(155,1)="I" AND ICPARM$(50,1)="Y" THEN A$(4,1)="N"
+1120 IF POS(A$(155,1)="SIC")>0 THEN IF EDV$(64,1)="Y" THEN A[4]=0,A[6]=0 ! Set sell price to zero if companion record says so
+1130 WRITE (Z[1],KEY=A$(147,8)+A$(6,3),DOM=*NEXT)IOL=0330; LINES_WRITTEN+=1,LAST_LINE$=STR(NUM(LAST_LINE$)+1:"000")
+1135 GOTO 1040 ! Get next EDV record
+1180 ! Done with companion products, if any lines written then update master line with flag
+1185 IF LINES_WRITTEN>0 THEN FS2$(229,1)="Y" ELSE FS2$(229,1)="N" END_IF ; WRITE (Z[1],KEY=FS2_KEY$)IOL=0310
+1190 GOTO 9900
+1195 ! 
+2000 ! Delete companion product order lines
+2010 GOSUB 3000
+2190 GOTO 9900
+2195 ! 
+3000 ! Remove companion product lines for this order line
+3005 DIM A[29]
+3010 READ (Z[1],KEY=FS2_KEY$(1,8),DOM=*NEXT)
+3015 K$=KEY(Z[1],END=*RETURN)
+3020 IF K$(1,8)<>FS2_KEY$(1,8) THEN GOTO *RETURN
+3025 READ (Z[1],KEY=K$)IOL=0320
+3030 IF MID(A$,230,3)<>FS2_KEY$(9,3) THEN GOTO 3015
+3035 IF A[19]<>0 THEN GOTO 3015 ! Don't remove if unbilled cost
+3037 IF REMOVE_ADD AND A$(155,1)="M" THEN GOTO 3015 ! SSP193198, if in remove/add mode and this is a message line, don't remove
+3040 REMOVE (Z[1],KEY=K$,DOM=3015)
+3042 IF MFF_PARM THEN CALL "FMGFV5;DELETE_FINDER_FEE_LINES",K$ ! SSP 276772
+3044 IF %MSLC THEN GOSUB DELETE_COMM_LINE ! SSP 304758
+3045 IF MID(A$,9,1)<>" " THEN CALL "FM2ODP",X3$,A$
+3050 CALL "FM2ODZ",X3$,-2,A$,A{ALL},FS1$
+3060 GOTO 3015
+3090 RETURN 
+3095 ! 
+3100 ! M (Message) type lines
+3110 A$(4,1)="Y" ! Fixed price
+3115 A$(14,1)="" ! Custom
+3120 A$(18,1)="N" ! Special shipping
+3125 IF A$(9,1)<>" " THEN A$(90,14)=FS2$(90,14) ELSE A$(10,4)=WHSE$,A$(215,4)=WHSE$ ! SSP190399, if M line has PO code then set the vendor and plant, else set the warehouse fields.
+3190 RETURN 
+3195 ! 
+3200 ! S (Special) type lines
+3210 A$(4,1)="Y",A$(14,1)="N",A$(18,1)="N",A$(10,4)=WHSE$ ! Fixed price, custom, special shipping, warehouse
+3215 DIM FMPX$(61),FMPX[3]; READ (Z[3],KEY="X"+A$(19,10),DOM=*NEXT)IOL=0360
+3220 IF STP(A$(50,40),3)="" THEN A$(50,40)=FMPX$(12,40) ! Description
+3225 A$(29,3)=FMPX$(52,3),A$(133,1)=FMPX$(59,1) ! Product code, keep order history
+3230 ! A[0]=1,A[10]=1 ! Open qty, original qty
+3231 GOSUB CALC_QTY_S_TYPE ! SSP286009 A[0]=FS2[0],A[10]=FS2[0]; QUANTITY_MULTIPLIER=EDV[5]; IF QUANTITY_MULTIPLIER<>0 THEN QUANTITY_MULTIPLIER=INT(QUANTITY_MULTIPLIER+.9999); A[0]=FS2[0]*QUANTITY_MULTIPLIER,A[10]=A[0] END_IF ; IF QUANTITY_MULTIPLIER=0 OR EDV$(65,1)="Y" THEN A[0]=1,A[10]=1; REM "201270
+3235 A$(120,4)=FMPX$(55,4),A[2]=FMPX[0],A[1]=EDV[2] ! Cost unit, qty in cost unit, unit cost
+3240 A$(124,4)=FMPX$(55,4),A[5]=FMPX[0],A[22]=EDV[1],A[4]=EDV[1] ! Sell unit, qty in sell unit, list price, unit price
+3242 GOSUB 8150
+3245 IF FMPX$(61,1)="Y" THEN A[6]=A[4],A[3]=A[1],A[4]=0,A[1]=0,A[0]=0,A[10]=0 ELSE GOSUB 8100 ! Cost extension, price extension
+3250 IF A$(9,1)<>" " THEN A$(90,14)=FS2$(90,14) ! Plant, vendor
+3255 GOSUB 3500 ! Finder's fee
+3260 IF %MSLC THEN IF A$(9,1)=" " THEN CM3$="*" ELSE CM3$=A$(9,1) ! ssp 30478
+3265 IF %MSLC THEN CM3$=CM3$+A$(155,1)+X3$(9,3)+FS1$(97,5); GOSUB DEFAULT_LINE_SETUP ! SSP 304758
+3290 RETURN 
+3295 ! 
+3300 ! I (Inventory) and C (Customer Specific) line types
+3305 ! SSP286009 - see new line 3321 A[0]=FS2[0],A[10]=FS2[0]; QUANTITY_MULTIPLIER=EDV[5]; IF QUANTITY_MULTIPLIER<>0 THEN QUANTITY_MULTIPLIER=INT(QUANTITY_MULTIPLIER+.9999); A[0]=FS2[0]*QUANTITY_MULTIPLIER,A[10]=A[0] END_IF ; IF EDV$(65,1)="Y" THEN A[0]=1,A[10]=1; REM "201270
+3310 DIM IC0$(187),IC0[40]
+3315 READ (Z[5],KEY=A$(161,10)+A$(19,10),DOM=*NEXT)IOL=0370; GOTO 3320
+3316 EXITTO 1040 ! Can't find item record
+3320 IF A$(155,1)="C" THEN A$(4,1)="Y" ELSE A$(4,1)="N" ! Fixed price
+3321 GOSUB CALC_QTY_IC_TYPE ! SSP286009, reposition/change line 3305, need IC0 sell u/m and quantity u/m for calc of ordered qty
+3324 GOSUB 3650 ! Check for whse group by item
+3325 A$(14,1)="N",A$(18,1)="N",A$(119,1)="N",A$(10,4)=WHSE$; IF STP(WHSE_LIST$,1)>"" THEN GOSUB 3600 ! Custom, special shipping, specs required, warehouse, check for IC1 records for warehouses in whse group
+3330 A$(29,3)=IC0$(61,3),A$(32,18)=IC0$(64,18)
+3335 IF STP(A$(50,40),1)="" THEN A$(50,40)=IC0$(21,40) ! Description
+3340 A$(90,4)=IC0$(92,4),A$(94,10)=IC0$(82,10) ! Plant, vendor
+3345 GOSUB 3500 ! Check for finder's fee
+3360 A$(198,7)=STR(IC0[16]:"0000000") ! Carton weight
+3365 A$(120,4)=IC0$(124,4),A[1]=IC0[18],A[2]=IC0[15] ! Cost unit, cost, qty in cost unit
+3370 A$(124,4)=IC0$(120,4),A[4]=IC0[13],A[5]=IC0[14] ! Sell unit, price, qty in sell unit
+3375 GOSUB 7600 ! Load pricing array
+3380 A[12]=IC0[19] ! Carton pack
+3385 GOSUB 7800; REM "Set Defaults from Product Code
+3387 GOSUB 8150
+3390 IF A$(155,1)="I" AND A$(10,1)="9" THEN A$(10,1)="0"
+3395 IF ICPARM$(44,1)="Y" AND POS(LOT_SELECTION$="ABO")<>0 AND IC0$(112,1)="Y" THEN GOSUB ASSIGN_LOTS
+3400 IF A$(10,1)<>"9" THEN IF STP(IC0$(168,20),1)<>"" THEN GOSUB 7650; GOSUB 8100 ELSE GOSUB 8000; GOSUB 8100; REM "Pick a price, extend price and cost
+3490 RETURN 
+3495 ! 
+3500 ! Finders fee
+3510 FINDER$=FS1$(6,10)+A$(29,3)+A$(161,10)+A$(19,10); IF MFF_PARM THEN CALL "FS2MFF",X3$,X4$,FINDER$,FINDER,A$(147,8)+A$(6,3); GOTO 3540 ELSE CALL "FS2DAF",X3$,X4$,FINDER$,FINDER ! SSP 276772
+3515 IF FINDER$>"" THEN A$(135,1)=FINDER$(11,1),A$(137,10)=FINDER$(1,10),A[11]=FINDER; GOTO *RETURN
+3520 A$(135,1)=FMPD$(12,1),A$(137,10)=FMPD$(13,10),A[11]=FMPD[0]
+3540 RETURN 
+3545 ! 
+3550 ! Set WHSE_LIST$ for warehouse group for this customer
+3555 WHSE_LIST$=""
+3560 DIM EDC$(129); READ (Z[9],KEY="C"+FS1$(6,10)+DIM(10),DOM=*RETURN)EDC$(1)
+3565 WHSE_LIST$=STP(EDC$(82,48),1)
+3590 RETURN 
+3595 ! 
+3600 ! Check WHSE_LIST$ for inventory records to set whse for line
+3610 IF LEN(WHSE_LIST$)<4 THEN GOTO *RETURN
+3615 FIRST_WHSE$=WHSE_LIST$(1,4)
+3620 CHECK_WHSE$=WHSE_LIST$(1,4)
+3625 READ (Z[10],KEY=A$(161,10)+A$(19,10)+CHECK_WHSE$,DOM=*NEXT); A$(10,4)=CHECK_WHSE$; GOTO *RETURN
+3630 IF LEN(STP(WHSE_LIST$,1))>4 THEN WHSE_LIST$=WHSE_LIST$(5); GOTO 3620
+3635 A$(10,4)=FIRST_WHSE$
+3640 RETURN 
+3645 ! 
+3650 ! Check for a warehouse group by item, if found set WHSE_LIST$
+3660 DIM I_EDC$(129); READ (Z[9],KEY="I"+A$(161,10)+A$(19,10),DOM=*RETURN)I_EDC$(1)
+3665 WHSE_LIST$=STP(I_EDC$(82,48),1)
+3690 RETURN 
+3695 ! 
+5000 REM "EOJ                                                              
+5040 GOTO 9900
+7500 CALC_QTY_S_TYPE:! SSP286009, convert master line quantity to units then calc companion quantity in units then convert that to eaches for S types
+7505 QE=FS2[0],QUANTITY_MULTIPLIER=EDV[5]; IF QUANTITY_MULTIPLIER=0 THEN QUANTITY_MULTIPLIER=1 ELSE QUANTITY_MULTIPLIER=INT(QUANTITY_MULTIPLIER+.9999)
+7510 CALL "FM2EXT",Z[13],2,FS2$(124,4),FS2[5],QE,0,0,2 ! convert master line quantity ordered in eaches to quantity ordered in units
+7515 QU=QE ! QE started as quantity in eaches, FM2EXT set it to quantity in units (QU)
+7520 CU=QU*QUANTITY_MULTIPLIER; IF EDV$(65,1)="Y" THEN CU=1 ! CU is companion ordered quantity in units
+7525 DIM M[2]; FIND (Z[13],KEY="U/M"+FMPX$(55,4),DOM=*NEXT)M$,M[0],M[1]
+7530 IF M$(20,1)="Y" AND M[1]<>0 THEN QPUM=M[1] ELSE QPUM=FMPX[0] ! QPUM quantity per u/m
+7535 CE=CU*QPUM ! companion quantity ordered in eaches
+7540 A[0]=CE,A[10]=CE
+7545 RETURN 
+7549 ! 
+7550 CALC_QTY_IC_TYPE:! SSP286009, companion quantity convertion for I or C type
+7555 QE=FS2[0],QUANTITY_MULTIPLIER=EDV[5]; IF QUANTITY_MULTIPLIER=0 THEN QUANTITY_MULTIPLIER=1 ELSE QUANTITY_MULTIPLIER=INT(QUANTITY_MULTIPLIER+.9999)
+7560 CALL "FM2EXT",Z[13],2,FS2$(124,4),FS2[5],QE,0,0,2 ! convert master line quantity ordered in eaches to quantity ordered in units
+7565 QU=QE ! QE started as quantity in eaches, FM2EXT set it to quantity in units (QU)
+7570 CU=QU*QUANTITY_MULTIPLIER; IF EDV$(65,1)="Y" THEN CU=1 ! CU is companion ordered quantity in units
+7575 DIM M[2]; FIND (Z[13],KEY="U/M"+IC0$(120,4),DOM=*NEXT)M$,M[0],M[1]
+7580 IF M$(20,1)="Y" AND M[1]<>0 THEN QPUM=M[1] ELSE QPUM=IC0[14] ! QPUM quantity per u/m
+7585 CE=CU*QPUM ! companion quantity ordered in eaches
+7590 A[0]=CE,A[10]=CE
+7595 RETURN 
+7599 ! 
+7600 REM "Load pricing array
+7605 IF POS(" "<>IC0$(168,20))<>0 THEN DIM P[12,1]; RETURN 
+7608 PRECISION M6[1]
+7610 DIM P[12,1]; P[0,1]=IC0[0]
+7620 FOR I=1 TO 6; P[I,0]=IC0[1+(I-1)*2],P[I,1]=IC0[2+(I-1)*2],P[I+6,0]=IC0[21+(I-1)*2],P[I+6,1]=IC0[22+(I-1)*2]; NEXT I
+7625 IF POS(" "<>IC0$(109,3)+AR1$(398,3))>0 THEN X$=$7E$+IC0$(109,3)+AR1$(398,3)+IC0$(1,20); DIM Q[35]; CALL "IC2ICF",X3$,Z[3],X$,A[5],IC0[15],IC0[14],IC0[0],IC0[18],IC0[17],IC0[20],Q{ALL}; IF X$="" THEN A$(214,1)="N" ELSE A$(214,1)="Y" ! Pricing table
+7626 PRECISION 2
+7627 IF ICPARM$(71,1)="Y" THEN A$(214,1)="N" ! Pricing table used
+7628 IF X$="" THEN RETURN 
+7630 DIM P[12,1]; P[0,1]=Q[0]
+7635 FOR I=0 TO 11; P[I+1,0]=Q[I*2+1],P[I+1,1]=Q[I*2+2]; NEXT I
+7640 RETURN 
+7645 ! 
+7650 REM "Feature Driven pricing
+7655 IF STP(IC0$(168,20),1)="" THEN A1$=A$(94,10)+FM1$(291,20) ELSE A1$=A$(94,10)+IC0$(168,20)
+7660 C0$=A$(120,4),C0=A[2],P0$=A$(124,4),P0=A[5],Q=A[0],C1=0,P1=0
+7665 CALL "FM2OB9",X3$,A1$,C0$,C0,P0$,P0,Q,C1,P1,M6[1]
+7670 FS2[1]=C1,FS2[4]=P1
+7699 RETURN 
+7700 ASSIGN_LOTS:! If lots needed call lot routine to auto-distribute
+7705 A$(2,1)="Y"; REM "Set lot flag
+7710 S1=0,QTY_FROM_LOTS=A[0],F=0; CALL "IC2LCA",X3$,X4$,LOT_SELECTION$,0,A$(161,10)+A$(19,10)+A$(10,4)+A$(147,8)+A$(6,3),QTY_FROM_LOTS,C,F,S1,S1$,S2,S3$,S3,S4; REM "Call inventory lot selection
+7715 QTY_BO=MAX(A[0]-QTY_FROM_LOTS,0) ! No negative backorders
+7720 ! 
+7725 IF QTY_FROM_LOTS<=0 THEN A[8]=QTY_BO; GOTO ASSIGN_LOTS_END ELSE A[7]=QTY_FROM_LOTS,A[8]=QTY_BO; GOSUB UPDATE_LINE_FROM_LOT_INFO
+7730 ! Set #labels to number actually shipped, not number req'd
+7735 IF MID(FMPT$,22,1)<>"N" THEN IF A[12]=0 THEN A[9]=0 ELSE A[9]=INT(A[7]/A[12]*1.1+.9); IF A[9]<0 OR MID(FMPT$,22,1)="N" THEN A[9]=0
+7740 ASSIGN_LOTS_END:RETURN 
+7745 ! *********************************************
+7800 ! Get product code and commission defaults
+7810 DIM FMPT$(48); READ (Z[3],KEY="T"+A$(29,3),DOM=*NEXT)FMPT$(1)
+7820 IF FMPT$(22,1)<>"N" THEN IF A[12]=0 THEN A[9]=0 ELSE A[9]=INT(A[0]/A[12]*1.1+.9); IF A[9]<0 OR FMPT$(22,1)="N" THEN A[9]=0; REM "If carton labels Possible                                                       
+7825 IF FMPT$(23,1)="N" THEN A$(136,1)="N" ELSE IF FMPT$(23,1)="C" AND A$(136,1)="Y" THEN A$(136,1)="C" ! set to tax default by prod code
+7830 IF POS(A$(155,1)="IC")=0 THEN GOTO 7850 ! SSP#226820  
+7835 IF MID(IC0$,119,1)=" " THEN GOTO 7850 ELSE IF MID(IC0$,119,1)="E" THEN A$(136,1)="N" ELSE IF MID(IC0$,119,1)="C" THEN A$(136,1)="C" ELSE IF MID(IC0$,119,1)="T" THEN A$(136,1)="Y" ! SSP#226820
+7850 IF A$(9,1)=" " THEN C3$="*" ELSE C3$=A$(9,1)
+7860 C3$=C3$+A$(155,1)+X3$(9,3)+FS1$(97,5),CM3$=C3$; REM "Set * if P/O code is not used !SSP 225300
+7865 CLOSE (14); OPEN (14)"ZZPARM"
+7870 CALL "AR2COM","DEFAULT",C3$,A{ALL},14,0,0
+7875 A$(128,5)=C3$
+7878 IF %MSLC THEN GOSUB DEFAULT_LINE_SETUP ! SSP 304758
+7880 IF OPS_PARM$(186,1)="Y" AND POS(" "<>MID(FMPT$,38,5))>0 THEN A$(128,5)=FMPT$(38,5); REM "Commission code
+7890 RETURN 
+7895 ! 
+7900 UPDATE_LINE_FROM_LOT_INFO:! Process data received from Lot Records
+7905 IF FNS$(S3$(9,3))>"" THEN A$(29,3)=S3$(9,3); GOSUB 7800; REM "Reset prod code
+7910 IF FNS$(S3$(12,5))>"" THEN A$(128,5)=S3$(12,5); REM "Reset comm code
+7915 IF OPS_PARM$(261,1)="Y" THEN A[17]=F; REM "Set freight from lots
+7920 ! Set unit cost into A[1] from total cost of lots C, A[4]=Unit sell, A[5]=Qty per sell/unit
+7925 ! Skip cost if customer owned inventory
+7930 IF A$(10,1)<>"9" THEN {
+7935 IF C<>0 THEN {! Cost extension from lot selection
+7940 REM "Calculate unit cost
+7945 CALL "FM2EXT",Z[13],1,A$(120,4),A[2],QTY_FROM_LOTS,U,C,M6[1]
+7950 A[1]=U; REM "Unit cost 
+7955  }
+7960 IF S1<>0 THEN {! Selling extension from lot selection
+7965 A$(124,4)=S1$,A[5]=S2,A[4]=S1; REM "Selling u/m, qty u/m, price 
+7970  }
+7975  }
+7990 RETURN 
+7995 ! 
+8000 REM "Pick a price
+8005 IF S1<>0 AND A$(2,1)="Y" AND NOT(A$(214,1)="Y" AND OPS_PARM$(311,1)="Y") THEN GOTO 8048; REM "If pricing set from lots, 185554 - If Item Price class pricing and param set then do get price here SSP 225566 - reading wrong variable - see 185554
+8008 PRECISION M6[1]
+8009 IF IC0[14]=0 THEN IC0[14]=1
+8010 A[4]=P[0,1]*A[5]/IC0[14]; IF P[1,0]=0 THEN GOTO 8045
+8020 FOR I=1 TO 12
+8030 IF ABS(A[0])<P[I,0] THEN I=99; GOTO 8040
+8035 IF P[I,0]<>0 THEN A[4]=P[I,1]*A[5]/IC0[14]
+8040 NEXT I
+8045 PRECISION 2
+8047 IF POS(X3$(9,3)="049500",3)>0 THEN IF NUM(AR1$(398,3),ERR=8048)>0 THEN A[4]=A[4]*(100-NUM(AR1$(398,3)))*.01
+8048 GOSUB 8050
+8049 RETURN 
+8050 REM "Contract price from item master
+8052 IF OPS_PARM$(225,1)<>"Y" THEN GOTO *RETURN
+8055 DIM FM1$(448),FM1[31]; READ (Z[7],KEY=FS1$(6,10)+A$(19,10),DOM=*RETURN)IOL=0380
+8060 IF FM1$(105,1)<>"Y" OR FM1[3]=0 OR FM1[4]=0 THEN GOTO *RETURN
+8065 A[4]=FM1[3]*A[5]/FM1[4]
+8090 RETURN 
+8095 ! 
+8100 REM "Extend price and cost
+8105 CLOSE (14); OPEN (14)"ZZPARM"
+8110 REM "Cost extension
+8115 J0=A[2],J1=A[0],J2=A[1]; CALL "FM2EXT",14,0,A$(120,4),J0,J1,J2,J3,0; A[3]=J3
+8120 REM "Price extension
+8125 J0=A[5],J1=A[0],J2=A[4]; CALL "FM2EXT",14,0,A$(124,4),J0,J1,J2,J3,0; A[6]=J3
+8149 RETURN 
+8150 REM "Extend qty in companion lines
+8155 RETURN ; REM "Intended to allow WebEC like qty extensions; future development
+8160 IF FS2[5]<>0 THEN SAVE_PRC=PRC; PRECISION 8; A[0]=A[5]*(INT(A[0]/FS2[5]+.99999999)); PRECISION SAVE_PRC
+8165 A[10]=A[0]
+8195 RETURN 
+8199 ! 
+8800 VENDOR_COMM:! SSP 217566 SSP 224042
+8810 DIM APC4$(300); FIND (Z[14],KEY=A$(94,10),DOM=8890)APC4$; REM SSP 224042
+8815 IF STP(APC4$(235,1),2)="" THEN GOTO 8890 ! SSP 217566 SSP 224042
+8830 CC3$=A$(128,5); CALL "AR2COM","VENDSUB",CC3$,A{ALL},13,0,0,ARPARM1$(75,1)+APC4$(235,1); A$(128,5)=CC3$ ! SSP 217566 SSP 224042 !SSP 225300
+8840 IF %MSLC THEN CMKEY$="O"+A$(147,8)+FS1$(6,10)+A$(6,3); CALL "AR2MCM","VENDSUB",CC3$,A{ALL},13,0,0,CMKEY$,0,ARPARM1$(75,1)+APC4$(235,1) ! SSP 217566 SSP 224042 !SSP 225300
+8890 RETURN ! SSP 217566 SSP 224042
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+39100 DEFAULT_LINE_SETUP:! SSP 304758
+39110 SC_TYPE$="O",SC_KEY1$=A$(147,8),SC_KEY2$=FS1$(6,10),SC_LINE$=A$(6,3)
+39115 CMKEY$="O"+SC_KEY1$+SC_KEY2$+SC_LINE$
+39120 CALL "ARGSCM;DEFAULT_LINE_SETUP",SC_TYPE$,SC_KEY1$,SC_KEY2$,SC_LINE$ ! SSP 225300
+39130 CALL "AR2MCM","DEFAULT",CM3$,A{ALL},Z[14],0,0,CMKEY$,0,A$; CALL "ARGSCM;COMM_PROD_OVERRIDE",CMKEY$,A$(29,3) ! SSP 225300
+39145 IF A$(9,1)<>" " AND A$(155,1)<>"M" THEN IF STP(ARPARM1$(75,1),2)<>"" AND ARPARM1$(76,1)<>"Y" THEN GOTO 39150 ELSE GOTO 39160 ! SSP 217566, SSP 222237
+39150 ! C3$=""; CALL "AR2MCM","VENDSUB",CC3$,FS2{ALL},13,0,0,CMKEY$,0,P1$(75,1)+APC4$(235,1) ! SSP 217566 SSP 224042 !SSP 225300
+39155 CC3$=""; CALL "AR2MCM","VENDCOM",CC3$,A${ALL},13,0,0,CMKEY$,0,A$ ! SP217566, SSP 225300
+39190 RETURN ! SSP 225
+39199 ! 
+39200 DELETE_COMM_LINE:! SSP 304758
+39210 SC_TYPE$="O",SC_KEY1$=A$(147,8),SC_KEY2$=FS1$(6,10),SC_LINE$=A$(6,3)
+39215 CMKEY$="O"+SC_KEY1$+SC_KEY2$+SC_LINE$
+39230 CALL "ARGSCM;DELETE_ORDER_DETAIL",CMKEY$
+39250 RETURN 
+39290 ! 
+56000 ! Program changes starting 12/08/05
+56010 REM "190399-PE when entering a PO that uses companion items
+56015 REM "192375-After comp items are billed/removed, being added back if
+56020 REM "193198-WebEC orders, with comp item messages, ok, but if user goes
+56021 REM "195563-Variable print po's - not all line there when billing     
+56022 REM "201270-Quote for companion items to pull only one companion item   
+56024 REM "222068-When they enter in a stock item with a companion item and   
+56026 REM "224042-Vendor substitution WO 217566 - does not do the substitution
+56027 REM "225566-Trying to enter in companion item as an inventory item in      
+56028 REM "226820-Sales Tax Issue-The taxable flag in FM1 is not working      
+56030 REM "222662-B-type orders are allowing Companion Products to be added   
+56031 REM "236734-Companion item pulling from 0001 warehouse and should be    
+56032 REM "276772-Multiple Finder's Fees per Customer/Item/Order Line.        
+56034 REM "286009-Manual OE; companion quantity not calculating correctly when
+56035 REM "304758-Their Multi commission does not appear to be calculating    

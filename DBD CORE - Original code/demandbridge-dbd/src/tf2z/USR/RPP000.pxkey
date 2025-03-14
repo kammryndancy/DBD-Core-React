@@ -1,0 +1,1483 @@
+<PxTable>
+ TableName=RPP000
+ TableKey=K1433887696
+ FileCreate=KEYED "RPP000",50,[1:1:10]+[1:318:3]+[1:11:40],0,-768,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="RPP_ReportParam"
+    PHYSICALPATH$="2013/02/18 17:06"
+    LASTUPDATEDFILE$="2015/06/09 17:02:29-root"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST RPT_ID$:[LEN(10)]"
+    NAME$="RPT_ID"
+    DESCRIPTION$="=MSG("+QUO+"RPT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="Report Id"
+    KEYDEFINITION$="1:1:A,2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST PARAM_NAME$:[LEN(40)]"
+    NAME$="PARAM_NAME"
+    DESCRIPTION$="=MSG("+QUO+"PARAM_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="P"
+    NOTES$="Parameter Name"
+    KEYDEFINITION$="1:2:A,2:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST RPT_ID$:[LEN(10,SEP=SEP)]"
+    NAME$="RPT_ID"
+    DESCRIPTION$="=MSG("+QUO+"RPT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Id"
+    KEYDEFINITION$="1:1:A,2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST PARAM_NAME$:[LEN(40,SEP=SEP)]"
+    NAME$="PARAM_NAME"
+    DESCRIPTION$="=MSG("+QUO+"PARAM_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Parameter Name"
+    KEYDEFINITION$="1:2:A,2:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST PARAM_PROMPT$:[LEN(60,SEP=SEP)]"
+    NAME$="PARAM_PROMPT"
+    DESCRIPTION$="=MSG("+QUO+"PARAM_PMT"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+    NOTES$="Parameter User Prompt"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST PARAM_DESC$:[LEN(100,SEP=SEP)]"
+    NAME$="PARAM_DESC"
+    DESCRIPTION$="=MSG("+QUO+"PARAM_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="S"
+    NOTES$="Long Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST DATATYPE$:[LEN(2,SEP=SEP)]"
+    NAME$="DATATYPE"
+    DESCRIPTION$="=MSG("+QUO+"DATATYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Datatype (S-String,N-Number,D-Date)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST DBD_ACCT_TYPE$:[LEN(3,SEP=SEP)]"
+    NAME$="DBD_ACCT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"ACCT_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Account Type Format Masks"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST IS_REQUIRED$:[LEN(1,SEP=SEP)]"
+    NAME$="IS_REQUIRED"
+    DESCRIPTION$="=MSG("+QUO+"IS_REQD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Is Required (Y/N)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST IS_LOCKED$:[LEN(1,SEP=SEP)]"
+    NAME$="IS_LOCKED"
+    DESCRIPTION$="=MSG("+QUO+"IS_LOCKED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Is Locked (Y/N)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST DEFAULT_VALUE$:[LEN(100,SEP=SEP)]"
+    NAME$="DEFAULT_VALUE"
+    DESCRIPTION$="=MSG("+QUO+"DEF_VAL"+QUO+")"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="S"
+    NOTES$="Default Value (for example or locked params)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST SEQ_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="SEQ_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Seq Number"
+    KEYDEFINITION$="2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST RPP_UNUSED_1$:[LEN(SEP,SIZ=200)]"
+    NAME$="RPP_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="200"
+    INTERNALFORMAT$="L"
+    NOTES$="Unused"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="-111      SortBy                                  "
+    RPT_ID$="-111      "
+    PARAM_NAME$="SortBy                                  "
+    PARAM_PROMPT$="Select output field for sorting                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000024CSR                                     "
+    RPT_ID$="0000000024"
+    PARAM_NAME$="CSR                                     "
+    PARAM_PROMPT$="Select a customer Sales Representative:                     "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000100AcctPeriod                              "
+    RPT_ID$="0000000100"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000100FiscalYear                              "
+    RPT_ID$="0000000100"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000101SalesPerson                             "
+    RPT_ID$="0000000101"
+    PARAM_NAME$="SalesPerson                             "
+    PARAM_PROMPT$="Choose a Salesperson                                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000101SortBy                                  "
+    RPT_ID$="0000000101"
+    PARAM_NAME$="SortBy                                  "
+    PARAM_PROMPT$="Sort Report By                                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000102SalesPerson                             "
+    RPT_ID$="0000000102"
+    PARAM_NAME$="SalesPerson                             "
+    PARAM_PROMPT$="Choose a Salesperson                                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000103SalesPerson                             "
+    RPT_ID$="0000000103"
+    PARAM_NAME$="SalesPerson                             "
+    PARAM_PROMPT$="Choose a Salesperson                                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000104SalesPerson                             "
+    RPT_ID$="0000000104"
+    PARAM_NAME$="SalesPerson                             "
+    PARAM_PROMPT$="Choose a Salesperson                                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000105Division                                "
+    RPT_ID$="0000000105"
+    PARAM_NAME$="Division                                "
+    PARAM_PROMPT$="Enter Division number                                       "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000106Division                                "
+    RPT_ID$="0000000106"
+    PARAM_NAME$="Division                                "
+    PARAM_PROMPT$="Selectd a Division                                          "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000107SortBy                                  "
+    RPT_ID$="0000000107"
+    PARAM_NAME$="SortBy                                  "
+    PARAM_PROMPT$="Sort Report By                                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000108AcctPeriod                              "
+    RPT_ID$="0000000108"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000108FiscalYear                              "
+    RPT_ID$="0000000108"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000108FiscalYearPrior                         "
+    RPT_ID$="0000000108"
+    PARAM_NAME$="FiscalYearPrior                         "
+    PARAM_PROMPT$="Enter Prior Fiscal Year (yyyy)                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000108ShowZeroSales                           "
+    RPT_ID$="0000000108"
+    PARAM_NAME$="ShowZeroSales                           "
+    PARAM_PROMPT$="Allow display of "+QUO+"0"+QUO+" sales                                  "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000109AcctPeriod                              "
+    RPT_ID$="0000000109"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000109FiscalYear                              "
+    RPT_ID$="0000000109"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000109FiscalYearPrior                         "
+    RPT_ID$="0000000109"
+    PARAM_NAME$="FiscalYearPrior                         "
+    PARAM_PROMPT$="Enter Prior Fiscal Year (yyyy)                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000109ShowZeroSales                           "
+    RPT_ID$="0000000109"
+    PARAM_NAME$="ShowZeroSales                           "
+    PARAM_PROMPT$="Allow display of "+QUO+"0"+QUO+" sales                                  "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000111CustCode                                "
+    RPT_ID$="0000000111"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000111CustDiv                                 "
+    RPT_ID$="0000000111"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division (or enter "+QUO+"ALL"+QUO+" for all divisions and custom"
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000111EndDate                                 "
+    RPT_ID$="0000000111"
+    PARAM_NAME$="EndDate                                 "
+    PARAM_PROMPT$="Enter End Date (MM/dd/yyyy)                                 "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000111StartDate                               "
+    RPT_ID$="0000000111"
+    PARAM_NAME$="StartDate                               "
+    PARAM_PROMPT$="Enter Start Date (MM/dd/yyyy)                               "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000112EndDate                                 "
+    RPT_ID$="0000000112"
+    PARAM_NAME$="EndDate                                 "
+    PARAM_PROMPT$="Enter End Date (MM/dd/yyyy)                                 "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000112StartDate                               "
+    RPT_ID$="0000000112"
+    PARAM_NAME$="StartDate                               "
+    PARAM_PROMPT$="Enter Start Date (MM/dd/yyyy)                               "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000112Warehouse                               "
+    RPT_ID$="0000000112"
+    PARAM_NAME$="Warehouse                               "
+    PARAM_PROMPT$="Select warehouse (or enter "+QUO+"ALL"+QUO+")                           "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000113AcctPeriod                              "
+    RPT_ID$="0000000113"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000113FiscalYear                              "
+    RPT_ID$="0000000113"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000114AccountLength                           "
+    RPT_ID$="0000000114"
+    PARAM_NAME$="AccountLength                           "
+    PARAM_PROMPT$="Length of account name                                      "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000114AcctPeriod                              "
+    RPT_ID$="0000000114"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000114FiscalYear                              "
+    RPT_ID$="0000000114"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000115CustCode                                "
+    RPT_ID$="0000000115"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000115CustDiv                                 "
+    RPT_ID$="0000000115"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000115LotDetail                               "
+    RPT_ID$="0000000115"
+    PARAM_NAME$="LotDetail                               "
+    PARAM_PROMPT$="Select the Lot detail                                       "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000116CustCode                                "
+    RPT_ID$="0000000116"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer (Note: Information comes from current custom"
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000116CustDiv                                 "
+    RPT_ID$="0000000116"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000117AcctPeriod                              "
+    RPT_ID$="0000000117"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000117FiscalYear                              "
+    RPT_ID$="0000000117"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year to report                                 "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000117MonthSetup                              "
+    RPT_ID$="0000000117"
+    PARAM_NAME$="MonthSetup                              "
+    PARAM_PROMPT$="Enter Month to display                                      "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000117YearSetup                               "
+    RPT_ID$="0000000117"
+    PARAM_NAME$="YearSetup                               "
+    PARAM_PROMPT$="Enter Year that account was set up (yyyy)                   "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000118EndDate                                 "
+    RPT_ID$="0000000118"
+    PARAM_NAME$="EndDate                                 "
+    PARAM_PROMPT$="Enter End Date (MM/dd/yyyy)                                 "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000118StartDate                               "
+    RPT_ID$="0000000118"
+    PARAM_NAME$="StartDate                               "
+    PARAM_PROMPT$="Enter Start Date (MM/dd/yyyy)                               "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119CustomerEnd                             "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="CustomerEnd                             "
+    PARAM_PROMPT$="Enter last Customer number in range                         "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="010"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119CustomerStart                           "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="CustomerStart                           "
+    PARAM_PROMPT$="Enter first Customer number in range                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="009"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119DivisionEnd                             "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="DivisionEnd                             "
+    PARAM_PROMPT$="Last Division number in range                               "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="008"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119DivisionStart                           "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="DivisionStart                           "
+    PARAM_PROMPT$="First Division number in range                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="007"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119OrderDateEnd                            "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="OrderDateEnd                            "
+    PARAM_PROMPT$="Enter last Order date (MM/dd/yyyy)                          "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119OrderDateStart                          "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="OrderDateStart                          "
+    PARAM_PROMPT$="Enter first Order date (MM/dd/yyyy)                         "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119SalesOrderNumberEnd                     "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="SalesOrderNumberEnd                     "
+    PARAM_PROMPT$="Enter last Sales Order in range                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119SalesOrderNumberStart                   "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="SalesOrderNumberStart                   "
+    PARAM_PROMPT$="Enter first Sales Order in range                            "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119SalesPersonEnd                          "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="SalesPersonEnd                          "
+    PARAM_PROMPT$="Enter last Salesperson                                      "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="006"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000119SalesPersonStart                        "
+    RPT_ID$="0000000119"
+    PARAM_NAME$="SalesPersonStart                        "
+    PARAM_PROMPT$="Enter first Salesperson                                     "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="005"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000120CSR                                     "
+    RPT_ID$="0000000120"
+    PARAM_NAME$="CSR                                     "
+    PARAM_PROMPT$="Select CSR                                                  "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121CustCode                                "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121CustDiv                                 "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121OrderDateEnd                            "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="OrderDateEnd                            "
+    PARAM_PROMPT$="Enter last Order date (MM/dd/yyyy)                          "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121OrderDateStart                          "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="OrderDateStart                          "
+    PARAM_PROMPT$="Enter first Order date (MM/dd/yyyy)                         "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121SortBy                                  "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="SortBy                                  "
+    PARAM_PROMPT$="Select output field to sort by                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="005"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000121SortDirection                           "
+    RPT_ID$="0000000121"
+    PARAM_NAME$="SortDirection                           "
+    PARAM_PROMPT$="Select sort direction                                       "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="006"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000122CustCode                                "
+    RPT_ID$="0000000122"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000122CustDiv                                 "
+    RPT_ID$="0000000122"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000122OrderDateEnd                            "
+    RPT_ID$="0000000122"
+    PARAM_NAME$="OrderDateEnd                            "
+    PARAM_PROMPT$="Enter last Order date (MM/dd/yyyy)                          "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000122OrderDateStart                          "
+    RPT_ID$="0000000122"
+    PARAM_NAME$="OrderDateStart                          "
+    PARAM_PROMPT$="Enter first Order date (MM/dd/yyyy)                         "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000123CustCode                                "
+    RPT_ID$="0000000123"
+    PARAM_NAME$="CustCode                                "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000123CustDiv                                 "
+    RPT_ID$="0000000123"
+    PARAM_NAME$="CustDiv                                 "
+    PARAM_PROMPT$="Select Division                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000123InvoiceDateEnd                          "
+    RPT_ID$="0000000123"
+    PARAM_NAME$="InvoiceDateEnd                          "
+    PARAM_PROMPT$="Enter last Invoice date (MM/dd/yyyy)                        "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000123InvoiceDateStart                        "
+    RPT_ID$="0000000123"
+    PARAM_NAME$="InvoiceDateStart                        "
+    PARAM_PROMPT$="Enter first Invoice date (MM/dd/yyyy)                       "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000128AcctPeriod                              "
+    RPT_ID$="0000000128"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000128CustomerCode-SingleVal                  "
+    RPT_ID$="0000000128"
+    PARAM_NAME$="CustomerCode-SingleVal                  "
+    PARAM_PROMPT$="Select Customer                                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000128FiscalYear                              "
+    RPT_ID$="0000000128"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000132AcctPeriod                              "
+    RPT_ID$="0000000132"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000132FiscalYear                              "
+    RPT_ID$="0000000132"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000132FiscalYearPrior                         "
+    RPT_ID$="0000000132"
+    PARAM_NAME$="FiscalYearPrior                         "
+    PARAM_PROMPT$="Enter Prior Fiscal Year (yyyy)                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000132ShowZeroSales                           "
+    RPT_ID$="0000000132"
+    PARAM_NAME$="ShowZeroSales                           "
+    PARAM_PROMPT$="Allow display of records with "+QUO+"0"+QUO+" sales                     "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000133AcctPeriod                              "
+    RPT_ID$="0000000133"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000133FiscalYear                              "
+    RPT_ID$="0000000133"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000133FiscalYearPrior                         "
+    RPT_ID$="0000000133"
+    PARAM_NAME$="FiscalYearPrior                         "
+    PARAM_PROMPT$="Enter Prior Fiscal Year (yyyy)                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000133ShowZeroSales                           "
+    RPT_ID$="0000000133"
+    PARAM_NAME$="ShowZeroSales                           "
+    PARAM_PROMPT$="Allow display of records with "+QUO+"0"+QUO+" sales                     "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000134AcctPeriod                              "
+    RPT_ID$="0000000134"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000134FiscalYear                              "
+    RPT_ID$="0000000134"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000135AcctPeriod                              "
+    RPT_ID$="0000000135"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="003"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000135FiscalYear                              "
+    RPT_ID$="0000000135"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000135FiscalYearPrior                         "
+    RPT_ID$="0000000135"
+    PARAM_NAME$="FiscalYearPrior                         "
+    PARAM_PROMPT$="Enter Prior Fiscal Year (yyyy)                              "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0000000135ShowZeroSales                           "
+    RPT_ID$="0000000135"
+    PARAM_NAME$="ShowZeroSales                           "
+    PARAM_PROMPT$="Allow display of records with "+QUO+"0"+QUO+" sales                     "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="004"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000001AcctPeriod                              "
+    RPT_ID$="8340000001"
+    PARAM_NAME$="AcctPeriod                              "
+    PARAM_PROMPT$="Enter Accounting Period (01-12)                             "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="002"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="8340000001FiscalYear                              "
+    RPT_ID$="8340000001"
+    PARAM_NAME$="FiscalYear                              "
+    PARAM_PROMPT$="Enter Fiscal Year (yyyy)                                    "
+    PARAM_DESC$="                                                                                                    "
+    DATATYPE$="S "
+    DBD_ACCT_TYPE$="   "
+    IS_REQUIRED$="N"
+    IS_LOCKED$=" "
+    DEFAULT_VALUE$="                                                                                                    "
+    SEQ_NUM$="001"
+    RPP_UNUSED_1$="                                                                                                                                                                                                        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

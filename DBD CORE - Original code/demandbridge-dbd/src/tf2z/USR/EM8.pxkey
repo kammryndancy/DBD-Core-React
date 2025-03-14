@@ -1,0 +1,115 @@
+<PxTable>
+ TableName=EM8
+ TableKey=K1049573025
+ FileCreate=KEYED "EM8",4,0,-256,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EM8_Uom"
+    PHYSICALPATH$="October 3,2008 2:52pm"
+    LASTCHANGEDATE$="tma"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TF_UM$:[LEN(4)]"
+    NAME$="TF_UM"
+    DESCRIPTION$="=MSG("+QUO+"TF_UM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="TopForm Unit of Measure"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TF_UM$:[LEN(4,SEP=SEP)]"
+    NAME$="TF_UM"
+    DESCRIPTION$="=MSG("+QUO+"TF_UM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="TopForm Unit of Measure"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST EDI_UM$:[LEN(15,SEP=SEP)]"
+    NAME$="EDI_UM"
+    DESCRIPTION$="=MSG("+QUO+"EDI_UM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="15"
+    INTERNALFORMAT$="S"
+    NOTES$="EDI Unit of Measure"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST UM_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="UM_DESC"
+    DESCRIPTION$="=MSG("+QUO+"UM_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Unit of Measure Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST EM8_UNUSED_1$:[LEN(SEP,SIZ=11)]"
+    NAME$="EM8_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="11"
+    INTERNALFORMAT$="L"
+    NOTES$="Unused"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="CASE"
+    TF_UM$="CASE"
+    EDI_UM$="CS             "
+    UM_DESC$="Case                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EA  "
+    TF_UM$="EA  "
+    EDI_UM$="EA             "
+    UM_DESC$="Each                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EACH"
+    TF_UM$="EACH"
+    EDI_UM$="EA             "
+    UM_DESC$="Each                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="M   "
+    TF_UM$="M   "
+    EDI_UM$="TH             "
+    UM_DESC$="Thousand                      "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,193 @@
+0010 REM "<PO2MAU> Update Receiving Data from PO2 data
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 05/17/22 - 11.306472 - crg - SSP# 307403
+0037 REM "307403-DBD-265: AP Invoice and PO Receiving parallel files         
+0040 REM "Copyright 2022 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0075 REM "A$= P02 string
+0076 REM "A(ALL)= PO2 numerics
+0077 REM "R1$=receiving info, (1,10)=A/P invoice number
+0078 REM "C0-> 8400=gosub 8400 to delete record, 8450=gosub 8450 to add back
+0079 REM "J$ and J(ALL) return PO7 info
+0080 REM "S1$ is ship to code , blank or "" for none
+0085 REM " OPTIONS$ set for in costing in PO2MAB, in PO2MAL for CIG Plus
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,A$,A{ALL},R1$,S1$,C0,J$,J{ALL},OPTIONS$
+0100 SETERR 9000
+0110 X0$="PO2MAU",X1$="Update Receiving Data from PO2"
+0320 IOLIST B$
+0330 IOLIST C$
+0340 IOLIST D$
+0400 IOLIST U$,U[0],U[1]
+0410 IOLIST L$,L[0],L[1],L[2],L[3],L[4],L[5],L[6],L[7],L[8],L[9],L[10],L[11],L[12],L[13],L[14],L[15],L[16],L[17],L[18],L[19],L[20],L[21],L[22],L[23],L[24],L[25],L[26],L[27],L[28],L[29]
+0411 IOLIST L$,L[0],STR(L[1]),L[2],L[3],STR(L[4]),L[5],L[6],L[7],L[8],L[9],L[10],L[11],L[12],L[13],L[14],STR(L[15]),L[16],L[17],STR(L[18]),L[19],L[20],L[21],STR(L[22]),L[23],L[24],L[25],L[26],L[27],L[28],L[29]
+0420 IOLIST J$,J[0],J[1],J[2],J[3],J[4],J[5],J[6],J[7],J[8],J[9],J[10],J[11],J[12]
+0421 IOLIST J$,J[0],STR(J[1]),J[2],J[3],J[4],STR(J[5]),J[6],J[7],J[8],J[9],J[10],J[11],J[12]
+0422 IOLIST J1$,J1[0],J1[1],J1[2],J1[3],J1[4],J1[5],J1[6],J1[7],J1[8],J1[9],J1[10],J1[11],J1[12]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O PO1... 03O FM0... 04O FMP... 05O ARV... 06O PO3... 09O FS2... 11O POA... 12O PO7... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 IF C0=8800 THEN GOSUB 8800; GOTO 9900 ! SSP 239950
+0530 READ (Z[2],KEY=A$(82,9),DOM=0531)IOL=0320
+0550 DIM M6[1]; CALL "IC2PRE",X3$,Z[13],M6$,M6{ALL},"",0,"",0
+0580 READ (Z[13],KEY=X3$(9,3)+"F/M")OPS$
+0590 READ (Z[13],KEY=X3$(9,3)+"I/C")P$
+0591 P8=NUM(P$(40,2)),P9=NUM(P$(42,1))
+0595 DIM U[1],U$(21); FIND (Z[13],KEY="U/M"+A$(77,4),DOM=0596)IOL=0400
+0596 PC$=A$(25,3); IF POS("P"=OPTIONS$)>0 THEN CALL "FM2ICB",X3$,X4$,"PO2MAU",A$(82,8),"P",PC$; REM "WO111482, Inventory costing, get product code for g/l
+0597 DIM D$(100); FIND (Z[4],KEY="T"+PC$,DOM=0598)IOL=0340
+0598 WHSE$=""; IF POS("W"=OPTIONS$)>0 THEN CALL "FM2ICB",X3$,X4$,"PO2MAU",A$(82,8),"W",WHSE$; REM "WO111482, Inventory costing, get whse to ship to
+0600 REM "Where to go
+0605 S0$=" ",S0$(1)=S1$
+0610 IF C0=8400 THEN GOSUB 8400; GOTO 9900 ELSE IF C0=8450 THEN GOSUB 8450; GOSUB 7000; GOTO 9900; REM " SSP# 129955 - 7000 CHECK TO SEE IF FLAG SHOULD BE SET TO UPDATE COSTS
+7000 REM " SSP# 129955 - CHECK TO SEE IF FLAG SHOULD BE SET TO UPDATE COSTS
+7001 IF MID(OPS$,297,1)<>"Y" THEN RETURN ; REM " SSP# 129955 - CHECK O/P FLAG
+7010 REM " SSP# 129955 - "CHECK" MEANS TO CHECK TO SEE IF WE SHOULD SET THE FLAG
+7090 CALL "PO2CST",A$,X3$,X4$,J$,EXTRA2$,CST_FLAG$,"CHECK",PROGRAM$,A{ALL},J{ALL},EXTRA_NUM2; REM " SSP# 129955 - PROGRAM TO CHECK FLAG OR SET FLAG OR DO UPDATE
+7096 A$(2,1)=CST_FLAG$; REM " SSP# 129955 - PUT FLAG IN PO2 RECORD
+7199 RETURN ; REM " SSP# 129955
+8400 REM "Remove PO7 record, and update buckets
+8405 DIM J$(130),J[12]
+8410 J$(1)=A$(82,9)+R1$(1,10)+A$(7,3)+S0$+A$(25,3),J$(63,3)=PC$
+8415 FIND (Z[12],KEY=J$(1,23),DOM=8440)IOL=0420
+8416 J1=1; GOSUB 8500
+8418 IF MID(J$,95,1)="Y" THEN OPTIONS$=OPTIONS$+"L" ! SSP 239950
+8420 A[6]=A[6]-J[0],A[7]=J[0],A[8]=J[1],A[14]=J[2],A[13]=A[13]-J[2],A[12]=J[3],A[9]=A[9]-J[4],A[10]=J[4],A[16]=J[6],A[15]=A[15]-J[6],A[17]=J[5]
+8421 IF A[6]<0 THEN A[6]=0
+8422 IF A[13]<0 THEN A[13]=0
+8423 IF A[9]<0 THEN A[9]=0
+8425 IF A[15]<0 THEN A[15]=0
+8426 REM LET A(1)=A(11)-A(6)
+8428 IF J$(66,3)<>"   " THEN CALL "FM2ICC",X3$,X4$,"PO2MAU",-1,J$,J{ALL},"",0; REM "WO111482, Inventory costing, remove FTF record(s) that go with this PO7
+8430 REM IF J0<>1 THEN GOTO 8435
+8431 J0=0
+8432 REMOVE (Z[12],KEY=J$(1,23),DOM=8433)
+8433 REMOVE (Z[11],KEY=J$(10,10)+J$(1,9)+J$(20,4),DOM=8434)
+8434 IF S0$<>" " THEN J9=-1; GOSUB 8700; REM "Update master record if needed
+8440 RETURN 
+8450 REM "Update prior buckets, clear nows & b/o and write out PO7 record
+8454 IF A[7]=0 AND A[8]=0 AND A[14]=0 AND A[12]=0 AND A[10]=0 AND A[17]=0 AND A[16]=0 AND (A$(10,1)<>"S" AND A$(6,1)<>"Y") THEN RETURN 
+8455 DIM J[12],J$(130)
+8460 J$(1)=A$(82,9)+R1$(1,10)+A$(7,3)+S0$+A$(25,3),J$(39)=R1$(11),J$(63,3)=PC$; J$(96,14)=MID(B$,7,14),J$(110,20)=MID(A$,91,20); GOSUB 8600 ! 307403-DBD-265
+8463 IF POS("C"=OPTIONS$)>0 THEN J$(93,1)="Y"; IF %WMS_RECV$="Y" THEN J$(95,1)="Y"; REM " SSP 132195, coming from CIG Plus, will use flag in AP2DAE to keep amounts exact from vendor invoice; SSP 254323 - if WMS, set flag showing presence of a lot line in POH
+8465 J[0]=A[7],J[1]=A[8],J[2]=A[14],J[3]=A[12],J[4]=A[10],J[5]=A[17],J[6]=A[16]
+8467 IF A$(10,1)="S" THEN READ (Z[4],KEY="X"+A$(101,10),DOM=8468)SPECIAL$; IF SPECIAL$(60,1)="Y" THEN J[9]=A[16]; REM "SSP118375, if order line freight we will keep for when we decide if freight should be excluded for AP discount purposes
+8470 A[6]=A[6]+A[7],A[13]=A[13]+A[14],A[9]=A[9]+A[10],A[15]=A[15]+A[16]
+8471 REM "A(1)=A(11)-A(6)
+8475 A[7]=0,A[8]=0,A[14]=0,A[12]=0,A[10]=0,A[17]=0,A[16]=0
+8478 J1=-1; GOSUB 8500
+8479 IF OPS$(280,1)="Y" AND B$(351,1)="B" THEN CALL "FM2ICC",X3$,X4$,"PO2MAU",1,J$,J{ALL},A$,A{ALL}; REM "WO111482, create inventory costing transactions if we have an invoice
+8480 WRITE (Z[12],KEY=J$(1,23))IOL=0421
+8485 WRITE (Z[11],KEY=J$(10,10)+J$(1,9)+J$(20,4))
+8486 IF S0$<>" " THEN J9=1; GOSUB 8700; REM "Update master PO7 record if needed
+8487 READ (Z[2],KEY=A$(82,9),DOM=8488)IOL=0320
+8490 IF B$(248,18)=DIM(18) THEN B$(248,18)=A$(119,18)
+8493 WRITE (Z[2],KEY=A$(82,9))IOL=0320
+8495 RETURN 
+8500 REM "Add or subtract from FS2 based on J$ & J1
+8505 DIM L[29]
+8510 EXTRACT (Z[9],KEY=J$(1,8)+J$(20,3),DOM=8540)IOL=0410
+8515 L[7]=L[7]-J[0]*J1,L[19]=L[19]-J[2]*J1,L[13]=A[19],L[12]=A[5]
+8516 L[8]=J[3]; IF L[8]<0 THEN L[8]=0; REM "SSP116507, was L[8]=L[8]-J[3]*J1
+8517 GOSUB 8550
+8518 L$(120,4)=A$(77,4),L[2]=A[2],L[1]=A[0],L[3]=A[4] ! SSP 264318 266163
+8519 REM "IF X3$(9,3)="030" THEN LET L$(4,1)="R"
+8520 IF L$(4,1)<>"Y" THEN IF L$(4,1)="R" THEN GOSUB 8850 ELSE IF L[15]>L[1] AND L[1]<>0 THEN L[18]=L[15]*L[4]/L[1]
+8521 IF LEN(L$)<204 THEN L$=L$+" "; GOTO 8521
+8525 L$(171,12)=A$(119,12),L$(183,6)=A$(131,6),L$(189,9)=A$(137,9),L$(198,7)=STR(A[18]:"####.00")
+8532 IF J1=1 THEN L$(3,1)="N" ELSE IF A$(6,1)="Y" THEN L$(3,1)="Y" ELSE L$(3,1)="N"
+8535 WRITE (Z[9],KEY=J$(1,8)+J$(20,3))IOL=0411
+8540 RETURN 
+8550 REM "Figure average cost from exten & quantity
+8555 IF U$(20,1)="Y" THEN Q0=U[1] ELSE Q0=A[2]
+8556 IF Q0=0 THEN Q0=1
+8558 IF L[19]=0 THEN L[15]=0; GOTO 8590
+8560 CALL "FM2EXT",Z[13],1,A$(77,4),A[2],L[7],Q5,L[19],M6[1]; L[15]=Q5
+8590 RETURN 
+8600 REM "Set cost of sale or inventory G/L account
+8615 DIM D2$(255); FIND (Z[5],KEY=D$(24,9),DOM=8630)D2$(1)
+8619 REM "Pick COS for order or Inv acct for stock order
+8620 IF B$(173,1)="C" AND POS(B$(351,1)="BS")=0 THEN J$(27,12)=D2$(106,12) ELSE J$(27,12)=D2$(118,12); GOSUB 8650; GOTO 8640
+8628 IF LEN(J$)<62 THEN J$=J$+" "; GOTO 8628
+8630 IF POS(" "<>D2$(202,12))>0 THEN J$(27,12)=D2$(202,12),J$(62,1)="Y"
+8640 RETURN 
+8650 REM "Do inv substituiton if needed
+8655 IF P$(39,1)<>"Y" THEN GOTO 8690
+8657 IF WHSE$>"" THEN DIM P7$(15); P7$(1,1)="D",P7$(12,4)=WHSE$; GOTO 8670; REM "WO111482, Inventory costing, need whse for non spec ship lines
+8658 IF B$(351,1)="B" THEN READ (Z[6],KEY=A$(82,8)+" "+A$(11,3)+"1",DOM=8659)P8$; GOTO 8661; REM "If B type order look for spec ship record for this line
+8660 READ (Z[6],KEY=A$(82,9)+"    ",DOM=8690)P8$; IF POS("C"=OPTIONS$)>0 AND J$(23,1)<>" " THEN READ (Z[6],KEY=A$(82,9)+J$(20,4),DOM=8661)P8$; REM " For CIG Plus we don't go through PO2MAF so need to make sure substitution is set here
+8665 DIM P7$(15); P7$(1)=P8$(11,1),P7$(12,4)=P8$(12,4); IF P8$(11,1)="P" THEN P7$(2,10)=B$(7,10)
+8670 READ (Z[3],KEY=P7$,DOM=8690)IOL=0330
+8675 P9$=D2$(118,12)
+8680 P9$(P8,P9)=C$(214,P9)
+8685 J$(27,12)=P9$
+8690 RETURN 
+8700 REM "Update master PO7 record when updating a special shipping PO7 record.
+8701 REM "J9=1 means write out with totals, J9=-1 means back out
+8709 REM "if here J9=-1
+8710 REMOVE (Z[12],KEY=J$(1,22)+" ",DOM=8711)
+8715 REMOVE (Z[11],KEY=J$(10,10)+J$(1,9)+J$(20,3)+" ",DOM=8716)
+8719 IF J9=-1 THEN GOTO 8745; REM "we're done
+8720 REM "add up all of the spec ship records to get total PO7
+8721 J7$=J$; DIM J7[12]; FOR J1=0 TO 12; J7[J1]=J[J1]; NEXT J1
+8722 DIM J1[12],J[12]; J$(23,1)=" "
+8723 READ (Z[12],KEY=J$(1,22),DOM=8724)
+8725 K$=KEY(Z[12],END=8735); IF K$(1,22)<>J$(1,22) THEN GOTO 8735 ELSE READ (Z[12],KEY=K$,DOM=8725)IOL=0422
+8726 FOR J1=0 TO 12
+8727 IF J1<>1 AND J1<>5 THEN J[J1]=J[J1]+J1[J1] ELSE IF J1[J1]<>0 THEN J[J1]=J1[J1]
+8728 NEXT J1
+8730 GOTO 8725
+8735 WRITE (Z[12],KEY=J$(1,23))IOL=0421
+8736 WRITE (Z[11],KEY=J$(10,10)+J$(1,9)+J$(20,4))
+8740 J$=J7$; FOR J1=0 TO 12; J[J1]=J7[J1]; NEXT J1
+8745 RETURN 
+8800 PO7_LINE_UPD:! Update PO7 order line to indicate lot been set up for this order line. SSP 239950
+8802 DIM J[12],J$(130) ! SSP 239950
+8810 J$(1)=A$+" " ! ssp 239950
+8820 FIND (Z[12],KEY=J$(1,23),DOM=*RETURN)IOL=0420 ! SSP 239950
+8830 J$(95,1)="Y" ! SSP 239950
+8840 WRITE (Z[12],KEY=J$(1,23))IOL=0420 ! SSP 239950
+8845 RETURN ! SSP 239950
+8850 REM "Recalculate selling price based on Feature Drive Pricing
+8855 IF POS(" "<>MID(H$,291,20))=0 THEN GOTO 8895
+8860 O0$=H$(82,10)+H$(291,20)
+8865 CALL "FM2OB9",X3$,O0$,L$(120,4),L[2],L$(124,4),L[5],J[0],O0,O1,M6[1]
+8870 L[18]=O1
+8895 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 ! "208675-Kit Module - Allow processing of items not in inventory     
+56002 REM "239950-P/O Receiving-Multiple Vendor bill and Receivings in batch  
+56004 REM "254323-WMS Put Away - Set PO7 flag to indicate it has lot line in POH
+56005 REM "264318-invoice billed out with a cost of $128,000 when the cost    
+56006 REM "266163-Cost of line goes to zero if delete po receiving and UOM is 
+56007 REM "307403-DBD-265: AP Invoice and PO Receiving parallel files         

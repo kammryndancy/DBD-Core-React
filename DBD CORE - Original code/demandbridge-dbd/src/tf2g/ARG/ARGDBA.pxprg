@@ -1,0 +1,379 @@
+0010 REM "Sales Journal <ARGDBA>
+0025 REM "(C) Copyright 1986 - All Rights Reserved
+0035 REM "5.5 - 03/05/07 - 10.980277 - mhe - SSP# 205703
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="ARGDBA",X1$="Sales Journal"
+0120 DIM A$(162),A[18],B[11],P2$(105)
+0140 Z0$="##,###,###.00-",Z1$="#,###,###.00-",Z2$="###.00-",Z3$="####,###.00-",Z4$="###,###.00-"
+0150 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0160 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0210 T=1,T0=0,T1=6
+0220 W3=129
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3)
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0305 REM "IOLIST FOR ARB - A/R Invoice Data Entry Header
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18]
+0315 REM "IOLIST FOR ARC"
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11]
+0330 IOLIST R1$,R[0],R[1],R[2],R[3],R[4],R[5],R[6]
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01L ARB...  02O ARC...  03O ARJ...  04O ARH...  05O AR3...  07O ARG...  08O ZYB...  06O ZZPARM  09O ARD...  10O GL1...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0529 REM "Check if Order processing, run detailed sales journal
+0530 REM "FIND (Z(6),KEY=X3$(9,3)+"F/M",DOM=0550) 
+0535 CLOSE (14); OPEN (14,ERR=0550)"ARGDCA"
+0540 RUN "ARGDCA"
+0600 REM 
+0605 N0$="AR2DBA"; GOSUB 6900
+0610 GOSUB 8500
+0700 REM "Open Printer
+0720 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 0721,9920
+0750 REM "Check for restart record"
+0755 READ (Z[1],KEY="",DOM=0780)
+0760 IF K0$>"" THEN X3$(184,1)="1"
+0765 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W4,W4$,W5$
+0770 CALL "ZZREST",X3$,Z[6],Z[1],W9,W3,W
+0775 R5$="*"
+0800 REM "Alternate Sort Info & total dim"
+0801 READ (Z[6],KEY=X3$(9,3)+"A/R",DOM=9900)P0$
+0802 READ (Z[6],KEY=X3$(9,3)+"AR1",DOM=9900)P1$
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[3]; U=14,U0=3,U[0]=0,U[1]=4,U[2]=2,U[3]=8,T0=1,V1=6,U0$="Y   ",T5$="S               ",U5$="Fiscal Year"; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM " Position read"
+0905 REM "set key file to read from"
+0910 CALL "ZZFLES",X3$,Y1$,Y0$,"00O "+V1$+"  ",Z{ALL},Z0,0; IF Z0>0 THEN GOTO 9900 ELSE U1=Z[0]
+0930 IF LEN(V2$)>=U*2 THEN GOTO 0965
+0934 REM "create default 'all' range key
+0935 DIM V2$(U*2),V4$(U,"~"); U3=1
+0940 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1]
+0950 V2$(U3+U[U9],U[U9])=V4$(1,U[U9])
+0955 NEXT U9
+0964 REM "Get starting key from range key
+0965 DIM V4$(U); U3=1,U4=1
+0970 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1],U4=U4+U[U9-1]
+0975 V4$(U4,U[U9])=V2$(U3,U[U9])
+0980 NEXT U9
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0990 READ (U1,KEY=V4$,DOM=0991)
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000)
+1008 REM "check key against range info"
+1009 U3=1,U2=1
+1010 FOR U9=1 TO U0; U2=U2+U[U9-1],U3=U3+U[U9-1]+U[U9-1]
+1020 IF U$(U2,U[U9])<V2$(U3,U[U9]) THEN READ (U1,END=5000); EXITTO 1000
+1030 IF U$(U2,U[U9])>V2$(U3+U[U9],U[U9]) THEN IF U=1 THEN EXITTO 5000 ELSE READ (U1,END=5000); EXITTO 1000
+1040 NEXT U9
+1100 REM "Get record"
+1110 U9$=U$
+1120 ON V0 GOTO 1150,1150,1130,1140
+1150 READ (Z[1],KEY=U$,DOM=1000)IOL=0310
+1300 REM "Read other data
+1305 DIM B$(48); D0=1
+1310 FIND (Z[2],KEY=A$(1,14),DOM=1320)IOL=0320
+1315 B$=B$(15,48)
+1400 REM "Subtotals"
+1415 GOSUB 3100
+1420 ON T GOTO 1470,1430,1440,1450,1460
+1490 T=0
+1500 REM "Print Data
+1505 S1=A[4]+A[6]+A[8],S2=A[1]-A[11]
+1510 IF W+3+INT(POS("    "=A$(137,16)+"    ")/4)>W0 THEN GOSUB 6000
+1511 IF R5$="*" THEN GOSUB 6000; R5$=" "
+1515 Y5$(1)=A$(7,8); IF A$(77,1)="C" THEN Y5$(8)="-CM" ELSE IF A$(77,1)="D" THEN Y5$(8)="-DM"
+1520 IF X3$(69,1)<>"Y" THEN Y5$(12)=FND$(A$(86,6)) ELSE CALL "ZZDISP","DX",A$(86,6),"   ",X3$,X$,"",0,0,X4$; Y5$(12)=X$
+1525 CALL "ZZDISP","AX",A$(15,10),"A/R",X3$,X$,"",0,0,X4$; Y5$(24)=X$
+1530 Y5$(36)=A$(25,35),Y5$(71)=STR(A[1]:Z3$),Y5$(92)=STR(S1:Z4$),Y5$(113)=STR(S2:Z3$)
+1535 GOSUB 7300
+1537 REM "Check for cash or unprinted invoice
+1538 IF A$(60,1)="Y" THEN Y5$(2)="(Cash",Y5$(8)=A$(61,4),Y5$(12)=")" ELSE IF A$(64,1)<>"P" THEN Y5$(1)="*Unprinted"
+1540 Y5$(13)="Trm:",Y5$(18)=A$(65,2),Y5$(21)="Cat:"
+1545 CALL "ZZDISP","AX",A$(153,9),"ARG",X3$,X$,"",0,0,X4$; Y5$(26)=X$
+1546 CALL "ZZDISP","AX",A$(67,10),"AR5",X3$,X$,"",0,0,X4$
+1548 Y5$(36)="ST: "+X$
+1550 Y5$(53)="CC:",Y5$(57)=A$(128,5)
+1551 IF P1$(7,1)="Y" THEN Y5$(63)=STR(A[18]:Z4$)
+1552 Y5$(82)=STR(A[2]:Z4$),Y5$(101)=STR(A[9]:Z3$)
+1555 IF A[1]<>0 THEN Y5$(122)=STR(S2*100/A[1]:Z2$,ERR=1556)
+1560 GOSUB 7300
+1564 IF POS(A$(77,1)="CD")<>0 THEN Y5$(16)="Apply to:",Y5$(26)=A$(78,8)
+1565 FOR I=-1 TO 3
+1569 IF POS(" "<>A$(137+I*4,4))=0 THEN GOTO 1572
+1570 IF I=-1 THEN Y5$(36)="Sls:"
+1571 Y5$(41)=A$(137+I*4,4),Y5$(46)=STR(A[13+I]:Z2$)
+1572 IF POS(" "<>Y5$)<>0 THEN GOSUB 7300
+1575 NEXT I
+1580 REM "Finish printing split terms
+1590 IF LEN(B$)=0 THEN GOTO 1600 ELSE IF POS(" "<>B$(1,6))=0 THEN GOTO 1600
+1592 IF W+2>W0 THEN GOSUB 6000
+1595 GOSUB 7600; GOSUB 7300; GOTO 1590
+1700 REM "PRINT LINES
+1720 GOSUB 2300
+1730 GOSUB 7300
+1900 REM "Accumulate Totals"
+1910 T[T0,1]=T[T0,1]+A[1],T[T0,2]=T[T0,2]+S1,T[T0,3]=T[T0,3]+S2,T[T0,4]=T[T0,4]+A[2],T[T0,5]=T[T0,5]+A[9],T[T0,6]=T[T0,6]+A[18]
+1920 GOSUB 7700
+1990 T[T0,0]=T[T0,0]+1
+1995 GOTO 1000
+2300 REM "G/L Distr
+2310 IF A[0]<=0 THEN GOTO 2390
+2315 X=0,X3=A[0],C9=0; DIM X[3]
+2316 P=-46
+2320 CALL "GL2XRA",X3$,X4$,W3,W9,W,W0,X3,Z[9],Z[10],X{ALL},X,P,C9,T1$,T2$,Y5$,0,0,0,0; IF C9>0 THEN GOSUB 6000; GOTO 2320
+2390 RETURN 
+3000 REM "Subtotaling Routines"
+3050 REM "Add to T$ for total title, T & T5 should be set
+3055 T7$=T5$(T*4-3,4)
+3060 IF T7$(1,1)=" " THEN RETURN 
+3070 IF T7$(1,1)<>"S" THEN CALL "ZZDISP",T7$(1,1)+"X",T6$,T7$(2,3),X3$,T6$,"",0,0,X4$
+3080 IF T$="" THEN T$=T6$ ELSE T$=T$+" "+T6$
+3090 RETURN 
+3100 REM "High order break"
+3110 IF V1=0 THEN RETURN ELSE IF U1$=U9$(1,V1) THEN GOSUB 3200; RETURN 
+3120 GOSUB 3220
+3130 IF U1$="" THEN GOSUB 8000; GOTO 3160
+3150 T=1,T$=U5$,T6$=U1$(1,4)+" Period "+U1$(5,2); GOSUB 3050; GOSUB 7000; IF T0$<>"END" THEN GOSUB 8000
+3155 IF U0$(1,1)="Y" THEN GOSUB 6000
+3160 U1$=U9$(1,V1)
+3180 RETURN 
+3280 RETURN 
+3380 RETURN 
+3480 RETURN 
+5000 REM "End of Print
+5020 IF W8=0 THEN GOTO 5290
+5030 T0$="END",J5$=""
+5040 IF V1>0 THEN GOSUB 3120
+5050 T=0,T$="Sales journal total:"; GOSUB 7000
+5060 IF X3$(184,1)="1" THEN PRINT (W9)@(INT(W3/2)-39),"** The update was interrupted and will be restarted! See page 1 for details **"; W=W+1
+5200 REM "
+5290 IF V3$(1,1)="I" AND POS(V3$(2,1)="LPU")<>0 THEN Y4$="ARGDUA" ELSE Y4$=""
+5295 GOTO 9900
+5300 REM "Recap totals"
+5301 GOSUB 8650
+5302 DIM R[6]
+5305 W3$="Recap Totals",R3$=""
+5310 READ (Z[3],KEY="",DOM=5311)
+5400 REM 
+5405 K$=KEY(Z[3],END=5600)
+5410 READ (Z[3],END=5600)IOL=0330
+5440 IF W+3>W0 THEN GOSUB 6000
+5450 GOSUB 7300
+5455 IF K$(1,1)<>R3$ THEN GOSUB 5700
+5460 Y5$(4)=FNS$(R1$)+" ("+STR(R[5]:"0")+"):"
+5470 Y5$(69)=STR(R[0]:Z0$),Y5$(90)=STR(R[1]:Z1$),Y5$(111)=STR(R[2]:Z0$); GOSUB 7300
+5475 IF P1$(7,1)="Y" THEN Y5$(61)=STR(R[6]:Z1$)
+5480 Y5$(80)=STR(R[3]:Z1$),Y5$(99)=STR(R[4]:Z0$); IF R[0]<>0 THEN Y5$(122)=STR(R[2]*100/R[0]:Z2$)
+5485 GOSUB 7300
+5490 GOTO 5400
+5600 REM "End of recap print
+5690 RETURN 
+5700 REM "Change of type of totals
+5705 GOSUB 7300
+5710 ON POS(K$(1,1)="ABCDEF") GOTO 5780,5715,5720,5725,5730,5735,5740
+5715 GOTO 5780
+5720 GOTO 5780
+5725 Y5$(1)="Division totals:"; GOTO 5780
+5730 GOTO 5780
+5735 Y5$(1)="Salesperson totals:"; GOTO 5780
+5740 Y5$(1)="Category totals:"; GOTO 5780
+5780 GOSUB 7300; GOSUB 7300
+5785 R3$=K$(1,1)
+5790 RETURN 
+6000 REM "Page header
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,J5$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6045 ON W5 GOTO 6046,9900
+6060 GOSUB 6100
+6070 GOSUB 7300
+6090 RETURN 
+6100 REM "
+6125 Y5$(1)="-----Invoice---------- ----Customer---------------",Y5$(76)="Net",Y5$(96)="Sales",Y5$(104)="Invoice",Y5$(114)="Gross Profit"
+6130 GOSUB 7300
+6135 Y5$(1)="Number",Y5$(13)="Date",Y5$(24)="Code",Y5$(36)="Name"
+6136 IF P1$(7,1)="Y" THEN Y5$(62)="Commission"
+6137 Y5$(75)="Amount",Y5$(84)="Freight",Y5$(97)="Tax",Y5$(105)="Total",Y5$(115)="Amount",Y5$(124)="%"
+6140 GOSUB 7300
+6199 RETURN 
+6200 REM "Break #1 header
+6299 RETURN 
+6900 REM "Auto run update
+6905 IF N0$="" OR V3$(1,1)<>"I" THEN GOTO 6990
+6910 EXTRACT (Z[1],KEY="",DOM=6990)V0$,K0$
+6915 IF K0$>"" THEN GOTO 6990
+6935 CALL "ZZPROM","R0",X3$,S3,"+("+V0$(22,4)+"."+V0$(26,2)+")","","",0
+6940 ON S3 GOTO 6941,5200
+6950 REMOVE (Z[1],KEY="")
+6990 RETURN 
+7000 REM "Totals logic
+7001 REM IF T=T0 THEN IF T(T0,0)<2 THEN GOSUB 7300; GOTO 7100
+7002 IF W+3>W0 THEN GOSUB 6000
+7010 Y5$(1)=T3$(1,T0+1-T)+" "
+7015 IF T$<>"" THEN Y5$(T0+2-T)=T$+" Total ("+STR(T[T,0]:"0")+"):"
+7020 Y5$(69)=STR(T[T,1]:Z0$),Y5$(90)=STR(T[T,2]:Z1$),Y5$(111)=STR(T[T,3]:Z0$); GOSUB 7300
+7021 IF P1$(7,1)="Y" THEN Y5$(61)=STR(T[T,6]:Z1$)
+7022 Y5$(80)=STR(T[T,4]:Z1$),Y5$(99)=STR(T[T,5]:Z0$); IF T[T,1]=0 THEN Y5$(122)=STR(0:Z2$) ELSE Y5$(122)=STR(T[T,3]*100/T[T,1]:Z2$)
+7023 GOSUB 7300
+7065 IF T$="END" THEN Y5$(69)=T2$(1,14),Y5$(90)=T2$(1,13),Y5$(111)=T2$(1,14),Y5$(80)=T2$(1,13),Y5$(99)=T2$(1,14),Y5$(122)=T2$(1,7); GOSUB 7300
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 5300; GOSUB 7200; GOTO 7190
+7095 GOSUB 7300
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7205 GOSUB 7300; Y5$(1)="Number of items printed: "+STR(T[0,0]); GOSUB 7300
+7210 PRECISION 14; T2=TIM-T2
+7220 IF INT(T2)>0 THEN T4$=STR(INT(T2))+" Hours " ELSE T4$=""
+7230 T3=INT(FPT(T2)*3600)
+7240 T3=T3/60
+7250 T4$=T4$+STR(T3:"##.##")+" Minutes"
+7260 Y5$(1)="Elapsed time: "+T4$; GOSUB 7300
+7280 PRECISION 2
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"   ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES
+7525 REM "Modified stmts:
+7550 REM "Added stmts:
+7575 REM "Deleted stmts:
+7600 REM "Print due date & amount"
+7610 Y5$(2)="Due date "+STR(D0:"#0")+":"
+7620 IF X3$(69,1)<>"Y" THEN Y5$(15)=FND$(B$(1,6)) ELSE CALL "ZZDISP","DX",B$(1,6),"   ",X3$,X$,"",0,0,X4$; Y5$(15)=X$
+7630 Y5$(26)=STR(B[D0-1]:Z0$)
+7640 B$=B$(7),D0=D0+1
+7645 RETURN 
+7700 REM "Make postings to recap file
+7701 REM "Total codes: A=A/R, B=Cash, C=Division, D=Returns, E=Salesperson, F=Category codes"
+7705 REM "Division posting"
+7707 IF P0$(13,1)<>"Y" THEN GOTO 7720
+7708 READ (Z[4],KEY=A$(15,2),DOM=7709)R2$; R1$=A$(15,2)+" - "+FNS$(R2$(3,30)); GOTO 7710
+7709 R1$="Division "+A$(15,2)
+7710 R0$="C"+A$(15,2); GOSUB 7800
+7720 REM "Cash and A/R postings
+7725 IF A$(60,1)<>"Y" THEN R0$="A",R1$="Accounts Receivable"; GOSUB 7800; GOTO 7740
+7728 READ (Z[8],KEY=A$(61,3),DOM=7729)R2$; R1$="Cash - Bank "+A$(61,3)+" "+FNS$(R2$(4,30)); GOTO 7730
+7729 R2$="Cash - Bank code "+A$(61,3)
+7730 R0$="B"+A$(61,3); GOSUB 7800
+7735 REM "Returns"
+7740 IF A[1]<0 THEN R0$="D",R1$="Returns"; GOSUB 7800
+7745 REM "Salespersons"
+7746 GOSUB 7900
+7750 FOR I=0 TO 16 STEP 4
+7755 IF POS(" "<>A$(133+I,4))=0 THEN EXITTO 7770
+7758 READ (Z[5],KEY=A$(133+I,4),DOM=7759)R2$; R1$=A$(133+I,4)+" - "+FNS$(R2$(5,35)); GOTO 7760
+7759 R1$="Salesperson "+A$(133+I,4)
+7760 I0=INT((I+1)/4)*6,R0$="E"+A$(133+I,4); GOSUB 7850
+7765 NEXT I
+7770 REM "Category code
+7773 CALL "ZZDISP","AX",A$(153,9),"ARG",X3$,X$,"",0,0,X4$
+7775 READ (Z[7],KEY=A$(153,9),DOM=7776)R2$; R1$=X$+" - "+FNS$(R2$(10,30)); GOTO 7780
+7776 R1$="Category "+X$
+7780 R0$="F"+A$(153,9); GOSUB 7800
+7790 RETURN 
+7800 REM "Make a posting to recap file based on info in R0$ & R1$
+7820 O1$=R0$,O2$=R1$
+7825 GOSUB 8600
+7830 O[O4]=O[O4]+A[1],O[O4+1]=O[O4+1]+S1,O[O4+2]=O[O4+2]+S2,O[O4+3]=O[O4+3]+A[2],O[O4+4]=O[O4+4]+A[9],O[O4+5]=O[O4+5]+1,O[O4+6]=O[O4+6]+A[18]
+7845 RETURN 
+7850 REM "Make a posting to recap file for a salesperson
+7870 O1$=R0$,O2$=R1$
+7875 GOSUB 8600
+7880 O[O4]=O[O4]+S[I0],O[O4+1]=O[O4+1]+S[I0+1],O[O4+2]=O[O4+2]+S[I0+2],O[O4+3]=O[O4+3]+S[I0+3],O[O4+4]=O[O4+4]+S[I0+4],O[O4+5]=O[O4+5]+1,O[O4+6]=O[O4+6]+S[I0+5]
+7895 RETURN 
+7900 REM "Pro-rate salespersons
+7910 DIM M[6],S[30]
+7925 M[1]=A[1],M[2]=S1,M[3]=S2,M[4]=A[2],M[5]=A[9],M[6]=A[18]
+7930 CALL "AR2XAA",X3$,M{ALL},1,6,S{ALL},A{ALL},12,16
+7945 RETURN 
+8000 REM "PRINT P/E DATE"
+8010 IF P2$(9,4)<>A$(1,4) THEN DIM P2$(105); FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+A$(1,4),DOM=8011)P2$
+8020 D1$=P2$(NUM(A$(5,2))*6+15,6),D0$=D1$
+8030 J5$="For Fiscal year "+A$(1,4)+", period "+A$(5,2)+" ending "+FND$(D0$)
+8060 RETURN 
+8500 REM "Initialize Recap stuff
+8510 REM "O0=max # to hold in core,O1=max size of key,O2=# of totals to keep,O3=device # of recap file,O4=starting index of totals in O(),O$=string of keys,O0$=blank string used in 8600 routine,O1$=key to add,IOL is at 8550,O2$=desc, O4$=string to hold desc, O7=max size of desc.
+8520 O0=20,O1=10,O2=7,O3=Z[3],O7=50
+8530 DIM O0$(O1),O1$(O1)
+8534 REM "Set iolist at 8550
+8535 O$=""; FOR O4=1 TO O2; O$=O$+",O("+STR(O4)+")"; NEXT O4
+8540 O$="8550 IOLIST O5$,"+O$(2)
+8545 EXECUTE O$
+8550 IOLIST O5$,O[1],O[2],O[3],O[4],O[5],O[6],O[7]
+8560 F$=FN%FID$(O3); IF F$(4,3)<>"ARJ" THEN ESCAPE ELSE CALL "ZZINIT",STR(O3:"00") ! [205703]-changed FID() to FN%FID$()
+8570 REM "Don't put anything between 8580 and 8590, because a gosub 8580 is used in 8650 routine
+8580 DIM O[(O0+1)*O2],O$(O0*O1),O4$(O0*O7)
+8590 RETURN 
+8600 REM "Set O1$ to key, then gosub here to get O4 set to position of the 1st total in the O array
+8601 REM "exit from routine through 8620
+8610 O4=POS(O1$=O$,O1)
+8619 REM "if found / index by O1 and return
+8620 IF O4>0 THEN O8=INT(O4/O1),O4=(O8+1)*O2+1,O4$(O8*O7+1,O7)=O2$; RETURN 
+8629 REM "if not found check for room in string
+8630 O4=POS(O0$=O$,O1)
+8639 REM "If no room,use clear rountine & set O4 to 1st position
+8640 IF O4=0 THEN GOSUB 8650; O4=1
+8644 REM "use 8620 exit to finish up, now that index is found
+8645 O$(O4,O1)=O1$; GOTO 8620
+8650 REM "Write totals out to file & clear O$,O()
+8660 FOR O4=1 TO LEN(O$) STEP O1
+8661 IF O$(O4,O1)=O0$ THEN GOTO 8680
+8665 O5=(INT(O4/O1)+1)*O2; REM "One less than index set in 8620
+8668 FOR O6=1 TO O2; O[O6]=0; NEXT O6
+8670 READ (O3,KEY=O$(O4,O1),DOM=8671)IOL=8550
+8672 FOR O6=1 TO O2; O[O6]=O[O5+O6]; NEXT O6
+8673 O5$=O4$(1+INT(O4/O1)*O7,O7)
+8675 WRITE (O3,KEY=O$(O4,O1))IOL=8550
+8680 NEXT O4
+8684 REM "Use last part of init logic to clear O$ & O()
+8685 GOSUB 8580
+8690 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9910 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 IF Y4$<>"" THEN CALL Y4$,"2",ERR=9931
+9940 EXIT 
+9999 END 
+56000 REM + Modification History
+56002 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$

@@ -1,0 +1,42 @@
+0010 REM "CHECK ARB FILE FOR UNPROCESSED CREDIT CARD INVOICES <AR2XCP>
+0035 REM "5.7 - 12/30/11 - 9.724444 - tma - SSP# 251511
+0037 REM "251511-All of these invoices failed in credit card processing      
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0890 SETERR 9000
+0900 REM "This routine runs through the ARB file given and counts
+0910 REM "the number of unprocessed credit card invoices.
+0915 REM " X0 is reserved for future use
+0920 REM "X1 is returned giving the number of unprocessed invoices found.
+1010 ENTER X3$,X4$,F0,X0,X1
+1012 DIM Z[NUM(X3$(60,3))]
+1014 Y$="01O AR2...  "
+1018 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 1019,9900
+2000 REM " CHECK ARB FILE ON F0
+2003 U=0
+2005 READ (F0,KEY="",DOM=2006)
+2010 READ (F0,END=3000)A$
+2011 ! IF A$(420,1)="Y" then invoice processing completed previously
+2012 ! If the terms code is not a credit card terms code skip this invoice
+2013 DIM TERMS$(100); READ (Z[1],KEY=A$(65,2),DOM=*NEXT)TERMS$ ! SSP#251511
+2015 IF TERMS$(57,1)<>"Y" THEN GOTO 2010
+2024 REM "Check for credit card terms code and unprocessed invoices
+2025 IF A$(420,1)<>"Y" THEN U=U+1
+2030 GOTO 2010
+3000 REM "See if any unprinted ones were found
+3005 READ (F0,KEY="",DOM=3006)
+3030 X1=U
+3035 GOTO 9900
+9000 REM "error
+9010 EXIT ERR
+9500 REM 
+9510 IF ERR=36 THEN LIST 0010; LIST 0900,1010; EXIT 
+9514 PRINT 'LF',"N1=",N1," I=",I," N0=",N0," N=",N,
+9515 PRINT 'LF',"ERR=",ERR,"  ","TCB(5)=",TCB(5),; INPUT *
+9520 EXIT ERR
+9900 REM "End
+9910 PRINT @(0,20),'CE',
+9920 EXIT 
+9999 END 
+56000 REM "189822-Credit Card Processing for webec back orders filled
+56001 REM "251511-All of these invoices failed in credit card processing but updated 0 bal as credit card invoice

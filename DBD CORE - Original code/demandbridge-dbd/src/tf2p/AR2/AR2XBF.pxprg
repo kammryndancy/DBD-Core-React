@@ -1,0 +1,168 @@
+0010 REM "Create Shipment Confirmation Records<AR2XBF>
+0035 REM "5.2 - 03/02/04 - 10.879444 - lms - SSP# 167214
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Also create CONS cash receipt records if consolidated order type is F for Full, WO91521
+0081 REM "Also run thru FO7 file, if any for an order line no longer open then write shipment conf record indicating a deleted line and/or order
+0082 REM "Added code on WO101013 to check new IE0 file for customers setup to always get a shipment confirmation record for orders billed even if they did not come in thru GOR.  These will not have an FO7 record.  In place of the NAPCO order number we will send info from the IE0 file.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2XBF"
+0140 MASK_7$="0000000",MASK_9$="000000000",MASK_4$="0000",MASK_5$="00000",MASK_12$="000000000000"
+0150 NO_FO7$="N"; REM "WO101013, will set this to Y if no FO7 record
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30]
+0320 IOLIST B0,B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13]
+0340 IOLIST D$
+0500 REM "FILES
+0502 TEMP$="TMP1"+FID(0),TEMP_2$="TMP2"+FID(0)
+0503 ERASE TEMP$,ERR=0504; GOTO 0503
+0504 SERIAL TEMP$,0,0
+0505 ERASE TEMP_2$,ERR=0506; GOTO 0505
+0506 SERIAL TEMP_2$,0,0
+0508 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01L ARB...  02O ART...  03O FS1...  04O FO7...  05O PO3...  06O "+TEMP$+"  07O "+TEMP_2$+"  08O FS2...  09O IE0...  13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 CLOSE (Z[6]); OPEN LOCK (Z[6],OPT="TEXT")TEMP$
+0535 CLOSE (Z[7]); OPEN LOCK (Z[7],OPT="TEXT")TEMP_2$
+0900 DIM A[30],B[20],C[13]
+0920 PRINT @(0,14),'CL',"Creating Shipment Confirmation Record:",
+1000 REM "READ NEXT RECORD
+1020 READ (Z[1],KEY="",DOM=1021)
+1100 READ (Z[1],END=5000)IOL=0310; B0=A[20]
+1110 READ (Z[3],KEY=A$(92,8),DOM=1100)IOL=0330
+1113 DIM IE0$(100); NO_FO7$="N"
+1115 IF POS(C$(182,1)="FP")=0 THEN READ (Z[9],KEY=A$(15,10),DOM=1100)IE0$; NO_FO7$="Y"; REM "F=Full, P=Partial, added READ on WO101013
+1120 PRINT @(45,14),A$(7,8),"   ",A$(92,8),
+1220 GOSUB 3000
+1230 TAX=A[4]+A[6]+A[8]
+1240 IF B0=0 THEN IF TAX=0 THEN GOTO 1100 ELSE GOTO 1600; REM "No lines, if no tax get out, otherwise do tax stuff
+1300 IF B0>0 THEN READ (Z[2],IND=B0)IOL=0320 ELSE GOTO 1600
+1400 GOSUB 2000
+1500 GOTO 1300
+1600 REM "EOL
+1700 GOSUB 3200; REM "Sales tax record
+1710 IF FRT_WR$="N" AND A[2]>0 THEN GOSUB 7900; REM "No freight lines but freight in bucket, need to write freight record
+1990 GOTO 1100
+2000 REM "NEW LINE
+2010 DIM SC$(167)
+2020 IF B[4]=0 AND B[0]=0 AND B[1]=0 THEN GOTO 2990
+2025 IF B$(1,1)="M" THEN GOTO 2990
+2030 DIM D$(61); READ (Z[4],KEY=A$(92,8)+B$(47,3),DOM=2031)IOL=0340; GOTO 2100
+2035 IF B$(1,1)="S" THEN IF B$(2,1)="Y" THEN GOSUB 7600; GOTO 2800 ELSE GOSUB 7700; GOTO 2800; REM "Specials, Freight or other
+2040 D$(12,7)=ORD$,D$(19,5)=STR(RLN)+"00",RLN=RLN+1,D$(24,15)=B$(65,10),D$(39,7)="0000000"; REM "Got the DOM, must be addition to req, no FO7 record, set it for use in 2100's
+2100 SC$(1,35)=D$(12,35); REM "Their order#, line#, item, qty, cons ship flag from incoming file
+2105 IF B[6]=0 THEN B[6]=1
+2110 SC$(56,7)=STR(B[0]/B[6]:MASK_7$); REM "Order quantity in units
+2115 SC$(63,8)=FND_2$(A$(180,6)); REM "Shipped date
+2120 SC$(71,7)=STR(B[1]/B[6]:MASK_7$); REM "Shipped quantity in units
+2125 SC$(78,9)=STR(B[2]*100:MASK_9$); REM "Unit price
+2130 SC$(87,9)=STR(B[4]*100:MASK_9$); REM "Extended value
+2135 SC$(96,9)=STR(B[3]*100:MASK_9$); REM "Unit cost
+2140 SC$(105,9)=STR(B[5]*100:MASK_9$); REM "Extended cost
+2190 IF B[0]=B[1] THEN REMOVE (Z[4],KEY=D$(1,11),DOM=2191); REM "If order qty and shipped qty are equal then remove FO7 record
+2800 REM 
+2810 WRITE RECORD (Z[6])SC$+$0D0A$; REM "Add line feed
+2990 RETURN 
+3000 REM "New invoice
+3010 TF_ORD$=A$(92,8),RLN=800,SLN=900; REM "RLN=Regular line no, SLN=Special line no
+3015 DIM PO3$(299); READ (Z[5],KEY=TF_ORD$+DIM(5),DOM=3016)PO3$
+3020 ORD$=PO3$(175,7); REM "Their order number
+3025 IF NO_FO7$="Y" THEN ORD$=IE0$(12,7); REM "WO101013
+3030 IF C$(182,1)="F" OR IE0$(11,1)="F" THEN GOSUB 7500; REM "Create CONS cash receipt record
+3040 FRT_WR$="N"; REM "If a freight record is written we will set this to Y, when we get to the end of this invoice we will check and if not Y and there is amount in freight bucket we will write out a freight record
+3090 RETURN 
+3200 REM "End of Invoice, do sales tax record
+3210 DIM SC$(167)
+3215 SC$(1,7)=ORD$,SC$(8,5)="99700"; REM "Their order no, line seq no
+3220 SC$(13,15)="TAX"
+3225 SC$(114,9)=STR((A[1]+A[2])*100:MASK_9$); REM "Total sale, net+freight
+3230 SC$(123,9)=STR(A[3]*100:MASK_9$); REM "Taxable amount
+3235 SC$(132,9)=STR((A[4]+A[6]+A[8])*100:MASK_9$); REM "Tax amount
+3240 IF A[3]+A[5]+A[7]=0 THEN TEMP=0 ELSE TEMP=INT((A[4]+A[6]+A[8])*10000/A[3]) END_IF ; SC$(141,4)=STR(TEMP:MASK_4$); REM "Tax percentage
+3245 SC$(145,2)=A$(267,2); REM "Ship to state
+3250 SC$(147,21)=A$(251,16); REM "Ship to city
+3280 GOSUB 2800; REM "Write record
+3290 RETURN 
+5000 REM "EOJ
+5010 READ (Z[1],KEY="",DOM=5021)
+5015 GOSUB 7800; REM "Check FO7 file for any related to deleted order lines
+5020 TMP$=FN%XFD$(Z[6],0),TMP_2$=FN%XFD$(Z[7],0)
+5025 CLOSE (Z[6]); IF DEC(TMP$(38,4))=0 THEN ERASE TEMP$ ELSE SCF_NAME$="SC"+X3$(178,6); RENAME TEMP$,SCF_NAME$; REM "If file is empty erase it otherwise rename it
+5030 CLOSE (Z[7]); IF DEC(TMP_2$(38,4))=0 THEN ERASE TEMP_2$ ELSE CONS_NAME$="RC"+X3$(178,6); RENAME TEMP_2$,CONS_NAME$
+5090 GOTO 9900
+7500 REM "Create and write out CONS cash receipt record
+7505 DIM RC$(118)
+7510 RC$(1,6)=A$(1,6); REM "Fiscal year, accounting period
+7515 RC$(7,1)="A",RC$(10,1)="1"; REM "Bank code, deposit number
+7520 RC$(11,10)=A$(15,10),RC$(21,6)="CONS"; REM "Customer code, check ref
+7525 RC$(27,8)=A$(7,8); REM "Invoice number
+7530 RC$(35,12)=STR(A[9]*100:MASK_12$); REM "Total applied
+7535 RC$(83,12)=RC$(35,12); REM "Cash posted
+7550 WRITE RECORD (Z[7])RC$+$0D0A$; REM "Add line feed
+7570 IF A$(344,1)="Y" THEN EXTRACT (Z[1],KEY=A$(1,14))IOL=0310; A$(344,1)=" "; WRITE (Z[1],KEY=A$(1,14))IOL=0310; REM "Don't want this going to summary bill file
+7590 RETURN 
+7600 REM "Special/Freight type
+7610 SC$(1,7)=ORD$,SC$(8,5)="99800"; REM "Their order number, line seq no
+7615 SC$(13,15)=B$(7,15); REM "Use first 15 of desc for item number
+7620 SC$(28,7)="0000000"; REM "Their order quantity
+7625 SC$(36,20)=A$(162,15); REM "Ship via description
+7630 SC$(63,8)=FND_2$(A$(180,6)); REM "Shipped date
+7635 SC$(87,9)=STR((B[4]+A[2])*100:MASK_9$); REM "Extended value, if anything in freight bucket add that in also
+7640 SC$(105,9)=STR(B[5]*100:MASK_9$); REM "Extended cost
+7650 FRT_WR$="Y"
+7690 RETURN 
+7700 REM "Special/Other type
+7710 SC$(1,7)=ORD$,SC$(8,5)=STR(SLN)+"00",SLN=SLN+1; REM "Their order number, line seq no
+7715 SC$(13,15)=B$(7,15); REM "Description
+7720 SC$(28,7)="0000000"; REM "Their order quantity
+7725 SC$(87,9)=STR(B[4]*100:MASK_9$); REM "Extended value
+7730 SC$(105,9)=STR(B[5]*100:MASK_9$); REM "Extended cost
+7790 RETURN 
+7800 REM "Run thru FO7 file, check FS2 for each one, if no FS2 record we will write out a shipment confirmation record indicating a deleted order line, then delete the FO7 record
+7810 READ (Z[4],KEY="",DOM=7811)
+7815 DIM D$(61); READ (Z[4],END=7890)IOL=0340
+7820 READ (Z[8],KEY=D$(1,11),DOM=7821); GOTO 7815
+7825 DIM SC$(167)
+7830 SC$(1,35)=D$(12,35); REM "Their order no, line seq no, item, qty, cons ship flag
+7835 SC$(56,7)="0000000"; REM "Ordered qty
+7850 GOSUB 2800; REM "Write record
+7855 REMOVE (Z[4],KEY=D$(1,11),DOM=7856)
+7860 GOTO 7815
+7890 RETURN 
+7900 REM "No freight lines but freight in bucket
+7910 DIM SC$(167)
+7915 SC$(1,7)=ORD$,SC$(8,5)="99800"; REM "Their order number line seq no
+7920 SC$(13,15)="FREIGHT",SC$(28,7)="0000000"; REM "Their desc, order qty
+7925 SC$(36,20)=A$(162,15); REM "Ship via description
+7930 SC$(63,8)=FND_2$(A$(180,6)); REM "Shipped date
+7935 SC$(87,9)=STR(A[2]*100:MASK_9$); REM "Extended value
+7940 SC$(105,9)="000000000"; REM "Extended cost
+7980 GOSUB 2800; REM "Write record
+7990 RETURN 
+8905 DEF FND_2$(Z9$)=STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"0000")+Z9$(3,4)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,1
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9190,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9190 GOSUB 6600; GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9700 REM "FILES
+9740 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+9790 RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 PRINT @(0,14),'CL',
+9940 EXIT 
+9999 END 

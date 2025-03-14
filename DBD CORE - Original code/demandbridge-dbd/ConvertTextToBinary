@@ -1,0 +1,18 @@
+0010 TXTPATH$ = ARG(1)
+0020 BINPATH$ = ARG(2)
+0030 password$ = ""
+0040 FLAGS$ = "FV"
+0050 RETMESSAGE$ = ""
+0060
+0120
+0130 CALL "*tools/ConvertData;Text_to_Binary", TXTPATH$, BINPATH$, password$, FLAGS$, RETMESSAGE$
+0140
+0150 IF RETMESSAGE$ <> "" THEN {
+0160   PRINT "Error during conversion: "+ RETMESSAGE$
+0170 }ELSE{
+0180   PRINT "Conversion done: ",TXTPATH$
+0190 }
+0200
+0210 PRINT "Proceso completado."
+0220 STOP
+

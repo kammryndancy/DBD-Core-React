@@ -1,0 +1,59 @@
+0010 REM "Define Temporary Sort File <ZZ2SRT>
+0035 REM "5.6 - 04/07/09 - 14.105833 - jir - SSP# 228228
+0037 REM "228228-Ability to split a report into multiple PDFs based on sales 
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0100 ENTER X3$,X4$,F0,F1,K0,K0$,K1,K1$
+0110 REM "F0= ZZPARM channel, F1=Source file channel, K0=sort key size, K0$=Description of Sort, K1$(1,1)=Y means ask resort question, K1$(2,1)=Y means caution more than 1000 records, K1=0 means need to resort data, K1=1 means use existing sort, K1=2 means sort aborted
+0120 REM "K0$=returned value of sort file name with blanks on end
+0130 REM "If first char of K0$='[' then it is assumed that the chars '[x]' exist where x is one or more digits. This means define a DIRect instead of sort file with a record size of x. If the ']' is not in the line or x is not a valid number then it is ignored.
+0135 REM "If a "{" and a "}" exists in K0$, then they bracket a string to be added to the file name between "TMP" and fid(0). This will be truncated to 3 chars if it is longer. The {}'s and text between are removed.
+0140 REM "IF F1, the source file channel, is negative number, then it is the number of records (after conversion to a positive value) to make the file, rather than the file channel to look on.
+0600 REM "Check for DIRect file
+0601 REM "If S0 <> 0 create a DIRect file instead
+0605 REM "IF K0$(1,1)<>"[" THEN GOTO 650
+0610 IF POS("]"=K0$)=0 THEN GOTO 0650
+0620 J$=K0$(1,POS("]"=K0$))
+0625 K0$=K0$(POS("]"=K0$)+1)
+0630 J$=J$(2,LEN(J$)-2)
+0640 S0=0
+0645 S0=NUM(J$,ERR=0646)
+0650 REM "Check for file name extension
+0655 IF POS("{"=K0$)=0 OR POS("}"=K0$)=0 THEN GOTO 0700
+0660 P1=POS("{"=K0$),P2=POS("}"=K0$)
+0665 K2$=K0$(P1+1,P2-P1-1); IF P1=1 THEN K0$=K0$(P2+1) ELSE K0$=K0$(1,P1-1)+K0$(P2+1)
+0670 IF LEN(K2$)>3 THEN K2$=K2$(1,3)
+0900 S8$=K0$
+0910 DIM Q9$(20); Q9$(1,2)=K1$; Q9$(2,1)="N" ! SSP#229267 Never caution large # of records
+1000 GOSUB 6950
+1100 GOTO 9900
+6700 REM "CHECK EXIST SORT
+6710 Q=0; CALL "ZZINFO",0,Q,X3$,R0,0,0,0,0,0,0,Q$+""; IF Q<0 THEN GOTO 6790 ELSE Q=-1
+6720 READ (F0,KEY=Q$,DOM=6790)S9$,Z$,R2
+6730 IF S9$<>S8$ THEN GOTO 6790 ELSE IF R2<>R0 OR R0<>R1 THEN GOTO 6790
+6740 IF %GUI=0 THEN DIM Z9$(22) END_IF ; IF %GUI=0 THEN CALL "ZZDISP","DXS",Z$(1,6),"",X3$,Z9$,"",1,0,X4$
+6750 IF %GUI=0 THEN CALL "ZZDISP","TXS",Z$(7,4),"",X3$,Z9$,"",13,0,X4$
+6755 Z9$="+("+Z9$+")"
+6756 IF %MULT_RPT_DRV_MODE THEN A=0,K1=A,Q=A-1; GOTO 6781 ! SSP 228228
+6780 CALL "ZZPROM","S3",X3$,A,Z9$,"","",0; IF A>1 THEN K1=2; GOTO 9900 ELSE K1=A,Q=A-1
+6795 RETURN 
+6800 REM "WRITE SORT CONTROLRECORD
+6870 Z$=X3$(21,6)+STR(TIM*100:"0000")
+6880 WRITE (F0,KEY=Q$)S8$,Z$,R0
+6890 RETURN 
+6950 REM "Create Temporary Sort Filt TMP
+6955 Q$="TMP"+K2$+FID(0),D0=0; REM "Need to get default data disk # from X3$
+6960 IF F1<0 THEN R1=-F1 ELSE CALL "ZZINFO",F1,0,X3$,R0,0,0,0,0,0,0,""; R1=R0; IF Q9$(1,1)="Y" THEN GOSUB 6700; ON Q+1 GOTO 6961,6975
+6962 IF R1<10 THEN R1=10 ELSE IF Q9$(2,1)="Y" THEN IF R1>1000 THEN Z$="+("+STR(R1)+")"; CALL "ZZPROM","S4",X3$,A,Z$,"","",0; IF A>0 THEN K1=2; GOTO 9900
+6965 ERASE Q$,ERR=6966; GOTO 6965
+6969 R1=0; REM " on level 8 (except 8.3.0) tthen always create autoexpanding sort files.
+6970 IF S0<>0 THEN DIRECT Q$,K0,R1,S0; K1=0; GOTO 6974 ELSE SORT Q$,K0,R1; K1=0
+6972 IF %GUI=0 THEN CALL "ZZPROM","S2",X3$,0,S9$,"","R",0; S9=2+LEN(S9$) END_IF ; IF POS("G"=FID(0))<>1 AND %GUI=0 THEN PRINT @(0,22),'CL',@(0),S9$,
+6974 GOSUB 6800
+6985 DIM K0$(8); K0$(1)=Q$
+6995 RETURN 
+9040 EXIT ERR
+9900 EXIT 
+9999 END 
+56000 ! "228228-Ability to split a report into multiple PDFs based on sales 

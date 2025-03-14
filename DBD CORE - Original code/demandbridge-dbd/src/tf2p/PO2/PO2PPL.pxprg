@@ -1,0 +1,123 @@
+0010 REM "<PO2PPL> Print Packing List from  PO Receiving"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 01/30/07 - 15.871944 - mhe - SSP# 203891
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,COMMAND$,PO7$
+0095 REM "This program will be called from the PO receiving update, PO2RUA, if 272,1 of OPS parms is Y.  We will check the order line to see if the P print flag is set, if yes then check the order header to see if it was printed, if not then write the PO6 record to print it.  Logic is modeled after FM2ODZ.
+0096 REM "COMMAND$ is P for Packing List, may use the same program in the future for others
+0100 SETERR 9000
+0110 X0$="PO2PPL",X1$="Print Packing List from PO Receiving"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0298 DIM PO3[4] ! [203891]-dim for PO3 IOLIST
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0330 IOLIST FMPS$ ! [203891]-IOLIST for FMPS
+0340 IOLIST PO3$,PO3[0],PO3[1],PO3[2],PO3[3] ! [203891]-IOLIST for PO3
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS2...  02O FS1...  03O PO6...  04O PO3...  05O OR1...  08O FMP...  13O ZZPARM  " ! [203891]-added PO3, OR1, and FMP 
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0590 FMP_LFN=Z[8] ! [203891]-set the FMP LFN
+0592 PO3_LFN=Z[4] ! [203891]-set the PO3 LFN
+0594 PO6_LFN=Z[3] ! [203891]-set the PO6 LFN
+0600 REM "
+1000 REM "BEGIN MAIN PROCESS
+1050 IF COMMAND$="P" THEN GOSUB 1100; GOTO 9900
+1100 REM "Packing list
+1110 DIM A$(228); READ (Z[1],KEY=PO7$(1,8)+PO7$(20,3),DOM=1190)IOL=0310
+1115 IF POS("P"=A$(156,5))=0 THEN GOTO 1190
+1120 DIM B$(200); READ (Z[2],KEY=PO7$(1,8),DOM=1190)IOL=0320
+1125 IF B$(128,1)="Y" THEN GOTO 1190; REM "Already printed
+1131 W9$=A$(10,1)
+1132 IF POS(B$(47,1)="RW")>0 THEN IF A$(10,1)<>"8" OR POS(X3$(9,3)="470474",3)<>0 THEN W9$="0" END_IF ELSE W9$=A$(10,1)
+1133 IF POS(X3$(9,3)="500020")>0 THEN W9$=A$(10,1)
+1135 GOSUB CREATE_PO6_RECORD ! [203891]-this routine gets the pick priority
+1140 X$="L"+W9$+A$(11,3)+PICK_PRIORITY$+PO7$(1,8)+PO7$(20,3) ! [203891]
+1145 IF A$(9,1)<>" " THEN X$(2,4)=A$(215,4)
+1150 GOSUB 7900
+1160 WRITE (Z[3],KEY=X$)
+1165 IF B$(53,1)="Y" THEN {! [203891]
+1170 PO6_KEY$="B"+X$(2,4)+X$(8) ! [203891]-changed to a type "B", remove pick priority
+1175 WRITE (Z[3],KEY=PO6_KEY$) ! [203891]-moved this line from 1165
+1180  }
+1190 RETURN 
+5000 REM "EOJ
+5040 GOTO 9900
+7900 REM "Remove PO6 Records
+7905 F8$=X$
+7910 REMOVE (Z[3],KEY=F8$,DOM=7911)
+7920 REMOVE (Z[3],KEY=F8$+"P",DOM=7921)
+7930 IF B$(53,1)="Y" AND F8$(1,1)="L" THEN F8$(1,1)="B"; GOTO 7910
+7935 IF F8$(1,1)="L" AND B$(128,1)<>"Y" THEN B$(128,1)=" "
+7940 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+11000 CREATE_PO6_RECORD:! [203891]-Added routine
+11010 ORDER_DIV$=A$(147,2) ! set the Order Division from FS2
+11012 ORDER_NUM$=A$(149,6) ! set the Order Number from FS2
+11014 ORDER_LINE_NUM$=A$(6,3) ! set the Order Line Number from FS2
+11016 PO_CODE$=A$(9,1) ! set the PO code from FS2
+11018 PRINT_FLAGS$=A$(156,5) ! set the print flag from FS2
+11020 SPECIAL_SHIPPING_FLAG$=A$(18,1) ! set the special shipping flag from FS2
+11022 WHSE_CODE_PKLIST$=A$(215,4) ! set the warehouse code packing list from FS2
+11030 GOSUB PROCESS_PO6_RECORD ! generate the PO6 records and write them
+11095 RETURN 
+11200 READ_SHIP_VIA_CODES:! [203891]-Added routine
+11201 ! This routine reads the FMPS file to get the picking
+11202 ! priority for the specified ship via code
+11210 PICK_PRIORITY$="~~" ! clear the field
+11220 FMPS_KEY$="S"+SHIP_VIA_CODE$ ! set the FMPS key
+11230 READ (FMP_LFN,KEY=FMPS_KEY$,DOM=*RETURN)IOL=0330 ! read the FMPS record
+11240 PICK_PRIORITY$=MID(FMPS$,278,2) ! set the pick priority
+11250 PICK_PRIORITY$=PAD(PICK_PRIORITY$,2) ! pad the pick priority
+11295 RETURN 
+11300 PROCESS_PO6_RECORD:! [203891]-Added routine
+11310 IF (SPECIAL_SHIPPING_FLAG$<>"Y") THEN {! no special shipping for the line
+11320 TMP_PO3_KEY$=ORDER_DIV$+ORDER_NUM$+"     " ! set the PO3 key
+11325  } ELSE {! special shipping
+11330 TMP_PO3_KEY$=ORDER_DIV$+ORDER_NUM$+" "+ORDER_LINE_NUM$+"1" ! set the PO3 key
+11335  }
+11340 READ (PO3_LFN,KEY=TMP_PO3_KEY$,DOM=*RETURN,ERR=9000)IOL=0340 ! read the PO3 record
+11345 SHIP_VIA_CODE$="" ! clear the field
+11350 SHIP_VIA_CODE$=PO3$(150,1) ! set the ship via code
+11355 GOSUB READ_SHIP_VIA_CODES ! read the FMPS file to get the pick priority
+11695 RETURN 
+56000 REM + Modification History
+56002 REM "203891-Need to validate Picking Priority code in Ship Via          

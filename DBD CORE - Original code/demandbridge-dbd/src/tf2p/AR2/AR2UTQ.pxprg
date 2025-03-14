@@ -1,0 +1,52 @@
+0010 REM "QBF/QRG Split controller    <AR2UTQ>
+0035 REM "3.7 - 05/13/94 - 18.32 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0120 DIM Z0$(80,"-")
+0130 C9$="-/|\"
+0150 OPEN (3)"ZZPARM"; READ (3,KEY=FID(0)+"      ")X3$
+0200 REM 
+0210 PRINT 'CS',@(25,1),"Set up Customer Delete control file",@(0,2),Z0$,
+0220 INPUT @(15,10),"Is this QBF or QRG? ",C0$,
+0222 IF C0$="" THEN GOTO 9950 ELSE IF POS(C0$="QBFQRGCSI",3)=0 THEN GOTO 0220
+0225 IF C0$="CSI" THEN C1$="500" ELSE IF C0$="QBF" THEN C1$="092" ELSE C1$="130"
+0230 OPEN (1,ERR=7500)"AR1"+C1$
+0240 OPEN (2)"UT3"+C1$
+0300 REM 
+0310 PRINT @(15,10),'CE',"Clearing Control data",
+0315 C9=0
+0320 READ (2,KEY="AR1",DOM=0321)
+0325 K$=KEY(2,END=0350)
+0327 C9=C9+1; PRINT @(42,10),C9$(MOD(C9,3)+1,1),
+0330 IF K$(1,3)="AR1" THEN REMOVE (2,KEY=K$); GOTO 0325
+1000 REM 
+1005 PRINT @(15,10),'CE',"Searching for customers",
+1006 GOSUB 8100
+1010 READ (1,END=5000)A$
+1015 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1020 IF C0$="QRG" AND (A$(1,2)="06" OR (POS(A$(1,2)="0102",2)>0 AND POS("DLP "=A$(278,4))=0)) THEN DIM B$(45); B$(1,4)="AR1D",B$(5,20)=A$(1,10); WRITE (2,KEY=B$(1,3)+B$(5,20))B$
+1030 IF C0$="QBF" AND (POS(A$(1,2)="030405",2)>0 OR (POS(A$(1,2)="0102",2)>0 AND POS("DLP "=A$(278,4))>0)) THEN DIM B$(45); B$(1,4)="AR1D",B$(5,20)=A$(1,10); WRITE (2,KEY=B$(1,3)+B$(5,20))B$
+1090 GOTO 1010
+1095 GOTO 9900
+5000 REM "END
+5010 GOTO 9900
+7500 REM "Wrong company
+7510 J$="This does not seem to be "+C0$+"'s system! I cant' find the right files."
+7520 CALL "ZZPROM",".4",X3$,0,J$,"","",0
+7525 PRINT @(0,18),'CE',
+7545 GOTO 0220
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",1,T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,4),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9900 REM 
+9910 C=T; GOSUB 8150
+9920 CALL "ZZPROM",".4",X3$,0,"Process Complete!","","",0
+9950 RUN "ZMENU"
+9999 END 

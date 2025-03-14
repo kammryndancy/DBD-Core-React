@@ -1,0 +1,20 @@
+0010 ! ZZGPOP - Pop a Panel to get a value
+0035 ! "6.0 - 08/07/03 - 14.643888 - kmc
+0040 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0085 ! ARGUMENTS:
+0086 ! ARG_1$=value to get, ARG_2$=Title of panel, ARG_3$=Tag on panel
+0087 ! ARG_4$=message & tool tip
+0088 ! ARG_5$=max length, ARG_6$=Format string
+0100 INIT:
+0195 RETURN 
+0199 ! 
+0500 MAIN_POST_DISPLAY:
+0505 X=ARG_1.CTL
+0510 COLS=NUM(ARG_5$,ERR=*NEXT); X'COLS=COLS ! Reset width of multiline
+0595 RETURN 
+0599 ! 
+9900 WRAPUP:
+9910 CMD_STR$="END"
+9995 RETURN 
+10000 PROCESS "ZZGPOP","tf2g/ZZG/ZZ.EN",VAL$,"Title","Enter your value here","Enter a value","10",""

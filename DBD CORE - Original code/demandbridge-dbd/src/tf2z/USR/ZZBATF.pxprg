@@ -1,0 +1,7 @@
+0010 REM "Check for Batch Files <ZZBATF>
+0030 REM "(C) 1985-1989 Basic Ideas, Inc; Atlanta, GA. USA
+0035 REM "This software contains trade secrets and proprietary information"
+1020 ENTER X3$,F$,B0
+1030 B0=0
+1200 F0$=F$,P=POS("..."=F$); IF P>0 THEN F0$=F0$(1,P-1)+F0$(P+3)
+9999 END 

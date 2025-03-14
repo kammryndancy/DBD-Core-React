@@ -1,0 +1,18 @@
+0010 REM "Create A/P Invoice Data ENtry Default <AP2ZAA>
+0035 REM "3.8 - 09/30/94 - 15.71
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X3$,Y0$,A$,A{ALL},C$,C{ALL},C0,T9$
+1200 REM 
+1210 DIM A$(146),A[14]
+1220 GOSUB 8000
+1990 GOTO 9900
+8000 REM "DEFAULTS
+8002 A$(1,6)=Y0$(1,6),A$(7,10)=C$(1,10),A$(17,10)=Y0$(7,10)
+8005 A$(89,1)="I"; A$(104,4)=X3$(9,3)+X3$(330,1)
+8010 A$(27,6)=Y0$(17,6),A$(33,2)=C$(286,2),A$(72,3)=C$(283,3),A$(47,15)=C$(256,15),A$(75,9)=C$(247,9),A$(84,4)=C$(288,4)
+8011 IF LEN(Q3$)>30 THEN A$(27,6)=Q3$(30,6)
+8012 T9$=C$(271,12),A$(87,1)="N"
+8015 A[1]=C0,A[9]=C0,A[10]=C[1]; GOTO 8100
+9940 EXIT 
+9999 END 

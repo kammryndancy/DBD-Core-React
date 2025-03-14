@@ -1,0 +1,146 @@
+0010 REM "Append to Fixed Ascii Out file <UT2APD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 09/30/02 - 11.864444 - dmm - SSP# 153588
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Will append to an existing file, or create new one if needed
+0052 REM "Q1$ is file name or file name + "/"+high order part of key
+0053 REM "If Q0$ is > "" then no display will be done
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2APD",X1$="Append to Fixed Ascii File"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 IF Q0$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0252 IF Q1$>"" THEN P=POS("/"=Q1$); IF P<>0 THEN HIGH_KEY$=Q1$(P+1),Q1$=Q1$(1,P-1)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="05O ZZE 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 IF Q0$="" THEN GOSUB 6000
+0635 DIM FILE$(8); IF Q0$="" THEN PRINT @(32,9),'CE',
+0636 IF Q1$<>"" THEN FILE$(1,8)=Q1$; GOTO 0650
+0640 CALL "ZZENTR","SU",A{ALL},FILE$,X4$,X3$,32,8,1,8,C0,"",X$,"","UT2APD01","ZZE","ZZ2FAA",""; IF C0>4 THEN GOSUB 6400; ON C0 GOTO 0640,0641
+0650 Z$="01O "+STP(FILE$,1)+"... "
+0655 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0660,0656
+0656 IF Q0$="JS" THEN A1$=$FF$+"File:"+FILE$+" not found"; GOTO 9900 ELSE CALL "ZZPROM",".4",X3$,Z,"File not found","","",0; GOTO 0640
+0660 DIM ZZE$(70),ZZE_KEY$(6); ZZE_KEY$(1)=STP(FILE$,1); FIND (Z[5],KEY=ZZE_KEY$,DOM=0661)ZZE$; IF Q0$="" THEN PRINT @(41),ZZE$(7,38),
+0662 MAX_KEY=NUM(ZZE$(48,2))
+0665 GOSUB 8100
+0666 IF Q1$<>"" THEN GOTO 0689
+0670 REM "Get HighKey
+0675 IF MAX_KEY=0 THEN GOTO 0681 ELSE DIM HIGH_KEY$(MAX_KEY)
+0680 CALL "ZZENTR","S",A{ALL},HIGH_KEY$,X4$,X3$,32,9,1,MAX_KEY,C0,"",X$,"","UT2APD02","","",""; HIGH_KEY$=STP(HIGH_KEY$,1)
+0689 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Information correct?","","",0; ON Z GOTO 0690,0630
+0690 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0691,9900
+0695 FILE$=STP(FILE$,1)
+0800 REM 
+0810 MASK$="-############.00"
+0900 REM "Create text file and open
+0902 REM "see if file there, if not THEN create
+0903 CLOSE (14); OPEN (14,ERR=0904)FILE$+"A.txt"; CLOSE (14); GOTO 0910
+0904 ERASE FILE$+"A.txt",ERR=0905
+0905 SERIAL FILE$+"A.txt",0,0
+0910 Z$="02O "+FILE$+"A.txt "
+0920 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0921,9000
+0930 CLOSE (Z[2]); OPEN LOCK (Z[2],OPT="TEXT")FILE$+"A.txt"
+0935 ! TMP$=FN%XFD$(Z[2],0); FILE_SIZE=DEC($00$+TMP$(38,4)); IF FILE_SIZE>0 THEN READ (Z[2],IND=FILE_SIZE-1); REM "Position to end of file
+0950 P$=PRM,P1$=P$
+0951 P$(2,1)=IOR(P$(2,1),$80$); SET_PARAM 'XI'; REM "Will temporarily set the READONLY PRM, SSP115789
+0955 READ_KEY$=HIGH_KEY$; IF READ_KEY$>"" AND MAX_KEY>0 THEN IF LEN(READ_KEY$)=MAX_KEY THEN READ_KEY$(LEN(READ_KEY$),1)=CHR(ASC(READ_KEY$(LEN(READ_KEY$)))-1); REM "Decrement last position if we have the full key
+0960 READ (Z[1],KEY=READ_KEY$,DOM=0961)
+1000 REM "BEGIN MAIN PROCESS
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1049 IF HIGH_KEY$="" THEN READ RECORD (Z[1],END=5000)REC$ ELSE K$=KEY(Z[1],END=5000); IF K$(1,LEN(HIGH_KEY$))<>HIGH_KEY$ THEN GOTO 5000 ELSE READ RECORD (Z[1],KEY=K$,DOM=1030)REC$
+1055 REC$=FNZ$(REC$)
+1100 REM "Create OUT$ by replacing $8A$ seperated numerics with number set to mask MASK$
+1105 OUT$="",FIRST_TIME=1,STR_SIZE=NUM(ZZE$(64,3),ERR=1106),ARRAY_SIZE=NUM(ZZE$(67,3),ERR=1106),COUNT=0
+1110 P=POS(SEP=REC$); IF P=0 THEN OUT$=OUT$+REC$,REC$=""; GOTO 1150
+1120 IF FIRST_TIME THEN OUT$=REC$(1,P-1),REC$=REC$(P+1),FIRST_TIME=0; GOSUB 7500; GOTO 1140
+1125 TMP$=REC$(1,P-1),REC$=REC$(P+1),COUNT=COUNT+1
+1128 TMP=0,TMP=NUM(TMP$,ERR=1129)
+1130 OUT$=OUT$+STR(TMP:MASK$)
+1140 GOTO 1110
+1150 REM "Ready to write out
+1160 GOSUB 7550
+1195 PRINT (Z[2])OUT$
+1600 GOTO 1000
+5000 REM "EOJ
+5005 C=T; GOSUB 8150
+5010 SET_PARAM 'XI'=0; REM "Turn READONLY PRM back off, SSP115789
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(5,4),"This CSI utility program will export the file XXX as a fixed width ASCII ",@(5,5),"file with the name XXX.txt. Setting the Key Filter will only get ",@(5,6),"records that match the filter.",
+6025 PRINT @(10,8),"File name to process:",
+6027 PRINT @(20,9),"Key filter:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+7500 REM "Will come here after creating string part to see if it's long enough by comparing it to what we found in the ZZE record, if not we will add blanks
+7505 IF STR_SIZE=0 THEN GOTO 7540
+7510 OUT=LEN(OUT$),DIFF=STR_SIZE-OUT
+7515 IF OUT<STR_SIZE THEN OUT$=OUT$+DIM(DIFF)
+7520 IF OUT>STR_SIZE THEN OUT$=OUT$(1,STR_SIZE)
+7540 RETURN 
+7550 REM "Will come here after creating numerics part to see if we have enough by comparing how many we have with what we found in the ZZE record, if not enough we will create more
+7560 IF ARRAY_SIZE=0 THEN GOTO 7590
+7565 ARRAY_SIZE=ARRAY_SIZE+1,DIFF=ARRAY_SIZE-COUNT
+7570 IF COUNT<ARRAY_SIZE THEN FOR X=1 TO DIFF; OUT$=OUT$+STR(TMP:MASK$); NEXT X
+7590 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 IF Q0$="" THEN PRINT @(20,12),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF Q0$="" THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+8955 DEF FNZ$(Z9$)=Z9$(1,POS($000000$=Z9$+$000000$)-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9011 IF MID(Q0$,1,2)="JS" THEN A1$=$FF$+X0$+"|Error|"+STR(Y5)+"|Line|"+STR(Y6)+"|"; GOTO 9900
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9515 GOTO 0640
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

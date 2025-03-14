@@ -1,0 +1,13 @@
+0010 REM "Generate SQL Create Syntax <UT2SQL>
+0035 REM "5.6 - 07/18/08 - 23.360833 - crg - SSP# 220512
+0037 REM "220512-Need UT2SQL fixed up and put on the DR menu.                
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(29)<7000000 THEN MSGBOX "You must be using Providex Version 7.0 or Higher to access this program"; IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0052 IF TCB(88)=0 THEN MSGBOX "You Must Be Using WindX to Access This Program"; IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0510 DDF_FN=HFN; OPEN (DDF_FN)"providex.ddf"
+0520 DDE_FN=HFN; OPEN (DDE_FN)"providex.dde"
+1000 CALL "*winproc","GEN_Sql","lib/*dict/scrnlib.en","",STR(DDF_FN),STR(DDE_FN)
+1900 CLOSE (DDF_FN),(DDE_FN)
+9900 IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+9999 END 

@@ -1,0 +1,7 @@
+0010 REM "@WORK_ORDER_STATUS_DESC: Work Order Status Description <YWODSC>
+0015 REM "Prog Type: M -360016  
+1020 ENTER X3$,Z0$,Z1$
+1210 Z1$=""; IF Z0$="J" THEN Z1$="W.O. (Being Quoted)" ELSE IF Z0$="K" THEN Z1$="Awaiting Cust. Approval" ELSE IF Z0$="L" THEN Z1$="W.O. (No Response)" ELSE IF Z0$="O" THEN Z1$="Approved Work Order" ELSE IF Z0$="U" THEN Z1$="W.O. (to be Billed)" ELSE IF Z0$="V" THEN Z1$="W.O. Billed (Closed)" ELSE IF Z0$="X" THEN Z1$="W.O. (Approved - TBS)" ELSE IF Z0$="Z" THEN Z1$="W.O. (In Testing)"
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

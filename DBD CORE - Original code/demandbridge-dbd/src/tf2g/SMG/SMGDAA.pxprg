@@ -1,0 +1,12 @@
+0010 ! SMGDAA - Sales Order Shipping History
+0035 ! "6.0 - 04/13/04 - 11:04 AM - jir
+0040 ! "Copyright 2004 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 PROCESS "SMGDAA","../SMG/SM.EN"
+0060 EXIT 
+1000 DELETE_LB:
+1010 FOR A=1 TO TRACK_SHIP.CTL'ITEMCOUNT
+1020 LIST_BOX LOAD TRACK_SHIP.CTL,1,*
+1030 NEXT 
+1040 RETURN 
+9999 END 

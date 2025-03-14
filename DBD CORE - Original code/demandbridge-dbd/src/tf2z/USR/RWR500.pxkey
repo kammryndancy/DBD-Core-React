@@ -1,0 +1,120 @@
+<PxTable>
+ TableName=RWR500
+ TableKey=K1170516989
+ FileCreate=KEYED "RWR500",35,0,-1152,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="RWR_Reports"
+    PHYSICALPATH$="="+QUO+"RWR"+QUO+"+%C$"
+    LASTCHANGEDATE$="2007/02/15 12:09:36-jme"
+    LASTCHANGEBY$="jme"
+    LASTUPDATEDFILE$="2024/07/05 11:33:40-LoriCave_aalhel"
+    DESCRIPTION$="Report Writer Reports"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST REPORT_GROUP$:[LEN(10)]"
+    NAME$="REPORT_GROUP"
+    DESCRIPTION$="=MSG("+QUO+"RPT_GRP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="TopForm Defined Report Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST RPT_NAME$:[LEN(25)]"
+    NAME$="RPT_NAME"
+    DESCRIPTION$="=MSG("+QUO+"RPT_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="25"
+    INTERNALFORMAT$="P"
+    NOTES$="Report Writer Report Name"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST REPORT_GROUP$:[LEN(10,SEP=SEP)]"
+    NAME$="REPORT_GROUP"
+    DESCRIPTION$="=MSG("+QUO+"RPT_GRP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="TopForm Defined Report Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST RPT_NAME$:[LEN(25,SEP=SEP)]"
+    NAME$="RPT_NAME"
+    DESCRIPTION$="=MSG("+QUO+"RPT_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="25"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Writer Report Name"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST PRINTER_ID$:[LEN(2,SEP=SEP)]"
+    NAME$="PRINTER_ID"
+    DESCRIPTION$="=MSG("+QUO+"PTRID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST RPT_DESC$:[LEN(60,SEP=SEP)]"
+    NAME$="RPT_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST NOT_USED$:[LEN(840,SEP=SEP)]"
+    NAME$="NOT_USED"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="840"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="WMS       500_WMS_QTY_BIN_LOC      "
+    REPORT_GROUP$="WMS       "
+    RPT_NAME$="500_WMS_QTY_BIN_LOC      "
+    PRINTER_ID$="PP"
+    RPT_DESC$="Item Quantity by Bin Type Selection                         "
+    NOT_USED$="                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,51 @@
+0010 REM "A/R Alternate Customer Code <AR2MAT>
+0020 SETERR 9000
+0035 REM "5.7 - 02/04/19 - 11.761944 - dmm - SSP# 305323
+0037 REM "305323-Need bypass of requirement for unique alternate cust code   
+0040 REM "Copyright 2019 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Q0$=existing key,Q1$="NEW KEY",Q2$>"" if can't change to new key
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,T$,Q2$
+0100 SETERR 9000
+0110 X0$="AR2MAT",X1$="A/R Alternate Customer Code"
+0300 REM "IOLISTS
+0310 IOLIST A$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AS8...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0800 REM 
+0820 IF T$="D" THEN GOTO 1200
+0830 IF T$="E" THEN GOTO 1400
+1000 REM "Change to new key"
+1020 REMOVE (Z[1],KEY=Q0$,DOM=1021)
+1040 IF FNS$(Q1$(1,20))>"" THEN WRITE (Z[1],KEY=Q1$)
+1090 GOTO 9900
+1200 REM "Delete key
+1220 REMOVE (Z[1],KEY=Q0$,DOM=1221)
+1290 GOTO 9900
+1400 REM "Entry check for a duplicate key
+1410 Q2$=""
+1415 IF POS(X3$(9,3)="579",3)>0 THEN GOTO 1000 ! SSP305323, allow entry of duplicates
+1420 READ (Z[1],KEY=Q1$(1,20),DOM=1421)
+1430 K$=KEY(Z[1],END=1000)
+1440 IF K$(1,20)<>Q1$(1,20) THEN GOTO 1000
+1442 IF K$(21,10)=Q1$(21,10) THEN GOTO 1000
+1445 CALL "ZZDISP","AX",K$(21,10),"A/R",X3$,X$,"",0,0,X4$
+1450 CALL "ZZPROM",".4",X3$,0,"INVALID! Alternate code is the same as for customer "+X$,"","",0
+1460 Q2$=X$
+1490 GOTO 9900
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9200 SETERR 9000; RETRY 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 REM "305323-Need bypass of requirement for unique alternate cust code   

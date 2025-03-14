@@ -1,0 +1,113 @@
+<PxTable>
+ TableName=ZA3901
+ TableKey=K1007399588
+ FileCreate=KEYED "ZA3901",26,50,792,BSZ=4,OPT="0"
+ MaxFields=00002
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ADD_ON_DATE               "
+    FIELD_1$="DD_ON_DATE               Convert ADDON dates to TF format   ADONDDATE:D,RESULT:D                                           PDRESULT="+QUO+"      "+QUO+";                                            IF DATE(1,1)<>"+QUO+" "+QUO+"AND DATE(1,1)<>CHR(1)                         THEN TEMP=ASC(DATE(1,1))-1;                                      RESULT=CHR(ASC("+QUO+"A"+QUO+")+INT(TEMP/10))                                 +STR( MOD( TEMP,10))                                        +STR( ASC( DATE(2,1))-1:"+QUO+"00"+QUO+")                               +STR( ASC( DATE(3))-1:"+QUO+"00"+QUO+")                                                                                                                                                                                                                                                                    "
+    FIELD_2$=$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ANYWHERE_IN               "
+    FIELD_1$="NYWHERE_IN               If string is anywhere in another   ANYWHSOURCE:S, TARGET:S                                        FBSTR( SGN( POS( SOURCE=TARGET)):"+QUO+"0"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+    FIELD_2$=$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_STATUS                 "
+    FIELD_1$="R_STATUS                 Return AR Status                   ARSTACREDIT_LIMIT:N, CURRENT_BAL:N, SINCE_ACTIVE:N, RESULT:S   PSRESULT = "+QUO+"OK "+QUO+", OVER_LIMIT:B= STR( SGN( INT( CURRENT_BAL    /CREDIT_LIMIT)):"+QUO+"0"+QUO+");                                                                                                   IF OVER_LIMIT @TRUE                                            THEN RESULT="+QUO+"O/L"+QUO+"                                        ELSE IF SINCE_ACTIVE >45                                       THEN RESULT = "+QUO+"INA"+QUO+"\                                                                                                                                                                                                                                                                                      "
+    FIELD_2$=$00$+$00$+$00$+$00$+"B"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BLANK                     "
+    FIELD_1$="LANK                     Check string field for all blanks  BLANKDATA:S                                                    FBSTR(ABS(SGN(POS("+QUO+" "+QUO+"<>DATA))-1))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CAP_FIRST                 "
+    FIELD_1$="AP_FIRST                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CHANGE_DATE               "
+    FIELD_1$="HANGE_DATE               Chg date to M,D,Y                  CHGDTDATE:D, MONTH:N, DAY:N, YEAR:N                            PNMONTH= NUM(DATE(3,2)),                                        DAY= NUM(DATE(5,2)),                                       YEAR= @YEAR_IN(DATE)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CHG_DATE_6                "
+    FIELD_1$="HG_DATE_6                Change MMDDYY dates                CHGDTOLD_DATE:S, RESULT:D                                      PDRESULT=@TF_YEAR(OLD_DATE(5,2))+OLD_DATE(1,2)+OLD_DATE(3,2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COST                      "
+    FIELD_1$="OST                      COST                               COST1                                                          F 1 * UNIT_COST                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+    FIELD_2$=$00$+$00$+$00$+$00$+"Y"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CURRENT_ON_HAND           "
+    FIELD_1$="URRENT_ON_HAND           CURRENT INVENTORY ON HAND          CURIN                                                          F ON_HAND_QUANTITY - NEXT_MONTH_ADJUSTMEN + NEXT_MONTH_ISSUES - NEXT_MONTH_RECEIPTS - NEXT_MONTH_RETURNS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CURRENT_VALUE             "
+    FIELD_1$="URRENT_VALUE             CURRENT INVENTORY VALUE            CURIN                                                          F CURRENT_ON_HAND * UNIT_COST                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+    FIELD_2$=$00$+$00$+$00$+$00$+"C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_TYPE             "
+    FIELD_1$="USTOMER_TYPE             Return Customer Type                    SALES:N                                                   FSCHR(ASC("+QUO+"A"+QUO+")+8-EPT(SALES))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+    FIELD_2$=$00$+$00$+$00$+$00$+"D"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATE_OF                   "
+    FIELD_1$="ATE_OF                   Calculate date from Year, Month, Dy     YEAR:N, MONTH:N, DAY:N                                    FDCHR(ASC("+QUO+"A"+QUO+")+INT(YEAR/10))+STR(MOD(YEAR,10))+               STR(MONTH :"+QUO+"00"+QUO+")+                                           STR(DAY :"+QUO+"00"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+    FIELD_2$=$00$+$00$+$00$+$00$+"D"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_BETWEEN              "
+    FIELD_1$="AYS_BETWEEN              Calculate # of days between 2 datesDYSBTDATE2:D,DATE1:D,RESULT:N                                  PNIF DATE1(1,1)="+QUO+" "+QUO+" OR DATE2(1,1)="+QUO+" "+QUO+"                            RESULT=0                                                 ELSE                                                           RESULT= @JULIAN_DATE( DATE1)                                      - @JULIAN_DATE( DATE2)                                                                                                                                                                                                                                                                                                                                                                                                      "
+    FIELD_2$=$00$+$00$+$00$+$00$+"D"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_IN                   "
+    FIELD_1$="AYS_IN                   Return number of days in a month   DYSINDATE:S, RESULT:N                                          PNRESULT=0, DAYS:S="+QUO+"312831303130313130313031"+QUO+",                MONTH:N= NUM(DATE(3,2)), MAXDAYS = NUM(DAYS(MONTH           ,2)) ; IF MONTH=2 YEAR=@YEAR_OF (DATE); IF INT (YEAR/4) =   YEAR/4 MAXDAYS=29                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+    FIELD_2$=$00$+$00$+$00$+$00$+"F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FALSE                     "
+    FIELD_1$="ALSE                     Condition False (Boolean)                                                                         C <> "+QUO+"1"+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+    FIELD_2$=$00$+$00$+$00$+$00$+"G"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_CUST_DATA             "
+    FIELD_1$="ET_CUST_DATA             Get customer data                  GCUSTCUSTOMER_CODE:S, DATA:N                                   P DATA=0;                                                     CLOSE(14);OPEN(14)"+QUO+"TP0"+QUO+";                                    READ(14,KEY=CUSTOMER_CODE)*,DATA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+    FIELD_2$=$00$+$00$+$00$+$00$+"G"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_NAME                  "
+    FIELD_1$="DD_ON_DATE               Convert ADDON dates to TF format   ADONDDATE:D,RESULT:D                                           PDRESULT="+QUO+"      "+QUO+";                                            IF DATE(1,1)<>"+QUO+" "+QUO+"AND DATE(1,1)<>CHR(1)                         THEN TEMP=ASC(DATE(1,1))-1;                                      RESULT=CHR(ASC("+QUO+"A"+QUO+")+INT(TEMP/10))                                 +STR( MOD( TEMP,10))                                        +STR( ASC( DATE(2,1))-1:"+QUO+"00"+QUO+")                               +STR( ASC( DATE(3))-1:"+QUO+"00"+QUO+")                                                                                                                                                                                                                                                                    "
+    FIELD_2$=$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,455 @@
+0010 REM "Item Number Change Processing <FM2NCA>
+0035 REM "5.7 - 12/21/18 - 11.363333 - tma - SSP# 305122
+0037 REM "305122-Item Code Change - It currently required DataRep to be off. 
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="FM2NCA",X1$="Item Code Change Audit Report"
+0120 DIM A$(256),A[19],B$(60),C$(227),C[2],D$(214),J$(46),S$(20)
+0140 Z0$="-##0",Z1$="-##,###.00#",Z2$="##,##0",Z3$="-######,##0",Z4$="#,###.00",Z5$="####,###.00"
+0210 T=1,T0=1,T1=1
+0220 W3=131
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3),W[4]
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0310 IOLIST A$
+0320 IOLIST B$
+0325 IOLIST B0$
+0330 IOLIST C$
+0340 IOLIST D$
+0400 IOLIST J$
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01L FSS...  02O AR1...  03O FM1...  04O IC0...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0540 FIND (Z[13],KEY=X3$(9,3)+"F/M",DOM=0541)P0$
+0600 GOSUB 6500
+0700 REM "Open Printer
+0720 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 0721,9920
+0800 REM "Alternate Sort Info & total dim"
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[2]; U=20,U0=2,U[0]=0,U[1]=10,U[2]=10,T0=0,U0$="    ",T5$="                "; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM " Position read"
+0905 REM "set key file to read from"
+0910 U1=Z[1]
+0930 IF LEN(V2$)>=U*2 THEN GOTO 0965
+0934 REM "create default 'all' range key
+0935 DIM V2$(U*2),V4$(U,"~"); U3=1
+0940 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1]
+0950 V2$(U3+U[U9],U[U9])=V4$(1,U[U9])
+0955 NEXT U9
+0964 REM "Get starting key from range key
+0965 DIM V4$(U); U3=1,U4=1
+0970 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1],U4=U4+U[U9-1]
+0975 V4$(U4,U[U9])=V2$(U3,U[U9])
+0980 NEXT U9
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0990 READ (U1,KEY=V4$,DOM=0991)
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000)
+1008 REM "check key against range info"
+1009 U3=1,U2=1
+1010 FOR U9=1 TO U0; U2=U2+U[U9-1],U3=U3+U[U9-1]+U[U9-1]
+1020 IF U$(U2,U[U9])>=V2$(U3,U[U9]) THEN GOTO 1030 ELSE EXTRACT (U1,KEY=U$(1,U2-1)+V2$(U3,U[U9]),DOM=1021)
+1025 EXITTO 1000
+1030 IF U$(U2,U[U9])<=V2$(U3+U[U9],U[U9]) THEN GOTO 1040 ELSE READ (U1,KEY=U$(1,U2-1)+$FF$,DOM=1032)
+1035 EXITTO 1000
+1040 NEXT U9
+1100 REM "Get record"
+1110 U9$=U$
+1120 ON V0 GOTO 1150,1150,1130,1140
+1150 READ (Z[1],KEY=U$,DOM=1000)IOL=0310
+1300 REM "Read other data
+1305 DUP$=""
+1315 DIM B0$(100); READ (Z[2],KEY=A$(21,10),DOM=1316)IOL=0325
+1320 DIM D9$(40); READ (Z[3],KEY=A$(1,20),DOM=1321)IOL=0330; D9$=C$(42,40); GOTO 1326
+1325 READ (Z[4],KEY=A$(1,20),DOM=1326)IOL=0340; D9$=D$(21,40)
+1330 READ (Z[3],KEY=A$(21,20),DOM=1331); DUP$="Duplicate"
+1340 READ (Z[4],KEY=A$(21,20),DOM=1341); DUP$="duplicate"
+1350 READ (Z[15],KEY=A$(21,20),DOM=1370)FSS$
+1360 IF FSS$(21,20)<>A$(1,20) THEN DUP$="Duplicate"
+1370 IF DUP$<>"" THEN FLAG$="1"
+1400 REM "Subtotals"
+1415 GOSUB 3100
+1490 T=0
+1492 IF S$(20,1)="Y" THEN S9=1 ELSE S9=A[14]
+1494 IF S9=0 THEN S9=1
+1496 Z5$="####,###.00"
+1497 FOR I=1 TO 11 STEP 2; IF FPT(A[I]/S9)<>0 THEN EXITTO 1500
+1498 NEXT I
+1499 Z5$="###,###,##0"
+1500 REM "Print Data
+1505 IF W+3>W0 THEN GOSUB 6000
+1510 IF A$(1,10)<>J0$ THEN GOSUB 7600
+1520 Y5$(4)=A$(11,10),Y5$(17)=A$(31,10),Y5$(31)=D9$,Y5$(72)=DUP$
+1525 IF A$(21,10)<>A$(1,10) THEN CALL "ZZDISP","AXS",A$(21,10),"A/R",X3$,Y5$,"",71,0,X4$; Y5$(84)=B0$(11,35)+DUP$
+1530 GOSUB 7300
+1900 REM "Accumulate Totals"
+1990 T[T0,0]=T[T0,0]+1
+1995 GOTO 1000
+3100 REM "Subtotal logic goes here, see -ZREPS
+3180 RETURN 
+3280 RETURN 
+3380 RETURN 
+3480 RETURN 
+4000 REM "Routine to renumber files. All examples relate to customer code, item code renumbering
+4001 REM "R is the number of elements minus 1 (0 based counting) to change eg for item code change this is 2, one for customer code, one for item code
+4002 REM "R0() describes how long each element is. eg R0(0)=10, R0(1)=10
+4003 REM "R1() describes where each element is in the data part of the renumbering control file (eg. FSS, R1(0)=21, R1(1)=31
+4004 REM " R2() describes where each element begins in the target file's KEY area eg R2(0)=1, R2(1)=11 for the FM1 file. If R2(0)=0 then KEY is unchanged, if not a key field for example.
+4005 REM "R3() describes where each element begins in the targe file's DATA area, eg R3(0)=1 , R3(1)=11 for the FM1 file. If R3(0)=0 then data is unchanged, eg if a sort file
+4006 REM "F0$ is the name of the control file (eg FSS), F1$ is the name of the target file (eg FM1)
+4007 REM "F9  is a flag that controls whether to remove records first or not, it is set if and err 2 is detected on the test write.
+4008 REM "The control file is assumed to be keyed by the elements in the order that their lengths are given in R0. eg. key to FSS is customer code, item code
+4010 REM " Uses file slots 10 and 11 and 12
+4011 REM "F8=0 means DIRect file, F8=1 means sort file
+4100 REM "Start renumbering
+4104 C=C+1; GOSUB 8150
+4105 Y$="10O "+F0$+"...  11O "+F1$+"...  12O ZZE...  "
+4106 IF F2$<>"" THEN Y$=Y$+"09O "+F2$+"...  "
+4110 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 4111,4180
+4115 REM "Set F9 flag by attempting write of bogus record. If error = 2 then F9 =1 remove first then write, else F9=0 write then remove.
+4116 F9=0; GOTO 4130
+4120 WRITE (Z[11],KEY="!^&",ERR=4121,DOM=4125); GOTO 4125
+4121 IF ERR=2 THEN F9=1; GOTO 4126 ELSE ESCAPE 
+4125 F9=0; REMOVE (Z[11],KEY="!^&",DOM=4126)
+4130 IF %GUI=0 THEN PRINT @(18,10),"Currently processing:", ! SSP#214176
+4133 DIM E$(50); FIND (Z[12],KEY=F1$+"   ",DOM=4134)E$
+4135 IF %GUI=0 THEN PRINT @(18,12),E$(7,39), ! SSP#214176
+4150 GOSUB 4200
+4175 PRINT @(0,12),'CE',
+4180 Y$="10C "+F0$+"...  11C "+F1$+"...  12O ZZE...  "
+4182 IF F2$<>"" THEN Y$=Y$+"09C "+F2$+"...  "
+4185 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+4190 REM "Clear R2, R3 for next file
+4192 DIM R2[R],R3[R]
+4193 F2$=""
+4195 RETURN 
+4200 REM "Actual substitution loop
+4201 REM "K0$=orig key, K1$=new key, D0$=orig data, D1$=new data, C0$=control data
+4205 C1=0; READ (Z[11],KEY="",DOM=4206)
+4210 K0$=KEY(Z[11],END=4290)
+4215 READ RECORD (Z[11],KEY=K0$)D0$
+4218 C1=C1+1 ! IF MOD(C1,25)=1 THEN PRINT @(18,14),K0$,!SSP#214176
+4220 IF R2[0]<>0 AND R2[1]<>0 THEN IF LEN(K0$)<R2[0]+R0[0]-1 OR LEN(K0$)<R2[1]+R0[1]-1 THEN GOSUB 7750; GOTO 4210
+4225 GOSUB 4300; REM "get control key C$
+4229 REM "Is control key C$ in control file?, If not goto next record
+4230 READ (Z[10],KEY=C$,DOM=4210)C0$
+4240 GOSUB 4400; REM "rebuild key and data
+4250 IF F9=1 THEN GOTO 4275
+4255 IF F8=0 THEN WRITE RECORD (Z[11],KEY=K1$)D1$ ELSE WRITE (Z[11],KEY=K1$)
+4260 IF K0$<>K1$ THEN REMOVE (Z[11],KEY=K0$,DOM=4261)
+4265 GOTO 4210
+4274 REM "Remove then write case
+4275 REMOVE (Z[11],KEY=K0$,DOM=4276)
+4280 IF F8=0 THEN WRITE RECORD (Z[11],KEY=K1$)D1$ ELSE WRITE (Z[11],KEY=K1$)
+4285 GOTO 4210
+4295 RETURN 
+4300 REM "Build key C$ to access control file
+4305 C$=""; REM "If R2(0)=0 use data portion to build C$ else use key part
+4310 IF R2[0]=0 OR R2[1]=0 THEN GOTO 4330
+4315 FOR I=0 TO R; C$=C$+K0$(R2[I],R0[I]); NEXT I
+4320 GOTO 4345
+4330 FOR I=0 TO R; C$=C$+D0$(R3[I],R0[I]); NEXT I
+4344 IF F1$="FT4" THEN IF D0$(14,1)="Y" THEN GOSUB 8000
+4345 IF F1$="FS6" THEN IF K0$(11,1)="F" THEN C$(1,10)=""
+4346 IF F1$="FS7" THEN IF K0$(4,1)="F" THEN C$(1,10)=""
+4347 IF F1$="FS8" THEN IF K0$(19,1)="F" THEN C$(1,10)=""
+4348 IF F1$="FS2" THEN IF D0$(14,1)="Y" THEN GOSUB 8000
+4349 RETURN 
+4400 REM "Rebuild K0$ to K1$ and D0$ to D1$ if needed based on C0$
+4405 K1$=K0$
+4407 IF F1$="FS6" THEN IF K0$(11,1)="F" THEN K1$(12,10)=C0$(31,10); GOTO 4450
+4408 IF F1$="FS7" THEN IF K0$(4,1)="F" THEN K1$(5,10)=C0$(31,10); GOTO 4450
+4409 IF F1$="FS8" THEN IF K0$(19,1)="F" THEN K1$(20,10)=C0$(31,10); GOTO 4450
+4410 IF R2[0]=0 AND R2[1]=0 THEN GOTO 4450
+4415 FOR I=0 TO R; IF R2[I]=0 THEN NEXT I ELSE K1$(R2[I],R0[I])=C0$(R1[I]); NEXT I
+4450 D1$=D0$
+4452 IF POS(F1$="FS6",3)>0 THEN IF D0$(11,1)="F" THEN D1$(12,10)=C0$(31,10); GOTO 4456
+4453 IF F1$="FM1" THEN D1$(199,10)=D0$(11,10)
+4455 FOR I=0 TO R; IF R3[I]=0 THEN NEXT I ELSE D1$(R3[I],R0[I])=C0$(R1[I]); NEXT I
+4495 RETURN 
+5000 REM "End of Print
+5030 T0$="END"
+5040 IF V1>0 THEN GOSUB 3120
+5050 IF U$<>"" THEN T=0,T$="Report"; GOSUB 7000 ! SSP#271136
+5090 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+5095 IF U$="" THEN GOTO 9900 ! SSP#271136
+5100 IF FLAG$="1" THEN TMP$="Duplicate record found no update allowed"; CALL "ZZPROM",".4",X3$,Z,TMP$,"","",0; ON Z GOTO 9900
+5200 REM "
+5210 CALL "ZZPROM",".Y",X3$,Z,"Are you ready to begin the renumbering process?","","",0
+5220 ON Z GOTO 5221,9900
+5230 GOSUB 5400
+5240 ! CALL "ZZ2PRP","EC",RESULT$,DATE$; IF RESULT$="Y" THEN CALL "ZZPROM",".Y",X3$,Z,"Should the Catalog Item Code be changed to the new item code?","","",0; IF Z=0 THEN ECH_CAT_ITEM=1 ! SSP186052  !SSP#268652
+5250 REM "Set constants for rebuild routine
+5255 F0$="FSS",R=1
+5260 DIM R0[R],R1[R],R2[R],R3[R]
+5265 F0$="FSS",R=1,R0[0]=10,R0[1]=10,R1[0]=21,R1[1]=31
+5290 PRINT @(18,5),"Item Code Renumbering in Progress",
+5300 REM "Begin rebuilding
+5305 T6=71; REM "Number of files to check
+5310 F1$="FM1",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5311 F1$="FM3",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5312 F1$="FM5",F8=0,R2[0]=3,R2[1]=17,R3[0]=3,R3[1]=17; GOSUB 4100
+5313 F1$="FMC",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5314 F1$="FMD",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5315 F1$="FME",F8=1,R2[0]=1,R2[1]=15,R3[0]=0,R3[1]=0; GOSUB 4100
+5316 F1$="FMF",F8=1,R2[0]=1,R2[1]=17,R3[0]=0,R3[1]=0; GOSUB 4100
+5317 F1$="FMH",F8=1,R2[0]=1,R2[1]=4,R3[0]=0,R3[1]=0; GOSUB 4100
+5318 F1$="FMI",F8=1,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5319 F1$="FML",F8=0,R2[0]=2,R2[1]=16,R3[0]=2,R3[1]=16; GOSUB 4100
+5320 F1$="FMS",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5321 F1$="FMU",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5322 F1$="FMV",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5323 F1$="FMY",F8=0,R2[0]=0,R2[1]=0,R3[0]=74,R3[1]=84; GOSUB 4100
+5324 F1$="FMZ",F8=0,R2[0]=0,R2[1]=16,R3[0]=36,R3[1]=16; GOSUB 4100
+5325 F1$="FS2",F8=0,R2[0]=0,R2[1]=0,R3[0]=161,R3[1]=19,F2$="FS1"; GOSUB 4100
+5326 F1$="FS5",F8=1,R2[0]=1,R2[1]=11,R3[0]=0,R3[1]=0; GOSUB 4100
+5327 F1$="FS6",F8=0,R2[0]=1,R2[1]=12,R3[0]=1,R3[1]=12; GOSUB 4100
+5328 F1$="FS7",F8=1,R2[0]=15,R2[1]=5,R3[0]=0,R3[1]=0; GOSUB 4100
+5329 F1$="FS8",F8=1,R2[0]=1,R2[1]=20,R3[0]=0,R3[1]=0; GOSUB 4100
+5330 F1$="IC0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5331 F1$="IC1",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5332 F1$="IC2",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5333 F1$="IC4",F8=1,R2[0]=18,R2[1]=28,R3[0]=0,R3[1]=0; GOSUB 4100
+5334 F1$="IC5",F8=1,R2[0]=4,R2[1]=14,R3[0]=0,R3[1]=0; GOSUB 4100
+5335 F1$="IC6",F8=1,R2[0]=8,R2[1]=18,R3[0]=0,R3[1]=0; GOSUB 4100
+5336 F1$="IC8",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5337 F1$="IC9",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5338 F1$="ICD",F8=1,R2[0]=35,R2[1]=45,R3[0]=0,R3[1]=0; GOSUB 4100
+5339 F1$="ICF",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5340 F1$="PO2",F8=0,R2[0]=0,R2[1]=0,R3[0]=91,R3[1]=101; GOSUB 4100
+5341 F1$="PO5",F8=1,R2[0]=1,R2[1]=11,R3[0]=0,R3[1]=0; GOSUB 4100
+5342 F1$="POB",F8=0,R2[0]=36,R2[1]=46,R3[0]=36,R3[1]=46; GOSUB 4100
+5343 F1$="POC",F8=0,R2[0]=36,R2[1]=46,R3[0]=36,R3[1]=46; GOSUB 4100
+5344 F1$="FM2",F8=1,R2[0]=32,R2[1]=22,R3[0]=0,R3[1]=0; GOSUB 4100
+5345 F1$="FM4",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5346 F1$="FM9",F8=0,R2[0]=1,R2[1]=0,R3[0]=1,R3[1]=62; GOSUB 4100
+5347 F1$="ICG",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5348 F1$="FW0",F8=0,R2[0]=1,R2[1]=21,R3[0]=1,R3[1]=21; GOSUB 4100
+5349 F1$="FW1",F8=0,R2[0]=9,R2[1]=19,R3[0]=9,R3[1]=19; GOSUB 4100
+5350 F1$="POF",F8=0,R2[0]=17,R2[1]=27,R3[0]=17,R3[1]=17; GOSUB 4100
+5351 F1$="POG",F8=0,R2[0]=5,R2[1]=15,R3[0]=5,R3[1]=15; GOSUB 4100
+5352 F1$="FSF",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5353 F1$="FSW",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5354 F1$="FST",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5355 F1$="AS7",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5356 F1$="KT0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5357 F1$="KT0",F8=0,R2[0]=21,R2[1]=31,R3[0]=21,R3[1]=31; GOSUB 4100
+5358 F1$="FT0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5359 F1$="FT1",F8=1,R2[0]=1,R2[1]=31,R3[0]=0,R3[1]=0; GOSUB 4100
+5360 F1$="FT4",F8=0,R2[0]=0,R2[1]=0,R3[0]=161,R3[1]=19,F2$="FT3"; GOSUB 4100
+5361 F1$="BM0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5362 F1$="BM0",F8=0,R2[0]=0,R2[1]=0,R3[0]=24,R3[1]=34; GOSUB 4100
+5363 F1$="FO2",F8=0,R2[0]=0,R2[1]=0,R3[0]=35,R3[1]=45; GOSUB 4100
+5364 F1$="FSU",F8=1,R2[0]=56,R2[1]=31,R3[0]=0,R3[1]=0; GOSUB 4100
+5365 F1$="FSX",F8=1,R2[0]=38,R2[1]=28,R3[0]=0,R3[1]=0; GOSUB 4100
+5366 F1$="FSY",F8=1,R2[0]=1,R2[1]=17,R3[0]=0,R3[1]=0; GOSUB 4100
+5367 F1$="FSR",F8=0,R2[0]=5,R2[1]=22,R3[0]=0,R3[1]=0; GOSUB 4100
+5368 F1$="BM1",F8=0,R2[0]=0,R2[1]=0,R3[0]=15,R3[1]=25; GOSUB 4100
+5369 F1$="FTA",F8=0,R2[0]=0,R2[1]=0,R3[0]=15,R3[1]=25; GOSUB 4100
+5370 F1$="FTE",F8=0,R2[0]=0,R2[1]=0,R3[0]=26,R3[1]=36; GOSUB 4100
+5371 F1$="FTG",F8=0,R2[0]=0,R2[1]=0,R3[0]=26,R3[1]=36; GOSUB 4100
+5372 F1$="FTJ",F8=1,R2[0]=15,R2[1]=25,R3[0]=0,R3[1]=0; GOSUB 4100
+5373 F1$="ASJ",F8=0,R2[0]=1,R2[1]=0,R3[0]=1,R3[1]=29; GOSUB 4100
+5374 F1$="ASL",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5375 F1$="ASL",F8=0,R2[0]=21,R2[1]=31,R3[0]=21,R3[1]=31; GOSUB 4100
+5376 F1$="AST",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5377 F1$="FTL",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5378 F1$="FTM",F8=1,R2[0]=5,R2[1]=15,R3[0]=0,R3[1]=0; GOSUB 4100
+5379 F1$="AT1",F8=0,R2[0]=0,R2[1]=0,R3[0]=39,R3[1]=49; GOSUB 4100
+5380 F1$="FS0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5381 F1$="ECR",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5382 F1$="ECH",F8=0,R2[0]=0,R2[1]=0,R3[0]=41,R3[1]=51; GOSUB 4100; IF MID(V0$,73,1)="Y" THEN F1$="ECH",F8=0,R2[0]=0,R2[1]=21,R3[0]=41,R3[1]=21; GOSUB 4100 ! SSP186052, option to also change catalog item code !SSP#268652
+5383 F1$="ECI",F8=1,R2[0]=31,R2[1]=41,R3[0]=0,R3[1]=0; GOSUB 4100
+5384 F1$="PP3",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5385 F1$="EDE",F8=0,R2[0]=0,R2[1]=0,R3[0]=36,R3[1]=46; GOSUB 4100
+5386 F1$="EDP",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5387 F1$="EDQ",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5388 F1$="EDR",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5389 F1$="EDV",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5390 F1$="EDV",F8=0,R2[0]=0,R2[1]=0,R3[0]=38,R3[1]=48; GOSUB 4100
+5391 F1$="EE3",F8=0,R2[0]=0,R2[1]=0,R3[0]=46,R3[1]=56; GOSUB 4100
+5392 F1$="ZZO",F8=0,R2[0]=4,R2[1]=14,R3[0]=4,R3[1]=14; GOSUB 4100
+5393 IF V0$(72,1)="Y" THEN F1$="AZT",F8=0,R2[0]=0,R2[1]=0,R3[0]=75,R3[1]=85; GOSUB 4100 ! SSP#268652
+5394 Y$="01O FSS...  "
+5395 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5396 IF %HAS_IMAGE_LIB THEN CALL "FM2NCB",X3$,X4$,Z[1] ! SSP#206958
+5397 CALL "ZZINIT",STR(Z[1]:"00")
+5398 CALL "ZZPROM","X0FM2NC0",X3$,0,"","","",0
+5399 GOTO 9900
+5400 REM "Check for things in progress
+5401 REM "Temp lock ZZPARM.  Lock on ZM1 will keep em off (5405)
+5402 GOTO 5404 ! LOCK (Z[13],ERR=5403); UNLOCK (Z[13]); GOTO 5404 ! Removed lock on menu file, NO tfcentral will ever be able to run form number change, no multi company machine can run form number change, it should be enough of a check for ZZPARM and for checking batchs SSP# 214176 !SSP#305122 Remove lock on ZZPARM
+5403 PRINT @(0,21),'CL','BB',"Update will not be initiated at this time.  Try again later",'EB',; CALL "ZZPROM",".4",X3$,0,"Activity detected!  All other terminals must be logged off during update.","","",0; GOTO 9900
+5404 FIND (Z[13],KEY="o"+X3$(40,3),DOM=*NEXT)OPERATOR$; IF OPERATOR$(41,2)="SU" THEN GOTO 5495 ! SSP#217446
+5408 X5=0; GOSUB 5600 ! SSP#217446
+5409 Y$="01O ARB...  02O ICL...  03O ICA...  04O FM6...  05O PO7...  09O ZM1    " ! SSP#217446
+5410 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 5411,9900
+5420 F5=1,F5$="Accounts Receivable Invoicing (ARB)"; GOSUB 5500
+5425 F5=2,F5$="Inventory Physical Count (ICL)"; GOSUB 5500
+5430 F5=3,F5$="Inventory Transaction Entry (ICA)"; GOSUB 5500
+5435 F5=4,F5$="Forms Management Physical Count (FM6)"; GOSUB 5500
+5440 F5=5,F5$="P/O Receiving (PO7)"; GOSUB 5500
+5480 Y$="01C ARB...  02C ICL...  03C ICA...  04C FM6...  05C PO7...  "
+5485 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5488 IF %GUI AND X5<>0 THEN MSGBOX MESSG$,"FYI Activity detected","OK"; GOTO 9900 ! ssp#250883
+5490 IF X5<>0 THEN CALL "ZZPROM",".4",X3$,Z,"","","",0; GOTO 9900
+5495 RETURN 
+5500 REM "See if given file has any records, if yes give message and exit program
+5510 READ (Z[F5],KEY="",DOM=5511)
+5515 READ (Z[F5],END=5545)
+5516 IF %GUI THEN ML_MESSG$="Renumbering cannot proceed until the transactions in these files are processed"; X5=X5+1; MESSG$=MESSG$+", "+F5$; GOTO 5525 ! PRINT @(0,6),'CE',@(5,6),ML_MESSG$,; GOTO 5525!SSP#214176;!SSP#250883
+5519 REM "If here then it has records in it
+5520 IF X5=0 THEN PRINT @(17,10),"Renumbering cannot proceed until the",@(15,11),"transactions in these files are processed:",; X5=13
+5525 IF %GUI=0 THEN PRINT @(18,X5),F5$; X5=X5+1 ! SSP#250883
+5545 RETURN 
+5600 REM " Check for open batches
+5610 Y$="01O ZY9..."; CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5615 MESSG$=S$ ! SSP#214176
+5620 READ (Z[1],KEY="",DOM=5621)
+5625 READ (Z[1],END=5644)K$ ! SSP#214176
+5630 IF K$(110,3)<>X3$(9,3) THEN GOTO 5625
+5640 IF K$(6,2)="AP" OR K$(6,2)="GL" OR K$(6,6)="AR2CAA" THEN GOTO 5625 ! SSP#214176 !SSP#229665
+5642 MESSG$=MESSG$+K$(6,2)+" Batch: "+K$(1,5)+" "; GOTO 5625 ! SSP#214176
+5644 IF STP(MESSG$)="" THEN GOTO 5680 ! SSP#214176
+5645 IF %GUI THEN ML_MESSG$="Renumbering cannot proceed open batchs must be closed "+MESSG$; PRINT @(0,6),'CE',@(5,6),ML_MESSG$,; GOTO 5651 ! SSP#214176
+5650 PRINT @(17,10),"Renumbering cannot proceed open batchs must be closed ",MESSG$, ! SSP#214176
+5660 X5=13
+5680 Y$="01C ZY9..."; CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5690 RETURN 
+6000 REM "Page header
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6045 ON W5 GOTO 6046,9900
+6060 GOSUB 6100
+6090 RETURN 
+6100 REM "
+6106 GOSUB 7300 ! ssp#257730
+6110 Y5$(6)="From",Y5$(20)="To"
+6120 GOSUB 7300
+6199 RETURN 
+6500 REM "Sort to check for dups
+6510 Q$="TMPFSS"+FID(0),D0=0
+6520 CALL "ZZINFO",Z[1],0,X3$,REC,0,0,0,0,0,0,""; REC1=REC+100
+6530 IF REC1>2500 THEN Z$="+("+STR(REC1)+")"; CALL "ZZPROM","S4",X3$,A,Z$,"","",0; ON A GOTO 6540,9900
+6540 ERASE Q$,ERR=6550; GOTO 6540
+6550 DIRECT Q$,20,0,64,D0,0
+6560 Y$="15O "+Q$+"   "; GOSUB 9750
+6570 K$=KEY(Z[1],END=6690); READ (Z[1],KEY=K$)FSS$
+6580 WRITE (Z[15],KEY=FSS$(21,20))FSS$(21,20)+FSS$(1,20)
+6590 REC1=REC1-1; IF POS("G"=FID(0))<>1 AND %GUI<>1 THEN PRINT @(S9,22),REC1:"##,##0", ! SSP#268652
+6600 GOTO 6570
+6900 REM "SORT
+6905 IF S9$="X" THEN GOTO 6990 ELSE S0=Z[1],S1=Z[2]
+6940 CALL "ZZSORT",X3$,"",V1$,S9$,"","",0,0,0,S0,S1,X9
+6990 RETURN 
+7000 REM "Totals logic
+7001 IF T=T0 THEN IF T[T0,0]<2 THEN GOSUB 7300; GOTO 7100
+7002 IF W+3>W0 THEN GOSUB 6000
+7010 REM LET Y5$(1)=T3$(1,T0+1-T)+" "
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 7200; GOTO 7190
+7095 GOSUB 7300
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7205 GOSUB 7300; Y5$(1)="Number of items printed"+": "+STR(T[0,0]); GOSUB 7300
+7210 PRECISION 14; T2=TIM-T2
+7220 T4$=STR(INT(T2):"##0")
+7230 T3=INT(FPT(T2)*3600),T4=MOD(T3,60),T3=INT(T3/60)
+7240 T3=T3/60
+7250 T4$=T4$+":"+STR(T3:"00")+":"+STR(T4:"00")
+7260 Y5$(1)="Elapsed time: "+T4$; GOSUB 7300
+7280 PRECISION 2
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"   ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES
+7525 REM "Modified stmts:
+7550 REM "Added stmts:
+7575 REM "Deleted stmts:
+7600 REM "New customer
+7605 GOSUB 7300
+7610 DIM B$(100); FIND (Z[2],KEY=A$(1,10),DOM=7611)IOL=0320
+7615 IF POS(" "<>A$(1,10))=0 THEN Y5$(1)="Stock Items:"; GOTO 7635
+7625 CALL "ZZDISP","AX",A$(1,10),"A/R",X3$,J1$,"",0,0,X4$
+7630 Y5$(1)="Customer: "+J1$+"  "+B$(11,35)
+7635 GOSUB 7300
+7640 J0$=A$(1,10)
+7645 RETURN 
+7700 REM "FS6 Special logic
+7710 IF F1$="FS6" THEN K1$(12,10)=C0$(31,10)
+7720 IF F1$="FS7" THEN K1$(5,10)=C0$(31,10)
+7730 IF F1$="FS8" THEN K1$(20,10)=C0$(31,10)
+7740 RETURN 
+7750 REM "Remvove Short Key?
+7755 IF F1$="FSF" AND K0$(1,3)="DFL" THEN GOTO 7790
+7785 REMOVE (Z[11],KEY=K0$,DOM=7786)
+7790 RETURN 
+8000 REM "Patch for FS2"
+8010 READ (Z[9],KEY=D0$(147,8),DOM=8040)J$
+8015 C$(1,10)=J$(6,10)
+8045 RETURN 
+8150 REM "Call this each time to update the bar graph.
+8155 CALL "ZZBARG",X3$,"H",8,10,50,T5,T6,C
+8195 RETURN 
+8900 REM "Functions
+8910 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8920 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8950 DEF FNQ$(Z9,Z9$)=STR(Z9:Z9$)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9750 REM "Files Routine
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+9770 ON Z0 GOTO 9771,9900
+9790 RETURN 
+9900 REM "End program
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9940 IF %GUI THEN EXIT ELSE RUN "ZMENU"
+9999 END 
+56000 ! Program changes starting 10/18/05
+56010 REM "184145-Ability to have "My Catalog" feature work for multiple
+56011 REM "229665-Item number change is checking Cash Receipts batchs to      
+56012 REM "206958-Change Form Number Change Utility FM2NCS/FM2NCA to update   
+56014 REM "268652-Can the AZT file be included in the update for the Item     
+56015 REM "271136-Trying to run a item code change and is getting an error.   
+56016 REM "305122-Item Code Change - It currently required DataRep to be off. 

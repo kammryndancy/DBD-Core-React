@@ -1,0 +1,101 @@
+0010 REM "Correct PO3, FS1 and FS2 tax flags <FM2TAX>                           
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 01/25/06 - 9.494722 - lms - SSP# 191905                         
+0037 REM "191905-Taxable flag on D1 orders...fix needs to be installed at       
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia               
+0041 REM "        Licensed Software - All Rights Reserved.                      
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="FM2TAX",X1$="Correct PO3, FS1 and FS2 Tax Flags",K9$="",K9=0
+0120 DIM S$(20)
+0135 C9=-1
+0200 REM "                                                                      
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS                                                               
+0500 REM "FILES                                                                 
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O PO3...  02O FS1...  03O FS2...  04O FM0...  05O AR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "                                                                                                                                                 
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 READ (Z[1],KEY="",DOM=*NEXT)
+1020 KEY_PO3$=KEY(Z[1],ERR=9000); READ (Z[1])
+1025 IF KEY_PO3$(1,8)=DIM(8) THEN GOTO 1020
+1030 READ RECORD (Z[1],KEY=KEY_PO3$)PO3$
+1040 READ RECORD (Z[2],KEY=PO3$(166,8),DOM=1020)FS1$
+1041 IF FS1$(63,1)="Y" THEN GOTO 1020
+1042 KEY_FS1$=KEC(Z[2])
+1045 IF PO3$(11,5)=DIM(5) THEN GOTO 1020
+1046 IF PO3$(12,4)=DIM(4) OR PO3$(11,1)<>"C" THEN READ RECORD (Z[5],KEY=FS1$(6,10))AR1$
+1047 REM IF PO3$(11,1)<>"C" THEN GOTO 1020                                      
+1048 TAXABLE$=""
+1050 IF PO3$(12,4)=DIM(4) OR PO3$(11,1)<>"C" THEN IF AR1$(245,1)="N" THEN TAXABLE$="Y" ELSE IF AR1$(245,1)="Y" THEN TAXABLE$="N"; ESCAPE ; GOTO 1087
+1060 READ RECORD (Z[4],KEY=PO3$(11,1)+FS1$(6,10)+PO3$(12,4))FM0$
+1080 REM IF (FM0$(283,1)="N" AND PO3$(279,1)="Y") OR (FM0$(283,1)="Y" AND PO3$( 279,1)="N") THEN GOTO 1020                                                 
+1086 TAXABLE$=""; IF FM0$(283,1)="N" THEN TAXABLE$="Y" ELSE IF FM0$(283,1)="Y" THEN TAXABLE$="N"
+1087 PO3$(279,1)=TAXABLE$,FS1$(86,1)=TAXABLE$
+1088 REM WRITE RECORD (Z[1],KEY=KEY_PO3$)PO3$                                   
+1089 REM WRITE RECORD (Z[2],KEY=KEY_FS1$)FS1$                                   
+1090 PRINT "ORDER: "+PO3$(166,8)+"   PO3: "+PO3$(279,1),"     FS1: "+FS1$(86,1),"    FM0: "+FM0$(283,1)
+2000 READ (Z[3],KEY=PO3$(166,8)+PO3$(7,3),DOM=*NEXT)
+2010 KEY_FS2$=KEY(Z[3],END=5002); READ (Z[3])
+2015 IF KEY_FS2$(1,8)<>PO3$(166,8) THEN GOTO 5002
+2020 READ RECORD (Z[3],KEY=KEY_FS2$)FS2$
+2021 IF FS2$(18,1)="Y" THEN PRINT "SPECIAL SHIPPING" ELSE PRINT "GENERAL SHIPPING"
+2023 IF FS2$(18,1)="Y" AND PO3$(7,3)<>FS2$(6,3) THEN GOTO 2010; REM IF IT'S SPE   CIAL SHIPPING BUT NOT FOR THIS LINE SKIP IT...WE'LL GET IT ON THE PO3 SP E C IAL SHIPPING RECORD                                                                                                                                                                                                          
+2024 COUNT=COUNT+1
+2025 REM WRITE RECORD (Z[3],KEY=KEY_FS2$)FS2$                                   
+2030 PRINT "ORDER: "+KEY_FS2$(1,8)+"  LINE:  "+KEY_FS2$(9,3)+"   FS2: ",FS2$(136,1)
+2050 GOTO 2010
+5002 GOTO 1020
+5010 ESCAPE 
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program will read through Open Orders and correct the taxable flag in PO3, FS1 and FS2"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9001 ESCAPE 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

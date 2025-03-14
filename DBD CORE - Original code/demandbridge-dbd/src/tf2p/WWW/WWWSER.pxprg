@@ -1,0 +1,54 @@
+0010 REM "WWW Basic Server <WWWSER>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.0 - 08/27/96 - 15.19 - kmc
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="WWWSER",X1$="WWW Basic Server"
+0120 EOL$=$0D0A$
+0495 REM "Very picky about where the file name is in the call
+0500 IF ARGC<3 THEN GOTO 9900 ELSE FILE_NAME$=ARG(2)
+0505 OPEN LOCK (1,OPT="TEXT")FILE_NAME$
+0509 SERIAL FILE_NAME$+".o",0,0
+0510 OPEN LOCK (2,OPT="TEXT")FILE_NAME$+".o"
+0600 REM "initialize IN$ array and set INDEX to starting element
+0601 REM "IN$[0] will be for environment information, so INDEX will start @ 1
+0605 INDEX=0,CALL_PROG$="",IN_MAX=50; REM "Start with 50 will expand if needed later
+0610 DIM IN$[IN_MAX,1]; REM "element 0 is 'tag', element 1 is the value
+0700 REM "Parameters
+0705 REM "Param$ 1,4 = end of line characters, 5,8=standard header, 13,8= standard trailer template
+0710 DIM PARAM$(100)
+0715 PARAM$(1,4)=EOL$,PARAM$(5,8)="WWWHD01",PARAM$(13,8)="WWWTR01"
+1000 REM "Read from Stdin and print out std out with a >> before each line
+1010 READ (1,END=1100,ERR=9900)IN_STR$
+1029 REM "if = in string split into tag and tag value around the =, if no '=' is found then the line is a continuation of the previous value, add an end of line to the string stored for the previous tag (INDEX is still pointing to the right place), and then the new line
+1030 P=POS("="=IN_STR$); IF P=0 THEN IN$[INDEX,1]=IN$[INDEX,1]+EOL$+IN_STR$; GOTO LOOP_BOTTOM ELSE TAG$=IN_STR$(1,P-1),TAG_VALUE$=IN_STR$(P+1)
+1040 IF TAG$="basic" THEN CALL_PROG$=TAG_VALUE$
+1045 INDEX=INDEX+1; IF INDEX>IN_MAX THEN CALL "INSERT_ARRAY;STRING",IN${ALL},IN_MAX+1,50; IN_MAX=IN_MAX+50; REM "if over end of array add 50 more
+1050 IN$[INDEX,0]=TAG$,IN$[INDEX,1]=TAG_VALUE$
+1095 LOOP_BOTTOM:GOTO 1010
+1100 REM "Done with call
+1105 IF CALL_PROG$<>"" THEN GOSUB CALL_A_PROG; GOTO 9900
+1107 PRINT (2)"Content-type: text/html",EOL$,EOL$,
+1110 FILE_NAME$=PARAM$(5,8); GOSUB SEND_FILE; REM "Send file header
+1115 PRINT (2)"<P>",EOL$,
+1120 FOR I=1 TO INDEX; PRINT (2)"{",IN$[I,0],"|",IN$[I,1],"}",EOL$,; NEXT I
+1180 PRINT (2)"</P>",EOL$,
+1190 FILE_NAME$=PARAM$(13,8); GOSUB SEND_FILE; REM " Send trailer of html
+1195 GOTO 9900
+1200 CALL_A_PROG:REM " Call specified program
+1220 CALL CALL_PROG$,ERR=ERROR_ON_CALL,PARAM$,IN${ALL},INDEX,2
+1295 CALL_A_PROG_END:RETURN 
+1300 ERROR_ON_CALL:REM "There was an error on the call, cancel the call and dump the data we were given
+1320 CALL_PROG$=""
+1395 ERROR_ON_CALL_END:GOTO 1100
+3000 SEND_FILE:REM "Put contents of FILE_NAME$ to (2)
+3020 CALL "WWWSND",ERR=SEND_FILE_END,PARAM$,FILE_NAME$,2
+3045 SEND_FILE_END:RETURN 
+9000 REM "ERROR PROCESSING
+9005 PRINT "ERR=",ERR," LINE = ",TCB(5),'LF','LF'
+9010 GOTO 9900
+9900 REM "End
+9950 RELEASE 
+9999 END 

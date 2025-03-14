@@ -1,0 +1,934 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>E-Mail Server Configuration </title>
+
+<!--(Meta)==========================================================-->
+
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content=ImportDoc>
+<meta name=OriginalFile content="C:\Documents and Settings\ddw\My Documents\TopForm Docs\Existing Source Docs\Webec System Admin Documenation - Providex.doc">
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=5174>
+<meta name=layout-width content=1106>
+
+
+<!--(Links)=========================================================-->
+
+ <link rel='stylesheet' href='default_ns.css'>
+<script type="text/javascript" language="JavaScript" title="WebHelpSplitCss">
+<!--
+if (navigator.appName !="Netscape")
+{   document.write("<link rel='stylesheet' href='default.css'>");}
+//-->
+</script>
+<!--(Style Sheet)===================================================-->
+
+<style>
+<!--
+
+A:visited {
+	color: #800080;
+}
+
+A:link {
+	color: #0000ff;
+}
+
+-->
+</style>
+
+
+<style type="text/css">
+<!--
+img_whs1 {border: none; width: 400px; height: 108px; float: none; border-style: none; border-style: none;}
+table.whs2 {border: none; x-border-left: 1px table-solid; x-border-top: 1px table-solid; x-border-right: 1px table-solid; x-border-bottom: 1px table-solid; border-collapse: separate; border-spacing: 0px;}
+td.whs3 {x-cell-content-align: top; width: 2.05in; border: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs4 {x-cell-content-align: top; width: 2.05in; border: solid #000000 .5pt; border-left: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs5 {x-cell-content-align: top; width: 2.05in; border: solid #000000 .5pt; border-top: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs6 {x-cell-content-align: top; width: 2.05in; border-top: none; border-left: none; border-bottom: solid #000000 .5pt; border-right: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+table.whs7 {border: none; x-border-left: 1px table-solid; x-border-top: 1px table-solid; x-border-right: 1px table-solid; x-border-bottom: 1px table-solid; border-collapse: separate; border-spacing: 0px; border-spacing: 0px;}
+col.whs8 {width: 81.9pt;}
+col.whs9 {width: 360.9pt;}
+td.whs10 {width: 109px; x-cell-content-align: top; border: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs11 {width: 481px; x-cell-content-align: top; border: solid #000000 .5pt; border-left: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs12 {width: 109px; x-cell-content-align: top; border: solid #000000 .5pt; border-top: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs13 {width: 481px; x-cell-content-align: top; border-top: none; border-left: none; border-bottom: solid #000000 .5pt; border-right: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+h4.whs14 {margin-left: 117.0pt; text-indent: -.25in;}
+td.whs15 {x-cell-content-align: top; width: 390.1pt; border: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs16 {x-cell-content-align: top; width: 390.1pt; border: solid #000000 .5pt; border-top: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs17 {x-cell-content-align: top; width: 221.4pt; border: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs18 {x-cell-content-align: top; width: 221.4pt; border: solid #000000 .5pt; border-left: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs19 {x-cell-content-align: top; width: 221.4pt; border: solid #000000 .5pt; border-top: none; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+td.whs20 {x-cell-content-align: top; width: 221.4pt; border-top: none; border-left: none; border-bottom: solid #000000 .5pt; border-right: solid #000000 .5pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px;}
+-->
+</style>
+<script type="text/javascript" language="JavaScript">
+<!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4))
+{
+  var strNSS = "<style type='text/css'>";
+  strNSS += "h4.whs14 {text-indent:1; }";
+  strNSS +="</style>";
+  document.write(strNSS);
+}
+//-->
+</script>
+<script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
+<!--
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//-->
+</script>
+<style type="text/css">
+<!--
+  div.WebHelpPopupMenu {position:absolute; left:0px; top:0px; z-index:4; visibility:hidden;}
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body lang=EN-US>
+
+<script type="text/javascript" language="javascript1.2">
+<!--
+if (window.gbWhTopic)
+{
+	if (window.addTocInfo)
+	{
+	addTocInfo("Web.ec Help\nServer menu\nServer Administration\nE-Mail Server Configuration");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Web-ec.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+//-->
+</script><img src="Graphics/TopForm_Logo-Help4.jpg" x-maintain-ratio="TRUE" width="400px" height="108px" border="0" class="img_whs1"> 
+
+<h1>Web.ec E-Mail Server Configuration </h1>
+
+<p>The following sections describe the steps to configure the automated 
+ e-mail functionality of <span style="font-weight: bold;"><B>Web.</B></span><span 
+ style="font-style: italic; font-weight: bold;"><I><B>ec</B></I></span>.</p>
+
+<h2><span style="font: 7.0pt 'Times New Roman';"><font size=1 style="font-size:7pt;">&nbsp; </font></span>How it Works</h2>
+
+<p class=Normal>This discussion uses the automated emails for order purchases 
+ as an example which results in an email of the order confirmation page 
+ to the flagged email addresses.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs2">
+
+<tr>
+<td valign="top" width="2.05in" class="whs3">
+<p class=Normal>Action</td>
+<td valign="top" width="2.05in" class="whs4">
+<p class=Normal>Process</td>
+<td valign="top" width="2.05in" class="whs4">
+<p class=Normal>Result example</td></tr>
+
+<tr>
+<td valign="top" width="2.05in" class="whs5">
+<p class=Normal>Order Placed</td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Normal>WebEC will create a copy of the order confirmation page 
+ and will place this copy in the active “www_interface” directory. As part 
+ of this process, the email packet header and termination will be placed 
+ at the beginning and end of the resulting page. One copy will be made 
+ for each email that is flagged with an “O” for the buyer who placed an 
+ order. These files will be prefixed with “TMP”+&lt;random number&gt;</td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Normal>TMP4562</p>
+<p class=Normal>TMP51999</td></tr>
+
+<tr>
+<td valign="top" width="2.05in" class="whs5">
+<p class=Normal>Email Files Generated</td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Normal>Following the copies of the email files (TMPxxxx), WebEC 
+ will generate email request files in the active “www_interface” directory. 
+ These files have an “*.em” suffix and are the files that are processed 
+ by the WebEC server. One file is generated directing the email of each 
+ of the TMPxxxx files discussed earlier.</p>
+<p class=Normal>&nbsp;</p>
+<p class=Normal><b style="font-weight: bold;">File Example</b>:</p>
+<p class=Normal>basic=EC3EM0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
+<p class=Normal>template=TMP35984 </p>
+<p class=Normal>session_id=0353922</p>
+<p class=Normal>remove_file=Y&nbsp;&nbsp;&nbsp;&nbsp; </td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Footer>11280.em</p>
+<p class=Normal>32453.em</td></tr>
+
+<tr>
+<td valign="top" width="2.05in" class="whs5">
+<p class=Normal>Emails Sent</td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Normal>The TFWS Email server will find the “*.em” files and will 
+ email each file, first come, first serve, using the following command:</p>
+<p class=Normal>&nbsp;</p>
+<p class=Normal>/usr/lib/sendmail –t &lt; path_to_www_interface/TMPxxxx</td>
+<td valign="top" width="2.05in" class="whs6">
+<p class=Footer>&nbsp;</td></tr>
+</table>
+
+<h2>Email Packet Header / Footer Files</h2>
+
+<p class=Normal>The following files will come over as part of the <span 
+ style="font-weight: bold;"><B>Web.</B></span><span style="font-style: italic; font-weight: bold;"><I><B>ec 
+ </B></I></span>release and need to be moved to the “www_interface” directory that 
+ is being used. These files will be found on the release in “/usr/lib/basic/rel/tf2w/EC3”</p>
+
+<p class=Normal>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs7">
+<col class="whs8">
+<col class="whs9">
+
+<tr>
+<td valign="top" width="109px" class="whs10">
+<p class=Normal>Files</td>
+<td valign="top" width="481px" class="whs11">
+<p class=Normal>Comments</td></tr>
+
+<tr>
+<td valign="top" width="109px" class="whs12">
+<p class=Normal>email_start.txt</td>
+<td valign="top" width="481px" class="whs13">
+<p class=Normal>This file contain the email packet header information.</p>
+<p class=Normal>&nbsp;</p>
+<p class=BodyText2>This file should be edited and the company name added 
+ following the “From:” field:</p>
+<p class=BodyText2>&nbsp;</p>
+<p class=BodyText2><u style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "
+						style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "><span 
+ style="font-weight: normal;">File Contents:</span></u></p>
+<p class=BodyText2><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">To: &lt;?tf?email?&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">From: </span>put_company_name_here<span 
+ style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">Subject: ?tf?subject?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">Message-ID: &lt;0ae412136171660EMAIL1@topform.com&gt;</span></p>
+<p class=BodyText2><span style="font-weight: normal;">MIME-Version: 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">Content-Type: multipart/alternative;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ boundary=&quot;----=_NextPart_WebEC&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">This is a multi-part 
+ message in MIME format.&nbsp;&nbsp; </span></p>
+<p class=BodyText2><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">------=_NextPart_WebEC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+<p class=BodyText2><span style="font-weight: normal;">Content-Type: text/html;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ charset=&quot;iso-8859-1&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">Content-Transfer-Encoding: 
+ 8bit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></p>
+<p class=BodyText2><span style="font-weight: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </span></td></tr>
+
+<tr>
+<td valign="top" width="109px" class="whs12">
+<p class=Normal>email_end.txt</td>
+<td valign="top" width="481px" class="whs13">
+<p class=Normal>This file contains the email packet termination information. 
+ </p>
+<p class=Normal>&nbsp;</p>
+<p class=Normal><u style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ "
+					style="x-text-underline: normal; /*begin!kadov{{*/ text-decoration: underline; /*}}end!kadov*/ ">File 
+ Contents:</u></p>
+<p class=Normal>&nbsp;</p>
+<p class=Normal>------=_NextPart_WebEC</td></tr>
+</table>
+
+<h2>TopForm Interface Configuration</h2>
+
+<h4>3<sup>rd </sup>Party Parameters</h4>
+
+<p class=Normal
+	style="margin-left: 117.0pt; text-indent: -.25in;">1.<span style="font: 7.0pt 'Times New Roman';"><font size=1 style="font-size:7pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span>Setup the following “email” id</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3M3A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ EC 3rd Party Parameters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 11:40 AM </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 3rd Party id: email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Name: E-Mail header and footer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Info 
+ field 1 Desc:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Info 
+ Field 2 Desc:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<h4>3<sup>rd</sup> Party Variable Text Setup</h4>
+
+<p class=Normal>This step requires the setup of variable email text for 
+ codes to link to packet header and termination files discussed above. 
+ Complete the following setup:</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3M3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EC 3rd Party 
+ Variable Text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time: 11:44 AM&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 3rd Party id: email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; E-Mail header 
+ and footer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Variable 
+ text code: 00001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Description: email header&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ File name: email_start.txt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3M3D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EC 3rd Party 
+ Variable Text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time: 11:44 AM&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ 3rd Party id: email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; E-Mail header 
+ and footer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Variable 
+ text code: 00002&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Description: email close&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ File name: email_end.txt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<h2>Email Server Setup</h2>
+
+<p class=Normal>You will need to be running the TFWS 3.0 (TopForm Web Server) 
+ that supports the set up of multiple servers. Automated email functions 
+ will generate files that are placed in the active “www_interface” directory. 
+ All files are placed with an “*.em” extension, regardless of the configuration 
+ (ie. no *.em_dev for development servers, etc.). </p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>Following is a standard configuration. Those items in <b>bold</b> 
+ would be unique for each email server set up.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3MSA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ EC Server Parameters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 11:49 AM </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Server id: EMAIL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Email Server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Server 
+ Directory: <b>/usr/lib/basic/www_interface </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp; 
+ IPLINPUT file: IPLINPUT.webec_dev&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ File Mask: DA:*.em&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Log File: email.log&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp; 
+ Base Page Ref:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ CGI Command:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Kill after:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; seconds&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Def 
+ Stat Tmplte:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ Terminal ID: <b>Kz</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Options:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ TF Env code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<h2><span style="font: 7.0pt 'Times New Roman';"><font size=1 style="font-size:7pt;">&nbsp;</font></span>Email 
+ Subject Line Definition (U1/U2)</h2>
+
+<p class=Normal>The subject line for the automated emails is configured 
+ using the user definable code tools of U1 and U2.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<h4 class="whs14"><span style="x-text-underline: off;
+	x-text-overline: off;
+	x-text-line-through: off;
+	text-underline: none;
+	/*begin!kadov{{*/ text-decoration: none none none; /*}}end!kadov*/ ">1.<span 
+ style="font: 7.0pt 'Times New Roman';"><font size=1 style="font-size:7pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></span>Email Subject Code Setup</h4>
+
+<p class=Normal>The code to be used for the email must begin with “EMAILSUB_”. 
+ The final character will correspond to the action code being supported 
+ (currently, this must be O). Following the addition of the code, the remaining 
+ field entries will default to the appropriate settings. Press F4 and exit.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; WebEC Sort 
+ Code Maintenance&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time: 11:55 AM </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ Description: Subject line definition for 'O' emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Called routine:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Type: E&nbsp;&nbsp;&nbsp; Cust P/O sort? N&nbsp;&nbsp;&nbsp; Code type: 
+ O&nbsp; </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Primary file 1: ^E/C&nbsp;&nbsp;&nbsp; -key def-&nbsp;&nbsp;&nbsp;&nbsp; 
+ Electronic Commerce Parameters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;ZZE 
+ reference 2: ECD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EC Worksheet Header&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;ZZE 
+ reference 3:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;ZZE 
+ reference 4:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;ZZE 
+ reference 5:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;Comments&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ Email subject line definition maximum is 100 characters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+
+<p class=Normal>&nbsp;</p>
+
+<h4 class="whs14"><span style="x-text-underline: off;
+	x-text-overline: off;
+	x-text-line-through: off;
+	text-underline: none;
+	/*begin!kadov{{*/ text-decoration: none none none; /*}}end!kadov*/ ">2.<span 
+ style="font: 7.0pt 'Times New Roman';"><font size=1 style="font-size:7pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></span>Email Subject Line Contents Definition</h4>
+
+<p class=Normal>In this step you will define the contents of the subject 
+ line. It is recommended that you define a global definition at the least. 
+ You may then choose to define customer specific message lines if you so 
+ choose. </p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>The following would be for the definition of the following 
+ </p>
+
+<p class=Normal>subject line</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>“Confirmation of your order # &lt;customer’s po&gt; from 
+ &lt;distributor’s company name&gt;”</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>This definition would have 5 elements as shown below. The 
+ definition of the customer’s po is unique in that it is split into two 
+ fields.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs7">
+
+<tr>
+<td valign="top" width="390.1pt" class="whs15">
+<p class=Normal>Element Definition</td></tr>
+
+<tr>
+<td valign="top" width="390.1pt" class="whs16">
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ WebEC Sort Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 11:59 AM </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Customer 
+ code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** ALL Customers **&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp; Subject line definition for 'O' 
+ emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Element: 001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">-------------------------------------------------------------------------------</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Source file:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Data 
+ position:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Desc/Text: Confirmation of your order #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Length: 029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Account 
+ type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></td></tr>
+
+<tr>
+<td valign="top" width="390.1pt" class="whs16">
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ WebEC Sort Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 12:01 PM </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Customer 
+ code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** ALL Customers **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp; Subject line definition for 'O' 
+ emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Element: 002&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">-------------------------------------------------------------------------------</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Source file: ECD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Data 
+ position: 040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Desc/Text: Customer Requisition number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Length: 010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Account 
+ type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></td></tr>
+
+<tr>
+<td valign="top" width="390.1pt" class="whs16">
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ WebEC Sort Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 12:01 PM </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Customer 
+ code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** ALL Customers **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp; Subject line definition for 'O' 
+ emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Element: 003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">-------------------------------------------------------------------------------</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Source file: ECD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Data 
+ position: 163&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Desc/Text: Last 5 char of req #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Length: 005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Account 
+ type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal>&nbsp;</td></tr>
+
+<tr>
+<td valign="top" width="390.1pt" class="whs16">
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ WebEC Sort Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 12:02 PM&nbsp; </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Customer 
+ code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** ALL Customers **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp; Subject line definition for 'O' 
+ emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Element: 004&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">--------------------------------------------------------------------------------</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: T&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Source file:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Data 
+ position:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Desc/Text:&nbsp; from&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Length: 006&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Account 
+ type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal>&nbsp;</td></tr>
+
+<tr>
+<td valign="top" width="390.1pt" class="whs16">
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Program: 
+ EC3SRB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** DEVELOPMENT SYSTEM **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Date: MAY 22, 2001&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ WebEC Sort Definitions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Time: 12:02 PM&nbsp; </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Customer 
+ code:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ ** ALL Customers **&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Sort code: EMAILSUB_O&nbsp;&nbsp;&nbsp; Subject line definition for 'O' 
+ emails&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Element: 005&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">--------------------------------------------------------------------------------</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp; 
+ Source file: ^E/C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">Data 
+ position: 007&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Desc/Text: E/C Company Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ Length: 050&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp; 
+ Data type: S&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;Account 
+ type:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></span></p>
+<p class=Normal><span style="font-size: 8.0pt; font-family: 'Courier New';"><font size=1 style="font-size:8pt;">&nbsp;&nbsp;&nbsp;&nbsp; 
+ Email subject line definition maximum is 100 characters&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+ </font></span></td></tr>
+</table>
+
+<p class=Normal>&nbsp;</p>
+
+<h2>Email Address / Action Codes</h2>
+
+<p class=Normal>The email addresses processed are set up on the individual 
+ buyer’s records. The action codes supported include the following:</p>
+
+<p class=Normal>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs7">
+
+<tr>
+<td valign="top" width="221.4pt" class="whs17">
+<p class=Normal>Action Code</td>
+<td valign="top" width="221.4pt" class="whs18">
+<p class=Normal>Description</td></tr>
+
+<tr>
+<td valign="top" width="221.4pt" class="whs19">
+<p class=Normal>O (letter O)</td>
+<td valign="top" width="221.4pt" class="whs20">
+<p class=Normal>This will email the order confirmation page to the email 
+ address.</td></tr>
+</table>
+
+<p class=Normal>&nbsp;</p>
+
+<h2>‘sendmail’ Configuration on TopForm Unix Server</h2>
+
+<p class=Normal>Your Unix system comes pre-loaded with a sendmail option. 
+ This configuration of this option needs to be configured to route outgoing 
+ email messages routed to your email server. This configuration will be 
+ done by TopForm Technical Support</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=BodyText3>Note:&nbsp; All configured systems need to have the 
+ “sendmail” command loaded into the “/usr/lib” directory</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>&nbsp;</p>
+
+<script type="text/javascript" language="javascript1.2">
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+//-->
+</script>
+</body>
+
+</html>

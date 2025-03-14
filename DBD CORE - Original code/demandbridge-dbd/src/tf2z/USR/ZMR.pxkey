@@ -1,0 +1,271 @@
+<PxTable>
+ TableName=ZMR
+ TableKey=K971278643
+ FileCreate=KEYED "ZMR",13,0,-1200,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="AR2DCA "
+    FIELD_1$="AR2DCA Detail Sales Journal                    A/R     AR2DC"+ESC+"þ"+$01$+ESC+$01$+$00$+"Number:"+ESC+$01$+$15$+"Date:"+ESC+$01$+"-Fiscal year:"+ESC+$01$+"@period"+ESC+$01$+"Jending xx/xx/xxxx"+ESC+$01$+"cType:"+ESC+$01$+"mApplies to:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"----- Customer ------------------------------"+ESC+$01$+"/------- Order -------------------"+ESC+$01$+"T----- Shipping --------------------------------"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Customer:"+ESC+$01$+"/Our order number:"+ESC+$01$+"TDate:"+ESC+$01$+"mVia:"+ESC+$01$+"s-"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$04$+"Name:"+ESC+$01$+"3Customer P/O:"+ESC+$01$+"TCode:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$01$+"Address:"+ESC+$01$+"7Category:"+ESC+$01$+"WAddress:"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+"3Salespersons:"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA "
+    FIELD_1$="AR2SAA Customer Sales Analysis Report                       "+ESC+"þ"+$01$+ESC+$01$+$00$+"Customer"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"Code"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS2RBA "
+    FIELD_1$="CS2RBA Customer Reorder Data Report                         "+ESC+"þ"+$01$+ESC+$01$+$00$+"Customer"+ESC+$01$+"iQuantity"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Code"+ESC+$01$+$0B$+"Customer name"+ESC+$01$+"0Form"+ESC+$01$+"<Form description"+ESC+$01$+"gto Order"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FA2RAA "
+    FIELD_1$="FA2RAA Fixed Asset Listing                                  "+ESC+"þ"+$01$+ESC+$01$+$00$+"Asset"+ESC+$01$+"1Acquis."+ESC+$01$+"AOriginal"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Code"+ESC+$01$+$0B$+"Description"+ESC+$01$+"1Date"+ESC+$01$+"ACost"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FC2RAA "
+    FIELD_1$="FC2RAA Order Status Report                                  "+ESC+"þ"+$02$+ESC+$01$+$00$+"Number"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"1dtrol number"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FE2RAA "
+    FIELD_1$="FE2RAA Open Quote Report                       E/Q          "+ESC+"þ"+$01$+ESC+$01$+$01$+"Quote number:"+ESC+$01$+$18$+"Date:"+ESC+$01$+".Good until:"+ESC+$01$+"JAction code:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"Salesperson:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$05$+"Customer:"+ESC+$01$+"LTelephone:"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$00$+"First contact:"+ESC+$01$+"NContact:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$02$+"Print quote?"+ESC+$01$+"MGreeting:"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$03$+"Quote code:"+ESC+$01$+".,"+ESC+$01$+"ECustomer service:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$03$+"Terms code:"+ESC+$01$+"MShip via:"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$05$+"Comments:"+ESC+$01$+"PF.O.B:"+ESC+"ÿ"+ESC+"þ"+$0C$+ESC+$01$+$03$+"Form"+ESC+$01$+$10$+"Quantity"+ESC+$01$+"2Cost"+ESC+$01$+"?Price"+ESC+$01$+"TExtension"+ESC+$01$+"bGP Dollars"+ESC+$01$+"qGP %"+ESC+"ÿ"+ESC+"þ"+$0D$+ESC+$01$+$0F$+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"+ESC+$01$+"JFP?"+ESC+$01$+"RVdr:"+ESC+"ÿ"+ESC+"þ"+$0E$+ESC+$01$+"#/"+ESC+$01$+"R99,999,999.99-"+ESC+$01$+"b999,999.99-"+ESC+$01$+"p999.99-"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CEA "
+    FIELD_1$="FM2CEA Inventory Status Report                              "+ESC+"þ"+$02$+ESC+$01$+$00$+"Form"+ESC+$01$+$0C$+"Rev"+ESC+$01$+"?On"+ESC+$01$+"`On"+ESC+$01$+"fReorder"+ESC+$01$+"rAvg Mon"+ESC+$01$+"{Mths"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Code"+ESC+$01$+$0C$+"Date"+ESC+$01$+$13$+"Form description"+ESC+$01$+"3Loc"+ESC+$01$+"=Order"+ESC+$01$+"EReceived"+ESC+$01$+"TUsed"+ESC+$01$+"_Hand"+ESC+$01$+"hPoint"+ESC+$01$+"tUsage"+ESC+$01$+"{O/H"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+"p0"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CGA "
+    FIELD_1$="FM2CGA Lot Inventory Status Report             I/C          "+ESC+"þ"+$01$+ESC+$01$+$00$+"Cust/"+ESC+$01$+$0C$+"2"+ESC+$01$+"9Job"+ESC+$01$+"EBegining"+ESC+$01$+"wEnding"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Item code"+ESC+$01$+$0D$+"Item description"+ESC+$01$+"8Number"+ESC+$01$+"DInventory"+ESC+$01$+"QReceipts"+ESC+$01$+"_Issues"+ESC+$01$+"gAdjust."+ESC+$01$+"tInventory"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2PCA "
+    FIELD_1$="FM2PCA Physical Count Usage Analysis           F/M          "+ESC+"þ"+$03$+ESC+$01$+$00$+"Location:"+ESC+$01$+"<Counted as of:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$00$+"Form"+ESC+$01$+";Average"+ESC+$01$+"D+--- Previous count ---+"+ESC+$01$+"lThis count"+ESC+$01$+"xUsage since"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$00$+"Code"+ESC+$01$+$0B$+"Description"+ESC+$01$+"=Cost"+ESC+$01$+"GDate"+ESC+$01$+"TQuantity"+ESC+$01$+"aReceipts"+ESC+$01$+"nQuantity"+ESC+$01$+"ylast count"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$19$+"Ply"+ESC+$01$+"%/"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RCA "
+    FIELD_1$="FM2RCA Usage/Budget Analysis Report            F/M          "+ESC+"þ"+$02$+ESC+$01$+"*+---------- U s a g e -----------------+ +- (Estimated) -+"+ESC+$01$+"gAnnual"+ESC+$01$+"qEst."+ESC+$01$+"yPer-"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Form Description"+ESC+$01$+",Qtr1"+ESC+$01$+"4Qtr2"+ESC+$01$+"<Qtr3"+ESC+$01$+"DQtr4"+ESC+$01$+"LY-T-D"+ESC+$01$+"TMonthly"+ESC+$01$+"^Annual"+ESC+$01$+"gBudget"+ESC+$01$+"oVariance"+ESC+$01$+"ycent"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$0B$+"Unit:"+ESC+$01$+$16$+"Pack"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$06$+"* Usage *"+ESC+$01$+$14$+"Jan"+ESC+$01$+$1D$+"Feb"+ESC+$01$+"&Mar"+ESC+$01$+"/Apr"+ESC+$01$+"8May"+ESC+$01$+"AJun"+ESC+$01$+"JJul"+ESC+$01$+"SAug"+ESC+$01$+"\Sep"+ESC+$01$+"eOct"+ESC+$01$+"nNov"+ESC+$01$+"wDec"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$06$+"This year:"+ESC+"ÿ"+ESC+"þ"+$09$+ESC+$01$+$06$+"Last year:"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RDA "
+    FIELD_1$="FM2RDA Client Items Catalog                    F/M          "+ESC+"þ"+$02$+ESC+$01$+";#"+ESC+$01$+"@Unit of"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Form"+ESC+$01$+$0D$+"Description"+ESC+$01$+":Plys"+ESC+$01$+"Aissue"+ESC+$01$+"JPacking"+ESC+$01$+"URevision"+ESC+$01$+"cComments"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RGA "
+    FIELD_1$="FM2RGA Order Booking Report                    O/P          "+ESC+"þ"+$02$+ESC+$01$+$14$+"Customer"+ESC+$01$+"IOrder"+ESC+$01$+"xEstimated"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Order"+ESC+$01$+$0B$+"Date"+ESC+$01$+$14$+"Number"+ESC+$01$+" Customer name"+ESC+$01$+"HAmount"+ESC+$01$+"XCosts"+ESC+$01$+"`Gross Profit"+ESC+$01$+"oGP%"+ESC+$01$+"xCommission"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+"n###.#-"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RHA "
+    FIELD_1$="FM2RHA Monthly Order Booking Summary                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIA "
+    FIELD_1$="FM2RIA Open Order Report                       O/P          "+ESC+"þ"+$02$+ESC+$01$+$16$+"Customer"+ESC+$01$+"hGross"+ESC+$01$+"zSales-"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Order"+ESC+$01$+$0D$+"Date"+ESC+$01$+$16$+"Number"+ESC+$01$+QUO+"Customer name"+ESC+$01$+"DOrder Total"+ESC+$01$+"ZCost"+ESC+$01$+"hProfit"+ESC+$01$+"sGP%"+ESC+$01$+"zPerson"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+"B"+$7f$+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$01$+"Ln"+ESC+$01$+$05$+"Form"+ESC+$01$+$10$+"Description"+ESC+$01$+"9P/O/Whse"+ESC+$01$+"GQuantity"+ESC+$01$+"VPrice"+ESC+$01$+"aUnit/Qty"+ESC+$01$+"sExtension"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+"d/"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RJA "
+    FIELD_1$="FM2RJA Customer Form Masterfile                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA "
+    FIELD_1$="FM2ROA Items Status Report                                  "+ESC+"þ"+$01$+ESC+$01$+">+-- USAGE INFORMATION"+ESC+$01$+"U--+ +--- ITEM AVAILABILITY ---+"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+"5Primary"+ESC+$01$+"?Current"+ESC+$01$+"HYear to"+ESC+$01$+"QUsage/"+ESC+$01$+"[In"+ESC+$01$+"bCustomer"+ESC+$01$+"lDays Sup"+ESC+$01$+"wQty on"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Item code"+ESC+$01$+"5U/Issue"+ESC+$01$+"@Period"+ESC+$01$+"JDate"+ESC+$01$+"RMonth"+ESC+$01$+"ZWarehse"+ESC+$01$+"eSite"+ESC+$01$+"lO/H"+ESC+$01$+"qMin"+ESC+$01$+"xOrder"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RQA "
+    FIELD_1$="FM2RQA Budget Comparison Report                             "+ESC+"þ"+$01$+ESC+$01$+"3Avg Usg"+ESC+$01$+"<Current"+ESC+$01$+"ETo Date Est Anl"+ESC+$01$+"VEst An"+ESC+$01$+"_Annual"+ESC+$01$+"hUsed"+ESC+$01$+"n% Bdg"+ESC+$01$+"uBudget"+ESC+$01$+"~Proj"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+"5/Mth"+ESC+$01$+">Usage"+ESC+$01$+"GUsage"+ESC+$01$+"OUsage"+ESC+$01$+"WCosts"+ESC+$01$+"_Budget To Date"+ESC+$01$+"oUsed"+ESC+$01$+"wLeft"+ESC+$01$+"}Ovr/Sht"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RRA "
+    FIELD_1$="FM2RRA FMS Restocking Report                                "+ESC+"þ"+$01$+ESC+$01$+$1D$+"Customer:"+ESC+$01$+"2Name:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$1C$+"LLocation:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+"L+--- Restocking Points ------+"+ESC+$01$+"lRestock"+ESC+$01$+"vMinimum"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$00$+"Form"+ESC+$01$+"6Effective"+ESC+$01$+"CQty on"+ESC+$01$+"MIn days"+ESC+$01$+"aManual"+ESC+$01$+"mLevel"+ESC+$01$+"vNeeded"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$00$+"Code"+ESC+$01$+$0C$+"Form description"+ESC+$01$+"8Date"+ESC+$01$+"DHand"+ESC+$01$+"MSupply"+ESC+$01$+"WQuantity"+ESC+$01$+"cDate"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RTA "
+    FIELD_1$="FM2RTA Inventory Valuation Report                           "+ESC+"þ"+$01$+ESC+$01$+"4Current"+ESC+$01$+"?YTD"+ESC+$01$+"EAvg Usg"+ESC+$01$+"PLast"+ESC+$01$+"\Quantity"+ESC+$01$+"fInventory"+ESC+$01$+"rInventory"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Form code and description"+ESC+$01$+"4Usage"+ESC+$01$+">Usage"+ESC+$01$+"F/Month"+ESC+$01$+"PCost"+ESC+$01$+"VUnit"+ESC+$01$+"]on hand"+ESC+$01$+"hValue"+ESC+$01$+"uStatus"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RVA "
+    FIELD_1$="FM2RVA Usage Trend Analysis                                 "+ESC+"þ"+$01$+ESC+$01$+":+------- Usage by Month -----------------------------------------------+"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+"+Unit of"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Form code and description"+ESC+$01$+"+Issue"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2SRA "
+    FIELD_1$="FM2SRA FMS Restocking Report                                "+ESC+"þ"+$06$+ESC+$01$+"'+--- Restocking Points ------+"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+"(In days"+ESC+$01$+"<Manual"+ESC+$01$+"IEffective"+ESC+$01$+"VQty on"+ESC+$01$+"bAvg Mo."+ESC+$01$+"lRestock"+ESC+$01$+"vMinimum"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$02$+"Customer"+ESC+$01$+$0E$+"Form"+ESC+$01$+$1C$+"Location"+ESC+$01$+"(Supply"+ESC+$01$+"1Quantity"+ESC+$01$+">Date"+ESC+$01$+"KDate"+ESC+$01$+"WHand"+ESC+$01$+"bUsage"+ESC+$01$+"mLevel"+ESC+$01$+"vNeeded"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2SSA "
+    FIELD_1$="FM2SSA Reorder Tracking Report                              "+ESC+"þ"+$02$+ESC+$01$+$00$+"Client"+ESC+$01$+$11$+"Form"+ESC+$01$+"#Notice"+ESC+$01$+",+--- Last Order ---+"+ESC+$01$+"DOn-Hand"+ESC+$01$+"PAverage"+ESC+$01$+"[Days"+ESC+$01$+"cSuggested"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Code"+ESC+$01$+$11$+"Code"+ESC+$01$+"$Date"+ESC+$01$+".Date"+ESC+$01$+"7Quantity"+ESC+$01$+"DQuantity"+ESC+$01$+"QUsage"+ESC+$01$+"ZSupply"+ESC+$01$+"dQuantity"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FW2RAA "
+    FIELD_1$="FW2RAA Production Backlog Report                            "+ESC+"þ"+$01$+ESC+$01$+$00$+"Due"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Date"+ESC+$01$+$0C$+"Item number"+ESC+$01$+QUO+"Custome \ Item Description"+ESC+$01$+"LOrder No."+ESC+$01$+"YLast Step"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC2RGA "
+    FIELD_1$="IC2RGA I/C Reorder Projection Report           I/C          "+ESC+"þ"+$01$+ESC+$01$+$00$+"Item"+ESC+$01$+"1Carton"+ESC+$01$+";Reorder"+ESC+$01$+"IOn"+ESC+$01$+"SOn"+ESC+$01$+"[30 day"+ESC+$01$+"e90 day"+ESC+$01$+"n180 day"+ESC+$01$+"{Last"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Code / Description"+ESC+$01$+")Plys"+ESC+$01$+"3Pack"+ESC+$01$+"=Point"+ESC+$01$+"HHand"+ESC+$01$+"ROrder"+ESC+$01$+"[Average"+ESC+$01$+"eAverage"+ESC+$01$+"oAverage"+ESC+$01$+"{Order"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+"{mm/yy"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+"y####,##0"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCRAA "
+    FIELD_1$="JSCRAA Open Purchase Order Report              P/O          "+ESC+"þ"+$02$+ESC+$01$+$01$+"P/O"+ESC+$01$+$0E$+"Job"+ESC+$01$+"!P/O"+ESC+$01$+"0Reqd"+ESC+$01$+">To"+ESC+$01$+"IDays"+ESC+$01$+"yProof"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Number"+ESC+$01$+$0E$+"Number"+ESC+$01$+"!Date"+ESC+$01$+"0Date"+ESC+$01$+"=Ship"+ESC+$01$+"ILate"+ESC+$01$+"UShip Via"+ESC+$01$+"hJob Status"+ESC+$01$+"yStatus"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$02$+"Vendor:"+ESC+$01$+"AAttn:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$03$+"Plant:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$03$+"Ln."+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP2RAA "
+    FIELD_1$="OP2RAA Promotion Sales Analysis                             "+ESC+"þ"+$01$+ESC+$01$+$00$+"Form"+ESC+$01$+"5Pricing"+ESC+$01$+"FTotal"+ESC+$01$+"VTotal"+ESC+$01$+"eTotal"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Group"+ESC+$01$+$0C$+"Description"+ESC+$01$+"5Features"+ESC+$01$+"CQuantity"+ESC+$01$+"WCost"+ESC+$01$+"ePrice"+ESC+$01$+"oProfit"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RAA "
+    FIELD_1$="PO2RAA Open Purchase Order Report              P/O          "+ESC+"þ"+$02$+ESC+$01$+$01$+"P/O"+ESC+$01$+$0E$+"Job"+ESC+$01$+"!P/O"+ESC+$01$+"0Reqd"+ESC+$01$+">To"+ESC+$01$+"IDays"+ESC+$01$+"yProof"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Number"+ESC+$01$+$0E$+"Number"+ESC+$01$+"!Date"+ESC+$01$+"0Date"+ESC+$01$+"=Ship"+ESC+$01$+"ILate"+ESC+$01$+"UShip Via"+ESC+$01$+"hJob Status"+ESC+$01$+"yStatus"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$02$+"Vendor:"+ESC+$01$+"AAttn:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$03$+"Plant:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$03$+"Ln."+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RAA1"
+    FIELD_1$="PO2RAA1Open Purchase Order Report              P/O          "+ESC+"þ"+$02$+ESC+$01$+$01$+"P/O"+ESC+$01$+$0E$+"Job"+ESC+$01$+"!P/O"+ESC+$01$+"0Reqd"+ESC+$01$+">To"+ESC+$01$+"IDays"+ESC+$01$+"yProof"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Number"+ESC+$01$+$0E$+"Number"+ESC+$01$+"!Date"+ESC+$01$+"0Date"+ESC+$01$+"=Ship"+ESC+$01$+"ILate"+ESC+$01$+"UShip Via"+ESC+$01$+"hJob Status"+ESC+$01$+"yStatus"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$02$+"Vendor:"+ESC+$01$+"AAttn:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$03$+"Plant:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$03$+"Ln."+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RBA "
+    FIELD_1$="PO2RBA Purchase Order Cash Requirements Report P/O          "+ESC+"þ"+$02$+ESC+$01$+$01$+"P/O"+ESC+$01$+$17$+"Acknowl"+ESC+$01$+" Terms"+ESC+$01$+")Estimated"+ESC+$01$+"4Est"+ESC+$01$+":Disc"+ESC+$01$+"BDiscount"+ESC+$01$+"N+---------- Required by -----------+"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Number"+ESC+$01$+$0D$+"Date"+ESC+$01$+$16$+"Ship date"+ESC+$01$+"!Code"+ESC+$01$+")P/O total"+ESC+$01$+"4due"+ESC+$01$+";exp"+ESC+$01$+"CAmount"+ESC+$01$+"Omm/dd/yyyy"+ESC+$01$+"[mm/dd/yyyy"+ESC+$01$+"hmm/dd/yyyy"+ESC+$01$+"yFuture"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$01$+"Vendor:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$03$+"Plant:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$04$+"Ln."+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RDA "
+    FIELD_1$="PO2RDA Purchase Order Grouping Report          P/O          "+ESC+"þ"+$01$+ESC+$01$+$00$+"PO #"+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RRA "
+    FIELD_1$="PO2RRA Purchase Order Receiving Report         P/O     PO2RU"+ESC+"þ"+$01$+ESC+$01$+$04$+"Received"+ESC+$01$+$11$+"Unit of"+ESC+$01$+$1C$+"--------------- Received ----------------"+ESC+$01$+"JQuantity"+ESC+$01$+"Z---------------- Invoiced ---------------"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$07$+"at"+ESC+$01$+$11$+"measure"+ESC+$01$+$1F$+"Quantity"+ESC+$01$+"+Unit cost"+ESC+$01$+":Extension"+ESC+$01$+"Ibackordered"+ESC+$01$+"]Quantity"+ESC+$01$+"iUnit cost"+ESC+$01$+"xExtension"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"P/O number:"+ESC+$01$+$1C$+"Vendor:"+ESC+$01$+"YInvoice number:"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+"0Job #:"+ESC+$01$+"YWeight:"+ESC+$01$+"jEnding number:"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPADRA "
+    FIELD_1$="TPADRA Sales Order Audit Report                        TPALU"+ESC+"þ"+$01$+ESC+$01$+$01$+"Sales"+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAA "
+    FIELD_1$="TPARAA Customer Masterfile Listing                          "+ESC+"þ"+$01$+ESC+$01$+$04$+"omer"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Code"+ESC+$01$+$16$+"Customer name"+ESC+$01$+"<YTD Sales"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAAN"
+    FIELD_1$="TPARAANBasisgegevens Klanten Rapport                        "+ESC+"þ"+$01$+ESC+$01$+$00$+"Klant"+ESC+$01$+"OLtste"+ESC+$01$+"[Jaar tot"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Nummer"+ESC+$01$+$0F$+"Klant naam"+ESC+$01$+"0Telefoon"+ESC+$01$+"OAktiv."+ESC+$01$+"[Vandaag"+ESC+$01$+"oHuidg Saldo"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARBA "
+    FIELD_1$="TPARBA Customer History Report                              "+ESC+"þ"+$01$+ESC+$01$+$00$+"Customer"+ESC+$01$+"1Current Year"+ESC+$01$+"DLast years"+ESC+$01$+"SPrior Year 1"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Number"+ESC+$01$+$0E$+"Customer Name"+ESC+$01$+"0to-date Sales"+ESC+$01$+"FSales"+ESC+$01$+"WSales"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARDA "
+    FIELD_1$="TPARDA Sample alternate sort by numeric field               "+ESC+"þ"+$01$+ESC+$01$+$00$+"Customer"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"Code"+ESC+$01$+$0D$+"Customer name"+ESC+$01$+"2Sales - PTD"+ESC+$01$+"DSales - YTD"+ESC+$01$+"W% OF YTD"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARHA "
+    FIELD_1$="TPARHA SAMPLE REPORT                                        "+ESC+"þ"+$02$+ESC+$01$+$01$+"Customer"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$03$+"Code"+ESC+$01$+$15$+"Customer Name"+ESC+$01$+"9Sales PTD"+ESC+$01$+"M+-- Salesperson code & Name ---------+"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARSA "
+    FIELD_1$="TPARSA Customer Masterfile Listing                          "+ESC+"þ"+$01$+ESC+$01$+$02$+"Customer"+ESC+$01$+"PLast"+ESC+$01$+"ZPeriod to date"+ESC+$01$+"mYear to date"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$03$+"Number"+ESC+$01$+$0F$+"Customer name"+ESC+$01$+"4Telephone number"+ESC+$01$+"OActivity"+ESC+$01$+"_Sales"+ESC+$01$+"oSales"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$08$+"Slsmn:"+ESC+$01$+$15$+"Name:"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$03$+"Customer:"+ESC+$01$+$19$+"** ______________________________**"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARTA "
+    FIELD_1$="TPARTA Salesmans Listing                                    "+ESC+"þ"+$01$+ESC+$01$+$00$+"SALESMAN"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"CODE"+ESC+$01$+$0E$+"SALESPERSON NAME"+ESC+$01$+"9SALES - PTD"+ESC+$01$+"KSALES - YTD"+ESC+$01$+"\SALES - PYTD"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UT201A "
+    FIELD_1$="UT201A Monthly Commission Report                            "+ESC+"þ"+$01$+ESC+$01$+$00$+"Invoice"+ESC+$01$+$09$+"Customer"+ESC+$01$+$14$+"Release"+ESC+$01$+QUO+"Invoice"+ESC+$01$+"-Amount"+ESC+$01$+"8Commis."+ESC+$01$+"FReq."+ESC+$01$+"QLine"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"No."+ESC+$01$+$09$+"Code"+ESC+$01$+$16$+"Date"+ESC+$01$+"$Total"+ESC+$01$+",Invoiced"+ESC+$01$+"9Amount"+ESC+$01$+"DAmount"+ESC+$01$+"OAmount"+ESC+$01$+"YFreight"+ESC+$01$+"dImprint"+ESC+$01$+"rComp"+ESC+$01$+"|Other"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+" "+$7f$+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2BRA "
+    FIELD_1$="ZA2BRA Selection Hard Copy                                  "+ESC+"þ"+$01$+ESC+$01$+$03$+"Library:"+ESC+$01$+$12$+"Selection code:"+ESC+$01$+"EType:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$15$+"Description:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$05$+"Title:"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$10$+"Primary database:"+ESC+$01$+"=Print detail?"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$15$+"Description:"+ESC+"ÿ"+ESC+"þ"+$09$+ESC+$01$+$11$+"Detail database:"+ESC+$01$+"=Print detail?"+ESC+"ÿ"+ESC+"þ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RAA "
+    FIELD_1$="ZA2RAA Database Listing                                     "+ESC+"þ"+$01$+ESC+$01$+$00$+"Database Name"+ESC+$01$+$18$+"Disc file name"+ESC+$01$+"/Key size"+ESC+$01$+"9and description"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RBA "
+    FIELD_1$="ZA2RBA Data Dictionary Listing                              "+ESC+"þ"+$01$+ESC+$01$+$02$+"Database:"+ESC+$01$+"&Database description:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$07$+"Key:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$02$+"Field"+ESC+$01$+$0B$+"Pos"+ESC+$01$+$14$+"Field name"+ESC+$01$+",Description"+ESC+$01$+"VType"+ESC+$01$+"^Length"+ESC+$01$+"hNumbers"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+"j-"+ESC+$01$+"m-"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RCA "
+    FIELD_1$="ZA2RCA Global Dictionary Listing                            "+ESC+"þ"+$01$+ESC+$01$+$00$+"Field name"+ESC+$01$+$17$+"Field description"+ESC+$01$+"BType"+ESC+$01$+"JMax len"+ESC+$01$+"TNumbers"+ESC+$01$+"`Format"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+"V-"+ESC+$01$+"Y-"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RDA "
+    FIELD_1$="ZA2RDA Macro Listing                                        "+ESC+"þ"+$01$+ESC+$01$+" Result"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"Macro code\Description"+ESC+$01$+$1F$+"Data Type"+ESC+$01$+"6Parameter list"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+")Conversion:"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RFA "
+    FIELD_1$="ZA2RFA Database Listing                                     "+ESC+"þ"+$01$+ESC+$01$+$00$+"Database name:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"Description:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$07$+"Key:"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$04$+"Field Name"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$06$+"1C"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RGA "
+    FIELD_1$="ZA2RGA Field Directory by Database                          "+ESC+"þ"+$01$+ESC+$01$+$00$+"Field Name:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$01$+"Database"+ESC+$01$+$17$+"Description"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RAA "
+    FIELD_1$="ZP2RAA Contact Masterfile Listing                           "+ESC+"þ"+$01$+ESC+$01$+"WFirst"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$02$+"List"+ESC+$01$+$09$+"Contact"+ESC+$01$+$15$+"+-- Contact Name /Address -----------------+"+ESC+$01$+"DBarometer"+ESC+$01$+"VContact"+ESC+$01$+"cSIC"+ESC+$01$+"rVolume"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$16$+"Address:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$10$+"City:"+ESC+$01$+")State:"+ESC+$01$+"4Zip:"+$7f$+ESC+$01$+"Q+--- Selection Codes ---+"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$0C$+"Category:"+ESC+$01$+"S01"+ESC+$01$+"[05"+ESC+$01$+"c09"+ESC+"ÿ"+ESC+"þ"+$07$+ESC+$01$+$0E$+"Source:"+ESC+$01$+"S02"+ESC+$01$+"[06"+ESC+$01$+"c10"+ESC+"ÿ"+ESC+"þ"+$08$+ESC+$01$+$08$+"Last Contact:"+ESC+$01$+"S03"+ESC+$01$+"[07"+ESC+$01$+"c11"+ESC+"ÿ"+ESC+"þ"+$09$+ESC+$01$+$09$+"Next Action:"+ESC+$01$+"S04"+ESC+$01$+"[08"+ESC+"ÿ"+ESC+"þ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RBA "
+    FIELD_1$="ZP2RBA Contact Follow-Up Report                             "+ESC+"þ"+$03$+ESC+$01$+"3Last Contact:"+ESC+"ÿ"+ESC+"þ"+$04$+ESC+$01$+$07$+"City:"+ESC+$01$+" State:"+ESC+$01$+"6Follow-up:"+ESC+"ÿ"+ESC+"þ"+$05$+ESC+$01$+$07$+"Contact Person:"+ESC+$01$+"OBarometer:"+ESC+"ÿ"+ESC+"þ"+$06$+ESC+$01$+$00$+"------------------------------------------------------------------------------------------------------------------------------------"+ESC+"ÿ"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RLA "
+    FIELD_1$="ZP2RLA Contact Mailing Labels                     F         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZ2FCA "
+    FIELD_1$="ZZ2FCA File Layout Printing                                 "+ESC+"þ"+$02$+ESC+$01$+$00$+"File name:"+ESC+$01$+$15$+"File description:"+ESC+$01$+"TKey size:"+ESC+$01$+"gBytes per record:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZ2FRA "
+    FIELD_1$="ZZ2FRA File Data Dictionary Report             D/S          "+ESC+"þ"+$01$+ESC+$01$+$00$+"File name:"+ESC+"ÿ"+ESC+"þ"+$02$+ESC+$01$+$01$+"Language:"+ESC+"ÿ"+ESC+"þ"+$03$+ESC+$01$+$00$+"Abstract name"+ESC+$01$+$12$+"Description"+ESC+$01$+"<Seq"+ESC+$01$+"APos"+ESC+$01$+"FMask Type"+ESC+"ÿ"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,2848 @@
+<PxTable>
+ TableName=ZC1
+ TableKey=K1273504966
+ FileCreate=KEYED "ZC1",40,[1:11:30]+[1:1:10],0,-384,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZC1_FileSets"
+    PHYSICALPATH$="2010/05/10 11:22"
+    LASTUPDATEDFILE$="2019/10/16 11:10:07-Chaitanya.Guntur"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST FILESET_CODE$:[LEN(10)]"
+    NAME$="FILESET_CODE"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="File Set Code"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST FILENAME$:[LEN(30)]"
+    NAME$="FILENAME"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="P"
+    NOTES$="Name of file, eg ECA_BuyerID"
+    KEYDEFINITION$="1:2:A,2:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST FILESET_CODE$:[LEN(10,SEP=SEP)]"
+    NAME$="FILESET_CODE"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="File Set Code"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST FILENAME$:[LEN(30,SEP=SEP)]"
+    NAME$="FILENAME"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Name of file, eg ECA_BuyerID"
+    KEYDEFINITION$="1:2:A,2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST ZC1_UNUSED$:[LEN(SEP,SIZ=160)]"
+    NAME$="ZC1_UNUSED"
+    TYPE$="S"
+    LENGTH$="160"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP0_Div                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP0_Div                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP2_Term                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP2_Term                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP3_VendCatg                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP3_VendCatg                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP4_Vend                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP4_Vend                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP5_VendStatus                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP5_VendStatus                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AP8_VendMsg                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AP8_VendMsg                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN APX_GLInterface               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="APX_GLInterface               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR0_CustCredit                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR0_CustCredit                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR1_Cust                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR2_Terms                     "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR2_Terms                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR3_Slsperson                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR3_Slsperson                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR4_Comm                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR4_Comm                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AR5_SlsTax                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AR5_SlsTax                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ARG_CustCatg                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ARG_CustCatg                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ARH_Div                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ARH_Div                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ARI_GLInterface               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ARI_GLInterface               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ARV_SlsDist                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ARV_SlsDist                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ARZ_CreditCard                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ARZ_CreditCard                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ASN_ForeignCurr               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ASN_ForeignCurr               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ASP_CreditCardType            "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ASP_CreditCardType            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ASV_UserDef                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ASV_UserDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ASY_CreditMemoReason          "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ASY_CreditMemoReason          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ASZ_Emp                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ASZ_Emp                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN AT2_CreditRequestor           "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="AT2_CreditRequestor           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN BR0_BankRecDet                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="BR0_BankRecDet                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN BR1_BankRecEnt                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="BR1_BankRecEnt                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN BR2_BankRecHis                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="BR2_BankRecHis                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN CD0_MerchantAccount           "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="CD0_MerchantAccount           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN CD1_EncryptCC                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="CD1_EncryptCC                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN CP1_ForCurFile                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="CP1_ForCurFile                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN DR0_DRTarget                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="DR0_DRTarget                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN DT0_Contrl                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="DT0_Contrl                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN DTK_RptSchedLog               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="DTK_RptSchedLog               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EC6_ThirdParty                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EC6_ThirdParty                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EC9_ThirdPartyTxt             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EC9_ThirdPartyTxt             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECA_BuyerID                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECA_BuyerID                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECG_CatalogCatg               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECG_CatalogCatg               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECO_CustSpecMsg               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECO_CustSpecMsg               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECU_Sort                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECU_Sort                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECV_SortElement               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECV_SortElement               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ECY_Server                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ECY_Server                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ED0_EcpGroup                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ED0_EcpGroup                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDB_XMLSub                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDB_XMLSub                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDC_WhseSet                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDC_WhseSet                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDH_ItemSelCode               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDH_ItemSelCode               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDL_PrcsPrm                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDL_PrcsPrm                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDM_ShipViaMap                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDM_ShipViaMap                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EDV_CompProds                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EDV_CompProds                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EE2_Color_Schemes             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EE2_Color_Schemes             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EF0_DevParm                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EF0_DevParm                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EF1_FaxNumType                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EF1_FaxNumType                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EF2_JobCardMap                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EF2_JobCardMap                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EF4_DeliveryOpts              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EF4_DeliveryOpts              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EF5_EmailParams               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EF5_EmailParams               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EFQ_EFEmail                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EFQ_EFEmail                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EM8_Uom                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EM8_Uom                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EMA_Doc                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EMA_Doc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN EMD_SegDesc                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="EMD_SegDesc                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FFA_Add_Frt                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FFA_Add_Frt                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FM0_Loc                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FMO_PMSNum                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FMO_PMSNum                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FSE_UserDefSpecTemplate       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FSE_UserDefSpecTemplate       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FSH_OPDiv                     "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FSH_OPDiv                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FTQ_QBC_Code                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FTQ_QBC_Code                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FTR_ReqChrgTable              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FTR_ReqChrgTable              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN FTZ_ItemGroup                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="FTZ_ItemGroup                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN GG2_GLGWAcctMap               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="GG2_GLGWAcctMap               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN GL1_AcctNum                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="GL1_AcctNum                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN GL4_AcctBreak                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="GL4_AcctBreak                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN GLD_Dept                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="GLD_Dept                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN GLR_RecurJEHdr                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="GLR_RecurJEHdr                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IB2_ProdInfoIBSA              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IB2_ProdInfoIBSA              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IC0_Item                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM0_ImpDefinition             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM0_ImpDefinition             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM1_ImpFields                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM1_ImpFields                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM3_ImpDev                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM3_ImpDev                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM4_ImpReadMeth               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM4_ImpReadMeth               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM5_ImpFmtMeth                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM5_ImpFmtMeth                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM8_ImpWriteMeth              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM8_ImpWriteMeth              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IM9_ImpFieldOutput            "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IM9_ImpFieldOutput            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN IMA_FieldFmt                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="IMA_FieldFmt                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN KT0_Kit                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="KT0_Kit                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OR1_PickPri                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OR1_PickPri                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS0_Off_Supp                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS0_Off_Supp                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS1_Price_Plan                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS1_Price_Plan                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS2_ItemPrimInfo              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS2_ItemPrimInfo              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS3_FileLayPrint              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS3_FileLayPrint              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS5_OffcSuppCustPricPln       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS5_OffcSuppCustPricPln       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS6_PricePlanPriorities       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS6_PricePlanPriorities       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS7_ItemCostPricePlan         "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS7_ItemCostPricePlan         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OS9_FileLayPrin               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OS9_FileLayPrin               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OSA_UniStatAcctNum            "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OSA_UniStatAcctNum            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN OSB_UniStatServCode           "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="OSB_UniStatServCode           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN PP0_PromProdSize              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="PP0_PromProdSize              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN PP1_PromProdColor             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="PP1_PromProdColor             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN PP2_PromProdOther             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="PP2_PromProdOther             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN QS3_RFQVendGrp                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="QS3_RFQVendGrp                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN QS4_ActionCode                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="QS4_ActionCode                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RF0_Ctl                       "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RF0_Ctl                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RF2_CartCtl                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RF2_CartCtl                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFB_Bin_Ctl                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFB_Bin_Ctl                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFD_Div_Prm                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFD_Div_Prm                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFK_User                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFK_User                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFL_Label                     "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFL_Label                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFT_BinType                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFT_BinType                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RFZ_Zone                      "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RFZ_Zone                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RPA_ReportMst                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RPA_ReportMst                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RPB_ReportRole                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RPB_ReportRole                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RPC_ReportsByRole             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RPC_ReportsByRole             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN RPP_ReportParam               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="RPP_ReportParam               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN SH1_ShipViaMap                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="SH1_ShipViaMap                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN SHB_ShipStateMap              "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="SHB_ShipStateMap              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN SM3_CIGCarrier                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="SM3_CIGCarrier                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN SMW_Warehouse                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="SMW_Warehouse                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN TW2_CrossRef                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="TW2_CrossRef                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN TW3_StateControlTax           "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="TW3_StateControlTax           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN TW4_CountyControlTax          "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="TW4_CountyControlTax          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN TW5_CityControlTax            "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="TW5_CityControlTax            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZC0_OSCommands                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZC0_OSCommands                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP0_ListType                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP0_ListType                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP1_ContactCatg               "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP1_ContactCatg               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP2_ContactSource             "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP2_ContactSource             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP3_Action                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP3_Action                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP6_Selection                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP6_Selection                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZP8_Letter                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZP8_Letter                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZPF_SicCode                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZPF_SicCode                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZS0_MenuSec                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZS0_MenuSec                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZY0_State                     "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZY0_State                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZY1_ZipCode                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZY1_ZipCode                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZY3_LetterHdr                 "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZY3_LetterHdr                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZY8_Country                   "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZY8_Country                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZYA_BankInst                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZYA_BankInst                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZYB_BankAcct                  "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZYB_BankAcct                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZYG_CanZipCode                "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZYG_CanZipCode                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-GEN ZZ9_Device                    "
+    FILESET_CODE$="*COMP-GEN "
+    FILENAME$="ZZ9_Device                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP2_CustDept                  "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP2_CustDept                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP3_RFQVendGroup              "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP3_RFQVendGroup              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP4_CustCategorySet           "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP4_CustCategorySet           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP7_CountStops                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP7_CountStops                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP8_ReordGroup                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP8_ReordGroup                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XP9_CustCostCenters           "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XP9_CustCostCenters           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPA_CustCont                  "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPA_CustCont                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPB_ArtStatFlag               "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPB_ArtStatFlag               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPC_CustPrcCat                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPC_CustPrcCat                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPD_CustDef                   "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPE_CustFiscYr                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPE_CustFiscYr                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPF_FOBCode                   "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPF_FOBCode                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPG_CustGroup                 "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPG_CustGroup                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPH_HowShipCodes              "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPH_HowShipCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPI_ItemPriceClass            "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPI_ItemPriceClass            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPM_FreightMarkup             "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPM_FreightMarkup             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPP_PricingTables             "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPP_PricingTables             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPQ_PromoCodes                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPQ_PromoCodes                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPR_CustReq                   "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPR_CustReq                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPS_ShipViaCodes              "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPT_ProdCode                  "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPT_ProdCode                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPV_VendStd                   "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPV_VendStd                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPW_VendProdCodes             "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPW_VendProdCodes             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPX_OrdEntSpec                "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPX_OrdEntSpec                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XPZ_MoreCustDefaults          "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XPZ_MoreCustDefaults          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*COMP-XP  XZU_UnitOfMeasures            "
+    FILESET_CODE$="*COMP-XP  "
+    FILENAME$="XZU_UnitOfMeasures            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AP4_Vend                      "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AP4_Vend                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      API_OpenInvoice               "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="API_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      APN_MoDisbDet                 "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="APN_MoDisbDet                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AR1_Cust                      "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AR5_SlsTax                    "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AR5_SlsTax                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AR6_OpenInvoice               "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AR6_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AR9_CustStats                 "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AR9_CustStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AS7_BundledPrice              "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AS7_BundledPrice              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      ASJ_OrderShipHis              "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="ASJ_OrderShipHis              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      AZB_CopyInvEntHdr             "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="AZB_CopyInvEntHdr             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      EDW_RCfile                    "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="EDW_RCfile                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FE0_QuoteFormGrp              "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FE0_QuoteFormGrp              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FE1_QuoteFormFeature          "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FE1_QuoteFormFeature          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FM0_Loc                       "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FM1_Form                      "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FM1_Form                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FM4_FormLoc                   "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FM4_FormLoc                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FM5_ReorderNotice             "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FM5_ReorderNotice             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FMC_RptInfoForm               "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FMC_RptInfoForm               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FMY_SummBill                  "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FMY_SummBill                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FMZ_FormDetActivity           "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FMZ_FormDetActivity           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FS1_OrderHdr                  "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FS1_OrderHdr                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FS2_OrderLns                  "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FS2_OrderLns                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      FS6_OrderHis                  "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="FS6_OrderHis                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      IC0_Item                      "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      IC1_InventoryLoc              "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="IC1_InventoryLoc              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      ICF_Lots                      "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="ICF_Lots                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      ICO_InventoryLotTrans         "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="ICO_InventoryLotTrans         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      PO1_POHdr                     "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="PO1_POHdr                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      PO2_POLns                     "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="PO2_POLns                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      PO3_POShip                    "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="PO3_POShip                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      SM4_CIGHis                    "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="SM4_CIGHis                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      XP4_CustCategorySet           "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="XP4_CustCategorySet           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      XPD_CustDef                   "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      XPR_CustReq                   "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="XPR_CustReq                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      XPS_ShipViaCodes              "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBE      XPT_ProdCode                  "
+    FILESET_CODE$="*DBE      "
+    FILENAME$="XPT_ProdCode                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      AR1_Cust                      "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      AR6_OpenInvoice               "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="AR6_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      ASJ_OrderShipHis              "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="ASJ_OrderShipHis              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      ECR_FormParm                  "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="ECR_FormParm                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FM0_Loc                       "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FM1_Form                      "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FM1_Form                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FMC_RptInfoForm               "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FMC_RptInfoForm               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FMY_SummBill                  "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FMY_SummBill                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FMZ_FormDetActivity           "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FMZ_FormDetActivity           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FSW_CustFormStats             "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FSW_CustFormStats             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FT3_RepeatOrderHdr            "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FT3_RepeatOrderHdr            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FT4_RepeatOrderLns            "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FT4_RepeatOrderLns            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FT5_RepeatOrderShip           "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FT5_RepeatOrderShip           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      FV1_OrderCustRefs             "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="FV1_OrderCustRefs             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      IC0_Item                      "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      IC1_InventoryLoc              "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="IC1_InventoryLoc              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      ICF_Lots                      "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="ICF_Lots                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      PO1_POHdr                     "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="PO1_POHdr                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      PO2_POLns                     "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="PO2_POLns                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      PO3_POShip                    "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="PO3_POShip                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      XPA_CustCont                  "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="XPA_CustCont                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      XPD_CustDef                   "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      XPS_ShipViaCodes              "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      XPT_ProdCode                  "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="XPT_ProdCode                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*DBR      XPX_OrdEntSpec                "
+    FILESET_CODE$="*DBR      "
+    FILENAME$="XPX_OrdEntSpec                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   AR1_Cust                      "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   AR3_Slsperson                 "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="AR3_Slsperson                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   AR5_SlsTax                    "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="AR5_SlsTax                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FM0_Loc                       "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FM1_Form                      "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FM1_Form                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FM3_FormStats                 "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FM3_FormStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FM4_FormLoc                   "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FM4_FormLoc                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FM5_ReorderNotice             "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FM5_ReorderNotice             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FSW_CustFormStats             "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FSW_CustFormStats             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   FT3_RepeatOrderHdr            "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="FT3_RepeatOrderHdr            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   IC0_Item                      "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   IC1_InventoryLoc              "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="IC1_InventoryLoc              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   KT0_Kit                       "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="KT0_Kit                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   OS1_Price_Plan                "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="OS1_Price_Plan                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   OS6_PricePlanPriorities       "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="OS6_PricePlanPriorities       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   PO1_POHdr                     "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="PO1_POHdr                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   PO3_POShip                    "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="PO3_POShip                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   SM4_CIGHis                    "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="SM4_CIGHis                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   XPD_CustDef                   "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   XPE_CustFiscYr                "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="XPE_CustFiscYr                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*EQLINK   XPS_ShipViaCodes              "
+    FILESET_CODE$="*EQLINK   "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP2_Term                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP2_Term                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP3_VendCatg                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP3_VendCatg                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP4_Vend                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP4_Vend                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP5_VendStatus                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP5_VendStatus                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP8_VendMsg                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP8_VendMsg                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AP9_VendStats                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AP9_VendStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  API_OpenInvoice               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="API_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  APQ_InvoiceHis                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="APQ_InvoiceHis                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR1_Cust                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR2_Terms                     "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR2_Terms                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR3_Slsperson                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR3_Slsperson                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR4_Comm                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR4_Comm                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR5_SlsTax                    "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR5_SlsTax                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR6_OpenInvoice               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR6_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR8_InvoiceHis                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR8_InvoiceHis                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AR9_CustStats                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AR9_CustStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARA_SlspersonStats            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARA_SlspersonStats            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARH_Div                       "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARH_Div                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARK_SlsTaxCommPend            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARK_SlsTaxCommPend            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARL_SlsTaxPayable             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARL_SlsTaxPayable             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARM_CommPayable               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARM_CommPayable               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARV_SlsDist                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARV_SlsDist                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARX_DivSlsCatProdStats        "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARX_DivSlsCatProdStats        "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ARY_SlspersonBook             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ARY_SlspersonBook             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AS7_BundledPrice              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AS7_BundledPrice              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ASJ_OrderShipHis              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ASJ_OrderShipHis              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AXS_CommCodeBySlsprsn         "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AXS_CommCodeBySlsprsn         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AZB_CopyInvEntHdr             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AZB_CopyInvEntHdr             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AZD_CopyOfInvDataEnt          "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AZD_CopyOfInvDataEnt          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AZS_CopyMultSlsTaxEnt         "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AZS_CopyMultSlsTaxEnt         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  AZT_CopyInvEntPrinDtl         "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="AZT_CopyInvEntPrinDtl         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EC0_WorksheetMsg              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EC0_WorksheetMsg              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EC6_ThirdParty                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EC6_ThirdParty                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EC8_Order                     "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EC8_Order                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EC9_ThirdPartyTxt             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EC9_ThirdPartyTxt             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECA_BuyerID                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECA_BuyerID                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECD_WorksheetHdr              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECD_WorksheetHdr              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECE_WorksheetLns              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECE_WorksheetLns              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECG_CatalogCatg               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECG_CatalogCatg               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECH_CatalogItem               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECH_CatalogItem               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECR_FormParm                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECR_FormParm                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ECS_CustParms                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ECS_CustParms                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDA_CatalogID                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDA_CatalogID                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDN_ApprWrkshtHdr             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDN_ApprWrkshtHdr             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDO_ApprWrkshtLines           "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDO_ApprWrkshtLines           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDU_ApprWksht                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDU_ApprWksht                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDV_CompProds                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDV_CompProds                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EDW_RCfile                    "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EDW_RCfile                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  EML_EmailAddress              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="EML_EmailAddress              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FE0_QuoteFormGrp              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FE0_QuoteFormGrp              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FE1_QuoteFormFeature          "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FE1_QuoteFormFeature          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FM0_Loc                       "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FM1_Form                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FM1_Form                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FM3_FormStats                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FM3_FormStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FM4_FormLoc                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FM4_FormLoc                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FM5_ReorderNotice             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FM5_ReorderNotice             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FMC_RptInfoForm               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FMC_RptInfoForm               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FMD_RptInfoLoc                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FMD_RptInfoLoc                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FML_Restock                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FML_Restock                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FMN_OrderNote                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FMN_OrderNote                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FMY_SummBill                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FMY_SummBill                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FMZ_FormDetActivity           "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FMZ_FormDetActivity           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FS1_OrderHdr                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FS1_OrderHdr                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FS2_OrderLns                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FS2_OrderLns                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FS6_OrderHis                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FS6_OrderHis                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FS9_NonStkItemDesc            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FS9_NonStkItemDesc            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FSA_OrderBook                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FSA_OrderBook                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FSW_CustFormStats             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FSW_CustFormStats             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT3_RepeatOrderHdr            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT3_RepeatOrderHdr            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT4_RepeatOrderLns            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT4_RepeatOrderLns            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT5_RepeatOrderShip           "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT5_RepeatOrderShip           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT6_RepeatOrderNote           "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT6_RepeatOrderNote           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT7_RepeatOrder               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT7_RepeatOrder               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT8_RepeatOrderPOHdr          "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT8_RepeatOrderPOHdr          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  FT9_RepeatOrderPOCmnt         "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="FT9_RepeatOrderPOCmnt         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  GL1_AcctNum                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="GL1_AcctNum                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  GL2_DetPost                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="GL2_DetPost                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  GL3_AcctBal                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="GL3_AcctBal                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  IC0_Item                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  IC1_InventoryLoc              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="IC1_InventoryLoc              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  IC2_SupplierPrice             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="IC2_SupplierPrice             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  IC8_InventoryTrans            "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="IC8_InventoryTrans            "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  IC9_ItemStats                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="IC9_ItemStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ICF_Lots                      "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ICF_Lots                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  PO1_POHdr                     "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="PO1_POHdr                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  PO2_POLns                     "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="PO2_POLns                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  PO3_POShip                    "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="PO3_POShip                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  QSA_RFQHdr                    "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="QSA_RFQHdr                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  QSB_RFQPriceDet               "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="QSB_RFQPriceDet               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  QSC_RFQCostDet                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="QSC_RFQCostDet                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  QSD_RFQDetVend                "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="QSD_RFQDetVend                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  SH8_ScaleShip                 "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="SH8_ScaleShip                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  SH9_ScaleShipDet              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="SH9_ScaleShipDet              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  SM4_CIGHis                    "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="SM4_CIGHis                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XP3_RFQVendGroup              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XP3_RFQVendGroup              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPD_CustDef                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPH_HowShipCodes              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPH_HowShipCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPM_FreightMarkup             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPM_FreightMarkup             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPP_PricingTables             "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPP_PricingTables             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPR_CustReq                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPR_CustReq                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPS_ShipViaCodes              "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPT_ProdCode                  "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPT_ProdCode                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  XPZ_MoreCustDefaults          "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="XPZ_MoreCustDefaults          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ZY0_State                     "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ZY0_State                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*REPORTS  ZY1_ZipCode                   "
+    FILESET_CODE$="*REPORTS  "
+    FILENAME$="ZY1_ZipCode                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AP4_Vend                      "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AP4_Vend                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH API_OpenInvoice               "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="API_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH APN_MoDisbDet                 "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="APN_MoDisbDet                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AR1_Cust                      "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AR1_Cust                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AR3_Slsperson                 "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AR3_Slsperson                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AR5_SlsTax                    "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AR5_SlsTax                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AR6_OpenInvoice               "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AR6_OpenInvoice               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AR9_CustStats                 "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AR9_CustStats                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AS7_BundledPrice              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AS7_BundledPrice              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH ASJ_OrderShipHis              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="ASJ_OrderShipHis              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AZB_CopyInvEntHdr             "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AZB_CopyInvEntHdr             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH AZT_CopyInvEntPrinDtl         "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="AZT_CopyInvEntPrinDtl         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH ECA_BuyerID                   "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="ECA_BuyerID                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH EDW_RCfile                    "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="EDW_RCfile                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FE0_QuoteFormGrp              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FE0_QuoteFormGrp              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FE1_QuoteFormFeature          "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FE1_QuoteFormFeature          "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FM0_Loc                       "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FM0_Loc                       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FM1_Form                      "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FM1_Form                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FM4_FormLoc                   "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FM4_FormLoc                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FM5_ReorderNotice             "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FM5_ReorderNotice             "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMC_RptInfoForm               "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMC_RptInfoForm               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMN_OrderNote                 "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMN_OrderNote                 "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMS_FormSpecComp              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMS_FormSpecComp              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMU_FormSpecPly               "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMU_FormSpecPly               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMV_FormSpecCmnt              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMV_FormSpecCmnt              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMY_SummBill                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMY_SummBill                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FMZ_FormDetActivity           "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FMZ_FormDetActivity           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FS1_OrderHdr                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FS1_OrderHdr                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FS2_OrderLns                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FS2_OrderLns                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FS6_OrderHis                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FS6_OrderHis                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FSE_UserDefSpecTemplate       "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FSE_UserDefSpecTemplate       "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH FSF_UserDefSpec               "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="FSF_UserDefSpec               "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH IC0_Item                      "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="IC0_Item                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH IC1_InventoryLoc              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="IC1_InventoryLoc              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH ICF_Lots                      "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="ICF_Lots                      "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH ICO_InventoryLotTrans         "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="ICO_InventoryLotTrans         "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH PO1_POHdr                     "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="PO1_POHdr                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH PO2_POLns                     "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="PO2_POLns                     "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH PO3_POShip                    "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="PO3_POShip                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH SM4_CIGHis                    "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="SM4_CIGHis                    "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XP4_CustCategorySet           "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XP4_CustCategorySet           "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPA_CustCont                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPA_CustCont                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPD_CustDef                   "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPD_CustDef                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPR_CustReq                   "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPR_CustReq                   "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPS_ShipViaCodes              "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPS_ShipViaCodes              "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPT_ProdCode                  "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPT_ProdCode                  "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="*SRCBENCH XPX_OrdEntSpec                "
+    FILESET_CODE$="*SRCBENCH "
+    FILENAME$="XPX_OrdEntSpec                "
+    ZC1_UNUSED$="                                                                                                                                                                "
+   </RecordData>
+
+</Data>
+
+</PxTable>

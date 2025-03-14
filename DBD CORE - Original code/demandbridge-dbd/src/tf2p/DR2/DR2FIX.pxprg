@@ -1,0 +1,261 @@
+0010 REM "Data Replication Check Replication <DR2UT0>              
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 03/08/05 - 12.2075 - lms - SSP# 181917
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 SAVE_XI=PRM('XI'); SET_PARAM 'XI' ! turn on dirty reads
+0110 X0$="DR2UT0",X1$="Data Replication Check Replication"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0280 FOR I=1 TO 12; MONTH_STR$+=UCS(DTE(JUL(2000,I,1):"%Ms")); NEXT I ! Build string of month names for date manipulation
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O DR1... 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0603 GOSUB 6000
+0605 DIM A$(10),A[1]; X$="Leave blank for all defined tables"
+0610 CALL "ZZENTR","SUX",A{ALL},A$,X4$,X3$,24,7,1,10,C0,"","{1"+X$,K9$,"DR2UT000","DR1","",""; IF C0=6 THEN GOSUB 6400; C0=1
+0615 IF STP(A$)="" THEN PRINT @(24,7),'CL',"All Tables", ELSE PRINT @(24,7),A$(1,10),
+0616 DIM DR1$(500)
+0617 IF STP(A$)<>"" THEN FIND (Z[1],KEY=A$(1,10),DOM=0610)DR1$; PRINT @(36,7),DR1$(11,30),
+0618 PRINT @(36,7),DR1$(11,30),
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM","0",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900,0605
+0900 ! init
+0910 IF STP(A$)<>"" THEN T0=1,T=1
+0915 EXTRACT (Z[1],KEY=A$,DOM=*NEXT)
+0950 GOSUB 8150
+1000 REM "BEGIN MAIN PROCESS                                               
+1005 DR1_KEY$=KEY(Z[1],END=5000); READ (Z[1],END=5000)DR1$; IF STP(A$)<>"" THEN IF DR1$(1,10)<>A$ THEN GOTO 5000
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1025 IF DR1$(301,1)<>"Y" THEN IF STP(A$)<>"" THEN GOTO 5000 ELSE GOTO 1000
+1100 ! Process file
+1110 TF_CHAN=HFN; OPEN (TF_CHAN,ERR=FILE_OPEN_ERR)STP(DR1$(1,10))
+1111 KEY_SIZE=NUM(FIN(TF_CHAN,"KEY_SIZE"))
+1115 DIM END_OF_FILE_MARKER$(KEY_SIZE,$FF$)
+1125 REP_CHAN=HFN; OPEN (REP_CHAN,ERR=FILE_OPEN_ERR)"DR_"+STP(DR1$(1,10))
+1140 EXTRA_REP_RECORDS=0,TF_RECORDS_SENT=0
+1150 ! Set fix_tf_keys based on Date string and length of key
+1155 FIX_TF_KEYS=0,DSTR$=FNOPT$(REP_CHAN,"TFDATE=","",ERR=FTK_DONE)
+1156 TF_KEY_SIZE=NUM(FIN(TF_CHAN,"KEY_SIZE")); FIRST_DATE=0,FIRST_DATE=NUM(MID(DSTR$,1,4),ERR=*NEXT)
+1158 IF FIRST_DATE<>0 AND FIRST_DATE<TF_KEY_SIZE THEN FIX_TF_KEYS=1 ! If we have a date and it appears to be in the key lets do it
+1160 FTK_DONE:
+1190 GOSUB 8200
+1200 ! Pass through TF table first to find records not in rep data, this pass we are comparing data as well as keys
+1205 GOSUB GET_NEXT_TF_KEY
+1210 WHILE TF_KEY$<>END_OF_FILE_MARKER$
+1220 FIND RECORD (REP_CHAN,KEY=TF_KEY$,DOM=SEND_KEY,ERR=*NEXT)REP_DATA$; GOTO 1222 ! if found record and data matches get next key
+1221 IF DR1$(347,1)="O" AND ERR=15 AND DR1$(1,6)="PO2101" THEN GOTO NEXT_TF_KEY ELSE GOTO SEND_KEY
+1222 GOSUB COMPARE_DATA; IF NOT(DIFFERENT) THEN GOTO NEXT_TF_KEY ! if found record and data matches get next key
+1225 ! either not found or data didn't match so send it
+1230 SEND_KEY:GOSUB SEND_CURR_TF_KEY
+1260 NEXT_TF_KEY:GOSUB GET_NEXT_TF_KEY
+1275 WEND 
+1300 ! Pass through Rep table and find extra records, just compare keys, no data at this point
+1304 IF DR1$(1,6)="PO2101" THEN GOTO 1376
+1305 READ (REP_CHAN,KEY="",DOM=*PROCEED); GOSUB GET_NEXT_REP_KEY
+1310 WHILE REP_KEY$<>END_OF_FILE_MARKER$
+1320 IF POS(DR1$(347,1)="M ")<>0 THEN FIND (TF_CHAN,KEY=PAD(REP_KEY$,KEY_SIZE,1),DOM=*NEXT); GOTO NEXT_REP_KEY ELSE FIND (TF_CHAN,KEY=REP_KEY$,DOM=*NEXT); GOTO NEXT_REP_KEY
+1325 GOSUB REMOVE_CURR_REP_KEY
+1360 NEXT_REP_KEY:GOSUB GET_NEXT_REP_KEY
+1375 WEND 
+1900 TABLE_DONE:! done with this table
+1905 PRINT @(0,9),'CL',@(0,10),'CL',@(0,11),'CL',@(0,12),'CL',
+1910 CLOSE (TF_CHAN); CLOSE (REP_CHAN)
+1950 IF STP(A$)<>"" THEN GOTO 5000 ELSE GOTO 1000
+1999 ! 
+2000 GET_NEXT_TF_KEY:! Get next key from TF data
+2005 TF_KEY$=END_OF_FILE_MARKER$ ! set to end of file marker
+2010 TF_KEY$=KEY(TF_CHAN,END=*NEXT); READ RECORD (TF_CHAN,KEY=TF_KEY$)TF_DATA$; ORIG_TF_KEY$=TF_KEY$; GOSUB FIX_TF_DATA; IF FIX_TF_KEYS THEN GOSUB FIX_TF_KEY
+2030 DC=DC+1; IF MOD(DC,DT0)=1 THEN GOSUB 8250
+2045 RETURN 
+2049 ! 
+2050 GET_NEXT_REP_KEY:! Get next key from Replicated data
+2055 REP_KEY$=END_OF_FILE_MARKER$ ! set to end of file marker
+2060 REP_KEY$=KEY(REP_CHAN,END=*NEXT); READ (REP_CHAN)
+2070 ORIG_REP_KEY$=REP_KEY$; IF POS(MID(DR1$,1,3)="ICF",3) AND MID(REP_KEY$,1,1)<>$FF$ THEN GOSUB FIX_REP_KEY
+2080 DC=DC+1; IF MOD(DC,DT0)=1 THEN GOSUB 8250
+2095 RETURN 
+2099 ! 
+2100 SEND_CURR_TF_KEY:! Read and write tf data to trigger replication
+2105 TF_RECORDS_SENT+=1; PRINT @(20,16),"Sent: "+STR(TF_RECORDS_SENT:"##,###,##0")
+2110 READ RECORD (TF_CHAN,KEY=ORIG_TF_KEY$,DOM=SEND_DONE)TF_DATA$
+2120 WRITE RECORD (TF_CHAN,KEY=ORIG_TF_KEY$)TF_DATA$
+2140 SEND_DONE:
+2145 RETURN 
+2149 ! 
+2150 REMOVE_CURR_REP_KEY:! remove extra record from replicated data
+2165 EXTRA_REP_RECORDS+=1; PRINT @(19,17),"Extra: "+STR(EXTRA_REP_RECORDS:"##,###,##0")
+2170 REMOVE (REP_CHAN,KEY=ORIG_REP_KEY$,DOM=*NEXT)
+2195 RETURN 
+2199 ! 
+3000 FIX_TF_KEY:! Fix the dates in TF_KEY$ and TF_DATA$
+3010 ORIG_TF_KEY$=TF_KEY$; DSTR$=FNOPT$(REP_CHAN,"TFDATE=","",ERR=FK_DONE)
+3015 WHILE DSTR$<>""
+3020 DPOS=NUM(MID(DSTR$,1,4),ERR=NEXT_KEY_DPOS)
+3025 IF DPOS+5>LEN(TF_KEY$) THEN BREAK ! issues with SM0 & SM4 where key is not first part of data and a date field falls in that part of the record
+3030 IF POS(DR1$(347,1)="M ")<>0 THEN IF STP(MID(TF_KEY$,DPOS,6))="" THEN TF_KEY$=MID(TF_KEY$,1,DPOS-1)+DIM(10)+MID(TF_KEY$,DPOS+6) ELSE TF_KEY$=MID(TF_KEY$,1,DPOS-1)+UCS(FNDR_FMT_TFDATE$(MID(TF_KEY$,DPOS,6),"%Y-%Mz-%Dz"))+MID(TF_KEY$,DPOS+6); IF DATE_ERR THEN ERR_MSG$="DATE FORMAT ERROR["+MID(A_OUT$,DPOS,10)+"]"
+3035 IF DR1$(347,1)="O" THEN IF STP(MID(TF_KEY$,DPOS,6))="" THEN TF_KEY$=MID(TF_KEY$,1,DPOS-1)+DIM(9)+MID(TF_KEY$,DPOS+6) ELSE TF_KEY$=MID(TF_KEY$,1,DPOS-1)+UCS(FNDR_FMT_TFDATE$(MID(TF_KEY$,DPOS,6),"%Dz-%Ms-%Yz"))+MID(TF_KEY$,DPOS+6); IF DATE_ERR THEN ERR_MSG$="DATE FORMAT ERROR["+MID(A_OUT$,DPOS,9)+"]" ! Oracle style date "DD-MM-YY"
+3040 NEXT_KEY_DPOS: DSTR$=MID(DSTR$,5)
+3045 WEND 
+3090 FK_DONE:
+3095 RETURN 
+3099 ! 
+3100 ! ^100 - Get option
+3105 DEF FNOPT$(LOCAL FILE_CHAN, LOCAL O$, LOCAL D$)
+3110 LOCAL X$,O
+3115 X$=FIN(FILE_CHAN,"FILENAME"); O=POS(";"=X$); IF O=0 THEN X$="" ELSE X$=X$(O)
+3120 X$=X$+";"+OPT(FILE_CHAN)+";"
+3125 O=POS(";"+UCS(O$)=UCS(X$))
+3130 IF O=0 THEN RETURN D$
+3135 X$=X$(O+1+LEN(O$))
+3140 RETURN X$(1,POS(";"=X$)-1)
+3145 END DEF
+3200 ! ^100 DR_GET_DATETIME given: Date in either format(MM/DD/YYYY), TopForm YYMMDD format or "" for bogus date, Time in TIM format hour.fractional part of hour RETURN a number representing the Julian day.partial part of the day
+3205 DEF FNDR_GET_DATETIME(LOCAL DATE_IN$, LOCAL TIME_IN)
+3210 LOCAL RET_VAL,CURR_P
+3215 ! default ret_val to Jan 1, 1800 to cover any errors, if DATE_IN$ is 6 long assume TopForm format, if 10 long then assume MM/DD/YYYY format, if 8 long assume MM/DD/YY format
+3220 RET_VAL=JUL(1800,1,1),DATE_ERR=1
+3225 IF LEN(DATE_IN$)=6 THEN {! TopForm date format
+3230 RET_VAL=JUL((ASC(DATE_IN$(1,1),ERR=*NEXT)+125)*10+NUM(DATE_IN$(2,1),ERR=*NEXT),NUM(DATE_IN$(3,2),ERR=*NEXT),NUM(DATE_IN$(5,2),ERR=*NEXT),ERR=*NEXT); DATE_ERR=0
+3235  } ELSE {
+3240 IF LEN(DATE_IN$)=8 OR LEN(DATE_IN$)=10 THEN {! In MM/DD/YY or MM/DD/YYYY format
+3245 RET_VAL=JUL(NUM(DATE_IN$(7),ERR=*NEXT),NUM(DATE_IN$(1,2),ERR=*NEXT),NUM(DATE_IN$(4,2),ERR=*NEXT),ERR=*NEXT); DATE_ERR=0
+3250  }
+3255  }
+3260 ! Add time NOTE: if date before 1/1/1970 then it will be negative, so subtract time
+3265 CURR_P=PRC; PRECISION 14; IF TIME_IN=0 OR TIME_IN>=24 THEN RET_VAL=RET_VAL+SGN(RET_VAL)*(TIM/24) ELSE RET_VAL=RET_VAL+SGN(RET_VAL)*(TIME_IN/24) END_IF ; PRECISION CURR_P
+3270 RETURN RET_VAL
+3275 END DEF ! DR_GET_DATETIME
+3300 ! ^100 DR_FMT_TFDATE$ given: TF format date, ""=current date, return stringusing DATE_FORMAT$ where DATE_FORMAT$ follows DTE date format mask --- note should use date only, time not given
+3305 DEF FNDR_FMT_TFDATE$(LOCAL TFDATE$, LOCAL DATE_FORMAT$)
+3310 LOCAL RET_VAL$
+3315 RET_VAL$=FN%PRINT_DATETIME$(FNDR_GET_DATETIME(TFDATE$,0),DATE_FORMAT$)
+3320 RETURN RET_VAL$
+3325 END DEF ! DR_FMT_TFDATE$
+3400 FIX_TF_DATA:! replace dates in TF_DATA
+3415 IF %C$="101" AND DR1$(1,3)="ICF" THEN TF_DATA$=MID(TF_DATA$,1,231)+DIM(4)+MID(TF_DATA$,232)
+3420 DSTR$=FNOPT$(REP_CHAN,"TFDATE=","",ERR=FTD_DONE)
+3421 SEP_ADJ=0
+3425 WHILE DSTR$<>""
+3430 DPOS=NUM(MID(DSTR$,1,4),ERR=NEXT_DPOS)+SEP_ADJ; SEP_ADJ+=1
+3435 DSEP$=SEP; IF MID(TF_DATA$,DPOS+6,1)=SEP THEN DSEP$="" ! If last field then we won't add an additional separator                                      
+3440 IF POS(DR1$(347,1)="M ")<>0 THEN IF STP(MID(TF_DATA$,DPOS,6))="" THEN TF_DATA$=MID(TF_DATA$,1,DPOS-1)+DIM(11)+DSEP$+MID(TF_DATA$,DPOS+6) ELSE TF_DATA$=MID(TF_DATA$,1,DPOS-1)+UCS(FNDR_FMT_TFDATE$(MID(TF_DATA$,DPOS,6),"%Y-%Mz-%Dz"))+" "+DSEP$+MID(TF_DATA$,DPOS+6); IF DATE_ERR THEN ERR_MSG$="DATE FORMAT ERROR["+MID(TF_DATA$,DPOS,10)+"]" ! MySQL style dates, YYYY-MM-DD                                                                
+3445 IF DR1$(347,1)="O" THEN IF STP(MID(TF_DATA$,DPOS,6))="" THEN TF_DATA$=MID(TF_DATA$,1,DPOS-1)+DIM(10)+DSEP$+MID(TF_DATA$,DPOS+6) ELSE TF_DATA$=MID(TF_DATA$,1,DPOS-1)+UCS(FNDR_FMT_TFDATE$(MID(TF_DATA$,DPOS,6),"%Dz-%Ms-%Yz"))+" "+DSEP$+MID(TF_DATA$,DPOS+6); IF DATE_ERR THEN ERR_MSG$="DATE FORMAT ERROR["+MID(TF_DATA$,DPOS,9)+"]" ! Oracle style date "DD-MM-YY"                                                                  
+3450 NEXT_DPOS: DSTR$=MID(DSTR$,5)
+3455 WEND 
+3490 FTD_DONE:
+3495 RETURN 
+3500 FOR I=1 TO LEN(REP_DATA$)
+3505 IF TF_DATA$(I,1)<>REP_DATA$(I,1) THEN ESCAPE 
+3510 NEXT I
+3520 TD$=TF_DATA$,RD$=REP_DATA$
+3525 TD=POS($8A$=TD$),RD=POS($8A$=RD$)
+3530 IF TD=0 OR RD=0 THEN ESCAPE 
+3535 PRINT MID(TD$,1,TD-1),"|",'LF',MID(RD$,1,RD-1),"|"
+3540 INPUT *
+3545 TD$=MID(TD$,TD+1),RD$=MID(RD$,RD+1); GOTO 3525
+3600 COMPARE_DATA:! Compare the two sets of data upto each $8A$ and strip trailing blanks
+3610 TD$=TF_DATA$,RD$=REP_DATA$,DIFFERENT=0
+3620 COMPARE_START: TD=POS($8A$=TD$),RD=POS($8A$=RD$); IF TD=0 OR RD=0 THEN GOTO COMPARE_DONE
+3625 IF STP(MID(TD$,1,TD-1),1)<>STP(MID(RD$,1,RD-1),1) THEN DIFFERENT=1; IF NUM(MID(TD$,1,TD-1),ERR=COMPARE_DONE)=NUM(MID(RD$,1,RD-1),ERR=COMPARE_DONE) THEN DIFFERENT=0; GOTO *NEXT ELSE GOTO COMPARE_DONE ! If different try final numeric compare, if numbers and the same then not different, so continue
+3630 TD$=MID(TD$,TD+1),RD$=MID(RD$,RD+1); GOTO COMPARE_START
+3640 COMPARE_DONE:
+3641 ! IF DIFFERENT THEN PRINT 'LF',MID(TD$,1,TD-1),"|",'LF',MID(RD$,1,RD-1),"|"; ESCAPE 
+3642 IF %C$="101" AND DIFFERENT THEN IF DR1$(1,3)="ICF" THEN IF FIRST_TIME AND TD>170 THEN FIRST_TIME=0,DIFFERENT=0,RD$=REP_DATA$,TD$=TF_DATA$,RD$(231,11)=RD$(235,11)+DIM(4); GOTO COMPARE_START
+3645 RETURN 
+3649 ! 
+3700 FIX_REP_KEY:! Fix up date fields in the REPKEY, converting back from the date to TopForm format
+3710 SWITCH MID(DR1$,1,3)
+3720 CASE "ICF"; DPOS$="025"; BREAK
+3750 END SWITCH 
+3755 WHILE DPOS$<>""
+3760 DPOS=NUM(MID(DPOS$,1,3),ERR=NEXT_RK_POS)
+3765 SWITCH DR1$(347,1)
+3770 CASE "O"; IF NUL(MID(REP_KEY$,DPOS,9)) OR MID(REP_KEY$,DPOS,1)=$FF$ THEN REP_KEY$=MID(REP_KEY$,1,DPOS-1)+DIM(6)+MID(REP_KEY$,DPOS+9) ELSE T$=PAD(MID(REP_KEY$,DPOS,9),9,1),T$=CHR(NUM(TBL(T$(8,2)<"50","19"+T$(8,1),"20"+T$(8,1)))-125)+T$(9,1)+STR((POS(UCS(T$(4,3))=MONTH_STR$,3)+2)/3:"00")+T$(1,2); REP_KEY$=MID(REP_KEY$,1,DPOS-1)+T$+MID(REP_KEY$,DPOS+9)
+3775 END SWITCH 
+3778 NEXT_RK_POS: DPOS$=MID(DPOS$,4)
+3780 WEND 
+3795 RETURN 
+3799 ! 
+5000 REM "EOJ                                                              
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,4),"This TopForm Utility verifies the replicated data  ",
+6022 PRINT @(10,5),"for a table setup in the Data Replication Module",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6445 RETURN 
+7500 FILE_OPEN_ERR:! Error opening file
+7505 FOE=ERR
+7510 CALL "ZZPROM",".4",X3$,Z,"Error "+STR(FOE)+" occurred on file "+STP(DR1$(1,10))+"!","","",0
+7545 GOTO 1950
+7549 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ! PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8200 ! bar for file
+8210 CALL "ZZINFO",TF_CHAN,DT9,X3$,DT,DT0,DK,DB,DD,DS0,DS1,DF$
+8212 DC=0,DT=DT*2
+8215 PRINT @(10,9),'CL',STP(DF$)+" - There are "+STR(DT)+" records to process"
+8230 DT0=INT(DT*.02); IF DT0<=1 THEN DT0=2
+8245 RETURN 
+8250 ! 
+8255 CALL "ZZBARG",X3$,"HG",12,10,50,DT1,DT,DC
+8295 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9515 GOTO 0610
+9520 ON C9 GOTO 1803,2040
+9900 REM "END PROGRAM                                      
+9905 SET_PARAM 'XI'=SAVE_XI
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

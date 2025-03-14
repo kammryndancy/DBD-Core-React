@@ -1,0 +1,124 @@
+0010 REM + DT0 Record Conversion Program  <DT0CON>
+0035 REM "5.6 - 12/19/07 - 9.829166 - mhe - SSP# 203099
+0037 REM "203099-Enhancements to Output Director.  Provide ability for
+0040 REM "Copyright 2007 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0085 SETESC 9300; SETERR 9000
+0090 CLEAR ; ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0110 X0$="DT0CON"; X1$="DT0 Record Conversion"
+0120 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0298 ! 
+0299 ! 
+0300 IOLISTS:
+0310 IOLIST_DT0:IOLIST DT0$
+0498 ! 
+0499 ! 
+0500 OPEN_FILES:
+0510 DIM Z[255] ! dimension array
+0520 Z$="01S DT0...  02S DT0...  "
+0550 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0560 DT01_CHN=Z[1]
+0570 DT02_CHN=Z[2]
+0798 ! 
+0799 ! 
+0800 SCREEN_DISPLAY:
+0801 ! Initialize and Screen Display
+0860 GOSUB BACKGROUND ! Initializes the background
+0870 IF Q1$="" THEN {
+0875 CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0
+0880 ON S0 GOTO 1000,9900
+0890  }
+0998 ! 
+0999 ! 
+1000 PROGRAM_MAIN:
+1001 ! The Main Section of the Program
+1010 GOSUB 8100 ! init the progress bar
+1020 DT0_CTR=0 ! init the counter
+1030 DT0_KEY$=KEF(DT01_CHN,END=9900) ! get the first key in DT0
+1100 READ (DT01_CHN,KEY=DT0_KEY$)IOL=IOLIST_DT0 ! read the DT0 record
+1110 REMOVE (DT02_CHN,KEY=DT0_KEY$) ! remove record from DT0
+1120 DT0_CTR+=1 ! increment the counter
+1130 IF MOD(DT0_CTR,T2)=1 THEN GOSUB 8150 ! update the progress bar
+1200 IF STP(DT0$(1,20))="CUST_INVOICE" AND STP(DT0$(53,5))="A" THEN DT0$(53,5)=DIM(5) ! convert ALL to a space
+1205 IF STP(DT0$(1,20))="CUST_TRACKING" AND STP(DT0$(53,5))="A" THEN DT0$(53,5)=DIM(5) ! convert ALL to a space
+1540 DT0$(21,37)=SUB(DT0$(21,37)," ","~") ! change the spaces in the key
+1550 WRITE (DT02_CHN,KEY=DT0$(1,60))IOL=IOLIST_DT0 ! write the new DT0 record
+1590 DT0_KEY$=KEY(DT01_CHN,END=9900) ! get the next key
+1595 GOTO 1100 ! read next DT0 record
+5998 ! 
+5999 ! 
+6000 BACKGROUND:
+6001 ! Initializes the background
+6005 PRINT (0,ERR=*NEXT)'SB', ! set the focus to the background
+6050 PRINT @(0,3),'CE' ! clear the screen starting at line 3
+6052 PRINT @(0,3),"This program will convert all of the spaces to tildes in the keys for"
+6054 PRINT @(0,4),"each record in the Output Director's Document Configuration File (DT0)."
+6056 PRINT @(0,6),"This is required due to the major enhancements made to the"
+6058 PRINT @(0,7),"Output Director."
+6060 REM " PRINT @(0,9),"See issue 203099 for details."
+6165 PRINT (0,ERR=*NEXT)'SF', ! set focus to the foreground
+6195 RETURN 
+8098 ! 
+8099 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T2 to the reporting interval (report every T2 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",DT01_CHN,T9,X3$,T,T2,K,B,D,S0,S1,F$
+8115 REM *** H2$=STR(T)+" # of records to do "; GOSUB 8800
+8129 REM "Set T2, we make sure T2 is > 1, because later on we MOD and look for a value of 1. IF T2 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8140 PRINT @(0,4),'CL',
+8145 RETURN 
+8148 ! 
+8149 ! 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",21,10,50,T1,T,DT0_CTR
+8195 RETURN 
+8798 ! 
+8799 ! 
+8800 REM "Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+8998 ! 
+8999 ! 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+55998 ! 
+55999 ! 
+56000 REM + Modification History
+56002 REM "203099-Enhancements to Output Director.  Provide ability for

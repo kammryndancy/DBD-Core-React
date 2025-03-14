@@ -1,0 +1,29 @@
+until [ "$validchoice" = "TRUE" ]
+do
+validchoice=""
+cd /usr/lib/pvx  
+
+case "$LOGNAME"
+in
+esac
+tput clear
+echo "==============================================================================="
+echo "                           D E M A N D   B R I D G E                           "
+echo " $LOGNAME                          Company Name Here                           "
+echo "==============================================================================="
+echo ""
+cat menu.screen
+#[ -s "$MAIL" ] && echo "       You have new mail!"
+echo ""
+echo ""
+echo -e "                   Please select an option: \c"
+read system
+tput clear
+echo " "
+case "$system"
+in
+        1) ./runpvx;;       
+        2) ./runpvxgui;exit;;         
+        99) exit;;
+        esac
+done

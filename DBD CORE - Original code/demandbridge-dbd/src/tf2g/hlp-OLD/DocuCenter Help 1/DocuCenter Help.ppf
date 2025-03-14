@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<!DOCTYPE polprojfile>
+<ppfml version="1.00" project="DocuCenter Help">
+ <windowlist>
+  <window name="NewWindow" x="5%" y="5%" width="90%" height="90%" viewtype="doublepane" workspacestyle="DEFAULT" caption="DocuCenter Help" toolbar="off" locationbar="off" menu="off" resizable="yes" statusbar="off" usecurrentwindowsettings="yes">
+   <agents defaultagent="toc">
+    <agent>toc
+    </agent>
+    <agent>ndx
+    </agent>
+    <agent>nls
+    </agent>
+    <agent>gls
+    </agent>
+   </agents>
+  </window>
+ </windowlist>
+ <contextmap>
+ </contextmap>
+ <topiclist defaulttopic="System_Setup.htm">
+  <topic>System_Setup.htm
+  </topic>
+  <topic>User_Roles.htm
+  </topic>
+  <topic>Item_Life_Cycle.htm
+  </topic>
+  <topic>Purchase_Order.htm
+  </topic>
+  <topic>DocuCenter_User_Permissions.htm
+  </topic>
+ </topiclist>
+ <projectincludes>
+ </projectincludes>
+ <filenamemap>
+ </filenamemap>
+</ppfml>

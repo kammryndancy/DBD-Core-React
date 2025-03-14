@@ -1,0 +1,86 @@
+0010 REM "Remove Commission Detail from file AXN <AR2UZM>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 02/03/10 - 10.929166 - tma - SSP# 236052
+0037 REM "236052-AR2UZM-change verbage from CSI utility                      
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UZM",X1$="Remove commission detail from AXN"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0320 IOLIST B$,B(0),B(1),B(2),B(3),B(4),B(5),B(6),B(7),B(8),B(9),B(10),B(11),B(12),B(13),B(14)
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AXN...  02O AR6...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 DIM A$(8),B(14)
+0710 CALL "ZZENTR","Z",A{ALL},A$,X4$,X3$,35,8,1,4,C0,"",X$,"","AR2UTM00","","",""; IF ABS(C0)>=4 THEN GOTO 9900
+0720 CALL "ZZENTR","Z",A{ALL},A$,X4$,X3$,35,10,5,2,C0,"",X$,"","AR2UTM02","","",""; IF ABS(C0)>=4 THEN GOTO 9900
+0725 X$="If 'Y' entered, only commission records for invoices paid in full are removed"
+0730 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,35,12,7,1,C0,"",X$,"","AR2UTM04","","",""; IF ABS(C0)>=4 THEN GOTO 9900
+0735 X$="Y=Remove Chargebacks, N=Do not remove, O=Only remove chargebacks"
+0740 CALL "ZZENTR","SUR",A{ALL},A$,X4$,X3$,35,14,8,1,C0,"","{3"+X$,"YNO","AR2UTM04","","",""; IF ABS(C0)>=4 THEN GOTO 9900
+0780 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0781,9900
+0990 PRINT @(14,14),"Commission Record:",
+1000 REM 
+1010 K$=KEY(Z[1],END=5000); READ (Z(1),KEY=K$)R$
+1030 IF MOD(C1,100)=1 THEN PRINT @(35,14),C1,"-",K$
+1035 IF A$(8,1)="O" AND R$(11,1)<>"D" THEN GOTO 1000 ELSE IF POS(A$(8,1)="YO")=0 AND R$(11,1)="D" THEN GOTO 1000
+1040 IF K$(5,6)>=A$(1,6) THEN GOTO 1000
+1050 IF POS(R$(11,1)="IC",1)=0 THEN GOTO 1100; REM "If chargeback remove by date alone
+1060 DIM B(14); READ (Z(2),KEY=R$(29,10)+R$(12,8),DOM=1100)IOL=0320; REM " If no open invoice record it is closed
+1070 IF A[3]<>0 THEN GOTO 1000; REM "If open balance do not remove
+1110 REMOVE (Z[1],KEY=K$)
+1200 C=C+1
+1600 GOTO 1000
+5000 REM "EOJ
+5010 X$=STR(C)+" records removed"
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(3,4),"This utility will process the Commissions Transactions File AXN and remove",@(3,5),"any records that are PRIOR TO the Fiscal Year and Accounting Period entered.",@(15,6),"...Progress will be reported every 100 records...", ! SSP#236052
+6040 PRINT @(20,8),"Fiscal Year:",@(14,10),"Accounting Period:",@(6,12),"Only remove paid invoices?",@(13,14),"Remove Chargebacks?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "236052-AR2UZM-change verbage from CSI utility                      

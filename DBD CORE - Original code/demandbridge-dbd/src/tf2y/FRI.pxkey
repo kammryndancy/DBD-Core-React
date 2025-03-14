@@ -1,0 +1,258 @@
+<PxTable>
+ TableName=FRI
+ TableKey=K1727451831
+ FileCreate=KEYED "FRI",7,0,-384,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FRI_IndexTable"
+    PHYSICALPATH$="="+QUO+"../tf2y/FRI"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:41:56-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:42:50-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST INDEX_CODE$:[LEN(3)]"
+    NAME$="INDEX_CODE"
+    DESCRIPTION$="=MSG("+QUO+"INDEX_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Index Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST TF_YEAR$:[LEN(4)]"
+    NAME$="TF_YEAR"
+    DESCRIPTION$="=MSG("+QUO+"YEAR"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Year"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST INDEX_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="INDEX_CODE"
+    DESCRIPTION$="=MSG("+QUO+"INDEX_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Index Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_YEAR$:[LEN(4,SEP=SEP)]"
+    NAME$="TF_YEAR"
+    DESCRIPTION$="=MSG("+QUO+"YEAR"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Year"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST FRI_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FRI_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST BASE_INDEX"
+    NAME$="BASE_INDEX"
+    DESCRIPTION$="=MSG("+QUO+"BASE_INDEX"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Base Index"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST FACTORY_PD_1_1"
+    NAME$="FACTORY_PD_1_1"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor for Period 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST FACTORY_PD_1_2"
+    NAME$="FACTORY_PD_1_2"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST FACTORY_PD_1_3"
+    NAME$="FACTORY_PD_1_3"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FACTORY_PD_1_4"
+    NAME$="FACTORY_PD_1_4"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_4"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST FACTORY_PD_1_5"
+    NAME$="FACTORY_PD_1_5"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_5"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST FACTORY_PD_1_6"
+    NAME$="FACTORY_PD_1_6"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_1_6"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 6"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST FACTORY_PD_2_1"
+    NAME$="FACTORY_PD_2_1"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor for Period 1 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST FACTORY_PD_2_2"
+    NAME$="FACTORY_PD_2_2"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 2 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST FACTORY_PD_2_3"
+    NAME$="FACTORY_PD_2_3"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 3 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST FACTORY_PD_2_4"
+    NAME$="FACTORY_PD_2_4"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_4"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor for Period 4 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST FACTORY_PD_2_5"
+    NAME$="FACTORY_PD_2_5"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_5"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor For Period 5 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST FACTORY_PD_2_6"
+    NAME$="FACTORY_PD_2_6"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_6"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor for Period 6 - 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST FACTORY_PD_2_7"
+    NAME$="FACTORY_PD_2_7"
+    DESCRIPTION$="=MSG("+QUO+"FACT_P_2_7"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="####.0000-"
+    NOTES$="Factor for Period 7 - 2"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+</Data>
+
+</PxTable>

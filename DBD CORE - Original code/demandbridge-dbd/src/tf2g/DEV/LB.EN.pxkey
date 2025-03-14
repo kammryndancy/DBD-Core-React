@@ -1,0 +1,105 @@
+<PxTable>
+ TableName=LB.EN
+ TableKey=K1521815571
+ FileCreate=KEYED "LB.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LBTEST      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="65"
+    FIELD_5$="29"
+    FIELD_6$="D"
+    FIELD_7$="Lbtest"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_18$="2018/03/23 10:44 Chaitanya Guntur"
+    FIELD_21$="S-mcXR"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LBTEST      0204"
+    FIELD_1$="LIST_BOX_1"
+    FIELD_2$="3"
+    FIELD_3$="1.4"
+    FIELD_4$="49"
+    FIELD_5$="17.6"
+    FIELD_6$="L"
+    FIELD_9$="1000"
+    FIELD_21$="r"
+    FIELD_23$="[Col 1]L10.00,[Col 2]L10.00,[Col 3]L10.00,"
+    FIELD_34$="L"
+    FIELD_36$=$01$+"L[Col 1]L10.00,[Col 2]L10.00,[Col 3]L10.00,"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LBTEST      0255"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="54"
+    FIELD_3$="1.8"
+    FIELD_4$="9"
+    FIELD_5$="1.8"
+    FIELD_6$="B"
+    FIELD_7$="Add new line"
+    FIELD_9$="1000"
+    FIELD_13$="XSEQ++; LIST_BOX LOAD LIST_BOX_1.CTL,0,STR(SEQ)+SEP+STR(SEQ)+SEP+STR(SEQ)+SEP"
+    FIELD_21$="<"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LBTEST      0655"
+    FIELD_1$="BT_EXP"
+    FIELD_2$="54"
+    FIELD_3$="5"
+    FIELD_4$="3"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!EXCEL}"
+    FIELD_9$="1000"
+    FIELD_13$="C"+QUO+"UTGEXP;EXPORT"+QUO+",LIST_BOX_1.CTL"
+    FIELD_14$="=MSG("+QUO+"EXPORT1"+QUO+")"
+    FIELD_21$="F<"
+    FIELD_30$="=MSG("+QUO+"EXPORT1"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LBTEST      2004"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="3"
+    FIELD_3$="19.8"
+    FIELD_4$="11"
+    FIELD_5$="2"
+    FIELD_6$="B"
+    FIELD_7$="Count Lines"
+    FIELD_9$="1000"
+    FIELD_13$="XMSGBOX "+QUO+"Num of lines in list:"+QUO+"+STR(LIST_BOX_1.CTL'ITEMCOUNT)"
+    FIELD_21$="<"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

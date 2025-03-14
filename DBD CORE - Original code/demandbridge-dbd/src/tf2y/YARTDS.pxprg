@@ -1,0 +1,7 @@
+0010 REM "@@ART_STATUS_DESCRIPTION: Art Status Code Description <YARTDS>
+0015 REM "Prog Type: M -370032  
+1020 ENTER X3$,Z0$,Z1$
+1210 IF Z0$=" " THEN Z1$="No Tracking" ELSE IF Z0$="B" THEN Z1$="Billed" ELSE IF Z0$="P" THEN Z1$="Plant" ELSE IF Z0$="D" THEN Z1$="Distributor"
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

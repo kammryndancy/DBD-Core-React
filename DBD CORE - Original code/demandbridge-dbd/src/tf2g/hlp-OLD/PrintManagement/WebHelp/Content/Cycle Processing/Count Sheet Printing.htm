@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Cycle Processing" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Count Sheet Printing</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapUtilities.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapBody.js">/*<![CDATA[*/ /*]]>*/</script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">Count Sheet Printing</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;margin-left: 0;margin-right: auto;">
+            <tbody>
+                <tr>
+                    <td><span style="font-weight: bold;font-style: normal;font-size: 8pt;font-family: Verdana;">DB&#160;Distributor &gt; Print Management &gt; Cycle Processing &gt; Count Sheet Printing (F/M P2)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav" style="font-weight: bold;font-style: italic;">&#160;</p>
+        <p class="Nav"><a name="kanchor18"></a>For your PM&#160;customers that are counted customers, you will need to print count sheets for the locations that you will be performing a physical count at for this cycle. To print the count sheets, simply select which customers, locations, and items you would like to print count sheets for. To print all available count sheets, leave all of the ranges set from FIRST to LAST. Press the Print Report button to print your count sheets, then you can proceed to <a href="Count Entry.htm">Count Entry</a>.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav"><u>Additional Count Sheet Information</u>
+        </p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">DB Distributor prints count sheets for those items at a customer's locations that have been identified as counted items. As a result there is a different approach for gathering counts for locations in the current cycle that are being counted for the first time.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">Reactive Count Sheets - When you establish a PM Customer as being counted, DB Distributor does not assume that all items you have setup for the customer are being used at every location. DB Distributor works in a reactive mode when determining which items should appear on the count sheet for a location. </p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">The key for an item appearing on a customer's location count sheet is the existence of a Customer Location Data record on the Item Master, with a "Y" setting to the following field:
+"Is item counted at this location?" 
+This Customer Location Data record can either be established manually or by the system following the processing of a factory order or warehouse release.
+</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">Newly Counted Item - When a new item is encountered during a count (one not on the system generated count sheet) it needs to be manually noted on the count sheet by the representative performing the count. The entry and subsequent processing of the count will establish the item as being used at the location and it will print on the next count sheet.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">Count Stops - The same rules are true for location count stops. When multiple count stops are first established at a location, the representative performing the count will need to manually note the count stop of each item. When the count is entered along with the count stop, DB Distributor will record which items were counted at each count stop. In future cycles, separate count sheets will be printed for these count stops.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">New Counted Locations - If a customer location is to be counted for the first time, the information about which items are used at the location may not be available. The initial count will establish the on-hand quantities at the location (along with a corresponding Customer Location Data record on the Item Master, if not already in existence) and enable future counts to determine usage data. For this first count, your representative can use a copy of the customer's <a href="../Reports - Customers/PM Catalog.htm">Client Items Catalog</a> as an initial count sheet. This report will show all items that you have setup on the item master for the customer. Print a Client Items Catalog for each customer in the current PM Cycle that is being counted for the first time. The representative will need a copy of the Print Management catalog for each customer location. Before distribution, manually note the appropriate customer's location code on each copy of the customer's Items Catalog. You will need to know which locations the counts were performed at when entering them back into the system.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">Previously Counted Locations - When item counts are entered for a customer's location, DB Distributor records which items are used at which locations. Following the first count entry, DB Distributor is able to generate count sheets. Based on the counted customers, for whom the PM Cycle has been started, DB Distributor has gathered the necessary data to print count sheets.</p>
+        <p class="Nav">
+        </p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

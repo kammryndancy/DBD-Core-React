@@ -1,0 +1,97 @@
+0010 REM "Compute Carton Pack from Lots <IC2UTL>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 11/14/07 - 17.389722 - dmm - SSP# 212146
+0037 REM "212146-New company name. Menu, documentation, etc.                 
+0040 REM "Copyright 2007 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="IC2UTL",X1$="I/C Compute Carton Pack from Lots"
+0120 DIM Z0$(80,"-"),A[40],C[6]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31],A[32],A[33],A[34],A[35],A[36],A[37],A[38],A[39],A[40]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O IC0...  03O ICF...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT$
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0980 READ (Z[1],KEY="",DOM=0981)
+1000 REM 
+1020 EXTRACT (Z[1],END=5000)IOL=0310
+1030 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1040 IF A$(112,1)<>"Y" THEN GOTO 1900
+1200 GOSUB 2000
+1240 IF T>0 THEN A[19]=T
+1900 REM 
+1920 WRITE (Z[1])IOL=0310
+1922 IF RT$>"" THEN IF RT$(7,1)="H" THEN CUST$=A$(1,10); CALL "RT2WOC",ERR=1923,X3$,X4$,CUST$,"IC0...","U",A$(1,20)
+1990 GOTO 1000
+2000 REM "Obtain Lot Detail
+2020 T=0
+2040 READ (Z[3],KEY=A$(1,20),DOM=2041)
+2060 READ (Z[3],END=2190)IOL=0330
+2080 IF C$(1,20)<>A$(1,20) THEN GOTO 2190
+2120 X=C[3]; IF C[2]<>0 THEN X=X*C[2]
+2140 IF X>T THEN T=X
+2160 GOTO 2060
+2190 RETURN 
+5000 REM "EOJ
+5010 C=T6; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This DBI utility program will process the Lot Inventory File ICF and",'LF',"set the carton pack in IC0 to the largest carton pack for any one lot."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T6,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T6)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T6*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T6,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "212146-New company name. Menu, documentation, etc.

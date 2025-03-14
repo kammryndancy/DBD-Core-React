@@ -1,0 +1,34 @@
+0010 REM "Get Worksheet Header Info <EC3WSH>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 09/23/08 - 17.653333 - dmm - SSP# 215367
+0037 REM "215367-EC shipping amt by customer, % of sale, or flat amt plus amt
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Called from EC3BYB, will read for ECD record and return it
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,EC3WSH_ECD$,EC3WSH_ECD2$
+0100 SETERR 9000
+0110 X0$="EC3WSH",X1$="Get Worksheet Header Info"
+0120 EOL$=$0D0A$; REM EOL$=ATH(STP(EC_PARM$(57,8),1))
+0127 HTML_TEXT$="Content-type: text/html"
+0140 DIM MESS_INFO$[20]
+0150 REM "EC$[1]=ESB session record, EC$[2]=client number        , ec$[3]=message from server to called program, EC$[4]=formatted date, EC$[5]=formatted time EC$[6]=ECA2$ available web catalogs (concatonated string) EC$[7]=customer webec parms (ECS)  EC$[8]=image path (customer if set otherwise from ec_parm) EC$[9]=ST_LIST sort code record EC$[10]=reporting whse list EC$[11]=(1,4)warehouse code to use for o/e FM2RT0  (5,4)=would contain the 'other'warehouse for availability checking o/e messaging <not passed to FM2RT0, EC$[12]=email params,see 8000s [13] UNUSED ,[14]=ECY$, [15]=inventory system parameters [16]=Credict Card code/desc list [17]=active webcode [18-20] unused                                                                 
+0310 IOLIST EC3WSH_ECD$,EC3WSH_ECD2$
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECD...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+1000 ! Check session record, if current worksheet blank, get out, otherwise will read for ECD record and return it
+1010 DIM EC3WSH_ECD$(1580)
+1020 IF EC$[1](97,10)=DIM(10) THEN GOTO 9900 ! Current worksheet blank in session record
+1030 WK$=EC$[1](97,10); READ (Z[1],KEY=WK$,DOM=9900)IOL=0310
+1080 GOTO 9900
+1090 ! 
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 REM "215367-EC shipping amt by customer, % of sale, or flat amt plus amt

@@ -1,0 +1,160 @@
+0010 ! CAGCCV - Credit card authorization program
+0035 REM "5.7 - 01/04/11 - 11.023055 - dmm - SSP# 239471
+0037 REM "239471-Use of Cybersource's Simple Order and Silent POST APIs to   
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! 
+0051 ! Return values:
+0052 ! 
+0060 ! SUCCESS_YN : 1 = Approved, -1 = Declined, 0 = Error
+0070 ! RESPONSE_MSG$: Holds response message received from processor
+0080 ! APPR_CD$ : IF SUCCESS_YN = 1 , then contains the approval code sent by processor, else blank
+0090 ! 
+0100 ENTER X3$,X4$,DATA${ALL},NUM_ENTRIES,SUCCESS_YN,RESPONSE_MSG$,APPR_CD$,MERCH_ACCT$ ! WO215237, need to pass MERCH_ACCT$ back to write into EDD and to print on the journal
+0110 SETERR 9000
+0120 ! 
+0510 DIM Z[100]; Z$="01O CD0...  02O AR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0525,9040
+0525 ! WO215237, read the AR system parameters to see if there is a default merchant account, if so then use it, if not then read for the first record in CD0, that will be the default, then check for a possible customer specific merchant account
+0530 DIM ARS$(255); READ (Z[13],KEY=X3$(9,3)+"A/R",DOM=*NEXT)ARS$(1); IF ARS$(244,10)<>DIM(10) THEN READ (Z[1],KEY=ARS$(244,10),DOM=*NEXT)CD0$; GOTO READ_CUST ! If default set in parameters then get the record and skip to check for customer setting, WO215237
+0531 READ (Z[1],KEY="",DOM=*NEXT) ! reposition file to beginning in case we got the DOM, WO215237
+0535 ! 
+0550 READ (Z[1],ERR=9000)CD0$
+0555 ! 
+0560 READ_CUST:! WO215237, read customer record, if Merchant Account present, use it instead of the default
+0565 CUST_CODE$=DATA$[13,1]; IF STP(CUST_CODE$,2)<>"" THEN DIM AR1$(599); READ (Z[2],KEY=CUST_CODE$,DOM=*NEXT)AR1$(1); IF AR1$(484,10)<>DIM(10) THEN READ (Z[1],KEY=AR1$(484,10),DOM=*NEXT)CD0$ ! WO215237
+0570 ! 
+0580 MERCH_ACCT$=CD0$(1,10) ! WO215237
+0590 ! 
+1000 CC_CMD$="",CC_PARAMS$="",CC_EXP$="",REDIRECT_URL$="",SESSION_ID$="",P_RESPMSG$="",P_PNREF$=""
+1010 ! 
+1015 VALID_PROVIDER$="N"
+1020 SWITCH STP(CD0$(41,10),2)
+1029 ! 
+1030 CASE "N" ! Use Net1 provider
+1031 CC_CMD$=" -provider N -url "+STP(CD0$(111,255))+" "+CC_CMD$; VALID_PROVIDER$="Y"; BREAK
+1039 ! 
+1040 CASE "V" ! Use Verisign provider
+1041 CC_CMD$=" -provider V -certpath "+STP(CD0$(494,150))+" -host "+STP(CD0$(430,32))+" -port "+STP(CD0$(462,32))+" -vendor "+STP(CD0$(366,32))+" -partner "+STP(CD0$(398,32))+CC_CMD$; VALID_PROVIDER$="Y"; BREAK
+1049 ! 
+1050 CASE "C" ! Use CyberSource Subscription Service
+1051 CC_CMD$=" -provider C -service AC "; VALID_PROVIDER$="Y"; BREAK
+1080 DEFAULT 
+1089 ! 
+1090 END SWITCH 
+1100 IF VALID_PROVIDER$<>"Y" THEN GOTO 2630 ! Invalid provider, treat as an Error case
+1140 ! 
+1141 IF POS("C"=STP(CD0$(41,10)))>0 THEN CC_CMD$=" -user "+STP(CD0$(51,30))+" -password "+"NONE"+" "+CC_CMD$ ELSE CC_CMD$=" -user "+STP(CD0$(51,30))+" -password "+STP(CD0$(81,30))+" "+CC_CMD$ ! WO239471
+1150 ! 
+2100 ! Prepare command line param string; Gather other data
+2105 FOR II=1 TO NUM_ENTRIES
+2110 TAG$=DATA$[II,0],TF_VALUE$=STP(DATA$[II,1],2)
+2115 SWITCH UCS(TAG$)
+2120 CASE "CC_NUMBER"
+2125 CC_PARAMS$=CC_PARAMS$+"TF_CARDNUM="+TF_VALUE$+"&"; BREAK
+2130 CASE "CC_NAME"
+2135 CC_PARAMS$=CC_PARAMS$+"TF_NAME="+SUB(TF_VALUE$," ","+")+"&"; GOSUB SET_FIRST_LAST_NAMES; BREAK ! WO239471
+2140 CASE "CC_EXPIRE_MONTH" ! "CC_EXP" MUST NOT be present
+2145 CC_EXP$=TF_VALUE$+CC_EXP$; BREAK
+2150 CASE "CC_EXPIRE_YEAR" ! "CC_EXP" MUST NOT be present
+2155 CC_EXP$=CC_EXP$+TF_VALUE$; BREAK
+2160 CASE "CC_EXP"
+2165 CC_EXP$=TF_VALUE$; BREAK
+2170 CASE "ADDRESS1"
+2175 CC_ADDR$=SUB(TF_VALUE$+" "+STP(CC_ADDR$,2)," ","+"); BREAK
+2180 CASE "ADDRESS2"
+2185 CC_ADDR$=SUB(STP(CC_ADDR$,2)+" "+TF_VALUE$," ","+"); BREAK
+2190 CASE "CITY"
+2195 CC_PARAMS$=CC_PARAMS$+"TF_CITY="+SUB(TF_VALUE$," ","+")+"&"; BREAK
+2200 CASE "STATE"
+2205 CC_PARAMS$=CC_PARAMS$+"TF_STATE="+SUB(TF_VALUE$," ","+")+"&"; BREAK
+2210 CASE "ZIP"
+2215 CC_PARAMS$=CC_PARAMS$+"TF_ZIP="+SUB(TF_VALUE$," ","+")+"&"; BREAK
+2220 CASE "INVOICE_TOTAL"
+2225 CC_PARAMS$=CC_PARAMS$+"TF_AMOUNT="+STR(NUM(TF_VALUE$))+"&"; BREAK
+2230 CASE "INVOICE_TAX"
+2235 CC_PARAMS$=CC_PARAMS$+"T_TAX="+STR(NUM(TF_VALUE$))+"&"; BREAK
+2240 CASE "CUSTOMER_ID"
+2245 CC_PARAMS$=CC_PARAMS$+"T_CUSTOMER_NUMBER="+SUB(TF_VALUE$," ","+")+"&"; BREAK
+2250 CASE "ORDER_NUM"
+2255 CC_PARAMS$=CC_PARAMS$+"T_ORDERNUM="+SUB(TF_VALUE$," ","+")+"&"; BREAK
+2260 CASE "CC_CVV" ! WO227413
+2265 CC_PARAMS$=CC_PARAMS$+"C_CVV="+TF_VALUE$+"&"; BREAK ! WO227413
+2270 CASE "EMAIL" ! WO239471
+2275 EMAIL$=TF_VALUE$; BREAK ! WO239471
+2280 CASE "CC_TYPE" ! WO 239471
+2285 CC_TYPE$=STP(TF_VALUE$,2); BREAK ! WO239471
+2390 DEFAULT 
+2400 BREAK
+2410 END SWITCH 
+2420 NEXT II
+2430 ! 
+2435 ! Add billing address lines 1,2 to the command line params
+2436 CC_PARAMS$=CC_PARAMS$+"TF_ADDR="+CC_ADDR$+"&"
+2438 CC_PARAMS$=CC_PARAMS$+"TF_EMAIL="+EMAIL$+"&" ! WO239471
+2439 CC_PARAMS$=CC_PARAMS$+"CC_TYPE="+CC_TYPE$+"&" ! WO239471
+2440 ! Add Expiry Date to the command line params
+2450 CC_PARAMS$=CC_PARAMS$+"TF_EXPDATE="+CC_EXP$
+2460 ! Finish preparing the command line params
+2470 CC_CMD$=CC_CMD$+" -params "+CC_PARAMS$
+2480 ! Store this command line as input in a temp file
+2490 TEMP_FILE$="ccauth.in."; GOSUB CREATE_UNIQUE_TEMP_FILE
+2500 SLOT=HFN; OPEN LOCK (SLOT,ERR=2630)TEMP_FILE$; PRINT (SLOT)CC_CMD$; CLOSE (SLOT)
+2510 ! 
+2520 ! Execute the command line
+2530 RESP$="",RETURN_CODE=-9999,TEMP_FILE1$=TEMP_FILE$,OLD_GUI=%GUI,%GUI=0
+2540 CALL "ZZ2CMD",X3$,X4$,"{CC_AUTH_100}",TEMP_FILE1$,"NR",RETURN_CODE,RESP$
+2541 %GUI=OLD_GUI
+2550 RESP$=SUB(RESP$,SEP,"|")+"|"
+2560 ! Remove temporary input file
+2570 IF %CC_DEBUG<>1 THEN ERASE TEMP_FILE$,ERR=2590
+2580 ! 
+2590 IF POS("Result :Approved"=RESP$,ERR=2630)>0 THEN SUCCESS_YN=1; GOTO 2650
+2600 IF POS("Result :Declined"=RESP$,ERR=2630)>0 THEN SUCCESS_YN=-1; GOTO 2650
+2610 IF POS("Result :Error"=RESP$,ERR=2630)>0 THEN SUCCESS_YN=0; GOTO 2650
+2620 ! If here, then error occurred
+2630 SUCCESS_YN=-1; RESPONSE_MSG$="Error occurred while processing credit card"; GOTO 2720
+2640 ! Extract response message and reference code
+2650 INDEX=POS("Message :"=RESP$,ERR=2665); END_INDEX=POS("|"=RESP$(INDEX+9),ERR=2665)
+2660 RESPONSE_MSG$=RESP$(INDEX+9,END_INDEX-1)
+2670 IF SUCCESS_YN<1 THEN GOTO 2720 ! Transaction NOT approved or error, no approval code
+2680 ! Transaction approved
+2690 INDEX=POS("Reference :"=RESP$,ERR=2705); END_INDEX=POS("|"=RESP$(INDEX+11),ERR=2705)
+2700 APPR_CD$=RESP$(INDEX+11,END_INDEX-1)
+2710 ! 
+2720 GOTO 9040
+2730 CREATE_UNIQUE_TEMP_FILE:! take TEMP_FILE$ and make it unique and make it to use, we let caller make the temp_file name so we don't have to be operating system specific
+2740 RND$=STR(INT(RND*1000):"0000")
+2750 SERV_DIR$=STP(MID(PFX,1,POS(" "=PFX)),2); SERV_DIR$=STP(SERV_DIR$,1,DLM)+DLM
+2760 TST=HFN; OPEN (TST,ERR=2770)SERV_DIR$+TEMP_FILE$+RND$; CLOSE (TST); GOTO 2740 ! if opened then go get another random number
+2770 TEMP_FILE$=SERV_DIR$+TEMP_FILE$+RND$; SERIAL TEMP_FILE$ ! name is unique, set it & create file to hold it
+2780 RETURN 
+2790 ! 
+2800 LOG_MESG:! Log LOGMESG$ to the WebEC log file
+2810 ! MESS$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|MESSAGE|CREDIT CARD AUTH|"+LOGMESG$
+2820 ! MX=FN%_LOG_MESSAGE_WITH_FLUSH("MESG",MESS$)
+2830 RETURN 
+2900 SET_FIRST_LAST_NAMES:! WO239471, using cc_name, determine first and last names and set these into parameters list
+2910 FULL_NAME$=STP(TF_VALUE$,2),FIRST_NAME$=FULL_NAME$,LAST_NAME$=""
+2915 P=POS(" "=FULL_NAME$); IF P=0 THEN GOTO SET_NAMES_INTO_PARAMS
+2920 FIRST_NAME$=FULL_NAME$(1,P-1),LAST_NAME$=STP(FULL_NAME$(P+1),0)
+2925 P=POS(" "=LAST_NAME$); IF P=0 THEN GOTO SET_NAMES_INTO_PARAMS ELSE FIRST_NAME$=FIRST_NAME$+DIM(1)+STP(LAST_NAME$(1,P-1),0),LAST_NAME$=STP(LAST_NAME$(P+1),0); GOTO *SAME
+2975 SET_NAMES_INTO_PARAMS:
+2980 CC_PARAMS$=CC_PARAMS$+"TF_FIRSTNAME="+SUB(FIRST_NAME$," ","+")+"&"
+2985 CC_PARAMS$=CC_PARAMS$+"TF_LASTNAME="+LAST_NAME$+"&"
+2990 RETURN 
+2995 ! 
+9000 REM "ERROR PROCESSING
+9010 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9020 LAST_CC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_CC_ERR$=GBL("LAST_CC_ERR",LAST_CC_ERR$)
+9030 GOTO 9040
+9040 REM "End
+9050 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9060 EXIT 
+9999 END 
+56002 REM "200625-Credit Card Plus: Validation of card fails when billing addr
+56004 REM "190790-Net1, wants to use Level II for a lower transaction rate    
+56006 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+56008 REM "215237-Ability to use multiple Net1 merchant accounts in DemandBdge
+56010 REM "227413-Credit card transactions need to support CVV security field
+56012 REM "239471-Use of Cybersource's Simple Order and Silent POST APIs to

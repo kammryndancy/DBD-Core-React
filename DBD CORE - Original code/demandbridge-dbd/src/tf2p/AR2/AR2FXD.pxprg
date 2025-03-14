@@ -1,0 +1,69 @@
+0010 REM "Program fix bad expiration date created by GUI
+0035 REM "5.6 - 04/11/08 - 10.862777 - tma - SSP# 218222
+0037 REM "218222-Post Upgrade Error in ARGMAV - Exp. Date Code Issue         
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 IF Q1$="" THEN Q1$=Q0$
+0110 X0$="AR2FXD",X1$="Credit Card Bad Expiration Date",K9=0
+0120 DIM S$(20)
+0130 K0=18,K1=3
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(65,1)>"2" THEN PRECISION NUM(X3$(65,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1)
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ARZ...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+1035 DIM A$(255)
+1040 READ (Z[1],KEY="",DOM=*NEXT) ! Positions the pointer at the beginning of file
+1050 GOSUB 6000 ! BACKGROUND
+1060 REM MSGBOX "This program will fix bad expiration dates created by GUI, proceed?",MSG("CONFIRM"),"YESNO,1,?",ANS$
+1070 REM IF ANS$="NO" THEN GOTO 9800
+1075 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 1076,9800
+1510 A1$=KEY(Z[1],END=9800) ! KEY of next record in file
+1520 READ (Z[1],KEY=A1$)IOL=0310
+1530 GOSUB 6200
+1540 GOTO 1510
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6006)@(0,11),'CE','SB',
+6060 PRINT @(0,4),"This program will fix bad expiration dates created by GUI."
+6070 PRINT @(10,6+V0),"# of Bad Exp. Dates:",
+6080 PRINT @(11,7+V0),"Credit card number:",@(9,8),"Bad Expiration date:",@(8,9+V0),"Good Expiration Date:",
+6130 PRINT (0,ERR=6131)'SF',
+6140 RETURN 
+6200 REM "DISPLAY DATA
+6217 IF A$(40,1)="K" OR A$(40,1)="L" THEN GOSUB 6230 ! SSP211214 jdf
+6220 RETURN 
+6230 K9=K9+1; PRINT @(31,6),K9,@(31,7),A$(20,20),@(31,8),A$(40,10),
+6240 IF A$(40,1)="K" OR A$(40,1)="L" THEN GOSUB 6600 ! SSP211214 jdf
+6250 PRINT @(31,9),A$(40,10),
+6290 RETURN 
+6600 REM "FIX DATE FIELDS THAT BEGIN WITH 'K' ! SSP211214 subroutine added jdf
+6605 A$(50,40)=A$(46,40)
+6610 A$(40,10)=FND$(A$(40,6)) ! SSP211214 jdf
+6620 WRITE (Z[1],KEY=A1$)IOL=0310 ! SSP211214 jdf
+6630 RETURN 
+8905 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+8910 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+8920 DEF FNB$(Z9$)=X3$(214-6*NUM(Z9$),1)
+8925 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 PRINT @(0,4),'CL',
+9925 IF A1$<>"" THEN Q1$=A1$
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "211214-Credit Card Info in gui is not writing back to chui         

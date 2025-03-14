@@ -1,0 +1,83 @@
+0010 REM "Get information from the I/C lots <ICGLOT>
+0035 ! "6.0 - 11/26/02 - 15.746111 - dmm
+0040 ! "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0059 REM "F$ is file name to use
+0060 REM "K$ is key part to match, generally 20 for item all locs, 24 for item & location, if K$ is "" or only 10 long (for the customer )tthen pass all to look at s$(would we ever do this?, very time consuming)
+0061 REM "S$ is sales order # or s/o #+line # that lines that pass K$ must match
+0062 REM "O$ is options, none at this time
+0063 REM " R$ is return string, for future use
+0064 REM " C is count of number found
+0065 REM " C() is buckets from lots, if totalable items (0-cost, 1-freight, 4- quantity) then corresponding C() is the total. If not totable, (2=units per pkg, 3=units per primary, 5=Sales price, 6=units per sale u/m) then it is the value of the lots or -1 if the lots did not ALL have the same value in that bucket.
+0090 REM "
+0095 SETERR 9000
+0100 ENTER X3$,F$,K$,S$,O$,R$,C,C{ALL}
+0110 X0$="ICGLOT",X1$="Lot Information program"
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6]
+0500 REM "FILES
+0503 GOSUB SETUP_MESSAGES
+0507 ! IF LEN(F$)=3 THEN F$=F$+"...  " ELSE IF LEN(F$)=6 THEN F$=F$+"  "
+0510 ! Z$="01O "+F$
+0525 IF LEN(F$)=3 THEN _FILE_NAME$=F$+%C$ ELSE IF LEN(F$)=6 THEN _FILE_NAME$=F$
+0530 _FILE=HFN; OPEN (_FILE,ERR=OPEN_ERR)_FILE_NAME$
+0710 DIM A$(240),A[6],C[6]
+0720 C=0; REM " count of number found so far
+1000 REM "Process the file
+1010 READ (_FILE,KEY=K$,DOM=1011)
+1020 K0$=KEY(_FILE,END=5000)
+1025 IF K0$(1,LEN(K$))<>K$ THEN GOTO 5000
+1030 READ (_FILE,KEY=K0$,DOM=1020)IOL=0310
+1035 IF S$<>"" THEN IF A$(110,LEN(S$))<>S$ THEN GOTO 1020
+1805 C=C+1
+1810 GOSUB 2000
+1990 GOTO 1020
+2000 REM "Process a found lot record
+2005 REM "Process the totalable buckets first
+2010 C[0]=C[0]+A[0],C[1]=C[1]+A[1],C[4]=C[4]+A[4]
+2050 REM "Process the non totalable buckets
+2055 IF C=1 THEN C[2]=A[2],C[3]=A[3],C[5]=A[5],C[6]=A[6]; GOTO 2090; REM "If first record, move the values in and go on
+2060 IF C[2]<>A[2] THEN C[2]=-1
+2062 IF C[3]<>A[3] THEN C[3]=-1
+2064 IF C[5]<>A[5] THEN C[5]=-1
+2065 IF C[6]<>A[6] THEN C[6]=-1
+2990 RETURN 
+5000 REM "End of processing
+5090 GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9200 SETUP_MESSAGES:
+9210 _MSG_FILOPNERR1$=MSG("FILOPNERR1")
+9220 _MSG_DIRECTORY$=MSG("DIRECTORY")
+9230 _MSG_PREFIX$=MSG("PREFIX")
+9240 SETUP_MESSAGES_END:RETURN 
+9245 ! 
+9250 OPEN_ERR: MSGBOX _MSG_FILOPNERR1$+QUO+_FILE_NAME$+QUO+SEP+_MSG_DIRECTORY$+LWD+SEP+_MSG_PREFIX$+PFX,MSG(ERR),"!"
+9255 CMD_STR$="E"
+9260 EXIT 
+9265 ! 
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 IF _FILE THEN CLOSE (_FILE)
+9930 EXIT 
+9999 END 

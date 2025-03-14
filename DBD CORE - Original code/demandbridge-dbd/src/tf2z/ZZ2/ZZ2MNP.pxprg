@@ -1,0 +1,31 @@
+0010 REM "Create Screen Print String <ZZ2MNP>
+0030 REM "(C) 1985,1986 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "This software contains trade secrets and proprietary information"
+0500 B0$="BR",B1$="E"+B0$(2,1)
+0550 L8=1; REM "PVX
+1000 REM "
+1010 SETERR 9000
+1020 ENTER V$,Q9$,R0,R1,R9
+1030 IF R9=0 THEN B2$=$1B$+"SB" ELSE B2$=""
+6100 REM "DISPLAY SCREEN
+6105 Q9$=""
+6110 FOR X=1+R1*80 TO LEN(V$) STEP 80
+6120 Q$=V$(X,80); IF POS(" "<>V$(X))=0 THEN EXITTO 6190 ELSE IF L8=1 AND Q$(80,1)<>" " THEN Q$=Q$(1,78)+Q$(80,1); REM "If level 8 then hold to 79 chars by replaceing next to last char (generally horizontal line) with last character (generally a bar or intersection)
+6125 IF POS("-"<>Q$)=0 THEN GOTO 6180
+6130 IF POS(" "<>Q$)=0 THEN GOTO 6180
+6140 Z1=INT(X/80)+3+R0
+6145 P0=POS(" "<>Q$),B0=0
+6150 P=POS("  "=Q$(P0)+"  ")-1; IF P=0 THEN P=LEN(Q$(P0))
+6152 Z0=P0-1
+6155 IF R9>=0 THEN IF Q$(P0,1)="|" THEN Q9$=Q9$+$1B01$+CHR(Z0+1+P)+$1B$+B1$+B2$+$1B01$+CHR(Z0)+$1B$+B0$+$1B01$+CHR(Z0+1)+Q$(P0+1,P)+$1B$+B1$+B2$,R9=1,P5=Z0+P+1; GOTO 6160
+6157 Q9$=Q9$+$1B01$+CHR(Z0)+Q$(P0,P),P5=Z0+P+1
+6165 IF POS(" "<>Q$(P0+1))=0 THEN GOTO 6180 ELSE P0=P0+P,P=POS(" "<>Q$(P0)); IF P>0 THEN P0=P0+P-1; GOTO 6150
+6180 IF POS(" "<>V$(X+80))>0 THEN Q9$=Q9$+$1B$+"LF"
+6185 NEXT X
+6190 IF R9>0 THEN Q9$=Q9$+$1B$+B1$
+6300 GOTO 9900
+8165 NEXT X
+9000 PRINT 'RB'
+9900 REM 
+9920 EXIT 
+9999 END 

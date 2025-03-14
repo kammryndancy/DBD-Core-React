@@ -1,0 +1,34 @@
+0010 REM "DB Distributor Software Level <UT2MOD>
+0035 REM "5.7 - 06/03/09 - 8.971111 - dmm - SSP# 229899
+0037 REM "229899-Change CHUI release to 5.7 and combine all release activity 
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 SETERR 0055; ENTER Q5
+0130 A$=WHO,A$=" - "+A$(1,3)
+0200 PREINPUT "0035 ! "+QUO+"5.7 - "+DAY+" - "+STR(TIM)+A$
+0290 DAY_FORMAT READ OLD_FORMAT$
+0295 DAY_FORMAT "YYYY"
+0300 PREINPUT "0040 ! "+QUO+"Copyright "+DAY+" Demand Bridge, LLC.; Norcross, Georgia"
+0310 DAY_FORMAT OLD_FORMAT$
+0400 PREINPUT "0041 ! "+QUO+"        Licensed Software - All Rights Reserved."
+0500 PREINPUT "9999 END"
+2000 REM "
+2010 PRGLEVEL=TCB(12),MAIN=PRGLEVEL-1
+2020 SETERR 2200; Q$=PGM(10,MAIN); P0$=Q$
+2025 Q$=LST(Q$); IF Q$(1,5)<>"0010" THEN PRINT 'RB',"THIS PROGRAM HAS NO LINE 10!"
+2030 PRINT 'LF',Q$
+2040 SETERR 2200; Q$=PGM(35,MAIN)
+2050 PRINT LST(Q$)
+2055 PRINT "** BE SURE TO SAVE! **"
+2060 PRINT 'LF',
+2190 GOTO 2300
+2200 SETERR 0000
+2220 PRINT 'RB',"ERROR ENCOUNTERED.  CHECK LINE 10!"
+9940 EXIT 
+9999 END 
+56000 ! Program changes starting 4/12/06
+56010 REM "194893-Change release from 5.4 to 5.5 
+56012 REM "213071-Change CHUI release from 5.5 to 5.6.  Change GUI release
+56014 REM "212146-New company name. Menu, documentation, etc.
+56016 REM "223692-UT2LCK/UT2MOD say DemandBridge, Inc., should be
+56018 REM "229899-Change CHUI release to 5.7 and combine all release activity

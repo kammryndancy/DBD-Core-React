@@ -1,0 +1,312 @@
+<PxTable>
+ TableName=FR2
+ TableKey=K1372704544
+ FileCreate=KEYED "FR2",5,0,-256,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR2_ColCtrl"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":56-csc"
+    LASTUPDATEDFILE$="2015/08/28 12:43:26-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST FORMAT_CONTROL_CODE$:[LEN(5)]"
+    NAME$="FORMAT_CONTROL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"FORM_C_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="P"
+    NOTES$="Format control code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST FORMAT_CONTROL_CODE$:[LEN(5,SEP=SEP)]"
+    NAME$="FORMAT_CONTROL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"FORM_C_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Format control code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST PARENS_OR_MINUS_NEG$:[LEN(1,SEP=SEP)]"
+    NAME$="PARENS_OR_MINUS_NEG"
+    DESCRIPTION$="=MSG("+QUO+"PARE_O_M_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="theses or minus for negative"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST MINUS_SIGN$:[LEN(1,SEP=SEP)]"
+    NAME$="MINUS_SIGN"
+    DESCRIPTION$="=MSG("+QUO+"MINUS_SIGN"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Minus sign (beginning/end)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST USE_CURRENCY_SIGN$:[LEN(4,SEP=SEP)]"
+    NAME$="USE_CURRENCY_SIGN"
+    DESCRIPTION$="=MSG("+QUO+"USE_C_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Use currency sign in mask"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST INDEXING_METHOD$:[LEN(4,SEP=SEP)]"
+    NAME$="INDEXING_METHOD"
+    DESCRIPTION$="=MSG("+QUO+"INDE_M"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Indexing method"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST DATA_IND_OR_ACCUM$:[LEN(1,SEP=SEP)]"
+    NAME$="DATA_IND_OR_ACCUM"
+    DESCRIPTION$="=MSG("+QUO+"DATA_I_O_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="data indexing or accumulate"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FR2_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FR2_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="EDP  "
+    FORMAT_CONTROL_CODE$="EDP  "
+    TF_DESC$="Balance Sheet                 "
+    PARENS_OR_MINUS_NEG$="8"
+    MINUS_SIGN$="0"
+    USE_CURRENCY_SIGN$="    "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS001"
+    FORMAT_CONTROL_CODE$="IS001"
+    TF_DESC$="Income Statement              "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="6"
+    USE_CURRENCY_SIGN$="0   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01 "
+    FORMAT_CONTROL_CODE$="IS01 "
+    TF_DESC$="Income Statement with YTD Comp"
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="6"
+    USE_CURRENCY_SIGN$="0   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L-1"
+    FORMAT_CONTROL_CODE$="P/L-1"
+    TF_DESC$="P/L FORMAT ONE                "
+    PARENS_OR_MINUS_NEG$="P"
+    MINUS_SIGN$=" "
+    USE_CURRENCY_SIGN$="    "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 "
+    FORMAT_CONTROL_CODE$="PER1 "
+    TF_DESC$="PERIODS 7 -12                 "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PINC "
+    FORMAT_CONTROL_CODE$="PINC "
+    TF_DESC$="PERIOD INCREASE               "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  "
+    FORMAT_CONTROL_CODE$="PL1  "
+    TF_DESC$="MTD, YTD                      "
+    PARENS_OR_MINUS_NEG$=" "
+    MINUS_SIGN$=" "
+    USE_CURRENCY_SIGN$="    "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  "
+    FORMAT_CONTROL_CODE$="QTR  "
+    TF_DESC$="QTD                           "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1000"
+    FORMAT_CONTROL_CODE$="R1000"
+    TF_DESC$="YTD Comparison                "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  "
+    FORMAT_CONTROL_CODE$="S/S  "
+    TF_DESC$="Spreadsheet Format by period  "
+    PARENS_OR_MINUS_NEG$=" "
+    MINUS_SIGN$=" "
+    USE_CURRENCY_SIGN$="    "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SBS  "
+    FORMAT_CONTROL_CODE$="SBS  "
+    TF_DESC$="Solion Balance Sheet          "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC "
+    FORMAT_CONTROL_CODE$="SINC "
+    TF_DESC$="Solion Income Statement       "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SPSH "
+    FORMAT_CONTROL_CODE$="SPSH "
+    TF_DESC$="Periods 1 -6 Spreadsheet      "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   "
+    FORMAT_CONTROL_CODE$="SS   "
+    TF_DESC$="Solion Spreadsheet            "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="1   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UG97 "
+    FORMAT_CONTROL_CODE$="UG97 "
+    TF_DESC$="Balance Sheet                 "
+    PARENS_OR_MINUS_NEG$="1"
+    MINUS_SIGN$="3"
+    USE_CURRENCY_SIGN$="2   "
+    INDEXING_METHOD$="    "
+    DATA_IND_OR_ACCUM$=" "
+    FR2_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

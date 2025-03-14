@@ -1,0 +1,152 @@
+0010 REM "EC Server Status Info <EC3STA>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 03/19/09 - 10.894166 - crg - SSP# 212758
+0037 REM "212758-Data replication enhancements and bugfixes and wishlist     
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3STA",X1$="E/C Server Status Info"
+0120 EOL$=$0D0A$; EOL$=ATH(STP(EC_PARM$(57,8),1))
+0310 IOLIST ECZ$(1),ECZ[0],ECZ[1],ECZ[2],ECZ[3],ECZ[4],ECZ[5],ECZ[6],ECZ[7],ECZ[8],ECZ[9],ECZ[10],ECZ[11],ECZ[12],ECZ[13],ECZ[14],ECZ[15],ECZ[16],ECZ[17],ECZ[18]
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECZ... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "Initialize by reading ECZ record for this server
+0615 DIM ECZ$(128),ECZ[18]
+0620 READ (Z[1],KEY=EC$[14](1,15),DOM=0621)IOL=0310
+1000 REM "Process DATA array
+1005 DATA_TAGS$="001<template>"
+1009 IF NUM_ENTRIES=0 THEN GOTO 1091
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1018 DPOS=POS("<"+TAG$+">"=DATA_TAGS$); IF DPOS=0 THEN GOTO 1090 ELSE DINDEX=NUM(DATA_TAGS$(DPOS-3,3),ERR=1090)
+1019 ON DINDEX GOTO 1090,1021,1090
+1021 TEMPLATE$=VALUE$; REM "template
+1090 NEXT I
+1101 VERSION$="EV",PROGRAM$=PGN; DIM BYBINFO$[5]; BYBINFO$[1]=PROGRAM$,BYBINFO$[2]=VERSION$,BYBINFO$[3]=TEMPLATE$,BYBOPTIONS$=""
+1500 REM "Use template$ to open file, read line by line and insert
+1504 IF EC$[2](324,1)<>"Y" THEN ECZ$(16)=""; DIM ECZ[18]; MESSAGE$="You are not authorized to view this data"
+1505 IF TEMPLATE$<>"" THEN CLOSE (100); OPEN (100,OPT="TEXT",ERR=9000)TEMPLATE$; REM "If no template given we will supply a default
+1506 REM "Setup line_tags$
+1507 LINE_TAGS$="001<server_id>002<current_process>003<last_input_file>004<status_time>005<server_start>006<server_pid>007<files_done>008<orders_done>009<order_lines>010<valid_logins>011<invalid_logins>012<errors>013<message>014<files_to_process>015<active_sessions>016<wc_company_code>017<wc_company_name>018<current_prefix>019<rpc_server_addr>020<rpc_server_port>021<autossh_status>022<dr2srv_status>023<dr2_status>"
+1510 IF TEMPLATE$="" THEN GOSUB 3000 ELSE READ (100,END=1595)LINE$; GOSUB 7550; REM "if no template supplied we will create line$
+1515 INDEX=POS("?tf?"=LINE$); IF INDEX=0 THEN PRINT (OUTPUT)LINE$,EOL$,; IF TEMPLATE$="" THEN GOTO 1595 ELSE GOTO 1510; REM "if no template given then only one LINE$ to process
+1520 END_INDEX=POS("?"=LINE$(INDEX+4)),TAG$=LINE$(INDEX+4,END_INDEX-1),LINE1$=LINE$(1,INDEX-1),LINE2$=LINE$(INDEX+END_INDEX+4),LPOS=POS("<"+TAG$+">"=LINE_TAGS$); IF LPOS=0 THEN LINDEX=0 ELSE LINDEX=NUM(LINE_TAGS$(LPOS-3,3))
+1530 GOSUB 2000; GOTO 1515
+1995 GOTO 9900
+1999 REM "Get tag value & substitute
+2000 ON LINDEX GOTO 2090,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2090
+2001 LINE$=LINE1$+STP(ECZ$(1,15),1)+LINE2$; GOTO 2095; REM "server_id
+2002 LINE$=LINE1$+STP(ECZ$(16,10),1)+LINE2$; GOTO 2095; REM "current_processK
+2003 LINE$=LINE1$+STP(ECZ$(26,20),1)+LINE2$; GOTO 2095; REM "last_input_file
+2004 PRECISION 14; LINE$=LINE1$+FN%NTD$(ECZ[0],"MM/DD/YYYY  HH:MI:SS")+LINE2$; PRECISION 2; GOTO 2095; REM "status_time
+2005 PRECISION 14; LINE$=LINE1$+FN%NTD$(ECZ[1],"MM/DD/YYYY  HH:MI:SS")+LINE2$; PRECISION 2; GOTO 2095; REM "server_start
+2006 LINE$=LINE1$+STR(ECZ[2])+LINE2$; GOTO 2095; REM "server_pid
+2007 LINE$=LINE1$+STR(ECZ[3])+LINE2$; GOTO 2095; REM "files_done
+2008 LINE$=LINE1$+STR(ECZ[4])+LINE2$; GOTO 2095; REM "orders_done
+2009 LINE$=LINE1$+STR(ECZ[5])+LINE2$; GOTO 2095; REM "order_lines
+2010 LINE$=LINE1$+STR(ECZ[6])+LINE2$; GOTO 2095; REM "valid_logins
+2011 LINE$=LINE1$+STR(ECZ[7])+LINE2$; GOTO 2095; REM "invalid_logins
+2012 LINE$=LINE1$+STR(ECZ[8])+LINE2$; GOTO 2095; REM "errors
+2013 LINE$=LINE1$+MESSAGE$+LINE2$; GOTO 2095; REM "message
+2014 LINE$=LINE1$+STR(ECZ[9])+LINE2$; GOTO 2095; REM "files_to_process
+2015 LINE$=LINE1$+STR(ECZ[10])+LINE2$; GOTO 2095; REM "active_sessions
+2016 LINE$=LINE1$+STP(%WC_INFO.CLIENT_CODE$,1)+LINE2$; GOTO 2095; REM "wc_company_code
+2017 LINE$=LINE1$+STP(%WC_INFO.CLIENT_NAME$,1)+LINE2$; GOTO 2095; REM "wc_company_code
+2018 LINE$=LINE1$+FN_PFX$+LINE2$; GOTO 2095; REM "current prefix
+2019 LINE$=LINE1$+STP(%WC_INFO.SERVER_ADDRESS$,1)+LINE2$; GOTO 2095; REM "rpc_server_addr
+2020 LINE$=LINE1$+STR(%WC_INFO.SERVER_PORT)+LINE2$; GOTO 2095; REM "rpc_server_port
+2021 GOSUB AUTOSSH_STATUS; LINE$=LINE1$+AUTOSSHSTAT$+LINE2$; GOTO 2095; REM "autossh_status
+2022 GOSUB DR2SRV_STATUS; LINE$=LINE1$+DR2SRVSTAT$+LINE2$; GOTO 2095; REM "dr2srv_status
+2023 GOSUB DR2FILE_STATUS; LINE$=LINE1$+DR2FILESTAT$+LINE2$; GOTO 2095; REM "dr2_status
+2090 LINE$=LINE1$+"?"+LINE2$; GOTO 2095; REM "tag not found, replace with '?'
+2095 RETURN 
+3000 REM "If no template given, then create one LINE$ to use with a default template in it
+3005 LINE$="<html>"+EOL$+"<head>"+EOL$
+3010 LINE$+="<title>Server Statistics for "+STP(ECZ$(1,15),1)+"</title>"+EOL$
+3015 LINE$+="</head>"+EOL$+"<body>"+EOL$+"<p><pre>"+EOL$
+3017 LINE$+="<br><br>?tf?message?<br><br>"+EOL$
+3020 LINE$+="       Server id: ?tf?server_id?<br>"+EOL$
+3022 LINE$+="Status date/time: ?tf?status_time?<br>"+EOL$
+3024 LINE$+=" Current process: ?tf?current_process?<br>"+EOL$
+3026 LINE$+=" Last input file: ?tf?last_input_file?<br>"+EOL$
+3028 LINE$+="  Server started: ?tf?server_start?<br>"+EOL$
+3030 LINE$+="      Process ID: ?tf?server_pid?<br>"+EOL$
+3032 LINE$+=" Files processed: ?tf?files_done?<br>"+EOL$
+3034 LINE$+="Orders processed: ?tf?orders_done?<br>"+EOL$
+3036 LINE$+="Order lines done: ?tf?order_lines?<br>"+EOL$
+3038 LINE$+="    Valid logins: ?tf?valid_logins?<br>"+EOL$
+3040 LINE$+="  Invalid logins: ?tf?invalid_logins?<br>"+EOL$
+3042 LINE$+="    Errors found: ?tf?errors?<br>"+EOL$
+3043 LINE$+="Files to process: ?tf?files_to_process?<br>"+EOL$
+3044 LINE$+=" Active sessions: ?tf?active_sessions?<br>"+EOL$
+3045 LINE$+="<br>  Current Prefix: ?tf?current_prefix?<br>"+EOL$
+3046 IF %WC THEN {
+3048 LINE$+="<br>"+EOL$
+3050 LINE$+=" WC Company code: ?tf?wc_company_code?<br>"+EOL$
+3052 LINE$+="      WC Company: ?tf?wc_company_name?<br>"+EOL$
+3054 LINE$+=" RPC Server Addr: ?tf?rpc_server_addr?<br>"+EOL$
+3056 LINE$+=" RPC Server Port: ?tf?rpc_server_port?<br>"+EOL$
+3060  }
+3080 LINE$+="</pre></p>"+EOL$+"</body>"+EOL$+"</html>"+EOL$
+3095 RETURN 
+4000 DEF FN_PFX$ ! Return string with formatted pfx data, sep'ed by EOLS
+4005 LOCAL PFX$,I,INDENT$; PFX$="",INDENT$=DIM(12)
+4010 IF NOT(NUL(PFX(-1))) THEN PFX$+=INDENT$+"File: "+PFX(-1)+"<br>"
+4015 FOR I=0 TO 9
+4020 IF NOT(NUL(PFX(I))) THEN PFX$+=INDENT$+STR(I:"   0: ")+PFX(I)+"<br>"
+4025 NEXT I
+4030 IF NOT(NUL(PFX(PGN))) THEN PFX$+=INDENT$+"Pgrm: "+PFX(PGN)+"<br>"
+4085 IF NOT(NUL(PFX$)) THEN PFX$="<pre>"+PFX$+"</pre>"
+4090 RETURN PFX$
+4095 END DEF
+4099 ! 
+5000 REM "Return autossh process status - DB Enterprise
+5005 AUTOSSH_STATUS:
+5010 IF NOT(NUL(MSG("EC3STA_001"))) THEN AUTOSSHSTAT$=FN_EXEC_CMD$(MSG("EC3STA_001"),"") ELSE AUTOSSHSTAT$="Error!"
+5045 RETURN 
+5049 ! 
+5050 REM "Return DR2SRV process status - DB Enterprise
+5055 DR2SRV_STATUS:
+5060 IF NOT(NUL(MSG("EC3STA_002"))) THEN DR2SRVSTAT$=FN_EXEC_CMD$(MSG("EC3STA_002"),"") ELSE DR2SRVSTAT$="Error!"
+5095 RETURN 
+5099 ! 
+5100 REM "Return DR2 file info - DB Enterprise
+5105 DR2FILE_STATUS:
+5110 OPEN (HFN,ERR=DR2FILE_ERR)"DR2"+%C$; DR2CHAN=LFO
+5120 CALL "ZZINFO",ERR=*NEXT,DR2CHAN,STATUS,X3$,REC_USED,TOT_REC,KEY_SZ,BYTE,DISC,TYPE,TOT_SEC,FILE_NM$
+5130 DR2FILESTAT$="DR2: "+FILE_NM$+" - Records in use: "+STR(REC_USED)
+5140 DR2FILE_STATUS_DONE:
+5144 IF DR2CHAN THEN CLOSE (DR2CHAN); DR2CHAN=0
+5145 RETURN 
+5146 DR2FILE_ERR: DR2FILESTAT$="Error opening file!"; GOTO DR2FILE_STATUS_DONE
+5149 ! 
+7550 REM "Send LINE$ to EC3BYB for generic fields processing
+7560 CALL "EC3BYB",ERR=7561,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,LINE$,BYBINFO${ALL},BYBOPTIONS$
+7595 RETURN 
+8000 FN_EXEC_CMD:
+8002 DEF FN_EXEC_CMD$(LOCAL CMD$, LOCAL ARG$)
+8005 LOCAL RESP$; RESP$=""
+8010 SEND_CMD$="< "+CMD$+" "+ARG$
+8030 CMD_CHAN=HFN; OPEN (CMD_CHAN,ERR=EXEC_ERR)SEND_CMD$
+8035 READ (CMD_CHAN,BSY=*SAME,END=EXEC_READ_DONE)RESP_IN$; RESP$+=RESP_IN$+$0A$; GOTO *SAME
+8036 EXEC_ERR: RESP$+="Error!"
+8040 EXEC_READ_DONE:
+8045 RESP_IN$=""; CLOSE (CMD_CHAN)
+8090 RETURN RESP$
+8095 END DEF
+8099 ! ****************************************************
+8910 DEF FND$(Z9$)=Z9$(1*2+1,2)+"/"+Z9$(7-1*2,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9905 REM FOR I=1 TO 20; IF Z[I]<>0 THEN CLOSE (Z[I]) FI; NEXT I
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56002 REM "212758-Data replication enhancements and bugfixes and wishlist     

@@ -1,0 +1,58 @@
+0010 REM "Program to clear FMZ file of all blank customers and trans > 2 yrs
+0020 REM "Program <FMZCLEAR>
+0090 BEGIN 
+0100 SETERR 9000
+0200 X0$="FMZCLEAR",X1$="Program to clear FMZ records > 2 years",T0=100
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2
+0500 REM "FILES                
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X FMZ... "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 DATE$=FND$(X3$(21,6)),DATE$=STR(NUM(DATE$(7,4))-2:"0000")+DATE$(1,2)+DATE$(4,2)
+0810 CALL "ZZINFO",Z[1],T9,X3$,T1,T0,K,B,D,S0,S1,F$
+0820 T=T1,T0=100
+1000 K$=KEY(1,END=9900); READ RECORD (1,KEY=K$)A$
+1010 DATE1$=FND$(A$(26,6)),DATE1$=STR(NUM(DATE1$(7,4)):"0000")+DATE1$(1,2)+DATE1$(4,2)
+1020 IF DATE1$<DATE$ OR A$(1,10)=DIM(10) THEN REMOVE (1,KEY=K$)
+1080 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1090 GOTO 1000
+6000 REM "BACKGROUND                
+6005 PRINT (0,ERR=6016)'SB',
+6010 PRINT @(0,4),"This program will run through the FMZ shipments detail reporting file used in   the FMR RA, RB, RC and RI and remove all records that are greater then two yearsolder than the current system date of ",FND$(X3$(21,6)),
+6090 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph  given total #, T and current #, C, and time counter T1 (T1 is init'ed her e and used here, just don't use it somewhere else)                         
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8910 DEF FND$(Z9$)=Z9$(1*2+1,2)+"/"+Z9$(7-1*2,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+9000 REM "ERROR PROCESSING                                            
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                           
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                      
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                     
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

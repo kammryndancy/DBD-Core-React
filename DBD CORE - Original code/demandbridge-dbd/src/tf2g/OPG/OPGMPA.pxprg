@@ -1,0 +1,242 @@
+0010 ! OPGMPA - Order Processing Paramter Setup
+0035 REM "5.7 - 08/23/24 - 12.036114 - jvv - SSP# 307477
+0037 REM "307477-Changes to Carton Label maintenance and Print               
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0060 PROCESS "OPGMPA","../PMG/PM.EN"
+0070 ! IF TCB(13)=1 THEN RUN "ZMENU"
+0080 EXIT 
+0100 INIT:! ^100,5 - Initialize routine
+0300 ! 300,5 - Iolists & Templates
+0305 DIM FM$:"a1:c(7),a2:c(1),a3_q:c(8),a3_unk:c(2),a4:c(2),a5:c(1),a6:c(1),a7:c(12),a8:c(12),a9:c(12),a10:c(12),a11:c(12),a12:c(12),a13:c(12),a14:c(12),a15:c(12),a16:c(12),a17:c(4),a18:c(1),a19:c(1),a20:c(1),a21:c(1),a22:c(1),a23:c(1),a24:c(1),a25:c(1),a26:c(1),a27:c(1),a28:c(1),a29:c(1),a30:c(1),a31:c(1),a32:c(5),a33:c(1),a34:c(1),a35:c(1),a36:c(1),a37:c(1),a38:c(1),a39:c(10),a40:c(1),a41:c(1),a42:c(1),a43:c(1),a44:c(1),a45:c(1),a46:c(1),a47:c(1),a48:c(1),a49:c(1),a50:c(1),a51:c(1),a52:c(1),a53:c(1),a54:c(1),a55:c(1),a56:c(1),a56_unk:c(2),a57:c(1),a58:c(1),a59:c(1),a60:c(1),a61:c(2),a62:c(3),a63:c(3),a64:c(1),a65:c(5),a66:c(1),a67:c(1),a68:c(1),a69:c(1),a70:c(1),a71:c(1),a72:c(1),a73:c(1),a74:c(1),a75:c(1),a76:c(10),a77:c(1),a78:c(1),a79:c(1),a80:c(1),a81:c(1),a82:c(1),a83:c(1),a84:c(1),a85:c(1),a86:c(1),a87:c(1),a88:c(1),a89:c(1),a90:c(1),a91:c(1),a92:c(1),a93:c(1),a94:c(1),a95:c(1),a96:c(1),a97:c(1),a98:c(1),a99:c(1),a100:c(1),a101:c(1),a102:c(1),a103:c(1),a104:c(1),a105:c(5),a106:c(1),a107:c(1),a108:c(1),a109:c(1),a110:c(1),a111:c(1),a112:c(1),a113:c(1),a114:c(1),a115:c(1),a116:c(1),a117:c(1),a118:c(1),a119:c(1),a120:c(6),a122:c(5),a123:c(1),a124:c(1),a125:c(1),a126:c(1),a127:c(1),a128:c(1),a129:c(1),a130:c(1),a131:c(1),a132:c(1),a133:c(2),a134:c(1),a135:c(1),a136:c(1),a137:c(3),a138:c(1),a139:c(1),a140:c(1),A141:c(1),A142:c(1),A143:c(1),A144:c(1),A145:c(1),A146:c(1),A147:c(1),A148:c(1),A149:C(5),A150:c(1),A151:c(1),A152:c(1),A153:c(1),A154:c(1),A155:c(1),A156:c(1),A157:c(1),A158:c(1),A159:c(1),A160:c(1),A161:c(1),A162:c(1),A163:c(2),A164:c(1),A165:c(1),A166:c(1),A167:c(1),fm_unused:c(164)" ! SSP 233931 ssp 233493, SSP238604, SSP239615, WO239078, WO241487 SSP246624 , WO247674 jdf wo255959, WO262075 WO276772 WO282078 WO279399 WO 283261 WO291586 ssp307210 SSP307287,DBD-368 SSP307463 DBD422 SSP 307477 DBD481 
+0310 FM_IOL:IOLIST FM$,FM0,FM1,FM2,FM3,FM4,FM5,FM6
+0315 GLOBAL_IOL:IOLIST %CUST_NAME$,%CUST_NAME1$
+0500 ! 500,5 - Open files
+0505 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"; _ZZPARM=ZZPARM
+0510 EXIT 
+1000 READ_REC:! ^1000,5 - Read data for OP parameters
+1005 WORK_ORDER_PRESENT=0
+1010 READ (ZZPARM,KEY=%C$+"F/W",DOM=*NEXT); WORK_ORDER_PRESENT=1
+1015 READ DATA FROM "" TO IOL=FM_IOL
+1020 READ (ZZPARM,KEY=%C$+"F/M",DOM=*NEXT)IOL=FM_IOL; B_FM$=FM$; GOTO 1035 ! SSP248581 jdf
+1025 MSGBOX "This entry is not on file. "+SEP+"Add this entry?","Attention","?,YESNO,2",ANSWER$
+1030 IF ANSWER$="NO" THEN CMD_STR$="E"; EXIT 
+1035 IF NOT(WORK_ORDER_PRESENT) THEN FM.A6$="" ! Work order production system
+1040 REFRESH_FLG=1
+1042 USE_COMP$=FM$(309,1); REM SSP 181372 FOR JIR
+1043 LOT_PR_OVER$=FM$(311,1),FORCE_CC$=FM$(315,1),USE_CLASS$=FM$(316,1); REM SSP !SSP#236922,236923
+1044 USE_TERMS$=FM$(317,1); REM SSP 
+1045 MULT_PO$=FM$(318,1); IF TCB(29)<7100000 OR %C$<>"500" THEN MULT_PO$="N" ! SSP212097
+1046 TOD_PL$=FM$(319,1); IF TCB(29)<7100000 THEN TOD_PL$="N" ! SSP212097
+1047 DF_NOD$=FM$(312,3) ! SSP 223467
+1048 START_RPO$=FM$(320,1),END_RPO$=FM$(321,1)
+1049 PO_ACK$=FM$(323,1) ! SSP 233493
+1050 EXIT 
+1100 WRITE_REC:IF ID$<>"BUTTON_2" THEN IF B_FM$<>FM$ THEN MSGBOX MSG("REC_ALTERD"),MSG("UPDATE"),"?,YESNO",_YESNO$; IF _YESNO$="NO" THEN GOTO 1140 ! ^100,5 - Write OP Paramters ! SSP248581 jdf SSP 261224
+1101 FM$(309,1)=USE_COMP$; REM SSP 181372 FOR JIR
+1102 FM$(311,1)=LOT_PR_OVER$,FM$(315,1)=FORCE_CC$,FM$(316,1)=USE_CLASS$; REM SSP !SSP#236922,236923
+1103 FM$(317,1)=USE_TERMS$; REM SSP 
+1104 FM$(318,1)=MULT_PO$; IF TCB(29)<7100000 THEN FM$(318,1)="N" ! ssp212097
+1105 FM$(319,1)=TOD_PL$; IF TCB(29)<7100000 THEN FM$(319,1)="N" ! ssp212097
+1106 FM$(312,3)=DF_NOD$ ! SSP 223467
+1107 FM$(320,1)=START_RPO$,FM$(321,1)=END_RPO$ ! SSP 233931
+1108 FM$(323,1)=PO_ACK$ ! SSP 233493
+1110 FM.A17$=FY$,FM.A4$=ACCTPD$ ! SSP 261224
+1130 WRITE (ZZPARM,KEY=%C$+"F/M")IOL=FM_IOL
+1140 CMD_STR$="E"
+1150 RETURN 
+1160 ! 
+5000 CHECK_FOLDER:! 5000,5 - Determine what is to be enabled/shown
+5005 IF FOLDER_ID$="OPGMPA.1" THEN {
+5010 GOSUB PROCESS_FM.A2
+5015 IF WORK_ORDER_PRESENT THEN CALL "*wingrp;show",WORK_ORDER.GRP$
+5018 ! OSUB LOAD_DATES ! SSP 261224
+5020  }
+5025 ! 
+5030 IF FOLDER_ID$="OPGMPA.2" THEN {
+5035 GOSUB PROCESS_FM.A20
+5040 IF POS(%C$="500084067",3) THEN ENABLE CONTROL FM.A34.CTL
+5045  }
+5050 ! 
+5055 IF FOLDER_ID$="OPGMPA.3" THEN {
+5060 GOSUB PROCESS_FM.A19
+5065  }
+5070 ! 
+5075 IF FOLDER_ID$="OPGMPA.4" THEN {
+5080 GOSUB PROCESS_FM.A38
+5085  }
+5090 ! 
+5095 IF FOLDER_ID$="OPGMPA.5" THEN {
+5100 ! IF POS(%C$="145500",3) THEN ENABLE CONTROL FM.A67.CTL ELSE DISABLE CONTROL FM.A67.CTL   !this parameter is very comp specific to 145, based on 1st 4 characters of item code see ref#230788  
+5105 IF POS(%C$="338500",3) THEN ENABLE CONTROL FM.A76.CTL ELSE DISABLE CONTROL FM.A76.CTL
+5110 IF POS(%C$="335500",3) THEN ENABLE CONTROL FM.A81.CTL ELSE DISABLE CONTROL FM.A81.CTL
+5115 GOSUB PROCESS_FM.A64
+5120  }
+5125 ! 
+5130 IF FOLDER_ID$="OPGMPA.6" THEN {
+5135 ! IF POS(%C$="434449500470474",3) THEN ENABLE CONTROL FM.A84.CTL ELSE FM.A84$="N"; DISABLE CONTROL FM.A84.CTL!SSP#217593
+5140  }
+5145 ! 
+5150 IF FOLDER_ID$="OPGMPA.7" THEN {
+5155 GOSUB PROCESS_FM.A104
+5160 GOSUB PROCESS_FM.A107
+5165 IF POS(%C$="500522529531137470497524537539541542546",3) THEN ENABLE CONTROL FM.A114.CTL ELSE FM.A114.CTL$="N" ! DISABLE CONTROL FM.A114.CTL
+5170 IF POS(%C$="321500",3) THEN ENABLE CONTROL FM.A118.CTL ELSE FM.A118.CTL$="N"; DISABLE CONTROL FM.A118.CTL
+5175  }
+5180 IF FOLDER_ID$="OPGMPA.8" THEN {
+5182 IF TCB(29)<7100000 OR %C$<>"500" THEN MULT_PO$="N"; DISABLE CONTROL MULT_PO.CTL ! SSP212097
+5183 IF TCB(29)<7100000 THEN TOD_PL$="N"; DISABLE CONTROL TOD_PL.CTL
+5190  }
+5191 IF FOLDER_ID$="OPGMPA.9" THEN GOSUB PROCESS_FM.A160 ! WO291586 SSP307210
+5192 REFRESH_FLG=1
+5195 RETURN 
+6000 ! ^1000,5 - Control specfic routines
+6005 ! 
+6025 PROCESS_FM.A2:! ^25,5 - Set quote mask
+6027 GOTO NEW_PROCESS_FM.12
+6030 IF FM.A2$="Y" THEN {
+6035 CALL "*wingrp;show",QUOTE_DIV.GRP$
+6040 %OP_MASK$="2N6"
+6045  } ELSE {
+6050 CALL "*WINGRP;HIDE",QUOTE_DIV.GRP$
+6055 %OP_MASK$="0N6"
+6060  }
+6065 ! %OP_MASK$ (1,1)=Division Len, (2,1)=A/N (3,1)=Length
+6070 %OP_DIV_LEN=NUM(%OP_MASK$(1,1)),%QUOTE_LEN=NUM(%OP_MASK$(3,1))
+6075 IF %OP_DIV_LEN THEN %QUOTE_MASK$=DIM(%OP_DIV_LEN,"0")+"-",%QUOTE_DIV$=DIM(%OP_DIV_LEN,"0")
+6080 %QUOTE_MASK$+=DIM(%QUOTE_LEN,"0"),%QUOTE_NUM$=DIM(%QUOTE_LEN,"0")
+6085 RETURN 
+6087 IF NUL(FM.A3_UNK$) THEN FM.A3_UNK$="89"
+6090 ! 
+6100 PROCESS_FM.A4:! ^25,5 - Verify accounting period is valid
+6102 B_FM$(19,2)=ACCTPD$
+6103 READ (ZZPARM,KEY=%C$+"G/LYE"+FY$,DOM=*NEXT)B$
+6105 IF ACCTPD$>MID(B$,13,2) OR NUM(ACCTPD$)<1 THEN {
+6110 NEXT_ID=ACCTPD.CTL
+6115  }
+6120 REFRESH_FLG=1
+6125 RETURN 
+6130 ! 
+6150 PROCESS_FM.A17:! ^25,5 - Verify accounting year
+6152 B_FM$(143,4)=FY$ ! SSP 261224
+6155 READ (ZZPARM,KEY=%C$+"G/LYE"+FY$,DOM=*NEXT)B$; GOTO 6165
+6160 ! M.A17$="",NEXT_ID=FM.A17.CTL,REFRESH_FLG=1
+6165 PERFORM "ZZWLDB;LOAD_ACCTPD" ! SSP 261224
+6168 RETURN 
+6170 ! 
+6175 PROCESS_FM.A19:! ^25,5 - Track promotional statistics
+6180 IF FM.A19$="Y" THEN CALL "*wingrp;enable",PROMO.GRP$ ELSE CALL "*wingrp;disable",PROMO.GRP$; FM.A58$="N",FM.A59$="N",FM.A61$="",FM.A62$="",FM.A63$="",REFRESH_FLG=1
+6185 RETURN 
+6190 ! 
+6200 PROCESS_FM.A20:! ^25,5 - Feature driven pricing
+6205 IF FM.A20$="Y" THEN ENABLE CONTROL FM.A21.CTL ELSE FM.A21$="N"; DISABLE CONTROL FM.A21.CTL
+6210 RETURN 
+6215 ! 
+6225 PROCESS_FM.A38:! ^25,5 - Set the GP adjustment to the cost for 'C' type
+6230 IF FM.A38$="Y" THEN ENABLE CONTROL FM.A39.CTL ELSE FM.A39$=""; DISABLE CONTROL FM.A39.CTL
+6235 RETURN 
+6240 ! 
+6250 PROCESS_FM.A60:! ^25,5 - Determine if ML Code for orders, etc are to be cleared
+6255 IF NOT(POS(FM.A60$="CT")) THEN {
+6260 FM.A61$="",FM.A62$="",FM.A63$=""
+6265 CALL "*wingrp;disable",CODES.GRP$
+6270  } ELSE {
+6275 CALL "*wingrp;enable",CODES.GRP$
+6280  }
+6285 REFRESH_FLG=1
+6290 RETURN 
+6295 ! 
+6300 PROCESS_FM.A61:! ^25,5 - Verify mailing label code is correct
+6305 IF (FM.A60$="C" AND NUM(FM.A61$)>3) OR (FM.A60$="T" AND NUM(FM.A61$)>11) THEN {
+6310 MSGBOX "Invalid Mailing Label code."+SEP+"If update by 'Customer', Mailing Label code value is between 1 and 3"+SEP+"If update by 'Telemarketing', Mailing Label code value is between 1 and 11","Attention",""
+6315 FM.A61$="",REFRESH_FLG=1
+6320  }
+6325 RETURN 
+6330 ! 
+6350 PROCESS_FM.A64:! ^25,5 - Enter sell price on Stock Purchase orders
+6355 IF FM.A64$="Y" THEN ENABLE CONTROL FM.A71.CTL ELSE FM.A71$="N"; DISABLE CONTROL FM.A71.CTL
+6360 RETURN 
+6365 ! 
+6375 PROCESS_FM.A65:! ^25,5 - Default print fields used for FM.A65 & FM.A122
+6380 LOCAL X
+6385 VAL$=VIS(ID$)
+6390 FOR X=1 TO LEN(VAL$)
+6395 IF NOT(POS(VAL$(X,1)="SIP ")) THEN {
+6400 MSGBOX "Invalid entry."+SEP+"Valid characters are 'SIP '","Attention","!"
+6405 VAR$=VAL$+"$"
+6410 VIA VAR$=""
+6415 NEXT_ID=ID,REFRESH_FLG=1
+6420 BREAK
+6425  }
+6430 NEXT X
+6435 RETURN 
+6440 ! 
+6450 PROCESS_FM.A104:! ^25,5 - Selection of PO's that will not update order
+6455 IF FM.A104$="Y" THEN ENABLE CONTROL FM.A105.CTL ELSE FM.A105$=""; DISABLE CONTROL FM.A105.CTL
+6460 RETURN 
+6465 ! 
+6475 PROCESS_FM.A107:! ^25,5 - Enable repeat order feature
+6480 IF FM.A107$="Y" THEN ENABLE CONTROL FM.A108.CTL ELSE FM.A108.CTL$="N",REFRESH_FLG=1; DISABLE CONTROL FM.A108.CTL
+6485 RETURN 
+6490 ! 
+6500 PROCESS_FM.A111:! ^25,5 - Flexible format to use for PO receiving carton
+6505 IF STP(FM.A111$,2)<>"" THEN {
+6510 READ (ZZPARM,KEY="FORMATCL"+FM.A111$,DOM=*NEXT); GOTO 6530
+6515 MSGBOX "Invalid format code.","Attention","!"
+6520 FM.A111$="",NEXT_ID=FM.A111.CTL,REFRESH_FLG=1
+6525  }
+6530 RETURN 
+6535 ! 
+6540 PROCESS_FM.A160:! ^25,5 - WO291586, adjust FMY/FMZ order type
+6545 IF FM.A160$="Y" THEN CALL "*wingrp;enable",TYPES.GRP$ ELSE CALL "*wingrp;disable",TYPES.GRP$; FM.A161$="",FM.A162$=""; REFRESH_FLG=1
+6550 RETURN 
+6555 ! 
+7000 LOAD_DATES:! SSP 261224
+7010 FY$=FM.A17$
+7020 ACCTPD$=FM.A4$
+7030 SET_CUR_FY$=FY$,SET_CUR_ACCTPD$=ACCTPD$
+7040 TF_MODULE$="G/L"
+7050 PERFORM "ZZWLDB;LOAD_FY"
+7055 FY$=CUR_FY$,ACCTPD$=CUR_ACCTPD$
+7060 REFRESH_FLG=1
+7080 RETURN 
+9700 WRAPUP:! 9700,5 - Clean up
+9705 READ DATA FROM "" TO IOL=GLOBAL_IOL
+9710 CLOSE (ZZPARM)
+9715 EXIT 
+9999 END 
+10000 NEW_PROCESS_FM.12:! SSP 199638
+10010 IF FM.A2$="Y" THEN P4$="0A2A6" ELSE P4$="0z2A6"
+10020 IF %X3$(330,1)="1" THEN P4$(2,1)="d"
+10030 CALL "ZZACCT",%X3$,%X4$,"A","O/P",P4$
+10040 P4$+="S1"
+10050 CALL "ZZACCT",%X3$,%X4$,"A","P/O",P4$
+10060 %GLOBALS_DONE=0
+10070 CALL "ZZWMX3"
+10080 RETURN 
+56000 ! "199638-Numbering by divison does not work in Order Entry.          
+56002 REM "261224-GUI panel OPGMPA - the current period.  If you type 1 and   
+56004 REM "233931-Parm to set range of PO's to always reprint, script to post 
+56006 ! 234938-Don't delete EDW record when order line deleted
+56008 REM "233493-Retrieve/process DSSI PO files, create/send DSSI PO Acks.   
+56010 REM "238604-Add O/P parameter to bypass new auto lot selection logic for
+56011 REM "236922 - Allow Item Price Class pricing to override Lot Sales Price?236923-Missing parameter question in GUI -Force Entry of Credit Card Info on Credit Card Orders?                           
+56012 REM "239615-Display Customer Invoice Inquiry Message in PO Receiving.   
+56014 REM "239078-Receiving Report form, flexible format/printing programs
+56016 REM "241487-Calculate suggested order qty for RON based on accumulated  
+56017 REM "246624-If you don't mark the questions in the comp section it fills
+56018 REM "247674-Need to use program logic to make function field write to   
+56019 REM "255959-Field in Order Header for Summary Bill Y/N which will carry 
+56020 REM "262075-Parm to change default in PO Rec. reprint PL msg to No      
+56021 REM "266632-O/P System Parm; Function key prompt, Order Notepad display,
+56022 REM "276772-Multiple Finder's Fees per Customer/Item/Order Line.        
+56023 REM "282078-Multi Finders Fee; use current settings when creating a new 
+56024 REM "279399-Add Print Flag access on Order Line Summary Entry Panel.    
+56025 REM "283261-O/P System Parameter; for new graphical order trigger       
+56026 REM "291586-OP System Parms; Change order type for release lines in SJ  
+56027 REM "307210-International shipping address - add country code           
+56028 REM "307287-DBD-116; Suppress specs on PO if spec URL present from DB/a.
+56029 REM "307454-DBD-368:Parameter to disable 10% overruns                   
+56030 REM "307463 DBD422-Allow access to all warehouses for an operator who is       
+56031 REM "307477-Changes to Carton Label maintenance and Print               

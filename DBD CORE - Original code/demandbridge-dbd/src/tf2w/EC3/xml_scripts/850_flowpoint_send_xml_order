@@ -1,0 +1,3 @@
+cd /usr/lib/pvx/www_interface
+
+./send_xml_file  -url 'http://flowpoint.development.dbenterprise.com/flowpoint/listener/na/DBD_vend/na/go.pt' -F $1  # 2> /dev/null

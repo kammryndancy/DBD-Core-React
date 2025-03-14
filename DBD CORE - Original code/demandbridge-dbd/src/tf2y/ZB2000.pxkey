@@ -1,0 +1,41 @@
+<PxTable>
+ TableName=ZB2000
+ TableKey=K1007399615
+ FileCreate=KEYED "ZB2000",23,200,1024,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           "
+    FIELD_1$="001SAMPLE-03            CREDIT_LIMIT > 0 AND (AR_BALANCE > CREDIT_LIMIT )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           "
+    FIELD_1$="001SAMPLE-04            CREDIT_LIMIT > 0 AND (AR_BALANCE > CREDIT_LIMIT )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           "
+    FIELD_1$="001SAMPLE-05            CREDIT_LIMIT > 0 AND (AR_BALANCE > CREDIT_LIMIT )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           "
+    FIELD_1$="001SAMPLE-40            |             Sales year: [YEAR:Z4]                                        |             Sales_type: [SALES_TYPE:S1]                                  YEAR <>"+QUO+"    "+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         "
+    FIELD_1$="001TIME REPORT          LOG_DATE>="+QUO+"K00701"+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="1                     "
+    FIELD_1$="1                     CUSTOMER.MASTER     CUSTOMER_CODE       0      "
+   </RecordData>
+
+</Data>
+
+</PxTable>

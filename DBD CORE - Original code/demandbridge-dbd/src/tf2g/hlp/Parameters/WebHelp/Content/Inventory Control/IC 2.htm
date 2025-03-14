@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Inventory Control" MadCap:InPreviewMode="false" MadCap:PreloadImages="false" MadCap:RuntimeFileType="Topic" MadCap:TargetType="WebHelp" lang="en-us" xml:lang="en-us" class="" MadCap:PathToHelpSystem="../../" MadCap:HelpSystemFileName="Parameters.xml" MadCap:SearchType="Stem">
+    <!-- saved from url=(0016)http://localhost -->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Tab 2</title>
+        <link href="../SkinSupport/Slideshow.css" rel="stylesheet" />
+        <link href="../SkinSupport/MadCap.css" rel="stylesheet" />
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapAll.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapTopicAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic_24x17.gif" style="width: 24;height: 17;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">Inventory Control Parameters - Tab 2</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;margin-left: 0;margin-right: auto;">
+            <tbody>
+                <tr>
+                    <td><span style="font-weight: bold;font-style: normal;font-size: 8pt;font-family: Verdana;">DB&#160;Distributor &gt; Inventory Control &gt; Setup &gt; System &gt; System Setup &gt; Parameters (ICS S1)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav" style="font-weight: bold;font-style: italic;">&#160;</p>
+        <p class="Nav">For each parameter listed below, you will see the available options, and if applicable, a recommended setting.</p>
+        <p class="Nav">&#160;</p>
+        <table style="width: 100%;margin-left: 0;margin-right: auto;">
+            <col style="width: 185px;" />
+            <col style="width: 619px;" />
+            <tbody>
+                <tr>
+                    <td style="font-size: 8pt;font-weight: bold;">Parameter</td>
+                    <td style="font-size: 8pt;font-weight: bold;">Description</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Do you group like inventory for quantity break pricing?</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">DB Distributor provides Pricing Tables that allow you to offer special pricing based upon the quantity of a specific item being purchased.  If you have multiple items that should be considered as one for the purpose of quantity pricing, you should check this box.  For example, you might sell 1099 forms for tax reporting purposes.  Since there are multiple types of 1099 forms, during order entry, each type would be entered on separate order entry line.  However, you may wish for the quantity of all lines to be taken into consideration to determine which quantity break is applicable. </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Do you require more than 6 quantity price breaks?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Checking this box increases to twelve, the number of quantity breaks in the Item file.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Automatic lot selection method code</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">Use the drop down list to select the method for automatic lot selection.  The choices are:</p>
+                        <p style="text-align: justify;">Manual – No automatic lot selection.  Operator designates which lot to use for the quantity being ordered.</p>
+                        <p style="text-align: justify;">Case pack then oldest – Automatic lot selection with emphasis on the case pack.</p>
+                        <p style="text-align: justify;">Oldest 1st, full cases – Automatic lot selection method where the oldest lot is selected, but the order quantity is adjusted to eliminate the splitting of a carton.  This method will process through the list of lots in the order receipt date order and only full cases will be shipped.  If a fractional case is required it will commit an additional FULL case.  Therefore, it may ship more than was ordered.   If more is ordered than on-hand, then ALL remaining lots will be committed and the program will revert to manual mode, giving the operator a chance to override this selection.  Using the same data as the first example, with an order quantity of 5,600, three cases of 2,700 will be selected for a total order quantity of 8,100.</p>
+                        <p style="text-align: justify;">No Order Entry – This method does not commit lots during order entry.  If you elect this method, you are assuming that the warehouse personnel will mark the accounting copy of the picking ticket with the information that accounting needs to relieve the appropriate lots during the billing function.     </p>
+                        <p />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Lot display option</td>
+                    <td style="font-size: 8pt;text-align: justify;">
+                        <p style="text-align: justify;">This parameter only applies for operators using the character version of DB Distributor Order Entry and/or inventory inquiry.  It sets the preference as to which field is more important to have displayed on the main lot availability panel.  The choices are:</p>
+                        <p>The Distributor Purchase Order Number</p>
+                        <p>The Bin Location</p>
+                        <p>The Vendor Job Number</p>
+                        <p>The Customer Purchase Order Number</p>
+                        <p style="text-align: justify;">The remaining fields would be displayed on the lot detail panel.
+
+In the graphical version of DB Distributor, with the use of a scroll bar, all fields can be displayed.
+</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Ignore bin locations when printing count sheets?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Generally Physical Inventory Count Sheets are printed with the items listed in bin location order.  This facilitates efficient movement throughout the warehouse during the counting process.  Check this box if you would prefer to print this report in strict item number order.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Number of months to use to calculate average monthly usage</td>
+                    <td style="font-size: 8pt;text-align: justify;">Enter the number of months for the average usage calculation. There are 3 figures that can be entered here. There are 3 different monthly average usage figures that can be calculated. As M1 M2 M3.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Should avg sales per month be displayed in I/C availability screen?</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">Adds an additional field on the inventory availability screen.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Prompt in P/O&#160;receiving if customer backorders?</td>
+                    <td style="font-size: 8pt;text-align: justify;">If there are customer backorders, the operator would be prompted that customer backorders exist during the PO receiving process.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">P/O receiving update to change suggested bin location?</td>
+                    <td style="font-size: 8pt;text-align: justify;">If answered yes, the bin location entered in the lot record will be updated to the bin location field on the inventory availability screen.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Expanded lot record (std cost, u/m, storage exp date, PC and CC)</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">New fields have been added to the lot record. Turn this option on to make use of these fields. The new fields are as follows:</p>
+                        <p>        Standard Unit Cost</p>
+                        <p>Standard Unit Cost Unit of Measure
+ </p>
+                        <p>       Standard Unit Cost Quantity per Unit of Measure
+</p>
+                        <p>        Storage Expiration Date</p>
+                        <p>Product Code
+</p>
+                        <p>        Commission Code</p>
+                        <p>Lot Number
+</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Display new lot numbers?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Shows the lot sequence number on the inventory record.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Maintain a lot transaction log?</td>
+                    <td style="font-size: 8pt;text-align: justify;">A file containing Transaction Detail for Lots is now available. This file is the IC8 detail transaction file. This file is used in running the Detail Transaction report. The file contains information about each lot in the system and tracks receipts, sales/issues and adjustments. The file is keyed by Fiscal Year/Accounting Period, customer number, item number, and location. The information is updated during the P/O Receiving update, the Sales Journal update, and the Inventory Transaction update. Each entry in the file contains all of the information in the lot at the time of the transaction, plus some additional new fields. Also, the sales price is updated during the Sales Journal update.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Post inventory transfers to committed and on PO?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Inventory transfers, while being entered in, will show the quantity on the inventory availability screen. </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Display lot comment field during inquiry and lot selection?</td>
+                    <td style="font-size: 8pt;text-align: justify;">If this parameter is set to "yes", when lots display during order entry or inventory availability, a second line will display the lot comment field.  If you view the lot detail, the line you chose will move to the top of the display (it has always done this).  The comment field will display below this.
+
+This is used to display serial numbers for electronic equipment such as printers and PC’s as an example.
+</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Automatic lot selection method for automatic reqs only</td>
+                    <td style="font-size: 8pt;">
+                        <p style="text-align: justify;">The program that creates Automatic Requisitions for eCommerce, Order Requisition Gateway, On-Line Services, Restocking Gateway, Restocking Report, etc. has been modified to check this new parameter.  If blank the program will work as before, which uses the 'regular' lot selection method.  If a valid method is entered it will be used for automatic requisitions only.
+</p>
+                        <p style="text-align: justify;">The main reason for this parameter is some users prefer to use manual lot selection over one of the automatic types.  When auto reqs are created, if manual is the method, no lots get committed.  With this new parameter, users can still use manual lot selection as their method for manual order entry, and have an automatic type method set up to use for auto reqs.
+</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav"> </p>
+        <p class="Nav">Continue to <a href="IC 3.htm">IC&#160;Parameters - Tab 3</a></p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007-2016 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

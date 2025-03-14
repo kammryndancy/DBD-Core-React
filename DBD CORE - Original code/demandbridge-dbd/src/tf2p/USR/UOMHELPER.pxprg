@@ -1,0 +1,23 @@
+0010 ENTER U$,U_QPM,DISPLAY_QTY,QTY_IN_EACHES,MODE
+0020 OPEN (HFN)"ZZPARM"; ZZPARM=LFO
+0030 ! U$="" ! Unit of measure "BOX ", "M   ", etc
+0040 ! U_QPM=0 ! Qty per unit; 1 or 250 (if it is an EACH/1 or Box/250 respectively) etc
+0050 ! DISPLAY_QTY=0 ! Qty displayed on screen in terms of UOM, ex: "10" BOX/250
+0060 ! QTY_IN_EACHES=0 ! Raw qty to be stored in DB/d files in extended form (also called eaches interchangeably)
+0070 ON MODE GOSUB *RETURN,GET_EACHES_QTY,GET_DISPLAY_QTY,*RETURN
+0085 EXIT 
+0090 END 
+0099 ! 
+0100 GET_UOM_FORMATTED:
+0110 U=1 ! Given U$ and U_QPM, get components required to calculate display units
+0120 DIM UOM[2]; FIND (ZZPARM,KEY="U/M"+PAD(U$,4),DOM=*RETURN)UOM$,UOM[0],UOM[1]
+0130 IF UOM$(20,1)="Y" THEN U=UOM[1] ELSE U=U_QPM
+0140 IF U=0 THEN U=1
+0195 RETURN 
+0199 ! 
+0200 GET_EACHES_QTY:
+0210 GOSUB GET_UOM_FORMATTED; QTY_IN_EACHES=DISPLAY_QTY*U
+0299 ! 
+0300 GET_DISPLAY_QTY:
+0310 GOSUB GET_UOM_FORMATTED; DISPLAY_QTY=QTY_IN_EACHES/U
+0399 ! 

@@ -1,0 +1,47 @@
+0010 ! Shipping Interface Parameter Setup <SHGMPA>
+0035 REM "5.7 - 07/28/14 - 18.200277 - jvv - SSP# 271507
+0037 REM "271507-S/H System Parm; Don't update order ship via description?   
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0060 PROCESS "SHGMPA","../SHG/SH.EN"
+0070 END 
+0080 INIT:
+0200 ! ^200,10 Setup
+0210 DIM SHG$:"A00:C(6),A01:C(60),A02:C(12),A03:C(12),A04:C(60),A05:C(12),A06:C(12),A07:C(12),A08:C(2),A09:C(10),A10_1:C(1),A10_2:C(1),A10_3:C(1),A11:C(1),A12:C(1),A13:C(1),A14:C(1),A15:C(12),A16:C(6),A17:C(1),A18:C(1),A19:C(1),A20:C(1),A21:C(1),A22:C(7),A23:C(1)"; REM SSP 199463 ,SSP206259,WO214375,WO231768 WO244750, WO252271,WO268495,WO271507  
+0300 ! ^300,10 - Iolist
+0310 SHG_IOL:IOLIST SHG$
+0320 ! 
+0500 ! ^ 500,10 - Open Files
+0510 _ZZPARM=HFN; OPEN (_ZZPARM)"ZZPARM"
+0520 RETURN 
+0530 ! 
+1000 ! ^1000,10 Read in parameters
+1010 READ_REC:
+1020 PARM_KEY$=%C$+"S/H",KEY_SIZE=LEN(PARM_KEY$)
+1030 READ DATA FROM "" TO IOL=SHG_IOL
+1040 SHG$(1,KEY_SIZE)=PARM_KEY$
+1050 READ (_ZZPARM,KEY=PARM_KEY$,DOM=*NEXT)IOL=SHG_IOL
+1055 SHG.A22=NUM(SHG$(229,7)) ! WO268495
+1060 REFRESH_FLG=1
+1070 RETURN 
+1080 ! 
+1200 ! ^1200,10 Write out parameters
+1210 WRITE_REC:
+1215 SHG$(229,7)=STR(SHG.A22) ! WO268495
+1220 WRITE (_ZZPARM,KEY=PARM_KEY$)IOL=SHG_IOL
+1230 CMD_STR$="E"
+1240 RETURN 
+1250 ! 
+9900 ! ^9900,10 - Wrap up
+9910 WRAP_UP:
+9920 CLOSE (_ZZPARM)
+9930 RETURN 
+9999 END 
+56000 REM "199463-Need to import fedex tracking number from a  text     
+56005 REM "214375-See 208467;Create a new S/H Parameter, Never invoice an
+56008 REM "231768-New SHA file to record Level One related account numbers
+56010 REM "244750-Inbound Freight processing in the Customer Invoicing Gateway
+56012 REM "252271-Inbound Freight; Bypass vendor match when invoicing PO lines
+56014 REM "268495-Inbound Frt: add markup to frt amt for vendor whse shipments
+56105 REM "271507-S/H System Parm; Don't update order ship via description?   

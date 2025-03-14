@@ -1,0 +1,36 @@
+0010 REM "Interactive Public Program Help Module <ZZPDOC>
+0030 REM "(C) 1985-1988 Basic Ideas, Inc; Atlanta, GA. USA
+0035 REM "This software contains trade secrets and proprietary information"
+1000 ENTER X0$
+1010 DIM S$(20)
+1020 GOSUB GET_PROG_DESCR
+2010 PRINT 'CE','LF',"**   ASG On-Line Documentation    **",'LF',
+2220 PRINT 'LF',@(12),X0$,": ",Q$,'LF'
+2230 GOSUB 5000
+2290 GOTO 9900
+3220 PRINT 'LF',"On-line Public Program Documentation feature has not yet been implemented."
+5000 REM 
+5020 F9=UNT
+5021 OPEN (F9,ERR=3200)"ZZH"
+5030 K$=" "+X0$+S$
+5040 FIND (F9,KEY=K$(1,10),DOM=6000)H0$; CLOSE (F9,ERR=*NEXT)
+5050 H0$=H0$(41),L0=4
+5060 PRINT H0$(1,70)
+5070 IF L0>12 THEN GOSUB 7000
+5080 H0$=H0$(71)
+5090 IF POS(" "<>H0$)>0 THEN GOTO 5060
+5100 PRINT 'LF',"** Done with documentation **"
+5110 PRINT 'LF','LF',
+5120 RETURN 
+6010 PRINT 'RB',
+6020 PRINT 'LF',"** Documentation not available for this program **"
+6040 GOTO 9900
+7000 INPUT @(70),"RETURN",Q$,@(0),; IF CTL=4 THEN GOTO 9900 ELSE IF Q$="Q" THEN GOTO 9900
+7020 RETURN 
+8000 GET_PROG_DESCR:
+8005 F9=0
+8010 CALL "ZZ2FNC;GET_PRG_REMARK",X0$,Q$
+8090 RETURN 
+9040 EXIT 
+9950 EXIT 
+9999 END 

@@ -1,0 +1,26 @@
+0010 REM "Get fax parameters <FX2SBC>
+0035 REM "5.6 - 05/06/08 - 10.4 - jvv - SSP# 207601
+0037 REM "207601-When emailing a laser form, if there is an "sp" in the email
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X3$,F0,C9$,X9
+1025 X9=-1
+1200 REM "
+1205 DIM C9$(727) ! SSP 207601
+1210 FIND (F0,KEY=X3$(9,3)+"FX2",DOM=1215)C9$(1); GOTO 1400
+1220 CALL "ZZPROM","4",X3$,0,"You are not configured for the Fax output option","","",0; GOTO 9900
+1405 X9=1
+1410 P0=POS("// "=C9$(23,78*5),78); IF P0=0 THEN GOTO 1600
+1420 C1$=C9$(22+P0,78),P1=POS("?"=C1$); IF P1=0 THEN GOTO 1500
+1425 REM "READ OPERATOR'S RECORD
+1430 FIND (F0,KEY="o"+X3$(40,3))Q$
+1440 C1$(P1)=Q$(96,8)
+1450 CLOSE (14); OPEN (14,ERR=1455)Q$(96,8); CLOSE (14); GOTO 1480
+1455 CALL "ZZPROM","4",X3$,0,"WARNING: CANNOT OPEN Fax include file "+Q$(96,8),"","",0
+1460 X9=-1; GOTO 9900
+1480 C9$(22+P0,78)=C1$
+1500 REM "
+1950 GOTO 9900
+9940 EXIT 
+9999 END 
+56000 REM "207601-When emailing a laser form, if there is an "sp" in the email

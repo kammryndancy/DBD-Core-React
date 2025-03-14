@@ -1,0 +1,4 @@
+umask 0
+TERM=ansi
+export TERM
+exec /usr/lib/pvx/pvx ZSTART.GUI

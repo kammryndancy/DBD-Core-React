@@ -1,0 +1,16 @@
+0010 REM "Program to reset latest fiscal yr and per for all customers
+0020 REM "Program <FMPYEAR>
+0100 BEGIN 
+0110 OPEN (1)"FMP073"
+0200 T0=100
+0900 READ (1,KEY="D",DOM=0910); REM "set for cust def records
+1000 K$=KEY(1,END=9900); READ RECORD (1,KEY=K$)A$
+1010 L=L+1; IF MOD(L,T0)=1 THEN PRINT @(10,10),L
+1020 IF K$(1,1)<>"D" THEN GOTO 9900; REM "if no longer D type then done
+1030 IF A$(24,1)<>"Y" THEN GOTO 1000; REM " If not FMS skip customer
+1040 A$(52,4)="2012",A$(56,2)="08"; REM "52,4=YEAR,56,2=PERIOD
+1050 WRITE RECORD (1,KEY=K$)A$
+1090 GOTO 1000
+9900 REM "END OF PROGRAM
+9910 RUN "ZMENU"
+9999 END 

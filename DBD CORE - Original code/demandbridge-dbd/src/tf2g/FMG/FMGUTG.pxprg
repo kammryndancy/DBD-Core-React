@@ -1,0 +1,124 @@
+0010 ! FMGUTG - Rebuild FM1 Sales from Order History
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/15/16 - 8.515 - tma - SSP# 284861
+0037 REM "284861-Utility SOP R5 does not include order history type D        
+0040 REM "Copyright 2016 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "FMGUTG","../FMG/FM.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 IF Q1$(1,1)="!" THEN Q1$=Q1$(2),F9$="Y"
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="FM2UTG",X1$="O/P Rebuild Item Master Sales"
+0120 DIM Z0$(80,"-"),S$(40)
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27],B[28],B[29],B[30],B[31]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS6...  02O FM1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0540 DIM A[7],B[31]
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000; GOSUB 8100
+0615 RETURN 
+0620 IF F9$="Y" THEN D9$=X3$(21,2)+"0101 "; PRINT @(45,7),FND$(D9$), ELSE DIM D9$(20); CALL "ZZENTR","D",A{ALL},D9$,X4$,X3$,45,7,1,6,C0,"","{2"+X$,"","FM2UTG00","","",""; IF D9$(1,2)<>"  " THEN D9$(10,6)=D9$(1,1)+STR(NUM(D9$(2,1))-1:"0")+D9$(3,4)
+0625 CALL "ZZENTR","D",A{ALL},D9$,X4$,X3$,65,7,10,6,C0,"","{2"+X$,"","FM2UTG00","","",""
+0630 IF F9$="Y" THEN D9$(7,1)="Y"; PRINT @(45,9),D9$(7,1), ELSE CALL "ZZENTR","Y",A{ALL},D9$,X4$,X3$,45,9,7,1,C0,"","{2"+X$,"","FM2UTG02","","",""
+0635 REM IF F9$="Y" THEN LET D9$(8,1)="Y"; PRINT @(45,9),D9$(8,1), ELSE CALL "ZZENTR","Y",A(ALL),D9$,X4$,X3$,45,10,8,1,C0,"","{2"+X$,"","FM2UTG04","","",""
+0640 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0642 PROCEED:DIM D9$(20); D9$(1,6)=SALES_DATE$,D9$(7,1)=CB_INFO$,D9$(10,6)=LAST_YEAR$
+0645 IF F9$="Y" THEN GOTO 0720; REM "Means conversion where FM1 created w/o sales figures
+0650 C1=0; READ (Z[2],KEY="",DOM=0651)
+0655 ML_MESS.CTL'VALUE$="Clearing Sales Stats in FM1 - will report every 25 entries"
+0660 EXTRACT (Z[2],END=0720)IOL=0320
+0665 C1=C1+1; IF MOD(C1,25)=0 THEN ML_MESS1.CTL'VALUE$=B$(1,10)+"-"+B$(11,10)+"  Record no: "+STR(C1)
+0670 FOR I=8 TO 15
+0680 B[I]=0
+0690 NEXT I
+0695 IF D9$(7,1)="Y" THEN B$(126,14)="",B[16]=0
+0700 WRITE (Z[2])IOL=0320; IF RT_PARM$<>"" THEN CUST$=B$(1,10); CALL "RT2WOC",ERR=0701,X3$,X4$,CUST$,"FM1...","U",B$(1,20)
+0710 GOTO 0660
+0900 C1=0; READ (Z[1],KEY="",DOM=0901)
+1000 REM 
+1005 ML_MESS.CTL'VALUE$="Processing order history - will report every 25 entries"
+1010 K$=KEY(Z[1],END=5000); READ (Z[1],KEY=K$)IOL=0310
+1020 C1=C1+1; IF MOD(C1,25)=0 THEN ML_MESS1.CTL'VALUE$=A$(1,10)+"  "+A$(22,8)+"  Record no: "+STR(C1)
+1050 IF POS(A$(11,1)="BFD")=0 THEN GOTO 1010 ! SSP#284861
+1200 EXTRACT (Z[2],KEY=A$(1,10)+A$(12,10),DOM=1010)IOL=0320
+1209 IF A[2]=0 THEN A[2]=1
+1210 IF POS(" "<>A$(40,8))=0 THEN GOTO 1240
+1211 REM "ASSUMING IF VALUE IN INVOICE NUMBER FIELD, ALREADY ILLED
+1212 IF A$(48,6)=S$(1,6) THEN A$(48,6)=A$(34,6)
+1213 IF A[5]=0 THEN A[5]=A[0],A[6]=A[5]*A[1]/A[2],A[7]=A[5]*A[4]/A[2]
+1215 IF A$(48,6)<D9$(10,6) THEN GOTO 1010 ELSE P0=0; IF A$(48,6)<=D9$(1,6) THEN P0=1
+1220 IF P0=0 THEN B[8]=B[8]+1,B[9]=B[9]+A[5],B[10]=B[10]+A[6],B[11]=B[11]+A[6]-A[7] ELSE B[12]=B[12]+1,B[13]=B[13]+A[5],B[14]=B[14]+A[6],B[15]=B[15]+A[6]-A[7]
+1245 IF D9$(7,1)<>"Y" OR A$(34,6)<B$(126,6) THEN GOTO 1400
+1260 B$(126,6)=A$(34,6),B$(132,8)=A$(22,8),B$(149,12)=A$(69,12),B$(82,14)=A$(87,14),B$(100,4)=A$(101,4),B[16]=A[0],B[3]=A[1],B[4]=A[2],B[1]=A[4],B$(96,4)=A$(101,4),B[2]=A[2]
+1400 WRITE (Z[2])IOL=0320; IF RT_PARM$<>"" THEN CUST$=B$(1,10); CALL "RT2WOC",ERR=1401,X3$,X4$,CUST$,"FM1...","U",B$(1,20)
+1900 GOTO 1010
+5000 REM "EOJ
+5020 IF Q1$<>"*" THEN MSGBOX "Process complete",MSG("CONFIRMING"),"!,TIM=5"
+5030 CMD_STR$="E"; EXIT 
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program rebuilds the Item Master Sales Stats from the order history and optionaly sets the last order data from FS6 - order history"
+6040 PRINT @(6,7),"Starting date for THIS YEAR's sales:",
+6041 PRINT @(56,7),"Last yr:"
+6050 PRINT @(0,9),"Update last order info from order history?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7610 Q$=A$(1,10)+A$(48,6)+A$(12,10)+A$(11,1)+A$(22,8)+A$(30,1)
+7660 CALL "ZZDATE",X3$,"","G10101",Q$(11,6),D0,1,0,0,0,0,0,"","",""; Q$(11,6)=STR(100000-D0:"000000")
+7665 WRITE (Z[4],KEY=Q$)
+7690 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ML_MESS$="There are "+STR(T)+" records to process",REFRESH_FLG=1
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.01); IF T0<=1 THEN T0=2
+8131 REM "Use 1% because of possible large size
+8145 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 END_PRG:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56001 REM "284861-Utility SOP R5 does not include order history type D        

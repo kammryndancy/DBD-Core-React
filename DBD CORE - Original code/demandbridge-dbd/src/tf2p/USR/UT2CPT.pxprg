@@ -1,0 +1,11 @@
+0010 REM "<UT2CPT> Copy TCONFIG to TCONFIGW
+0035 REM "3.9 - 11/01/95 - 14.25 - dmm
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 OPEN (1)"TCONFIG"
+0060 OPEN (2)"TCONFIGW"
+0070 DIM K$(8)
+0080 READ RECORD (1,KEY=K$)A$
+0090 WRITE RECORD (2,KEY=K$)A$
+0100 RUN "ZMENU"
+9999 END 

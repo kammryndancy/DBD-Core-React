@@ -1,0 +1,301 @@
+0010 REM "Flexible Format Listing <BC2FMR>
+0035 REM "3.8 - 09/06/95 - 11.1 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="BC2FMR",X1$="Flexible Format Listing"
+0120 DIM A$(158),A[1],C$(68),D$(142),E$(214),F$(236),H1$(49,"."),H2$(78,"-"),H3$(40,".")
+0140 Z0$="-#,###",Z1$="-#,##0",Z2$="###"; REM "Z0$ is blank if 0, Z1$ is 0 if 0
+0160 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0180 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0210 T=1,T0=1,T1=1
+0220 W3=79
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3)
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0310 IOLIST A$,A[0],A[1]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9]
+0340 IOLIST D$
+0350 IOLIST E$
+0360 IOLIST F$
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01O ZF6...  03O ZF5...  04O ZF0...  05O ZF1...  06O ZF4... 07O AR1... 08O AP4... 13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0600 REM 
+0695 GOTO 0800
+0700 REM "Open Printer
+0720 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 0721,9920
+0795 RETURN 
+0800 REM "Alternate Sort Info & total dim"
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[4]; T0=4,T1=2,U=16,U0=4,U[0]=0,U[1]=10,U[2]=1,U[3]=4,U[4]=1,V1=10,V2=1,V3=4,V4=1,U0$="Y     ",T5$="S   S   S   S   S   ",U5$="Document Code",U6$="Flexible Format Type",U7$="Field Number",U8$="Print id"; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM " Position read"
+0905 REM "set key file to read from"
+0910 CALL "ZZFLES",X3$,Y1$,Y0$,"00O "+V1$+"  ",Z{ALL},Z0,0; IF Z0>0 THEN GOTO 9900 ELSE U1=Z[0]
+0930 IF LEN(V2$)>=U*2 THEN GOTO 0965
+0934 REM "create default 'all' range key
+0935 DIM V2$(U*2),V4$(U,"~"); U3=1
+0940 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1]
+0950 V2$(U3+U[U9],U[U9])=V4$(1,U[U9])
+0955 NEXT U9
+0964 REM "Get starting key from range key
+0965 DIM V4$(U); U3=1,U4=1
+0970 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1],U4=U4+U[U9-1]
+0975 V4$(U4,U[U9])=V2$(U3,U[U9])
+0980 NEXT U9
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0997 READ (U1,KEY=V4$,DOM=0998)
+0999 GOSUB 0700
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000)
+1008 REM "check key against range info"
+1009 U3=1,U2=1
+1010 FOR U9=1 TO U0; U2=U2+U[U9-1],U3=U3+U[U9-1]+U[U9-1]
+1020 IF U$(U2,U[U9])<V2$(U3,U[U9]) THEN READ (U1,END=5000); EXITTO 1000
+1030 IF U$(U2,U[U9])>V2$(U3+U[U9],U[U9]) THEN IF U=1 THEN EXITTO 5000 ELSE READ (U1,END=5000); EXITTO 1000
+1040 NEXT U9
+1100 REM "Get record"
+1110 U9$=U$
+1120 ON V0 GOTO 1150,1150,1130,1140
+1150 READ (Z[1],KEY=U$,DOM=1000)IOL=0310
+1300 REM "Read other data
+1400 REM "Subtotals"
+1410 GOSUB 3100
+1420 ON T GOTO 1470,1430,1440,1450,1460
+1440 GOSUB 4000
+1490 T=0
+1500 REM "Print Data
+1510 GOSUB 2000; REM "Print any unselected fields between last field printed (F0$) and this field (A$(12,4))
+1550 A0$=A$,A0=A[0],A1=A[1]; GOSUB 2100
+1900 REM "Accumulate Totals"
+1995 GOTO 1000
+2000 REM "Print fields between the last field no printed (F0$) and the field being printed now (A$(12,4)); E$ is left with the field info for the field being printed now
+2005 IF E$(1,14)=A$(1,10)+A$(12,4) THEN GOTO 2060
+2010 READ (Z[5],KEY=A$(1,10)+F0$,DOM=2011)
+2015 READ (Z[5],END=2050)IOL=0350
+2020 IF E$(1,10)<>A$(1,10) THEN GOTO 2050
+2025 IF E$(11,4)>=A$(12,4) THEN GOTO 2050
+2030 REM "oKAY WE FOUND ONE
+2035 IF V0$(76,1)="Y" THEN GOTO 2015 ELSE DIM A0$(LEN(A$)); A0$(1,10)=E$(1,10),A0$(12,4)=E$(11,4),A0=0,A1=0; GOSUB 2100
+2045 GOTO 2015
+2050 REM "If field numbers, don't match (shouldn't realy happen but you never know) clear E$, set E$ key info from A$ (to make it print out) and continue on
+2055 IF E$(1,14)<>A$(1,10)+A$(12,4) THEN E$(1)=A$(1,10),E$(11,4)=A$(12,4)
+2060 F0$=A$(12,4)
+2095 RETURN 
+2100 REM "Print a line using A0$ for string matching ZF6, A0 & A1 for column and line. Done so can be used in multiple places. Assumes also that E$ is set correctly
+2105 IF W+3>W0 THEN GOSUB 6000; GOSUB 6100
+2107 Y5$(2)=A0$(12,4),Y5$(9)=A0$(16,1),Y5$(13)=E$(85,3)
+2108 IF POS(" "<>A0$(17,11))<>0 THEN GOSUB 7500
+2110 Y5$(18)=H1$,Y5$(18,LEN(FNS$(E$(55,30))))=FNS$(E$(55,30)); IF A0$(28,1)<>" " THEN Y5$(64)=A0$(28,1)
+2120 IF A0=0 AND A1=0 THEN Y5$(67)="Not selected" ELSE Y5$(67)=STR(A0:Z2$),Y5$(72)=STR(A1:Z2$)
+2125 GOSUB 7300
+2127 IF V0$(75,1)="Y" THEN Y5$(1)=H2$; GOSUB 7300; Y5$(2)="[ ]  New values?"; GOSUB 7300; Y5$(1)=H2$; GOSUB 7300
+2130 IF V0$(74,1)="Y" THEN GOSUB 2250
+2140 IF POS(" "<>A0$(29,20))<>0 THEN Y5$(20)="Heading 1: "+A0$(29,20); GOSUB 7300
+2145 IF POS(" "<>A0$(49,20))<>0 THEN Y5$(20)="Heading 2: "+A0$(49,20); GOSUB 7300
+2160 IF POS(" "<>A0$(69,25))<>0 THEN O5$=A0$(69,25),O6$=A0$(94,75),O5=18; GOSUB 2300
+2175 GOSUB 7300
+2195 RETURN 
+2200 REM "Finish off the rest of the previous document's fields
+2205 E0$=E$(1,10)
+2210 READ (Z[5],END=2240)IOL=0350
+2215 IF E$(1,10)<>E0$ THEN GOTO 2240
+2220 DIM A0$(LEN(A$)); A0$(1,10)=E$(1,10),A0$(12,4)=E$(11,4),A0=0,A1=0; GOSUB 2100
+2235 GOTO 2210
+2245 RETURN 
+2250 REM "Print notes
+2253 I2=0
+2255 FOR I0=0 TO 2
+2260 IF POS(" "<>E$(88+I0*40,40))<>0 THEN Y5$(20)=E$(88+I0*40,40),I2=1; IF W+1>W0 THEN GOSUB 6000; GOSUB 6100; GOSUB 7300 ELSE GOSUB 7300
+2265 NEXT I0
+2275 IF I2=1 THEN GOSUB 7300; REM "Add extra line if we printed any
+2295 RETURN 
+2300 REM "Print options (5 chars each) from O5$, matching params (5 per option, each 3 chars long) from O6$, offset from left margin by O5
+2303 IF LEN(O5$)<5 THEN RETURN ELSE O7=0
+2304 IF LEN(O6$)<>3*LEN(O5$) THEN O6$=O6$+" "; GOTO 2304; REM "Fix length of param string to match option string
+2305 FOR O6=1 TO LEN(O5$)-4 STEP 5
+2310 O7$=O5$(O6,5); IF POS(" "<>O7$)=0 THEN GOTO 2375
+2315 DIM F$(236); FIND (Z[6],KEY=O7$,DOM=2316)IOL=0360
+2319 IF W+2>W0 THEN GOSUB 6000; GOSUB 6100
+2320 GOSUB 7300; O7=O7+1; Y5$(3+O5)="Option "+STR(O7)+": "+O7$+" - "+F$(6,30); GOSUB 7300
+2330 O9$=O6$((O6-1)/5*15+1,15); IF POS(" "<>O9$)=0 THEN O8$="No parmeters set."; GOTO 2340
+2334 O8$=""
+2335 FOR O9=1 TO LEN(O9$)-2 STEP 3; O8$=O8$+O9$(O9,3)+" "; NEXT O9
+2340 Y5$(1+O5)="Parameters: "+O8$; GOSUB 7300
+2350 IF V0$(74,1)<>"Y" THEN GOTO 2360
+2352 J4=0
+2354 FOR O9=O TO 4
+2356 IF POS(" "<>F$(36+40*O9,40))=0 THEN GOTO 2359 ELSE IF W+2>W0 THEN GOSUB 6000; GOSUB 6100
+2357 IF J4=0 THEN J4=1,Y5$(6+O5)="Notes: "+F$(36+40*O9,40); GOSUB 7300 ELSE Y5$(13+O5)=F$(36+40*O9,40); GOSUB 7300
+2359 NEXT O9
+2375 NEXT O6
+2395 RETURN 
+3000 REM "Subtotaling Routines"
+3050 REM "Add to T$ for total title, T & T5 should be set
+3055 T7$=T5$(T*4-3,4)
+3060 IF T7$(1,1)=" " THEN RETURN 
+3070 CALL "ZZDISP",T7$(1,1)+"X",T6$,T7$(2,3),X3$,X6$,"",0,0,X4$
+3071 REM " Was IF T7$(1,1)<>"S" THEN CALL "ZZDISP",T7$(1,1)+"X",T6$,T7$(2,3),X3$,X6$,"",0,0,X4$
+3075 T6$=X6$
+3080 IF T$="" THEN T$=T6$ ELSE T$=T$+" "+T6$
+3090 RETURN 
+3100 REM "High order break"
+3110 IF V1=0 THEN RETURN ELSE IF U1$=U9$(1,V1) THEN GOSUB 3200; RETURN 
+3120 GOSUB 3220
+3130 IF U1$="" THEN GOTO 3160
+3150 T=1,T$=U5$,T6$=U1$; GOSUB 3050; GOSUB 7000
+3155 IF U0$(1,1)="Y" THEN GOSUB 6000
+3160 U1$=U9$(1,V1)
+3180 RETURN 
+3200 REM "Second highest order break"
+3210 IF V2=0 THEN RETURN ELSE IF U2$=U9$(V5,V2) THEN GOSUB 3300; RETURN 
+3220 GOSUB 3320
+3230 IF U2$="" THEN GOTO 3260
+3250 T=2,T$=U6$,T6$=U2$; GOSUB 3050; GOSUB 7000
+3255 IF U0$(2,1)="Y" THEN GOSUB 6000
+3260 U2$=U9$(V5,V2)
+3280 RETURN 
+3300 REM "Third highest order break
+3310 IF V3=0 THEN RETURN ELSE IF U3$=U9$(V6,V3) THEN GOSUB 3400; RETURN 
+3320 GOSUB 3420
+3330 IF U3$="" THEN GOTO 3360
+3350 T=3,T$=U7$,T6$=U3$; GOSUB 3050; GOSUB 7000
+3355 IF U0$(3,1)="Y" THEN GOSUB 6000
+3360 U3$=U9$(V6,V3)
+3380 RETURN 
+3400 REM "Fourth highest order break
+3410 IF V4=0 THEN RETURN ELSE IF U4$=U9$(V7,V4) THEN GOSUB 3500; RETURN 
+3420 GOSUB 3520
+3430 IF U4$="" THEN GOTO 3460
+3450 T=4,T$=U8$,T6$=U4$; GOSUB 3050; GOSUB 7000
+3455 IF U0$(4,1)="Y" THEN GOSUB 6000
+3460 U4$=U9$(V7,V4)
+3480 RETURN 
+3580 RETURN 
+4000 REM "Print ZF5 info for the current ZF6 record
+4003 IF F0$<>"" THEN GOSUB 2200; REM "Finish any Not Selected fields at the end of the last document.
+4005 DIM C$(68),C[9]; FIND (Z[3],KEY=A$(1,11),DOM=4006)IOL=0330
+4009 REM "Set heading information
+4010 W1$=A$(11,1)+"-"+FNS$(C$(12,30)); IF V0$(75,1)="Y" THEN W1$=W1$+"-Worksheet"
+4015 DIM D$(142); FIND (Z[4],KEY=A$(1,10),DOM=4016)IOL=0340
+4020 W0$=FNS$(A$(1,10))+"-"+FNS$(D$(11,30))
+4050 GOSUB 6000
+4070 GOSUB 4100
+4075 GOSUB 4200
+4085 F0$=""
+4090 GOSUB 6100
+4095 RETURN 
+4100 REM "Print ZF0 information
+4105 J0$="Document code ("+FNS$(A$(1,10))+")",J1$=D$(11,30); GOSUB 4150
+4110 J0$="Responsible Agency",J1$=D$(42,1); GOSUB 4150
+4115 J0$="Version",J1$=D$(42,4); GOSUB 4150
+4120 IF POS(" "<>D$(46,6))<>0 THEN J0$="Date of Last Revision",J1$=FND$(D$(46,6)); GOSUB 4150
+4140 GOSUB 7300
+4145 RETURN 
+4150 REM "Print a formatted heading line from J0$ & J1$, skip if J1$ is all blanks, or goto 4155 to print anyway
+4154 IF POS(" "<>J1$)=0 THEN GOTO 4195
+4155 Y5$(1)=H3$
+4160 Y5$(1,LEN(J0$))=J0$
+4170 Y5$(40)=J1$
+4180 GOSUB 7300
+4195 RETURN 
+4200 REM "Print Format Header informat
+4205 J0$="Format Code ("+A$(11,1)+")",J1$=C$(12,30); GOSUB 4150
+4210 J0$="Number of lines",J1$=STR(C[0]:Z1$); GOSUB 4150
+4215 J0$="Vertical Offset",J1$=STR(C[1]:Z0$); GOSUB 4150
+4220 J0$="Number of columns",J1$=STR(C[2]:Z1$); GOSUB 4150
+4225 J0$="Horizontal Offset",J1$=STR(C[3]:Z0$); GOSUB 4150
+4230 J0$="Starting line of 1st section",J1$=STR(C[4]:Z0$); GOSUB 4150
+4235 J0$="Number of lines in 1st section",J1$=STR(C[5]:Z0$); GOSUB 4150
+4240 J0$="Starting line of 2nd section",J1$=STR(C[6]:Z0$); GOSUB 4150
+4245 J0$="Number of lines in 2nd section",J1$=STR(C[7]:Z0$); GOSUB 4150
+4250 J0$="Starting line of 3rd section",J1$=STR(C[8]:Z0$); GOSUB 4150
+4255 J0$="Number of lines in 3rd section",J1$=STR(C[9]:Z0$); GOSUB 4150
+4260 J0$="Style",J1$=C$(42,1); GOSUB 4150
+4270 O$=C$(43,20),O1$="",O1=0
+4290 GOSUB 7300; GOSUB 7300
+4295 RETURN 
+5000 REM "End of Print
+5020 IF W8=0 THEN GOTO 5290
+5025 IF F0$<>"" THEN GOSUB 2200; REM "Finish any Not Selected fields at the end of the last document.
+5030 T0$="END"
+5040 REM IF V1>0 THEN GOSUB 03120
+5050 T=0,T$="Report"; GOSUB 7000
+5200 REM "
+5290 GOTO 9900
+6000 REM "Page header
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6045 ON W5 GOTO 6046,9900
+6070 GOSUB 7300
+6090 RETURN 
+6100 REM 
+6110 Y5$(1)="Field",Y5$(8)="Id",Y5$(12)="Width",Y5$(18)="Description",Y5$(62)="Type",Y5$(67)="Col",Y5$(72)="Line"
+6115 GOSUB 7300; GOSUB 7300
+6199 RETURN 
+7000 REM "Totals logic
+7001 GOTO 7100
+7002 IF T=T0 THEN IF T[T0,0]<2 THEN GOSUB 7300; GOTO 7100
+7003 IF W+3>W0 THEN GOSUB 6000
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 7200; GOTO 7190
+7095 GOSUB 7300
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"   ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "Print customer or vendor specific information
+7505 IF A0$(17,1)="C" THEN CALL "ZZDISP","AX",A0$(18,10),"A/R",X3$,J0$,"",0,0,X4$; X$="Customer: "+J0$,X0=Z[7],X1=10,X2=11,X3=35 ELSE IF A0$(17,1)="V" THEN CALL "ZZDISP","AX",A0$(18,10),"A/P",X3$,J0$,"",0,0,X4$; X$="Vendor: "+J0$,X0=Z[8],X1=10,X2=11,X3=35 ELSE X$=A0$(17)+": "+A0$(18,10),X0=0,X1=10,X2=0,X3=0
+7510 J$=""; IF X0<>0 THEN READ (X0,KEY=A0$(18,X1),DOM=7511)J$
+7530 IF X2<>0 AND J$>"" THEN X$=X$+" "+J$(X2,X3)
+7540 Y5$(18)=X$; GOSUB 7300
+7545 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; J8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",J8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9910 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 IF Y4$<>"" THEN RUN Y4$,ERR=9931
+9940 RUN "ZMENU"
+9999 END 

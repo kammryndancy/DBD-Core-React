@@ -1,0 +1,139 @@
+0010 REM "Add lot to Lot History <IC2LAH>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 10/02/18 - 15.467222 - jvv - SSP# 303386
+0037 REM "303386-ICO file does not record the Billed On Invoice number or the
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "L$ & L(ALL) is a lot record in ICF format
+0071 REM "P$ is FY/AP period in 1,4, 5,2 format
+0072 REM "S$ is transaction source (RR, SJ, TR)
+0073 REM "T$ is type: R(eceipt), S(ale), I(ssue), A(djustment)
+0074 REM "D$ is transaction date
+0075 REM "F0 is file slot that ICO is open on, if 0, then open & close done in here
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,L$,L{ALL},P$,S$,T$,D$,F0
+0100 SETERR 9000
+0110 X0$="IC2LAH",X1$="Add Lot record ot Lot History"
+0115 IF X3$="?" THEN GOTO 8950
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12]
+0320 IOLIST AA$,AA[0],AA[1],AA[2],AA[3],AA[4],AA[5],AA[6],AA[7],AA[8],AA[9],AA[10],AA[11],AA[12]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0507 IF F0<>0 THEN Z[1]=F0; GOTO 0521
+0510 Z$="01O ICO...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0900 IF S$="SR" THEN GOTO INV_RECV ! SSP 303386
+1000 REM "Create ICO record in A$
+1010 DIM A$(286),A[12]
+1020 A$(1,6)=P$; REM "Fiscal Year/Accting period
+1025 A$(7,20)=L$(1,20); REM "Customer number/item number from lot
+1030 A$(27,4)=L$(21,4); REM "Location code from lot
+1035 A$(35,6)=D$; REM "Transaction date
+1040 A$(41)=L$(41); REM "All the rest of the matching lot record fields
+1045 A$(260,1)=T$; REM "Transaction type
+1050 A$(261,2)=S$; REM "transaction source
+1055 A$(263,6)=L$(25,6); REM "Receipt date from lot
+1060 A$(269,8)=L$(33,8); REM "Receiving report number from lot
+1065 A$(277,3)=L$(260,3) ! PO line number from lot ssp#234932
+1070 A$(280,4)=L$(263,4) ! Primary salesperson on the lot ssp#234932
+1075 A$(284,3)=L$(267,3) ! Item price class from the lot ssp#234932
+1078 A$(221,11)=DIM(11),A$(232,2)=DIM(2) ! ssp#234932
+1080 A$(196,6)=L$(196,6) ! Received on Audit number ssp#234932
+1082 A$(202,7)=L$(202,7) ! ssp 303386 Update Released on Inv #
+1085 IF T$="I" THEN A$(209,6)=X3$(178,6) ! SSP 303386 Rleased on Audit nr
+1089 REM "Transfer buckets from lot record
+1090 FOR I=0 TO 12; A[I]=L[I]; NEXT I
+1200 REM "Write ICO record
+1205 A$(31,4)="0000"; REM "Default seq number
+1250 REM "Write record
+1260 WRITE (Z[1],KEY=A$(1,34),DOM=1261)IOL=0310; GOTO 1295
+1265 GOSUB 2000; GOTO 1260
+1290 REM "Done processing
+1295 GOTO 9900
+2000 REM "We need to adjust the sequence number. We will read to end of this FY/AP, item location, get the previous key, increment by one then return to try angain
+2001 REM "We're here because the 0000 record dom'ed, so we know at least one record of this FY/AP, item number, location, exists. There could be many, so we're backing into it to prevent counting up to the right one by incrementing, writing and getting a dom
+2010 READ (Z[1],KEY=A$(1,30)+$FFFFFFFF$,DOM=2011)
+2015 DIM K$(34); K$(31,4)="0000"; K$=KEP(Z[1],END=2016)
+2020 IF K$(31,4)>="0000" AND K$(31,4)<"9999" THEN GOTO 2025 ELSE IF K$(31,4)<"ZZZZ" THEN GOTO 2035 ELSE ESCAPE ; REM "Counter overflow, added logic to go to letters, escape if letters are also exhausted ! 247241
+2025 A$(31,4)=STR(NUM(K$(31,4))+1:"0000")
+2030 RETURN ! 247241
+2035 A$(31,4)=FN%NEXT_SEQ$(K$(31,4),6) ! 247241, Increment sequence using letters
+2045 RETURN 
+4000 INV_RECV:! SSP 303386
+4005 ! Find all matching ICO records for the PO number and location, and update the ICO record with the Invoice Number from AR2DUD for Sales Orders previously received inventory
+4008 CHL=HFN; OPEN (CHL)"ICO"+%C$
+4010 K$=L$(41,9)+L$(7,10)+L$(17,10)+L$(31,4); KNO=1
+4015 DIM AA$[286],AA[12]
+4040 READ (Z[1],KEY=K$,KNO=1,DOM=*NEXT)IOL=0320; GOTO 4060
+4045 NEXT_ICO:
+4050 KY$=KEY(Z[1],KNO=1,END=INV_RECV_EXIT)
+4055 READ (Z[1],KEY=KY$,KNO=1)IOL=0320
+4060 IF KY$(1,LEN(K$))<>K$(1,LEN(K$)) THEN GOTO INV_RECV_EXIT
+4075 IF AA$(261,2)<>"RR" THEN GOTO NEXT_ICO
+4078 IF STP(MID(AA$,148,7),2)<>"" THEN GOTO NEXT_ICO
+4080 AA$(148,7)=L$(148,7)
+4085 KY2$=AA$(1,34)
+4090 WRITE (CHL,KEY=KY2$)IOL=0320
+4100 GOTO NEXT_ICO
+4200 INV_RECV_EXIT:
+4210 KIC$=KEC(Z[1],KNO=0,ERR=*NEXT)
+4250 GOTO 9900
+4299 ! 
+8950 REM "Module Hellp
+8955 PRINT 'LF','LF'; LIST 0010; LIST 0035,0049; PRINT 'LF'
+8960 J$=LST(PGM(90)); IF POS("ENTER"=J$)=0 THEN GOTO 8961 ELSE J$="CALL "+QUO+X0$+QUO+J$(POS("ENTER"=J$)+5); PRINT J$
+8962 PRINT "X3$    = System Parameters"
+8963 PRINT "X4$    = Format Infomation"
+8964 PRINT "D9$    = Flex Format Document code (1,10) + Flex Format Type (11,1)"
+8965 PRINT "          EX: 'FORMATCL  A'"
+8966 PRINT "A$     = RETURNS: Flex Format Document Print Information from ZF5."
+8967 PRINT "A(ALL) = RETURNS: Flex Format Document Print Numerics from ZF5."
+8968 PRINT "X9(ALL)= RETURNS: Array Dimmed to highest field number (from ZF1)"
+8969 PRINT "                  for this document. If a field is to be printed"
+8970 PRINT "                  (as found in ZF6) its corresponding index in "
+8971 PRINT "                  X9(ALL) is set to 1."
+8972 PRINT "X9$    = RETURNS: String of field print types from ZF6 info."
+8973 PRINT "Q1$    = Reserved for future use."
+8974 PRINT "Q(ALL) = Reserved for future use."
+8975 PRINT "C0     = RETURNS: Return code 0=ok, 1=No header record found in ZF5,"
+8976 PRINT "                  2=No field information found in ZF6."
+8995 GOTO 9930
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 IF F0=0 THEN CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0; REM "Only close if no file slot passed in and we opened files in here
+9920 CLOSE (CHL,ERR=*NEXT)
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "234932-Keep a lot transaction file                                 
+56002 REM "247241-Sequence counters becoming more of an issue for customers   
+56003 REM "303386-ICO file does not record the Billed On Invoice number or the

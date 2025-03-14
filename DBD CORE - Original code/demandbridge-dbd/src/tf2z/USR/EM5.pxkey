@@ -1,0 +1,85 @@
+<PxTable>
+ TableName=EM5
+ TableKey=K1049573022
+ FileCreate=KEYED "EM5",2,0,-256,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EM5_Level"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/EM5"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:41:50-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:42:36-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST LEVEL_CODE$:[LEN(2)]"
+    NAME$="LEVEL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"LEVEL_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Level code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST LEVEL_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="LEVEL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"LEVEL_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Level code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST LEVEL_DESC$:[LEN(SEP,SIZ=40)]"
+    NAME$="LEVEL_DESC"
+    DESCRIPTION$="=MSG("+QUO+"LEVEL_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="L"
+    NOTES$="Description"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="LD"
+    LEVEL_CODE$="LD"
+    LEVEL_DESC$="Detail section                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LH"
+    LEVEL_CODE$="LH"
+    LEVEL_DESC$="Header section                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LS"
+    LEVEL_CODE$="LS"
+    LEVEL_DESC$="Summary section                         "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,144 @@
+0010 REM "Export Shipping Data Ghost Process <SH2GST>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 02/20/02 - 10.018055 - dmm - SSP# 146207
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "Transfer data from SH3 to shipping header export file and from SH4 to shipping detail export file. No X3$ support.
+0100 SETERR 9000
+0105 ! CLOSE (14); OPEN (14,ERR=9930)"DA"; CLOSE (14); REM "If DIRectorynot defined then don't process
+0110 X0$="SH2GST",X1$="Export Shipping Data Ghost Process"
+0115 DIM Z1$(300," ")
+0130 CURR_DAY$=DAY; REM "Save day for use with UPS processing
+0140 KILL_FILE$="SH2GSTKILL.tmp"
+0500 REM "Open ZZPARM and look for S/H records to tell which companies to process. These will also provide the parameters. The records (keyed company_code + "S/H" like normal param records) are repeated as "S/H"+company_code so we can find them. Build COMP_LIST$ array, we'll hardcode for 100 now and leave the option to make it dynamic (via NEA & INSERT ARRAY) later
+0505 DIM Z[13],COMP_LIST$[100],DAY$[100]; COMP_COUNT=0,CURRENT_COMP=0
+0510 Z[13]=UNT; OPEN (Z[13])"ZZPARM"
+0511 REM "See if SH2GST environment exists, we will need if doing UPS scale
+0512 ENV_FOUND=0; FIND (Z[13],KEY="TFESH2GST  ",DOM=0513)X3$,*,X4$; ENV_FOUND=1; IF X3$(77,1)="D" THEN OUT_COMM$="echo" ELSE OUT_COMM$="cat"
+0515 READ (Z[13],KEY="S/H",ERR=*NEXT); GOTO 0520
+0516 ! Exit if S/H record is locked so only one program copy can run
+0517 IF ERR=11 THEN WRITE (Z[13],KEY="S/H")"S/H"; GOTO 0515 ELSE GOTO 9900
+0520 K$=KEY(Z[13],END=0525); READ (Z[13],KEY=K$)SH_PARM$; IF LEN(SH_PARM$)<6 THEN GOTO 0525 ELSE IF SH_PARM$(4,3)<>"S/H" THEN GOTO 0525 ELSE COMP_COUNT=COMP_COUNT+1; COMP_LIST$[COMP_COUNT]=SH_PARM$; GOTO 0520
+0525 IF COMP_COUNT=0 THEN GOTO 9900
+0526 ! lock ZZPARM S/H Record so only one copy of program runs
+0527 EXTRACT (Z[13],KEY="S/H",ERR=9900)
+0528 CLOSE (14); OPEN (14,ERR=*NEXT)KILL_FILE$; CLOSE (14); GOTO 0530
+0529 SERIAL KILL_FILE$
+0530 START_A_COMPANY:REM "Come to here to get the next company
+0532 CURRENT_COMP=CURRENT_COMP+1; IF CURRENT_COMP>COMP_COUNT THEN CURRENT_COMP=1
+0533 CLOSE (14); OPEN (14,ERR=9900)KILL_FILE$; CLOSE (14)
+0535 SH_PARM$=COMP_LIST$[CURRENT_COMP]
+0536 HEADER$=""; DETAIL$=""
+0537 IF POS("U"=SH_PARM$(189,10))<>0 THEN GOSUB 7600; REM "If UPS scale
+0539 HEADER$=""; DETAIL$=""
+0540 IF STP(SH_PARM$(67,12),3," ")="" THEN GOTO 9900
+0550 REM "Check for export flag file, if there then wait until it is gone
+0554 IF STP(SH_PARM$(163,12),3," ")="" THEN GOTO 0567; REM "Skip checking for and creating flag file if file name is blank
+0555 CLOSE (14); OPEN (14,ERR=0560)STP(SH_PARM$(7,60),1)+DLM+STP(SH_PARM$(163,12),1); CLOSE (14); REM "If not found we ar ok so go to 560, be sure to close flag file so it can be erased
+0556 REM "Here we need to loop until free, give message, wait 1 so we dont waste a lot of cpu trying then try again
+0557 WAIT 1; GOTO 0555
+0560 REM "If here, there is no file now, so make one in the appropiate DIRectory, if we get ERR 12, someone else has slipped in ahead, so go back and wait
+0565 SERIAL STP(SH_PARM$(7,60),1)+DLM+SH_PARM$(163,12),10,0,ERR=0566; GOTO 0570
+0566 IF ERR=12 THEN GOTO 0557 ELSE SERIAL STP(SH_PARM$(7,60),1)+DLM+STP(SH_PARM$(163,12),1),10,0; REM "If file exists someone else got there first, loop until clear, else try again and get err
+0600 REM "Open header & detail files, create if necessary
+0605 REM "If no '*' in header name to indicate use order number, then create the header file if needed.
+0610 IF POS("*"=SH_PARM$(67,12))=0 THEN FILE_NAME$=SH_PARM$(67,12); GOSUB CREATE_FILE; HEADER$=FILE_NAME$
+0634 IF STP(SH_PARM$(79,12),3," ")="" OR POS("*"=SH_PARM$(79,12))<>0 THEN GOTO 0640 ELSE FILE_NAME$=SH_PARM$(79,12); GOSUB CREATE_FILE; DETAIL$=FILE_NAME$; REM "If detail file blank, OR it will have a wildcarded name then don't create or write out
+0650 GOSUB OPEN_FILE
+0700 REM "Open Source files
+0705 Z[2]=UNT; OPEN (Z[2],ERR=0706)"SH3"+SH_PARM$(1,3); GOTO 0707
+0706 OPEN (Z[2],ERR=9900)"SH3"
+0710 Z[3]=UNT; OPEN (Z[3],ERR=0711)"SH4"+SH_PARM$(1,3); GOTO 0712
+0711 OPEN (Z[3],ERR=9900)"SH4"
+1000 REM "BEGIN MAIN PROCESS
+1100 REM "Write Headers and corresponding detail lines
+1105 SH3_KEY$=KEY(Z[2],END=1195); EXTRACT (Z[2],KEY=SH3_KEY$,DOM=1105)SH3$
+1106 IF POS("W"=SH_PARM$(189,10))<>0 THEN GOSUB 7700
+1107 NEED_OPEN=0; IF POS("*"=SH_PARM$(67,12))<>0 THEN FILE_NAME$=SH_PARM$(67,12),P=POS("*"=FILE_NAME$); IF P=1 THEN FILE_NAME$=STP(SH3_KEY$(1,8),1)+FILE_NAME$(2) ELSE FILE_NAME$=FILE_NAME$(1,P-1)+STP(SH3_KEY$(1,8),1)+FILE_NAME$(P+1) END_IF ; GOSUB CREATE_FILE; HEADER$=FILE_NAME$; NEED_OPEN=1
+1108 IF POS("*"=SH_PARM$(79,12))<>0 THEN FILE_NAME$=SH_PARM$(79,12),P=POS("*"=FILE_NAME$); IF P=1 THEN FILE_NAME$=STP(SH3_KEY$(1,8),1)+FILE_NAME$(2) ELSE FILE_NAME$=FILE_NAME$(1,P-1)+STP(SH3_KEY$(1,8),1)+FILE_NAME$(P+1) END_IF ; GOSUB CREATE_FILE; DETAIL$=FILE_NAME$; NEED_OPEN=1
+1109 IF NEED_OPEN THEN GOSUB OPEN_FILE
+1110 IF SH_PARM$(189,1)<>"X" THEN GOTO 1114
+1111 SH3$=SH3$(13),CITY=POS(","=SH3$(133,30)),CITY$=SH3$(133,CITY-1),STATE$=SH3$(133+CITY+1,2),CITY$=PAD(CITY$,30," ")
+1113 JL$=SH3$(1,8)+SH3$(9,4)+SH3$(13,30)+Z1$(1,5)+SH3$(73,30)+Z1$(1,5)+SH3$(103,30)+Z1$(1,40)+CITY$+STATE$+SH3$(163,9)+SH3$(235,14)+SH3$(262,20)+SH3$(173,3)+SH3$(175,20)+SH3$(282,20)+Z1$(1,2)+SH3$(195,15)+Z1$(1,33)+SH3$(232,3)+Z1$(1,113)+SH3$(210,10)+Z1$(1,140); IF POS(X3$(9,3)="475",3)<>0 THEN JL$=JL$+SH3$(252,10) END_IF ; SH3$=SH3_KEY$+JL$; REM "ssp#106782
+1114 PRINT (Z[4])SH3$(LEN(SH3_KEY$)+1); REM "PRINT out header, stripping off leading key section
+1115 REM "Detail lines
+1120 READ (Z[3],KEY=SH3_KEY$,DOM=1121)
+1125 SH4_KEY$=KEY(Z[3],END=1180); IF SH4_KEY$(1,LEN(SH3_KEY$))<>SH3_KEY$ THEN GOTO 1180
+1130 EXTRACT (Z[3],KEY=SH4_KEY$,DOM=1125,ERR=1150)SH4$
+1135 IF STP(SH_PARM$(79,12),3," ")="" THEN GOTO 1136 ELSE IF SH_PARM$(189,1)<>"X" THEN PRINT (Z[5])SH4$(LEN(SH4_KEY$)+1) ELSE SH4$=SH4$(19); JL1$=SH4$(1,8)+SH4$(9,4)+SH4$(13,3)+SH4$(28,20)+SH4$(38,10)+Z1$(1,10)+SH4$(68,40)+SH4$(118,7)+Z1$(1,7)+SH4$(38,10)+Z1$(1,5)+SH4$(68,40)+Z1$(1,15)+SH4$(16,12)+SH4$(108,4)+SH4$(112,6)+SH4$(125,7)+SH4$(132,7)+Z1$(1,83)+SH4$(139,10); SH4$=SH4_KEY$+JL1$; IF SH_PARM$(189,1)<>"X" THEN GOTO 1136 ELSE PRINT (Z[5])SH4$(LEN(SH4_KEY$)+1); REM "PRINT out detail line, stripping off leading key section; ssp#106782 changed X option
+1150 REMOVE (Z[3],KEY=SH4_KEY$,DOM=1151)
+1175 GOTO 1125
+1180 REMOVE (Z[2],KEY=SH3_KEY$,DOM=1181)
+1185 GOTO 1100
+1200 GOSUB 7750; REM "if W option set then process P/O's as well
+1985 HEADER$=""; DETAIL$=""; FOR I=2 TO 5; IF Z[I]<>0 THEN CLOSE (Z[I]) END_IF ; NEXT I
+1990 IF STP(SH_PARM$(163,12),3," ")="" THEN GOTO 1991 ELSE ERASE STP(SH_PARM$(163,12),1),ERR=1991; REM "Remove flag file
+1992 WAIT 60; REM "Give scale a chance to get in
+1995 GOTO 0530
+7500 CREATE_FILE:REM "Setup text file FILE_NAME$ in export DIRectory
+7504 REM "If O option then erase the file, we will overwrite it if it was there, else if it is there, then skip the creating of it.
+7505 IF POS("O"=SH_PARM$(189,10))<>0 THEN ERASE STP(SH_PARM$(7,60),1)+DLM+FILE_NAME$,ERR=7506; GOTO 7505 ELSE CLOSE (14); OPEN (14,ERR=7506)STP(SH_PARM$(7,60),1)+DLM+FILE_NAME$; CLOSE (14); GOTO 7540
+7510 SERIAL STP(SH_PARM$(7,60),1)+DLM+FILE_NAME$,10,0,ERR=7511
+7545 CREATE_FILE_END:RETURN 
+7550 OPEN_FILE:REM "Open Header & Detail files and position to the end
+7555 IF HEADER$<>"" THEN IF Z[4]<>0 THEN CLOSE (Z[4]) END_IF ; Z[4]=UNT; OPEN LOCK (Z[4],ISZ=1)STP(SH_PARM$(7,60),1)+DLM+HEADER$
+7560 IF DETAIL$="" OR STP(DETAIL$,3," ")="" THEN GOTO 7561 ELSE IF Z[5]<>0 THEN CLOSE (Z[5]) END_IF ; Z[5]=UNT; OPEN LOCK (Z[5],ISZ=1)STP(SH_PARM$(7,60),1)+DLM+DETAIL$
+7565 REM "Position files to the end if needed
+7570 IF HEADER$<>"" THEN TMP$=FN%XFD$(Z[4],0); IF DEC(TMP$(38,4))>0 THEN READ (Z[4],IND=DEC(TMP$(38,4))-1,ERR=7571)
+7575 IF DETAIL$="" OR STP(DETAIL$,3," ")="" THEN GOTO 7576 ELSE TMP$=FN%XFD$(Z[5],0); IF DEC(TMP$(38,4))>0 THEN READ (Z[5],IND=DEC(TMP$(38,4))-1,ERR=7576)
+7595 OPEN_FILE_END:RETURN 
+7600 REM "For UPS scale (U in sh_parm$(189,10)) we want to rebuild the file from the open orders around midnight each night. We will track the last day we did this for each company in DAY$[]. If DAY$[]='' then we will set it, if the same as DAY we do nothing, if < DAY then rebuild field by calling SH2EXP with Force option for each open order.
+7601 REM "If we did not find X3$ and X4$ (ENV_FOUND=0) then we will not be able to proceed anyway. We are doing CURRENT_COMP each time.
+7605 IF ENV_FOUND=0 THEN GOTO 7695 ELSE IF DAY$[CURRENT_COMP]="" THEN DAY$[CURRENT_COMP]=DAY; GOTO 7695 ELSE IF DAY$[CURRENT_COMP]=DAY THEN GOTO 7695; REM "IF no environment (X3$,X4$) leave, if DAY$ not set, then set it and leave else if same day, we've done it once so leave
+7609 INVOKE "echo SH2GST 'comp="+STR(CURRENT_COMP)+" "+SH_PARM$(1,3)+"' >> SH2GST.LOG"
+7610 REM "Erase file, then recreate
+7615 IF Z[4]<>0 THEN CLOSE (Z[4]) END_IF ; ERASE STP(SH_PARM$(7,60),1)+DLM+STP(SH_PARM$(67,12),1),ERR=7616; GOTO 7615
+7616 IF ERR<>12 THEN GOSUB 8000; REM "SSP132829
+7620 SERIAL STP(SH_PARM$(7,60),1)+DLM+STP(SH_PARM$(67,12),1),10,0,ERR=7621
+7630 REM "Replace comp code in X3$ with current company code from SH_PARM$, restore at end
+7635 COMP_CODE$=X3$(9,3),X3$(9,3)=SH_PARM$(1,3)
+7639 INVOKE "echo SH2GST starting at '"+DAY+" "+STR(TIM)+"' >> SH2GST.LOG"
+7640 Z[6]=UNT; OPEN (Z[6],ERR=7641)"FS1"+X3$(9,3); GOTO 7642
+7641 OPEN (Z[6],ERR=7690)"FS1"
+7645 ORDER_CNT=0
+7650 KEY6$=KEY(Z[6],END=7665); ORDER$=KEY6$
+7651 ORDER_CNT=ORDER_CNT+1
+7655 CALL "SH2EXP",X3$,X4$,ORDER$,"F",R$
+7660 READ (Z[6],KEY=KEY6$,DOM=7650); GOTO 7650; REM "Reposition incase file pointer moved
+7665 DAY$[CURRENT_COMP]=DAY; CLOSE (Z[6])
+7667 INVOKE "echo SH2GST ended at '"+DAY+" "+STR(TIM)+"' after processing "+STR(ORDER_CNT)+" orders >> SH2GST.LOG"
+7690 X3$(9,3)=COMP_CODE$
+7695 RETURN 
+7700 REM "W option processing, write out to txt files
+7705 IF X3$="" THEN CLOSE (100); OPEN (100)"ZZPARM"; READ (100,KEY="TFESH2GST",DOM=7745)X3$,*,X4$; CLOSE (100)
+7710 ORDER$=SH3$(1,8)
+7715 CALL "UT2APD",X3$,X4$,"*","FS1/"+ORDER$
+7720 CALL "UT2APD",X3$,X4$,"*","FS2/"+ORDER$
+7725 CALL "UT2APD",X3$,X4$,"*","PO3/"+ORDER$
+7740 REM "Order move will be done in 7792 after all orders and POs processed, put system call here if needed sooner
+7745 RETURN 
+7750 REM "W option processing of PO data
+7755 IF POS("W"=SH_PARM$(189,10))=0 THEN GOTO 7795
+7756 IF X3$="" THEN CLOSE (100); OPEN (100)"ZZPARM"; READ (100,KEY="TFESH2GST",DOM=7795)X3$,*,X4$; CLOSE (100)
+7760 CLOSE (101); OPEN (101,ERR=7795)"SH7"+SH_PARM$(1,3)
+7762 K101$=KEY(101,END=7790)
+7775 CALL "UT2APD",X3$,X4$,"*","PO1/"+K101$
+7776 CALL "UT2APD",X3$,X4$,"*","PO2/"+K101$
+7777 CALL "UT2APD",X3$,X4$,"*","PO3/"+K101$
+7780 REMOVE (101,KEY=K101$,DOM=7762); GOTO 7762
+7790 CLOSE (101); REM "End of W option processing
+7792 INVOKE "/usr/lib/pvx/tf2d/WMS/move_files_2_WMS > /dev/null"; REM "AUTO MOVE FILES THIS IS FOR BOTH ORDERS AND POS
+7795 RETURN 
+8000 REM "Move file because we can't erase it, UPS
+8010 IF X3$(9,3)="522" THEN INVOKE "mv /basis/pro5/forms/shared/ship_out/HEADER.CSV /basis/pro5/forms/shared/ship_out/HEADER.OLD"; REM "132829
+8015 IF SH_PARM$(1,3)="537" THEN INVOKE "mv /usr/lib/basic/ship_out/HEADER.CSV /usr/lib/basic/ship_out/HEADER.OLD"; REM "SSP133889
+8020 IF SH_PARM$(1,3)="539" THEN INVOKE "mv /usr/lib/basic/badgership_out/HEADER.CSV /usr/lib/basic/badgership_out/HEADER.OLD"; REM "ssp133889
+8045 RETURN 
+9000 REM "ERROR PROCESSING
+9900 REM "END PROGRAM
+9901 IF LEN(SH_PARM$)>=174 THEN IF STP(SH_PARM$(163,12),3," ")="" THEN GOTO 9902 ELSE ERASE STP(SH_PARM$(7,60),1)+DLM+STP(SH_PARM$(163,12),1),ERR=9902; REM "Remove flag file
+9902 ERASE KILL_FILE$,ERR=*NEXT
+9903 CLOSE (Z[4],ERR=9904)
+9904 CLOSE (Z[5],ERR=9905)
+9950 RELEASE 
+9999 END 

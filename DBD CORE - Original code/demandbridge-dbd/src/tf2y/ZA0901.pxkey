@@ -1,0 +1,95 @@
+<PxTable>
+ TableName=ZA0901
+ TableKey=K1007399559
+ FileCreate=KEYED "ZA0901",20,110,180,BSZ=4,OPT="0"
+ MaxFields=00002
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ACRS_TABLES         "
+    FIELD_1$="CRS_TABLES         Fixed Assets Maintenance: Acrs Table    FAM-10              212        FIRM_ID+"+QUO+"C"+QUO+"+TABLE_NUMBER                                                    "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_DISTR_CODES      "
+    FIELD_1$="P_DISTR_CODES      A/P Maintenance: Distribution Code      APM-10              207        FIRM_ID+"+QUO+"B"+QUO+"+DISTRIBUTION_CODE                                               "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_INV_PMTS         "
+    FIELD_1$="P_INV_PMTS         Open Invoices: Payment/Adj Record       APT-01              223        FIRM_ID+AP_TYPE+VENDOR_NUMBER+INVOICE_NUMBER+SEQUENCE                       "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_OPEN_INVOICES    "
+    FIELD_1$="P_OPEN_INVOICES    Open Invoices: Invoice Record           APT-01              223        FIRM_ID+AP_TYPE+VENDOR_NUMBER+INVOICE_NUMBER+"+QUO+"00"+QUO+"                           "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_PMT_GROUPS       "
+    FIELD_1$="P_PMT_GROUPS       A/P Maintenance: Payment Group          APM-10              207        FIRM_ID+"+QUO+"D"+QUO+"+PAYMENT_GROUP                                                   "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_TYPES            "
+    FIELD_1$="P_TYPES            A/P Maintenance: Ap Type                APM-10              207        FIRM_ID+"+QUO+"A"+QUO+"+AP_TYPE                                                         "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_DISCOUNT_CODES   "
+    FIELD_1$="R_DISCOUNT_CODES   A/R Maintenance: Sale Discount Code     ARM-10              206        FIRM_ID+"+QUO+"I"+QUO+"+SALE_DISCOUNT_CODE                                              "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_DISTR_CODES      "
+    FIELD_1$="R_DISTR_CODES      A/R Maintenance: Distribution Code      ARM-10              206        FIRM_ID+"+QUO+"D"+QUO+"+DISTRIBUTION_CODE                                               "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_MESSAGES         "
+    FIELD_1$="R_MESSAGES         A/R Maintenance: Standard Message Code  ARM-10              206        FIRM_ID+"+QUO+"G"+QUO+"+STANDARD_MESSAGE_COD+"+QUO+"1"+QUO+"_OR_"+QUO+"2"+QUO+"                                 "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_ORDER/INV_CODES  "
+    FIELD_1$="R_ORDER/INV_CODES  A/R Maintenance: Order/Invoice Code     ARM-10              206        FIRM_ID+"+QUO+"E"+QUO+"+ORDER/INVOICE_CODE                                              "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TAX_CODES        "
+    FIELD_1$="R_TAX_CODES        A/R Maintenance: Tax Code               ARM-10              206        FIRM_ID+"+QUO+"B"+QUO+"+TAX_CODE                                                        "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TERMS_CODES      "
+    FIELD_1$="R_TERMS_CODES      A/R Maintenance: Terms Code             ARM-10              206        FIRM_ID+"+QUO+"A"+QUO+"+TERMS_CODE                                                      "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TERRITORIES      "
+    FIELD_1$="R_TERRITORIES      A/R Maintenance: Territory Code         ARM-10              206        FIRM_ID+"+QUO+"H"+QUO+"+TERRITORY_CODE                                                  "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ASSETS_ALPHA_SORT   "
+    FIELD_1$="CRS_TABLES         Fixed Assets Maintenance: Acrs Table    FAM-10              212        FIRM_ID+"+QUO+"C"+QUO+"+TABLE_NUMBER                                                    "
+    FIELD_2$=$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+$00$+"A"
+   </RecordData>
+
+</Data>
+
+</PxTable>

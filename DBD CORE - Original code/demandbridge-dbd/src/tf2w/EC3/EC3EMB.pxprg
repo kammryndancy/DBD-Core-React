@@ -1,0 +1,75 @@
+0010 REM "Create File to be Emailed <EC3EMB>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/07/18 - 17.488888 - dmm - SSP# 301389
+0037 REM "301389-Deluxe security, PEN test results, need program changes.    
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! This program will be called to write out a file to be picked up by the email server with instructions related to filling out a template that can then be used for email.  The first use of this program is WO166006, where the buyer will have an alternate template to use for the order confirmation email.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EACTION$,ETEMPLATE$,BASIC_PGN$,SERVERID$,SESSIONID$,OTHER$,RETURN_CODE
+0100 SETERR 9000
+0110 X0$="EC3EMB",X1$="Create File to be Emailed"
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECY...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9200
+0595 ! 
+0700 ! Read server record for path and email suffix
+0710 DIM ECY$(512); SERVERID$=PAD(SERVERID$,15); READ (Z[1],KEY=SERVERID$,DOM=9220)ECY$(1)
+0720 FILE_PATH$=%SERVER_DIR$ ! Ray Alen. SSP301389
+0730 IF NOT(NUL(ECY$(482,5))) THEN FILE_SUFFIX$=STP(ECY$(482,5),3) ELSE XX$=STP(ECY$(176,20),3," "),XX=POS("."=XX$); FILE_SUFFIX$=MID(XX$,XX)
+0795 ! 
+0800 ! Create TMP file and open
+0810 CLOSE (1001)
+0820 PRECISION 5; RANDOM$=STR(INT(RND*100000)); PRECISION 2
+0825 TMP_FILE$=FILE_PATH$+"TMP"+RANDOM$
+0830 OPEN (1001,ERR=*NEXT)TMP_FILE$; CLOSE (1001); GOTO 0820 ! If file can be opened then already in use, try again.
+0840 SERIAL TMP_FILE$,ERR=0820
+0850 OPEN LOCK (1001)TMP_FILE$
+0895 ! 
+1000 ! Write records to email file
+1010 PRINT (1001)"basic="+BASIC_PGN$
+1015 PRINT (1001)"session_id="+SESSIONID$
+1020 PRINT (1001)"template="+ETEMPLATE$
+1030 PRINT (1001)"email_action_code="+EACTION$
+1100 ! Check OTHER$ for additional fields
+1105 IF LEN(OTHER$)=0 THEN GOTO 1200
+1110 P=POS("|"=OTHER$); IF P=0 THEN GOTO 1200
+1120 RECORD$=OTHER$(1,P-1); IF LEN(OTHER$)>LEN(RECORD$)+1 THEN OTHER$=OTHER$(P+1) ELSE OTHER$=""
+1130 PRINT (1001)RECORD$
+1140 GOTO 1105
+1195 ! 
+1200 ! Close file, create email file name, rename, if error make new email file name.
+1210 CLOSE (1001)
+1220 EMAIL_FILE$=FILE_PATH$+RANDOM$+FILE_SUFFIX$
+1230 RENAME TMP_FILE$,EMAIL_FILE$,ERR=*NEXT; GOTO 1300
+1240 PRECISION 5; RANDOM$=STR(INT(RND*100000)); PRECISION 2; GOTO 1220
+1295 ! 
+1300 ! Log message 
+1310 IF NOT(%QUIET_MODE) THEN {
+1320 MESSAGE_TYPE$="INFO"
+1330 MESSAGE$="EC3EMB created file "+EMAIL_FILE$
+1340 IF %X3$(48,2)="2" THEN OUT$=DTE(0:"%Y-%Dz-%Mz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$ ELSE OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$; PRECISION 2
+1350 IF %NO_LOG THEN GOTO *NEXT ELSE PRINT (%WEBEC_LOG_FILE)OUT$
+1360 IF %DISPLAY_LOG THEN PRINT OUT$
+1370  } ! NOT (%QUIET_MODE)
+1395 ! 
+1400 ! All done
+1410 GOTO 9240
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9250
+9200 RETURN_CODE=1; GOTO 9900 ! Problem opening files
+9220 RETURN_CODE=3; GOTO 9900 ! Server record not found
+9240 RETURN_CODE=5; GOTO 9900 ! All done
+9250 RETURN_CODE=6; GOTO 9900 ! Error occurred, check log
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 REM "301389-Deluxe security, PEN test results, need program changes.    

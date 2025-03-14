@@ -1,0 +1,97 @@
+0010 REM "EC Export CUST Information <EC2CUST>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 09/15/98 - 11 - kmc - SSP# 098699
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Export CUST type info
+0085 REM "Handles both Customer (key length of 10) and Shipto (key length of 15)information, both go as CUST types
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC0$,EC1$,OPTIONS$,Z{ALL},RET$
+0091 REM "EC PROG Serial number = 6
+0092 EC_SERIAL_NUM=6
+0093 CURR_DIR$=LWD
+0100 SETERR 9000
+0110 X0$="EC2CUST",X1$="Export CUST Information"
+0150 FIELD_SEP$=$09$; FIELD_SEP$=ATH(STP(EC_PARM$(95,10),1),ERR=0151)
+0160 LINE_SEP$=$0D0A$; LINE_SEP$=ATH(STP(EC_PARM$(105,10),1),ERR=0161)
+0320 AR1_IOL:IOLIST AR1$,AR1[0],AR1[1],AR1[2],AR1[3],AR1[4],AR1[5],AR1[6],AR1[7],AR1[8],AR1[9],AR1[10],AR1[11],AR1[12],AR1[13],AR1[14],AR1[15]
+0340 AR5_IOL:IOLIST AR5$,AR5[0],AR5[1],AR5[2],AR5[3]
+0500 REM "Open files, IF FILES array is uninitialized or Z[0] <> EC_SERIAL_NUM for this program (close files then reopen, after redim of array)
+0505 IF FN%NEA("Z",1)=0 THEN GOTO 0515 ELSE IF Z[0]<>EC_SERIAL_NUM THEN GOTO 0510 ELSE GOTO 0560
+0510 FOR TMP=1 TO FN%NEA("FILES",1); IF Z[TMP]<>0 THEN CLOSE (Z[TMP]) END_IF ; NEXT TMP; REM "Close all open files in the FILES array
+0515 DIM Z[NUM(X3$(60,3))]; Z[0]=EC_SERIAL_NUM; REM "Dim array and set the serial number
+0522 FILE_NAME$="AR1",INDEX=2; GOSUB 9750
+0523 FILE_NAME$="FM0",INDEX=3; GOSUB 9750
+0524 FILE_NAME$="AR5",INDEX=4; GOSUB 9750
+0525 FILE_NAME$="EC5",INDEX=5; GOSUB 9750
+0529 REM "Open or Create and open output file in correct DIRectory
+0530 Z[1]=UNT; IF Z[1]=14 THEN OPEN (14)FID(0); GOTO 0530; REM "Skip slot 14
+0532 CWDIR STP(EC_PARM$(55,40),1)
+0534 OPEN LOCK (Z[1],OPT="TEXT",ERR=0535)STP(EC0$(36,30),1); GOTO 0550
+0536 SERIAL STP(EC0$(36,30),1),10,0
+0538 OPEN LOCK (Z[1],OPT="TEXT")STP(EC0$(36,30),1)
+0540 TMP$=FN%XFD$(Z[1],0); IF DEC(TMP$(38,4))>0 THEN READ (Z[1],IND=DEC(TMP$(38,4))-1,ERR=0541)
+0550 CWDIR CURR_DIR$
+1000 REM "Prepare data to write out here and put into OUT$
+1001 REM "If key is 10 long we are doing a customer, if key is 15 long we are doning a shipto from FM0
+1005 AR1_TYPE=0,FM0_TYPE=0; IF LEN(EC1$(5))=10 THEN AR1_TYPE=1 ELSE IF LEN(EC1$(5))=15 THEN FM0_TYPE=1 ELSE RET$="Wrong CUST type key "+EC1$(5); GOTO 7500
+1010 IF AR1_TYPE THEN DIM AR1$(600),AR1[15]; FIND (Z[2],KEY=EC1$(5),DOM=1011)IOL=AR1_IOL; GOTO 1020 ELSE IF FM0_TYPE THEN FIND (Z[3],KEY=EC1$(5),DOM=1011)FM0$; GOTO 1020 ELSE GOTO 1012
+1012 REM "Didn't find record!! flag error
+1013 RET$="Missing data for key "+EC1$(5); GOTO 7500
+1030 IF AR1_TYPE THEN GOSUB 1100 ELSE IF FM0_TYPE THEN GOSUB 1200
+1080 IF OUT$<>"" THEN WRITE RECORD (Z[1])OUT$+LINE_SEP$
+1095 GOTO 9900
+1100 REM "Create OUT$ from customer record
+1105 CALL "ZZDISP","AX",AR1$(1,10),"A/R",X3$,CUST_CODE$,"",0,0,X4$
+1110 OUT$="CUST"+FIELD_SEP$+CUST_CODE$+FIELD_SEP$+AR1$(11,35); REM "Cust code and Name
+1112 OUT$=OUT$+FIELD_SEP$+AR1$(165,20)+FIELD_SEP$+AR1$(56,30)+FIELD_SEP$+AR1$(86,30); REM "Attention(purch agent), Address 1, Address 2
+1113 CALL "ZZDISP","AX",AR1$(134,9),"ZIP",X3$,ZZDISP$,"",0,0,X4$; IF STP(AR1$(46,10),3," ")="" THEN GOTO 1114 ELSE CALL "ZZDISP","AX",AR1$(46,10),"A/R",X3$,BILL_TO_CODE$,"",0,0,X4$
+1114 OUT$=OUT$+FIELD_SEP$+STP(AR1$(116,16),1)+FIELD_SEP$+AR1$(132,2)+FIELD_SEP$+ZZDISP$; REM "City, region, zip (formatted)
+1115 DIM AR5$(118),AR5[3]; FIND (Z[4],KEY=AR1$(235,10),DOM=1116)IOL=AR5_IOL
+1116 IF AR1$(245,1)="Y" THEN TAX_RATE$="0" ELSE TAX_RATE$=STR(AR5[0]+AR5[2]+AR5[3]) END_IF ; OUT$=OUT$+FIELD_SEP$+""+FIELD_SEP$+TAX_RATE$+FIELD_SEP$+AR1$(246,16); REM "Country (blank for now),Tax rate (local+county+state), Tax Resale number, Tax rate is 0 if customer is tax exempt
+1117 IF AR1$(219,1)=" " THEN DELETED$="0" ELSE DELETED$="1" END_IF ; IF STP(AR1$(46,10),3," ")="" THEN PARENT_ACCT$=CUST_CODE$ ELSE PARENT_ACCT$=BILL_TO_CODE$
+1118 OUT$=OUT$+FIELD_SEP$+"0"+FIELD_SEP$+PARENT_ACCT$+FIELD_SEP$+DELETED$; REM "Discount percent (0 for now), parent account (bill to account), deleted y/n (1 or 0 ) based on customer status
+1119 DATE_IN$=X3$(21,6); CALL "ZZDISP","DX",DATE_IN$,"",X3$,DATE$,"",0,0,X4$
+1120 OUT$=OUT$+FIELD_SEP$+DATE$+FIELD_SEP$+"TopForm"; REM "Last updated on from system date, updated by = TopForm
+1121 GOSUB 7600
+1122 OUT$=OUT$+FIELD_SEP$+""+FIELD_SEP$+""+FIELD_SEP$+CREDIT$; REM "AR Manager, AR Manager Phone, Credit good? (0=no, 1=yes)
+1195 RETURN 
+1200 REM "Create OUT$ from Ship to Record
+1205 DIM AR1$(600),AR1[15]; FIND (Z[2],KEY=FM0$(2,10),DOM=1295)IOL=AR1_IOL
+1206 CALL "ZZDISP","AX",AR1$(1,10),"A/R",X3$,CUST_CODE$,"",0,0,X4$; LOC_CODE$=CUST_CODE$+"-"+FM0$(12,4); IF STP(AR1$(46,10),3," ")="" THEN GOTO 1207 ELSE CALL "ZZDISP","AX",AR1$(46,10),"A/R",X3$,BILL_TO_CODE$,"",0,0,X4$
+1207 NAME$=STP(FM0$(16,35),1)+"-"+FM0$(12,4)
+1210 OUT$="CUST"+FIELD_SEP$+LOC_CODE$+FIELD_SEP$+NAME$; REM "Account (customer# + shipto ) and Name
+1212 OUT$=OUT$+FIELD_SEP$+FM0$(160,20)+FIELD_SEP$+FM0$(51,30)+FIELD_SEP$+FM0$(81,30); REM "Attention(purch agent), Address 1, Address 2
+1213 CALL "ZZDISP","AX",FM0$(129,9),"ZIP",X3$,ZZDISP$,"",0,0,X4$
+1214 OUT$=OUT$+FIELD_SEP$+STP(FM0$(111,16),1)+FIELD_SEP$+FM0$(127,2)+FIELD_SEP$+ZZDISP$; REM "City, region, zip (formatted)
+1215 DIM AR5$(118),AR5[3]; FIND (Z[4],KEY=FM0$(224,10),DOM=1216)IOL=AR5_IOL
+1216 IF FM0$(283,1)="Y" THEN TAX_RATE$="0" ELSE TAX_RATE$=STR(AR5[0]+AR5[2]+AR5[3]) END_IF ; OUT$=OUT$+FIELD_SEP$+""+FIELD_SEP$+TAX_RATE$+FIELD_SEP$+AR1$(246,16); REM "Country (blank for now),Tax rate (local+county+state), Tax Resale number, Tax rate is 0 if customer is tax exempt
+1217 IF AR1$(219,1)=" " THEN DELETED$="0" ELSE DELETED$="1" END_IF ; IF STP(AR1$(46,10),3," ")="" THEN PARENT_ACCT$=CUST_CODE$ ELSE PARENT_ACCT$=BILL_TO_CODE$
+1218 OUT$=OUT$+FIELD_SEP$+"0"+FIELD_SEP$+PARENT_ACCT$+FIELD_SEP$+DELETED$; REM "Discount percent (0 for now), parent account (bill to account), deleted y/n (1 or 0 ) based on customer status
+1219 DATE_IN$=X3$(21,6); CALL "ZZDISP","DX",DATE_IN$,"",X3$,DATE$,"",0,0,X4$
+1220 OUT$=OUT$+FIELD_SEP$+DATE$+FIELD_SEP$+"TopForm"; REM "Last updated on from system date, updated by = TopForm
+1221 GOSUB 7600
+1222 OUT$=OUT$+FIELD_SEP$+""+FIELD_SEP$+""+FIELD_SEP$+CREDIT$; REM "AR Manager, AR Manager Phone, Credit good? (0=no, 1=yes)
+1295 RETURN 
+7500 REM "Exit as if an error happened
+7501 REM "Expecting that RET$ is already set before here
+7505 EXIT 69
+7600 REM "Set CREDIT$ to 0 if credit bad and 1 if credit good. CUST_CODE$ set above
+7605 CREDIT$="0"; FIND (Z[5],KEY=CUST_CODE$,DOM=7606)EC5$; IF EC5$(22,1)="Y" THEN CREDIT$="-1"; GOTO 7640; REM "Check EC Customer list, if credit always good, then set it and move on
+7610 IF AR1$(219,1)=" " AND (AR1$(361,1)=" " OR AR1$(361,1)="N") AND (AR1[5]=0 OR AR1[6]+AR1[13]<=AR1[5]) THEN CREDIT$="-1" ELSE CREDIT$="0"; REM "credit good (=1) if active and not on credit hold and either no credit limit or balance+open order <= credit limit
+7645 RETURN 
+9000 REM "Error
+9005 CWDIR CURR_DIR$
+9010 RET$="ERROR # "+STR(ERR)+" @ LINE "+STR(TCB(5))+" IN "+X0$
+9020 EXIT ERR
+9750 REM "FILES - Use instead of ZZFLES
+9755 Z[INDEX]=UNT; IF Z[INDEX]=14 THEN OPEN (14)FID(0); GOTO 9755; REM "Skip slot 14
+9760 IF LEN(FILE_NAME$)<>3 THEN GOTO 9780
+9765 OPEN (Z[INDEX],ERR=9780)FILE_NAME$+X3$(9,3); GOTO 9781
+9780 OPEN (Z[INDEX])FILE_NAME$
+9790 RETURN 
+9900 REM "END PROGRAM
+9905 CWDIR CURR_DIR$
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,283 @@
+0010 REM "<CR2UAA> Import Cash Receipts Gateway Information
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/16/22 - 23.313638 - crg - SSP# 307408
+0037 REM "307408-DBD-267;Enhance CR GW and other for Pre-Payments            
+0040 REM "Copyright 2022 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0052 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access this program"; GOTO 0075 ! SSP#276457                                                    
+0055 IF NOT(%GUI) THEN CHUI_MODE=1; %GUI=1
+0060 PROCESS "CRGUAA","../CRG/CR.EN"
+0065 IF CHUI_MODE THEN %GUI=0; RUN "ZMENU"
+0075 IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0080 ! 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0101 INIT:! SSP240496 jdf
+0110 X0$="CR2UAA",X1$="Import Cash Receipts Gateway Information"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0210 IF %GUI THEN X0=-1 ! SSP240496 jdf
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 CR0_IOLIST:IOLIST CR0$,CR0[0],CR0[1],CR0[2],CR0[3],CR0[4],CR0[5],CR0[6],CR0[7]
+0350 ARP_IOLIST:IOLIST ARP$,ARP[0],ARP[1],ARP[2]
+0360 AR6_IOLIST:IOLIST AR6$,AR6[0],AR6[1],AR6[2],AR6[3],AR6[4],AR6[5],AR6[6],AR6[7],AR6[8],AR6[9],AR6[10],AR6[11],AR6[12],AR6[13],AR6[14],AR6[15]
+0380 ! Open Files - 260723 - Batch enable Cash Receipts Gateway
+0383 %NO_NEW_BATCH=0 ! Allow creation of new batches
+0385 CALL "ZGBATC",X3$,X4$,"CR2CAA",X9; IF X9=1 THEN CMD_STR$="END"; EXIT 
+0390 ! 
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O CR0... 03O AR1... 04O AR6... 05O ZYB... 06O GL1... 07O ARN...  13O ZZPARM " ! ssp 307373
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0603 DIM A$(10)
+0604 IF %GUI THEN RETURN ! SSP240496 jdf
+0605 GOSUB 7800; REM "Get current fiscal year
+0610 GOSUB 6000
+0615 REM "Fiscal year
+0620 CALL "ZZENTR","ZXUX",A{ALL},A$,X4$,X3$,37,10,1,4,C0,"","{1"+X$,"","CR2UAA00","","",""
+0630 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0631,9900
+0635 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+A$(1,4),DOM=0620)P1$
+0640 IF POS(P1$(99,1)="CR")<>0 THEN CALL "ZZPROM",".4",X3$,Z,"Closed years must be reopened by System Administrator prior to posting.","","",0; GOTO 0620
+0665 REM "Accounting period
+0670 CALL "ZZENTR","ZUX",A{ALL},A$,X4$,X3$,37,11,5,2,C0,"","{1"+X$,"","CR2UAA02","","",""
+0680 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0681,9900
+0685 IF A$(5,2)<"01" OR A$(5,2)>P1$(13,2) THEN GOTO 0670
+0690 GOSUB 7700
+0715 REM "Bank code
+0720 CALL "ZZENTR","SZUX",A{ALL},A$,X4$,X3$,37,12,7,3,C0,"","{1"+X$,"","CR2UAA04","","",""
+0730 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0731,9900
+0740 DIM ZYB$(200); FIND (Z[5],KEY=A$(7,3),DOM=0720)ZYB$
+0750 PRINT @(43,12),ZYB$(4,30),
+0775 REM "Deposit number
+0780 CALL "ZZENTR","SUX",A{ALL},A$,X4$,X3$,37,13,10,1,C0,"","{1"+X$,"","CR2UAA06","","",""
+0785 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0786,9900
+0800 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0801,9900
+0850 PROCEED:! SSP240496 jdf
+0900 DIM CR0$(113),CR0[7]; SEQ_NO=1
+0950 IF %GUI THEN A$(1,4)=CR_FY$; IF LEN(CR_ACCTPD$)>2 THEN A$(5,2)=CR_PD$ ELSE A$(5,2)=CR_ACCTPD$; END_IF ; A$(7,3)=BANK_CODE$,A$(10,1)=DEPOSIT_NUM$ ! SSP240496 jdf
+1000 REM "Get list of CR1 files to process
+1010 CALL "ZZ2BLS","D0:CR1*","S",F$
+1012 IF X3$(77,1)="U" THEN CALL "ZZ2BLS","D0:cr1*","S",F_LOWER$; F$=F$+F_LOWER$
+1013 IF SEL_FILES$="Y" THEN CALL "ZZ2BLS;SELECT_FILES",F$,"D0:",""; IF %SEL_FILES$="X" THEN %SEL_FILES$="",CMD_STR$="END"; GOTO 9900 ! 260723!SSP#273320
+1015 P=POS(":"=F$); IF P=0 THEN GOTO 5000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1050 Z$="01CU 01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")F1$; REM "Open for reading raw file
+1065 CLOSE (13); OPEN (13)"ZZPARM"; REM "Re-open ZZPARM closed in ZZ2BLS
+1075 IF NOT(%GUI) THEN IF Q1$<>"G" THEN PRINT @(15,15),'CE',"Processing: "+F1$, ! SSP240496 jdf  
+1080 IF NOT(%GUI) THEN IF Q1$<>"G" THEN GOSUB 8100; GOSUB 8150 ! SSP240496 jdf
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0
+1110 READ (Z[1],END=7750)I$; I9=I9+1,COUNT=COUNT+1
+1113 IF STP(I$,3," ")="" OR I$="" THEN GOTO 1110 ELSE IF I9=1 AND (POS(","=MID(I$,1,8)) OR POS($09$=MID(I$,1,8))) THEN IF POS(","=MID(I$,1,8)) THEN DELIM$=MID(I$,POS(","=MID(I$,1,8)),1) ELSE IF POS($09$=MID(I$,1,8)) THEN DELIM$=MID(I$,POS($09$=MID(I$,1,8)),1) ! SSP#307289
+1114 IF NOT(NUL(DELIM$)) THEN RETURN$=""; GOSUB 4100; I$=RETURN$ ! SSP#307289
+1120 IF NOT(%GUI) THEN IF Q1$<>"G" THEN IF MOD(I9,T0)=1 THEN GOSUB 8150 ! SSP240496 jdf 
+1125 IF LEN(I$)<133 THEN I9$=I$; DIM I$(133); I$(1)=I9$; REM "Correct length if short; 307408 - Cust PO
+1150 REM "Create CR0 record
+1160 DIM CR0$(113),CR0[7]
+1170 IF STP(I$(1,4),3," ")="" THEN CR0$(1,4)=A$(1,4) ELSE CR0$(1,4)=I$(1,4); REM "Fiscal Year
+1172 DIM YEAR$(105); FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+CR0$(1,4),DOM=1173)YEAR$; GOTO 1175
+1173 CR0$(80,2)="01"; GOTO 1180; REM "Invalid fiscal year
+1175 IF POS(YEAR$(99,1)="CR")<>0 THEN CR0$(80,2)="01"; REM "Closed year
+1180 IF STP(I$(5,2),3," ")="" THEN CR0$(5,2)=A$(5,2) ELSE CR0$(5,2)=I$(5,2); REM "Accounting period
+1181 CR0$(5,2)=STR(NUM(CR0$(5,2)):"00",ERR=*NEXT) ! SSP268013
+1182 IF CR0$(5,2)<"01" OR CR0$(5,2)>YEAR$(13,2) THEN IF CR0$(80,2)="  " THEN CR0$(80,2)="02"; REM "Invalid accounting period
+1190 IF STP(I$(7,3),3," ")="" THEN CR0$(7,3)=A$(7,3) ELSE CR0$(7,3)=I$(7,3); REM "Bank code
+1192 FIND (Z[5],KEY=CR0$(7,3),DOM=1193); GOTO 1195
+1193 IF CR0$(80,2)="  " THEN CR0$(80,2)="03"; REM "Invalid bank code
+1195 IF I$(10,1)=" " THEN CR0$(10,1)=A$(10,1) ELSE CR0$(10,1)=I$(10,1); REM "Deposit number
+1200 CR0$(11,4)=STR(SEQ_NO:"0000"); REM "Sequence number
+1205 CR0$(15,6)=X3$(15,6); REM "Set deposit date to accounting date
+1210 CR0$(21,10)=I$(11,10); REM "Customer number
+1215 DIM AR1$(599); FIND (Z[3],KEY=CR0$(21,10),DOM=1216)AR1$; GOTO 1220
+1216 IF CR0$(80,2)="  " THEN CR0$(80,2)="04"; REM "Invalid customer code
+1220 CR0$(31,6)=I$(21,6),CR0$(37,8)=I$(27,8); IF CR0$(37,8)=DIM(8) THEN GOTO 1227; REM "Check reference,invoice number. SSP258606, if blank inv then invalid
+1221 FIND (Z[4],KEY=CR0$(21,10)+CR0$(37,8),DOM=1222); CR0$(94,1)="I"; GOTO 1230; REM "Valid invoice number, look no further 
+1222 IF CR0$(37,8)="ONACCNT " THEN GOSUB ADD_ONACCT; GOTO 1221 ! SSP 307373
+1223 IF UCS(STP(CR0$(37,8),2))="P" THEN CR0$(94,1)="P"; GOSUB ADD_PREPAYMENT; GOTO 1230 ! 307408 Pre-payments
+1225 DIM AR6$(180),AR6[15]; READ (Z[4],KEY=CR0$(21,10),DOM=1226); REM "Position AR6 file to start of this customer's invoices, will look for possible summary bill number      
+1226 READ (Z[4],END=1227)IOL=AR6_IOLIST; IF AR6$(1,10)<>CR0$(21,10) THEN GOTO 1227 ELSE IF AR6[3]=0 OR AR6$(160,8)<>CR0$(37,8) THEN GOTO 1226 ELSE CR0$(94,1)="S"; GOTO 1230
+1227 IF CR0$(80,2)="  " THEN CR0$(80,2)="05"; REM "Invalid invoice number
+1230 CR0$(45,35)=AR1$(11,35); REM "Customer name
+1233 CR0[0]=NUM(I$(35,12),ERR=1234); GOTO 1235; REM "Total Applied
+1234 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1235 CR0[1]=NUM(I$(47,12),ERR=1236); GOTO 1237; REM "Discount Allowed
+1236 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1238 CR0[2]=NUM(I$(59,12),ERR=1239); GOTO 1240; REM "Freight allowed
+1239 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1240 CR0[3]=NUM(I$(71,12),ERR=1241); GOTO 1242; REM "Sales tax allowed
+1241 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1243 CR0[4]=NUM(I$(83,12),ERR=1244); GOTO 1245; REM "Cash posted
+1244 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1245 CR0[5]=NUM(I$(95,12),ERR=1246); GOTO 1247; REM "G/L Adjustment amout
+1246 IF CR0$(80,2)="  " THEN CR0$(80,2)="06"
+1247 IF CR0[5]+CR0[4]+CR0[3]+CR0[2]+CR0[1]<>CR0[0] THEN CR0$(80,2)="07" ! SSP239836, added CR0[5] (G/L adjustment) to calculation
+1248 CR0$(95,15)=I$(119,15) ! 307408 Cust PO
+1249 IF CR0[5]=0 THEN GOTO 1300 ! If there isn't a G/L adjustment then we're done
+1255 CR0$(82,12)=I$(107,12) ! G/L account number
+1260 READ (Z[6],KEY=CR0$(82,12),DOM=*NEXT); GOTO 1265 ! Make sure G/L account number is valid 
+1261 IF CR0$(80,2)=DIM(2) THEN CR0$(80,2)="08"
+1299 ! 
+1300 WRITE (Z[2],KEY=CR0$(1,14),DOM=1301)IOL=CR0_IOLIST; GOTO 1310
+1301 SEQ_NO=SEQ_NO+1,CR0$(11,4)=STR(SEQ_NO:"0000"); GOTO 1300
+1310 SEQ_NO=SEQ_NO+1
+1350 IF CR0$(94,1)="P" THEN GOSUB CREATE_PREPAY_INVOICE
+1795 GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to CR4 for archiving. Erase an existing CR4 file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$=F1$; IF F2$ LIKE "[Cc][Rr]1*" THEN F2$(1,3)="CR4" ELSE GOTO 1995
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 ERASE F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$
+1995 GOTO 1015
+3114 ! T=NUM(NUM_REC$,ERR=8130)
+4100 REM "BREAK OUT IF COMMA DELIMITED
+4110 F_NUM=15,F_LEN$="040203011006081212121212121215" ! 307408
+4120 DIM FIELDS[F_NUM]
+4130 FOR F_LOOP=1 TO F_NUM
+4140 FIELDS[F_LOOP]=NUM(F_LEN$(2*F_LOOP-1,2))
+4150 NEXT F_LOOP
+4160 CALL "ZZ2DLM","","",STP(I$,1,$0D$),DELIM$,FIELDS{ALL},"",RETURN$,FIELDS_FOUND
+4199 RETURN 
+4900 REM "END OF LINES
+4910 Y[4]=-1; WRITE (F,IND=0)IOL=0290
+4920 CALL "ZZEXPF",X3$,X4$,"X"+STR(F),"",G9; IF G9>0 THEN EXITTO 1300
+4925 EXTRACT (F,IND=0)IOL=0290
+4930 Z=NUM(FIN(F,"MAXREC")); Y[3]=Z-1
+4935 Y[4]=-2; WRITE (F,IND=0)IOL=0290
+4940 GOTO 5215
+4980 EXITTO 1300
+5000 REM "EOJ
+5010 PRINT @(0,15),'CE',
+5020 IF Q1$="" AND NOT(%GUI) THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0 ! SSP240496 jdf 
+5030 IF %GUI THEN MSGBOX "Process complete","F.Y.I.","!"; CMD_STR$="END" ! SSP240496 jdf
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 IF %GUI THEN RETURN ! SSP240496 jdf
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Cash Receipts Gateway Information"
+6030 PRINT @(24,10),"Fiscal year:",@(18,11),"Accounting period:",@(26,12),"Bank code:",@(21,13),"Deposit number:",
+6040 PRINT @(37,10),A$(1,4),@(37,11),A$(5,2),
+6050 GOSUB 7700
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 CONVERT_YYMMDD:REM "Convert date in YYMMDD format into TopForm format, assume YY <=50 means 20+YY >50 means 19+YY
+7501 REM "YYMMDD in date$,result in DATE_RESULT$
+7505 DATE_RESULT$=""
+7510 IF LEN(DATE$)<6 THEN GOTO CONVERT_YYMMDD_END
+7515 IF DATE$(1,2)<="50" THEN DATE$="20"+DATE$ ELSE DATE$="19"+DATE$
+7520 DATE_RESULT$=CHR(NUM(DATE$(1,3),ERR=7521)-125)+DATE$(4)
+7545 CONVERT_YYMMDD_END:RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2)
+7595 RETURN 
+7600 CONVERT_NUMBER:REM "Convert number in NUM_IN$ to NUM_IN including translating EBCIDIC to ASCII conversion artifacts
+7601 REM "Some programs when converting numberic values from EBCIDIC to ASCII will indicate negative numbers by adding a value to the least significant digit when translated the number is negative if the last char is not 0-9. The value will be as follows: }=0, J=1, K=2, L=3, M=4, N=5, O=6, P=7, Q=8, R=9....Furthermore 2 digits of precision are assumed so the number will be divided by 100
+7605 NUM_IN=0; TMP=POS(NUM_IN$(LEN(NUM_IN$),1)="}JKLMNOPQR")
+7610 IF TMP=0 THEN NUM_IN=NUM(NUM_IN$,ERR=CONVERT_NUMBER_END)/100; GOTO CONVERT_NUMBER_END
+7615 REM "Convert last char back to num and convert to negative
+7620 NUM_IN$(LEN(NUM_IN$),1)=STR(TMP-1:"0"),NUM_IN=(-NUM(NUM_IN$,ERR=CONVERT_NUMBER_END))/100
+7645 CONVERT_NUMBER_END:RETURN 
+7700 REM "PRINT P/E DATE"
+7720 PRINT @(43,11),"Ending ",FND$(P1$(NUM(A$(5,2))*6+15,6)),
+7749 RETURN 
+7750 REM "End of file
+7795 GOTO 1900
+7800 REM "Get G/L Z Mask
+7810 CALL "ZZDISP","AX","000000000000","G/L",X3$,W2$,"",0,0,X4$
+7815 M2=0; FOR X=1 TO LEN(W2$); M2=M2+POS("0"=W2$(X,1)); NEXT X
+7850 REM "Set Fiscal year & period"
+7860 FIND (Z[13],DOM=8900,KEY=X3$(9,3)+"A/R")P0$
+7870 FIND (Z[13],DOM=8900,KEY=X3$(9,3)+"G/LYE"+P0$(7,4))P1$
+7880 A$(1,6)=P0$(7,6)
+7890 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8113 CALL "ZZ2FNC;SerialRecCnt",Z[1],T
+8115 IF NOT(%GUI) THEN PRINT @(0,7),"There are "+STR(T)+" records to process" ! SSP240496 jdf
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+12000 ADD_ONACCT:! SSP 307373
+12010 DIM AR6$(180),AR6[15]
+12020 ! ARN_CHL=HFN; IF NOT(FN%ISOPEN(ARN_CHL)) THEN OPEN (ARN_CHL)"ARN"+%C$
+12030 AR6$(1,10)=CR0$(21,10),AR6$(11,8)="ONACCNT ",AR6$(19,1)="A",AR6$(20,6)=CR0$(15,6),AR6$(54,6)=AR6$(20,6),AR6$(127,6)=CR0$(1,6),AR6$(108,9)=AR1$(220,9)
+12040 KK$=CR0$(21,10)+CR0$(37,8); WRITE (Z[4],KEY=KK$)IOL=AR6_IOLIST
+12050 WRITE (Z[7],KEY=AR6$(1,10)+"B"+AR6$(20,6)+AR6$(11,8))
+12090 RETURN 
+12099 ! 
+12150 SETUP_PREPAY_PARM:
+12160 DIM P9$(20); P9$(1,9)=X3$(9,3)+"PREPAY"
+12170 P0=1; P9$(10,6)=STR(P0:"000000")
+12180 WRITE RECORD (Z[13],KEY=X3$(9,3)+"PREPAY")P9$
+12199 ! 
+12200 ADD_PREPAYMENT:! SSP 307408
+12210 DIM P9$(20); EXTRACT RECORD (Z[13],KEY=X3$(9,3)+"PREPAY",DOM=SETUP_PREPAY_PARM)P9$
+12215 CR0$(37,8)="P"+P9$(10,6); IF P9$(10,6)<"999999" THEN P9$(10,6)=STR(NUM(P9$(10,6))+1:"000000") ELSE P9$(10,6)=FN%NEXT_SEQ$(P9$(10,6),6)
+12220 WRITE RECORD (Z[13],KEY=X3$(9,3)+"PREPAY")P9$
+12222 FIND (Z[4],KEY=CR0$(21,10)+CR0$(37,8),DOM=*NEXT)*; GOTO ADD_PREPAYMENT ! prepayment exists, get new number
+12225 RETURN 
+12229 ! 
+12230 CREATE_PREPAY_INVOICE:
+12232 DIM AR6$(180),AR6[15]
+12235 AR6$(1,10)=CR0$(21,10),AR6$(11,8)=CR0$(37,8),AR6$(19,1)="P",AR6$(20,6)=CR0$(15,6),AR6$(54,6)=AR6$(20,6),AR6$(36,15)=CR0$(95,15),AR6$(66,8)=CR0$(37,8),AR6$(127,6)=CR0$(1,6),AR6$(108,9)=AR1$(220,9),AR6$(51,2)=AR1$(359,2),AR6$(74,4)=AR1$(278,4),AR6$(78,4)=AR1$(282,4),AR6$(82,4)=AR1$(286,4),AR6$(86,4)=AR1$(290,4),AR6$(90,4)=AR1$(294,4),AR6$(102,6)=X3$(178,6),AR6$(117,10)=AR1$(235,10),AR6[5]=CR0[0]
+12240 KK$=CR0$(21,10)+CR0$(37,8); WRITE (Z[4],KEY=KK$)IOL=AR6_IOLIST
+12290 RETURN 
+12299 ! 
+56000 REM "239836-Cash Receipts Gateway doesn't support G/L Adjustment and G/L
+56002 REM "240496-Cash Receipts Gateway GUI - GCR, P1 Option                  
+56004 REM "258606-Cash Receipts Gateway - blank invoice number should be      
+56005 REM "260723-Import Module/Cash Receipts GW/CIG Plus; Allow selection of 
+56006 REM "268013-FY/AP validation in Cash Receipts Gateway, other gateways   
+56007 REM "276457-Cash Receipts gateway, when using tiny term shows up with   
+56008 REM "273320-GOR - Order Req Gateway - change file selection screen to   
+56009 REM "307289-Cash Rcpts GW: Add support for csv and tab-delimited files  
+56010 REM "307373-Cash Receipts Gateway - Add ONACCNT invoice if doesn't exist
+56011 REM "307408-DBD-267;Enhance CR GW and other for Pre-Payments            

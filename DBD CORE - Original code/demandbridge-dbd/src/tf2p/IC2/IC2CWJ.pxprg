@@ -1,0 +1,466 @@
+0010 REM "Inventory Lot Selection <IC2LCA>
+0015 REM "NOTE: This program CALLS itself recursively in automatic mode
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 12/04/98 - 10.56 - cwj - SSP# 101145
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 REM "M$=mode, blank=entry, D=delete, I=inquiry, A,B=Auto distribute, a=called recursively from auto distribute, C=compute number of uncommitted cartons inthis warehouse, c=uncomitted cartons in all whses
+0046 REM "M$=d means delete is coming from I/C transactions IC2TB1
+0047 REM "L0 is line to start display on, L0=0 means no display or entry no matter what
+0089 REM "Q=QTY, C=COST EXT, F=FREIGHT EXT, S1$=Selling U/M, S1=Unit selling price, S2=Selling Qty/UM,S3$ contains various data - see 7000's, S3=std cost, S4=std cost qty/um
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,M$,L0,I$,Q,C,F,S1,S1$,S2,S3$,S3,S4
+0100 SETERR 9000; SETESC 9300
+0110 X0$="IC2LCA",X1$="Inventory Lot Selection",K9$="",K9=0
+0120 DIM Z0$(80,"-"),S0$(79),T[4]
+0121 REM "T() 0=qty not on order, 1=qty on order, 2=temp, 3=cost ext on order, 4=frt on order
+0130 Q4=Q
+0135 C9=-1
+0140 M0$="-###,###",M1$="###,###.00-",M3$="###,##0-",M4$="-#,###,##0 "; DIM M5$(9,"#")
+0200 REM "
+0245 IF X3$(65,1)>"2" THEN PRECISION NUM(X3$(65,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12]
+0315 IOLIST A0$,A0[0],A0[1],A0[2],A0[3],A0[4],A0[5],A0[6],A0[7],A0[8],A0[9],A0[10],A0[11],A0[12]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ICF...  02O AR1...  03O IC0...  04O FM0...  13O ZZPARM  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0540 READ (Z[13],KEY=X3$(9,3)+"I/C")P0$
+0550 IF L0>0 AND P0$(68,1)="Y" AND MOD(L0,2)=0 THEN L0=L0+1,ADJ_L0$="Y"; REM WO95211
+1000 REM "
+1030 DIM A$(269),A[12],A0$(269),A0[12],A2$(269),A2[12],S$(50),S3$(50)
+1039 REM "M(, 0=A(2), 1= A(3), 2= EXTENDED AMOUNT
+1040 DIM Q[20],M[20,2],J0$(80),J1$(80)
+1050 T=0,T5=0,S1=0,S2=0,S3=0,S4=0
+1060 IF LEN(M$)>1 THEN M9$=M$(2),M$=M$(1,1)
+1120 IF POS(M$="AB")>0 AND Q=0 THEN M$="N"
+1140 IF L0>0 AND POS(M$="DdABC")=0 THEN GOSUB 6000
+1500 REM "Setup for lines
+1520 A1$=I$(1,24)
+1525 IF M$="C" THEN GOSUB 6600; GOTO 9900
+1530 IF POS(M$="Dd")>0 THEN GOSUB 6500; GOTO 9900
+1534 REM "For Auto Distribute, clear old committed lots and recommit.
+1535 IF POS(M$="AB")<>0 THEN GOSUB 6500
+1570 GOSUB 4200
+1900 REM 
+1920 GOSUB 4100
+1940 GOSUB 7400; GOSUB 7500
+2000 REM 
+2005 IF COUNTER>LEN(SEQ_KEY$) THEN GOTO 5000 ELSE K$=A1$(1,24)+SEQ_KEY$(COUNTER,8),COUNTER=COUNTER+8
+2010 READ (Z[1],KEY=K$)IOL=0310
+2020 IF A$(1,LEN(A1$))<>A1$ THEN GOTO 5000
+2025 IF M$="I" THEN GOTO 2040
+2030 IF POS(" "<>A$(110,11))>0 AND A$(110,11)<>I$(25,11) THEN GOTO 2000
+2035 IF POS(" "<>A$(110,11))=0 AND POS(" "<>A$(221,11))>0 THEN GOTO 2000
+2040 IF P0$(68,1)<>"Y" THEN IF POS(M$="AB")=0 THEN IF L>19 THEN GOSUB 4000
+2042 IF P0$(68,1)="Y" THEN IF POS(M$="AB")=0 THEN IF L>18 THEN GOSUB 4000
+2050 N=N+1,N0=N0+1,N$=N$+K$; IF POS(" "<>A$(221,11))>0 THEN N1$=N1$+"a" ELSE N1$=N1$+" "
+2120 IF POS(M$="AB")<>0 THEN GOSUB 4500; GOTO 2000 ELSE GOSUB 7700
+2145 L=L+1
+2195 GOTO 2000
+3050 REM "Print total
+3055 IF L0=0 OR POS(M$="AB")<>0 THEN RETURN 
+3060 IF M$="I" THEN PRINT @(0,21),'CL',"Lot units committed:",T[1]:M4$,@(49,21),"Lot units on-hand:",T[0]:M4$, ELSE PRINT @(0,21),'CL',"Lot units this order:",T[1]:M4$,@(49,21),"Lot units available:",T[0]:M4$,; IF T7<>0 THEN PRINT @(10,20),"Lots temporarily unavailable due to adjustments in process:",T7:M4$,
+3070 IF FLAG1$="" AND COUNTER<=LEN(SEQ_KEY$)+1 THEN PRINT @(37,21),"<MORE>",
+3090 FLAG1$=""
+3095 RETURN 
+3300 REM "Display line
+3320 CALL "IC2LAB",X3$,X4$,"1",L0,A$,A{ALL}
+3330 GOTO 1000
+4000 REM "End of Page Routine"
+4002 IF EOD$="Y" THEN GOTO 5010
+4005 GOSUB 3050
+4008 IF M$="I" THEN PROMPT_CODE$="X1IC2ISB" ELSE PROMPT_CODE$="X0IC2ISB"
+4010 CALL "ZZPROM",PROMPT_CODE$,X3$,Z,"","","",X0
+4020 ON Z GOTO 4021,4021,1000,5090,5100,8000
+4025 N=0,N$="",N0=0,L=L0+1,K0$="",N1$=""
+4030 PRINT @(0,L),'CE','SF',
+4040 DIM Q[20],M[20,2],J0$(80),J1$(80)
+4045 RETURN 
+4100 REM " FIX PAGE FOR INPUT "
+4110 K0$=""
+4120 L=L0+1
+4121 N=0,N$="",N0=0,N1$=""
+4130 IF L0>0 THEN PRINT @(0,L),'CE','SF'
+4190 RETURN 
+4200 REM "GET TOTAL AVAILABLE
+4205 DIM T[4]; T7=0,F8$=""
+4210 READ (Z[1],KEY=A1$,DOM=4211)
+4220 READ (Z[1],END=4280)IOL=0310
+4230 IF A$(1,LEN(A1$))<>A1$ THEN GOTO 4280
+4235 IF A$(125,4)="    " THEN T[2]=A[4]*A[3] ELSE T[2]=A[4]*A[2]*A[3]
+4240 IF A$(221,2)="TR" THEN IF A$(125,4)="    " THEN T7=T7+A[4]*A[3] ELSE T7=T7+A[4]*A[2]*A[3]
+4245 IF POS(" "<>A$(110,11))<>0 THEN F8$="*"
+4250 IF M$="I" THEN T[0]=T[0]+T[2]; IF POS(" "<>A$(110,11))>0 THEN T[1]=T[1]+T[2]; GOTO 4220 ELSE GOTO 4220
+4255 IF POS(" "<>A$(110,11))>0 AND A$(110,11)<>I$(25,11) THEN GOTO 4220
+4260 T[0]=T[0]+T[2]; IF A$(110,11)=I$(25,11) THEN T[1]=T[1]+T[2],T[3]=T[3]+A[0],T[4]=T[4]+A[1]
+4270 GOTO 4220
+4280 RETURN 
+4500 REM "Auto distribute logic
+4501 REM "If Q4=0 we're done, else if line is <= Q4, commit the whole line
+4502 REM "else if split makes sense, split the line, else goto entry mode.
+4503 REM "committing a line done thru 8400's logic. We will set Q(), N$, and J0$ to look like this is line 1 (index 0) and we have entered the right amount, then we will gosub 8400.
+4504 REM "Assumes old lots committed for this order/line have been deleted, see 1535; therefore any adjustments will not be on uncommitted list
+4505 IF A$(125,4)="    " THEN L5=A[4]*A[3] ELSE L5=A[4]*A[2]*A[3]
+4506 J1$="    "
+4508 IF L5<=0 THEN GOTO 4545
+4509 REM "Set Q5 to amount to get from line,Q6 = AMOUNT TO SUBTRACT FROM Q4
+4510 IF L5<=Q4 THEN GOSUB 4550 ELSE GOSUB 4600
+4512 IF Q5=-1 THEN GOTO 4545
+4515 X0=1,N$="",J0$=J1$,Q[0]=Q5,N1$=" "
+4520 GOSUB 8400
+4530 Q4=Q4-Q6
+4535 IF Q4=0 THEN EXITTO 9900
+4539 REM "Reposition for next one
+4540 READ (Z[1],KEY=K$)
+4546 RETURN 
+4550 REM "Check out line that will be completly used to make sure the units make sense
+4555 REM "Skip this check if in B auto mode
+4556 IF M$="B" THEN Q5=A[4],Q6=L5,J1$=A$(121,4); GOTO 4595
+4560 IF A[3]<>0 THEN IF MOD(Q4,A[3])=0 THEN Q5=A[4],Q6=L5; IF A$(125,4)="    " THEN J1$=A$(121,4); GOTO 4595 ELSE J1$=A$(125,4); GOTO 4595
+4575 REM "Skip this line, perhaps we can find later to match
+4580 Q5=-1
+4595 RETURN 
+4600 REM "If a reasonable split can be made of the line, set Q5=Q4, otherwise skip this line and keep looking
+4601 REM "Reasonable split means the amount requested is evenly divisable by one of the packs
+4602 IF I$(25,2)="KT" THEN Q5=Q4,Q6=Q4,J1$="    "; RETURN ; REM "If a kit then split it no matter what"
+4605 IF M$="B" THEN GOTO 4800
+4610 IF A[3]<>0 THEN IF MOD(Q4,A[3])=0 THEN Q5=Q4/A[3],Q6=Q4; IF A$(125,4)="    " THEN J1$=A$(121,4); GOTO 4645 ELSE J1$=A$(125,4); GOTO 4645
+4615 REM "Skip this line, perhaps we can find later to match
+4620 Q5=-1
+4645 RETURN 
+4700 REM 'HANDLE CALL TO ENTRY
+4710 CALL "IC2LCA",X3$,X4$,"a",L0,I$,Q4,C,F,S1,S1$,S2,S3$,S3,S4
+4720 T[1]=Q4,T[3]=C,T[4]=F
+4730 GOTO 9900
+4800 REM "B type auto split of line. We want to split the lot record without splitting the cartons.
+4805 IF A$(125,4)="    " THEN D5=A[3] ELSE D5=A[2]*A[3]
+4810 IF D5<=0 THEN Q5=-1; GOTO 4845
+4815 Q5=Q4/D5
+4820 IF FPT(Q5)<>0 THEN Q5=INT(Q5)+1
+4822 IF Q5>A[4] THEN Q5=A[4]
+4825 Q6=Q4,J1$=A$(121,4)
+4845 RETURN 
+5000 REM "End of display"
+5002 IF POS(M$="AB")<>0 THEN IF Q4=0 OR L0=0 THEN GOTO 5090 ELSE GOTO 4700
+5003 IF N=0 THEN GOTO 5050
+5004 FLAG1$="Y"; GOSUB 3050; IF M$="I" THEN GOTO 5150
+5005 IF F1$="*" THEN F1$=""; RETURN ELSE EOD$="Y"; GOTO 8000
+5010 CALL "ZZPROM","X0IC2ISB",X3$,Z,"","","V",X0
+5020 ON Z GOTO 5090,5090,1000,5090,5100,8000
+5050 IF T7<>0 THEN PRINT @(10,20),"Lots temporarily unavailable due to adjustments in process:",T7:M4$,
+5060 IF F8$="*" THEN CALL "ZZPROM",".4",X3$,Z,"All lot inventory is committed to other orders.","","",0 ELSE CALL "ZZPROM",".4",X3$,Z,"There are no lot inventory records for this location.","","",0; T[1]=-1,T[3]=0,T[4]=0
+5090 IF Q1$<>"" THEN GOTO 9700 ELSE GOTO 9900
+5100 REM "Show the detail of an line number
+5104 DIM A9$(4),X$(0)
+5105 PRINT @(24,22),'CE',"Line number:",; CALL "ZZENTR","SZUX",A{ALL},A9$,X4$,X3$,38,22,1,2,C0,"",X$,A1$,"IC2MAI12","","",""; IF ABS(C0)>4 THEN GOSUB 6400; ON C0 GOTO 5105,5106
+5106 PRINT @(24,22),'CL',; IF C0<0 THEN GOTO 5130
+5107 N1=NUM(A9$,ERR=5105); IF N1<=0 OR N1>N0 THEN GOTO 5105
+5112 GOTO 5200
+5130 GOTO 1000
+5150 REM "Inquiry"
+5160 CALL "ZZPROM","X1IC2ISB",X3$,Z,"","","V",X0
+5170 ON Z GOTO 5090,5090,1000,5090,5100
+5200 REM "Take N0 & show info
+5205 IF X3$(40,3)="cwj" THEN ESCAPE 
+5210 N0$=N$((N1-1)*32+1,32)+"**"
+5220 FIND (Z[1],KEY=N0$(1,32))IOL=0310
+5230 L=L0+1,N=N1; PRINT @(0,L),'CE',; GOSUB 7700
+5240 PRINT @(0,L+1),Z0$,@(1,L+2),"Receipt date:",@(40),"Vendor/Plant:",@(2,L+3),"Receiving #:",@(42),"P/O number:",@(0,L+4),"Item Rev date:",@(44),"P/O date:",@(3,L+5),"Bin number:",@(42),"Total cost:",@(39,L+6),"Ending number:",
+5245 PRINT @(0,L+6),"Customer P/O#:",@(0,L+7),"Selling Price:",
+5250 PRINT @(15,L+2),FND$(A$(25,6)),@(15,L+3),A$(33,8),@(15,L+4),A$(215,6),@(15,L+5),A$(100,10),@(54,L+6),A$(91,9)
+5255 CALL "ZZDISP","A",A$(68,10),"A/P",X3$,"","",54,L+2,X4$
+5256 PRINT @(66),A$(78,4),
+5260 CALL "ZZDISP","A",A$(41,9),"P/O",X3$,"","",54,L+3,X4$
+5270 PRINT @(54,L+4),FND$(A$(50,6)),@(54,L+5),A[0]:M1$,
+5280 PRINT @(15,L+6),A$(133,15),
+5290 IF A[5]>0 THEN X$=FNR$(FNS$(STR(A[5]:M1$)))+" per "+FNS$(A$(129,4))+"/"+FNS$(STR(A[6])); PRINT @(15,L+7),X$,
+5300 IF P0$(65,1)="Y" THEN PRINT @(42,L+7),"Lot Number:",@(54),A$(234,8),
+5320 IF P0$(64,1)<>"Y" THEN GOTO 5800 ELSE PRINT @(0,L+8),"Standard Cost:",
+5330 IF A[7]<>0 THEN X$=FNR$(FNS$(STR(A[7]:M1$)))+" per "+FNS$(A$(256,4))+"/"+FNS$(STR(A[8])); PRINT @(15,L+8),X$,
+5340 PRINT @(43,L+8),"Prod Code:",@(54),A$(242,3),@(61),"Comm Code: ",@(72),A$(245,5),
+5350 PRINT @(41,L+9),"Storage Exp:",@(54),FND$(A$(250,6)),
+5800 INPUT @(5,23),"<RET> to Continue ",*,
+5820 GOTO 1000
+6000 REM "BACKGROUND
+6010 IF ADJ_L0$="Y" THEN PRINT @(0,L0-1),'CL',
+6070 PRINT @(0,L0),'CE',"Ln#",@(5),"Quantity",@(20),"Available Inventory (*=Broken Carton)",@(61),"Start#",
+6075 IF P0$(53,1)="A" THEN PRINT @(68),"P/O Number", ELSE IF P0$(53,1)="B" THEN PRINT @(68),"Bin Loc.", ELSE IF P0$(53,1)="D" THEN PRINT @(68),"Cust P/O", ELSE PRINT @(68),"Job Number",
+6080 IF M$="I" THEN PRINT @(4),"Order#  Line#",
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6430 IF C9>0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6490 RETURN 
+6500 REM "DE-COMMIT LOT INVENTORY
+6510 READ (Z[1],KEY=A1$,DOM=6511)
+6520 READ (Z[1],END=6580)IOL=0310
+6525 IF A$(1,LEN(A1$))<>A1$ THEN GOTO 6580
+6528 IF M$="d" THEN IF A$(221,11)<>I$(25,11) THEN GOTO 6520 ELSE GOTO 6531
+6530 IF A$(110,11)<>I$(25,11) THEN GOTO 6520
+6540 EXTRACT (Z[1],KEY=A$(1,32))IOL=0310
+6550 IF M$="d" THEN A$(221,11)="" ELSE A$(110,11)=""
+6555 IF M$="d" THEN IF A$(110,2)="TR" THEN A$(110,11)=""
+6560 WRITE (Z[1])IOL=0310
+6570 GOTO 6520
+6580 RETURN 
+6600 REM "Add Non committed cartons - Mode C
+6605 IF M9$="A" THEN A1$=A1$(1,20)
+6606 IF LEN(M9$)>1 THEN IF M9$(1,1)="B" THEN BIN_LOC$=M9$(2),S1=0; REM "If getting uncommitted by bin location and warehouse then save off BIN_LOC$ and clear S1 which will return the number at that bin location
+6609 PREV_KEY$=""; PREV_KEY$=KEP(Z[1],END=6610); REM "Save prev key so we can reset file pointer at 6680
+6610 READ (Z[1],KEY=A1$,DOM=6611)
+6620 READ (Z[1],END=6680)IOL=0310
+6630 IF A$(1,LEN(A1$))<>A1$ THEN GOTO 6680
+6640 IF POS(" "<>A$(110,11))=0 THEN T[1]=T[1]+A[4]; IF BIN_LOC$<>"" THEN IF A$(100,LEN(BIN_LOC$))=BIN_LOC$ THEN S1=S1+A[4]
+6660 GOTO 6620
+6680 READ (Z[1],KEY=PREV_KEY$,DOM=6681); READ (Z[1],END=6681); REM "Restore file pointer
+6690 RETURN 
+7000 REM "Revised 10/2/91 - The sale price will be set from the first lot that has one.  Then if any subsequent lot with a nonzero price has a different one then the operator will be alerted.
+7005 READ (Z[1],KEY=A1$,DOM=7006)
+7006 READ (Z[1],END=7045)IOL=0310; IF A$(1,LEN(A1$))<>A1$ THEN GOTO 7045 ELSE IF A$(110,11)<>I$(25,11) THEN GOTO 7006
+7010 IF FNS$(S3$(1,8))="" THEN S3$(1,8)=A$(234,8); REM "Lot Number
+7011 IF FNS$(S3$(9,3))="" THEN S3$(9,3)=A$(242,3); REM "Product Code
+7012 IF FNS$(S3$(12,5))="" THEN S3$(12,5)=A$(245,5); REM "Comm Code
+7013 IF FNS$(S3$(17,6))="" THEN S3$(17,6)=A$(250,6); REM "Storage Exp Date
+7014 IF S3=0 AND A[7]>0 THEN S3=A[7],S3$(23,4)=A$(256,4),S4=A[8]; REM "Standard Cost
+7020 IF S1=A[5] AND S1$=A$(129,4) AND S2=A[6] THEN GOTO 7030 ELSE IF S1<>0 AND L0>0 THEN CALL "ZZPROM",".4",X3$,0,"Lots have mixed sell prices: "+STR(A[5]:M1$)+" and "+STR(S1:M1$)+" << will be used","","",0; GOTO 7030 ELSE IF S1<>0 AND L0=0 THEN GOTO 7030
+7025 S1=A[5]; IF S1<=0 THEN S1=0 ELSE S1$=A$(129,4),S2=A[6]
+7030 GOTO 7006
+7045 RETURN 
+7400 REM "Processing Sequence Setup - SEQ_KEY$ is Receipt Date + Seq No.
+7410 DIM SEQ_KEY$(8,"z"),SEQ_SORT$(30,"z")
+7420 COUNTER=1
+7440 RETURN 
+7500 REM "Build Processing Sequence
+7510 READ (Z[1],KEY=A1$,DOM=7511)
+7520 K$=KEY(Z[1],END=7545)
+7525 READ (Z[1],KEY=K$)IOL=0310
+7527 IF A$(1,LEN(A1$))<>A1$ THEN GOTO 7545
+7530 IF M$="I" THEN GOTO 7540 ELSE IF POS(" "<>A$(110,11))>0 AND A$(110,11)<>I$(25,11) THEN GOTO 7520
+7535 IF POS(" "<>A$(110,11))=0 AND POS(" "<>A$(221,11))>0 THEN GOTO 7520
+7540 GOSUB 7550; GOTO 7520
+7545 SEQ_KEY$=SEQ_KEY$(1,LEN(SEQ_KEY$)-8),SEQ_SORT$=SEQ_SORT$(1,LEN(SEQ_SORT$)-20); RETURN 
+7550 REM "Sort the keys - 1) If Committed to this Order, 2) Numbering 3) Not used (08x) - RESULT: Committed then receipt date order UNLESS there is Numbering, then the sort will be lowest to highest number.   Use Seq# in case two lots committed to the same order and line.
+7551 REM "1/16/97 Receipt date now prefixs numbering - for the most part this will solve the case when the numbers are re-set. ie we need to use the higher numbers before the newer lower ones.
+7560 DIM Q$(30); Q$(1)=A$(110,11)+A$(25,6)+A$(82,9); IF POS(" "<>Q$(1,11))=0 THEN Q$(1,11)="zzzzzzzzzzz"
+7570 I=POS(Q$<SEQ_SORT$,30); SEQ_SORT$=SEQ_SORT$(1,I-1)+Q$+SEQ_SORT$(I)
+7575 I=8*((I-1)/30)+1
+7580 SEQ_KEY$=SEQ_KEY$(1,I-1)+K$(25,8)+SEQ_KEY$(I)
+7595 RETURN 
+7700 REM "Print quantity explantion line
+7703 READ (Z[1],KEY=K$)IOL=0310; REM "ssp101145
+7705 Q$=FNR$(STR(A[4]:M4$))
+7710 IF A[4]=1 THEN Q$=Q$+FNC$(A$(121,4))+" of " ELSE Q$=Q$+FNC$(A$(121,4))+"s of "
+7715 IF A$(125,4)="    " THEN Q$=Q$+FNR$(STR(A[3]:M3$)) ELSE Q$=Q$+FNR$(STR(A[2]:M3$))+FNC$(A$(125,4)); IF A[2]=1 THEN Q$=Q$+" of "+FNR$(STR(A[3]:M3$)) ELSE Q$=Q$+"s of "+FNR$(STR(A[3]:M3$))
+7725 IF A$(125,4)="    " THEN Q=A[4]*A[3] ELSE Q=A[4]*A[2]*A[3]
+7730 REM LET T=T+Q
+7750 REM "Load J0$ and Q() as necessary
+7754 Q1=N-1
+7755 IF LEN(I$)>=35 THEN IF A$(110,11)=I$(25,11) THEN Q[Q1]=A[4]
+7760 Q0=Q1*4+1; J0$(Q0)=A$(121,4),J1$(Q0)=A$(125,4)
+7765 M[Q1,0]=A[2],M[Q1,1]=A[3],M[Q1,2]=Q
+7770 Q$=Q$+"= "+FNR$(STR(Q:M4$)); IF A$(155,1)="Y" THEN Q$=Q$+"*"
+7775 IF LEN(Q$)>40 THEN X$=Q$ ELSE DIM X$(40,"."); X$(1,LEN(Q$))=Q$
+7780 PRINT @(0,L),STR(N:"##)"),
+7785 IF M$="I" THEN GOSUB 7800 ELSE PRINT @(3),N1$(N,1),Q[N-1]:M0$,@(13),J0$(Q0,4),
+7790 PRINT @(20),X$,
+7791 X$=A$(82,9); IF POS(" "<>X$)>0 THEN X$=FNR$(X$); PRINT @(67-LEN(X$)),FNR$(A$(82,9)),
+7792 IF P0$(53,1)="A" THEN CALL "ZZDISP","A",A$(41,9),"P/O",X3$,"","",68,L,X4$ ELSE IF P0$(53,1)="B" THEN PRINT @(68),A$(100,10), ELSE IF P0$(53,1)="D" THEN PRINT @(68),A$(133,11), ELSE PRINT @(68),FNS$(A$(56,12)),
+7793 IF P0$(68,1)="Y" THEN GOSUB 7850; REM "WO95211
+7795 RETURN 
+7800 REM 
+7810 IF POS(" "<>A$(110,11)+A$(221,11))=0 THEN RETURN 
+7815 IF POS(" "<>A$(110,11))=0 THEN GOTO 7830 ELSE CALL "ZZDISP","A",A$(110,8),"O/P",X3$,"","",4,L,X4$; PRINT @(14,L),A$(118,3),; IF A$(221,2)="PI" THEN PRINT @(3,L),"p", ELSE IF A$(221,2)="TR" THEN PRINT @(3,L),"a",
+7820 GOTO 7840
+7830 IF A$(221,2)="PI" THEN PRINT @(4,L),"Physical Inv.",; GOTO 7840 ELSE IF A$(221,2)="TR" THEN PRINT @(4,L),"Adj in process", ELSE CALL "ZZDISP","A",A$(110,8),"O/P",X3$,"","",4,L,X4$
+7840 RETURN 
+7850 REM "If parm set display lot comment on second line, WO95211
+7855 L=L+1
+7860 PRINT @(20,L),A$(156,40),
+7890 RETURN 
+8000 REM "Enter quantity stuff
+8010 X0=-1,C0=0,X1=0,C9=0,Z9=0
+8020 SETERR 9000; C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 4000
+8035 L1=INT(X0/2)+L0+1; IF P0$(68,1)="Y" THEN L1=L1+INT(X0/2); REM "ssp97532 related to WO95211
+8040 IF X0>(N-1)*2+1 THEN GOTO 4000 ELSE IF MOD(X0,2)=0 THEN GOTO 8100 ELSE GOTO 8150
+8100 REM "Quantity
+8105 Q1=INT(X0/2)
+8107 Q3=Q[Q1]
+8108 IF N1$(Q1+1,1)="a" THEN X$="This lot presently being adjusted - qty cannot be changed"
+8110 CALL "ZZENTR","N&",Q{ALL},Q$,X4$,X3$,4,L1,Q1,610,C0,M0$,"{3"+X$,"","IC2LCA00","","",""
+8111 Q[Q1]=Q[Q1]*SGN(Q[Q1]); PRINT @(4,L1),Q[Q1]:M0$,
+8112 IF N1$(Q1+1,1)="a" THEN Q[1]=Q3; PRINT @(4,L1),Q[Q1]:M0$,; F0$=""; GOTO 8020
+8115 IF Q3=Q[Q1] THEN F0$=""; GOTO 8140 ELSE F0$="*"
+8119 REM "Check if total qty available
+8120 GOSUB 8300; IF F9=1 THEN GOTO 8110
+8125 IF ABS(C0)>1 THEN GOSUB 8400
+8140 GOTO 8020
+8150 REM "Packing
+8154 Q2=INT(X0/2)*4+1
+8155 IF N1$(INT(X0/2)+1,1)="a" THEN GOTO 8020
+8156 J2$=J0$(Q2,4)
+8159 IF Q[INT(X0/2)]=0 THEN GOTO 8165
+8160 CALL "ZZENTR","SU",Q{ALL},J0$,X4$,X3$,13,L1,Q2,4,C0,"","{3"+X$,"","IC2LCA02","","",""
+8165 IF J2$=J0$(Q2,4) AND F0$<>"*" THEN GOTO 8190
+8166 F0$=""
+8168 IF J0$(Q2,4)<>"    " AND J0$(Q2,4)<>J2$ AND J0$(Q2,4)<>J1$(Q2,4) THEN GOTO 8160
+8170 F5$="*"; GOSUB 8300; F5$=""
+8185 GOSUB 8400
+8190 GOTO 8020
+8300 REM "Check to see if too many entered
+8301 REM "F9=0 means ok, F9=1 means error
+8305 I9=Q1,I9$=J0$(Q1*4+1,4); GOSUB 8850
+8310 IF T9<=M[Q1,2] THEN F9=0; GOTO 8345
+8313 REM "If too many switch to secondary unit automatically and try it
+8314 REM "Save old answer in J9$ in case we need to restore
+8315 J9$=J0$(Q1*4+1,4),J0$(Q1*4+1,4)=J1$(Q1*4+1,4)
+8316 IF POS(" "<>J1$(Q1*4+1,4))=0 THEN GOTO 8331
+8320 PRINT @(13,L1),J0$(Q1*4+1,4),
+8325 I9=Q1,I9$=J0$(Q1*4+1,4); GOSUB 8850
+8330 IF T9<=M[Q1,2] THEN F9=0; GOTO 8345
+8333 F9=1; GOTO 8334
+8334 REM "IF STILL TOO BIG MAKE IT BLANK
+8335 IF F5$="*" THEN F5$=""; GOTO 8345
+8336 IF Q[Q1]>M[Q1,2] THEN Z=1; CALL "ZZPROM",".4",X3$,0,"Quantity entered is more than this entire lot! - Try again","","",0 ELSE CALL "ZZPROM",".Y",X3$,Z,"Are you sure you wish to split a case?","","",0
+8337 IF Z=0 THEN F9=0 ELSE F9=1,J0$(Q1*4+1,4)=J9$; GOTO 8345
+8339 J0$(Q1*4+1,4)=""
+8340 PRINT @(13,L1),J0$(Q1*4+1,4),
+8345 RETURN 
+8400 REM "Split a line
+8401 REM "F0$ & F1$ are used as flags for things
+8402 IF X3$(40,3)="cwj" THEN ESCAPE 
+8405 Q1=INT(X0/2)
+8410 F0$=""
+8415 K2$=N$(Q1*32+1,32)
+8420 READ (Z[1],KEY=K2$,DOM=8490)IOL=0310
+8421 REM "If new amount is zero, then uncommitt.
+8425 REMOVE (Z[1],KEY=K2$)
+8430 REM "# TO COMMIT
+8432 IF J0$(Q1*4+1,4)="    " THEN F3$="*" ELSE F3$=""
+8435 IF F3$="*" THEN P8=Q[Q1] ELSE IF J0$(Q1*4+1,4)<>A$(125,4) AND A$(125,4)<>"    " THEN P8=Q[Q1]*A[2]*A[3] ELSE P8=Q[Q1]*A[3]
+8437 T[2]=P8; GOSUB 8800
+8439 REM "# TO NOT COMMIT
+8440 IF A$(125,4)<>"    " THEN P9=A[4]*A[2]*A[3] ELSE P9=A[4]*A[3]
+8442 IF POS(" "<>A$(111,10))>0 THEN T[2]=-P9; GOSUB 8800; T[3]=T[3]-A[0],T[4]=T[4]-A[1]
+8445 P7=P9,P9=P9-P8
+8450 J7=A[0]*P8/P7,J8=A[1]*P8/P7,J9=A[5]; REM J9=A(5)*P8/P7
+8464 REM "N9 is ending number for this lot
+8465 N9=-1; IF POS(" "<>A$(82,9))>0 THEN N9=NUM(A$(82,9),ERR=8466),N9=N9+P8+P9
+8470 P0=A[0]-J7,P1=A[1]-J8,P2=A[5],P$="",P3=P9; GOSUB 8700; REM P2=A(5)-J9
+8475 P0=J7,P1=J8,P2=J9,P$=I$(25,11),P3=P8; GOSUB 8700
+8479 REM "Adjust cost and freight
+8480 T[3]=T[3]+J7,T[4]=T[4]+J8
+8490 IF POS(M$="AB")=0 THEN IF P8<>0 AND P9<>0 THEN F1$="*",T=0; GOSUB 4040; GOSUB 1900
+8494 IF POS(M$="AB")=0 THEN FLAG1$="Y"; GOSUB 3050
+8495 RETURN 
+8550 REM "Copy line over and prorate cost and freight
+8553 Q1=INT(X0/2)
+8555 A0$=A$; FOR I=0 TO 12; A0[I]=A[I]; NEXT I
+8560 A[4]=Q[Q1]
+8565 IF A0[4]=0 THEN A[0]=0,A[1]=0 ELSE A[0]=A0[0]*Q[Q1]/A0[4],A[1]=A0[1]*Q[Q1]/A0[4]
+8568 A0[4]=A0[4]-A[4]
+8570 A0[0]=A0[0]-A[0],A0[1]=A0[1]-A[0]
+8575 A$(110,11)=I$(25,11),A0$(110,11)=""
+8595 RETURN 
+8600 REM "Write out A0$
+8602 IF N9>-1 THEN N9=N9-P5,A0$(82,9)=STR(N9:M5$)
+8605 IF A0[3]<>A[3] OR A0[2]<>A[2] THEN A0$(155,1)="Y"
+8610 IF A0$(110,2)="TR" THEN A0$(221,11)=I$(25,11)
+8615 WRITE (Z[1],KEY=A0$(1,32),DOM=8616)IOL=0315; GOTO 8625
+8620 KEY$=A0$(1,32); CALL "IC2LCC",X3$,X4$,Z[1],31,2,LAST_ONE$,KEY$; A0$(1,32)=KEY$; GOTO 8615
+8625 IF N9>-1 THEN A$(91,9)=STR(N9-1:M5$)
+8645 RETURN 
+8700 REM "Given A$ andA() and # to post P3,in eaches,make 0 to 3 lines to post them,P$='' OR ORDER #, LINE #,P0=total cost, P1=total freight, P2=total sales price
+8704 P4=P3
+8705 A2=MOD(P3,A[3]),P3=INT(P3/A[3])
+8706 IF A[2]=0 THEN A3=0 ELSE A3=MOD(P3,A[2]),P3=INT(P3/A[2])
+8707 T0=0,T1=0,T2=0
+8709 REM "Do primary units
+8710 IF P3=0 THEN GOTO 8740
+8712 IF P4=A2 THEN GOTO 8770
+8715 A0$=A$; FOR I=0 TO 12; A0[I]=A[I]; NEXT I
+8717 IF A$(125,4)="    " THEN P5=P3*A[3] ELSE P5=P3*A[2]*A[3]
+8720 IF A2=0 AND A3=0 THEN A0[0]=P0,A0[1]=P1,A0[5]=A[5] ELSE A0[0]=P0*P5/P4,A0[1]=P1*P5/P4,A0[5]=A[5],T0=A0[0],T1=A0[1]
+8725 A0[4]=P3,A0$(110,11)=P$
+8730 GOSUB 8600; A$(31,2)=A0$(31,2)
+8739 REM "Do primary with less than full secondary
+8740 IF A3=0 THEN GOTO 8770
+8745 A0$=A$; FOR I=0 TO 12; A0[I]=A[I]; NEXT I
+8747 P5=A3*A[3]
+8750 IF A2=0 THEN A0[0]=P0-T0,A0[1]=P1-T1,A0[5]=A[5] ELSE A0[0]=P0*P5/P4,A0[1]=P1*P5/P4,A0[5]=A[5],T0=T0+A0[0],T1=T1+A0[1]
+8755 A0[4]=1,A0$(110,11)=P$
+8756 A0[2]=A3
+8760 GOSUB 8600; A$(31,2)=A0$(31,2)
+8769 REM "Do primary with leftovers
+8770 IF A2=0 THEN GOTO 8795
+8775 A0$=A$; FOR I=0 TO 12; A0[I]=A[I]; NEXT I
+8780 A0[0]=P0-T0,A0[1]=P1-T1,A0[5]=A[5]
+8785 A0[4]=1,A0$(110,11)=P$
+8786 A0$(125,4)="",A0[2]=0,A0[3]=A2
+8788 P5=A2
+8790 GOSUB 8600
+8795 RETURN 
+8800 REM "Print total of picked in eaches
+8810 T[1]=T[1]+T[2]
+8840 RETURN 
+8850 REM "Given index I9 and Unit, in I9$, calculate total amt T9 in eaches
+8853 IF I9$="    " THEN T9=Q[I9]; GOTO 8895
+8855 IF I9$=J1$(I9*4+1,4) THEN GOTO 8860 ELSE GOTO 8875
+8859 REM " in Secondary Unit
+8865 T9=Q[I9]*M[I9,1]
+8870 GOTO 8895
+8875 REM "in Primary Unit
+8880 IF J1$(I9*4+1,4)="    " THEN T9=Q[I9]*M[I9,1] ELSE T9=Q[I9]*M[I9,0]*M[I9,1]
+8895 RETURN 
+8910 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8925 DEF FNS$(Z9$)=Z9$(1,POS("        "=Z9$+"        ")-1)
+8930 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8949 DEF FNC$(Z9$)=Z9$(1,POS(" "=Z9$+" ")-1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM "PROG FLOW
+9710 IF U1$="" THEN REMOVE (Z[13],KEY=U0$,DOM=9900); GOTO 9900
+9720 WRITE (Z[13],KEY=U0$)U0$,U1$
+9730 RUN U1$(1,6)
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9902 IF POS(M$="ABN")<>0 OR M$="" THEN GOSUB 7000
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q=T[1],C=T[3],F=T[4]; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,180 @@
+0010 REM + FUD Rebuilding   <UT2FRB>
+0035 REM "5.5 - 12/18/06 - 10.535555 - mhe - SSP# 202056
+0037 REM "202056-Modify FM2SFA to also call UPDFMP to update XPV after       
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM + Begin Program Notes
+0051 ! The purpose of this program is to initialize and re-populate the
+0052 ! following files from the FMP file:
+0053 ! XPV - Vendor Standards
+0054 ! XPA - Customer Contacts
+0055 ! XP7 - Count Stops
+0056 ! XP2 - Customer Departments
+0057 ! XPW - Vendor Product Codes
+0058 ! 
+0059 ! This program is called at the end of the FUD Processing <UT2FUD>
+0060 ! program because it is necessary to keep the files in sync with
+0061 ! the FMP records.
+0062 ! 
+0063 ! This program will initialize all of the files listed above and
+0064 ! then will read through the FMP file, calling the UPDFMP program
+0065 ! to update the above files when an appropriate record is read.
+0099 REM + End Program Notes
+0100 REM + Begin Program Initialization
+0110 CLEAR 
+0130 ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0140 SETERR ERROR_PROCESSING
+0150 SETESC ESCAPE_PROCESSING
+0200 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0299 REM + End Program Initialization
+0300 REM + Begin String and Variable Declaration
+0305 X0$=PGN
+0310 X1$="FUD Rebuilding"
+0315 DIM A[255]
+0320 DIM Z[255]
+0499 REM + End String and Variable Declaration
+0500 REM + Begin Open Files
+0510 Z$=""
+0520 Z$+="01O FMP...  " ! FMP File
+0530 Z$+="02O XPV...  " ! Vendor Standards
+0540 Z$+="03O XPA...  " ! Customer Contacts
+0550 Z$+="04O XP7...  " ! Count Stops
+0560 Z$+="05O XP2...  " ! Customer Departments
+0570 Z$+="06O XPW...  " ! Vendor Product Codes
+0580 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call ZZFLES
+0590 FMP_LFN=Z[1] ! FMP File
+0600 XPV_LFN=Z[2] ! Vendor Standards
+0610 XPA_LFN=Z[3] ! Customer Contacts
+0620 XP7_LFN=Z[4] ! Count Stops
+0630 XP2_LFN=Z[5] ! Customer Departments
+0640 XPW_LFN=Z[6] ! Vendor Product Codes
+0799 REM + End Open Files
+0800 REM + Begin IOLISTs
+0808 IOLIST A$ ! Vendor Standards
+0812 IOLIST A$ ! Customer Contacts
+0814 IOLIST A$ ! Count Stops
+0830 IOLIST A$ ! Customer Departments
+0848 IOLIST A$,A[0] ! Vendor Product Codes
+0999 REM + End IOLISTs
+1000 PROGRAM_MAIN:
+1020 GOSUB INIT_FILES ! clear all files for rebuilding
+1030 FMP_KEY$=KEF(FMP_LFN,ERR=END_PROGRAM) ! get the first key, if the file is empty then exit
+1050 READ (FMP_LFN,KEY=FMP_KEY$)C$ ! read the FMP record
+1055 GOSUB FMP_PROCESS ! process the FMP records
+1060 FMP_KEY$=KEN(FMP_LFN,ERR=END_PROGRAM) ! get the next key
+1095 GOTO 1050 ! process the record
+2000 INIT_FILES:
+2010 CALL "ZZINIT",STR(XPV_LFN:"00") ! Vendor Standards
+2015 CALL "ZZINIT",STR(XPA_LFN:"00") ! Customer Contacts
+2020 CALL "ZZINIT",STR(XP7_LFN:"00") ! Count Stops
+2025 CALL "ZZINIT",STR(XP2_LFN:"00") ! Customer Departments
+2030 CALL "ZZINIT",STR(XPW_LFN:"00") ! Vendor Product Codes
+2095 RETURN 
+9000 ERROR_PROCESSING:
+9005 Y5=ERR,Y6=TCB(5)
+9010 IF Y5=68 OR Y5=69 THEN GOTO CTRL_LOGIC
+9015 SETERR 9040
+9020 Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,TRANSFER_CONTROL,EXIT_PROGRAM,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_PROCESSING
+9085 RETRY 
+9090 SETERR 0000
+9095 RETRY 
+9100 TRANSFER_CONTROL:
+9120 ON Y8 GOTO END_PROGRAM,PROGRAM_MAIN,9920
+9180 GOTO PROGRAM_MAIN
+9190 GOTO EXIT_PROGRAM
+9300 ESCAPE_PROCESSING:
+9305 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN {
+9320 RETURN 
+9325  } ELSE {
+9330 SETESC 0000
+9335 RETURN 
+9340  }
+9350 SETERR ERROR_PROCESSING
+9360 SETESC ESCAPE_PROCESSING
+9395 RETURN 
+9500 CTRL_LOGIC:
+9510 SETERR ERROR_PROCESSING
+9515 GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 CLOSE_FILES:
+9710 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9740 RETURN 
+9750 OPEN_FILES:
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 EXIT_PROGRAM:
+9900 END_PROGRAM:
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+15000 REM + Begin FMP Processing
+15001 FMP_PROCESS:
+15005 A$="" ! init the string
+15010 SWITCH C$(1,1) ! record type
+15060 CASE "V" ! Vendor Standards
+15065 GOSUB VENDOR_STANDARDS
+15070 BREAK
+15090 CASE "a" ! Customer Contacts
+15095 GOSUB CUSTOMER_CONTACTS
+15100 BREAK
+15105 CASE "d" ! Count Stops
+15110 GOSUB COUNT_STOPS
+15115 BREAK
+15225 CASE "f" ! Customer Departments
+15230 GOSUB CUSTOMER_DEPARTMENTS
+15235 BREAK
+15360 CASE "W" ! Vendor Product Codes
+15365 GOSUB VENDOR_PRODUCT_CODES
+15370 BREAK
+15390 DEFAULT ! Default Action
+15395 BREAK
+15400 END SWITCH 
+15405 RETURN 
+15499 REM + End FMP Processing
+20300 REM + Begin Vendor Standards (XPV)
+20301 VENDOR_STANDARDS:
+20310 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0808 ! read the FMP record
+20340 CALL "UPDFMP;DUPLICATE_XPV",XPV_LFN,A$,A{ALL},"U" ! write the record to the new file
+20395 RETURN 
+20399 REM + End Vendor Standards (XPV)
+20500 REM + Begin Customer Contacts (XPA)
+20501 CUSTOMER_CONTACTS:
+20510 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0812 ! read the FMP record
+20540 CALL "UPDFMP;DUPLICATE_XPA",XPA_LFN,A$,A{ALL},"U" ! write the record to the new file
+20595 RETURN 
+20599 REM + End Customer Contacts (XPA)
+20600 REM + Begin Count Stops (XP7)
+20601 COUNT_STOPS:
+20610 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0814 ! read the FMP record
+20640 CALL "UPDFMP;DUPLICATE_XP7",XP7_LFN,A$,A{ALL},"U" ! write the record to the new file
+20695 RETURN 
+20699 REM + End Count Stops (XP7)
+21400 REM + Begin Customer Departments (XP2)
+21401 CUSTOMER_DEPARTMENTS:
+21410 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0830 ! read the FMP record
+21440 CALL "UPDFMP;DUPLICATE_XP2",XP2_LFN,A$,A{ALL},"U" ! write the record to the new file
+21495 RETURN 
+21499 REM + End Customer Departments (XP2)
+22300 REM + Begin Vendor Product Codes (XPW)
+22301 VENDOR_PRODUCT_CODES:
+22310 READ (FMP_LFN,KEY=FMP_KEY$)IOL=0848 ! read the FMP record
+22340 CALL "UPDFMP;DUPLICATE_XPW",XPW_LFN,A$,A{ALL},"U" ! write the record to the new file
+22395 RETURN 
+22399 REM + End Vendor Product Codes (XPW)
+56000 REM + Modification History
+56001 REM "12/15/2006 : Program created by MHE
+56002 REM "5.5 - 12/18/06 - 10.535555 - mhe - SSP# 202056
+56003 REM "202056-Modify FM2SFA to also call UPDFMP to update XPV after       

@@ -1,0 +1,136 @@
+0010 REM "Report Page Head-up Routine <ZZHEAD>
+0035 REM "5.7 - 11/13/13 - 15.775277 - tma - SSP# 252570
+0037 REM "252570-Print the A/B identifier on audit reports to identify the   
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETESC 9300; SETERR 9000
+1000 REM "
+1020 ENTER X0$,X1$,X2$,X3$,H0$,H1$,H2$,W9$,H0,H1,H2,H3,H4,H5,H6,H4$,H5$
+1022 REM "BATCHCTRL_PARMS global variable contains a batch control record..positioning is the same as the ZY9 file.
+1025 BCP$=GBL("BATCHCTRL_PARMS",ERR=1026); REM SP#[123167]
+1028 IF LEN(BCP$)>=56 THEN E$="Operator"; EC$=BCP$(54,3) ELSE E$="Operator"; EC$=X3$(40,3); REM SP#[123167] AND SSP128024, 240299
+1030 REM "H4$ is options, an 'S' means suppress date time & page #, an 's' means just suppress Date and time,'X' means no heading, 'P'+3 char's means move page number over to left by that many, example P020 means move page number over 20 to the left of where it would normally print"
+1040 REM "H5=1 end report normally, H5=2 redisplay report, H5=3 report interrupted"
+1042 IF LEN(W9$)>40 THEN W9_TYPE$="BUFFER" ELSE W9_TYPE$="DESC"
+1045 H3$=W9$,N2$=X2$; IF MID(X3$,30,1)="M" THEN N2$=X3$(9,3)+" - "+X2$
+1050 IF MID(X0$,1,1)="!" THEN X0$=X0$(2),F0$="Y"; REM "Suppress final linefeed
+1055 IF H0=0 THEN H0=80
+1060 H=INT(H0/2)
+1070 DIM Z$(H0),S$(H0),S0$(H0)
+1100 REM "Lang Interface
+1120 L0$=X3$(239,1); CALL "ZZLANG",X3$,L0$
+1180 GOSUB 6900
+1200 REM "Goto proper routine depending on output device
+1205 H9=H1,H1=0,H3=H3+1
+1210 ON H6 GOTO 2000,1500,1600,1800
+1500 REM "Terminal Specific part
+1510 IF H3<=1 THEN GOTO 1540 ELSE W9=1
+1511 REM "1510 WAS <2
+1530 CALL "ZZPROM","X0ZZHEAD",X3$,X4,"","","",0
+1531 ON X4 GOTO 1540,1535,1537,1550
+1535 H5=1; GOTO 9900
+1537 H5=2; GOTO 9900
+1540 PRINT (H2)'CS','SB',; IF W9_TYPE$="BUFFER" THEN W9$(1)=""
+1545 GOTO 2030
+1550 REM "H0=WIDTH OF REPORT IN COLMS
+1555 Q=INT((H0+79)/80)
+1560 IF W9_TYPE$="BUFFER" THEN CALL "ZZVIEW",ERR=1530,X3$,2,W9,H0,0,H1,W9$,S$
+1565 W9=MOD(W9+1,Q)
+1590 GOTO 1530
+1600 REM "AUX
+1610 IF H3>1 THEN IF MID(X3$,184,1)="1" THEN CALL "ZZPROM","X0ZZREST",X3$,0,Q$,"","",0; S$(H-39)=Q$; GOSUB 7300
+1620 GOSUB 8200
+1630 IF H3>1 THEN GOSUB 3000
+1640 GOTO 2030
+1800 REM "Forms type printing"
+1801 IF FID(H2)=FID(0) THEN GOTO 1500
+1805 IF H3<2 THEN GOTO 2910
+1820 FOR X=H9+1 TO H4; PRINT (H2)'LF',; NEXT X
+1840 GOTO 2910
+2000 REM "Printer Specific part
+2010 IF H3>2 THEN IF MID(X3$,184,1)="1" THEN S$(H-39)="** The update was interrupted and will be restarted! See page 1 for details **"; GOSUB 7300
+2015 GOSUB 8200
+2020 IF H3>1 THEN GOSUB 3000
+2030 REM "Jump to here for normal "LINE TYPE" output device ,printer, terminal,etc.
+2032 IF POS("R"=H4$)>0 THEN IF MID(H5$,1,1)="Y" THEN CALL "ZR2DNP",ERR=2033,X3$,X4$,H5$; REM "ssp#90363, if archiving this report start new page
+2034 REM IF JETFORM_MODE THEN GOTO 2300
+2035 IF POS("X"=H4$)<>0 THEN GOTO 2900 ELSE P$=FNS$(L0$(456,16))+":",Q$=FNS$(L0$(440,16))
+2037 SHIFT=0,P=POS("P"=H4$); IF P>0 THEN SHIFT=NUM(H4$(P+1,3),ERR=2028)
+2040 IF POS("S"=H4$)=0 AND POS("s"=H4$)=0 THEN S$(14-LEN(Q$))=Q$+": "+O1$,S$(INT(H-LEN(N2$)/2))=N2$,S$(H0-LEN(P$)-8-SHIFT)=P$+STR(H3:"######0") ELSE S$(INT(H-LEN(N2$)/2))=N2$; IF POS("s"=H4$)>0 THEN S$(H0-LEN(P$)-8-SHIFT)=P$+STR(H3:"######0")
+2045 IF %GUI=1 AND P$="Page:" THEN IF POS(X3$(9,3)="603",3)=0 THEN PRINT 'MESSAGE'('BR'+'_GREEN'+'WHITE'+"Working on Page No: "+STR(H3),0),; END_IF ; IF H3=1 THEN IF POS(X3$(9,3)="603",3)<>0 THEN PRINT 'MESSAGE'('BR'+'_GREEN'+'WHITE'+"Printing report...",0),; END_IF ; PRINT 'MESSAGE'(DEF 40),'MESSAGE'('_RED'+'WHITE'+"Click here to Abort",1),; SET_FOCUS 0 ! SYSTEM_HELP "'Press 'I' to interrupt - Working on Page No:"+STR(H3); SET_FOCUS 0 ! gui ! SSP 218789,SSP 220877
+2050 GOSUB 7300
+2060 IF POS("S"=H4$)=0 AND POS("s"=H4$)=0 THEN S$(25-LEN(O0$))=O0$,S$(INT(H-LEN(X1$)/2))=X1$,S$(H0-LEN(O3$))=O3$ ELSE S$(INT(H-LEN(X1$)/2))=X1$
+2061 GOSUB 7300
+2062 IF (STP(BCP$,1)<>"" OR EC$<>"") AND STP(O3$,1)<>"" THEN S$(14-LEN(E$))=E$+": "+EC$; REM "SP# [123167], 240299
+2065 IF MID(X3$,185,1)="A" THEN CALL "ZZDISP","DX",X3$(15,6),X2$,X3$,Q$,Q1$,0,0,X4$; Q$=FNS$(L0$(380,30))+": "+Q$,S$(LEN(S$)-LEN(Q$))=Q$
+2070 IF H0$>"" THEN S$(INT(H-LEN(H0$)/2),LEN(H0$))=H0$; GOSUB 7300
+2075 IF LEN(H1$)<H0 THEN IF LEN(H1$)>0 THEN S$(INT(H-LEN(H1$)/2),LEN(H1$))=H1$; GOSUB 7300
+2080 IF H2$>"" THEN S$(INT(H-LEN(H2$)/2),LEN(H2$))=H2$; GOSUB 7300
+2085 IF H3$>"" AND LEN(H3$)<=40 THEN S$(INT(H-LEN(H3$)/2),LEN(H3$))=H3$; GOSUB 7300
+2090 IF POS(" "<>S$)>0 THEN GOSUB 7300
+2095 IF F0$<>"Y" THEN GOSUB 7300
+2100 REM "
+2290 REM GOSUB 7300
+2300 REM JETFORM MODE
+2310 REM IF H3>1 THEN PRINT {END OF BODY}
+2350 REM PRINT (H2), " ^field HEAD1 "+'LF'+H0$+'LF'
+2352 REM PRINT (H2), " ^field HEAD2 "+'LF'+H1$+'LF'
+2354 REM PRINT (H2), " ^field HEAD3 "+'LF'+H2$+'LF'
+2356 REM PRINT (H2), " ^field HEAD4 "+'LF'+H3$+'LF'
+2358 REM PRINT (H2), " ^field HEAD5 "+'LF'+H4$+'LF'
+2360 REM PRINT (H2), " ^field HEAD6 "+'LF'+H5$+'LF'
+2900 REM "
+2910 H5=0
+2920 IF H6=1 THEN PRINT (H2)'SF',
+2950 GOTO 9900
+3000 REM "Form feed routine"
+3005 IF %IL_PDF THEN IF MNM('F_',%IL_PDF)<>"Y" THEN PRINT (%IL_PDF,ERR=*NEXT)'FF', ELSE MNEMONIC (%IL_PDF)'F_'="" ! If allowed then issue 'FF', else no formfeed; clear flag, one time use only SSP 213924
+3006 ! F %IL_PDF THEN PRINT (%IL_PDF,ERR=*NEXT)'FF',
+3010 IF H4=58 OR %FF_ALWAYS THEN PRINT (H2,ERR=3011)'FF',; GOTO 3090 ! 172919, if flag set then ff always
+3020 FOR X=H9+1 TO H4+8; PRINT (H2)'LF',; NEXT X; GOTO 3090
+3090 RETURN 
+6900 REM "DISP DATE/TIME
+6905 Q$=STR(INT(TIM):"00")+STR(FPT(TIM)*100:"00")
+6910 CALL "ZZDISP","TX",Q$,"",X3$,O0$,"",0,0,""
+6915 Q$=X3$(21,6)
+6920 CALL "ZZDISP","DX",Q$,"",X3$,O1$,"",0,0,""
+6925 IF MID(X3$,30,1)="M" THEN O1$=O1$+" "+X3$(40,3)
+6930 O0$=FNS$(L0$(202,8))+": "+O0$
+6932 BATCH_NUM$=X3$(174,4); IF X3$(85,1)<>" " THEN BATCH_NUM$=BATCH_NUM$+X3$(85,1) ! ssp#252570
+6935 IF MID(X3$,174,4)<>"    " THEN Q$=" ("+BATCH_NUM$+")" ELSE Q$="" ! ssp#252570
+6940 IF MID(X3$,185,1)="A" THEN O3$=FNS$(L0$(472,16))+":"+STR(NUM(X3$(178,6))/100:"###0.00")+Q$
+6950 IF MID(X3$,184,1)="1" THEN O3$=O3$+"*" ELSE O3$=O3$+" "
+6990 RETURN 
+7300 REM "Output line  S$ to output device
+7305 IF POS("R"=H4$)>0 THEN IF MID(H5$,1,1)="Y" THEN CALL "ZR2DNL",ERR=*NEXT,X3$,X4$,S$,H5$ ! SSP#170994
+7306 IF %IL_PDF THEN PRINT (%IL_PDF,ERR=*NEXT)S$
+7310 IF W9_TYPE$="BUFFER" AND POS("V"=H4$)>0 THEN CALL "ZZVIEW",X3$,0,0,H0,H2,H1,W9$,S$; GOTO 7345
+7320 H1=H1+1; IF POS(" "<>S$)=0 THEN PRINT (H2)"" ELSE PRINT (H2)S$; S$(1)=""
+7395 RETURN 
+8200 REM "GET CTRL VALUE
+8205 IF POS("G"=FID(0))=1 THEN RETURN 
+8210 IF %GUI THEN OBTAIN (0,TIM=0,ERR=*RETURN)'ME',*,'MN'; IF CTL=-1401 OR CTL=4 OR EOM$=$1B$ THEN Q$="I",%INTERRUPT_RPT_MODE=1; GOTO 8220 ELSE GOTO *RETURN ! SSP 218789 ssp 228228
+8215 READ RECORD (0,SIZ=1,TIM=.01,ERR=8250)Q$ ! SSP 218789
+8220 IF POS(Q$="Ii")=0 THEN RETURN 
+8240 H5=3; EXITTO 9900
+8250 RETURN 
+8910 DEF FNS$(Z$)=Z$(1,POS("  "=Z$+"  ")-1)
+9000 REM "ERROR PROCESSING
+9010 E0=ERR,E1=TCB(5); IF E0=66 AND MID(X3$,47,1)="1" THEN EXIT E0
+9040 CALL "ZZERRM",E0$,"ZZHEAD",E1$,X3$,E0,E1,E2,E3,0
+9050 ON E2 GOTO 9060,9100,9190,9070
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE E1$
+9080 SETERR 9000; RETRY 
+9100 REM " TRANSFER CONTROL
+9190 H4=2
+9195 GOTO 9900
+9300 RETURN 
+9900 REM "END PROGRAM
+9920 EXIT 
+9999 END 
+56000 ! "218789-Running AR Open Invoice report, this is taking 7.5 minutes  
+56001 ! "228228-Ability to split a report into multiple PDFs based on sales 
+56002 REM "240299-GL Trans showed another operator code than the correct one
+56003 REM "213924-Summary bill in Image Library - isn't automatic archive     

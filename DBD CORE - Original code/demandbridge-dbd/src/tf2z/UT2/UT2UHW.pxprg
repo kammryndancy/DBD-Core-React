@@ -1,0 +1,46 @@
+0010 REM "UT2UHW Update User's HW setting to ZZPARM"
+0035 REM "3.5 - 08/30/92 - 14.13
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0110 OPEN (1)"zzparm"
+0120 OPEN (2)"ZZPARM"
+1000 REM 
+1010 PRINT 'CS',"Remove selected system parameters from ZZPARM and copy new ones from zzparm?",'LF'
+1020 PRINT "o = operator codes (that's a lowercase letter 'o')"
+1030 PRINT "ptr = printers (including PRINTERS records)"
+1040 PRINT "TCTL = Terminal function key settings"
+1100 INPUT "Enter option (F4 to end): ",Q$
+1110 IF CTL=4 THEN GOTO 9000
+1200 IF Q$="o" THEN GOTO 2000
+1220 IF Q$="ptr" THEN GOTO 2000
+1240 IF Q$="TCTL" THEN GOTO 2000
+1280 PRINT "Try again!"
+1290 GOTO 1100
+2000 REM "Remove from ZZPARM
+2020 READ (2,KEY=Q$,DOM=2021)
+2040 K$=KEY(2,END=2200)
+2060 IF K$(1,LEN(Q$))<>Q$ THEN GOTO 2200
+2070 PRINT "Removing: ",K$
+2080 REMOVE (2,KEY=K$)
+2100 GOTO 2040
+2200 REM "Copy from zzparm to ZZPARM
+2220 READ (1,KEY=Q$,DOM=2221)
+2240 K$=KEY(1,END=2900)
+2260 IF K$(1,LEN(Q$))<>Q$ THEN GOTO 2900
+2280 READ RECORD (1,KEY=K$)R$
+2290 PRINT "Copying: ",K$
+2300 WRITE RECORD (2,KEY=K$)R$
+2320 GOTO 2240
+2900 REM "Done
+2910 IF Q$="ptr" THEN GOSUB 3000
+2920 PRINT "Finished with code: ",Q$
+2940 INPUT "CR to continue ",*
+2990 GOTO 1000
+3000 REM "Get the 'PRINTERS' record"
+3020 K$="PRINTERS"
+3040 READ RECORD (1,KEY=K$,DOM=3090)R$
+3060 WRITE RECORD (2,KEY=K$)R$
+3090 RETURN 
+9000 PRINT "End of Job"
+9999 END 

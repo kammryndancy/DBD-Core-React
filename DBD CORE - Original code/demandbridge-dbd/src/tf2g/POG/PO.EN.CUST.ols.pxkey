@@ -1,0 +1,73 @@
+<PxTable>
+ TableName=PO.EN.CUST.ols
+ TableKey=K1505841943
+ FileCreate=KEYED "PO.EN.CUST.ols",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00034
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_PO7.1   0000"
+    FIELD_1$="*File==%PO7_FILE_NAME$"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="60"
+    FIELD_5$="20"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_PO7"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="=%PO7_FILE_NAME$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2007/12/14 15:37 tma"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.FLD#1$(1,23)"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO7.1   0001"
+    FIELD_1$="Formula:FN%ZZDISP$(MID(_MN_.FLD#1$,1,9),"+QUO+"P/O"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"PO_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO7.1   0002"
+    FIELD_1$="Formula:MID(_MN_.FLD#1$,10,10)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"AP_INV_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO7.1   0003"
+    FIELD_1$="Formula:MID(_MN_.FLD#1$,51,11)"
+    FIELD_4$="11"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"FREIGHT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_PO7.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_13$="TNUL(_MN_.FLD#1$(20,3))"
+   </RecordData>
+
+</Data>
+
+</PxTable>

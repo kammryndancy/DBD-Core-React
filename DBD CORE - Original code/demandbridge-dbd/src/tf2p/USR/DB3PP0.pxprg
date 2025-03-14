@@ -1,0 +1,15 @@
+0010 REM "Convert to Upper Case <DB3PP0>
+0035 REM "5.2 - 11/25/03 - 14.811666 - dmm - SSP# 163697
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 ENTER A$,B$
+1020 B$=A$
+1040 C0=ASC("a")-ASC("A")
+2000 FOR X=1 TO LEN(B$)
+2100 Q$=B$(X,1)
+2200 IF Q$>="a" AND Q$<="z" THEN B$(X,1)=FNU$(X)
+2800 NEXT X
+2950 GOTO 9900
+8910 DEF FNU$(Q)=CHR(ASC(B$(Q,1))-C0)
+9940 EXIT 
+9999 END 

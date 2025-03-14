@@ -1,0 +1,113 @@
+0010 REM "<CM2PRB> Change companies, start next update
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.9 - 03/19/96 - 13.69 - dmm
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Q1$ is data to work on
+0051 REM "1,3   = master company
+0052 REM "4,3   = first company
+0053 REM "7,3   = last company
+0054 REM "10,12 = Selection Screen to use
+0085 BEGIN 
+0100 SETERR 9000
+0110 X0$="CM2PRB",X1$="Change Company to Update"
+0120 DIM Z0$(80,"-")
+0145 GOSUB 8900; REM "We always expect input from the program list
+0150 IF Q1$="" THEN GOTO 9900; REM "If no progam list input then leave
+0200 REM "
+0210 PRINT @(0,3),'CE',
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0310 IOLIST A0$,A1$,A2$,A3$,A4$,A5$
+0315 IOLIST X3$,A1$,X4$,A3$,A4$,A5$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM 
+0610 GOSUB 6000
+0650 PRINT @(10,5),"Processing companies ",Q1$(4,3)," - ",Q1$(7,3),
+0655 IF X3$(9,3)=Q1$(1,3) THEN PRINT @(10,8),"Starting with First Company", ELSE PRINT @(10,8),"Just finished company ",X3$(9,3),
+1000 REM 
+1010 REM "If the current company is the master company, then this is the first time thru so extract with first company number as it may be the exact company that we need. If the current company is not the master company then read with it to get the next company to process
+1015 IF X3$(9,3)=Q1$(1,3) THEN EXTRACT (Z[13],KEY="CMP"+Q1$(4,3),DOM=1016) ELSE READ (Z[13],KEY="CMP"+X3$(9,3),DOM=1016)
+1020 K$=KEY(Z[13],END=5000); IF LEN(K$)<6 THEN GOTO 5000 ELSE IF K$(1,3)<>"CMP" OR K$(4,3)>Q1$(7,3) THEN GOTO 5000
+1025 READ (Z[13],KEY=K$)C1$
+1029 CLOSE (14); OPEN (14,ERR=1031)"AR1"+K$(4,3); CLOSE (14)
+1030 READ (Z[13],KEY="R/L"+K$(4,3),DOM=1031)R0$; IF R0$(10,1)="1" THEN GOTO 1040
+1031 READ (Z[13],KEY=K$,DOM=1020); GOTO 1020
+1050 REM "Change to new company, K$(4,3)
+1055 CALL "ZZMNUC",X3$,X4$,K$(4,3),N0$
+1060 DIM K0$(8); K0$(1)=FID(0)
+1065 READ (Z[13],KEY=K0$,DOM=9900)IOL=0310
+1070 WRITE (Z[13],KEY=K0$)IOL=0315; REM "Write out changed X3$ & X4$
+1100 REM "setup string of programs and keys in Q$
+1105 Q$=""
+1110 Q$="CM2RBS"+"12"+Q1$(10,12)+Q$; REM "Run Selection screen for audit report
+1115 Q$=Q$+"CM2UAA"+"01*"; REM "Run file transfer program with * to let the program know it is in auto mode
+1120 Q$=Q$+"CM2UAB"+"12"+Q1$(10,12); REM "Run A/P payment update, it will run A/P check update if needed or will go on to next program in the chain
+1125 Q$=Q$+"AR2CBS"+"12"+Q1$(10,12); REM "Run A/R cash receiupts update
+1195 Q$=Q$+X0$+STR(LEN(Q1$):"00")+Q1$; REM "Come back here at end
+1490 REM "Now write out program list and run it
+1495 GOTO 5900
+5000 REM "EOJ
+5004 CALL "ZZMNUC",X3$,X4$,Q1$(1,3),N0$
+5005 DIM K0$(8); K0$(1)=FID(0); READ (Z[13],KEY=K0$,DOM=9900)IOL=0310
+5006 WRITE (Z[13],KEY=K0$)IOL=0315; REM "Restore to master company
+5010 X2=0; CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+5015 PRINT @(0,3),'CE',@(20,15),"All companies processed!",
+5020 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+5900 REM "Setup new order sequence
+5910 U0$=X3$(1,6)+"PF"
+5920 U1$=Q$
+5930 WRITE (Z[13],KEY=U0$)U0$,U1$
+5980 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+5990 SETERR 5995; RUN U1$(1,6)
+5995 J0$="Could not run "+U$(1,6)+"!!"; CALL "ZZPROM",".4",X3$,Z,J0$,"","",0
+5996 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,3),"Running Franchise Updates - Change companies",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8950 REM "Program flow logic
+8960 DIM U0$(6); U0$(1)=FID(0); U0$=U0$+"PF"
+8970 CLOSE (14); OPEN (14)"ZZPARM"; FIND (14,KEY=U0$,DOM=8990)U0$,U1$
+8980 Q1=NUM(U1$(7,2)),Q1$=U1$(9,Q1),U1$=U1$(Q1+9)
+8990 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM "PROG FLOW
+9710 IF U1$="" THEN REMOVE (Z[13],KEY=U0$,DOM=9900); GOTO 9900
+9720 WRITE (Z[13],KEY=U0$)U0$,U1$
+9725 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9730 RUN U1$(1,6)
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

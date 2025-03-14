@@ -1,0 +1,132 @@
+0010 REM "Regenerate active web catalogs by buyer <EW3UT4>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 01/15/03 - 17.331944 - tma - SSP# 157083
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,BUYER$,CATEGORIES$,OPTIONS$
+0091 REM "BUYER$ = the buyer id to process (blank if caglog passed in)
+0093 REM "CATEGORIES$ = returned string of categories
+0095 REM "options$(1,1) = N do not display complete message after eoj
+0096 REM "OPTIONS$(2,10)="CATALOG PASSED IN TO BE USED INSTEAD OF THE CATALOG ASSIGNED TO THE BUYER IN 325,10
+0097 REM "OPTIONS$(12,4)=shipto record to be used instead of shipto from buyers record for testing of active items  (ssp 154600)
+0098 REM "OPTIONS$(16,1) -  Y=ignore active items for purchasing agents (needs to be set when called from buyer as there is no active shipto in 12,4
+0100 SETERR 9000
+0110 X0$="EW3UT4",X1$="Regenerate web catagoryes by buyer"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM 'CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST BUY1$,BUY2$
+0320 IOLIST ECG$
+0330 IOLIST ECH$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECA...  02O ECG...  03O ECH...  04O FM4...  05OSECH...  06O EDE...  07O FM1...  08O IC0...  09O EDA...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 OPTIONS$=PAD(OPTIONS$,50)
+0900 CATEGORIES$=""
+0910 READ (Z[1],KEY=BUYER$,DOM=9900)IOL=0310; CATALOG$=BUY1$(325,10),MAIN_CATALOG$="Y"
+0911 IF BUY1$(61,4)=DIM(4) AND (OPTIONS$(16,1)="Y" OR BUY1$(339,1)<>"Y") THEN GOTO 0915; REM "ssp 154600,157083
+0912 IF BUY1$(61,4)=DIM(4) THEN ACTIVE_SHIPTO$=OPTIONS$(12,4) ELSE ACTIVE_SHIPTO$=BUY1$(61,4) END_IF ; IF STP(ACTIVE_SHIPTO$,3," ")="" THEN GOTO 9900; REM "ssp 154600 - if no active shipto exit
+0915 IF OPTIONS$(2,10)<>DIM(10) THEN CATALOG$=OPTIONS$(2,10),MAIN_CATALOG$="N"
+0920 IF STP(CATALOG$,2)="" OR (BUY1$(480,3)<>X3$(9,3) AND BUY1$(480,3)<>DIM(3)) THEN GOTO 9900
+0930 IF MAIN_CATALOG$="Y" THEN IF BUY1$(483,10)<>DIM(10) THEN GOSUB 7500; REM "IF HAVE CATEGORY SET FOR ACTIVE FORMS THEN SET THE DEFAULT CATEGORY & CLEAR ITEMS OUT OF CATEGORY
+0950 READ (Z[3],KEY=CATALOG$,DOM=0951)
+0960 BUYER_SCODES$=STP(BUY1$(233,20),2)
+0970 DIM EDA$(200); FIND (Z(9),KEY=CATALOG$,DOM=0971)EDA$; REM "get catalog settings 154559
+1000 REM "BEGIN MAIN PROCESS
+1020 K$=KEY(Z[3],END=5000); IF K$(1,LEN(CATALOG$))<>CATALOG$ THEN GOTO 3000
+1022 READ (Z[3],KEY=K$)IOL=0330
+1025 IF MAIN_CATALOG$<>"Y" THEN GOTO 1100; REM "disable active items if not main catalog on screen 1 of the buyer record
+1030 IF BUY1$(339,1)<>"Y" THEN GOTO 1100; REM "not filtering only items used at location (Fm4)
+1031 IF OPTIONS$(16,1)="Y" THEN GOTO 1100; REM "ignore active items 154600
+1032 IF K$(11,10)=CURR_CATEGORY$ THEN IF BUY1$(483,10)=DIM(10) THEN GOTO 1000; REM "item already found in category - skip remaining items (except if setting active items to specified category
+1034 FIND (Z[4],KEY=BUY1$(51,10)+ECH$(51,10)+ACTIVE_SHIPTO$,DOM=1035); GOTO 1040; REM "ssp 154600
+1035 IF BUY1$(483,10)=DIM(10) THEN GOTO 1000 ELSE GOTO 1100
+1040 GOSUB 7600; REM "add to active category list
+1042 IF BUY1$(483,10)<>DIM(10) AND K$(11,10)=CURR_CATEGORY$ THEN GOTO 1000
+1044 CURR_CATEGORY$=K$(11,10); GOTO 1200
+1100 IF K$(11,10)=CURR_CATEGORY$ THEN GOTO 1000
+1105 CURR_CATEGORY$=K$(11,10)
+1110 READ (Z[2],KEY=CURR_CATEGORY$,DOM=1000)IOL=0320
+1120 CAT_SCODES$=STP(ECG$(101,6),2)
+1122 REM "ck for super user on buyer record
+1124 IF BUY1$(86,1)="Y" THEN GOTO 1200; REM "if buyer is su then accept all categories
+1130 IF CAT_SCODES$="" THEN GOTO 1200
+1132 IF BUYER_SCODES$="" THEN GOTO 1000; REM 'SKIP CATEGORY
+1140 FOR X=0 TO LEN(CAT_SCODES$)/2-1
+1142 CODE$=CAT_SCODES$(X*2+1,2); IF POS(CODE$=BUYER_SCODES$,2)<>0 THEN EXITTO 1200
+1144 NEXT X
+1150 GOTO 1000
+1200 REM "add category to the list
+1220 IF K$(11,10)<>BUY1$(483,10) THEN CATEGORIES$=CATEGORIES$+K$(11,10)
+1300 GOTO 1000
+5000 REM "EOJ
+5002 IF POS(BUY1$(483,10)=CATEGORIES$,10)=0 AND BUY1$(483,10)<>DIM(10) THEN CATEGORIES$=BUY1$(483,10)+CATEGORIES$
+5005 IF LEN(CATEGORIES$)>500 THEN CATEGORIES$=CATEGORIES$(1,500); REM "set max number of categories to 50
+5010 IF OPTIONS$(1,1)="N" THEN GOTO 5040
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Catalog "+BUY1$(325,10)+" has been published!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "erase active forms category
+7505 READ (Z[6],KEY=BUY1$(1,15),DOM=7506)
+7510 EDEKEY$=KEY(Z[6],END=7530); IF EDEKEY$(1,15)<>BUY1$(1,15) THEN GOTO 7530
+7512 REMOVE (Z[6],KEY=EDEKEY$); GOTO 7510
+7540 RETURN 
+7600 REM "if setting active items to specified cateogry then write catalog
+7602 IF BUY1$(483,10)=DIM(10) THEN GOTO 7640
+7603 IF EDA$(73,1)<>"Y" THEN GOTO 7610
+7604 DIM FM1$(500); FIND (Z(7),KEY=ECH$(41,20),DOM=7605)FM1$; ITEMDESC$=FM1$(42,40); GOTO 7610
+7605 DIM IC0$(500); FIND (Z(7),KEY=ECH$(41,20),DOM=7606)IC0$; ITEMDESC$=IC0$(21,40)
+7612 DIM EDE$(186); EDE$(1,15)=BUYER$,EDE$(16,40)=ECH$(21,40),EDE$(56,40)=ITEMDESC$
+7620 WRITE (Z[6],KEY=EDE$(1,35))EDE$
+7640 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 EXIT 
+9999 END 

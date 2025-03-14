@@ -1,0 +1,106 @@
+<PxTable>
+ TableName=edb
+ TableKey=K1000516144
+ FileCreate=KEYED "edb",99,0,512,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="/!DOCTYPE                                                                                          "
+    FIELD_1$="/!DOCTYPE                                                                                          NY                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Header/From/Credential/Identity                                                              "
+    FIELD_1$="/cXML/Header/From/Credential/Identity                                                              NNuser                                                                                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Header/Sender/Credential/Identity                                                            "
+    FIELD_1$="/cXML/Header/Sender/Credential/Identity                                                            NY                                        basic=EC3WS1                                                template=xml_response_template                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Header/Sender/UserAgent                                                                      "
+    FIELD_1$="/cXML/Header/Sender/UserAgent                                                                       N3p_id                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Description                                          "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Description                                           Nitem_desc                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Extrinsic/costCenter                                 "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Extrinsic/costCenter                                 NNrecv_dept                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Extrinsic/name                                       "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/Extrinsic/name                                       YY                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/UnitOfMeasure                                        "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ItemDetail/UnitOfMeasure                                        NNum                                                                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ItemID/SupplierPartID                                           "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ItemID/SupplierPartID                                            Nitem_code                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/City                               "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/City                                Nman_city                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/DeliverTo                          "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/DeliverTo                          NNattention                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/PostalCode                         "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/PostalCode                          Nman_zip                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/State                              "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/State                               Nman_state                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/Street                             "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/Street                              Nman_addr_n                                                                                                                                                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/name                               "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/ShipTo/Address/PostalAddress/name                               NNman_name                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/lineNumber                                                      "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/lineNumber                                                       Nline_number                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/ItemOut/quantity                                                        "
+    FIELD_1$="/cXML/Request/OrderRequest/ItemOut/quantity                                                         Nquantity                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/OrderRequestHeader/Extrinsic/name                                       "
+    FIELD_1$="/cXML/Request/OrderRequest/OrderRequestHeader/Extrinsic/name                                       YY                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="/cXML/Request/OrderRequest/OrderRequestHeader/orderID                                              "
+    FIELD_1$="/cXML/Request/OrderRequest/OrderRequestHeader/orderID                                              NNcust_req                                purchase=Y                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

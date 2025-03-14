@@ -1,0 +1,7 @@
+0010 REM "@UPPER_CASE: Return uppercase of string <YUCASE>
+0015 REM "Prog Type: M -3.0A    
+1020 ENTER X3$,Z0$,Z1$
+1210 Z1$=UCS(Z0$)
+5050 GOTO 9900
+9940 EXIT 
+9999 END 

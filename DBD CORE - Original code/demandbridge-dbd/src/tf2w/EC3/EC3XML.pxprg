@@ -1,0 +1,130 @@
+0010 REM "Process XML file into EC3<EC3XML>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/09/15 - 17.85 - dmm - SSP# 278444
+0037 REM "278444-Four51; New tags for BillTo data, new buyer parm to use data
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "OPTION$: S=Suppress 'empty' values, R=Replace values with lookups, E=EC3SRV calling in XML mode (will use CONTROL and IN$ arrays, F=write output to file XMLOUT for debugging
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,OPTION$,Q1$,CONTROL{ALL},IN${ALL}
+0100 SETERR 9000
+0110 X0$="EC3XML",X1$="Process XML file into EC3"
+0120 DIM Z0$(80,"-")
+0140 IF POS("E"=OPTION$)<>0 THEN EC3_MODE=1,Q1$="*"
+0200 REM "
+0240 IF EC3_MODE=0 THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST EDB$
+0500 REM "FILES    Z[1]&Z[12] are used later, also see line 506
+0505 DIM Z[NUM(X3$(60,3))]
+0506 IF EC3_MODE THEN Z[1]=CONTROL[1],Z[2]=CONTROL[2],Z[3]=CONTROL[3]; GOTO 0600
+0600 REM "
+0605 IF EC3_MODE THEN GOTO 0700
+0610 GOSUB 6000
+0620 INPUT @(25,10),"Options: ",OPTION$
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "Set options based on OPTion$
+0760 IF POS("S"=OPTION$)<>0 THEN SUPPRESS_EMPTY=1 ELSE SUPPRESS_EMPTY=0
+0762 IF POS("R"=OPTION$)<>0 THEN REPLACE_XML=1 ELSE REPLACE_XML=0
+0764 IF POS("F"=OPTION$)<>0 THEN DEBUG_FILE=1 ELSE DEBUG_FILE=0
+0800 REM "Debug file if needed
+0810 IF DEBUG_FILE=0 THEN GOTO 0850
+0815 ERASE "XMLOUT",ERR=0816; GOTO 0815
+0816 SERIAL "XMLOUT",0,0
+0817 Z[12]=UNT; OPEN LOCK (Z[12],OPT="TEXT")"XMLOUT"
+0850 REM "End of debug file setup
+0900 REM "init
+1000 ! Call EC3XPN to get info
+1010 IF EC3_MODE THEN FILE_NAME$="~"+STR(Z[1]) ELSE FILE_NAME$="XML"
+1020 CALL "EC3XPN",FILE_NAME$,"",RAW_XML,RAW_PATH,OUTPUT,ENTITY
+1099 ! ***************************************************
+1100 ! If debug the write raw paths to debug
+1105 IF DEBUG_FILE AND RAW_PATH<>0 THEN {
+1110 READ (RAW_PATH,IND=0,END=END_RAW_PATH)PATH$,VALUE$
+1115 PRINT_RAW_PATH:
+1120 PRINT (Z[12])PATH$+$09$+VALUE$+$0D$
+1150 READ (RAW_PATH,END=END_RAW_PATH)PATH$,VALUE$
+1155 GOTO PRINT_RAW_PATH
+1190 END_RAW_PATH:
+1195  }
+1199 ! ************************************************************
+1200 ! Process resulting output from OUTPUT memory file
+1205 IF OUTPUT<>0 THEN {
+1210 READ (OUTPUT,IND=0,ERR=END_OUTPUT)OUTPUT$
+1212 IF DEBUG_FILE THEN PRINT (Z[12]); PRINT (Z[12])"Output from XML"+$0D$; PRINT (Z[12])
+1215 PROCESS_OUTPUT:
+1220 IF EC3_MODE THEN IN_STR$=OUTPUT$; GOSUB 2300
+1230 IF DEBUG_FILE THEN PRINT (Z[12])OUTPUT$+$0D$
+1240 READ (OUTPUT,END=END_OUTPUT)OUTPUT$
+1245 GOTO PROCESS_OUTPUT
+1290 END_OUTPUT:
+1295  }
+1995 GOTO 5000
+1999 ! *********************************************************
+2300 REM "Split into TAG$ and TAG_VALUE$ and load into IN$[]
+2304 IF STP(IN_STR$)="{dont_join_values}" THEN DONT_JOIN_VALUES=1; RETURN ! 182560 if XML processing command {dont_join_values} is found set flag and return
+2305 REM "if tilde in the string then drop the tilde and everything after it
+2306 LEFT_OVER$="",TPOS=POS($7E$=IN_STR$); IF TPOS>0 THEN IF TPOS=1 THEN GOTO 2340 ELSE LEFT_OVER$=IN_STR$(TPOS+1),IN_STR$=IN_STR$(1,TPOS-1); REM "134017
+2309 REM "if = in string split into tag and tag value around the =, if no '=' is found then the line is a continuation of the previous value, add an end of line to the string stored for the previous tag (CONTROL[4] is still pointing to the right place), and then the new line
+2310 P=POS("="=IN_STR$); IF P=0 THEN IN$[CONTROL[4],1]=IN$[CONTROL[4],1]+EOL$+IN_STR$; GOTO 2349 ELSE TAG$=STP(IN_STR$(1,P-1),2),TAG_VALUE$=CVS(IN_STR$(P+1),16); REM "135245, 154001
+2313 IF TAG$="bt_addrn_override" THEN IF POS("<"+TAG_VALUE$+">"=BTOVRS_FOUND$)<>0 THEN GOTO 2330 ELSE BTOVRS_FOUND$=BTOVRS_FOUND$+"<"+TAG_VALUE$+">",TPOS=0; GOTO 2320 ! WO278444, similar to man_addr_n, allow multiples of the tag
+2314 IF TAG$="man_addr_n" THEN IF POS("<"+TAG_VALUE$+">"=MANS_FOUND$)<>0 THEN GOTO 2330 ELSE MANS_FOUND$=MANS_FOUND$+"<"+TAG_VALUE$+">",TPOS=0; GOTO 2320; REM "Check for duplicate address lines                                                            
+2315 IF POS("?tf?"=TAG_VALUE$)<>0 THEN TAG_VALUE$=""; REM "We cannot (at this time) allow any tag_values with a '?tf?' in them, it can hang the called programs. In the future we may allow such tags to do advanced stuff, but we should put the exceptions here.
+2319 TPOS=POS("<"+TAG$+">"=USED_TAG$)
+2320 IF TPOS=0 OR DONT_JOIN_VALUES THEN {! 182560 flag set @2304
+2321 CONTROL[4]=CONTROL[4]+1; IF CONTROL[4]>CONTROL[0] THEN GOTO 2349 ! If over the number of entries then we will not add any more
+2324 USED_TAG$=USED_TAG$+STR(CONTROL[4]:"0000")+"<"+TAG$+">"; IN$[CONTROL[4],0]=TAG$,IN$[CONTROL[4],1]=TAG_VALUE$
+2325  } ELSE {
+2326 IF MID(TAG$,1,4)="man_" OR MID(TAG$,1,9)="attention" THEN GOTO 2328 ELSE TINDEX=NUM(USED_TAG$(TPOS-4,4),ERR=2329) ! Skip man_ address fields, just get the first occurance, SSP#154001
+2327 IN$[TINDEX,1]=IN$[TINDEX,1]+", "+TAG_VALUE$
+2329  }
+2335 IF LEFT_OVER$<>"" THEN IN_STR$=LEFT_OVER$,LEFT_OVER$=""; GOTO 2306 ELSE GOTO 2340; REM "134017
+2349 RETURN 
+5000 REM "EOJ
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5030 CLOSE (RAW_XML,ERR=*PROCEED); CLOSE (RAW_PATH,ERR=*PROCEED); CLOSE (OUTPUT,ERR=*PROCEED); CLOSE (ENTITY,ERR=*PROCEED) ! 254864
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This Program will process an XML file into EC3 format",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1235,2040
+9900 REM "END PROGRAM
+9910 ! IF ECE_MODE=0 THEN CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 READ_PATH: J=0
+10005 READ (RAW_PATH,IND=J++)A$,B$; IF POS(SEARCH$=A$)=0 AND SEARCH$<>"" THEN GOTO *SAME ELSE PRINT A$,'LF',B$; INPUT *; GOTO *SAME
+10010 ESCAPE 
+10100 READ_OUTPUT: J=0
+10105 READ (OUTPUT,IND=J++)A$; IF POS(SEARCH$=A$)=0 AND SEARCH$<>"" THEN GOTO *SAME ELSE PRINT A$; INPUT *; GOTO *SAME
+10110 ESCAPE 
+56002 REM "254864-XML service seems to be leaving some memory channels open   
+56004 REM "278444-Four51; New tags for BillTo data, new buyer parm to use data

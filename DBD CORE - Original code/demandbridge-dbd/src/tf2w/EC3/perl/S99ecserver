@@ -1,0 +1,4 @@
+#!/bin/ksh
+#Starts Topform Webec Server
+cd /etc
+/usr/local/bin/perl ./ecserver.pl&

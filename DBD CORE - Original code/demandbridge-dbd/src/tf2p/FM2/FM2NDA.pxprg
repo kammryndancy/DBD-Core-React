@@ -1,0 +1,322 @@
+0010 REM "Ship-to Change Processing <FM2NDA>
+0035 REM "5.7 - 10/06/09 - 11.879722 - tma - SSP# 207215
+0037 REM "207215-Ship-to code change doesn't change location code            
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="FM2NDA",X1$="Ship-to Change Audit Report"
+0120 DIM A$(256),A[19],B$(60),C$(227),C[2],D$(214),J$(46),S$(20)
+0140 Z0$="-##0",Z1$="-##,###.00#",Z2$="##,##0",Z3$="-######,##0",Z4$="#,###.00",Z5$="####,###.00"
+0210 T=1,T0=1,T1=1
+0220 W3=131
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3),W[4]
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0310 IOLIST A$
+0320 IOLIST B$
+0325 IOLIST B0$
+0330 IOLIST C$
+0340 IOLIST D$
+0400 IOLIST J$
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01L ASB...  02O AR1...  03O FM0...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0540 FIND (Z[13],KEY=X3$(9,3)+"F/M",DOM=0541)P0$
+0700 REM "Open Printer
+0720 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 0721,9920
+0800 REM "Alternate Sort Info & total dim"
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[2]; U=20,U0=2,U[0]=0,U[1]=10,U[2]=10,T0=0,U0$="    ",T5$="                "; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM " Position read"
+0905 REM "set key file to read from"
+0910 U1=Z[1]
+0930 IF LEN(V2$)>=U*2 THEN GOTO 0965
+0934 REM "create default 'all' range key
+0935 DIM V2$(U*2),V4$(U,"~"); U3=1
+0940 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1]
+0950 V2$(U3+U[U9],U[U9])=V4$(1,U[U9])
+0955 NEXT U9
+0964 REM "Get starting key from range key
+0965 DIM V4$(U); U3=1,U4=1
+0970 FOR U9=1 TO U0; U3=U3+U[U9-1]+U[U9-1],U4=U4+U[U9-1]
+0975 V4$(U4,U[U9])=V2$(U3,U[U9])
+0980 NEXT U9
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0990 READ (U1,KEY="S",DOM=0991)
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000)
+1008 GOTO 1100
+1009 U3=1,U2=1
+1010 FOR U9=1 TO U0; U2=U2+U[U9-1],U3=U3+U[U9-1]+U[U9-1]
+1020 IF U$(U2,U[U9])>=V2$(U3,U[U9]) THEN GOTO 1030 ELSE EXTRACT (U1,KEY=U$(1,U2-1)+V2$(U3,U[U9]),DOM=1021)
+1025 EXITTO 1000
+1030 IF U$(U2,U[U9])<=V2$(U3+U[U9],U[U9]) THEN GOTO 1040 ELSE READ (U1,KEY=U$(1,U2-1)+$FF$,DOM=1032)
+1035 EXITTO 1000
+1040 NEXT U9
+1100 REM "Get record"
+1110 U9$=U$
+1120 ON V0 GOTO 1150,1150,1130,1140
+1150 READ (Z[1],KEY=U$,DOM=1000)IOL=0310
+1300 REM "Read other data
+1315 DIM B0$(100); READ (Z[2],KEY=A$(2,10),DOM=1316)IOL=0325
+1320 DIM D9$(40); READ (Z[3],KEY="C"+A$(2,14),DOM=1321)IOL=0330; D9$=C$(16,35); GOTO 1326
+1400 REM "Subtotals"
+1415 GOSUB 3100
+1490 T=0
+1492 IF S$(20,1)="Y" THEN S9=1 ELSE S9=A[14]
+1494 IF S9=0 THEN S9=1
+1496 Z5$="####,###.00"
+1497 FOR I=1 TO 11 STEP 2; IF FPT(A[I]/S9)<>0 THEN EXITTO 1500
+1498 NEXT I
+1499 Z5$="###,###,##0"
+1500 REM "Print Data
+1505 IF W+3>W0 THEN GOSUB 6000
+1525 CALL "ZZDISP","AXS",A$(2,10),"A/R",X3$,Y5$,"",4,0,X4$; Y5$(20)=B0$(11,35)
+1530 Y5$(60)=A$(12,4),Y5$(70)=A$(26,4),Y5$(80)=D9$
+1590 GOSUB 7300
+1900 REM "Accumulate Totals"
+1990 T[T0,0]=T[T0,0]+1
+1995 GOTO 1000
+3100 REM "Subtotal logic goes here, see -ZREPS
+3180 RETURN 
+3280 RETURN 
+3380 RETURN 
+3480 RETURN 
+4000 REM "Routine to renumber files. All examples relate to customer code, item code renumbering
+4001 REM "R is the number of elements minus 1 (0 based counting) to change eg for item code change this is 2, one for customer code, one for item code
+4002 REM "R0() describes how long each element is. eg R0(0)=10, R0(1)=10
+4003 REM "R1() describes where each element is in the data part of the renumbering control file (eg. FSS, R1(0)=21, R1(1)=31
+4004 REM " R2() describes where each element begins in the target file's KEY area eg R2(0)=1, R2(1)=11 for the FM1 file. If R2(0)=0 then KEY is unchanged, if not a key field for example.
+4005 REM "R3() describes where each element begins in the targe file's DATA area, eg R3(0)=1 , R3(1)=11 for the FM1 file. If R3(0)=0 then data is unchanged, eg if a sort file
+4006 REM "F0$ is the name of the control file (eg FSS), F1$ is the name of the target file (eg FM1)
+4007 REM "F9  is a flag that controls whether to remove records first or not, it is set if and err 2 is detected on the test write.
+4008 REM "The control file is assumed to be keyed by the elements in the order that their lengths are given in R0. eg. key to FSS is customer code, item code
+4010 REM " Uses file slots 10 and 11 and 12
+4011 REM "F8=0 means DIRect file, F8=1 means sort file
+4012 REM "F7=1 MEANS SHIP-TO CODE MUST BE PREFACED WITH 'C'
+4100 REM "Start renumbering
+4105 Y$="10O "+F0$+"...  11O "+F1$+"...  12O ZZE...  "
+4106 IF F2$<>"" THEN Y$=Y$+"09O "+F2$+"...  "
+4110 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 4111,4180
+4115 REM "Set F9 flag by attempting write of bogus record. If error = 2 then F9 =1 remove first then write, else F9=0 write then remove.
+4116 F9=0; GOTO 4130
+4120 WRITE (Z[11],KEY="!^&",ERR=4121,DOM=4125); GOTO 4125
+4121 IF ERR=2 THEN F9=1; GOTO 4126 ELSE ESCAPE 
+4125 F9=0; REMOVE (Z[11],KEY="!^&",DOM=4126)
+4130 IF %GUI=0 THEN PRINT @(18,10),"Currently processing:",
+4133 DIM E$(50); FIND (Z[12],KEY=F1$+"   ",DOM=4134)E$
+4135 IF %GUI=0 THEN PRINT @(18,12),E$(7,39),
+4150 GOSUB 4200
+4175 IF %GUI=0 THEN PRINT @(0,12),'CE',
+4180 Y$="10C "+F0$+"...  11C "+F1$+"...  12O ZZE...  "
+4182 IF F2$<>"" THEN Y$=Y$+"09C "+F2$+"...  "
+4185 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+4190 REM "Clear R2, R3 for next file
+4192 DIM R2[R],R3[R]
+4193 F2$="",F7=0
+4195 RETURN 
+4200 REM "Actual substitution loop
+4201 REM "K0$=orig key, K1$=new key, D0$=orig data, D1$=new data, C0$=control data
+4205 READ (Z[11],KEY="",DOM=4206)
+4210 K0$=KEY(Z[11],END=4290)
+4215 READ RECORD (Z[11],KEY=K0$)D0$
+4216 IF F1$="PO3" THEN IF D0$(11,1)<>"C" THEN GOTO 4210
+4217 IF F1$="PO3" THEN READ (Z[9],KEY=K0$(1,8),DOM=4210)D2$
+4218 R9=R9+1; IF MOD(R9,250)=0 THEN PRINT @(18,14),K0$,
+4220 IF R2[0]<>0 AND R2[1]<>0 THEN IF LEN(K0$)<R2[0]+R0[0]-1 OR LEN(K0$)<R2[1]+R0[1]-1 THEN GOSUB 7750; GOTO 4210
+4222 IF F7>0 THEN IF F8=1 THEN IF K0$(R2[1]-1,1)<>"C" THEN GOTO 4210
+4223 IF F7>0 THEN IF F8=0 THEN IF D0$(R3[1]-1,1)<>"C" THEN GOTO 4210
+4225 GOSUB 4300; REM "get control key C$
+4226 REM "C$ would be the customer plus the ship-to
+4229 REM "Is control key C$ in control file?, If not goto next record
+4230 READ (Z[10],KEY="S"+C$,DOM=4210)C0$
+4240 GOSUB 4400; REM "rebuild key and data
+4245 IF F1$="FM0" AND MID(V0$,72,1)="Y" THEN D1$(214,9)=D1$(12,4)+DIM(5) ! SSP#207215
+4250 IF F9=1 THEN GOTO 4275
+4255 IF F8=0 THEN WRITE RECORD (Z[11],KEY=K1$)D1$ ELSE WRITE (Z[11],KEY=K1$)
+4260 IF K0$<>K1$ THEN REMOVE (Z[11],KEY=K0$,DOM=4261)
+4265 GOTO 4210
+4274 REM "Remove then write case
+4275 REMOVE (Z[11],KEY=K0$,DOM=4276)
+4280 IF F8=0 THEN WRITE RECORD (Z[11],KEY=K1$)D1$ ELSE WRITE (Z[11],KEY=K1$)
+4285 GOTO 4210
+4295 RETURN 
+4300 REM "Build key C$ to access control file
+4305 C$=""; REM "If R2(0)=0 use data portion to build C$ else use key part
+4306 IF F1$="PO3" THEN C$=D2$(6,10)+D0$(12,4); GOTO 4345
+4310 IF R2[0]=0 OR R2[1]=0 THEN GOTO 4330
+4315 FOR I=0 TO R; C$=C$+K0$(R2[I],R0[I]); NEXT I
+4320 GOTO 4345
+4330 FOR I=0 TO R; C$=C$+D0$(R3[I],R0[I]); NEXT I
+4349 RETURN 
+4400 REM "Rebuild K0$ to K1$ and D0$ to D1$ if needed based on C0$
+4405 K1$=K0$
+4410 IF R2[0]=0 AND R2[1]=0 THEN GOTO 4450; REM "if no key substitution
+4415 FOR I=0 TO R; IF R2[I]=0 THEN NEXT I ELSE K1$(R2[I],R0[I])=C0$(R1[I]); NEXT I
+4450 D1$=D0$
+4455 FOR I=0 TO R; IF R3[I]=0 THEN NEXT I ELSE D1$(R3[I],R0[I])=C0$(R1[I]); NEXT I
+4495 RETURN 
+5000 REM "End of Print
+5010 IF U$="" THEN IF %GUI THEN EXIT ; ELSE RUN "ZMENU"; REM SSP 216090
+5020 IF W8=0 THEN GOTO 5290
+5030 T0$="END"
+5040 IF V1>0 THEN GOSUB 3120
+5050 T=0,T$="Report"; GOSUB 7000
+5090 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$
+5200 REM "
+5210 CALL "ZZPROM",".Y",X3$,Z,"Are you ready to begin the renumbering process?","","",0
+5220 ON Z GOTO 5221,9900
+5230 GOSUB 5400
+5250 REM "Set constants for rebuild routine
+5255 F0$="ASB",R=1
+5260 DIM R0[R],R1[R],R2[R],R3[R]
+5265 F0$="ASB",R=1,R0[0]=10,R0[1]=4,R1[0]=16,R1[1]=26
+5290 IF %GUI=0 THEN PRINT @(18,5),"Ship-to Renumbering in Progress",
+5295 REM "F7=1 MEANS PREVIOUS CHARACTER TO DATA FIELD MUST BE 'C' TO CHANGE!
+5300 REM "Begin rebuilding
+5306 IF F1$="PO3" THEN C$=D2$(6,10)+D0$(12,4)
+5310 F1$="FM0",F8=0,R2[0]=2,R2[1]=12,R3[0]=2,R3[1]=12; GOSUB 4100
+5311 F1$="CS0",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5312 F1$="FM3",F8=0,R2[0]=1,R2[1]=21,R3[0]=1,R3[1]=21; GOSUB 4100
+5313 F1$="FM4",F8=0,R2[0]=1,R2[1]=21,R3[0]=1,R3[1]=21; GOSUB 4100
+5314 F1$="FMZ",F8=0,R2[0]=1,R2[1]=12,R3[0]=1,R3[1]=12; GOSUB 4100
+5315 F1$="FSM",F8=0,R2[0]=0,R2[1]=0,R3[0]=21,R3[1]=109; GOSUB 4100
+5316 F1$="PO3",F2$="FS1",F7=1,F8=0,R2[0]=0,R2[1]=0,R3[0]=0,R3[1]=12; GOSUB 4100
+5317 F1$="POF",F8=0,R2[0]=17,R2[1]=0,R3[0]=17,R3[1]=203; GOSUB 4100
+5318 F1$="FMY",F7=1,F8=0,R2[0]=1,R2[1]=0,R3[0]=1,R3[1]=148; GOSUB 4100
+5320 F1$="FMD",F7=1,F8=0,R2[0]=1,R2[1]=22,R3[0]=1,R3[1]=22; GOSUB 4100
+5321 F1$="FME",F7=1,F8=1,R2[0]=1,R2[1]=12,R3[0]=0,R3[0]=0; GOSUB 4100
+5322 F1$="FMF",F7=1,F8=1,R2[0]=1,R2[1]=59,R3[0]=0,R3[1]=0; GOSUB 4100
+5323 F1$="FMH",F7=1,F8=1,R2[0]=14,R2[1]=25,R3[0]=0,R3[1]=0; GOSUB 4100
+5324 F1$="FMI",F8=0,R2[0]=1,R2[1]=0,R3[0]=1,R3[1]=207; GOSUB 4100
+5325 REM "FML NOT CHANGED - THIS IS AN ON-DEMAND SORT FILE
+5326 F1$="FMM",F8=1,R2[0]=1,R2[1]=20,R3[0]=0,R3[1]=0; GOSUB 4100
+5327 F1$="FMP",F8=0,R2[0]=2,R2[1]=12,R3[0]=2,R3[1]=12; GOSUB 4100; REM "*****
+5331 F1$="FM6",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5332 F1$="FM7",F8=1,R2[0]=1,R2[1]=11,R3[0]=0,R3[1]=0; GOSUB 4100
+5334 F1$="FM8",F8=0,R2[0]=1,R2[1]=11,R3[0]=1,R3[1]=11; GOSUB 4100
+5335 F1$="ARB",F8=0,R2[0]=0,R2[1]=0,R3[0]=15,R3[1]=187; GOSUB 4100
+5336 CALL "ZZ2PRP","EC",RESULT$,DATE$; IF RESULT$="Y" THEN F1$="ECA",F8=0,R2[0]=0,R2[1]=0,R3[0]=51,R3[1]=61; GOSUB 4100
+5340 CALL "FM2UTT",X3$,X4$,"","A"
+5390 Y$="01O ASB...  "
+5395 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5397 CALL "ZZINIT",STR(Z[1]:"00")
+5398 CALL "ZZPROM","X0FM2NC0",X3$,0,"","","",0
+5399 GOTO 9900
+5400 REM "Check for things in progress
+5401 REM "Temp lock ZZPARM.  Lock on ZM1 will keep em off (5405)
+5402 LOCK (Z[13],ERR=5403); UNLOCK (Z[13]); GOTO 5405
+5403 PRINT @(0,21),'CL','BB',"Update will not be initiated at this time.  Try again later",'EB',; CALL "ZZPROM",".4",X3$,0,"Activity detected!  All other terminals must be logged off during update.","","",0; GOTO 9900
+5405 Y$="01O ARB...  02O ICL...  03O ICA...  04O FM6...  05O PO7...  09O ZM1    "
+5410 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1; ON Z0 GOTO 5411,9900
+5415 X5=0
+5420 REM LET F5=1,F5$="Accounts Receivable Invoicing (ARB)"; GOSUB 05500
+5480 Y$="01C ARB...  02C ICL...  03C ICA...  04C FM6...  05C PO7...  "
+5485 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+5490 IF X5<>0 THEN CALL "ZZPROM",".4",X3$,Z,"","","",0; GOTO 9900
+5495 RETURN 
+5500 REM "See if given file has any records, if yes give message and exit program
+5510 READ (Z[F5],KEY="",DOM=5511)
+5515 READ (Z[F5],END=5545)
+5519 REM "If here then it has records in it
+5520 IF X5=0 THEN PRINT @(17,10),"Renumbering cannot proceed until the",@(15,11),"transactions in these files are processed:",; X5=13
+5525 PRINT @(18,X5),F5$; X5=X5+1
+5545 RETURN 
+6000 REM "Page header
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6045 ON W5 GOTO 6046,9900
+6050 GOSUB 7300
+6060 GOSUB 6100
+6090 RETURN 
+6100 REM "
+6105 Y5$(4)="Customer",Y5$(60)="Old",Y5$(69)="New"; GOSUB 7300
+6110 Y5$(4)="Code",Y5$(20)="Customer name",Y5$(58)="Ship-to",Y5$(68)="Ship-to",Y5$(80)="Ship-to Description"
+6120 GOSUB 7300
+6130 Y5$(1)=T1$; GOSUB 7300
+6199 RETURN 
+6900 REM "SORT
+6905 IF S9$="X" THEN GOTO 6990 ELSE S0=Z[1],S1=Z[2]
+6940 CALL "ZZSORT",X3$,"",V1$,S9$,"","",0,0,0,S0,S1,X9
+6990 RETURN 
+7000 REM "Totals logic
+7001 IF T=T0 THEN IF T[T0,0]<2 THEN GOSUB 7300; GOTO 7100
+7002 IF W+3>W0 THEN GOSUB 6000
+7010 REM LET Y5$(1)=T3$(1,T0+1-T)+" "
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 7200; GOTO 7190
+7095 GOSUB 7300
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7205 GOSUB 7300; Y5$(1)="Number of items printed"+": "+STR(T[0,0]); GOSUB 7300
+7210 PRECISION 14; T2=TIM-T2
+7220 T4$=STR(INT(T2):"##0")
+7230 T3=INT(FPT(T2)*3600),T4=MOD(T3,60),T3=INT(T3/60)
+7240 T3=T3/60
+7250 T4$=T4$+":"+STR(T3:"00")+":"+STR(T4:"00")
+7260 Y5$(1)="Elapsed time: "+T4$; GOSUB 7300
+7280 PRECISION 2
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"  ")-1)
+7485 FOR U1=1 TO LEN(V1$); IF V1$(U1,1)=" " THEN V1$(U1,1)="."; NEXT U1 ELSE NEXT U1
+7490 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES
+7700 REM "FS6 Special logic
+7740 RETURN 
+7750 REM "Remvove Short Key?
+7790 RETURN 
+8000 REM "Patch for FS2"
+8010 READ (Z[9],KEY=D0$(147,8),DOM=8040)J$
+8015 C$(1,10)=J$(6,10)
+8045 RETURN 
+8900 REM "Functions
+8910 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8920 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8950 DEF FNQ$(Z9,Z9$)=STR(Z9:Z9$)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9940 IF %GUI THEN EXIT ; ELSE RUN "ZMENU"; REM SSP 216090
+9999 END 
+56000 REM "216090-Trying to run the FM shipto change utility
+56001 REM "207215-Ship-to code change doesn't change location code            

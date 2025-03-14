@@ -1,0 +1,345 @@
+0010 REM "<PA2UBA> Import Accounts Payable Gateway
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/16/16 - 13.045555 - tma - SSP# 273320
+0037 REM "273320-GOR - Order Req Gateway - change file selection screen to   
+0040 REM "Copyright 2016 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 CLEAR ; SETERR 0050; ENTER X3$,X4$,Q0$,Q1$; GOTO CALL_INIT
+0050 IF TCB(13)=1 THEN BEGIN 
+0052 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access this program"; GOTO 0075 ! SSP#276476
+0055 IF NOT(%GUI) THEN CHUI_MODE=1; %GUI=1; PRINT 'SHOW'(0)
+0060 PROCESS "PAGUBA","../PAG/PA.EN"
+0065 IF CHUI_MODE THEN %GUI=0; PRINT 'SHOW'(1); RUN "ZMENU"
+0075 IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0080 ! 
+0094 REM "Copied from FO2UBA, 8/22/97
+0095 REM "WO101028, finish up gateway
+0098 REM "Q1$=CPR if coming from commission payable report
+0099 CALL_INIT:
+0100 SETERR 9000
+0102 CALL_FROM=1
+0105 INIT:
+0110 X0$="PA2UBA",X1$="Import Accounts Payable Gateway"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0140 L0=284,L1=24; REM "Header should be 284 long, lines should be 24 long for version 1.00, will adjust at 1140 if another version
+0145 M0$="000"
+0150 COUNT=0; REM "Req count to send back to ghost task
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0210 IF %GUI THEN X0=-1 ! SSP240496 jdf
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13]; REM "PA0
+0320 IOLIST B$,B[0]; REM "PA2
+0330 IOLIST C$,C[0],C[1],C[2]; REM "AP4
+0340 IOLIST D$,D[0],D[1]; REM "AP2
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "Slot 1 used for import file opened in 1000's
+0510 Z$="02O PA0... 03O PA2... 04O AP4... 05O API... 06O APQ... 07O AP2... 08O ZYB... 09O AP3... 10O AR3... 11O GL1... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0560 DIM F3$(120); READ (Z[13],KEY=X3$(9,3)+"AP2A",DOM=0561)F3$ ! SSP262361, was "APA2"
+0580 READ (Z[13],KEY=X3$(9,3)+"A/P")F0$
+0585 READ (Z[13],KEY=X3$(9,3)+"G/LYE"+F0$(7,4))P1$
+0590 READ (Z[13],KEY=X3$(9,3)+"GAP",DOM=*NEXT)GAP_PARM$ ! 262361 - AP Gateway Parameters
+0600 REM "
+0603 DIM E$(6)
+0605 E$(1,6)=F0$(7,6); REM "Set to current AP fiscal year/ap
+0608 IF %GUI THEN RETURN 
+0610 IF Q1$<>"G" THEN GOSUB 6000
+0611 IF Q1$<>"" THEN GOTO 1000
+0615 REM "Fiscal year
+0620 CALL "ZZENTR","ZXUX",E{ALL},E$,X4$,X3$,37,10,1,4,C0,"","{1"+X$,"","PA2UBA00","","",""
+0630 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0631,9900
+0635 FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+E$(1,4),DOM=0620)P1$
+0640 IF POS(P1$(99,1)="CR")<>0 THEN CALL "ZZPROM",".4",X3$,Z,"Closed years must be reopened by System Administrator prior to posting.","","",0; GOTO 0620
+0665 REM "Accounting period
+0670 CALL "ZZENTR","ZUX",E{ALL},E$,X4$,X3$,37,11,5,2,C0,"","{1"+X$,"","PA2UBA02","","",""
+0680 IF C0<0 THEN ON INT(ABS(C0)-2) GOTO 0681,9900
+0685 IF E$(5,2)<"01" OR E$(5,2)>P1$(13,2) THEN GOTO 0670
+0690 GOSUB 7700
+0740 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0741,9900
+0850 PROCEED:! SSP 262361
+0950 IF %GUI THEN E$(1,4)=CR_FY$; IF LEN(CR_ACCTPD$)>2 THEN E$(5,2)=CR_PD$ ELSE E$(5,2)=CR_ACCTPD$ ! SSP 262361
+1000 REM "Get list of FO1 files to process
+1005 IMP_DIR$="",ZZ2BLS_IMP_DIR$=""; IF NOT(NUL(MID(GAP_PARM$,7,60))) THEN IMP_DIR$=STP(STP(MID(GAP_PARM$,7,60)),1,"/")+"/",ZZ2BLS_IMP_DIR$="|"+IMP_DIR$ ! 262361 - If import dir specified in parameters then use it, append trailing "/" (dir defaults to %DATAPATH$ in ZZ2BLS unless explicitly specified)
+1010 CALL "ZZ2BLS","D0:PA1*"+ZZ2BLS_IMP_DIR$,"S",F$
+1012 IF X3$(77,1)="U" THEN CALL "ZZ2BLS","D0:pa1*"+ZZ2BLS_IMP_DIR$,"S",F_LOWER$; F$=F$+F_LOWER$
+1013 IF SEL_FILES$="Y" THEN CALL "ZZ2BLS;SELECT_FILES",F$,"D0:",""; IF %SEL_FILES$="X" THEN %SEL_FILES$="",CMD_STR$="END"; GOTO 9900 ! 262361 - Allow user to select files to import, if requested  !SSP#273320
+1015 NEXT_FILE: P=POS(":"=F$); IF P=0 THEN GOTO 5000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1040 F1$=IMP_DIR$+F1$
+1050 Z$="01CU 01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")F1$; REM "Open for reading raw file
+1065 CLOSE (13); OPEN (13)"ZZPARM"; REM "Re-open ZZPARM closed in ZZ2BLS
+1075 IF NOT(%GUI) THEN IF Q1$<>"G" THEN PRINT @(15,15),'CE',"Processing: "+F1$, ! SSP240496 jdf  
+1080 IF NOT(%GUI) THEN IF Q1$<>"G" THEN GOSUB 8100; GOSUB 8150 ! SSP240496 jdf
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0,I$="",RCOUNT$=""; DIM RCOUNT[50]
+1108 NEXT_REC:
+1110 READ (Z[1],END=END_OF_FILE)I$; I9=I9+1,COUNT=COUNT+1,L2=0
+1115 P=POS(I$(1,3)=RCOUNT$,3); IF P=0 THEN RCOUNT$=RCOUNT$+I$(1,3); GOTO 1115; REM "Used to write to /usr/lib/pvx/GW_LOG
+1120 P1=(P+2)/3; RCOUNT[P1]=RCOUNT[P1]+1
+1125 IF NOT(%GUI) THEN IF Q1$<>"G" THEN IF MOD(I9,T0)=1 THEN GOSUB 8150 ! SSP240496 jdf 
+1130 REM PRINT @(0,3),'CE',@(0,4),I$; INPUT *
+1135 DIM A$(119),A[13],B$(41),B[1]; F8=0
+1140 REM "IF I$(4,3)="101" THEN LET L0=310; REM "HEADER OF VERSION 1.01 FILE IS 310 LONG
+1142 IF POS(I$(4,1)=",|")<>0 OR I$(4,1)=$09$ THEN DELIM$=I$(4,1); GOSUB 7000
+1143 IF STP(I$,3)="" THEN GOTO NEXT_REC ! SSP262361, don't process blank records
+1145 IF LEN(I$)<L0 THEN I9$=I$; DIM I$(L0); I$(1)=I9$; A$(111,2)="01"; REM "Correct length if short, put on hold
+1147 IF LEN(I$)>L0 THEN LINES$="Y" ELSE LINES$="N"
+1148 IF LINES$="Y" THEN IF STP(I$(L0+1),3)="" THEN LINES$="N" ! SSP262361, DMM 06/20/13, if lines area all blanks then we don't really have lines data.
+1150 A$(113,3)=I$(1,3); REM "Import Source
+1155 A$(116,3)=I$(4,3); REM "Import file version
+1159 IF STP(I$(7,6),3," ")="" THEN I$(7,6)=E$(1,6)
+1160 A$(1,6)=I$(7,6); REM "Fiscal Year/Accounting Period
+1165 DIM P1$(105); FIND (Z[13],KEY=X3$(9,3)+"G/LYE"+A$(1,4),DOM=1170)P1$
+1167 IF POS(P1$(99,1)="CR")=0 THEN GOTO 1171
+1170 IF A$(111,2)="  " THEN A$(111,2)="02"; REM "Got the DOM, or closed year
+1174 A$(5,2)=STR(NUM(A$(5,2)):"00",ERR=*NEXT) ! SSP268013
+1175 IF A$(5,2)<"01" OR A$(5,2)>P1$(13,2) THEN IF A$(111,2)="  " THEN A$(111,2)="02"; REM "Invalid accounting period
+1180 A$(7,10)=I$(13,10); REM "Vendor code
+1185 DIM C$(347),C[2]; FIND (Z[4],KEY=A$(7,10),DOM=1186)IOL=0330; GOTO 1190
+1186 IF A$(111,2)="  " THEN A$(111,2)="03"; REM "Got the DOM, no such vendor
+1190 IF C$(246,1)="I" THEN IF A$(111,2)="  " THEN A$(111,2)="03"; REM "Inactive vendor
+1195 A$(17,10)=UCS(I$(23,10)); REM "Invoice Number SSP262361, must be uppercase
+1200 IF STP(A$(17,10),3," ")="" THEN A$(111,2)="04"; REM "Blank invoice number
+1205 READ (Z[5],KEY=A$(7,20),DOM=1206); IF Q1$="CPR" THEN A$(23,2)=STR(NUM(A$(23,2))+1:"00"); GOTO 1205 ELSE IF A$(111,2)="  " THEN A$(111,2)="05"; REM "Invoice number in A/P open invoice file for this vendor already
+1210 READ (Z[6],KEY=A$(7,20),DOM=1211); IF Q1$="CPR" THEN A$(23,2)=STR(NUM(A$(23,2))+1:"00"); GOTO 1210 ELSE IF A$(111,2)="  " THEN A$(111,2)="05"; REM "Invoice number in A/P invoice history for this vendor
+1215 A$(27,6)=I$(33,6); IF STP(A$(27,6),3," ")="" THEN A$(27,6)=X3$(15,6); REM "Invoice date
+1220 A$(33,2)=I$(39,2); IF A$(33,2)="  " THEN A$(33,2)=C$(286,2); REM "Terms code
+1225 DIM D$(53),D[1]; FIND (Z[7],KEY=A$(33,2),DOM=1226)IOL=0340; GOTO 1230
+1226 IF A$(111,2)="  " THEN A$(111,2)="06"; REM "Invalid terms code
+1230 A$(35,6)=I$(41,6),A$(41,6)=I$(47,6); IF STP(A$(35,6),3," ")="" THEN IF POS(" "<>D$(1,53))>0 THEN GOSUB 8300; REM "Invoice due date
+1232 GOSUB CHECK_DATES
+1235 A$(47,15)=I$(53,15); IF POS(" "<>A$(47,15))=0 THEN A$(47,15)=C$(256,15); REM "Invoice comment
+1240 A$(62,10)=I$(68,10); REM "Our reference number
+1245 A$(72,3)=I$(78,3); IF A$(72,3)="   " THEN A$(72,3)=C$(283,3); REM "Bank code
+1250 READ (Z[8],KEY=A$(72,3),DOM=1251); GOTO 1255
+1251 IF A$(111,2)="  " THEN A$(111,2)="07"; REM "Invalid bank code
+1255 A$(75,9)=I$(81,9); IF STP(A$(75,9),3," ")="" THEN A$(75,9)=C$(247,9); REM "G/L Category code
+1260 READ (Z[9],KEY=A$(75,9),DOM=1261); GOTO 1265
+1261 IF A$(111,2)="  " THEN A$(111,2)="08"; REM "Invalid category
+1265 A$(84,2)=I$(90,2); IF A$(84,2)="  " THEN A$(84,2)=C$(288,2); REM "Payment selection code
+1270 A$(86,1)=I$(92,1); IF A$(86,1)=" " THEN A$(86,1)=C$(290,1); REM "Payment priority code
+1275 A$(87,1)=I$(93,1); IF A$(87,1)=" " THEN A$(87,1)=C$(291,1); REM "Vendor on hold?
+1280 A$(88,1)=I$(94,1); REM "Special invoice type
+1285 A$(89,1)=I$(95,1); IF A$(89,1)=" " THEN A$(89,1)="I"; REM "Invoice type
+1290 A$(90,10)=I$(96,10); REM "Apply to invoice number
+1295 IF F0$(70,1)="Y" THEN A$(100,4)=I$(106,4) ELSE GOTO 1300
+1296 IF A$(100,4)<>"    " THEN READ (Z[10],KEY=A$(100,4),DOM=1297); GOTO 1300 ELSE GOTO 1300
+1297 IF A$(111,2)="  " THEN A$(111,2)="09"; REM "Invalid salesperson code
+1300 A$(104,3)=I$(110,3); REM "Source company code
+1305 A$(107,1)=I$(113,1); REM "Source company code remote location type
+1310 A$(108,3)=I$(114,3); REM "Alternate currency code
+1320 A[1]=NUM(I$(129,12),ERR=1321); GOTO 1325; REM "Gross invoice amount
+1321 IF A$(111,2)="  " THEN A$(111,2)="10"; REM "Invalid numeric
+1325 IF POS(" "<>F3$(8,16))>0 THEN A[2]=NUM(I$(141,12),ERR=1326); GOTO 1330 ELSE GOTO 1330; REM "Special amount 1
+1326 IF A$(111,2)="  " THEN A$(111,2)="10"
+1330 IF POS(" "<>F3$(28,16))>0 THEN A[3]=NUM(I$(153,12),ERR=1331); GOTO 1335 ELSE GOTO 1335; REM "Special amount 2
+1331 IF A$(111,2)="  " THEN A$(111,2)="10"
+1335 IF POS(" "<>F3$(48,16))>0 THEN A[4]=NUM(I$(165,12),ERR=1336); GOTO 1340 ELSE GOTO 1340; REM "Special amount 3
+1336 IF A$(111,2)="  " THEN A$(111,2)="10"
+1340 IF POS(" "<>F3$(68,16))>0 THEN A[5]=NUM(I$(177,12),ERR=1341); GOTO 1345 ELSE GOTO 1345; REM "Special amount 4
+1341 IF A$(111,2)="  " THEN A$(111,2)="10"
+1345 A[6]=NUM(I$(189,12),ERR=1346); GOTO 1350; REM "Discount applies to
+1346 IF A$(111,2)="  " THEN A$(111,2)="10"
+1350 A[7]=NUM(I$(201,12),ERR=1351); GOTO 1355; REM "Discount amount
+1351 IF A$(111,2)="  " THEN A$(111,2)="10"
+1355 A[8]=NUM(I$(213,12),ERR=1356); GOTO 1360; REM "Workman comp w/h--not used
+1356 IF A$(111,2)="  " THEN A$(111,2)="10"
+1360 A[9]=NUM(I$(225,12),ERR=1361); GOTO 1365; REM "Net invoice amount
+1361 IF A$(111,2)="  " THEN A$(111,2)="10"
+1365 A[10]=NUM(I$(237,12),ERR=1366); GOTO 1370; REM "# days to extend due date
+1366 IF A$(111,2)="  " THEN A$(111,2)="10"
+1370 A[11]=NUM(I$(249,12),ERR=1371); GOTO 1375; REM "Used during invoice entry
+1371 IF A$(111,2)="  " THEN A$(111,2)="10"
+1375 A[12]=NUM(I$(261,12),ERR=1376); GOTO 1380; REM "Gross amount in alt curr
+1376 IF A$(111,2)="  " THEN A$(111,2)="10"
+1380 A[13]=NUM(I$(273,12),ERR=1381); GOTO 1385; REM "Discount amount in alt curr
+1381 IF A$(111,2)="  " THEN A$(111,2)="10"
+1385 IF A[1]=0 THEN A[1]=C[0]; REM "Standard amount from AP4
+1390 IF A[10]=0 THEN A[10]=C[1]; REM "# extra due days from AP4
+1400 GOSUB 7800; REM "Compute VAT, discount applies to, discount amount,net invoice amount
+1440 GOSUB 7600; REM "Write out header
+1450 REM "Write lines to PA2 file
+1455 TOTAL=0
+1460 IF LINES$="N" THEN B$(1,26)=A$(1,26),B$(30,12)=C$(271,12),B[0]=A[9],TOTAL=B[0]; GOTO 1550; REM "Use std G/L account number from AP4 and gross invoice amount SSP262361, add setting of B$(1,26) and change B[0]=A[1] to B[0]=A[9] net amount
+1505 I0$=I$(L0+1); REM "Set I0$ to start of lines
+1510 IF I0$="" OR STP(I0$,3," ")="" THEN GOSUB 1700; GOTO NEXT_REC; REM "Done with this record
+1515 IF LEN(I0$)<L1 THEN I1$=I0$; DIM I0$(L1); I0$(1)=I1$; REM "If line isn't long enough fill with blanks
+1520 IF STP(I0$(1,L1),3," ")="" THEN GOTO 1635; REM "If we have a line of all blanks, we don't want to write it out
+1523 B$(1,26)=A$(1,26); REM "Set first 26 to key of header
+1524 GLC$=I0$(1,12); IF STP(GLC$,3)="" THEN GOTO *NEXT ELSE GLC$=STP(GLC$,3),GLC$=STP(GLC$,3,"-"),GLC$=PAD(GLC$,12,"0") ! SSP262361, if all blank then just go on but if not then strip all spaces, then strip all hyphens, then pad with zeros to the right.
+1525 B$(30,12)=GLC$ ! SSP262361, now use GLC$ set in line 1524 I0$(1,12); REM "G/L account number.
+1526 IF STP(B$(30,12),3)="" THEN B$(30,12)=C$(271,12) ! SSP262361
+1530 B[0]=NUM(I0$(13,12),ERR=1531),TOTAL=TOTAL+B[0]; GOTO 1535; REM "Amount
+1531 IF A$(111,2)="  " THEN A$(111,2)="10"; WRITE (Z[2],KEY=A$(1,26))IOL=0310
+1550 L2=L2+1; REM "Increment line number
+1555 B$(27,3)=STR(L2:M0$); REM "Line number
+1560 READ (Z[11],KEY=B$(30,12),DOM=1561); GOTO WRITE_PA2
+1561 IF A$(111,2)="  " THEN A$(111,2)="11"; WRITE (Z[2],KEY=A$(1,26))IOL=0310; REM "Invalid G/L account number
+1565 WRITE_PA2:
+1630 WRITE (Z[3],KEY=B$(1,29))IOL=0320
+1634 IF I0$="" OR STP(I0$,3," ")="" THEN GOSUB 1700; GOTO NEXT_REC; REM "Done with this record  SSP262361
+1635 I0$=I0$(L1+1); DIM B$(41),B[1]; REM "Set I0$ to start of next line
+1640 GOTO 1510
+1700 REM "Check to see if lines = gross invoice amount SSP262361, s/b net
+1710 IF TOTAL<>A[9] THEN IF A$(111,2)="  " THEN A$(111,2)="12"; WRITE (Z[2],KEY=A$(1,26))IOL=0310 ! SSP262361, was checking against A[1] gross but should be A[9] net, otherwise it's out of balance
+1740 RETURN 
+1900 PROCESS_END:! REM "End of file
+1901 REM "Close & Rename to PA4 for archiving. Erase an existing PA4 file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 IF NOT(NUL(IMP_DIR$)) THEN F1$=SUB(F1$,IMP_DIR$,"") END_IF ; F2$=F1$; IF F2$ LIKE "[Pp][Aa]1*" THEN F2$(1,3)="PA4" ELSE GOTO 1995
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$+DLM; IF NOT(NUL(IMP_DIR$)) THEN J$=IMP_DIR$
+1930 REM "Move the file
+1935 ERASE J$+F2$,ERR=*PROCEED; RENAME J$+F1$ TO J$+F2$
+1995 GOTO NEXT_FILE
+5000 REM "EOJ
+5010 IF Q1$<>"G" THEN PRINT @(0,15),'CE',
+5020 IF Q1$="" AND NOT(%GUI) THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5030 IF %GUI THEN MSGBOX "Process complete","F.Y.I.","!"; CMD_STR$="END"
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 IF %GUI THEN RETURN ! SSP240496 jdf
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Accounts Payable Gateway Records"
+6050 IF Q1$="" THEN PRINT @(24,10),"Fiscal year:",@(18,11),"Accounting period:",@(37,10),E$(1,4),@(37,11),E$(5,2),; GOSUB 7700
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Parse delimited strings
+7001 I$=SUB(SUB(I$,$0A$,""),$0D$,"") ! Remove \r\n chars
+7005 RETURN$="",DELIM$=I$(4,1)
+7010 F_NUM=38,F_LEN$="0303040210100602060615100309020101010110040301031212121212121212121212121212"; MX=FNFIELDS ! Header record format
+7015 CALL "ZZ2DLM","","",I$,DELIM$,FIELDS{ALL},"",RETURN$,FIELDS_FOUND
+7020 F_NUM=2,F_LEN$="1212"; MX=FNFIELDS ! Line record format
+7030 IF POS(DELIM$=I$,1,0)>38 THEN I$=MID(I$,POS(DELIM$=I$,1,38)+1); GOTO *NEXT ELSE GOTO 7090
+7040 TMPRETURN$=""; CALL "ZZ2DLM","","",I$,DELIM$,FIELDS{ALL},"",TMPRETURN$,FIELDS_FOUND
+7050 RETURN$+=TMPRETURN$
+7060 IF (POS(DELIM$=I$,1,0)+1)>2 THEN I$=MID(I$,POS(DELIM$=I$,1,2)+1); GOTO 7040
+7090 I$=RETURN$
+7095 RETURN 
+7099 ! 
+7200 CHECK_DATES:
+7210 ZZ=NUM(A$(27,2),ERR=7220) ! If not Topform date (use NUM() to get an error or not, and use result to decide if Topform date or not) convert into Topform date
+7215 Q$=A$(27,6); GOSUB 7500; A$(27,6)=D0$ ! Invoice Date
+7220 ZZ=NUM(A$(35,2),ERR=7240)
+7225 Q$=A$(35,6); GOSUB 7500; A$(35,6)=D0$ ! Invoice Due Date
+7240 ZZ=NUM(A$(41,2),ERR=7260)
+7250 Q$=A$(41,6); GOSUB 7500; A$(41,6)=D0$ ! Discount Expires on
+7260 RETURN 
+7500 FORMAT_DATE:! REM "Convert date Q$ into D0$
+7501 REM "Q$ in YYMMDD format
+7505 D0$=""
+7506 IF STP(Q$,3," ")="" THEN GOTO 7545
+7510 IF LEN(Q$)<6 THEN GOTO 7545 ELSE D1$=Q$(1,2)
+7515 IF D1$<"50" THEN D1$="20"+D1$ ELSE D1$="19"+D1$
+7520 D0$=CHR(NUM(D1$(1,3),ERR=7521)-125)+D1$(4,1)+Q$(3,2)+Q$(5,2)
+7545 RETURN 
+7600 REM "Write out a header record to PA0
+7605 WRITE (Z[2],KEY=A$(1,26),DOM=7606)IOL=0310; GOTO 7640
+7609 REM "Increment sequence number and try again until no dup
+7610 IF A$(26,1)=" " THEN A$(26,1)="0" ELSE A$(26,1)=CHR(ASC(A$(26,1))+1)
+7615 GOTO 7605
+7645 RETURN 
+7700 REM "Print PE date
+7720 PRINT @(43,11),"Ending ",FND$(P1$(NUM(E$(5,2))*6+15,6)),
+7749 RETURN 
+7750 END_OF_FILE:! REM "End of file
+7754 IF LEN(RCOUNT$)<=0 THEN GOTO 7795
+7755 FOR X=1 TO LEN(RCOUNT$)-2 STEP 3
+7756 S$="GAP|STAT|"+FN%CDS$+"|"+X3$(40,3)+"|"+X3$(9,3)+"|"+FID(0)+"|"+F1$+"|"+RCOUNT$(X,3)+"|"+STR(RCOUNT[(X+2)/3]:"0000")
+7757 S2$="echo "+QUO+S$+QUO+" >> "+HWD+DLM+"GW_LOG"
+7758 INVOKE S2$
+7759 NEXT X
+7795 GOTO PROCESS_END
+7800 REM "COMPUTE VAT
+7810 IF F0$(71,1)<>"Y" THEN GOSUB 7900; GOSUB 7850; GOTO 7840
+7820 A[3]=0; GOSUB 7900
+7830 IF F0$(71,1)<>"Y" OR F9$="*" THEN GOTO 7840 ELSE A[1]=A[1]-A[3],A[3]=(A[1]-A[7])*NUM(F0$(72,4))*.0001,A[1]=A[1]+A[3]; GOSUB 7950
+7840 RETURN 
+7850 REM "CALC DISC AMT
+7855 IF A[7]<>0 THEN GOTO 7887
+7880 A[7]=A[6]*D[0]/100
+7887 GOSUB 7830
+7890 RETURN 
+7900 REM "CALCULATE DISCOUNT APPLIES TO
+7905 IF A[6]<>0 THEN GOTO 7935
+7910 A[6]=A[1]
+7915 FOR X=0 TO 3; IF POS(STR(X+1:"0")=C$(294,5))=0 AND F3$(25+20*X,1)<>"Y" THEN A[6]=A[6]-A[2+X]
+7918 NEXT X
+7935 GOSUB 7850
+7950 REM "CALC NET INV AMT
+7955 A[9]=A[1]
+7960 FOR X=0 TO 3; IF F3$(24+X*20,1)="Y" THEN A[9]=A[9]-A[2+X]; NEXT X ELSE NEXT X
+7965 A[9]=A[9]-A[8]
+7970 IF F0$(15,1)="L" THEN A[9]=A[9]-A[7]
+7990 RETURN 
+8000 REM "Setup fields for parsing delimited records using F_NUM and F_LEN$ vars
+8010 DEF FNFIELDS
+8020 DIM FIELDS[F_NUM]
+8040 FOR F_LOOP=1 TO F_NUM
+8050 FIELDS[F_LOOP]=NUM(F_LEN$(2*F_LOOP-1,2))
+8060 NEXT F_LOOP
+8090 RETURN F_LOOP
+8095 END DEF
+8099 ! 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8113 CALL "ZZ2FNC;SERIALRECCNT",Z[1],T
+8115 IF NOT(%GUI) THEN PRINT @(0,7),"There are "+STR(T)+" records to process" ! SSP240496 jdf
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8300 REM "CALC DUE DATE
+8305 REM "EXTRA DAYS ADDED TO DUE DATE AT PRINT TIME
+8310 CALL "ZZDISC",X3$,D$,0,0,A$(27,6),Q4$,Q2$,0,0
+8370 A$(35,6)=Q4$,A$(41,6)=Q2$
+8395 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9001 IF Q1$<>"G" THEN PRINT @(4,15),ERR,"  ",TCB(5); INPUT *
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1150,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; IF Q1$="G" THEN Q0$=STR(COUNT) ELSE Q1$=A1$
+9935 EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "262361-GUI conversion of Accounts Payable Gateway - Module GW_A/P  
+56002 REM "268013-FY/AP validation in Cash Receipts Gateway, other gateways   
+56003 REM "276476-Import Accounts Payable Gateway GAP P1 if using tiny term   
+56004 REM "273320-GOR - Order Req Gateway - change file selection screen to   

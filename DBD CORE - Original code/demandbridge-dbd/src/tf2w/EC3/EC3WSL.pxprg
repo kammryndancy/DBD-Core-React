@@ -1,0 +1,45 @@
+0010 REM "Get Worksheet Lines Info <EC3WSL>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 10/06/10 - 9.482222 - dmm - SSP# 237271
+0037 REM "237271-EC output/input tags for 3rd party frt calculation, share   
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Called from EC3BYB, need number of printable current worksheet lines
+0051 ! WO215367, Changed call/enter to include NUM_ITEMS, only C and I type lines, and DISP_SUBTOTAL which is total of ECE[5] for all lines
+0052 ! WO237271, Changed call/enter to include TOTAL_CARTON_WEIGHT
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,NUM_WK_ITEMS,NUM_ITEMS,DISP_SUBTOTAL,TOTAL_CARTON_WEIGHT ! WO215367, WO237271
+0100 SETERR 9000
+0110 X0$="EC3WSL",X1$="Get Worksheet Lines Info"
+0120 EOL$=$0D0A$; REM EOL$=ATH(STP(EC_PARM$(57,8),1))
+0127 HTML_TEXT$="Content-type: text/html"
+0140 DIM MESS_INFO$[20]
+0150 REM "EC$[1]=ESB session record, EC$[2]=client number        , ec$[3]=message from server to called program, EC$[4]=formatted date, EC$[5]=formatted time EC$[6]=ECA2$ available web catalogs (concatonated string) EC$[7]=customer webec parms (ECS)  EC$[8]=image path (customer if set otherwise from ec_parm) EC$[9]=ST_LIST sort code record EC$[10]=reporting whse list EC$[11]=(1,4)warehouse code to use for o/e FM2RT0  (5,4)=would contain the 'other'warehouse for availability checking o/e messaging <not passed to FM2RT0, EC$[12]=email params,see 8000s [13] UNUSED ,[14]=ECY$, [15]=inventory system parameters [16]=Credict Card code/desc list [17]=active webcode [18-20] unused                                                                 
+0310 IOLIST ECE$,ECE[0],ECE[1],ECE[2],ECE[3],ECE[4],ECE[5],ECE[6],ECE[7],ECE[8] ! WO215367
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECE...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+1000 ! Check session record, if current worksheet blank, get out, otherwise will read for number of worksheet lines that are set to print
+1010 NUM_WK_ITEMS=0,NUM_ITEMS=0,DISP_SUBTOTAL=0; DIM ECE$(499),ECE[8] ! WO215367
+1020 IF EC$[1](97,10)=DIM(10) THEN GOTO 9900 ! Current worksheet blank in session record
+1030 WK$=EC$[1](97,10); READ (Z[1],KEY=WK$,DOM=*NEXT)
+1040 ECE_KEY$=KEY(Z[1],END=9900); READ (Z[1],KEY=ECE_KEY$)IOL=0310 ! WO215367
+1045 IF ECE_KEY$(1,10)<>WK$ THEN GOTO 9900
+1050 IF ECE$(258,1)<>"N" THEN NUM_WK_ITEMS+=1
+1055 IF ECE$(258,1)<>"N" AND POS(ECE$(28,1)="CI")>0 THEN NUM_ITEMS+=1 ! WO215367
+1057 DISP_SUBTOTAL+=ECE[5] ! WO215367, add up display price extension amounts
+1058 TOTAL_CARTON_WEIGHT+=ECE[0]*ECE[6] ! WO237271, ECE[6] populated in EC3WS1 for each item from FM1 or IC0 carton weight, multiply by quantity ordered and accumulate for all worksheet lines
+1060 GOTO 1040
+1090 ! 
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 ! Program changes starting 01/24/06
+56010 REM "189757-WebEC global tag that displays the number of worksheet lines
+56012 REM "215367-EC shipping amt by customer, % of sale, or flat amt plus amt
+56014 REM "237271-EC output/input tags for 3rd party frt calculation, share 

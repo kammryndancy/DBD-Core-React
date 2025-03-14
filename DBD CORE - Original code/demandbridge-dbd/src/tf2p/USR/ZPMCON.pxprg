@@ -1,0 +1,171 @@
+0010 REM + ZZPARM- Record Conversion Program  <ZPMCON>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/11/18 - 13.646944 - jvv - SSP# 303058
+0037 REM "303058-Support for Data Replication of UOM's.                      
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0110 X0$=PGN,X1$="ZZPARM Record Conversion"
+0115 DIM A[255]; DIM Z[255] ! dimension array
+0600 SCREEN_DISPLAY:
+0601 ! Initialize and Screen Display
+0650 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0660 GOSUB BACKGROUND ! Initializes the background
+0670 IF Q1$="" THEN {
+0675 CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0
+0680 ON S0 GOTO 0900,9900
+0690  }
+0900 OPEN_FILES:
+0901 ! Open the files
+0910 GOSUB BUILD_FILE_LIST ! build Z$
+0915 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0960 GOSUB INIT_XZ_FILES
+1000 PROGRAM_MAIN:
+1010 ! The Main Section of the Program
+1020 ZZPARM_CTR=0
+1030 RESTORE 40000 ! position the read data pointer
+1040 READ DATA ZZPARM,ZZPARM_FILENAME$,ZZPARM_RECTYPE$,ZZPARM_DESC$,ZZPARM_DKEY$,ZZPARM_TYPE$,END=9900 ! get the ZZPARM file info
+1045 ZZPARM=Z[ZZPARM]
+1050 RESTORE 40005
+1055 NEXT_TYPE:
+1060 READ DATA ZZPARM_FILENO,ZZPARM_FILENAME$,ZZPARM_RECTYPE$,ZZPARM_DESC$,ZZPARM_DKEY$,ZZPARM_TYPE$,END=9900 ! get the ZZPARM file info
+1070 ZZPARM_FILENO=Z[ZZPARM_FILENO]
+1080 GOSUB 8100
+1090 READ (ZZPARM,KEY=ZZPARM_DKEY$+"",DOM=*NEXT)
+1099 ! 
+1100 NEXT_READ:
+1110 ZZPARM_KEY$=KEY(ZZPARM,END=NEXT_TYPE) ! get the first key SSP 221788
+1120 READ (ZZPARM,KEY=ZZPARM_KEY$)C$ ! read the record
+1130 IF ZZPARM_KEY$(1,LEN(ZZPARM_DKEY$))<>ZZPARM_DKEY$ THEN GOTO NEXT_TYPE
+1140 ZZPARM_CTR+=1
+1150 IF MOD(ZZPARM_CTR,T2)=1 THEN GOSUB 8150
+1160 C$=ZZPARM_TYPE$
+1170 GOSUB ZZPARM_PROCESS ! process the ZZPARM records
+1190 GOTO NEXT_READ ! process the record
+1199 ! 
+6000 BACKGROUND:
+6001 ! Initializes the background
+6005 PRINT (0,ERR=*NEXT)'SB', ! set the focus to the background
+6010 GOSUB DISPLAY_DESC ! display the program description
+6020 GOSUB DISPLAY_FILE_LIST ! display the list of new files
+6165 PRINT (0,ERR=*NEXT)'SF', ! set focus to the foreground
+6195 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T2 to the reporting interval (report every T2 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",ZZPARM_FILENO,T9,X3$,T,T2,K,B,D,S0,S1,F$
+8115 REM *** H2$=STR(T)+" # of records to do "; GOSUB 8800
+8129 REM "Set T2, we make sure T2 is > 1, because later on we MOD and look for a value of 1. IF T2 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8140 PRINT @(0,4),'CL',
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",21,10,50,T1,T,ZZPARM_CTR
+8195 RETURN 
+8800 REM "Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+15000 ZZPARM_PROCESS:
+15001 ! Process ZZPARM records
+15005 A$="" ! init the string
+15010 SWITCH C$(1,1) ! record type
+15015 CASE "U" ! Customer Defaults
+15020 GOSUB UNIT_OF_MEASURES ! Update XZU
+15025 BREAK
+15390 DEFAULT ! Default Action
+15395 BREAK
+15400 END SWITCH 
+15405 RETURN 
+15499 ! 
+20000 UNIT_OF_MEASURES:! Unit of measures (XZU)
+20010 READ (ZZPARM,KEY=ZZPARM_KEY$)IOL=41005 ! read the ZZPARM record
+20020 RESTORE 40005 ! position the read data pointer
+20030 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$,ZKEY$,ZTYPE$ ! get the XZU file info
+20040 CALL "UPDZPM;DUPLICATE_XZU",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20095 RETURN 
+20099 ! 
+35000 DISPLAY_DESC:
+35001 ! Display the program description
+35002 ! This routine will display the programs description on the screen.
+35010 PRINT @(0,3),'CE' ! clear the screen beginning with row 3
+35020 PRINT @(0,3),"This program will copy specific ZZPARM records and write them to new files."
+35025 PRINT @(0,4),"Below is a list of ZZPARM record types and the new files associated with each."
+35095 RETURN 
+35100 DISPLAY_FILE_LIST:
+35101 ! This routine will display the list of files.
+35105 LINE_NO=6,COLUMN_NO=40 ! set the line number, column number
+35110 PRINT @(0,LINE_NO),"Type  Name  Description" ! print the column heading
+35115 PRINT @(COLUMN_NO,LINE_NO),"Type  Name  Description" ! print the column heading
+35116 LINE_NO+=1 ! increment the line number
+35120 RESTORE 40005
+35130 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ZKEY$,ZTYPE$,ERR=35195
+35135 PRINT @(0,LINE_NO),RECTYPE$+"   "+FILENAME$+"   "+DESC$
+35140 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ZKEY$,ZTYPE$,ERR=35195
+35145 PRINT @(COLUMN_NO,LINE_NO),RECTYPE$+"   "+FILENAME$+"   "+DESC$
+35165 LINE_NO+=1 ! increment the line number
+35170 GOTO 35130
+35195 RETURN 
+35199 ! 
+38000 INIT_XZ_FILES:
+38001 ! This routine will initialize all of the XZ_ files.
+38010 RESTORE 40005
+38020 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ERR=38095
+38030 CALL "ZZINIT",STR(Z[FILENO]:"00")
+38050 GOTO 38020
+38095 RETURN 
+39000 BUILD_FILE_LIST:
+39001 ! This routine will read through all of the data records and 
+39002 ! build the string needed to open the files.
+39010 RESTORE 40000
+39020 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,FKEY$,SKEY$,ERR=39095
+39030 FILEFMT$=STR(FILENO:"00")+"O "+FILENAME$+"...  "
+39040 Z$+=FILEFMT$
+39050 GOTO 39020
+39095 RETURN 
+39998 ! Data Format:
+39999 ! Channel file opened on, Filename, Record Type, File Description
+40000 DATA 1,"ZZPARM","","ZZParm File","","" ! Original File
+40005 DATA 2,"XZU","U/M","Unit of Measures","U/M","U" ! UOM  Defaults
+41000 INIT_IOLISTS:
+41001 ! Here we build the IOLISTs for all the files.
+41005 IOLIST A$,A[0],A[1],A[2] ! UOM Defaults
+45195 RETURN 
+56000 REM + Modification History
+56001 REM "303058-Support for Data Replication of UOM's.                      

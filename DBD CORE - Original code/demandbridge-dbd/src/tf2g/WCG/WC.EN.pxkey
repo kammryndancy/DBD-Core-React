@@ -1,0 +1,943 @@
+<PxTable>
+ TableName=WC.EN
+ TableKey=K1051902017
+ FileCreate=KEYED "WC.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="            0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_14$="."
+    FIELD_18$="1"
+    FIELD_32$="MS Sans Serif,1,R&S"
+    FIELD_33$="000F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     0000"
+    FIELD_1$="*File=SS1"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="60"
+    FIELD_5$="15"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"H_QRY_SS1"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="SS1"
+    FIELD_18$="2003/05/02 16:36 kmc"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     0001"
+    FIELD_1$="Fld#1(6,3)"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CLIENTCODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     0002"
+    FIELD_1$="Fld#1(11,35)"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     0003"
+    FIELD_1$="Fld#1(106,16)"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     0004"
+    FIELD_1$="Fld#1(122,2)"
+    FIELD_4$="3"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"STATE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SS1     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="00000"
+    FIELD_13$="T_MN_.FLD#1$(9,2)="+QUO+"00"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="81"
+    FIELD_5$="24"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"T_WCGMAA"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"WCGMAA;Init"+QUO
+    FIELD_12$="P"+QUO+"WCGMAA;Main_post_display"+QUO
+    FIELD_13$="P"+QUO+"WCGMAA;Wrapup"+QUO
+    FIELD_18$="2004/06/24 10:41 cjb"
+    FIELD_21$="ScXR"
+    FIELD_24$="WC0"
+    FIELD_25$="131212"
+    FIELD_26$="WCGMAA"
+    FIELD_28$="sns"
+    FIELD_29$="00101220"
+    FIELD_30$="000560"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      0102"
+    FIELD_1$="Fonted_text_0"
+    FIELD_2$="2"
+    FIELD_3$="1"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CLIENTCODE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      0115"
+    FIELD_1$="CLIENT_CODE"
+    FIELD_2$="15"
+    FIELD_3$="1"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_12$="P"+QUO+"WCGMAA;Check_changes"+QUO
+    FIELD_13$="P"+QUO+"WCGMAA;Find_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"CLIENTCODE"+QUO+")"
+    FIELD_17$="3"
+    FIELD_19$="QRY_SS1"
+    FIELD_22$="KEY1"
+    FIELD_26$="ZZWLKU;CLIENT_CODE_VAL"
+    FIELD_27$="ZZWLKU;CLIENT_CODE_FMT"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      0223"
+    FIELD_1$="%CLIENT_NAME"
+    FIELD_2$="22"
+    FIELD_3$="1"
+    FIELD_4$="36"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_17$="35"
+    FIELD_21$="LB"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      0402"
+    FIELD_1$="FOLDER"
+    FIELD_2$="1"
+    FIELD_3$="2.8"
+    FIELD_4$="79"
+    FIELD_5$="18.2"
+    FIELD_6$="S"
+    FIELD_7$="WCGMAA.1=="+QUO+"&1. "+QUO+"+MSG("+QUO+"T_WCGMAA_1"+QUO+")"+$00$+"WCGMAA.2=="+QUO+"&2. "+QUO+"+MSG("+QUO+"T_WCGMAA_2"+QUO+")"+$00$+"WCGMAA.3=="+QUO+"&3. "+QUO+"+msg("+QUO+"T_WCGMAA_3"+QUO+")"+$00$
+    FIELD_9$="1000"
+    FIELD_10$="000000"
+    FIELD_17$="14"
+    FIELD_32$="MS Sans Serif,1,&C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2300"
+    FIELD_1$="FOLDER_TAB_2M"
+    FIELD_2$="0"
+    FIELD_3$="23"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="999"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.WCGMAA.1.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2303"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="2"
+    FIELD_3$="21.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"WCGMAA;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2307"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="6"
+    FIELD_3$="21.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"WCGMAA;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2311"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="10"
+    FIELD_3$="21.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"WCGMAA;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2315"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="14"
+    FIELD_3$="21.8"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"WCGMAA;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2340"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="39"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="1005"
+    FIELD_13$="P"+QUO+"WCGMAA;Write_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2350"
+    FIELD_1$="BUTTON_8"
+    FIELD_2$="49"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="1006"
+    FIELD_13$="P"+QUO+"WCGMAA;Clear_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2360"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="59"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="1007"
+    FIELD_13$="P"+QUO+"WCGMAA;Delete_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_30$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA      2370"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="69"
+    FIELD_3$="21.8"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="1008"
+    FIELD_13$="XPerform "+QUO+"WCGMAA;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_30$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="16"
+    FIELD_6$="W"
+    FIELD_7$="=MSG("+QUO+"H_WCGMAA_1"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_12$="X_FIRST_TAB=OPEN_DATE.CTL,_LAST_TAB=CONTACT_PHONE.CTL;PERFORM "+QUO+"WCGMAA;Init_folder"+QUO
+    FIELD_18$="2004/12/15 13:43 cjb"
+    FIELD_21$="R"
+    FIELD_28$="Chaitanya Guntur"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0102"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.4"
+    FIELD_4$="77"
+    FIELD_5$="10.4"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"ACCT_STAT"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0104"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="3"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="7"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.WCGMAA.2.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0303"
+    FIELD_1$="FONTED_TEXT_2"
+    FIELD_2$="2"
+    FIELD_3$="1.8"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"OPEN_DATE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0314"
+    FIELD_1$="OPEN_DATE"
+    FIELD_2$="13"
+    FIELD_3$="1.8"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_11$="XIF NUL(OPEN_DATE$) THEN OPEN_DATE$=TBL(SGN(POS("+QUO+" "+QUO+"<>%X3_TODAY$)),%X3_MACH_DATE$,%X3_TODAY$),REFRESH_FLG=1"
+    FIELD_14$="=MSG("+QUO+"OPEN_DATE"+QUO+")"
+    FIELD_17$="12"
+    FIELD_19$="*ZZWQRY"
+    FIELD_22$="FIELDS"
+    FIELD_26$="ZZWDTE;validate"
+    FIELD_27$="ZZWDTE;display"
+    FIELD_29$="DATE-KKMMDD"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0326"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="25"
+    FIELD_3$="1.8"
+    FIELD_4$="9"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"STATUS"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0336"
+    FIELD_1$="CLIENT_STATUS"
+    FIELD_2$="35"
+    FIELD_3$="1.8"
+    FIELD_4$="12"
+    FIELD_5$="4.2"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"ASC"+QUO+")"
+    FIELD_8$="ACTIVE"
+    FIELD_9$="2"
+    FIELD_13$="XSTATUS_DATE$=TBL(SGN(POS("+QUO+" "+QUO+"<>%X3_TODAY$)),%X3_MACH_DATE$,%X3_TODAY$),REFRESH_FLG=1"
+    FIELD_14$="=MSG("+QUO+"STATUS"+QUO+")"
+    FIELD_22$="FIELDS"
+    FIELD_25$="=MSG("+QUO+"ASC2"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0345"
+    FIELD_1$="Fonted_text_4"
+    FIELD_2$="44"
+    FIELD_3$="1.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"STAT_DATE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0358"
+    FIELD_1$="STATUS_DATE"
+    FIELD_2$="57"
+    FIELD_3$="1.8"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_14$="=MSG("+QUO+"STAT_DATE"+QUO+")"
+    FIELD_17$="12"
+    FIELD_19$="*ZZWQRY"
+    FIELD_22$="FIELDS"
+    FIELD_26$="ZZWDTE;validate"
+    FIELD_27$="ZZWDTE;display"
+    FIELD_29$="DATE-KKMMDD"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0402"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="1.2"
+    FIELD_3$="3.4"
+    FIELD_4$="76.6"
+    FIELD_5$="1"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"CLIENTCONT"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0603"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="2"
+    FIELD_3$="5.05"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0614"
+    FIELD_1$="CLIENT_CONTACT"
+    FIELD_2$="13"
+    FIELD_3$="5.05"
+    FIELD_4$="59"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_14$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0803"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="2"
+    FIELD_3$="6.8"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"EMAIL"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0804"
+    FIELD_1$="EMAIL"
+    FIELD_2$="3"
+    FIELD_3$="6.5"
+    FIELD_4$="3.6"
+    FIELD_5$="1.6"
+    FIELD_6$="B"
+    FIELD_7$="{!SendMail}"
+    FIELD_9$="0"
+    FIELD_13$="Xif nul(contact_email$) then msgbox msg("+QUO+"WCGMAA_7"+QUO+") ,msg("+QUO+"WCGMAA_8"+QUO+") ELSE system_help "+QUO+"mailto:"+QUO+"+contact_email$"
+    FIELD_14$="=MSG("+QUO+"SEND_EMAIL"+QUO+")"
+    FIELD_21$="S"
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"SEND_EMAIL"+QUO+")+"+QUO+"."+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    0814"
+    FIELD_1$="CONTACT_EMAIL"
+    FIELD_2$="13"
+    FIELD_3$="6.8"
+    FIELD_4$="59"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_14$="=MSG("+QUO+"EMAIL"+QUO+")"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    1003"
+    FIELD_1$="FONTED_TEXT_7"
+    FIELD_2$="2"
+    FIELD_3$="8.55"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CONT_PHONE"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.1    1014"
+    FIELD_1$="CONTACT_PHONE"
+    FIELD_2$="13"
+    FIELD_3$="8.55"
+    FIELD_4$="14"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="(XXX)XXX-XXXX.XXXX"
+    FIELD_9$="6"
+    FIELD_14$="=MSG("+QUO+"CONT_PHONE"+QUO+")"
+    FIELD_17$="14"
+    FIELD_22$="FIELDS"
+    FIELD_29$="PHNE_EXT"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="15"
+    FIELD_6$="W"
+    FIELD_7$="=MSG("+QUO+"H_WCGMAA_2"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_12$="X_FIRST_TAB=WC_URL.CTL,_LAST_TAB=SERVER_PORT.CTL;PERFORM "+QUO+"WCGMAA;Init_folder"+QUO
+    FIELD_18$="2004/06/24 10:45 cjb"
+    FIELD_21$="xR"
+    FIELD_26$="WCGMAA"
+    FIELD_28$="cjb"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0001"
+    FIELD_1$="FOLDER_TAB_1"
+    FIELD_2$="1"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_12$="XTAB_FLG$="+QUO+"<"+QUO+",NEXT_FOLDER=FLDR.WCGMAA.1.CTL"
+    FIELD_21$="LBK"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0102"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.4"
+    FIELD_4$="77"
+    FIELD_5$="9.6"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"WEBEC_CEN"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0104"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="3"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.WCGMAA.3.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0303"
+    FIELD_1$="FONTED_TEXT_8"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"URL"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0313"
+    FIELD_1$="WC_URL"
+    FIELD_2$="12"
+    FIELD_3$="2"
+    FIELD_4$="59"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_14$="=MSG("+QUO+"URL2"+QUO+")"
+    FIELD_17$="100"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0502"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="1.2"
+    FIELD_3$="4"
+    FIELD_4$="76.6"
+    FIELD_5$="1"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"SERVER"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0703"
+    FIELD_1$="FONTED_TEXT_9"
+    FIELD_2$="2"
+    FIELD_3$="5.6"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ADDRESS"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0713"
+    FIELD_1$="SERVER_ADDRESS"
+    FIELD_2$="12"
+    FIELD_3$="5.6"
+    FIELD_4$="59"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_14$="=MSG("+QUO+"ADDRESS"+QUO+")"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0803"
+    FIELD_1$="FONTED_TEXT_10"
+    FIELD_2$="2"
+    FIELD_3$="7.4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"SERV_PORT"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.2    0813"
+    FIELD_1$="SERVER_PORT"
+    FIELD_2$="12"
+    FIELD_3$="7.4"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_8$="4543"
+    FIELD_9$="4"
+    FIELD_14$="=MSG("+QUO+"SERV_PORT"+QUO+")"
+    FIELD_17$="5"
+    FIELD_21$="i"
+    FIELD_22$="FIELDS"
+    FIELD_23$="4543"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="16"
+    FIELD_6$="W"
+    FIELD_7$="=MSG("+QUO+"H_WCGMAA_3"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_12$="X_FIRST_TAB=SETUP_DIRS.CTL,_LAST_TAB=CONTACT_PHONE.CTL;PERFORM "+QUO+"WCGMAA;Init_folder"+QUO
+    FIELD_18$="2004/06/24 10:43 cjb"
+    FIELD_21$="R"
+    FIELD_26$="WCGMAA"
+    FIELD_28$="cjb"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0002"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="2"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.WCGMAA.2.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0102"
+    FIELD_1$="BOXES_3"
+    FIELD_2$="1"
+    FIELD_3$="0.4"
+    FIELD_4$="28.3"
+    FIELD_5$="15"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_5"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0129"
+    FIELD_1$="BOXES_4"
+    FIELD_2$="28"
+    FIELD_3$="0.4"
+    FIELD_4$="28"
+    FIELD_5$="15"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_21"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_32$="MS Sans Serif,1,R&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0306"
+    FIELD_1$="SETUP_DIRS"
+    FIELD_2$="5"
+    FIELD_3$="2"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_1"+QUO+")"
+    FIELD_9$="2"
+    FIELD_13$="P"+QUO+";SETUP_DIRS"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_4"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0333"
+    FIELD_1$="SETUP_DIRS3"
+    FIELD_2$="32"
+    FIELD_3$="2"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_24"+QUO+")"
+    FIELD_9$="7"
+    FIELD_13$="P"+QUO+";RPC_STATUS"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_28"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0606"
+    FIELD_1$="SETUP_PREFIX"
+    FIELD_2$="5"
+    FIELD_3$="4.6"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_6"+QUO+")"
+    FIELD_9$="3"
+    FIELD_13$="P"+QUO+";SETUP_PREFIX"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_10"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0633"
+    FIELD_1$="SETUP_DIRS1"
+    FIELD_2$="32"
+    FIELD_3$="4.6"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_22"+QUO+")"
+    FIELD_9$="8"
+    FIELD_13$="P"+QUO+";TEST_ECCLIENT"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_30"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0806"
+    FIELD_1$="SETUP_SCRIPTS"
+    FIELD_2$="5"
+    FIELD_3$="7.2"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_13"+QUO+")"
+    FIELD_9$="4"
+    FIELD_13$="P"+QUO+";SETUP_SCRIPTS"+QUO
+    FIELD_30$="=MSG("+QUO+"WCGMAA_14"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    0833"
+    FIELD_1$="SETUP_DIRS2"
+    FIELD_2$="32"
+    FIELD_3$="7.2"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_23"+QUO+")"
+    FIELD_9$="9"
+    FIELD_13$="P"+QUO+";SERVER_STATUS"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_29"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    1106"
+    FIELD_1$="SETUP_SCRIPTS1"
+    FIELD_2$="5"
+    FIELD_3$="9.8"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_16"+QUO+")"
+    FIELD_9$="5"
+    FIELD_13$="P"+QUO+";SETUP_SERVERS"+QUO
+    FIELD_30$="=MSG("+QUO+"WCGMAA_19"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    1133"
+    FIELD_1$="SETUP_DIRS4"
+    FIELD_2$="32"
+    FIELD_3$="9.8"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_32"+QUO+")"
+    FIELD_9$="10"
+    FIELD_13$="P"+QUO+";LOGIN_TO_SITE"+QUO
+    FIELD_22$="FIELDS"
+    FIELD_30$="=MSG("+QUO+"WCGMAA_33"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    1306"
+    FIELD_1$="SETUP_SCRIPTS2"
+    FIELD_2$="5"
+    FIELD_3$="12.4"
+    FIELD_4$="20"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"WCGMAA_34"+QUO+")"
+    FIELD_9$="6"
+    FIELD_13$="P"+QUO+";TELNET_TO_CLIENT"+QUO
+    FIELD_30$="=MSG("+QUO+"WCGMAA_35"+QUO+")"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    V001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="+"
+    FIELD_9$="0"
+    FIELD_10$="SETUP_DIRS,E"
+    FIELD_13$="dirs_setup=0"
+    FIELD_17$="Y"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WCGMAA.3    V002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="+"
+    FIELD_9$="0"
+    FIELD_10$="SETUP_PREFIX,E"
+    FIELD_13$="prefix_setup=0"
+    FIELD_17$="Y"
+   </RecordData>
+
+</Data>
+
+</PxTable>

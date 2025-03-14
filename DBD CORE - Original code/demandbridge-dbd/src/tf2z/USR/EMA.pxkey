@@ -1,0 +1,105 @@
+<PxTable>
+ TableName=EMA
+ TableKey=K1049573026
+ FileCreate=KEYED "EMA",3,0,-256,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EMA_Doc"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":50-csc"
+    LASTUPDATEDFILE$="2015/10/28 10:40:53-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DOC_TYPE$:[LEN(3)]"
+    NAME$="DOC_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Document type"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DOC_TYPE$:[LEN(3,SEP=SEP)]"
+    NAME$="DOC_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Document type"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST DOC_DESC$:[LEN(35,SEP=SEP)]"
+    NAME$="DOC_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DOC_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="35"
+    INTERNALFORMAT$="S"
+    NOTES$="Document Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST EMA_UNUSED_1$:[LEN(SEP,SIZ=25)]"
+    NAME$="EMA_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="25"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="810"
+    DOC_TYPE$="810"
+    DOC_DESC$="Invoice                            "
+    EMA_UNUSED_1$="                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="840"
+    DOC_TYPE$="840"
+    DOC_DESC$="Request for Quote                  "
+    EMA_UNUSED_1$="                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="850"
+    DOC_TYPE$="850"
+    DOC_DESC$="Purchase Order                     "
+    EMA_UNUSED_1$="                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856"
+    DOC_TYPE$="856"
+    DOC_DESC$="Advance Shipping Notice - ASN      "
+    EMA_UNUSED_1$="                         "
+   </RecordData>
+
+</Data>
+
+</PxTable>

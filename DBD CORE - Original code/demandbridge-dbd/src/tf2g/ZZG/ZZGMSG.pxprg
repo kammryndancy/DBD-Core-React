@@ -1,0 +1,63 @@
+0010 ! <ZZGMSG> Display or remove Message in dialogue on Top of everything
+0035 ! "6.0 - 02/17/04 - 21.088611 - kmc
+0040 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 ! COMMAND$ is C for create, D for destroy, U for update
+0051 ! MSG$ is optional message to display
+0052 ! %MSG_STYLE is global variable determining style 
+0053 ! OPTION$ is options  Y+XX = Move window up/down by XX # lines
+0090 SETERR 0100
+0095 ENTER COMMAND$,MSG$,OPTION$
+0100 SETERR 9000
+0500 ! Analyze Options
+0510 IF POS("Y+"=OPTION$) THEN ADD_Y=NUM(MID(OPTION$,POS("Y+"=OPTION$)+2,2),ERR=*NEXT)
+1000 ! What to do
+1010 WIN_ID=203,IDTMP$=FIN(0),CURR_WIN=DEC($00$+IDTMP$(10,1))
+1015 WIN_SIZE=60,WIN_HT=5
+1050 SWITCH COMMAND$
+1100 CASE "C" ! Create
+1105 OBJ$=OBJ(0),MSE$=MSE
+1120 ! CALL "*info;GetDialogLocation",UC_X,UC_Y; CALL "*info;GetWindowSize",WS_X,WS_Y
+1121 UC_X=0,UC_Y=0; CALL "*info;GetDesktopSize",WS_X,WS_Y
+1125 WX=INT(UC_X+INT(WS_X/2)-INT(WIN_SIZE/2)),WY=INT(UC_Y+INT(WS_Y/2))
+1130 IF WX<0 THEN WX=1 END_IF ; IF WY<0 THEN WY=1
+1135 IF ADD_Y THEN WY=WY+ADD_Y
+1145 PRINT (0,ERR=*NEXT)'DROP'(WIN_ID),
+1175 GOSUB CREATE_WINDOW
+1180 GOSUB PRINT_MESSAGE
+1195 BREAK
+1200 CASE "D" ! Delete
+1210 PRINT (0,ERR=*NEXT)'DROP'(WIN_ID),
+1295 BREAK
+1300 CASE "U" ! Update
+1320 GOSUB PRINT_MESSAGE
+1395 BREAK
+1950 END SWITCH 
+1995 GOTO 9900
+1999 ! ***************************************************
+2000 CREATE_WINDOW:! Create window based on style setting
+2010 SWITCH %MSG_STYLE
+2015 CASE 1; PRINT (0,ERR=*NEXT)'DIALOGUE'(WX,WY,WIN_SIZE,WIN_HT,WIN_ID,OPT="ch&"),; BREAK ! 1 = Not always on top
+2070 DEFAULT 
+2075 PRINT (0,ERR=*NEXT)'DIALOGUE'(WX,WY,WIN_SIZE,WIN_HT,WIN_ID,OPT="ch^&"),
+2085 END SWITCH 
+2095 RETURN 
+2099 ! *******************************
+2100 PRINT_MESSAGE:! Print the message in the window
+2110 SWITCH %MSG_STYLE
+2170 DEFAULT 
+2175 PRINT (0,ERR=*NEXT)'CS','FONT'("Arial",-20),'TEXT'(@X(0),@Y(0),@X(WIN_SIZE-2),@Y(WIN_HT-2),MSG$,"C"),
+2185 END SWITCH 
+2195 RETURN 
+2199 ! *******************************************************
+4000 TESTIT:
+4010 CALL "ZZGMSG","C","This is a test message",""
+4015 WAIT 5
+4020 CALL "ZZGMSG","U","Updated message",""
+4025 WAIT 5
+4030 CALL "ZZGMSG","D","",""
+9000 ! Error
+9010 EXIT ERR
+9900 ! Done
+9930 EXIT 
+9999 END 

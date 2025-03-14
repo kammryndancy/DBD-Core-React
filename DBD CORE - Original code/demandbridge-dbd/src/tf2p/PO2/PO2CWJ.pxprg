@@ -1,0 +1,330 @@
+0010 REM "Carton Label Add to Print file <PO2PCC>
+0035 REM "4.1 - 02/11/98 - 13.97 - cwj - SSP# 085719
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 BEGIN ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="PO2PCC",X1$="Carton Label Printing"
+0120 DIM A$(0),B$(82),B[19],C$(297),G[29],E[1],S0$(40),P9$(138)
+0140 M0$="###,###",M1$="###,###.00"
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0180 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0190 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+0220 W3=60
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3),W[4]
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0260 CALL "ZZRPTP",X3$,X0$,X1$,V9$,V0,Q0$,Q1$,Q2$,Q3$,Q4$,Q5$,Q6$
+0300 REM "I/O lists
+0305 REM "IOLIST FOR PO1 - purchase order header
+0310 IOLIST A$
+0315 REM "IOLIST FOR PO2 - Purchase order lines
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19]
+0325 REM "IOLIST FOR FS1 - Sales order Header
+0330 IOLIST C$
+0335 REM "IOLIST FOR AR1 - Customer Masterfile
+0340 IOLIST D$
+0350 IOLIST E$,E[0],E[1]
+0360 IOLIST P$,P[0],P[1],P[2],P[3],P[4]
+0365 REM "IOLIST FOR FS2 - Sales order line
+0370 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29]
+0375 REM "IOLISTS FOR AR3 - Salesperson Masterfile
+0380 IOLIST H$
+0400 IOLIST I$
+0410 IOLIST F0$,F0[0],F0[1],F0[2],F0[3],F0[4],F0[5],F0[6],F0[7],F0[8],F0[9],F0[10],F0[11],F0[12],F0[13],F0[14],F0[15],F0[16],F0[17],F0[18]
+0420 IOLIST J5$
+0450 IOLIST X3$,X4$,V1$,V3$
+0490 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0504 DIM P[1]
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01O PO6...  02O PO1...  03O PO2...  04O FS1...  05O AR1...  06O PO3...  07O FS2...  08O POF...  09O AR3...  10O FMS...  11O FM0...  12O FM1...  13O ZZPARM  "
+0520 GOSUB 8100
+0580 READ (Z[13],KEY=X3$(9,3)+"F/M")P0$,*,*,*,*,*,*,P[0]
+0590 READ (Z[13],KEY="CMP"+X3$(9,3))P5$
+0600 REM 
+0610 GOSUB 8250
+0800 REM "Alternate Sort Info & total dim
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[2]; U=10,U0=2,U[0]=0,U[1]=1,U[2]=9,T0=0,U0$="    ",T5$="          "; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM "Position read
+0905 REM "set key file to read from
+0910 CALL "ZZFLES",X3$,Y1$,Y0$,"00O PO6...  ",Z{ALL},Z0,0; IF Z0>0 THEN GOTO 9900 ELSE U1=Z[0]
+0990 READ (U1,KEY="C",DOM=0991)
+0995 IF V8$<>"A" THEN PRINT @(16,17),"Generating Carton Labels",
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000); READ (U1)
+1007 IF U$(1,1)<>"C" THEN GOTO 5000
+1100 REM "Get record
+1110 U9$=U$
+1150 C9=0,C9$="P/O"; READ (Z[2],KEY=U$(2,9),DOM=1155)IOL=0310; GOTO 1160
+1155 C9=1,C9$="O/P"; DIM C$(168); EXTRACT RECORD (Z[4],KEY=U$(2,8),DOM=1156)C$; C$(127,1)="Y"; WRITE RECORD (Z[4])C$; GOTO 1160
+1156 REMOVE (U1,KEY=U$,DOM=1000); GOTO 1000
+1300 REM "Read other data
+1305 P0=1
+1320 IF C9=0 THEN DIM C$(168); EXTRACT RECORD (Z[4],KEY=A$(306,8),DOM=1321)C$; C$(127,1)="Y"; WRITE RECORD (Z[4])C$
+1330 IF C9=0 THEN DIM D$(300); FIND (Z[5],KEY=A$(179,10),DOM=1331)IOL=0340 ELSE FIND (Z[5],KEY=C$(6,10),DOM=1331)IOL=0340
+1349 REM "Get salesperson from S/O or if not avail, get from Customer file.
+1350 DIM H$(100); FIND (Z[9],KEY=C$(93,4),DOM=1351)IOL=0380; GOTO 1360
+1355 FIND (Z[9],KEY=D$(278,4),DOM=1356)IOL=0380
+1400 GOSUB 8050
+1500 REM "Print Data
+1505 ON C9 GOTO 1506,1700
+1506 REM "P/O based
+1507 IF V8$<>"A" THEN PRINT @(25,19),'CE'; CALL "ZZDISP","A",U$(2,9),"P/O",X3$,"","",25,19,X4$
+1510 FIND (Z[3],KEY=U$(2,12),DOM=1590)IOL=0320
+1520 DIM G$(200),G[29]; FIND (Z[7],KEY=U$(2,8)+B$(11,3),DOM=1521)IOL=0370
+1550 GOSUB 2000
+1560 REMOVE (U1,KEY=U$,DOM=1561)
+1590 GOTO 1900
+1700 REM "S/O based
+1705 REM "same as 1500-1699 but use FS2 file
+1707 PRINT @(25,19),'CE'; CALL "ZZDISP","A",U$(2,8),"O/P",X3$,"","",25,19,X4$
+1710 FIND (Z[7],KEY=U$(2,8)+U$(11,3),DOM=1900)IOL=0370
+1750 GOSUB 3000
+1760 REMOVE (U1,KEY=U$,DOM=1561)
+1995 GOTO 1000
+2000 REM "Fill in POF records from P/O information
+2005 GOSUB 7500
+2009 REM "If not special ship, get general ship int and set quantities else get eaeach individual ship record and do them
+2010 IF B$(14,1)="Y" THEN GOTO 2050
+2019 REM "Try p/o specific record first, if not found look for s/o record
+2020 READ (Z[6],KEY=U$(2,9)+S0$(1,4),DOM=2021)IOL=0350; GOTO 2025
+2021 READ (Z[6],KEY=U$(2,8)+S0$(1,5),DOM=2045)IOL=0350
+2025 E[0]=B[1],E[1]=B[3],P$(587,1)=B$(1,1)
+2040 GOSUB 2100
+2045 GOTO 2095
+2050 REM "Individual records
+2051 REM "Try p/o specific records first, if not found look for s/o records
+2055 READ (Z[6],KEY=U$(2,9)+B$(7,3),DOM=2056)
+2060 READ (Z[6],END=2080)IOL=0350
+2065 IF E$(166,9)+E$(7,3)<>U$(2,9)+B$(7,3) THEN GOTO 2080
+2070 P$(587,1)=E$(1,1); GOSUB 2100
+2075 GOTO 2060
+2080 READ (Z[6],KEY=U$(2,8)+" "+B$(11,3),DOM=2081)
+2085 READ (Z[6],END=2095)IOL=0350
+2086 IF E$(166,9)+E$(7,3)<>U$(2,8)+" "+B$(11,3) THEN GOTO 2095
+2090 P$(587,1)=E$(1,1); GOSUB 2100
+2091 GOTO 2085
+2095 RETURN 
+2100 REM "Given a PO3 record with E(0) and E(1) filled in , created a POF record Assuming a P/O
+2105 GOSUB 2250
+2110 P$(6,8)=U$(2,8),P$(14,3)=B$(7),P$(27,10)=B$(101)
+2111 IF B$(10,1)="I" THEN P$(17,10)=B$(91,10),C0$=B$(91,10) ELSE C0$=C$(6,10)
+2112 P$(573,1)=U$(10,1); REM "P/O code
+2115 P$(37,2)=E$(10,1)
+2120 GOSUB 7600; GOSUB 7800
+2125 P[0]=B[5],P[1]=E[1],P[3]=1,P[2]=B[18],P[4]=P[1]
+2130 REM "Fill in info from purchase  order line
+2135 P$(412,18)=B$(17,8)+B$(111,8)+B$(15,2),P$(436,40)=B$(28),P$(563,9)=B$(68,9); IF POS(" "<>B$(137,9))<>0 THEN P$(572,1)="Y"
+2140 REM "Set salesperson info
+2145 P$(476,4)=H$(1),P$(480,50)=H$(5,35)
+2150 P$(530,15)=C$(28)
+2155 P$(588,20)=C$(129,20); REM "Ordered By
+2160 P$(545,12)=A$(248),P$(557,6)=A$(204,6)
+2170 IF POS(" "<>A$(328,15))<>0 THEN P$(530,15)=A$(328,15)
+2185 GOSUB 8000; GOSUB 7900; GOSUB 8200
+2190 WRITE (Z[8],KEY=P$(1,38))IOL=0360
+2195 IF G$(220,1)<>" " AND G[24]<>0 THEN P$(38,1)=G$(220,1),P[1]=G[24],P[4]=P[1],P$(587,1)=G$(220,1); WRITE (Z[8],KEY=P$(1,38))IOL=0360; REM "Add to update for 2nd label print type cwj 2/11/98; #085719
+2198 RETURN 
+2250 REM "Set ship item address from P/O
+2260 P$(39,14)=A$(7,14),P$(53,35)=A$(21,35)
+2262 DIM L$(3*35); L=0
+2265 IF POS(" "<>A$(86,30))<>0 THEN L$(L*35+1,35)=A$(86,30),L=L+1
+2270 IF POS(" "<>A$(116,30))<>0 THEN L$(L*35+1,35)=A$(116,30),L=L+1
+2275 L0$=FNS$(A$(146,16)); IF A$(162,2)<>"  " THEN L0$=L0$+",  "+A$(162,2)
+2276 IF L0$>"" THEN CALL "ZZDISP","AX",A$(164,9),"ZIP",X3$,X$,"",0,0,X4$; L0$=L0$+"   "+X$
+2280 IF L0$>"" THEN L$(L*35+1,35)=L0$,L=L+1
+2285 FOR L=0 TO 2; P$(L*35+88,35)=L$(L*35+1,35); NEXT L
+2295 RETURN 
+3000 REM "Fill in POF records from S/O information
+3005 GOSUB 7500
+3009 REM "If not special ship, get general ship int and set quantities else get eaeach individual ship record and do them
+3010 IF G$(18,1)="Y" THEN GOTO 3050
+3020 READ (Z[6],KEY=U$(2,8)+S0$(1,5),DOM=3045)IOL=0350
+3025 E[0]=G[0],E[1]=G[9],P$(587,1)=G$(1,1)
+3040 GOSUB 3100
+3045 GOTO 3095
+3050 REM "Individual records
+3055 READ (Z[6],KEY=U$(2,8)+" "+G$(6,3),DOM=3056)
+3060 READ (Z[6],END=3095)IOL=0350
+3065 IF E$(166,9)+E$(7,3)<>U$(2,9)+G$(6,3) THEN GOTO 3095
+3070 P$(587,1)=E$(1,1)
+3080 GOSUB 3100
+3085 GOTO 3060
+3095 RETURN 
+3100 REM "Given a PO3 record with E(0) and E(1) filled in , created a POF record
+3105 IF G$(10,4)<>"DS  " AND POS(" "<>G$(10,4))<>0 THEN P$(2,4)=G$(10,4); GOSUB 3200 ELSE GOSUB 3250
+3110 P$(6,8)=C$(118,8),P$(14,3)=G$(6),P$(27,10)=G$(19)
+3111 IF G$(155,1)="C" THEN P$(17,10)=G$(161,10),C0$=G$(161,10) ELSE C0$=C$(6,10)
+3115 P$(37,2)=E$(10,1)
+3120 GOSUB 7600; GOSUB 7800
+3125 P[0]=G[12],P[1]=E[1],P[3]=1,P[4]=P[1]
+3129 REM "Fill in info from order line
+3130 P$(412,18)=G$(32),P$(436,40)=G$(50),P$(563,9)=G$(104,9); IF POS(" "<>G$(104,9))<>0 THEN P$(572,1)="Y"
+3134 REM "Set salesperson info
+3135 P$(476,4)=H$(1),P$(480,50)=H$(5,35)
+3140 P$(530,15)=C$(28),P$(557,6)=C$(55,6)
+3145 P$(588,20)=C$(129,20); REM "Ordered by
+3150 P$(573,1)=G$(9,1); REM "P/O code
+3185 GOSUB 8000; GOSUB 7900; GOSUB 8400; GOSUB 8200
+3190 WRITE (Z[8],KEY=P$(1,38))IOL=0360
+3192 IF G$(220,1)<>" " AND G[24]<>0 THEN P$(38,1)=G$(220,1),P[1]=G[24],P[4]=P[1],P$(587,1)=G$(220,1); WRITE (Z[8],KEY=P$(1,38))IOL=0360
+3195 RETURN 
+3200 REM "Set ship from address from whse location
+3210 READ (Z[11],KEY="D"+S0$(1,10)+P$(2,4),DOM=3245)IOL=0400
+3215 GOSUB 7550
+3245 RETURN 
+3250 REM "Set ship from address from vendor
+3255 IF POS(" "<>G$(94,10))=0 THEN GOTO 3200
+3260 P$(39,14)=G$(94,10)+G$(90,4)
+3265 READ (Z[11],KEY="P"+G$(94,10)+G$(90,4),DOM=3295)IOL=0400
+3270 GOSUB 7550
+3295 RETURN 
+5000 REM "End of Print
+5010 IF Q5=1 THEN GOTO 9920
+5020 IF W8=0 THEN GOTO 5200
+5200 REM "
+5300 REM "Remove printed P/O's
+5302 IF V8$="A" THEN GOTO 5340
+5305 PRINT @(0,17),'CE',
+5310 CALL "ZZPROM",".Y",X3$,Z,"Do you want to maintain the carton label file?","","",0
+5320 ON Z GOTO 5330,5340
+5330 Y4$="PO2MDA"
+5335 GOTO 9900
+5340 Y4$="PO2PDA"
+5345 GOTO 9900
+7400 REM "Read report selection parameters"" to see if running in auto print mode, set V8$ to "A" if we are
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0490
+7482 IF V1$(1,3)="???" THEN V8$="A",V7$=V1$(4,2)
+7485 Z$="12C ZZP     "
+7486 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7487,9900
+7490 RETURN 
+7500 REM "Default POF info
+7510 DIM P$(608),P[4]
+7520 P$(1,1)="C"
+7545 RETURN 
+7550 REM "Given a ship from whsein I$, set ship from fields
+7555 P$(53,35)=I$(16,35)
+7560 DIM L$(3*35); L=0
+7565 IF POS(" "<>I$(51,30))<>0 THEN L$(L*35+1,35)=I$(51,30),L=L+1
+7570 IF POS(" "<>I$(81,30))<>0 THEN L$(L*35+1,35)=I$(81,30),L=L+1
+7575 L0$=FNS$(I$(111,16)); IF I$(127,2)<>"  " THEN L0$=L0$+",  "+I$(127,2)
+7576 IF L0$>"" THEN CALL "ZZDISP","AX",I$(129,9),"ZIP",X3$,X$,"",0,0,X4$; L0$=L0$+"   "+X$
+7580 IF L0$>"" THEN L$(L*35+1,35)=L0$,L=L+1
+7585 FOR L=0 TO 2; P$(L*35+88,35)=L$(L*35+1,35); NEXT L
+7595 RETURN 
+7600 REM "Given ship intr rec, E$, fill in ship to addresses
+7601 REM "Customer info in D$
+7605 P$(193,10)=C$(6,10),P$(203,4)=E$(12,4),P$(382,30)=E$(16,30)
+7610 P$(207,35)=E$(225,35),P$(242,35)=E$(175,35)
+7615 DIM L$(3*35); L=0
+7620 IF POS(" "<>E$(46,30))<>0 THEN L$(L*35+1,35)=E$(46,30),L=L+1
+7625 IF POS(" "<>E$(76,30))<>0 THEN L$(L*35+1,35)=E$(76,30),L=L+1
+7630 L0$=FNS$(E$(106,16)); IF E$(122,2)<>"  " THEN L0$=L0$+",  "+E$(122,2)
+7635 IF L0$>"" THEN CALL "ZZDISP","AX",E$(124,9),"ZIP",X3$,X$,"",0,0,X4$; L0$=L0$+"   "+X$
+7640 IF L0$>"" THEN L$(L*35+1,35)=L0$,L=L+1
+7645 FOR L=0 TO 2; P$(L*35+277,35)=L$(L*35+1,35); NEXT L
+7646 RETURN 
+7800 REM "Read and default item info
+7804 DIM F0$(250),F0[18]
+7805 FIND (Z[12],KEY=C0$+P$(27,10),DOM=7845)IOL=0410
+7810 P$(430,6)=F0$(167)
+7815 P[2]=F0[18]
+7830 FIND (Z[10],KEY=C0$+P$(27,10),DOM=7835)IOL=0420
+7834 IF NUM(J5$(42,5),ERR=7835)>0 THEN P$(575,12)=FNS$(J5$(38,4))+"/"+FNR$(STR(NUM(J5$(42,5)):"#,##0")) ELSE P$(575,12)=FNS$(J5$(38,4))
+7845 RETURN 
+7900 REM "W/O System
+7910 IF P0$(22,1)<>"Y" THEN GOTO 7990
+7920 P$(53,35)=X3$(86,40)
+7950 REM "Dealer Orders for Forms Plus
+7955 IF C$(8,1)<>"8" THEN GOTO 7990
+7960 P$(53,35)=D$(11,35); REM "Sub Dealer's Name for Forms Plus
+7965 P$(476,54)=""; REM "Salesperson data
+7967 P$(545,12)=P$(6,8); REM "Our Order Number to Factory Job Number
+7969 REM "In Customer P/O Field is Dealer's P/O /(slash) Dealer's Customer's P/O"
+7970 X$=P$(530,15); I=POS("/"=X$); IF I=0 THEN GOTO 7990
+7975 IF I>1 THEN P$(8,6)=X$(1,I-1) ELSE P$(6,8)=""; REM "Only store 6x to keep out of division area
+7980 P$(530,15)=X$(I+1)
+7990 RETURN 
+8000 REM "Set Division Phone Number in Reorder From"
+8010 IF POS(" "<>P9$(124,14))=0 THEN RETURN 
+8020 CALL "ZZDISP","POX",P9$(124,12),"",X3$,X$,"",0,0,X4$; REM "LET X$="("+P9$(124,3)+") "+P9$(127,3)+"-"+P9$(130,4)
+8030 IF POS(" "<>P$(476,54))>0 THEN P$(515,15)=X$ ELSE P$(475,15)=X$
+8040 RETURN 
+8050 REM "Get O/P Division Phone Number"
+8055 IF U$(2,2)=P9$(2,2) THEN RETURN 
+8060 Y$="09C AR3...  09O FSH...  "
+8070 GOSUB 8100
+8080 DIM P9$(138); FIND (Z[9],KEY=U$(2,2),DOM=8081)P9$(1)
+8085 Y$="09C FSH...  09O AR3...  "
+8090 GOSUB 8100
+8095 RETURN 
+8100 REM "Open files
+8120 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+8140 RETURN 
+8200 REM "Substitute name based on category set if needed
+8205 IF C3$="" THEN GOTO 8245
+8210 C3=POS(D$(220,9)=C3$,9); IF C3>0 THEN P$(53,35)=C4$((C3-1)/9*30+1,30)
+8245 RETURN 
+8250 REM "Create C3$ and C4$ as needed
+8253 C3$="",C4$=""
+8254 IF POS(" "<>V0$(73,3))=0 THEN GOTO 8290
+8255 Y$="09C AR3...  10C FMS...  09O FMP...  10O ARG...  "; GOSUB 8100
+8260 READ (Z[9],KEY="e"+V0$(73,3),DOM=8290)C2$; REM "If not found, leave quietly
+8265 IF C2$(35,1)="Y" THEN GOSUB 8300 ELSE GOSUB 8350
+8290 Y$="09C FMP...  10C ARG...  09O AR3...  10O FMS...  "; GOSUB 8100
+8295 RETURN 
+8300 REM "Load C3$ and C4$ in the inclusive case, all set values in C2$
+8310 FOR I0=1 TO 12
+8315 READ (Z[10],KEY=C2$(36+(I0-1)*9,9),DOM=8325)C5$
+8320 C3$=C3$+C2$(36+(I0-1)*9,9); C4$=C4$+C5$(10,30)
+8325 NEXT I0
+8345 RETURN 
+8350 REM "Load C3$ and C4$ in the exclusive case, all but the values in c2$
+8355 READ (Z[10],KEY="",DOM=8356)
+8360 READ (Z[10],END=8390)C5$
+8365 IF POS(C5$(1,9)=C2$(36),9)<>0 THEN GOTO 8360; REM "If in c2$ then skip it
+8370 C3$=C3$+C5$(1,9),C4$=C4$+C5$(10,30)
+8375 GOTO 8360
+8395 RETURN 
+8400 REM "Change Ship From for Professional-IL #335/ General Fin #323,340
+8402 IF POS(X3$(9,3)="340",3)>0 THEN GOTO 8430
+8405 IF POS(X3$(9,3)="323",3)>0 THEN IF POS(D$(1,2)="10",2)>0 THEN GOTO 8430 ELSE GOTO 8490
+8410 IF POS(X3$(9,3)="335")=0 THEN GOTO 8490
+8415 IF POS(D$(1,2)="1190919293949596979899",2)=0 THEN GOTO 8490
+8430 P$(476,54)=""; REM "Salesperson Data
+8440 REM P$(530,15)="" IF YOU WANT TO BLANK CUST P/O FIELD
+8450 I1$=I$; DIM I$(200); I$(16,35)=D$(11,35),I$(51,87)=D$(56,87)
+8460 GOSUB 7550; I$=I1$
+8490 RETURN 
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM "TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 IF Y4$<>"" THEN RUN Y4$,ERR=9931
+9940 RUN "ZMENU"
+9999 END 

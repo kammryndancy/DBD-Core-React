@@ -1,0 +1,284 @@
+0010 REM "Adjust P/O based on shipping instructions <PO2MAH>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/12/22 - 15.177779 - crg - SSP# 307397
+0036 REM "ADDED: LINE 1020,370,510,1065
+0037 REM "307397-DBSPT-147915 - Impending Whse Receipt notification - 943 XML     
+0040 REM "Copyright 2022 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 REM "Given a P/O number, Read through its lines building a string of
+0061 REM "Line#-item#-amount,  Then read through special shipping instructions
+0062 REM "subtract amounts from first list, removing an item if it goes <=0, add
+0063 REM "to list of item#-location-P/O #-line #-amount, anything left on first list gets
+0064 REM "put on general ship inst. location. Second list is then returned
+0065 REM "If no ship instructions present, list is empty
+0070 REM "T$ is p/o type, S means use Sales order # to search shipping instructions
+0075 REM "C0$= 1 means put on , -1 means take off
+0076 REM "P$(1,1) means coming from order entry - update print flag
+0090 ENTER X3$,T$,P$,C0$
+0100 SETERR 9000
+0110 X0$="PO2MAH"
+0120 IF P$(1,1)="!" THEN P$=P$(2),P1$="OE"
+0130 IF LEN(T$)=3 THEN P0=NUM(T$(2,2)),T$=T$(1,1)
+0170 FID_0$=FID(0); IF %IN_WEBEC$="Y" OR %OS2INV=1 THEN FID_0$(1,1)="G"; REM SSP 194096 don't display if from OS2INV
+0200 L$=""
+0210 IF FID_0$(1,1)<>"G" AND NOT(%GUI) THEN PRINT @(0,22),'CE',@(22,22),"Adjusting purchase order information", ! SSP#213461
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27]
+0320 IOLIST B$,B[0],B[1],B[2]
+0370 IOLIST G$
+0380 IOLIST H$
+0390 IOLIST J$; REM "SSP#148759
+0400 IOLIST N$; REM "SSP#148759
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X PO2...  02O PO3...  04O IC1...  05O IC0...  06O PO5...  07O PO1...  08O PO6... 09O FS6...  10O FS1...  11O AP4...  12O FS2...  13O ZZPARM 14O FM0...  " ! SSP 226001, DBD-255
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 READ (Z[13],KEY="osec"+X3$(40,3),DOM=*NEXT)OP_SECURITY$ ! ssp 226001
+0526 PO_REPRNT$=""; READ (Z[13],KEY=X3$(9,3)+"F/M")PO_RP$; IF STP(MID(PO_RP$,320,1),2)<>"" AND STP(MID(PO_RP$,321,1),2)<>"" THEN PO_REPRNT$="Y" ! SSP 233931
+0585 RT$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT$
+0610 M0$="-#########.00",M0=LEN(M0$)
+1000 REM "Build line-item amount list
+1005 I$=""
+1015 XP=PRM('XI'); SET_PARAM 'XI'
+1017 EXTRACT (Z[7],KEY=P$,DOM=1018)IOL=0370; G$(358,3)=X3$(40,3); WRITE (Z[7])IOL=0370; REM "193098-Set operator code
+1020 EXTRACT (Z[7],KEY=P$,DOM=1021)IOL=0370; READ (Z[10],KEY=P$(1,8),DOM=1021)IOL=0380; G$(328,23)=H$(28,15)+H$(93,4)+H$(89,4); WRITE (Z[7])IOL=0370
+1025 SET_PARAM 'XI'=XP
+1030 READ (Z[1],KEY=P$,DOM=1031)
+1035 REM "Read lines
+1038 DIM A$(111),A[27]
+1040 READ (Z[1],END=1090)IOL=0310
+1045 IF A$(82,9)<>P$ THEN GOTO 1090
+1047 IF FID_0$(1,1)<>"G" AND NOT(%GUI) THEN PRINT @(32,23),A$(82,9),"-",A$(7,3), ! SSP#213461
+1050 IF POS(A$(10,1)="IC")=0 THEN GOTO 1080
+1060 I$=I$+A$(7,3)+A$(91,20)+STR(A[1]:M0$)
+1064 REM "PO SIDE DOES OE TOO!
+1065 IF P0<>99 AND MID(G$,173,1)="S" AND POS(MID(G$,351,1)="BS")=0 THEN CALL "PO2MAK",X3$,G$,G{ALL},A$,A{ALL},0,C0$
+1080 GOTO 1035
+1095 IF I$="" THEN GOTO 9900
+2000 REM "Run through shipping instructions and build L$ list
+2005 IF T$="C" THEN S0$=P$(1,8)+" " ELSE S0$=P$
+2010 READ (Z[2],KEY=S0$+"000 ",DOM=2011)
+2020 DIM B$(175),B[2]
+2025 READ (Z[2],END=2090)IOL=0320
+2030 IF B$(166,9)<>S0$ THEN GOTO 2090
+2034 REM "We are only concerned with dist. locations here
+2035 IF B$(11,1)<>"D" THEN B$(12,4)="DS  "
+2040 L0=POS(B$(7,3)=I$,36); IF L0=0 THEN GOTO 2020
+2045 L0$=I$(L0+3,20)+B$(12,4)+P$+I$(L0,3)+B$(10,1); GOSUB 3000
+2049 REM "Check for pos in L$ and put in or on end
+2050 L1=POS(L0$=L$,50)
+2051 IF B[0]-B[2]<0 THEN GOTO 2056; REM "96121-DXM
+2055 IF L1=0 THEN L$=L$+L0$+STR(B[0]-B[2]:M0$) ELSE L$(L1+37,M0)=STR(NUM(L$(L1+37,M0))+B[0]-B[2]:M0$)
+2080 GOTO 2020
+2100 REM "Any thing left goes to general instructions
+2105 IF I$="" THEN GOTO 2190
+2110 DIM B$(175),B[2]; READ (Z[2],KEY=S0$+"    ",DOM=2190)IOL=0320
+2120 FOR I=1 TO LEN(I$) STEP 36
+2123 IF B$(11,1)<>"D" THEN B$(12,4)="DS  "
+2125 L0$=I$(I+3,20)+B$(12,4)+P$+I$(I,3)+" "
+2130 L1=POS(L0$=L$,50)
+2135 IF L1=0 THEN L$=L$+L0$+I$(I+23,M0) ELSE L$(L1+37,M0)=STR(NUM(L$(L1+37,M0))+NUM(I$(I+23,M0)):M0$)
+2150 NEXT I
+2200 REM "End
+2210 IF C0$="-1" THEN L0$="" ELSE L0$=L$,L$=""
+2215 IF C0$="1" AND X3$(9,3)="434" THEN PO_NUM$=P$; CALL "UT2APD",X3$,X4$,"*","PO1/"+PO_NUM$; CALL "UT2APD",X3$,X4$,"*","PO2/"+PO_NUM$; CALL "UT2APD",X3$,X4$,"*","PO3/"+PO_NUM$
+2290 GOTO 4000
+3000 REM "Subtract B(0) from amount in I$ at L0
+3010 I1=NUM(I$(L0+23,M0))-(B[0]-B[2]); REM "96121-DXM  , 158010
+3020 IF I1>0 THEN I$(L0+23,M0)=STR(I1:M0$); GOTO 3090
+3025 REM "ELSE remove from I$
+3030 I2=LEN(I$)
+3035 IF L0=I2 THEN I$=""; GOTO 3090
+3040 IF L0=1 THEN I$=I$(37); GOTO 3090
+3045 IF L0+36=I2 THEN I$=I$(1,L0-1); GOTO 3090
+3050 I$=I$(1,L0-1)+I$(L0+36)
+3090 RETURN 
+4000 REM "Update location info
+4005 REM "Takes two strings L$ and L0$ and updates inventory location info
+4010 REM "String format - invnum(20)+location code(4)+P/O number(9)+P/O line(3)+amount(13)
+4015 REM "if inv num in L$ and not L0$ it will be zeroed in the file
+4020 REM "else difference is posted to file, L$ is old amount
+4025 REM "if only in L0$ it is updated as full amount of course
+4030 REM "Each inv num is checked to make sure it is in IC0 first, to weed
+4035 REM "out custom items
+4040 REM "Also updates PO5 inventory on order file
+4045 REM "
+4050 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20]
+4051 IOLIST B$,B[0],STR(B[1]),STR(B[2]),B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20]
+4055 IOLIST C$,C0
+4080 REM "Go through L0$ first
+4085 IF L0$="" THEN GOTO 4150
+4090 FOR I=1 TO LEN(L0$) STEP 50
+4095 L1$=L0$(I,50),L=NUM(L1$(38))
+4100 L0=POS(L1$(1,24)=L$,50)
+4105 IF L0=0 THEN GOSUB 4215; GOTO 4145
+4110 REM "Else subtract off L$ amount and remove from L$
+4115 L=L-NUM(L$(L0+37,13)); GOSUB 4215
+4120 L2=LEN(L$)
+4125 IF L0=L2 THEN L$=""; GOTO 4145
+4130 IF L0=1 THEN L$=L$(51); GOTO 4145
+4135 IF L0+38=L2 THEN L$=L$(1,L0-1); GOTO 4145
+4140 L$=L$(1,L0-1)+L$(L0+38)
+4145 NEXT I
+4150 REM "Now check if L$ <>"" remove amounts from file
+4155 DIM B$(58),B[20]
+4160 IF L$="" THEN GOTO 4205
+4165 FOR I=1 TO LEN(L$) STEP 50
+4167 IF L$(I+20,4)="DS  " THEN GOTO 4185
+4170 EXTRACT (Z[4],KEY=L$(I,24),DOM=4185)IOL=4050
+4175 B[8]=B[8]-NUM(L$(I+37,13))
+4180 WRITE (Z[4],KEY=L$(I,24))IOL=4051
+4182 IF RT$>"" THEN IF RT$(7,1)="H" THEN CUST$=L$(I,10); CALL "RT2WOC",ERR=4183,X3$,X4$,CUST$,"IC1...","U",L$(I,24)
+4185 REM "Remove from PO5 here
+4190 REMOVE (Z[6],KEY=L$(I,37),DOM=4191)
+4195 NEXT I
+4200 L$="",L0$=""
+4205 REM "End
+4210 GOTO 9900
+4215 REM "Post amount L, into location L1$(1,24) after checking it is an inventory item
+4220 IF POS(" "<>L1$(21,4))=0 THEN GOTO 4265
+4225 GOSUB SET_READONLY; FIND (Z[5],KEY=L1$(1,20),DOM=4250); GOSUB CLEAR_READONLY ! SSP174539, added READONLY
+4227 IF L1$(21,4)="DS  " THEN GOTO 4250
+4230 DIM B$(58),B[20]; B$(1,24)=L1$(1,24)
+4232 IF L<0 THEN GOTO 4247; REM "96121-DXM
+4235 EXTRACT (Z[4],KEY=B$(1,24),DOM=4236)IOL=4050
+4240 B[8]=B[8]+L
+4245 WRITE (Z[4],KEY=B$(1,24))IOL=4051
+4247 IF RT$>"" THEN IF RT$(7,1)="H" THEN CUST$=B$(1,10); CALL "RT2WOC",ERR=4248,X3$,X4$,CUST$,"IC1...","U",B$(1,24)
+4250 REM "Write into PO5 file here
+4253 IF PRM('XI') THEN GOSUB CLEAR_READONLY ! SSP174539, in case we got the DOM on 4225, check parm
+4255 C$=L1$(1,37),C0=L
+4260 WRITE (Z[6],KEY=L1$(1,37))
+4265 RETURN 
+7500 REM "If P/O has been printed, ask Reprint?
+7505 IF %IN_GUI$="Y" THEN IF %NAV_FLG THEN %NAV_FLG=0; RETURN ! SSP 221981
+7510 IF P0=99 OR P1$<>"OE" OR X3$(146,6)="PO2RFS" OR X3$(146,6)="FM2BKS" OR X3$(146,6)="POGRRS" OR X3$(146,6)="PO2RRS" OR X3$(146,6)="FMGBKS" OR %OS2INV$="YES" OR X3$(146,6)="ICGZSU" THEN RETURN ; REM "SSP 183935 Don't ask to print if importing invoice from United;SSP#205301,SSP#207182 SSP 302176
+7515 X$="P"+P$
+7520 IF C0$="-1" OR MID(H$,194,1)="Y" OR MID(H$,314,1)="Y" THEN GOSUB 7900; GOTO 7590; REM " SSP 146930 - IF ON HOLD DON'T PRINT, ssp 189962 - If order suspended, do not print
+7530 FIND (Z[7],KEY=P$,DOM=7900)A$
+7540 ON POS(A$(189,1)="PYS") GOTO 7600,7541,7580,7590; REM SSP 187899, SSP244424, (S)suspend option
+7542 IF FID_0$(1,1)="G" THEN GOTO 7585
+7545 ANSWER$=GBL("ANSWER",ERR=7546); IF ANSWER$(1,8)=P$(1,8) THEN IF ANSWER$(10,1)="2" THEN GOTO 7580 ELSE IF ANSWER$(10,1)="3" THEN GOSUB 7900; GOTO 7587 ! SSP255745 - even though user said no to all for reprint PO we still need to check 7600's for each PO to see if we need a V record, was GOTO 7590; REM "SSP118724
+7550 IF %IN_GUI$="Y" THEN M$=MSG("FMGODH_13",FN%ZZDISP$(P$(1,9),"P/O")) ELSE M$="Reprint Purchase Order: "+P$(1,8)+"-"+P$(9,1); REM "SSP 221981
+7552 IF MID(OP_SECURITY$,102,1)="Y" THEN GOSUB 7900; IF PO_REPRNT$<>"Y" THEN GOTO 7590 ELSE IF P$(9,1)=" " OR P$(9,1)>=MID(PO_RP$,320,1) AND P$(9,1)<=MID(PO_RP$,321,1) THEN S3=0; GOTO 7580 ELSE ANSWER$(10,1)="3"; GOTO 7590 ! SSP 226001 ;!SSP 233931, SSP 237074 - Stock POs were causing a PE here
+7560 IF %IN_GUI$="Y" THEN CALL "FMGODH.1",M$,S3,"Y"; ELSE CALL "ZZPROM",".RP",X3$,S3,M$,"","",0; END_IF ; IF S3=1 OR S3=3 THEN GOSUB 7900; GOTO 7585 ! SSP 221981
+7580 WRITE (Z[8],KEY=X$)
+7585 ANSWER$=P$+STR(S3); ANSWER$=GBL("ANSWER",ANSWER$)
+7587 GOSUB 7600; REM "SSP#148759
+7590 RETURN 
+7600 REM "Check for Office Supply Orders to Supplier, 182560->and check to see if we need to add for SPC code processing
+7601 REM SSP 187899 - NEED TO SET TO SEND WHETHER PRINTING OR NOT
+7602 ! This is also used when doing vendor XML po output.  We'll need to check the options field on the vendor to see if we are only outputting XML for certain order line types, and if so we will need to check to see if this PO qualifies
+7610 IF G$(305,1)=" " THEN GOTO 7690; REM " DON'T ADD IF NOT ON ORDER
+7615 GOSUB SET_READONLY; READ (Z[11],KEY=G$(7,10),DOM=*NEXT)IOL=0390; GOSUB CLEAR_READONLY; GOTO 7617 ! SSP221127, add READONLY, clear if record found and go around to next thing to do, changed DOM to go to next line
+7616 GOSUB CLEAR_READONLY; GOTO 7690 ! SSP221127, moved DOM on 7615 here
+7620 IF STP(J$(223,8),3," ")="" THEN GOTO 7690
+7625 IF POS(G$(352,1)=" N")>0 AND NOT(NUL(MID(J$,223,8))) THEN GOTO *NEXT ELSE IF POS(G$(352,1)="YC")=0 THEN GOTO 7690; REM "ONLY ADD RECORD IF WE'VE SAID TO PRINT, 182560-> or if G$(352,1)is blank [not in TOPS] then do it if the vendor has an SPC code
+7630 IF G$(353,5)<>DIM(5) AND G$(352,1)="C" THEN GOTO 7690; REM ORDER HAS ALREADY BEEN SENT...CAN  ONLY SEND IT AGAIN AS A CONFIRMATION
+7631 IF POS(G$(352,1)="AN")<>0 AND J$(223,6)<>"PO2XML" THEN GOTO 7690; REM SSP
+7632 IF J$(223,6)="PO2XML" THEN IF G$(2,1)="Y" THEN GOTO *RETURN END_IF ; IF POS("W"=J$(382,20))>0 AND MID(H$,246,4)<>"WEB " THEN GOTO *RETURN END_IF ; IF POS("E"=J$(382,20))>0 THEN WRITE_PO6=0; GOSUB 7700; IF WRITE_PO6=0 THEN GOTO *RETURN ! SSP189102, SSP270929 add W option for WEB order source only
+7633 IF J$(223,6)="PO2XML" AND POS("X"=J$(382,20))>0 THEN WRITE_PO6=0; GOSUB 7750; IF WRITE_PO6=0 THEN GOTO *RETURN ! WO234315, if "X" option, check for EEG rec
+7635 N$="V"+J$(223,8)+G$(297,9); REM PROGRAM TO CALL + ORDER NUMBER
+7640 REM "N$="V"+G$(297,8); REM PROGRAM TO CALL + ORDER NUMBER
+7645 IF G$(352,1)="C" THEN N$(7,1)="4"
+7680 WRITE (Z[8],KEY=N$)
+7690 RETURN 
+7700 ! Check to see if order line for PO has matching order type, if not we don't want to write "V" record, 189102
+7710 READ (Z[12],KEY=G$(297,8),DOM=*NEXT)
+7715 FS2_KEY$=KEY(Z[12],END=*RETURN)
+7720 IF FS2_KEY$(1,8)<>G$(297,8) THEN GOTO *RETURN
+7725 READ (Z[12],KEY=FS2_KEY$)FS2$
+7730 IF FS2$(9,1)<>G$(305,1) THEN GOTO 7715
+7735 IF FS2$(5,1)="E" THEN WRITE_PO6=1
+7740 RETURN 
+7745 ! 
+7750 ! WO234315, check for EEG record, with non-blank 3p order line id, if found then we want "V" record, if not we don't. We only have the PO number at this point, not any line numbers, so check for any match on the sales order number.
+7755 EEG_CHAN=HFN; OPEN (EEG_CHAN,ERR=*RETURN)"EEG"+%C$
+7760 DIM EEG$(380); READ (EEG_CHAN,KEY=G$(297,8),DOM=*NEXT)
+7765 EEG_KEY$=KEY(EEG_CHAN,END=*RETURN)
+7770 IF EEG_KEY$(1,8)<>G$(297,8) THEN GOTO *RETURN
+7775 READ (EEG_CHAN,KEY=EEG_KEY$)EEG$(1)
+7780 IF EEG$(12,100)<>DIM(100) THEN WRITE_PO6=1; GOTO *RETURN
+7785 GOTO 7765
+7795 RETURN 
+7799 ! 
+7900 REM "Remove print flags
+7910 REMOVE (Z[8],KEY=X$,DOM=7911)
+7920 REMOVE (Z[8],KEY=X$+"P",DOM=7921)
+7940 RETURN 
+8500 SET_READONLY:
+8510 SET_PARAM 'XI'
+8525 SET_READONLY_END:RETURN 
+8530 CLEAR_READONLY:
+8535 SET_PARAM -'XI'
+8545 CLEAR_READONLY_END:RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9900,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9902 GOSUB 7500
+9903 GOSUB CHECK_WHSE_IWR ! REM "DBD-255
+9905 IF FID_0$(1,1)<>"G" AND %IN_GUI$<>"Y" THEN PRINT @(0,22),'CE', ! SSP 221981
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 ! DBD-255 - Check whether PO qualifies for an IWR 943 notification
+10005 CHECK_WHSE_IWR:
+10010 IWR_WHSE_LIST$=""
+10012 IF NUL(G$) OR G$(3,1)="Y" THEN GOTO *RETURN
+10015 READ (Z[2],KEY=S0$+"000 ",DOM=*NEXT)
+10020 NEXT_PO3:DIM B$(175),B[2]; READ (Z[2],END=DONE_CHECK_IWR)IOL=0320
+10025 IF B$(166,9)<>S0$ THEN GOTO DONE_CHECK_IWR
+10030 REM "Look for "D" whse locations with IWR flag enabled
+10035 IF B$(11,1)<>"D" THEN GOTO NEXT_PO3
+10040 DIM FM0$(620); FIND (Z[14],KEY=B$(11,1)+DIM(10)+B$(12,4),DOM=NEXT_PO3)FM0$
+10045 IF MID(FM0$,378,1)<>"Y" THEN GOTO NEXT_PO3
+10050 IWR_WHSE_LIST$+=B$(12,4)
+10055 GOTO NEXT_PO3
+10080 DONE_CHECK_IWR:
+10085 IF NOT(NUL(IWR_WHSE_LIST$)) THEN {
+10086 IF NOT(NUL(IWR_WHSE_LIST$)) THEN WRITE (Z[8],KEY="W"+"PO2XML  "+PAD(P$,9)+MID(IWR_WHSE_LIST$,1,4)); IWR_WHSE_LIST$=MID(IWR_WHSE_LIST$,5); GOTO *SAME
+10087 WRITE (Z[8],KEY="V"+"PO2XML  "+DIM(9)) ! Trigger PO2XML processing in Unattended printing for "W" with this entry
+10088  }
+10095 RETURN 
+10099 ! 
+56000 ! Program changes starting 02/23/06
+56010 REM "189102-Solion / Printegra XML Interface
+56015 REM "200962-XML POs to TFP are being retransmitted multiple times
+56017 REM "198953-Implementation-Tops
+56019 REM "199643-In Tops had flag set to not transmit, but records went into PO6
+56020 REM "205301-Enhanced Back Order Fill Rpt PE                             
+56022 REM "193098-Need a way to set the operator code for WebEC as this       
+56023 REM 194096-List of Issues with importing Invoices from United     
+56026 REM "221127-DBE: Some orders are created with no PO header (PO1 record)
+56027 REM "221981-Consolidate POGMAH and PO2MAH into one program to be used in
+56028 ! "226001-Security by operator - Restrict from PO reprint option      
+56030 REM "233931-Parm to set range of PO's to always reprint, script to post 
+56032 REM "244424-EC3WS1 line level input tag to indicate the PO should not be
+56034 REM "252273-New Deleted Order and Deleted PO file. Modify delete routine
+56036 REM "255745-Flowpoint; Trying to send 08-052793-1, -2, -3, -4 to Wise.  
+56038 REM "270929-Flowpoint; vendor option WEB order source orders only       
+56039 REM "302176-Utility for External Warehouse Zero Ship correction.        
+56040 REM "307397-DBD-255 - Impending Whse Receipt notification - 943 XML     
+56041 REM "307397-DBSPT-147915 - Impending Whse Receipt notification - 943 XML     

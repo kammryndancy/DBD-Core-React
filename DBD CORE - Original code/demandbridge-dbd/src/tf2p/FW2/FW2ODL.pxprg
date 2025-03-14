@@ -1,0 +1,121 @@
+0010 REM "Add or delete work order info <FW2ODL>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 05/21/03 - 10.572777 - tma - SSP# 156542
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0087 REM "C0=Command 1=add, -1=maint delete, -2=line delete -3 = both deletes
+0088 REM "W$ = string to process, format = cus#(10)+inv#(20)+order#(8)+location(4)
+0090 CLEAR ; SETERR 0100; ENTER X3$,C0,W$
+0100 SETERR 9000
+0110 X0$="FW2ODL"
+0120 DIM S0$(10),E[30]
+0170 FID_0$=FID(0); IF %IN_WEBEC$="Y" THEN FID_0$(1,1)="G"
+0210 IF FID_0$(1,1)<>"G" THEN PRINT @(0,22),'CE',@(23,22),"Adjusting sales order information",
+0310 IOLIST A$(1),A[0],A[1],A[2]
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15],E[16],E[17],E[18],E[19],E[20],E[21],E[22],E[23],E[24],E[25],E[26],E[27],E[28],E[29],E[30]
+0400 IOLIST J$,J[0],J[1],J[2],J[3],J[4],J[5],J[6],J[7],J[8],J[9],J[10],J[11],J[12],J[13],J[14],J[15],J[16],J[17],J[18],J[19],J[20]
+0401 IOLIST J$,J[0],STR(J[1]),STR(J[2]),J[3],J[4],J[5],J[6],J[7],J[8],J[9],J[10],J[11],J[12],J[13],J[14],J[15],J[16],J[17],J[18],J[19],J[20]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FW0...  02O FW1...  05O IC0...  06O IC1...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0700 REM "Process W$
+0701 REM "A0$=Items to update, first one is 'main' item others are bill of materials,B$ is location
+0702 REM "Q is quantity, C1 is carton pack
+0710 FOR I0=1 TO LEN(W$) STEP 42
+0720 K$=W$(I0,38),B$=W$(I0+38,4)
+0725 IF FID_0$(1,1)<>"G" THEN PRINT @(20,23),K$,
+0730 DIM A$(476),A[2]
+0740 EXTRACT (Z[1],KEY=K$,DOM=0780)IOL=0310
+0745 Q=A[2],A0$=A$(11,20)+A$(317,80)
+0758 REM "Do committed, except in the case of deleting a line after the maint delete has been done (C0=-2)
+0759 REM "Sign of C0 will control whether delete or add
+0760 IF C0<>-2 THEN GOSUB 8500
+0770 IF C0=-2 OR C0=-3 THEN GOSUB 7500
+0780 NEXT I0
+0790 GOTO 9900
+7500 REM "Delete the associated FW1 record on a delete
+7510 K0$=K$(31,8)+K$(11,20)
+7520 REMOVE (Z[2],KEY=K0$,DOM=7521)
+7530 REM "Clear order line# and reset last order# in FW0
+7540 IF POS(" "<>A$(40,10))=0 THEN GOTO 7580
+7550 A$(96,3)="",A$(31,8)=A$(40,8),A$(40,10)=""
+7560 WRITE (Z[1],KEY=A$(1,38))IOL=0310
+7580 REMOVE (Z[1],KEY=K$,DOM=7581)
+7590 RETURN 
+8500 REM "Step thru A0$ and call routine for each item, if not blank
+8501 REM "Skip committing part for 'main' item, it is done by FM2ODL
+8502 REM "On main item set F=1 if BOM blank, otherwise F=2.
+8505 F=1; IF POS(" "<>A0$(21))>0 THEN F=2
+8510 FOR I=0 TO LEN(A0$)/20-1
+8515 A1$=A0$(1+I*20,20); GOSUB 8600
+8520 F=0
+8522 NEXT I
+8525 SET_READONLY_END:RETURN 
+8530 CLEAR_READONLY:REM "Restore previous setting
+8535 SET_PARAM 'XI'=SAVE_XI ! restore previous setting
+8545 CLEAR_READONLY_END:RETURN 
+8600 REM "Put on or take off committed based on C0
+8604 IF POS(" "<>A1$)=0 THEN GOTO 8695
+8605 DIM J$(58),J[20]
+8609 J$(1)=A1$+B$
+8610 EXTRACT (Z[6],KEY=J$(1,24),DOM=8611)IOL=0400
+8614 REM "Skip 'main' item committing, it was done in FM2ODL
+8615 ON F GOTO 8616,8635,8640
+8620 J[7]=J[7]+SGN(C0)*Q; REM "Will not b/o a bom item "
+8630 WRITE (Z[6],KEY=J$(1,24))IOL=0401
+8634 REM "IF C0=0 Don't transfer inventory
+8635 Q3=J[3]+J[4]-J[5]+J[6]; IF Q3<J[7]*1.15 AND C0<>0 THEN GOSUB 8650
+8640 RETURN 
+8650 REM "MFG - TRANSFER FULL CASES FROM WHSE XXX1 TO XXX2
+8652 GOSUB 8700
+8655 Q0=J[7]*1.15-Q3,Q2=0
+8660 EXTRACT (Z[6],KEY=J$(1,23)+"1",DOM=8696)IOL=0400
+8665 IF C1=0 THEN Q1=1 ELSE Q1=C1
+8668 Q0=(INT((Q0-1)/Q1)+1)*Q1
+8670 Q2=J[3]+J[4]-J[5]+J[6]; IF Q0>Q2 THEN GOSUB 8696; Q0=Q2; IF Q0<=0 THEN GOTO 8695
+8672 J[6]=J[6]-Q0
+8675 WRITE (Z[6],KEY=J$(1,24))IOL=0401; Q2=J[2]
+8680 EXTRACT (Z[6],KEY=J$(1,20)+B$)IOL=0400
+8682 IF Q3+Q0<>0 THEN J[2]=(Q3*J[2]+Q2*Q0)/(Q3+Q0) ELSE J[2]=0
+8685 J[6]=J[6]+Q0
+8690 WRITE (Z[6],KEY=J$(1,24))IOL=0401
+8695 RETURN 
+8696 CALL "ZZDISP","AX",J$(1,20),"I/C",X3$,J5$,"",0,0,X4$; J5$=FNR$(J5$),J5$=FNS$(J5$)
+8697 CALL "ZZPROM",".4",X3$,0,"Not enough inventory to transfer "+J5$+" - short by "+STR(Q0-Q2),"","",0; GOTO 8695
+8700 REM "Get Carton Pack from Item Master
+8710 DIM E[30]
+8720 FIND (Z[5],KEY=J$(1,20),DOM=8721)IOL=0350
+8730 C1=E[19]
+8740 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8915 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 IF FID_0$(1,1)<>"G" THEN PRINT @(0,22),'CL',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

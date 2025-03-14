@@ -1,0 +1,110 @@
+<PxTable>
+ TableName=AP.EN.CUST.ols
+ TableKey=K1194275362
+ FileCreate=KEYED "AP.EN.CUST.ols",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00034
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0000"
+    FIELD_1$="*File==%APD$"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="85"
+    FIELD_5$="20"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_APD"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="=%APD$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2005/06/01 15:27 dff"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.FLD#1$(17,10)"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0001"
+    FIELD_1$="Fld#1(1,4)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0002"
+    FIELD_1$="Fld#1(5,2)"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ACCTPD"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0003"
+    FIELD_1$="Formula:TBL(SGN(%AP_DIV_LEN),"+QUO+QUO+",_MN_.FLD#1$(7,%AP_DIV_LEN)+"+QUO+"-"+QUO+")+_MN_.FLD#1$(9,%VEND_LEN)"
+    FIELD_4$="12"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0004"
+    FIELD_1$="Fld#1(17,10)"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"INV_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0005"
+    FIELD_1$="Formula:STR(FN%FMT_TFDATE$(_MN_.FLD#1$(27,6),"+QUO+"MM/DD/YYYY"+QUO+"))"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"INV_DATE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     0006"
+    FIELD_1$="Fld#3"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"INV_AMT"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"#,###,###.00-"+QUO
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_APD     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%FY$+%ACCTPD$+%VENDOR$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,154 @@
+0010 REM "A/P Change Invoice Terms <AP2UTF>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/20/18 - 13.200833 - tma - SSP# 301659
+0037 REM "301659-APGUTF utility is looking at the Selection Criteria settings
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF %GUI THEN PROCESS "APGUTF","../APG/AP.EN"; EXIT ! SSP246734 jdf
+0080 BEGIN ! SSP246734 jdf
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 INIT:! SSP246734 jdf
+0100 SETERR 9000
+0110 X0$="AP2UTF",X1$="A/P Change Invoice Terms",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0140 T0$="ZZXAP4",C0=1,L9=0; DIM W$(20,$7E$); W$(1,10)=""
+0200 REM "
+0210 IF %GUI THEN X0=-1 ! SSP246734 jdf
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27]
+0330 IOLIST C$,C[0]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AP4...  02O API...  03O AP2...  04O PO4...  05O PO1...  06O FT8...  13O ZZPARM  " ! ssp#272234
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0540 READ (Z[13],KEY=X3$(9,3)+"AP2A")P0$
+0550 DIM P[4]
+0555 FOR I=0 TO 3
+0560 IF P0$(25+I*20,1)<>"Y" THEN P[I]=1
+0565 NEXT I
+0600 REM "
+0610 IF NOT(%GUI) THEN GOSUB 6000 ! SSP246734 jdf
+0620 GOSUB 8100
+0625 IF %GUI THEN RETURN ! SSP246734  jdf
+0630 CALL T0$,ERR=0631,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 CALL "ZZINIT",STR(Z[4]:"00")
+0655 PRINT @(0,16),"..Open P/O file being sorted-progress reported every 100 entries: ",
+0657 PROCEED:! SSP246734 jdf
+0658 IF %GUI AND STP(VEND_START$,3)<>"" THEN W$(1,10)=VEND_START$ END_IF ; IF %GUI AND STP(VEND_END$,3)<>"" THEN W$(11,10)=VEND_END$ ! SSP#301659
+0660 READ (Z[5],KEY="",DOM=0661)
+0670 READ (Z[5],END=0700)A$
+0675 C5=C5+1; IF MOD(C5,100)=1 THEN IF NOT(%GUI) THEN PRINT @(64,16),C5," ",A$(297,9), ! SSP246734 jdf  
+0680 WRITE (Z[4],KEY=A$(7,14)+A$(297,9))
+0690 GOTO 0670
+0700 IF NOT(%GUI) THEN PRINT @(0,16),'CL', ! SSP246734 jdf
+0900 DIM A[1],B[27],C[1]
+0990 EXTRACT (Z[1],DOM=0991,KEY=W$(1,10))
+1000 REM "PROCESS VENDOR MASTER FILE
+1020 READ (Z[1],END=5000)IOL=0310
+1022 IF A$(1,10)>W$(11,10) THEN GOTO 5000
+1025 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+1030 GOSUB 1100
+1040 GOSUB 2000
+1045 GOSUB 2100 ! SSP#272234
+1050 GOTO 1020
+1090 GOTO 1000
+1100 REM "PROCESS OPEN INVOICES
+1140 READ (Z[2],KEY=A$(1,10),DOM=1141)
+1200 READ (Z[2],END=1900)IOL=0320
+1220 IF A$(1,10)<>B$(1,10) THEN GOTO 1900
+1230 IF A$(286,2)=B$(27,2) AND A[1]=B[9] THEN GOTO 1200
+1250 EXTRACT (Z[2],KEY=B$(1,20))IOL=0320
+1260 B[9]=A[1]
+1270 IF A$(286,2)=B$(27,2) THEN GOTO 1380
+1280 B$(27,2)=A$(286,2)
+1300 FIND (Z[3],KEY=B$(27,2),DOM=1900)IOL=0330
+1320 CALL "ZZDISC",X3$,C$,0,0,B$(21,6),Q4$,Q2$,0,0
+1330 B$(29,6)=Q4$,B$(35,6)=Q2$
+1340 X=B[10]
+1360 FOR I=0 TO 3; X=X-B[3+I]*P[I]; NEXT I
+1370 B[7]=X*C[0]*.01
+1380 WRITE (Z[2])IOL=0320
+1400 GOTO 1200
+1900 REM 
+1990 RETURN 
+2000 REM "Process Open P/O File
+2020 READ (Z[4],KEY=A$(1,10),DOM=2021)
+2040 K1$=KEY(Z[4],END=2090); READ (Z[4])
+2050 IF K1$(1,10)<>A$(1,10) THEN GOTO 2090
+2060 EXTRACT RECORD (Z[5],KEY=K1$(15,9),DOM=2040)E$
+2070 E$(210,2)=A$(286,2)
+2080 WRITE RECORD (Z[5])E$
+2085 GOTO 2040
+2090 RETURN 
+2100 REM "Process the Repeat Order hdr file FT8 SSP#272234
+2110 READ (Z[6],KEY=A$(1,10),KNO=1,DOM=*NEXT)
+2120 FT8_KEY$=KEY(Z[6],END=2190); READ RECORD (Z[6],KEY=FT8_KEY$)FT8$
+2130 IF FT8_KEY$(1,10)<>A$(1,10) THEN GOTO 2190
+2140 FT8$(210,2)=A$(286,2)
+2150 WRITE RECORD (Z[6],KEY=FT8_KEY$(15,9))FT8$
+2160 GOTO 2120
+2190 RETURN 
+5000 REM "EOJ
+5005 C=T5; GOSUB 8150
+5020 IF NOT(%GUI) THEN IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0 ! SSP246734 jdf
+5030 IF %GUI THEN MSGBOX MSG("PROC_CMPLT") ! SSP246734 jdf
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,10),"This program will process the Accounts Payable Vendor Master File, AP4, and for",'LF',"each of the vendor's open invoices set the terms code and associated due dates",'LF',"including discount amount plus the extra number of days that is currently in",'LF',"the Vendor Master File.  A sort file rebuild will be run on the",'LF',"Open P/O file and any open P/O's for the vendor will have their terms code",'LF',"changed.  The Repeat Order file FT8 will also be adjusted to use this new terms",'LF',"code."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF %GUI THEN CALL "ZZBARG",X3$,"HG",14,12,50,T1,T5,C ELSE CALL "ZZBARG",X3$,"HG",19,10,50,T1,T5,C ! SSP246734 jdf
+8195 RETURN 
+8200 REM "Same as 8100,but for z(2)
+8210 CALL "ZZINFO",Z[2],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8230 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8240 R0=0,T1=0
+8245 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 WRAPUP:! SSP246734 jdf
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "246734-Cannot locate the Change Invoice Terms Utility (SAP-U1)     
+56001 REM "272234-AP Change Invoice Terms - propose adding FT8 to the files   
+56002 REM "301659-APGUTF utility is looking at the Selection Criteria settings

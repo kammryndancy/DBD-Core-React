@@ -1,0 +1,11 @@
+0010 REM "Merge zze,f,l records <UT2MER>
+0035 REM "3.7 - 05/03/94 - 15.82 - wmz
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0200 F$="zzeZZEzzlZZLzzfZZF"
+0300 FOR I=0 TO 2
+0400 F1$=F$(1+I*6,3)
+0500 OPEN (1)F1$
+0600 READ (1,KEY="",DOM=0601)
+9999 END 

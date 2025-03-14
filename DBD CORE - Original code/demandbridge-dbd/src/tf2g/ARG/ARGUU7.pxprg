@@ -1,0 +1,157 @@
+0010 ! ARGUU7 - A/R Change Commission Codes 
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 10/03/06 - 14.523611 - jir - SSP# 186933
+0037 REM "186933-WO186251;New AR utility to change commission codes on open  
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "ARGUU7","../ARG/AR.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="AR2UU7",X1$="A/R Change Commission Codes",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0140 T0$="ZZXAR3",C0=1,L9=0; DIM W$(8,$7E$); W$(1,4)=""
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,-1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AR3...  02O AR4...  03O FS1...  04O FS2...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0625 RETURN 
+0630 CALL T0$,ERR=*NEXT,X3$,X4$,Y0$,W$,W{ALL},2,C0,L9
+0632 C0=1,L9=0
+0635 CALL T0$,ERR=*NEXT,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9
+0637 IF ABS(C0)>4 THEN GOSUB 6400; GOTO 0630 ! CALL T0$,ERR=*NEXT,X3$,X4$,Y0$,W$,W{ALL},2,C0,L9; C0=1,L9=1; CALL T0$,ERR=*NEXT,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0660 IF SLS_START$<>"" THEN W$(1,4)=SLS_START$
+0670 IF SLS_END$<>"" THEN W$(5,4)=SLS_END$ ELSE W$(5,4)=DIM(4,"~")
+0700 ! PRINT @(0,16),'CL',
+0750 GOSUB 3000 ! Build memory file of salesperson code/order number
+0795 ! 
+0900 DIM B[23]
+0990 EXTRACT (Z[1],DOM=0991,KEY=W$(1,4))
+0995 ! 
+1000 REM "PROCESS SALESPERSON MASTER FILE
+1020 READ (Z[1],END=5000)IOL=0310
+1022 IF A$(1,4)>W$(5,4) THEN GOTO 5000
+1025 R0=R0+1; IF MOD(R0,T0)=1 THEN C=R0; GOSUB 8150
+1030 READ (Z[2],KEY=A$(219,5),DOM=*NEXT); GOTO 1040
+1031 MSGBOX "Salesperson code "+A$(1,4)+SEP+"has an invalid commission code of "+A$(219,5),MSG("WARNING"),"!,TIM=10"; GOTO 1020
+1040 GOSUB 1100
+1050 GOTO 1020
+1095 ! 
+1100 REM "Process open orders for this salesperson
+1105 PRINT 'MESSAGE'('_RED'+'WHITE'+"Updating commission code in open orders for "+A$(1,4),0),
+1140 READ (SLS_CUST,KEY=A$(1,4),DOM=1141)
+1195 ! 
+1200 K1$=KEY(SLS_CUST,END=DONE_WITH_SLS); READ (SLS_CUST,KEY=K1$)SLS_CUST$
+1220 IF SLS_CUST$(1,4)<>A$(1,4) THEN GOTO DONE_WITH_SLS
+1225 ! 
+1230 EXTRACT RECORD (Z[3],KEY=SLS_CUST$(5,8),DOM=1200)FS1$
+1260 FS1$(97,5)=A$(219,5)
+1270 WRITE RECORD (Z[3],KEY=FS1$(118,8))FS1$
+1280 GOSUB 2000
+1400 GOTO 1200
+1410 ! 
+1900 DONE_WITH_SLS:
+1910 ! PRINT @(10,16),'CL',
+1990 RETURN 
+1995 ! 
+2000 REM "Process open order lines file for this order
+2020 READ (Z[4],KEY=FS1$(118,8),DOM=2021)
+2040 K2$=KEY(Z[4],END=2090); READ (Z[4])
+2050 IF K2$(1,8)<>FS1$(118,8) THEN GOTO 2090
+2060 EXTRACT RECORD (Z[4],KEY=K2$,DOM=2040)FS2$
+2070 FS2$(128,5)=FS1$(97,5)
+2080 WRITE RECORD (Z[4],KEY=K2$)FS2$
+2085 GOTO 2040
+2090 RETURN 
+2095 ! 
+3000 ! Create memory file of first salesperson code/order number, using FS1
+3005 SET_FOCUS 0; PRINT 'MESSAGE'("Creating temporary sort file",0),
+3010 SET_PARAM 'XI' ! Set READONLY
+3015 SLS_CUST=HFN; OPEN (SLS_CUST)"*MEMORY*"
+3020 READ (Z[3],KEY="",DOM=*NEXT)
+3025 K$=KEY(Z[3],END=END_OF_FS1); READ (Z[3],KEY=K$)FS1$
+3030 C1=C1+1; IF MOD(C1,100)=0 THEN PRINT 'MESSAGE'(FS1$(93,4)+" "+FS1$(118,8),0),
+3035 RECORD$=FS1$(93,4)+FS1$(118,8)
+3040 WRITE (SLS_CUST,KEY=RECORD$)RECORD$
+3045 GOTO 3025
+3060 END_OF_FS1:
+3065 READ (SLS_CUST,KEY="",DOM=*NEXT)
+3070 SET_PARAM -'XI' ! Clear READONLY
+3075 ! PRINT @(0,16),'CE',
+3095 RETURN 
+3099 ! 
+5000 REM "EOJ
+5005 C=T5; GOSUB 8150
+5020 MSGBOX "Process complete!!","F.Y.I","!,TIM=10"
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,10),"This program will process the Salesperson Master File, AR3,",'LF',"and for each of the salesperson's open orders, set the default commission code",'LF',"from the master record into the order header and corresponding order lines.",'LF',"Open orders for a particular salesperson are determined by the salesperson",'LF',"code being the first salesperson code on the open order header.",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T5,C
+8195 RETURN 
+8200 REM "Same as 8100,but for z(2)
+8210 CALL "ZZINFO",Z[2],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8230 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8240 R0=0,T1=0
+8245 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 END_PROC: CMD_STR$="E"
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 ! "186933-WO186251 New A/R Utility to change Codes Orders

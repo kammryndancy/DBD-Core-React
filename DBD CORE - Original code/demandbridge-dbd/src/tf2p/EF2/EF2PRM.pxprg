@@ -1,0 +1,74 @@
+0010 REM "Get Electronif Forms Parmeters <EF2PRM>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/01/10 - 22.600277 - crg - SSP# 237164
+0037 REM "237164-Install Unform. Implement electronic forms support in Unform
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "R$ are parmeters read
+0071 REM "D$ is basic device name OR is V3$ from report options, which may contain parameters to override or supplant normal parameters; len(D$)>8 means it is V3$ report options
+0072 REM "F$ is fax parameters (for use in formatting fax numbers)
+0073 REM "FORM_CODE$ is document code (B/C style) + format code - should be 11 chars long
+0074 REM "FORM_PARM$ is item parameters based on form_code$
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,D$,R$,F$,FORM_CODE$,FORM_PARM$
+0100 SETERR 9000
+0110 X0$="EF2PRM",X1$="Get Electronic Forms Parameters"
+0120 DIM S$(40)
+0200 REM "Determine if file EF0 exists if not set parms to ''
+0205 CLOSE (14); OPEN (14,ERR=0206)"EF0"; CLOSE (14); GOTO 0220
+0210 CLOSE (14); OPEN (14,ERR=0211)"EF0"+X3$(9,3); CLOSE (14); GOTO 0220
+0215 DIM R$(255); GOTO 9930; REM "If still here, then we didn't find the files, they must not have it yet.
+0300 REM "IOLISTS
+0310 IOLIST R$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EF0...  02O EF2... 13O ZZPARM "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0605 DIM R$(255)
+1000 REM "Read record
+1005 REM "Set DEVICE$ and JOB_CARD$, and ALLOW$ from D$. D$ may be device name only (<65 in length) or may be report options. If report_options(65,60) are blank, then set JOB_CARD$ to '' and get job card from EF params else use report_options(65,60) as job card data and setup param record
+1010 JOB_CARD$="",ALLOW$=""; IF LEN(D$)<65 THEN DEVICE$=D$ ELSE IF STP(D$(65,60),3," ")="" THEN DEVICE$=STP(D$(2,6),1) ELSE DEVICE$=STP(D$(2,6),1),JOB_CARD$=D$(65,60),ALLOW$=D$(125,1)
+1050 READ (Z[1],KEY=DEVICE$,DOM=1995)IOL=0310
+1100 REM "Read fax parms
+1105 DIM F$(727); REM SSP 207601
+1110 READ (Z[13],KEY=X3$(9,3)+"FX2",DOM=1111)F$
+1200 REM "Read item parameters
+1205 DIM FORM_PARM$(175) ! 237164
+1210 IF JOB_CARD$="" THEN FIND (Z[2],KEY=FORM_CODE$,DOM=1211)FORM_PARM$ ELSE FORM_PARM$(1,11)=FORM_CODE$,FORM_PARM$(12,60)=JOB_CARD$,FORM_PARM$(72,1)=ALLOW$
+1995 GOTO 9900
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56005 REM "207601-When emailing a laser form, if there is an "sp" in the email
+56006 REM "237164-Install Unform. Implement electronic forms support in Unform

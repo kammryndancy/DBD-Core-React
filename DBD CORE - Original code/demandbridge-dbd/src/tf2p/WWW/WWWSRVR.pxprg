@@ -1,0 +1,136 @@
+0010 REM "WWW Basic Server <WWWSRVR>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 03/05/07 - 11.777777 - mhe - SSP# 205703
+0037 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Expects to be started in basic with 1st arg= task id, 2nd arg = filemask (DX:** -> X is disk #, ** is file mask to use[any legal unix or windows mask]), 3rd arg=logfile name, 4th arg is number of seconds to sleep between each search, normally 1 second, 5th arg is options use "" if none,6th arg is IPLINPUT name
+0055 REM "If file named 'ENDITALL' is found, server will exit
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="WWWSRVR",X1$="WWW Basic Server"
+0120 EOL$=$0D0A$
+0130 IF POS(";U"=SYS)<>0 THEN SYS_TYPE$="U",PN_SEP$="/",LS_COMMAND$="ls" ELSE SYS_TYPE$="W",PN_SEP$="\",LS_COMMAND$="DIR"
+0200 REM "Initialization
+0204 REM "Get argument information, if imode then prompt for the values
+0205 IMODE=0; IF ARGC<3 THEN IMODE=1; PRINT 'CS',@(0,0),"WWW Server, Interactive mode" ELSE IF ARGC<7 THEN GOTO 9900; REM "Later we'll prompt for these
+0210 IF IMODE THEN INPUT "File mask: ",FILEMASK$ ELSE FILEMASK$=ARG(2); REM "file name maske
+0212 IF IMODE THEN INPUT "Log file: ",LOGFILE$ ELSE LOGFILE$=ARG(3); REM "Log file name
+0214 SLEEP=1; IF IMODE THEN INPUT "Sleep seconds: ",TMP$; IF TMP$="" THEN SLEEP=1 ELSE SLEEP=NUM(TMP$,ERR=0215) END_IF ELSE SLEEP=NUM(ARG(4),ERR=0215); REM "seconds to sleep, default to 1
+0216 OPTIONS$=""; IF IMODE THEN INPUT "Option string: ",OPTION$ ELSE IF ARG(5)=QUO$+QUO$ THEN OPTIONS$="" ELSE OPTION$=ARG(5); REM "Get options string
+0220 REM "Open log file, send initial messages
+0222 IF LOGFILE$="" THEN NO_LOG=1; GOTO 0236; REM "If no log file, don't log to disk
+0225 ERASE LOGFILE$,ERR=0226; GOTO 0225
+0230 SERIAL LOGFILE$,0,0; REM "Always place logfile on 0
+0235 OPEN LOCK (3,OPT="TEXT")LOGFILE$
+0236 PAST_LOG_OPEN=1; REM "We can now signal errors
+0240 PRECISION 14; START_TIME=JUL(0,0,0); PRECISION 2; MESS$="TopForm WWW Server initiated "+FN%NTD$(JUL(0,0,0),"Mon DD,YYYY HH:MI:SS"); GOSUB 7500
+0245 IF IMODE THEN MESS$="Interactive mode ON" ELSE MESS$="Interactive mode OFF" END_IF ; GOSUB 7500
+0246 MESS$="Filemask:|"+FILEMASK$+"|"; GOSUB 7500
+0248 MESS$="Log file:|"+LOGFILE$+"|"; IF NO_LOG THEN MESS$=MESS$+"  LOGGING IS TURNED OFF!!!!!",MTYPE$="WARN" END_IF ; GOSUB 7500
+0250 MESS$="Sleep seconds:|"+STR(SLEEP:"0")+"|"; GOSUB 7500
+0252 MESS$="Options:|"+OPTIONS$+"|"; GOSUB 7500
+0260 REM "Variables to track
+0262 FILES_DONE=0; PRECISION 14; LAST_TIME=JUL(0,0,0); PRECISION 2
+0400 REM "Search for files
+0410 REM "Check D0 for ENDITALL file
+0415 CLOSE (14); OPEN (14,ERR=0416)"ENDITALL"; MESS$="Found ENDITALL file",MTYPE$="EXIT"; GOSUB 7500; GOTO 9900; REM "If ENDITALL file found then stop
+0420 FIND$=FILEMASK$; GOSUB 7600; IF FILES$="" THEN GOSUB 7550; WAIT SLEEP; GOTO 0410
+0425 PIPE_POS=POS("|"=FILES$); IF PIPE_POS<>0 THEN FILE_NAME$=FILES$(1,PIPE_POS-1); IF PIPE_POS=LEN(FILES$) THEN FILES$="" ELSE FILES$=FILES$(PIPE_POS+1) END_IF ; GOSUB 0500; GOTO 0425
+0430 GOTO 0420
+0440 ESCAPE 
+0495 GOTO 9900
+0500 REM "Process a file
+0502 REM "Create output name from input name, strip off leading DIRectory.
+0503 IN_NAME$=FILE_NAME$; S_POS=POS(PN_SEP$=IN_NAME$,-1); IF S_POS<>0 THEN IN_NAME$=IN_NAME$(S_POS+1)
+0504 OUT_NAME$=IN_NAME$+".o",TMP_NAME$=IN_NAME$+".x"
+0505 MESS$="FILE:|"+IN_NAME$+"|"; GOSUB 7500
+0506 FILES_DONE=FILES_DONE+1; CLOSE (1); OPEN LOCK (1,OPT="TEXT")FILE_NAME$
+0511 CLOSE (2)
+0512 ERASE TMP_NAME$,ERR=0513
+0515 SERIAL TMP_NAME$,DISK_NO,0; REM "DISK_NO set in 7600's
+0520 OPEN LOCK (2,OPT="TEXT")TMP_NAME$
+0600 REM "initialize IN$ array and set INDEX to starting element
+0601 REM "IN$[0] will be for environment information, so INDEX will start @ 1
+0605 INDEX=0,CALL_PROG$="",IN_MAX=50; REM "Start with 50 will expand if needed later
+0610 DIM IN$[IN_MAX,1]; REM "element 0 is 'tag', element 1 is the value
+0700 REM "Parameters
+0705 REM "Param$ 1,4 = end of line characters, 5,8=standard header, 13,8= standard trailer template
+0710 DIM PARAM$(100)
+0715 PARAM$(1,4)=EOL$,PARAM$(5,8)="WWWHD01",PARAM$(13,8)="WWWTR01"
+1000 REM "Read from Stdin and print out std out with a >> before each line
+1010 READ (1,END=1100,ERR=9000)IN_STR$
+1029 REM "if = in string split into tag and tag value around the =, if no '=' is found then the line is a continuation of the previous value, add an end of line to the string stored for the previous tag (INDEX is still pointing to the right place), and then the new line
+1030 P=POS("="=IN_STR$); IF P=0 THEN IN$[INDEX,1]=IN$[INDEX,1]+EOL$+IN_STR$; GOTO LOOP_BOTTOM ELSE TAG$=IN_STR$(1,P-1),TAG_VALUE$=IN_STR$(P+1)
+1040 IF TAG$="basic" THEN CALL_PROG$=TAG_VALUE$
+1045 INDEX=INDEX+1; IF INDEX>IN_MAX THEN CALL "INSERT_ARRAY;STRING",IN${ALL},IN_MAX+1,50; IN_MAX=IN_MAX+50; REM "if over end of array add 50 more
+1050 IN$[INDEX,0]=TAG$,IN$[INDEX,1]=TAG_VALUE$
+1095 LOOP_BOTTOM:GOTO 1010
+1100 REM "Done with call
+1103 IF INDEX=0 THEN CLOSE (1); CLOSE (2); GOTO 1190; REM "If no records found then we probably opened the file before it is finished, so close it, but don't erase and we'll catch it on the next loop around
+1105 IF CALL_PROG$<>"" THEN GOSUB CALL_A_PROG; GOTO 1190
+1107 PRINT (2)"Content-type: text/html",EOL$,EOL$,
+1110 FILE_NAME$=PARAM$(5,8); GOSUB SEND_FILE; REM "Send file header
+1115 PRINT (2)"<P>",EOL$,
+1117 PRINT (2)"INDEX = "+STR(INDEX),EOL$,
+1120 FOR I=1 TO INDEX; PRINT (2)"{",IN$[I,0],"|",IN$[I,1],"}",EOL$,; NEXT I
+1180 PRINT (2)"</P>",EOL$,
+1185 FILE_NAME$=PARAM$(13,8); GOSUB SEND_FILE; REM " Send trailer of html
+1190 REM "Done with this file
+1191 CLOSE (1); ERASE FILE_NAME$,ERR=1192
+1192 CLOSE (2)
+1193 ERASE OUT_NAME$,ERR=1194; REM "Rename tmpe file  to out file
+1194 RENAME TMP_NAME$,OUT_NAME$
+1195 RETURN 
+1200 CALL_A_PROG:REM " Call specified program
+1220 CALL CALL_PROG$,ERR=1400,PARAM$,IN${ALL},INDEX,2
+1295 CALL_A_PROG_END:RETURN 
+1400 REM "Process errors by adding .err on file original file name & renameing (so we don't process again), then send  error message back to server
+1403 ERR_NO=ERR,LINE_NO=TCB(5)
+1405 CLOSE (1); RENAME IN_NAME$,IN_NAME$+".err"
+1410 PRINT (2)"Content-type: text/html",EOL$,EOL$,
+1415 FILE_NAME$=PARAM$(5,8); GOSUB SEND_FILE; REM "Send file header
+1430 PRINT (2)"<P>",EOL$,
+1432 PRINT (2)"<BR>An error occured will processing your request",EOL$,
+1434 PRINT (2)"<BR>Please contact this web site to report it",EOL$,
+1436 PRINT (2)"<BR>Code "+STR(ERR_NO)+"-"+STR(LINE_NO),EOL$,
+1437 PRINT (2)"<BR>P=",CALL_PROG$,"|",EOL$,
+1440 FILE_NAME$=PARAM$(13,8); GOSUB SEND_FILE; REM " Send trailer of html
+1445 RETURN 
+3000 SEND_FILE:REM "Put contents of FILE_NAME$ to (2)
+3020 CALL "WWWSND",ERR=SEND_FILE_END,PARAM$,FILE_NAME$,2
+3045 SEND_FILE_END:RETURN 
+7500 REM "Put MESS$ in log & display to screen if IMODE
+7501 REM "MTYPE$ is type, clear it after, if '' then say info
+7502 REM "valid are INFO,WARN,EXIT,EXCP,STAT
+7505 IF MTYPE$="" THEN MTYPE$="INFO"
+7510 PRECISION 14; OUT$=FN%NTD$(JUL(0,0,0),"MM-DD-YYYY|HH:MI:SS")+"|"+MTYPE$+"|"+MESS$; PRECISION 2
+7520 IF NO_LOG THEN GOTO 7540 ELSE WRITE (3)OUT$
+7540 IF IMODE THEN PRINT OUT$
+7541 MTYPE$=""
+7545 RETURN 
+7550 REM "Idle tasks, these are done if no files found
+7560 REM "approx every 15 mins give stat to say we're alive & print # done
+7564 PRECISION 14
+7565 IF JUL(0,0,0)-LAST_TIME>.01 THEN MTYPE$="STAT",MESS$="SERVER OK|files to date FTD:|"+STR(FILES_DONE)+"|"; GOSUB 7500; LAST_TIME=JUL(0,0,0)
+7566 PRECISION 2
+7595 RETURN 
+7600 REM "Given FIND$ in DX:YYY format (X=basic disk#, YYY is mask) return FILES$ as list of files in that DIRectory that match YYY seperated by "|"
+7604 FILES$="",DISK_DIR$="",DISK_NO=0; IF LEN(FIND$)>2 THEN DISK_NO=NUM(FIND$(2,1),ERR=7605)
+7605 CLOSE (14); OPEN (14,ERR=7606)"D"+STR(DISK_NO); FID$=FN%FID$(14); CLOSE (14); DISK_DIR$=STP(FID$(4,6)+FID$(21),1); REM "Get DIRectory that disk is on  ! [205703]-changed FID() to FN%FID$()
+7607 MASK$="*"; IF LEN(FIND$)>3 THEN MASK$=FIND$(4); REM "get file mask
+7610 COMMAND$=LS_COMMAND$+" "+DISK_DIR$+PN_SEP$+MASK$
+7615 CLOSE (14); OPEN (14,ERR=7645,OPT="SHELL")COMMAND$
+7620 READ (14,END=7630)RESPONSE$; IF RESPONSE$<>"" AND POS(" "=RESPONSE$)=0 THEN FILES$=FILES$+RESPONSE$+"|" END_IF ; GOTO 7620; REM "IF RESPONSE$ is'' done, if response$ has a space in the name then it probably a message and not a valid file name
+7630 CLOSE (14)
+7645 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF PAST_LOG_OPEN THEN MTYPE$="EXCP",MESS$="Error: "+STR(ERR)+" Line: "+STR(TCB(5)); GOSUB 7500; MTYPE$="EXIT",MESS$="Leaving because of Program Exception"; GOSUB 7500
+9010 GOTO 1400
+9090 GOTO 9900
+9900 REM "End
+9905 ESCAPE 
+9950 IF IMODE THEN RUN "ZMENU" ELSE RELEASE 
+9999 END 
+56000 REM + Modification History
+56002 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$

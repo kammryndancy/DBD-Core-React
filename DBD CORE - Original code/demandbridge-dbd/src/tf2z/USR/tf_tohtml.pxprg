@@ -1,0 +1,115 @@
+0010 ! TF_TOHTML - TopForm Printer Mnemonic Setup
+0020 SETESC 9925; SETERR 9900
+0035 REM "5.1 - 09/17/02 - 11.034166 - kmc - SSP# 151802
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ! ^ 100
+0101 SETERR 9900
+0110 X0$="tf_tohtml",X1$="PRINTER MNEMONIC SETUP"
+0200 ! ^ 200 Save Printer Channel in lfo so we can open other files
+0210 H_PTR=LFO
+0215 IF H_PTR>65000 THEN EXIT 
+0220 PRT_NAME$=FIN(H_PTR,"FILENAME")
+0230 PRT_ID$=FID(H_PTR)
+0300 ! ^ 300 IOLISTS
+0310 IOLIST A$
+0320 IOLIST KEY_PRFX$:[LEN(3)],NAME$:[LEN(8)],DESC$:[LEN(30)],SETUP_STR$:[LEN(24)],V1$:[LEN(16)],V2$:[LEN(16)],V3$:[LEN(16)],V4$:[LEN(16)],LINES_V1$:[LEN(2)],LINES_V2$:[LEN(2)],LINES_V3$:[LEN(2)],LINES_V4$:[LEN(2)],H1$:[LEN(16)],H2$:[LEN(16)],H3$:[LEN(16)],H4$:[LEN(16)],CHR_H1$:[LEN(4)],CHR_H2$:[LEN(4)],CHR_H3$:[LEN(4)],CHR_H4$:[LEN(4)],SM1$:[LEN(16)],SM2$:[LEN(16)],SM3$:[LEN(16)],SM4$:[LEN(16)],SM5$:[LEN(16)],DESC_SM1$:[LEN(16)],DESC_SM2$:[LEN(16)],DESC_SM3$:[LEN(16)],DESC_SM4$:[LEN(16)],DESC_SM5$:[LEN(16)],MAXWIDTH$:[LEN(5)],DRIVER$:[LEN(8)]
+0500 ! ^ 500 "FILES
+0600 ! ^ 600 GET Printer Information
+0610 REM "Identify Open Printer name, exit if can't open
+0620 H_ZZ9=UNT
+0640 OPEN (H_ZZ9,ERR=*NEXT)"ZZ9"+%C$; GOTO 0655
+0650 OPEN (H_ZZ9)"ZZ9"
+0660 READ (H_ZZ9,KEY=PRT_ID$,ERR=*NEXT)IOL=0310
+0670 CLOSE (H_ZZ9)
+0700 ! ^ 100
+0710 IF A$(1,2)<>PRT_ID$ THEN GOTO 9925
+0720 IF A$(52,1)="Y" THEN GOSUB HTML ELSE GOSUB 0800
+0790 GOTO 9925
+0800 ! ^ 100
+0810 ! Read DeviceEscape codes into variables in iol 400
+0820 H_ZZPARM=UNT
+0830 OPEN (H_ZZPARM)"ZZPARM"
+0840 A1$=PAD("ptr"+A$(44,8),11,1)
+0850 READ (H_ZZPARM,KEY=A1$)IOL=0320
+0860 CLOSE (H_ZZPARM)
+1000 ! ^ 1000  "BEGIN MAIN PROCESS of loading printer control codes
+1010 MNEMONIC (H_PTR)'FF'=$0C$
+1020 MNEMONIC (H_PTR)'CR'=$0D$
+1030 MNEMONIC (H_PTR)'LF'=$0D0A$
+1100 ! ^ 100
+1110 FOR X=1 TO 4
+1120 MU$=CVS(EVS("V"+STR(X)+"$","00"),3)
+1130 IF FN%ISHEX(MU$)=1 THEN MU$="$"+MU$+"$" ELSE MU$="$00$"
+1140 ! PRINT MU$ ! debug only
+1150 CMDSTR$="MNEMONIC (H_PTR)"+$27$+STR(X)+"Y"+$27$+"="+MU$
+1160 ! PRINT CMDSTR$ ! debug only
+1170 EXECUTE CMDSTR$
+1180 ! 
+1190 MU$=CVS(EVS("H"+STR(X)+"$","00"),3)
+1200 IF FN%ISHEX(MU$)=1 THEN MU$="$"+MU$+"$" ELSE MU$="$00$"
+1210 ! PRINT MU$ ! debug only
+1220 CMDSTR$="MNEMONIC (H_PTR)"+$27$+STR(X)+"X"+$27$+"="+MU$
+1230 ! PRINT CMDSTR$ ! debug only
+1240 EXECUTE CMDSTR$
+1250 ! 
+1260 NEXT X
+1300 ! ^ 100
+1310 FOR X=1 TO 5
+1320 MU$=CVS(EVS("SM"+STR(X)+"$","00"),3)
+1330 IF FN%ISHEX(MU$)=1 THEN MU$="$"+MU$+"$" ELSE MU$="$00$"
+1340 ! PRINT MU$ ! DEBUG ONLY
+1350 CMDSTR$="MNEMONIC (H_PTR)"+$27$+STR(X)+$5327$+"="+MU$
+1360 ! PRINT CMDSTR$ ! debug only
+1370 EXECUTE CMDSTR$
+1380 ! 
+1390 NEXT X
+1400 ! ^ 100
+1410 MNEMONIC (H_PTR)'SP'=MNM('1Y',H_PTR)+MNM('1X',H_PTR)
+1420 MNEMONIC (H_PTR)'CP'=MNM('2Y',H_PTR)+MNM('2X',H_PTR)
+1430 MNEMONIC (H_PTR)'A1'=MNM('3Y',H_PTR)+MNM('3X',H_PTR)
+1440 MNEMONIC (H_PTR)'A2'=MNM('4Y',H_PTR)+MNM('4X',H_PTR)
+1450 MNEMONIC (H_PTR)'PM'=MNM('1S',H_PTR)
+1460 MNEMONIC (H_PTR)'LM'=MNM('2S',H_PTR)
+1470 X$=MNM('PS',0); IF X$<>"" THEN MNEMONIC (H_PTR)'PS'=X$ ! Start Slave
+1480 X$=MNM('PE',0); IF X$<>"" THEN MNEMONIC (H_PTR)'PE'=X$ ! End Slave
+1500 MU$=CVS(SETUP_STR$,3)
+1510 IF FN%ISHEX(MU$)=1 THEN MU$="$"+MU$+"$" ELSE MU$="$00$"
+1520 CMDSTR$="MNEMONIC (H_PTR)'RM'="+MU$
+1530 ! PRINT CMDSTR$ ! debug only
+1540 EXECUTE CMDSTR$
+1550 ! 
+1560 PRINT (H_PTR,ERR=*NEXT)'RM', ! setup printer
+1590 RETURN 
+2010 HTML:
+2020 ! Close printer and replace printer device with spool file
+2030 CLOSE (H_PTR)
+2035 GOSUB CREATE_HTML_STRING
+2040 ! PRINT "HTML_FILE$=",HTML_FILE$,'LF',"HTML_OPT$=",HTML_OPT$,; INPUT *
+2080 OPEN (H_PTR,OPT=HTML_OPT$)"*HTML*;FILE="+HTML_FILE$
+2100 ! Set Device Escape Codes
+2110 ! GOSUB 0800
+2200 ! Define closing mnemonic for printer & erase temp file
+2300 ! set file id (fid) to printer name
+2310 SETFID (H_PTR)PRT_ID$
+2390 RETURN 
+3000 CREATE_HTML_STRING:! Create HTML_OPT$ with HTML open
+3010 HTML_FILE$=STP(A$(53,60)); HTML_OPT$=STP(A$(113,60)); TITLE$=TBL(%TF_TITLE$,"~!@#$%^&* ",DIM(10,"_")); DATETIME$=DTE(0:"%Ms %D, %Y %H:%m:%s"); SEQ$=DTE(0:"%Mz%Dz")+SUB(STR(TIM+RND),".","") ! SEQ is month+day+tim in hours+ random factor, TITLE is title with chars replaced with "_"s
+3050 ! replace tokens
+3055 T$=HTML_FILE$; GOSUB REPLACE_TOKENS; HTML_FILE$=T$
+3060 T$=HTML_OPT$; GOSUB REPLACE_TOKENS; HTML_OPT$=T$
+3095 RETURN 
+3099 ! 
+3100 REPLACE_TOKENS:! Replace tokens in T$
+3110 T$=SUB(T$,"&TITLE",%TF_TITLE$) ! Program title
+3115 T$=SUB(T$,"&DATETIME",DATETIME$) ! Date and time stamp
+3120 T$=SUB(T$,"&TITLE_NS",TITLE$) ! Title without spaces
+3125 T$=SUB(T$,"&PROG",STP(%TF_PROG$)) ! Program name
+3130 T$=SUB(T$,"&SEQ",SEQ$) ! time based sequence#
+3195 RETURN 
+3199 ! 
+8900 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9900 REM "ERROR PROCESSING
+9910 PRINT "tf_tohtml Print Driver error number: ",ERR," on line: ",TCB(5),'LF','LF','LF'; INPUT *
+9920 EXIT 
+9999 END 

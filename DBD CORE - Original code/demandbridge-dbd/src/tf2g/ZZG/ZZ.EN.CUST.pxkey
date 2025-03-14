@@ -1,0 +1,77 @@
+<PxTable>
+ TableName=ZZ.EN.CUST
+ TableKey=K1450815969
+ FileCreate=KEYED "ZZ.EN.CUST",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_SEC_USER0000"
+    FIELD_1$="*File=ZZPARM"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="71"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="Application Security by Operator"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="ZZPARM"
+    FIELD_18$="2015/03/31 16:12 tma"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SEC_USER0001"
+    FIELD_1$="Fld#1(5,3)"
+    FIELD_4$="9"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"USER_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SEC_USER0002"
+    FIELD_1$="Formula:%ZZPAR1$"
+    FIELD_4$="35"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SEC_USER0003"
+    FIELD_1$="Formula:%ZZPAR$"
+    FIELD_4$="25"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ROLE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_SEC_USERSLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="osec"
+    FIELD_13$="C"+QUO+"ZZGMOB;CHECK_QRY"+QUO+",PRIME_KEY$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

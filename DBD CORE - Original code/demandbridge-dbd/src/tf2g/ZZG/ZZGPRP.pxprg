@@ -1,0 +1,30 @@
+0010 REM "Identify Installed TopForm Modules <ZZ2PRP>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.5 - 09/07/07 - 15.893888 - jdf - SSP# 211380
+0037 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "MODULE_CODE$ is 2 char module code given to look in install info for
+0071 REM "Returns RESULT$ = 'Y' if found, 'N' if not found, '' would be error
+0072 REM "DATE$ are the version and data created if module exists
+0090 CLEAR ; SETERR 0100; ENTER MODULE_CODE$,RESULT$,TF_DATE$
+0100 SETERR 9000
+0110 X0$="ZZ2PRP",X1$="Identify Installed TopForm Modules"
+0900 REM "Initialize variables
+0910 RESULT$="",TF_DATE$=""
+0915 V0_LEN=17; REM "Length of each entry in V0$
+0950 IF LEN(MODULE_CODE$)<>2 THEN GOTO 9900
+1000 REM "Get code and return data
+1010 CALL "TF"+%LIC_COMP$+";OSCAR",V0$
+1015 P=POS(MODULE_CODE$=V0$,V0_LEN); IF P=0 THEN RESULT$="N"; GOTO 9900; REM "If not found, set result$ and leave
+1020 REM "If here, we found module, set return params and leave
+1025 RESULT$="Y",TF_DATE$=V0$(P+5,6)
+1095 GOTO 9900
+9000 REM "Error routine
+9010 EXIT ERR
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 

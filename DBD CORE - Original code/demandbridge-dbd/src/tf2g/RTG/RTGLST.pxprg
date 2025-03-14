@@ -1,0 +1,25 @@
+0010 ! RTGLST - Get Send to List for Remote T/M
+0100 ! ^100,5 - Call/Enter String
+0105 SETERR 0110; ENTER RT_PARMS$,TM_LIST$,SP_CODE$,SEND_TO$
+0500 ! 500,5 - Open files
+0505 _RT6=HFN; OPEN (_RT6)"RT6"+%C$ ! List options by Salesperson
+0600 ! ^100,5 - Get parameters
+0605 IF RT_PARMS$="" THEN CALL "RTGPRM",ERR=*NEXT,RT_PARMS$
+0615 ! 
+1000 ! ^1000,5 - Setup Sendto List
+1005 SEND_TO$=""
+1010 SELECT RT6$ FROM _RT6 BEGIN TM_LIST$ END TM_LIST$+$FF$
+1015 ! If on host and host updates or on remote and remote updates, then
+1016 ! check the salesperson to see if they get the salesperson's updates
+1017 ! only. If all true then add to SENT_TO$ list
+1020 IF (RT_PARMS$(7,1)="R" AND RT6$(10,1)="Y") OR (RT_PARMS$(7,1)<>"R" AND RT6$(9,1)="Y") THEN {
+1021 IF RT6$(23,1)<>"Y" OR (RT6$(23,1)="Y" AND RT6$(5,4)=SP_CODE$) THEN {
+1022 SEND_TO$+=RT6$(5,4)
+1023  } }
+1025 NEXT RECORD 
+1035 ! 
+9700 ! 9700,5 - Close files and clean up
+9705 CLOSE (_RT6)
+9800 ! ^100,5 - Return to previous
+9998 ! 9998,1 - End
+9999 END 

@@ -1,0 +1,41 @@
+0010 ! *cmd/dumpf - Find values in the dump
+0020 ! Based on 'tfd' by Keith McBride of TopForm - match Dump, save to memory file and only dump lines matching _MATCH$
+0030 ! Concept by Harry Valters of PointForce/BCSL
+0035 ! Noel Vandebeek submitted update to allow for case insensitive matches if prefixed with a * and corrected a line count problem - Sept 23
+0040 ! 
+0050 ! Available for download at http://nthdimension.net/
+0060 ! 
+0100 ! ^100
+0105 SETERR GoodBye
+0110 PRINT ESC+"F"+STR(PRM('LB'):"0"),'B?',PAD(" Dump Find ",MXC(0)+1),'ER','SF','RM',ESC+"F"+STR(PRM('LB'):"0"),'CE','RM',
+0120 OPEN (UNT,BSZ=4096)"*memory*"
+0130 DUMP (LFO)*
+0140 ENTER _MATCH$,ERR=*NEXT
+0150 _MATCH$=STP(_MATCH$,0)
+0151 IF POS("*"=_MATCH$)=1 THEN _CASE=1,_MATCH$=UCS(_MATCH$(2))
+0160 _CHAN=LFO
+0170 Found=0
+0180 READ (_CHAN,IND=0)
+0190 SELECT A$ FROM _CHAN
+0191 IF _CASE THEN A$=UCS(A$)
+0200 IF POS("! PGN"=A$)=1 AND POS(PGN=A$)=0 THEN GOSUB PrintLine; CONTINUE ! If you error on this line you really should upgrade your providex... otherwise change the CONTINUE to GOTO the line with the NEXT RECORD on it
+0210 IF POS(_MATCH$=A$)<>0 THEN {
+0220 IF MID(A$,1,1)<>"!" THEN {
+0230 Found=1
+0240 GOSUB PrintLine
+0250  }
+0260  }
+0270 NEXT RECORD 
+0280 CLOSE (_CHAN)
+0290 IF NOT(Found) THEN A$="Dump Data Not Found"; GOSUB PrintLine
+0300 GoodBye:EXIT 
+0310 ! 
+0400 PrintLine:! ^100 print line
+0410 _COUNT++
+0411 _XLINES=INT(LEN(A$)/(MXC(0)+1))
+0412 _COUNT+=_XLINES
+0420 IF _COUNT>MXL(0)-3 THEN _COUNT=1+_XLINES; INPUT 'LF',"Return to Continue <F4> to Quit",*; IF CTL=4 THEN EXIT END_IF ; PRINT 'LF'
+0430 IF MID(A$,1,1)<>"!" AND NOT(NUL(_MATCH$)) THEN A$=SUB(A$,_MATCH$,'B;'+_MATCH$+'RM')
+0440 PRINT A$
+0450 RETURN 
+0460 ! 

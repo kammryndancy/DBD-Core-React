@@ -1,0 +1,31 @@
+0010 REM "Execute System command and get results <ZZSCOM>
+0035 REM "3.8 - 04/24/95 - 13.59 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "C0$ is command to do system call on
+0081 REM "R$ is results returned
+0085 REM "Puts temp file on disk 0 always
+0086 REM "Command output will be piped to a temp file, so don't pipe it anywhere else! The command will add the necessary pipe stuff itself.
+0090 SETERR 0100; ENTER C0$,R$
+0100 SETERR 9000
+0900 R$="!",E$=""
+1000 REM "Get file name, clearit and get results
+1010 J$="TEMP"+FID(0)
+1020 ERASE J$,ERR=1021
+1030 F0=14
+1035 CLOSE (F0,ERR=1036)
+1055 D0$=%DATAPATH$
+1060 C9$=C0$+" > "+D0$+"/"+J$
+1063 REM PRINT C9$,; INPUT *
+1065 INVOKE C9$
+1070 CLOSE (F0,ERR=1071)
+1075 OPEN (F0,ERR=1100)J$
+1080 R$=""
+1085 READ RECORD (F0,END=1100)R0$; R$=R$+R0$; GOTO 1085
+1995 GOTO 9900
+8910 DEF FNS$(X$)=X$(1,POS("  "=X$+"  ")-1)
+9000 REM 
+9010 EXIT ERR
+9820 O9$=""
+9940 EXIT 
+9999 END 

@@ -1,0 +1,193 @@
+0010 REM "Display Bar Graph and Time to complete
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 05/09/18 - 10.851111 - tma - SSP# 300616
+0037 REM "300616-Getting an error 41 in QATST GUI running OP month end       
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 REM "
+0095 REM "S$=style, "H"orizontal or "V"ertical, "G"=guess time left to complete a 'p' means don't print percentage in bar
+0096 REM "L=line to print on, L0=column to start the actual bar in, L1 = total length of the bar itself in columns,
+0097 REM "T0=start time(if 0, ZZBARG will init), T= total amount, C=amount completed so far
+0100 REM "
+0110 ENTER X3$,S$,L,L0,L1,T0,T,C
+1000 ! if GUI, then, doit  and leave
+1005 CTLOFFSET=3000+INT(L)
+1010 IF %GUI THEN GOTO GUI ! SSP#300616 too off this portion of the check AND (SSN>"10" AND TCB(88)) THEN GOTO GUI
+1050 REM "Display horiz. bar graph given total #, T and current #, C
+1051 REM "Display hardcoded for line 8 now
+1055 IF T=0 THEN P=1 ELSE P=C/T; IF P>1 THEN P=1; REM "can't be over 100%, even if it is!
+1060 DIM P9$(L1,"+"); P9=INT(P*L1),P8$=STR(INT(P*100):"##0")+"%"
+1062 GOSUB 7000
+1063 IF P9>1 THEN P9$(1,P9)=""; REM "Make the bar solid
+1065 IF POS("p"=S$)=0 AND L1>LEN(P8$)+2 THEN P9$(INT(L1/2)-INT(LEN(P8$))/2+1,LEN(P8$)+1)=P8$
+1070 IF P9<1 THEN PRINT @(L0-1,L),"|"+P9$+"|", ELSE IF P9>L1 THEN PRINT @(L0-1,L),"|",'BR',P9$,'ER',"|", ELSE PRINT @(L0-1,L),"|",'BR',P9$(1,P9),'ER',P9$(P9+1),"|",
+1080 WAIT (0)
+1090 IF POS("G"=S$)<>0 THEN GOSUB 2000
+1095 GOTO 9900
+2000 REM "Guess time remaining
+2002 PRECISION 6
+2004 REM "Initialize time, if not set already
+2005 IF T0=0 THEN T0=TIM
+2009 REM "Figure time used so far (TIM), and using percent done (P) guess at what is left to do (T2)
+2010 IF P=0 THEN T2=TIM-T0 ELSE T2=(TIM-T0)*(1-P)/P
+2014 REM "Now display as HH:MM:SS left to do at the left end of the bar graph
+2015 IF T2<1 THEN H=0,M=FPT(T2) ELSE M=FPT(T2),H=T2-FPT(T2)
+2020 M=M*60
+2025 IF M<1 THEN S=INT(FPT(M)*60),M=0 ELSE S=INT(FPT(M)*60),M=M-FPT(M)
+2040 PRINT @(L0+L1+3,L),"TL: ",STR(H:"00"),":",STR(M:"00"),":",STR(S:"00"),
+2041 PRECISION 2
+2045 RETURN 
+3000 GUI:! Use ZZBARG
+3014 %_NO_PROGBAR_CANCEL=1 ! we don't have cancel code in right now
+3015 IF T0=0 THEN { T0=TIM
+3016 IF SSN>"10" THEN {
+3017 BTN=CTLOFFSET+10; BUTTON BTN,@(L0,L,1,1.25)="",ERR=*NEXT; BTN'BACKCOLOUR$="LIGHT BLUE"
+3018 PRINT 'PEN'(1,1,15),'FILL'(1,15),'RECTANGLE'(@X(L0),@Y(L),@X(L0+L1),@Y(L+1.35)),'FRAME'(@X(L0),@Y(L),@X(L0+L1),@Y(L+1.35),0),
+3019 MLN=CTLOFFSET+11; MULTI_LINE MLN,@(L0+INT(L1/2)-6,L-1.5,12,1),OPT="BCL",ERR=*NEXT
+3020 GOTO GUI_DONE ! if first_time then init progbar and leave
+3021  } ELSE {
+3022 CALL "ZZBARG;INIT","",L1,L0,L; GOTO GUI_DONE ! if first_time then init progbar and leave
+3023  }
+3024  }
+3025 GOSUB 3100
+3090 GUI_DONE:GOTO 9900
+3099 ! 
+3100 REM "GUI guess time remaining
+3102 PRECISION 6
+3105 IF T=0 THEN P=1 ELSE P=C/T; IF P>1 THEN P=1; REM "can't be over 100%, even if it is!
+3109 REM "Figure time used so far (TIM), and using percent done (P) guess at what is left to do (T2)
+3110 IF P=0 THEN T2=TIM-T0 ELSE T2=(TIM-T0)*(1-P)/P
+3114 REM "Setup mess$ based on time HH:MMSS left to do
+3115 IF T2<1 THEN H=0,M=FPT(T2) ELSE M=FPT(T2),H=T2-FPT(T2)
+3120 M=M*60
+3125 IF M<1 THEN S=INT(FPT(M)*60),M=0 ELSE S=INT(FPT(M)*60),M=M-FPT(M)
+3130 MESS$=MSG("TIME_LEFT")+" "+STR(H:"00")+":"+STR(M:"00")+":"+STR(S:"00")
+3131 IF SSN>"10" THEN {
+3132 SETERR 3137
+3134 BTN=CTLOFFSET+10; BTN_COLS=INT((C/T)*L1); BTN'COLS=BTN_COLS
+3135 MLN=CTLOFFSET+11; MLN'VALUE$=STR(INT(P*100):" 00")+"%"+"  |  "+STR(H:"00")+":"+STR(M:"00")+":"+STR(S:"00")
+3137 SETERR 9000
+3138 RETURN 
+3139  }
+3140 CALL "ZZBARG;Update_percent",MESS$,P*100
+3141 PRECISION 2
+3145 RETURN 
+3149 ! 
+7000 REM "Put hash marks on graph
+7005 IF L1<10 THEN GOTO 7045; REM " Not worth putting marks in
+7010 IF FPT(L1/3)=0 THEN L5=3 ELSE L5=4
+7045 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 EXIT 
+9999 END 
+10000 ! *progbar - ProvideX Status Bar Utility
+10010 ! (c) Copyright 1996 - Sybex Ltd (Ontario, Canada)
+10020 ! 
+10030 ! INIT call for setup:
+10040 ! !  CALL "*progbar;Init",TITLE$,BAR_SIZE[,COLUMN,ROW]
+10050 ! !    Where TITLE$ is the title that appears at the top of the window
+10060 ! !    Where BAR_SIZE is the size of the bar in columns (minimum 15)
+10070 ! !    Where COLUMN and ROW are optional arguments which indicate the
+10080 ! !      location of the top left corner of the status bar window
+10090 ! 
+10100 ! UPDATE call:
+10110 ! !  CALL "*progbar;Update",ERR=ADDRESS,TEXT$
+10120 ! !    Where TEXT$ is the message which is displayed above the bar.
+10130 ! !    Where ADDRESS is the error branch statement if the user chooses
+10140 ! !      to cancel the process before it is complete.
+10150 ! !    With this call, the bar simply increases in size by one block
+10160 ! !      with each call.
+10170 ! 
+10180 ! UPDATE_PERCENT call:
+10190 ! !  CALL "*progbar;Update_percent",ERR=ADDRESS,TEXT$,PERCENT
+10200 ! !    Where TEXT$ is the message which is displayed above the bar.
+10210 ! !    Where PERCENT is the percentage value to be indicated by the bar.
+10220 ! !    Where ADDRESS is the error branch statement if the user chooses
+10230 ! !      to cancel the process before it is complete.
+10240 ! 
+10250 ! WRAP_UP call:
+10260 ! !  CALL "*progbar;Wrap_up"
+10270 ! 
+10280 INIT:
+10290 ENTER TITLE$,BAR_SIZE,C,R,ERR=10300; GOTO 10310
+10300 C=MAX(0,INT((MXC(0)-MAX(BAR_SIZE,15)+4)/2)),R=18
+10310 %_STS_BAR_LEN_=0,%_STS_BAR_TXT_$=""
+10320 BAR_SIZE=MAX(BAR_SIZE,15),%_LAST_TMS=-1
+10330 ! 
+10340 SV_MSGLIB$=MSG(*)
+10350 _LANG$=LCS(%NOMAD_DEF_SFX$); IF _LANG$="" THEN _LANG$=LCS(ENV("PVXLANG")); IF _LANG$="" THEN _LANG$=LCS(ENV("LANG")); IF _LANG$="" THEN _LANG$="en"
+10360 MESSAGE_LIB "*msglib."+_LANG$,ERR=*NEXT; GOTO 10380
+10370 MESSAGE_LIB "*msglib.en"
+10380 CANCEL$=MSG("&CANCEL"),%PROGBAR_ABORT$=MSG("ABORT_PBAR")
+10390 MESSAGE_LIB SV_MSGLIB$
+10400 ! 
+10405 %_STS_X=C-1,%_STS_Y=R-4,%_STS_BAR_SIZE=BAR_SIZE
+10420 PRINT 'FRAME'(@X(%_STS_X+1),@Y(%_STS_Y+3.9),@X(%_STS_X+BAR_SIZE+3.5),@Y(%_STS_Y+5.2),0),
+10440 IF %_NO_PROGBAR_CANCEL=0 THEN BUTTON 4,@(BAR_SIZE-7,1,9,2)=CANCEL$
+10450 PRINT 'IMAGE'("Bar"),'FILL'(1,4),'PEN'(1,1,4),'IMAGE'(""),
+10460 WAIT 0
+10470 EXIT 
+10480 UPDATE:
+10490 ENTER TEXT$; PFLG$="N"
+10500 GOTO 10530
+10510 UPDATE_PERCENT:
+10520 ENTER TEXT$,PRCNT; PFLG$="Y"
+10530 BAR_SIZE=%_STS_BAR_SIZE
+10540 ! IF %_LAST_TMS=TMS THEN GOTO 10600 ELSE %_LAST_TMS=TMS
+10550 IF %_STS_BAR_TXT_$<>TEXT$ THEN PRINT 'IMAGE'(DELETE "Text"),'IMAGE'("Text"),'TEXT'(@X(%_STS_X+15),@Y(%_STS_Y+3),TEXT$),; WAIT 0; %_STS_BAR_TXT_$=TEXT$
+10560 IF PFLG$="N" THEN GOSUB NO_PERCENT ELSE GOSUB WITH_PERCENT
+10570 OBTAIN (0,TIM=.01,ERR=10580)*
+10580 X=CTL; IF X<>4 OR %_NO_PROGBAR_CANCEL<>0 THEN X=0
+10590 IF X<>0 THEN P=POS(":"=%PROGBAR_ABORT$); MSGBOX %PROGBAR_ABORT$(P+1),%PROGBAR_ABORT$(1,P-1),"YESNO",X$; IF X$="YES" THEN EXIT X
+10600 EXIT 
+10610 NO_PERCENT:
+10620 %_STS_BAR_LEN_=%_STS_BAR_LEN_+1
+10630 IF %_STS_BAR_LEN_<=BAR_SIZE THEN GOTO 10660
+10640 PRINT 'IMAGE'(DELETE "Bar"),'IMAGE'("Bar"),'FILL'(1,4),'PEN'(1,1,4),; WAIT 0
+10650 %_STS_BAR_LEN_=1
+10660 X=@X(%_STS_X+1+%_STS_BAR_LEN_)
+10670 PRINT 'IMAGE'("Bar"),'RECTANGLE'(X+2,@Y(%_STS_Y+4)+2,X+@X(%_STS_X+1)-2,@Y(%_STS_Y+5)-2),
+10680 PRINT 'IMAGE'(""),; WAIT 0
+10690 RETURN 
+10700 WITH_PERCENT:
+10710 IF PRCNT<=47 THEN PRINT 'IMAGE'(DELETE "Percent"),'IMAGE'("Percent"),'FONT'("MS Sans Serif",1),'TEXT'(@X(%_STS_X+INT(BAR_SIZE/2)-1),@Y(%_STS_Y+4.0),STR(INT(PRCNT))+"%"),; WAIT 0 ELSE PRINT 'IMAGE'(DELETE "Percent"),'IMAGE'("Percent"),'WHITE','FONT'("MS Sans Serif",1),'TEXT'(@X(%_STS_X+INT(BAR_SIZE/2)-1),@Y(%_STS_Y+4.0),STR(INT(PRCNT))+"%"),'BLACK',; WAIT 0
+10720 L1=%_STS_BAR_LEN_,%_STS_BAR_LEN_=INT(BAR_SIZE*PRCNT/100),L2=%_STS_BAR_LEN_
+10725 IF L2<L1 THEN L1=0; PRINT 'IMAGE'(DELETE "Bar"),'FILL'(1,4),'PEN'(1,1,4),; WAIT 1
+10730 IF %_STS_BAR_LEN_=0 OR L1=L2 THEN GOTO 10790
+10740 FOR I=1 TO L2-L1
+10750 X=@X(%_STS_X+1+(L1)+I),X2=@X(%_STS_X+2+L1+I)-2
+10760 PRINT 'IMAGE'("Bar"),'FILL'(1,4),'PEN'(1,1,4),'RECTANGLE'(X+2,@Y(%_STS_Y+4)+2,X2+2,@Y(%_STS_Y+5)-2),; WAIT 0
+10770 PRINT 'IMAGE'(""),; WAIT 0
+10780 NEXT I
+10790 RETURN 
+10800 WRAP_UP:
+10805 ESCAPE 
+10810 WAIT 1
+10820 PRINT (0,ERR=*NEXT)'POP',
+10830 EXIT 
+56001 REM "265753-Enhance progress bar display in CHUI and GUI if DB/d session
+56002 REM "300616-Getting an error 41 in QATST GUI running OP month end       

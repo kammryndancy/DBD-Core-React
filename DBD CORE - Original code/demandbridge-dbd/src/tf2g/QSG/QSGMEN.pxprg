@@ -1,0 +1,24 @@
+0010 ! QSGMEN - Demonstration menu
+0020 BEGIN 
+0021 IF %OP_ID$="" THEN CALL "ZZWMX3"
+0030 PRINT 'SHOW'(-1),
+0035 REM "5.7 - 08/16/10 - 14.994444 - tma - SSP# 240435
+0037 REM "240435-Compare of programs/panels from DEV to Release              
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 PROCESS "MENU","../QSG/QS.EN"
+0061 END 
+0100 INIT:! ^100,5 - Initialization Routine
+0105 IF DEC(MID(MSE,22,1))>0 THEN %WDX$="[WDX]" ELSE %WDX$=""
+0110 IF %WDX$<>"" THEN {
+0115 CALL %WDX$+"*WINDX.UTL;GET_LWD",%WINDX_DIR$
+0116 IF %WINDX_DIR$(LEN(%WINDX_DIR$),1)<>DLM THEN %WINDX_DIR$+=DLM
+0120  }
+0125 IF NOT(LEN(%WDX$)) THEN {
+0130 PICTURE$=".\tf_logo.bmp"
+0135  } ELSE {
+0140 PICTURE$=%WINDX$+%WINDX_DIR$+"topform\tf_logo.bmp"
+0145  }
+0150 EXIT 
+0155 END 
+9999 END 

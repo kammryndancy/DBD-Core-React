@@ -1,0 +1,126 @@
+0010 REM "<PA2UAA> Update Accounts Payable Gateway
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 10/06/17 - 10.046666 - tma - SSP# 295658
+0037 REM "295658-What are we doing wrong on this AP Gateway upload?          
+0040 REM "Copyright 2017 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0091 REM "Copied from FO2UAA--8/28/97
+0095 REM "Q0$="", Q1$="*"
+0096 REM "Q1$=CPR if coming from commission payable report
+0100 SETERR 9000
+0110 X0$="PA2UAA",X1$="Update Accounts Payable Gateway"
+0120 DIM Z0$(80,"-"),S0$(40)
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 IF Q0$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13]; REM "PA0-Header
+0320 IOLIST B$,B[0]; REM "PA2-Lines
+0330 IOLIST A1$,A1[0],A1[1],A1[2],A1[3],A1[4],A1[5],A1[6],A1[7],A1[8],A1[9],A1[10],A1[11],A1[12],A1[13],A1[14]; REM "APD
+0340 IOLIST B1$,B1[0]; REM "APE
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15],E[16],E[17],E[18],E[19],E[20],E[21],E[22],E[23],E[24],E[25],E[26],E[27],E[28],E[29],E[30],E[31],E[32]; REM "IC0, used for validity check
+0360 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29],G[30]; REM "FM1, used for validity check
+0370 IOLIST H$; REM "FO5-Parameters
+0380 IOLIST I$,I[0],I[1],I[2],I[3],I[4],I[5],I[6],I[7],I[8],I[9],I[10],I[11],I[12],I[13],I[14],I[15]; REM "FM4
+0500 REM " Files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O PA0... 02O PA2... 03O APD... 04O APE... 05O ZY9  13O ZZPARM "
+0515 IF X3$(145,1)="1" AND Q1$="CPR" THEN CALL "ZZBATZ",X3$,X4$,"AP2DAA","Commission Payable Report"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 IF Q0$="" THEN IF Q1$<>"G" THEN GOSUB 6000
+0620 IF Q0$="" THEN IF Q1$<>"G" THEN GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 DIM A$(119),A[13],B$(41),B[1]
+0990 READ (Z[1],KEY="",DOM=0991)
+1000 REM "Process PA0
+1010 K1$=KEY(Z[1],END=5000); READ (Z[1],KEY=K1$,DOM=1010)IOL=0310
+1015 IF Q0$="" THEN IF Q1$<>"G" THEN C=C+1; IF MOD(C,T0)=0 THEN GOSUB 8150
+1017 IF R1=1 AND A$(119,1)="Y" THEN REMOVE (Z[1],KEY=K1$); GOSUB 2100; GOTO 1010
+1020 IF NUL(A$(111,2)) AND A$(119,1)<>"Y" THEN GOSUB 2000; GOSUB 2100; A$(119,1)="Y"; WRITE (Z[1],KEY=K1$)IOL=0310; REM "Not on hold and invoice not yet created, ok to create invoice record ! 262361
+1090 IF Q0$<>"" THEN GOTO 9900
+1095 GOTO 1010
+2000 REM "Write PA0 header to APD file
+2005 DIM A1$(146),A1[14]
+2007 A1$(1,110)=A$(1,110)
+2010 FOR X=0 TO 13; A1[X]=A[X]; NEXT X
+2020 WRITE (Z[3],KEY=A1$(1,26))IOL=0330
+2025 EXTRACT (Z[3],KEY=A1$(1,26))IOL=0330
+2095 RETURN 
+2100 REM "Write PA2 lines to APE
+2110 DIM T[200]; T9$="",F=Z[4],A0=0,T[0]=-A1[9],X=0 ! ssp#295658
+2115 READ (Z[2],KEY=A$(1,26),DOM=2116)
+2120 READ (Z[2],END=2180)IOL=0320
+2125 IF B$(1,26)<>A$(1,26) THEN IF R1=1 THEN GOTO 2195 ELSE GOTO 2180
+2126 IF R1=1 THEN REMOVE (Z[2],KEY=B$(1,29)); GOTO 2120
+2140 X=X+1
+2145 T9$=T9$+B$(30,12),T[X]=B[0]
+2170 GOTO 2120
+2180 IF R1=1 THEN GOTO 2195 ELSE CALL "GL2XAB",X3$,T9$,T{ALL},V9$,F,A0
+2185 A1[0]=A0; WRITE (Z[3],KEY=A1$(1,26))IOL=0330
+2195 RETURN 
+5000 REM "EOJ
+5005 IF Q1$="CPR" THEN R0=T
+5010 IF Q0$="" THEN IF Q1$<>"G" THEN T=C; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5030 IF R1<>1 THEN IF Q1$="CPR" THEN R1=1,C=0,T=R0; PRINT @(0,7),"There are "+STR(T)+" records to process for removal"; GOTO 0990; REM "Remove records if invoice created
+5035 IF X3$(145,1)="1" THEN GOSUB 8200; REM "Check for empty batch files
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Processing Accounts Payable Gateway Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8200 REM "Check for empty batch files and erase if empty, also remove batch header from ZY9
+8205 READ (Z[3],KEY="",DOM=8206)
+8210 K$=KEY(Z[3],END=8211); GOTO 8290
+8215 CLOSE (Z[3]); CLOSE (Z[4])
+8220 BATCH$=X3$(174,4)
+8225 ERASE "APD"+BATCH$,ERR=8226
+8230 ERASE "APE"+BATCH$,ERR=8231
+8235 REMOVE (Z[5],KEY=BATCH$+" ",DOM=8236)
+8290 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "262361-GUI conversion of Accounts Payable Gateway - Module GW_A/P  
+56003 REM "295658-What are we doing wrong on this AP Gateway upload?          

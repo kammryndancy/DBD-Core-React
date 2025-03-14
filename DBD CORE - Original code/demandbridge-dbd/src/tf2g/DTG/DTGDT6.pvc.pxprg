@@ -1,0 +1,73 @@
+REM ** @Name DTGDT6 - Output Director Queue
+REM ** @Author mhe 
+REM ** @OutputFile DTGDT6.pvc 
+REM "5.6 - 11/27/07 - 14.556666 - mhe - SSP# 203099
+REM "203099-Enhancements to Output Director.  Provide ability for       
+REM "Copyright 2007 DemandBridge, Inc.; Norcross, Georgia
+REM "        Licensed Software - All Rights Reserved.
+! 
+! 
+DEF CLASS "DTGDT6" CREATE ON_CREATE REQUIRED DELETE ON_DELETE REQUIRED 
+LIKE "DBFILE"
+LOCAL _OPENSTATUS
+! 
+! 
+! GETCHANNELNUMBER()
+! This method returns the channel number the file is opened on
+! 
+FUNCTION GETCHANNELNUMBER()
+RETURN _CHANNELNUMBER
+! 
+! 
+! GETOUTPUTQUEUE$()
+! This method returns the output queue
+! 
+FUNCTION GETOUTPUTQUEUE$()
+RETURN OUTPUT_QUEUE$
+! 
+! 
+! GETOUTPUTTYPE$()
+! This method returns the output type
+! 
+FUNCTION GETOUTPUTTYPE$()
+RETURN OUTPUT_TYPE$
+! 
+! 
+! DISPLAYRECORD()
+! This method will display the current record
+! 
+FUNCTION DISPLAYRECORD()
+PRINT 
+PRINT " OUTPUT QUEUE: "+_OBJ'GETOUTPUTQUEUE$()
+PRINT "  OUTPUT TYPE: "+_OBJ'GETOUTPUTTYPE$()
+PRINT 
+RETURN 1
+! 
+! 
+END DEF
+! 
+! 
+! CONSTRUCTOR
+! 
+ON_CREATE:
+_OPENSTATUS=0
+FILENAME$="DT6"
+COMPANY$=%C$
+_CHANNELNUMBER=HFN
+_KEYNUMBER=0
+OPEN (_CHANNELNUMBER,IOL=*,ERR=*RETURN)FILENAME$+COMPANY$
+STATIC IOL=IOL(_CHANNELNUMBER)
+_OPENSTATUS=1
+RETURN 
+! 
+! 
+! DESTRUCTOR
+! 
+ON_DELETE:
+IF _OPENSTATUS THEN CLOSE (_CHANNELNUMBER)
+RETURN 
+! 
+! 
+REM ** @ModificationHistory
+REM "Class created. 11/27/2007 - MHE
+REM "203099-Enhancements to Output Director.  Provide ability for       

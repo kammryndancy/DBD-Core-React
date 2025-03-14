@@ -1,0 +1,36 @@
+<PxTable>
+ TableName=ECO000
+ TableKey=K1021060501
+ FileCreate=KEYED "ECO000",25,0,512,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="          EC3WS1    00001"
+    FIELD_1$="          EC3WS1    00001NNNNThis is an invalid item                                                                                                                                                                                                                         Invalid item                  Y N                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EC3WS1    00002"
+    FIELD_1$="          EC3WS1    00002NNNNThis item is not in your product catalog                                                                                                                                                                                                        Not in product catalog        Y N                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EC3WS1    00003"
+    FIELD_1$="          EC3WS1    00003N   This item is currently out of stock and will be shipped     on it's arrival in our warehouse.                                                                                                                                                   Not in stock                  N                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EC3WS1    00004"
+    FIELD_1$="          EC3WS1    00004NNNNThere is not enough stock to ship your entire order.        The balance of your order will be shipped on it's arrival   in our warehouse.                                                                                                       Not enough stock              N N                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EC3WS1    00005"
+    FIELD_1$="          EC3WS1    00005NNNNYou have exceeded the monthly order maximum for this item.                                                                                                                                                                                      Order Maximum Exceeded        N N                                                                                                                                                                                                      "
+   </RecordData>
+
+</Data>
+
+</PxTable>

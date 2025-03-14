@@ -1,0 +1,1891 @@
+<PxTable>
+ TableName=CC.EN
+ TableKey=K1047417447
+ FileCreate=KEYED "CC.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="            0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_33$="0C0F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="83"
+    FIELD_5$="25"
+    FIELD_6$="D"
+    FIELD_7$="Client Conference Attendee Set-up"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"CCDCC1;Init"+QUO
+    FIELD_12$="XPerform "+QUO+"CCDCC1;Main_post_display"+QUO
+    FIELD_13$="P"+QUO+"CCDCC1;Wrapup"+QUO
+    FIELD_18$="2003/03/19 09:21 dff"
+    FIELD_21$="XR"
+    FIELD_24$="CC1"
+    FIELD_25$="1312121212"
+    FIELD_28$="crg"
+    FIELD_29$="11111210"
+    FIELD_30$="000555"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0203"
+    FIELD_1$="Fonted_text_0"
+    FIELD_2$="2"
+    FIELD_3$="0.6"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Attendee ID:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0212"
+    FIELD_1$="ATTENDEE_ID"
+    FIELD_2$="11"
+    FIELD_3$="0.6"
+    FIELD_4$="7"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_12$="P"+QUO+"CCDCC1;Check_changes"+QUO
+    FIELD_13$="P"+QUO+"CCDCC1;Find_rec"+QUO
+    FIELD_17$="4"
+    FIELD_19$="QRY_ATT"
+    FIELD_22$="KEY1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0219"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="18"
+    FIELD_3$="0.6"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Company Code:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0230"
+    FIELD_1$="COMP_CODE"
+    FIELD_2$="29"
+    FIELD_3$="0.6"
+    FIELD_4$="7"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_13$="Xcomp_code$=pad(comp_code$,3,0,"+QUO+"0"+QUO+");Perform "+QUO+"CCDCC1;Find_rec"+QUO
+    FIELD_19$="QRY_COMPCODE"
+    FIELD_22$="KEY2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   0403"
+    FIELD_1$="FOLDER"
+    FIELD_2$="2"
+    FIELD_3$="2.8"
+    FIELD_4$="79"
+    FIELD_5$="18.8"
+    FIELD_6$="S"
+    FIELD_7$="CC1_MAINT.1=Attendee"+$00$+"CC1_MAINT.2=Room"+$00$+"CC1_MAINT.3=Golf"+$00$+"CC1_MAINT.4=Admin"+$00$
+    FIELD_9$="4"
+    FIELD_10$="00000000"
+    FIELD_17$="15"
+    FIELD_32$="MS Sans Serif,1,&C"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2100"
+    FIELD_1$="FOLDER_TAB_2M"
+    FIELD_2$="0"
+    FIELD_3$="21"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.1.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2302"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="1"
+    FIELD_3$="22.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="5"
+    FIELD_13$="P"+QUO+"CCDCC1;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2306"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="5"
+    FIELD_3$="22.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="6"
+    FIELD_13$="P"+QUO+"CCDCC1;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2310"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="9"
+    FIELD_3$="22.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="7"
+    FIELD_13$="P"+QUO+"CCDCC1;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2314"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="13"
+    FIELD_3$="22.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="8"
+    FIELD_13$="P"+QUO+"CCDCC1;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2443"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="42"
+    FIELD_3$="22.6"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="9"
+    FIELD_13$="XPerform "+QUO+"CCDCC1;Write_rec"+QUO+";Perform "+QUO+"CCDCC1;clear_fields"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2453"
+    FIELD_1$="BUTTON_8"
+    FIELD_2$="52"
+    FIELD_3$="22.6"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="10"
+    FIELD_13$="P"+QUO+"CCDCC1;Clear_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2463"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="62"
+    FIELD_3$="22.6"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="11"
+    FIELD_13$="P"+QUO+"CCDCC1;Delete_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT   2473"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="72"
+    FIELD_3$="22.6"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="12"
+    FIELD_13$="XPerform "+QUO+"CCDCC1;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="15"
+    FIELD_6$="W"
+    FIELD_7$="Attendee"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="XFIRST_TAB$="+QUO+"FIRST_NAME.CTL"+QUO+",LAST_TAB$="+QUO+"SEL_CODE_5.CTL"+QUO
+    FIELD_12$="P"+QUO+"CCDCC1;Init_folder"+QUO
+    FIELD_18$="2003/03/14 10:39 dff"
+    FIELD_21$="R"
+    FIELD_28$="crg"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0002"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="2"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="11"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.2.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0102"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.4"
+    FIELD_4$="38"
+    FIELD_5$="9"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0140"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="39"
+    FIELD_3$="0.4"
+    FIELD_4$="38"
+    FIELD_5$="9"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0304"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="3"
+    FIELD_3$="2.4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="First Name:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0315"
+    FIELD_1$="FIRST_NAME"
+    FIELD_2$="14"
+    FIELD_3$="2.4"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0342"
+    FIELD_1$="FONTED_TEXT_5"
+    FIELD_2$="41"
+    FIELD_3$="2.2"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Attendee Type:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0355"
+    FIELD_1$="ATTENDEE_TYPE"
+    FIELD_2$="54"
+    FIELD_3$="2.2"
+    FIELD_4$="13"
+    FIELD_5$="5"
+    FIELD_6$="D"
+    FIELD_7$="Attendee"+$01$+"Spouse"+$01$+"TF Employee"+$01$+"Vendor"+$01$+"Other"+$01$
+    FIELD_8$="A"
+    FIELD_9$="4"
+    FIELD_22$="FIELDS"
+    FIELD_25$="ASTVO"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0504"
+    FIELD_1$="FONTED_TEXT_2"
+    FIELD_2$="3"
+    FIELD_3$="4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Last Name:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0515"
+    FIELD_1$="LAST_NAME"
+    FIELD_2$="14"
+    FIELD_3$="4"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0642"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="41"
+    FIELD_3$="5.2"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Attendee Comment:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0655"
+    FIELD_1$="ATTENDEE_COMMENT"
+    FIELD_2$="54"
+    FIELD_3$="5.2"
+    FIELD_4$="20"
+    FIELD_5$="2"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0704"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="3"
+    FIELD_3$="6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Title:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 0715"
+    FIELD_1$="TITLE"
+    FIELD_2$="14"
+    FIELD_3$="6.2"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1103"
+    FIELD_1$="Fonted_text_7"
+    FIELD_2$="2"
+    FIELD_3$="10"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Selection Code 1:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1115"
+    FIELD_1$="SEL_CODE_1"
+    FIELD_2$="14"
+    FIELD_3$="10"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="6"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1121"
+    FIELD_1$="Fonted_text_8"
+    FIELD_2$="20"
+    FIELD_3$="10"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Selection Code 2:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1133"
+    FIELD_1$="SEL_CODE_2"
+    FIELD_2$="32"
+    FIELD_3$="10"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="7"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1140"
+    FIELD_1$="Fonted_text_9"
+    FIELD_2$="39"
+    FIELD_3$="9.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Selection Code 3:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1153"
+    FIELD_1$="SEL_CODE_3"
+    FIELD_2$="52"
+    FIELD_3$="9.8"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="8"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1403"
+    FIELD_1$="Fonted_text_10"
+    FIELD_2$="2"
+    FIELD_3$="12.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Selection Code 4:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1415"
+    FIELD_1$="SEL_CODE_4"
+    FIELD_2$="14"
+    FIELD_3$="12.8"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="9"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1421"
+    FIELD_1$="Fonted_text_11"
+    FIELD_2$="20"
+    FIELD_3$="12.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Selection Code 5:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.1 1433"
+    FIELD_1$="SEL_CODE_5"
+    FIELD_2$="32"
+    FIELD_3$="12.8"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="10"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="71"
+    FIELD_5$="15"
+    FIELD_6$="W"
+    FIELD_7$="Room"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="XFIRST_TAB$="+QUO+"ROOM_TYPE.CTL"+QUO+",LAST_TAB$="+QUO+"NIGHT_6.CTL"+QUO+";_first_tab=room_type.ctl"
+    FIELD_12$="XFIRST_TAB$="+QUO+"ROOM_TYPE.CTL"+QUO+",LAST_TAB$="+QUO+"NIGHT_6.CTL"+QUO+";_first_tab=room_type.ctl;perform "+QUO+"CCDCC1;Init_folder"+QUO
+    FIELD_18$="2003/03/19 09:06 dff"
+    FIELD_21$="R"
+    FIELD_28$="dff"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0001"
+    FIELD_1$="FOLDER_TAB_1"
+    FIELD_2$="1"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="11"
+    FIELD_12$="XTAB_FLG$="+QUO+"<"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.1.CTL"
+    FIELD_21$="LBK"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0002"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="2"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="12"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.3.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0209"
+    FIELD_1$="Fonted_text_12"
+    FIELD_2$="8"
+    FIELD_3$="0.8"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Room Type:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0220"
+    FIELD_1$="ROOM_TYPE"
+    FIELD_2$="19"
+    FIELD_3$="0.8"
+    FIELD_4$="15"
+    FIELD_5$="5"
+    FIELD_6$="D"
+    FIELD_7$="Single"+$01$+"Double"+$01$+"2nd Person in a Double"+$01$
+    FIELD_9$="1"
+    FIELD_13$="XIF ROOM_TYPE$="+QUO+"2"+QUO+" THEN MULTI_LINE ENABLE SHARE_WITH.CTL;NEXT_ID=SHARE_WITH.CTL ELSE MULTI_LINE DISABLE SHARE_WITH.CTL;REFRESH_FLG=1"
+    FIELD_22$="FIELDS"
+    FIELD_25$="SD2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0242"
+    FIELD_1$="FONTED_TEXT_13"
+    FIELD_2$="41"
+    FIELD_3$="0.8"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Share with:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0251"
+    FIELD_1$="SHARE_WITH"
+    FIELD_2$="50"
+    FIELD_3$="0.8"
+    FIELD_4$="7"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_17$="4"
+    FIELD_19$="QRY_ATT"
+    FIELD_21$="D"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0408"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="7"
+    FIELD_3$="2.8"
+    FIELD_4$="52"
+    FIELD_5$="8.8"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="2"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0510"
+    FIELD_1$="FONTED_TEXT_14"
+    FIELD_2$="9"
+    FIELD_3$="3.8"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Smoking:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0517"
+    FIELD_1$="SMOKING"
+    FIELD_2$="16"
+    FIELD_3$="3.6"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="3"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0708"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="7"
+    FIELD_3$="6"
+    FIELD_4$="52"
+    FIELD_5$="0.2"
+    FIELD_6$="x"
+    FIELD_7$="Nights Staying"
+    FIELD_9$="0"
+    FIELD_10$="4"
+    FIELD_33$="01FF"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0809"
+    FIELD_1$="FONTED_TEXT_16"
+    FIELD_2$="8"
+    FIELD_3$="7.2"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Tue, 04/22/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0821"
+    FIELD_1$="NIGHT_1"
+    FIELD_2$="20"
+    FIELD_3$="7"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="4"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0826"
+    FIELD_1$="FONTED_TEXT_17"
+    FIELD_2$="25"
+    FIELD_3$="7.2"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Wed, 04/23/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0838"
+    FIELD_1$="NIGHT_2"
+    FIELD_2$="37"
+    FIELD_3$="7"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="5"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0843"
+    FIELD_1$="FONTED_TEXT_18"
+    FIELD_2$="42"
+    FIELD_3$="7.2"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Thu, 04/24/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 0855"
+    FIELD_1$="NIGHT_3"
+    FIELD_2$="54"
+    FIELD_3$="7"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="6"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1009"
+    FIELD_1$="FONTED_TEXT_19"
+    FIELD_2$="8"
+    FIELD_3$="9.4"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Fri,  04/25/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1021"
+    FIELD_1$="NIGHT_4"
+    FIELD_2$="20"
+    FIELD_3$="9.2"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="7"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1026"
+    FIELD_1$="FONTED_TEXT_20"
+    FIELD_2$="25"
+    FIELD_3$="9.4"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Sat, 04/26/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1038"
+    FIELD_1$="NIGHT_5"
+    FIELD_2$="37"
+    FIELD_3$="9.2"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="8"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1043"
+    FIELD_1$="FONTED_TEXT_21"
+    FIELD_2$="42"
+    FIELD_3$="9.4"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Sun, 04/27/2003"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1055"
+    FIELD_1$="NIGHT_6"
+    FIELD_2$="54"
+    FIELD_3$="9.2"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="9"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1311"
+    FIELD_1$="Fonted_text_15"
+    FIELD_2$="10"
+    FIELD_3$="12.2"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Room Comment:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.2 1325"
+    FIELD_1$="ROOM_COMMENT"
+    FIELD_2$="24"
+    FIELD_3$="12.4"
+    FIELD_4$="25"
+    FIELD_5$="2"
+    FIELD_6$="M"
+    FIELD_9$="10"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="14"
+    FIELD_6$="W"
+    FIELD_7$="Golf"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="XFIRST_TAB$="+QUO+"GOLF.CTL"+QUO+",LAST_TAB$="+QUO+"GOLF_COMMENT.CTL"+QUO
+    FIELD_12$="XFIRST_TAB$="+QUO+"GOLF.CTL"+QUO+",LAST_TAB$="+QUO+"GOLF_COMMENT.CTL"+QUO+",_first_tab=golf.ctl;perform "+QUO+"CCDCC1;Init_folder"+QUO
+    FIELD_18$="2003/03/19 09:08 dff"
+    FIELD_21$="R"
+    FIELD_28$="crg"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0001"
+    FIELD_1$="FOLDER_TAB_1"
+    FIELD_2$="1"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_12$="XTAB_FLG$="+QUO+"<"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.2.CTL"
+    FIELD_21$="LBK"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0002"
+    FIELD_1$="FOLDER_TAB_2"
+    FIELD_2$="2"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="6"
+    FIELD_12$="XTAB_FLG$="+QUO+">"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.4.CTL"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0215"
+    FIELD_1$="FONTED_TEXT_22"
+    FIELD_2$="14"
+    FIELD_3$="1.4"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Golf:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0219"
+    FIELD_1$="GOLF"
+    FIELD_2$="18"
+    FIELD_3$="1"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="1"
+    FIELD_12$="Xcheck_box disable Rental_clubs.ctl;drop_box disable club_type.ctl;Refresh_flg=1"
+    FIELD_13$="XIf golf$="+QUO+"Y"+QUO+" then check_box enable Rental_clubs.ctl;next_id = rental_clubs.ctl else check_box disable Rental_clubs.ctl;Refresh_flg=1"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0415"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="14"
+    FIELD_3$="3"
+    FIELD_4$="35"
+    FIELD_5$="5.4"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0518"
+    FIELD_1$="FONTED_TEXT_23"
+    FIELD_2$="17"
+    FIELD_3$="4.2"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Rental Clubs:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0530"
+    FIELD_1$="RENTAL_CLUBS"
+    FIELD_2$="29"
+    FIELD_3$="4"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="2"
+    FIELD_13$="XIf Rental_clubs$="+QUO+"Y"+QUO+" then drop_box enable Club_type.ctl;next_id=Club_type.ctl else drop_box disable Club_type.ctl;Refresh_flg=1"
+    FIELD_21$="D"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0716"
+    FIELD_1$="FONTED_TEXT_24"
+    FIELD_2$="15"
+    FIELD_3$="5.8"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Club Type:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 0730"
+    FIELD_1$="CLUB_TYPE"
+    FIELD_2$="29"
+    FIELD_3$="6"
+    FIELD_4$="13"
+    FIELD_5$="5"
+    FIELD_6$="D"
+    FIELD_7$="Right Hand Clubs"+$01$+"Left Hand Clubs"+$01$
+    FIELD_9$="3"
+    FIELD_21$="D"
+    FIELD_22$="FIELDS"
+    FIELD_25$="RL"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 1012"
+    FIELD_1$="FONTED_TEXT_25"
+    FIELD_2$="11"
+    FIELD_3$="8.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Golf Comments:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.3 1025"
+    FIELD_1$="GOLF_COMMENT"
+    FIELD_2$="24"
+    FIELD_3$="9"
+    FIELD_4$="25"
+    FIELD_5$="2"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="14"
+    FIELD_6$="W"
+    FIELD_7$="Admin"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="XFIRST_TAB$="+QUO+"SYS_ADMIN.CTL"+QUO+",LAST_TAB$="+QUO+"SA_COMMENT.CTL"+QUO
+    FIELD_12$="P"+QUO+"CCDCC1;Init_folder"+QUO
+    FIELD_18$="2003/03/12 08:51 dff"
+    FIELD_21$="R"
+    FIELD_28$="crg"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0001"
+    FIELD_1$="FOLDER_TAB_1"
+    FIELD_2$="1"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_12$="XTAB_FLG$="+QUO+"<"+QUO+",NEXT_FOLDER=FLDR.CC1_MAINT.3.CTL"
+    FIELD_21$="LBK"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0228"
+    FIELD_1$="SYS_ADMIN"
+    FIELD_2$="27"
+    FIELD_3$="1.2"
+    FIELD_4$="3"
+    FIELD_5$="1.5"
+    FIELD_6$="C"
+    FIELD_7$="{!X|!Checkmark}"
+    FIELD_8$="N"
+    FIELD_9$="1"
+    FIELD_22$="FIELDS"
+    FIELD_25$="NY"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0313"
+    FIELD_1$="FONTED_TEXT_26"
+    FIELD_2$="12"
+    FIELD_3$="1.6"
+    FIELD_4$="13"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="System Administrator:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0514"
+    FIELD_1$="FONTED_TEXT_27"
+    FIELD_2$="13"
+    FIELD_3$="3.8"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="S.A Comment:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC1_MAINT.4 0528"
+    FIELD_1$="SA_COMMENT"
+    FIELD_2$="27"
+    FIELD_3$="3.8"
+    FIELD_4$="25"
+    FIELD_5$="2"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="70"
+    FIELD_5$="18"
+    FIELD_6$="D"
+    FIELD_7$="Client Conference 2003 - Spring Training."
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_18$="2003/03/13 17:29 dff"
+    FIELD_21$="-mMZXR"
+    FIELD_28$="jvv"
+    FIELD_38$="Z"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   0318"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="17"
+    FIELD_3$="1.8"
+    FIELD_4$="50"
+    FIELD_5$="2.8"
+    FIELD_6$="F"
+    FIELD_7$="CLIENT CONFERENCE"
+    FIELD_9$="0"
+    FIELD_32$="Arial Black,-24,I"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   0530"
+    FIELD_1$="FONTED_TEXT_2"
+    FIELD_2$="29"
+    FIELD_3$="4.2"
+    FIELD_4$="20"
+    FIELD_5$="2.2"
+    FIELD_6$="F"
+    FIELD_7$="2003"
+    FIELD_9$="0"
+    FIELD_32$="Arial Black,-24,"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   0907"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="6"
+    FIELD_3$="8.2"
+    FIELD_4$="60"
+    FIELD_5$="7.6"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   1214"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="13"
+    FIELD_3$="11.4"
+    FIELD_4$="16"
+    FIELD_5$="2"
+    FIELD_6$="B"
+    FIELD_7$="Customer Set-up"
+    FIELD_9$="1000"
+    FIELD_13$="J"+QUO+"CCO_MAINT"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   1240"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="39"
+    FIELD_3$="11.4"
+    FIELD_4$="16"
+    FIELD_5$="2"
+    FIELD_6$="B"
+    FIELD_7$="Attendee Set-up"
+    FIELD_9$="1000"
+    FIELD_13$="J"+QUO+"CC1_MAINT"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCD_MAINT   1762"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="61"
+    FIELD_3$="15.8"
+    FIELD_4$="8"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Stop}E&xit"
+    FIELD_9$="1000"
+    FIELD_13$="XCmd_str$="+QUO+"END"+QUO
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="80"
+    FIELD_5$="20"
+    FIELD_6$="D"
+    FIELD_7$="Client Conference Customer Setup"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+"*win/flmaint;Init"+QUO
+    FIELD_12$="P"+QUO+"*win/flmaint;Main_post_display"+QUO
+    FIELD_13$="P"+QUO+"*win/flmaint;Wrapup"+QUO
+    FIELD_18$="2003/03/14 10:47 dff"
+    FIELD_21$="-mMXR"
+    FIELD_23$="R"
+    FIELD_24$="CC0"
+    FIELD_25$="12"
+    FIELD_28$="crg"
+    FIELD_29$="11111110"
+    FIELD_30$="000554"
+    FIELD_33$="0C0F"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0103"
+    FIELD_1$="Fonted_text_0"
+    FIELD_2$="2"
+    FIELD_3$="0.4"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Company Code:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0114"
+    FIELD_1$="COMP_CODE"
+    FIELD_2$="13"
+    FIELD_3$="0.4"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="1"
+    FIELD_11$="X_KEYDEF$="+QUO+"COMP_CODE$"+QUO+",_NUMDEF$="+QUO+QUO+",_REQD$="+QUO+QUO+",_REQD_PNL$="+QUO+QUO
+    FIELD_12$="P"+QUO+"*win/flmaint;Check_changes"+QUO
+    FIELD_13$="Xcomp_code$=pad(comp_code$,3,0,"+QUO+"0"+QUO+");Perform"+QUO+"*win/flmaint;Find_rec"+QUO+";Refresh_flg=1"
+    FIELD_17$="3"
+    FIELD_22$="KEY1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0136"
+    FIELD_1$="FONTED_TEXT_7"
+    FIELD_2$="35"
+    FIELD_3$="0.4"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Customer:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0145"
+    FIELD_1$="AR_CODE"
+    FIELD_2$="44"
+    FIELD_3$="0.4"
+    FIELD_4$="25"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="2"
+    FIELD_13$="P"+QUO+"CCDCC1;Load_cust_info"+QUO
+    FIELD_19$="QRY_AR1.1,../ARG/AR.EN"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0303"
+    FIELD_1$="Fonted_text_1"
+    FIELD_2$="2"
+    FIELD_3$="2.2"
+    FIELD_4$="12"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Company Name:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0314"
+    FIELD_1$="COMP_NAME"
+    FIELD_2$="13"
+    FIELD_3$="2.2"
+    FIELD_4$="25"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="3"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0402"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="3.4"
+    FIELD_4$="30"
+    FIELD_5$="10.4"
+    FIELD_6$="x"
+    FIELD_7$="Address"
+    FIELD_9$="0"
+    FIELD_10$="2"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0606"
+    FIELD_1$="ADDR_1"
+    FIELD_2$="5"
+    FIELD_3$="5"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="4"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0737"
+    FIELD_1$="FONTED_TEXT_8"
+    FIELD_2$="36"
+    FIELD_3$="5.8"
+    FIELD_4$="8"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Comment:"
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0746"
+    FIELD_1$="TF_COMMENT"
+    FIELD_2$="45"
+    FIELD_3$="6"
+    FIELD_4$="25"
+    FIELD_5$="2"
+    FIELD_6$="M"
+    FIELD_9$="9"
+    FIELD_17$="60"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0806"
+    FIELD_1$="ADDR_2"
+    FIELD_2$="5"
+    FIELD_3$="6.6"
+    FIELD_4$="21"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="5"
+    FIELD_17$="30"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0904"
+    FIELD_1$="Fonted_text_4"
+    FIELD_2$="3"
+    FIELD_3$="8.4"
+    FIELD_4$="5"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="City:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   0907"
+    FIELD_1$="CITY"
+    FIELD_2$="6"
+    FIELD_3$="8.4"
+    FIELD_4$="20"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="6"
+    FIELD_17$="20"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1034"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="33"
+    FIELD_3$="8.8"
+    FIELD_4$="38"
+    FIELD_5$="5"
+    FIELD_6$="x"
+    FIELD_7$="Selection Codes"
+    FIELD_9$="0"
+    FIELD_10$="2"
+    FIELD_32$="MS Sans Serif,1,S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1103"
+    FIELD_1$="Fonted_text_5"
+    FIELD_2$="2"
+    FIELD_3$="10.4"
+    FIELD_4$="6"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="State:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1107"
+    FIELD_1$="TF_STATE"
+    FIELD_2$="6"
+    FIELD_3$="10.4"
+    FIELD_4$="3"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="7"
+    FIELD_17$="2"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1113"
+    FIELD_1$="FONTED_TEXT_6"
+    FIELD_2$="12"
+    FIELD_3$="10.4"
+    FIELD_4$="5"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="Zip:"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1116"
+    FIELD_1$="ZIP"
+    FIELD_2$="15"
+    FIELD_3$="10.4"
+    FIELD_4$="11"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="XXXXX.XXXX"
+    FIELD_9$="8"
+    FIELD_17$="9"
+    FIELD_22$="FIELDS"
+    FIELD_29$="ZIP"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1236"
+    FIELD_1$="FONTED_TEXT_9"
+    FIELD_2$="35"
+    FIELD_3$="10.6"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="1"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1238"
+    FIELD_1$="SEL_CODE_1"
+    FIELD_2$="37"
+    FIELD_3$="10.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="10"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1243"
+    FIELD_1$="FONTED_TEXT_10"
+    FIELD_2$="42"
+    FIELD_3$="10.6"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="2"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1245"
+    FIELD_1$="SEL_CODE_2"
+    FIELD_2$="44"
+    FIELD_3$="10.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="11"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1250"
+    FIELD_1$="FONTED_TEXT_11"
+    FIELD_2$="49"
+    FIELD_3$="10.6"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="3"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1252"
+    FIELD_1$="SEL_CODE_3"
+    FIELD_2$="51"
+    FIELD_3$="10.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="12"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1257"
+    FIELD_1$="FONTED_TEXT_12"
+    FIELD_2$="56"
+    FIELD_3$="10.6"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="4"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1259"
+    FIELD_1$="SEL_CODE_4"
+    FIELD_2$="58"
+    FIELD_3$="10.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="13"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1264"
+    FIELD_1$="FONTED_TEXT_13"
+    FIELD_2$="63"
+    FIELD_3$="10.6"
+    FIELD_4$="2"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="5"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1266"
+    FIELD_1$="SEL_CODE_5"
+    FIELD_2$="65"
+    FIELD_3$="10.6"
+    FIELD_4$="4"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="14"
+    FIELD_17$="3"
+    FIELD_21$="U"
+    FIELD_22$="FIELDS"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1802"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="1"
+    FIELD_3$="17.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="15"
+    FIELD_13$="P"+QUO+"*win/flmaint;First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1806"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="5"
+    FIELD_3$="17.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="16"
+    FIELD_13$="P"+QUO+"*win/flmaint;Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1810"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="9"
+    FIELD_3$="17.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="17"
+    FIELD_13$="P"+QUO+"*win/flmaint;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1814"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="13"
+    FIELD_3$="17.4"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="18"
+    FIELD_13$="P"+QUO+"*win/flmaint;Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1840"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="39"
+    FIELD_3$="17.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&WRITE"+QUO+")"
+    FIELD_9$="19"
+    FIELD_13$="XPerform "+QUO+"*win/flmaint;Write_rec"+QUO+";Perform "+QUO+"*win/flmaint;Clear_fields"+QUO+";Refresh_flg=1"
+    FIELD_14$="=MSG("+QUO+"PRESS_WRT"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1850"
+    FIELD_1$="BUTTON_8"
+    FIELD_2$="49"
+    FIELD_3$="17.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="20"
+    FIELD_13$="P"+QUO+"*win/flmaint;Clear_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1860"
+    FIELD_1$="BUTTON_2"
+    FIELD_2$="59"
+    FIELD_3$="17.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&DELETE"+QUO+")"
+    FIELD_9$="21"
+    FIELD_13$="P"+QUO+"*win/flmaint;Delete_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_DEL"+QUO+")"
+    FIELD_21$="D"
+    FIELD_22$="BUTTONS"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCO_MAINT   1870"
+    FIELD_1$="BUTTON_3"
+    FIELD_2$="69"
+    FIELD_3$="17.2"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="22"
+    FIELD_13$="XPerform "+QUO+"*win/flmaint;Check_changes"+QUO+";cmd_str$="+QUO+"END"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ATT     0000"
+    FIELD_1$="CC1_Attendee_Master"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="60"
+    FIELD_5$="15"
+    FIELD_6$="Q"
+    FIELD_7$="Attendee Lookup"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="CC1"
+    FIELD_18$="2003/03/19 09:09 dff"
+    FIELD_21$="R"
+    FIELD_23$="C00000M0"
+    FIELD_29$="_MN_.ATTENDEE_ID$+_MN_.COMP_CODE$"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ATT     0001"
+    FIELD_1$="ATTENDEE_ID"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="Attendee ID"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ATT     0002"
+    FIELD_1$="FIRST_NAME"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="First Name"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ATT     0003"
+    FIELD_1$="LAST_NAME"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="Last Name"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ATT     0004"
+    FIELD_1$="COMP_CODE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="Company Code"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_COMPCODE0000"
+    FIELD_1$="CCD_Client_conference"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="60"
+    FIELD_5$="15"
+    FIELD_6$="Q"
+    FIELD_7$="Company Code Lookup"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="CC0"
+    FIELD_18$="2003/03/19 08:50 dff"
+    FIELD_21$="R"
+    FIELD_23$="C00000M0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_COMPCODE0001"
+    FIELD_1$="COMP_CODE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="Company Code"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_COMPCODE0002"
+    FIELD_1$="COMP_NAME"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="Company Name"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+</Data>
+
+</PxTable>

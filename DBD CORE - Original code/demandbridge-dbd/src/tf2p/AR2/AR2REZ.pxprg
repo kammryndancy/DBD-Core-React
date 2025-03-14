@@ -1,0 +1,80 @@
+0010 REM "Print Summary Bill Invoice <AR2REZ>
+0035 REM "5.7 - 09/19/24 - 16.15967 - jvv - SSP# 307501
+0037 REM "307501-Summary Sheet Cover sheet does not print company name       
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1010 REM "C0$ IS Company Name/Address string, C$ =Customer Name/Address
+1011 REM "C2$=Invoice No. and possibly terms description, ssp#83171
+1012 REM "C0=Freight, C1=Sales tax, C2=Net Amount (extension)
+1020 ENTER X3$,X4$,W9$,W,W9,W0,W2,C0$,C$,C2$,C3$,C0,C1,C2
+1030 IF LEN(C2$)=38 THEN TERMS$=C2$(9,30),C2$=C2$(1,8); REM "from AR2REF, ssp#83171
+1200 REM 
+1210 W3=80
+1220 DIM Y5$(W3),S$(20),T1$(W3,"-")
+1230 W4=INT(W3/2)
+1240 M0$="###,###.00-"
+1250 T0=C0+C1+C2
+1280 W8=.1
+1900 REM "
+2000 REM "Distributor Header
+2010 X1$=FNS$(C0$(7,40)); X1$=DIM(40) ! SSP 307501
+2012 W0$=FNS$(C0$(47,40)),W1$=FNS$(C0$(87,40))
+2014 W2$=FNS$(C0$(127,40))
+2015 IF W2$>"" THEN W0$=W0$+"; "+W1$,W1$=""
+2040 GOSUB 6000
+2060 FOR X=0 TO 2; GOSUB 7300
+2470 Y5$(50)="I N V O I C E"
+2480 GOSUB 7300
+2500 REM "CUSTOMER / INVOICE HEADING
+2540 GOSUB 7300
+2550 REM "
+2560 Y5$(1)=C$(11,35)
+2565 Y5$(52)="Invoice no:     "+C2$
+2580 GOSUB 7300
+2600 REM 
+2620 Y5$(1)=C$(86,30)
+2640 GOSUB 7300
+2650 REM 
+2660 Y5$(1)=C$(56,30)
+2665 Y5$(50)="Invoice date:  "+FND$(X3$(21,6))
+2670 GOSUB 7300
+2700 REM 
+2705 X$=FNS$(C$(116,16))+", "+C$(132,2)+"   "+C$(134,5); IF C$(139,4)<>"    " THEN X$=X$+"-"+C$(139,4)
+2710 Y5$(1)=X$; GOSUB 7300
+2765 Y5$(50)="Total amount: $"+STR(T0:M0$)
+2770 GOSUB 7300
+2800 REM 
+3000 REM "DETAIL
+3010 FOR X=0 TO 1; GOSUB 7300
+3015 IF TERMS$>"" THEN Y5$(1)="Terms: "+TERMS$; GOSUB 7300; GOSUB 7300
+3020 Y5$(1)=T1$; GOSUB 7300; GOSUB 7300
+3030 FOR X=0 TO 2
+3035 Y5$(1)=C3$(82+X*70,70); GOSUB 7300
+3040 NEXT X
+3500 REM "DETAIL TOTALS?
+5000 REM "END
+5020 W=999
+5090 GOTO 9900
+6000 REM "Page header
+6030 W8$="S"
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W9$,W3,W,W9,W8,W0,W5,W2,W8$,W5$; IF T0$="END" THEN GOTO 6060 ELSE ON W5 GOTO 6041,9910
+6045 ON W5 GOTO 6046,9900
+6070 GOSUB 7300
+6090 RETURN 
+7300 REM "Output line Y5$ to output device
+7310 IF POS("V"=W8$)>0 THEN CALL "ZZVIEW",X3$,0,0,W3,W9,W,W9$,Y5$; GOTO 7390
+7320 W=W+1 ! SSP 213924                                                        
+7325 IF %IL_PDF THEN PRINT (%IL_PDF,ERR=*NEXT)Y5$ ! 213924
+7330 REM 
+7340 IF POS(" "<>Y5$)=0 THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; Y5$(1)=""
+7390 IF W>=W0 THEN GOSUB 6000
+7395 RETURN 
+8910 DEF FNP(Z$)=INT(W3/2-LEN(Z$)/2)
+8915 DEF FNS$(X$)=X$(1,POS(S$=X$+S$)-1)
+8940 DEF FND$(Z9$)=Z9$(3,2)+"/"+Z9$(5,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+9000 REM "ERROR PROCESSING
+9040 EXIT ERR
+9940 EXIT 
+9999 END 
+56000 REM "213924-Summary bill in Image Library - isn't automatic archive     
+56001 REM "307501-Summary Sheet Cover sheet does not print company name       

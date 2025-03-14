@@ -1,0 +1,4256 @@
+<PxTable>
+ TableName=ZA0
+ TableKey=K1372704708
+ FileCreate=KEYED "ZA0",20,[1:1:20]+[1:61:20],0,-512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZA0_BERTDatabase"
+    PHYSICALPATH$="="+QUO+"../tf2y/ZA0"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:10-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:27-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TF_DATABASE$:[LEN(20)]"
+    NAME$="TF_DATABASE"
+    DESCRIPTION$="=MSG("+QUO+"DATABASE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="P"
+    NOTES$="Database"
+    KEYDEFINITION$="1:1:A,2:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TF_DATABASE$:[LEN(20,SEP=SEP)]"
+    NAME$="TF_DATABASE"
+    DESCRIPTION$="=MSG("+QUO+"DATABASE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Database"
+    KEYDEFINITION$="1:1:A,2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST DATABASE_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="DATABASE_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DATA_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DISK_FILE_NAME$:[LEN(20,SEP=SEP)]"
+    NAME$="DISK_FILE_NAME"
+    DESCRIPTION$="=MSG("+QUO+"DISK_F_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Disk file name"
+    KEYDEFINITION$="2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST FILE_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="FILE_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"FILE_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="File type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST KEY_SIZE$:[LEN(2,SEP=SEP)]"
+    NAME$="KEY_SIZE"
+    DESCRIPTION$="=MSG("+QUO+"KEY_SIZE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Key size"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ACCESS_PASSWORD$:[LEN(6,SEP=SEP)]"
+    NAME$="ACCESS_PASSWORD"
+    DESCRIPTION$="=MSG("+QUO+"ACCE_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Access password"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST ACCESS_LEVEL$:[LEN(2,SEP=SEP)]"
+    NAME$="ACCESS_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"ACCE_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Access level"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST KEY_ACCESS_DATA_1$:[LEN(75,SEP=SEP)]"
+    NAME$="KEY_ACCESS_DATA_1"
+    DESCRIPTION$="=MSG("+QUO+"KEY_A_D_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="75"
+    INTERNALFORMAT$="S"
+    NOTES$="Key/access data #1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST KEY_ACCESS_DATA_2$:[LEN(75,SEP=SEP)]"
+    NAME$="KEY_ACCESS_DATA_2"
+    DESCRIPTION$="=MSG("+QUO+"KEY_A_D_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="75"
+    INTERNALFORMAT$="S"
+    NOTES$="Key/access data #2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST DFLT_LAST_MOD_DATE$:[LEN(6,SEP=SEP)]"
+    NAME$="DFLT_LAST_MOD_DATE"
+    DESCRIPTION$="=MSG("+QUO+"DFLT_L_M_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Definition last mod date"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST DFLT_LAST_MOD_TIME$:[LEN(4,SEP=SEP)]"
+    NAME$="DFLT_LAST_MOD_TIME"
+    DESCRIPTION$="=MSG("+QUO+"DFLT_L_M_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Def. last mod time"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST ZA0_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="ZA0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST RECORD_SIZE"
+    NAME$="RECORD_SIZE"
+    DESCRIPTION$="=MSG("+QUO+"RECO_S"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,##0-"
+    NOTES$="Record size"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="3P_SW               "
+    TF_DATABASE$="3P_SW               "
+    DATABASE_DESC$="3rd Party Software                     0"
+    DISK_FILE_NAME$="SS7...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE+SW_CODE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J60304"
+    DFLT_LAST_MOD_TIME$="1794"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=356
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ACTIVITY_LOG        "
+    TF_DATABASE$="ACTIVITY_LOG        "
+    DATABASE_DESC$="User Error/Activity Log                 "
+    DISK_FILE_NAME$="ZYL...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="13"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K30602"
+    DFLT_LAST_MOD_TIME$="1454"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=40
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_CHECK_REGISTER   "
+    TF_DATABASE$="AP_CHECK_REGISTER   "
+    DATABASE_DESC$="AP Check Register                       "
+    DISK_FILE_NAME$="APC...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SOURCE_COMP + BANK_CODE + VENDOR_CODE + CHECK_CODE                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=70
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_DIVISIONS        "
+    TF_DATABASE$="AP_DIVISIONS        "
+    DATABASE_DESC$="Division Masterfile                    0"
+    DISK_FILE_NAME$="AP0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIVISION_NUMBER                                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=34
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_GATEWAY          "
+    TF_DATABASE$="AP_GATEWAY          "
+    DATABASE_DESC$="Accounts Payable Gateway                "
+    DISK_FILE_NAME$="PA1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="L81008"
+    DFLT_LAST_MOD_TIME$="1231"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=308
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_INVOICE_HIST     "
+    TF_DATABASE$="AP_INVOICE_HIST     "
+    DATABASE_DESC$="A/P Invoice History File               0"
+    DISK_FILE_NAME$="APQ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE+INVOICE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=264
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_INV_BY_BANK      "
+    TF_DATABASE$="AP_INV_BY_BANK      "
+    DATABASE_DESC$="A/P Invoice sort by Bank Code          0"
+    DISK_FILE_NAME$="APP...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="BANK_CODE+AP_VENDOR+INVOICE_NUMBER                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MONTHLY_DISB     "
+    TF_DATABASE$="AP_MONTHLY_DISB     "
+    DATABASE_DESC$="Monthly Disbursements Check Header     0"
+    DISK_FILE_NAME$="APM...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR__ACCTG_P+BANK_CODE+CHECK_NUMBER+SEQUENCE                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=116
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MTH_CKS_BY_CKNO  "
+    TF_DATABASE$="AP_MTH_CKS_BY_CKNO  "
+    DATABASE_DESC$="Monthly Disb. by Check Number sort     0"
+    DISK_FILE_NAME$="APY...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="BANK_CODE+CHECK_NUMBER+FISCAL_YEAR+ACCOUNTING_PERIOD                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_MTH_DISB_DTL     "
+    TF_DATABASE$="AP_MTH_DISB_DTL     "
+    DATABASE_DESC$="Monthly Disb Invoice detail            0"
+    DISK_FILE_NAME$="APN...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="27"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FYACCTG_PERIOD+BANK_CODE+CHECK_NUMBER+SEQUENCE_COUNTER+INVOICE_NUMBER      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=142
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_OPEN_INVOICES    "
+    TF_DATABASE$="AP_OPEN_INVOICES    "
+    DATABASE_DESC$="A/P Open Invoice                       0"
+    DISK_FILE_NAME$="API...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE+INVOICE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=264
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_TERMS_CODES      "
+    TF_DATABASE$="AP_TERMS_CODES      "
+    DATABASE_DESC$="Terms Code Masterfile                  0"
+    DISK_FILE_NAME$="AP2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TERMS_CODE                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_ALPHA     "
+    TF_DATABASE$="AP_VENDOR_ALPHA     "
+    DATABASE_DESC$="Vendor sort by lookup code             0"
+    DISK_FILE_NAME$="AP6...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOOKUP_CODE+VENDOR_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_CATEG     "
+    TF_DATABASE$="AP_VENDOR_CATEG     "
+    DATABASE_DESC$="Alternate vendor sort by category      0"
+    DISK_FILE_NAME$="AP7...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="19"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CATEGORY_CODE+VENDOR_CODE                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_MASTER    "
+    TF_DATABASE$="AP_VENDOR_MASTER    "
+    DATABASE_DESC$="Vendor Masterfile                      0"
+    DISK_FILE_NAME$="AP4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=396
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_MESSAGES  "
+    TF_DATABASE$="AP_VENDOR_MESSAGES  "
+    DATABASE_DESC$="Vendor message file                    0"
+    DISK_FILE_NAME$="AP8...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=252
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_PLANTS    "
+    TF_DATABASE$="AP_VENDOR_PLANTS    "
+    DATABASE_DESC$="AP Vendor Plant Locations               "
+    DISK_FILE_NAME$="FM0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOCATION_TYPE + VENDOR_CODE + PLANT_CODE                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40415"
+    DFLT_LAST_MOD_TIME$="1661"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_PURCHASES "
+    TF_DATABASE$="AP_VENDOR_PURCHASES "
+    DATABASE_DESC$="Vendor purchases                        "
+    DISK_FILE_NAME$="AP9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE + YEAR +"+QUO+"P"+QUO+"                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=96
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AP_VENDOR_STATUS    "
+    TF_DATABASE$="AP_VENDOR_STATUS    "
+    DATABASE_DESC$="Vendor Status Data                     0"
+    DISK_FILE_NAME$="AP5...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=224
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_ART_CHARGE       "
+    TF_DATABASE$="AR_ART_CHARGE       "
+    DATABASE_DESC$="External Invoice Charges               0"
+    DISK_FILE_NAME$="ZE0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER+SPECIAL_CHARGE_CODE+SEQUENCE_NUMBER_3                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1417"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CASH_REC_CHK_HDR "
+    TF_DATABASE$="AR_CASH_REC_CHK_HDR "
+    DATABASE_DESC$="AR Cash Receipts Check Header           "
+    DISK_FILE_NAME$="ARP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="26"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+BANK_CODE+DEPOSIT_NUMBER+CUSTOMER_CODE+CHECK "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40916"
+    DFLT_LAST_MOD_TIME$="1817"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=94
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMMISSION_CODES "
+    TF_DATABASE$="AR_COMMISSION_CODES "
+    DATABASE_DESC$="Commission code                        0"
+    DISK_FILE_NAME$="AR4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="COMMISSION_CODE                                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_BY_LINE     "
+    TF_DATABASE$="AR_COMM_BY_LINE     "
+    DATABASE_DESC$="Commission Booked by Line Item         0"
+    DISK_FILE_NAME$="AS9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+SALESPERSON+INVOICE_NUMBER+SEQUENCE_NUMBER   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70324"
+    DFLT_LAST_MOD_TIME$="1045"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PAY         "
+    TF_DATABASE$="AR_COMM_PAY         "
+    DATABASE_DESC$="Commissions payable                    0"
+    DISK_FILE_NAME$="ARM...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="33"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+SALESPERSON_CODE+CUSTOMER_NUMBER+INVOICE_NUMB"
+    KEY_ACCESS_DATA_2$="E                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=144
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PAYABLE     "
+    TF_DATABASE$="AR_COMM_PAYABLE     "
+    DATABASE_DESC$="Commissions payable                    0"
+    DISK_FILE_NAME$="ARM...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="33"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="YEAR+PERIOD+SALESPERSON_CODE+CUSTOMER_CODE+INVOICE_NUMBER+COMM_#           "
+    KEY_ACCESS_DATA_2$="E                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=144
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_COMM_PEND        "
+    TF_DATABASE$="AR_COMM_PEND        "
+    DATABASE_DESC$="Sales tax & commission pending         0"
+    DISK_FILE_NAME$="ARK...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + INVOICE_NUMBER                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CREDIT_MEMO      "
+    TF_DATABASE$="AR_CREDIT_MEMO      "
+    DATABASE_DESC$="Credit Memo Information                0"
+    DISK_FILE_NAME$="AT1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+CREDIT_MEMO_INVOICE_NUMBER                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=384
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CREDIT_REASON    "
+    TF_DATABASE$="AR_CREDIT_REASON    "
+    DATABASE_DESC$="User Defined Fields                    0"
+    DISK_FILE_NAME$="ASV...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TYPE_C=CUSTOMER_F=FORM+FIELD_NUMBER                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_CATEG   "
+    TF_DATABASE$="AR_CUSTOMER_CATEG   "
+    DATABASE_DESC$="Customer category setup                0"
+    DISK_FILE_NAME$="ARG...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CATEGORY_CODE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K60929"
+    DFLT_LAST_MOD_TIME$="1316"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=42
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_MASTER  "
+    TF_DATABASE$="AR_CUSTOMER_MASTER  "
+    DATABASE_DESC$="Customer Masterfile                     "
+    DISK_FILE_NAME$="AR1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K30729"
+    DFLT_LAST_MOD_TIME$="1509"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUSTOMER_SALES   "
+    TF_DATABASE$="AR_CUSTOMER_SALES   "
+    DATABASE_DESC$="Sales History Stats                     "
+    DISK_FILE_NAME$="ARX...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIVISION+SALESPERSON_CODE+CATEGORY_CODE+PRODUCT_CODE+ORDER+YEAR+SALES_TYP  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_BY_LOOKUP   "
+    TF_DATABASE$="AR_CUST_BY_LOOKUP   "
+    DATABASE_DESC$="Customer Lookup Sequence               0"
+    DISK_FILE_NAME$="ARE...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_LOOKUP_CODE+CUSTOMER_CODE                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_BY_SLS      "
+    TF_DATABASE$="AR_CUST_BY_SLS      "
+    DATABASE_DESC$="Customer sort by primary salesperson   0"
+    DISK_FILE_NAME$="ARU...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+CUSTOMER_CODE                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_CATEGORY    "
+    TF_DATABASE$="AR_CUST_CATEGORY    "
+    DATABASE_DESC$="Customer Category Definition            "
+    DISK_FILE_NAME$="ARG...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUST_CATEGORY                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=42
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_CREDIT      "
+    TF_DATABASE$="AR_CUST_CREDIT      "
+    DATABASE_DESC$="Customer Credit Analysis               0"
+    DISK_FILE_NAME$="AR0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=224
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_STATS_P     "
+    TF_DATABASE$="AR_CUST_STATS_P     "
+    DATABASE_DESC$="Customer States Profit                  "
+    DISK_FILE_NAME$="AR9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+YEAR_P+"+QUO+"P"+QUO+"                                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K20725"
+    DFLT_LAST_MOD_TIME$="0777"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_STATS_S     "
+    TF_DATABASE$="AR_CUST_STATS_S     "
+    DATABASE_DESC$="Customer Sales Statistics               "
+    DISK_FILE_NAME$="AR9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+YEAR_S+"+QUO+"S"+QUO+"                                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40923"
+    DFLT_LAST_MOD_TIME$="1128"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_STATS_SALES "
+    TF_DATABASE$="AR_CUST_STATS_SALES "
+    DATABASE_DESC$="Customer Statistics                     "
+    DISK_FILE_NAME$="AR9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + YEAR + SALES_TYPE                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_CUST_STATS_SPRIOR"
+    TF_DATABASE$="AR_CUST_STATS_SPRIOR"
+    DATABASE_DESC$="Customer Stats Sales (Prior Year)       "
+    DISK_FILE_NAME$="AR9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + PRIOR_S_YEAR + "+QUO+"S"+QUO+"                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_DIVISIONS        "
+    TF_DATABASE$="AR_DIVISIONS        "
+    DATABASE_DESC$="Division Masterfile                    0"
+    DISK_FILE_NAME$="ARH...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIVISION_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=34
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_GL_INTERFACE     "
+    TF_DATABASE$="AR_GL_INTERFACE     "
+    DATABASE_DESC$="G/L Interface Information              0"
+    DISK_FILE_NAME$="ARI...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CATEGORY                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=224
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INVOICE_HISTORY  "
+    TF_DATABASE$="AR_INVOICE_HISTORY  "
+    DATABASE_DESC$="Invoice History                        0"
+    DISK_FILE_NAME$="AR8...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+INVOICE_NUMBER                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=196
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INV_BY_INV_DATE  "
+    TF_DATABASE$="AR_INV_BY_INV_DATE  "
+    DATABASE_DESC$="Sort of open invoice by invoice date   0"
+    DISK_FILE_NAME$="ARN...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_NUMBER+PAID_FLAG_A=PAID,_B=UNPAI+INVOICE_DATE+INVOICE_NUMBER      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INV_HDR          "
+    TF_DATABASE$="AR_INV_HDR          "
+    DATABASE_DESC$="A/R Invoice Data Entry Header          1"
+    DISK_FILE_NAME$="ARB...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+INVOICE_NUMBER                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_INV_PRT_DETAIL   "
+    TF_DATABASE$="AR_INV_PRT_DETAIL   "
+    DATABASE_DESC$="Invoice Entry Print Detail             1"
+    DISK_FILE_NAME$="ART...              "
+    FILE_TYPE$="0"
+    KEY_SIZE$="00"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=234
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_OPEN_INVOICES    "
+    TF_DATABASE$="AR_OPEN_INVOICES    "
+    DATABASE_DESC$="A/R Open Invoices                      0"
+    DISK_FILE_NAME$="AR6...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+INVOICE_NUMBER                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1592"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=285
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_DIST       "
+    TF_DATABASE$="AR_SALES_DIST       "
+    DATABASE_DESC$="A/R Sales Distribution                  "
+    DISK_FILE_NAME$="ARV...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIST_CODE                                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_TAX_CODES  "
+    TF_DATABASE$="AR_SALES_TAX_CODES  "
+    DATABASE_DESC$="Sales Tax Masterfile                   0"
+    DISK_FILE_NAME$="AR5...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALES_TAX_CODE                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=54
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SALES_TX_PBL     "
+    TF_DATABASE$="AR_SALES_TX_PBL     "
+    DATABASE_DESC$="Sales tax payable                      0"
+    DISK_FILE_NAME$="ARL...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+SALES_TAX_CODE+INVOICE_NUMBER                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=144
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_BY_LOOKUP    "
+    TF_DATABASE$="AR_SLS_BY_LOOKUP    "
+    DATABASE_DESC$="Salesperson Lookup Sequence            0"
+    DISK_FILE_NAME$="ARF...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOOKUP_SEQUENCE+SALESPERSON_CODE                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_MASTER       "
+    TF_DATABASE$="AR_SLS_MASTER       "
+    DATABASE_DESC$="Salesperson Masterfile                 0"
+    DISK_FILE_NAME$="AR3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=246
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_STATS        "
+    TF_DATABASE$="AR_SLS_STATS        "
+    DATABASE_DESC$="Salesperson Statistics                 0"
+    DISK_FILE_NAME$="ARA...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="9 "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+FISCAL_YEAR+BALANCE_TYPE                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_STATS_P      "
+    TF_DATABASE$="AR_SLS_STATS_P      "
+    DATABASE_DESC$="Salesperson Statistics Type P           "
+    DISK_FILE_NAME$="ARA...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+YEAR+"+QUO+"P"+QUO+"                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J60402"
+    DFLT_LAST_MOD_TIME$="1489"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_SLS_STATS_S      "
+    TF_DATABASE$="AR_SLS_STATS_S      "
+    DATABASE_DESC$="Salesperson Statistics Type S           "
+    DISK_FILE_NAME$="ARA...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+YEAR+"+QUO+"S"+QUO+"                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J60403"
+    DFLT_LAST_MOD_TIME$="1006"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_STATS_PROFIT     "
+    TF_DATABASE$="AR_STATS_PROFIT     "
+    DATABASE_DESC$="A/R Statistics - Profits                "
+    DISK_FILE_NAME$="ARX...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIVISION_NUMBER+SALESPERSON_CODE+CATEGORY+PRODUCT_CODE+ORDER+FISCAL_YEAR+  "
+    KEY_ACCESS_DATA_2$=QUO+"P"+QUO+"                                                                        "
+    DFLT_LAST_MOD_DATE$="J30111"
+    DFLT_LAST_MOD_TIME$="1453"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=96
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TERMS_CODES      "
+    TF_DATABASE$="AR_TERMS_CODES      "
+    DATABASE_DESC$="A/R Terms Codes                         "
+    DISK_FILE_NAME$="AR2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TERMS_CODE                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_TRANSACTIONS     "
+    TF_DATABASE$="AR_TRANSACTIONS     "
+    DATABASE_DESC$="A/R Open Invoice Transactions          0"
+    DISK_FILE_NAME$="AR7...              "
+    FILE_TYPE$="0"
+    KEY_SIZE$="00"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=72
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BERT_ERROR_MSG_MSTR "
+    TF_DATABASE$="BERT_ERROR_MSG_MSTR "
+    DATABASE_DESC$="BERT Error Message Master               "
+    DISK_FILE_NAME$="ZAE                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 8"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ERROR_TYPE + STATEMENT_NO + BASIC_ERROR_NO                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30203"
+    DFLT_LAST_MOD_TIME$="1779"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=134
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BR_DETAIL           "
+    TF_DATABASE$="BR_DETAIL           "
+    DATABASE_DESC$="Bank Recon Detail                       "
+    DISK_FILE_NAME$="BR0...              "
+    FILE_TYPE$="0"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CA2_AR1             "
+    TF_DATABASE$="CA2_AR1             "
+    DATABASE_DESC$="AR Customer Conversion                  "
+    DISK_FILE_NAME$="AR100A              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ASI_CUSTOMER_CODE                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=22
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CARTON_LABEL        "
+    TF_DATABASE$="CARTON_LABEL        "
+    DATABASE_DESC$="Carton Labels to Print File             "
+    DISK_FILE_NAME$="POF...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="26"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TYPE+SHIP_FROM+ORDER_NUMBER+LINE_NUMBER+CUSTOMER_NUMBER                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=604
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CASH_REC_GATEWAY    "
+    TF_DATABASE$="CASH_REC_GATEWAY    "
+    DATABASE_DESC$="Cash Receipts Gateway                   "
+    DISK_FILE_NAME$="CR1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K90831"
+    DFLT_LAST_MOD_TIME$="1526"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=118
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CFS_COMMISSIONS     "
+    TF_DATABASE$="CFS_COMMISSIONS     "
+    DATABASE_DESC$="CFS Commission Detail File              "
+    DISK_FILE_NAME$="U01...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="07"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="INVOICE_NUMBER                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=178
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CIG_PLUS            "
+    TF_DATABASE$="CIG_PLUS            "
+    DATABASE_DESC$="Customer Invoicing Gateway Plus         "
+    DISK_FILE_NAME$="RP1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="L31106"
+    DFLT_LAST_MOD_TIME$="1662"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=240
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CLIENT_MANUAL_DATA  "
+    TF_DATABASE$="CLIENT_MANUAL_DATA  "
+    DATABASE_DESC$="Client Manual Data                      "
+    DISK_FILE_NAME$="ZWR...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=152
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COMMISSION_BY_LINE  "
+    TF_DATABASE$="COMMISSION_BY_LINE  "
+    DATABASE_DESC$="Commissions by Line item (Optional)    0"
+    DISK_FILE_NAME$="AS4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCOUNTING_PERIOD+SALESPERSON_CODE+INVOICE_NUMBER+SEQ_NUMBER   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=144
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COMMISSION_CHG_BACK "
+    TF_DATABASE$="COMMISSION_CHG_BACK "
+    DATABASE_DESC$="Commission Charge Back                  "
+    DISK_FILE_NAME$="AS0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="16"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FISCAL_YEAR+ACCT_PERIOD+SALESPERSON_CODE+CHGBACK_NUMBER                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J50316"
+    DFLT_LAST_MOD_TIME$="0901"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=34
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CONS_ORDER_CUSTOMERS"
+    TF_DATABASE$="CONS_ORDER_CUSTOMERS"
+    DATABASE_DESC$="Consolidated Order Customers (IEF menu) "
+    DISK_FILE_NAME$="IE0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUST_CODE                                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J81118"
+    DFLT_LAST_MOD_TIME$="1600"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CREDIT_CARD_INFO    "
+    TF_DATABASE$="CREDIT_CARD_INFO    "
+    DATABASE_DESC$="Credit Card Information Setup           "
+    DISK_FILE_NAME$="ARZ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + CREDIT_CARD_TYPE + SEQ_4                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CREDIT_CARD_TYPE    "
+    TF_DATABASE$="CREDIT_CARD_TYPE    "
+    DATABASE_DESC$="Credit Card Type                        "
+    DISK_FILE_NAME$="ASP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CREDIT_CARD_TYPE                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J80630"
+    DFLT_LAST_MOD_TIME$="0958"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS2                 "
+    TF_DATABASE$="CS2                 "
+    DATABASE_DESC$="Requisitions Line File                  "
+    DISK_FILE_NAME$="CS2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="27"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LINE_NUMBER+LINE_TYPE+FROM_COMPANY_IE_CUSTOMER+FORM_CODE+COST_CENTER       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=138
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSI_CLIENT_MASTER   "
+    TF_DATABASE$="CSI_CLIENT_MASTER   "
+    DATABASE_DESC$="CSI Client Master                       "
+    DISK_FILE_NAME$="ZWB...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 6"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1118"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=1024
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CSI_STAFFING        "
+    TF_DATABASE$="CSI_STAFFING        "
+    DATABASE_DESC$="CSI Staffing                            "
+    DISK_FILE_NAME$="ZWC...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PERSON'S_INITIALS                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=46
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_MASTER     "
+    TF_DATABASE$="CUSTOMER_MASTER     "
+    DATABASE_DESC$="Customer Masterfile                     "
+    DISK_FILE_NAME$="TP0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=276
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_MENU       "
+    TF_DATABASE$="CUSTOMER_MENU       "
+    DATABASE_DESC$="System Parameter File                  0"
+    DISK_FILE_NAME$="ZZPARM              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="16"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="OPTION_NUMBER+SELECTION_TYPE+LIBRARY_CODE+SELECTION                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30116"
+    DFLT_LAST_MOD_TIME$="2022"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=1024
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_CREDIT_CARDS   "
+    TF_DATABASE$="CUST_CREDIT_CARDS   "
+    DATABASE_DESC$="Customer Credit Cards                   "
+    DISK_FILE_NAME$="ARZ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="18"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUST_DIV+CUST_CODE+CREDIT_CARD_TYPE+SEQ_NUM                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_PMT_SUMMARY    "
+    TF_DATABASE$="CUST_PMT_SUMMARY    "
+    DATABASE_DESC$="Customer payment summary                "
+    DISK_FILE_NAME$="ARM-06              "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 8"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID + CUSTOMER_NUMBER                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=112
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_USER_DEFINED   "
+    TF_DATABASE$="CUST_USER_DEFINED   "
+    DATABASE_DESC$="Customer User Defined Fields            "
+    DISK_FILE_NAME$="ASW...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FIELD_NUMBER                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K00310"
+    DFLT_LAST_MOD_TIME$="1458"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_USER_DEF_SORT  "
+    TF_DATABASE$="CUST_USER_DEF_SORT  "
+    DATABASE_DESC$="Customer User Defined Sort              "
+    DISK_FILE_NAME$="ASX...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIELD_NUMBER+CUSTOMER_CODE                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATABASE_BY_FIELD   "
+    TF_DATABASE$="DATABASE_BY_FIELD   "
+    DATABASE_DESC$="Data dictionary by field name           "
+    DISK_FILE_NAME$="ZAA...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="40"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIELD_NAME + DATABASE                                                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30116"
+    DFLT_LAST_MOD_TIME$="1658"
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATABASE_MASTER     "
+    TF_DATABASE$="DATABASE_MASTER     "
+    DATABASE_DESC$="Database Master Fil                     "
+    DISK_FILE_NAME$="ZA0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DATABASE                                                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1007"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=384
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATAREP_TABLE       "
+    TF_DATABASE$="DATAREP_TABLE       "
+    DATABASE_DESC$="Files to Data Replicate                0"
+    DISK_FILE_NAME$="DR1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TOPFORM_FILE                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K70712"
+    DFLT_LAST_MOD_TIME$="1211"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATAREP_TARGET      "
+    TF_DATABASE$="DATAREP_TARGET      "
+    DATABASE_DESC$="Data Replication Target                0"
+    DISK_FILE_NAME$="DR0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DATA_REP_TARGET                                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATA_DICTIONARY_MSTR"
+    TF_DATABASE$="DATA_DICTIONARY_MSTR"
+    DATABASE_DESC$="Data Dictionary Master                  "
+    DISK_FILE_NAME$="ZA1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="40"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DATABASE+FIELD_NAME                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1129"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=526
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EC_CATALOG          "
+    TF_DATABASE$="EC_CATALOG          "
+    DATABASE_DESC$="EC Customer Catalog Items              0"
+    DISK_FILE_NAME$="ECH...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="40"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CATALOG_ID+CATEGORY_ID+CATALOG_ITEM                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K00918"
+    DFLT_LAST_MOD_TIME$="1144"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=92
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EC_CATALOG_CATEGORY "
+    TF_DATABASE$="EC_CATALOG_CATEGORY "
+    DATABASE_DESC$="EC Catalog Categories                  0"
+    DISK_FILE_NAME$="ECG...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CATEGORY_ID                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K00918"
+    DFLT_LAST_MOD_TIME$="1126"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDD_CREDIT_CARD     "
+    TF_DATABASE$="EDD_CREDIT_CARD     "
+    DATABASE_DESC$="EC Credit Card file                     "
+    DISK_FILE_NAME$="EDD                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NO + SEQ_NO                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_CODES      "
+    TF_DATABASE$="EMPLOYEE_CODES      "
+    DATABASE_DESC$="Employee Codes                         0"
+    DISK_FILE_NAME$="ASZ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="07"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="EMPLOYEE_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_DETAIL     "
+    TF_DATABASE$="EMPLOYEE_DETAIL     "
+    DATABASE_DESC$="EMPLOYEE DETAIL HISTORY                 "
+    DISK_FILE_NAME$="PRT-01              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID + EMPLOYEE_NUMBER + RECORD_A + PAY_CODE                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_HISTORY    "
+    TF_DATABASE$="EMPLOYEE_HISTORY    "
+    DATABASE_DESC$="EMPLOYEE DETAIL HISTORY CONTRIBUTIONS   "
+    DISK_FILE_NAME$="PRT-01              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID+EMPLOYEE_NUMBER+RECORD_D+CONTRIBUTION_CODE                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EMPLOYEE_MASTER     "
+    TF_DATABASE$="EMPLOYEE_MASTER     "
+    DATABASE_DESC$="Employee master file                    "
+    DISK_FILE_NAME$="PRM-01              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID+EMPLOYEE_NUMBER                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=282
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EQ_PROSPECT         "
+    TF_DATABASE$="EQ_PROSPECT         "
+    DATABASE_DESC$="Prospect Masterfile                    0"
+    DISK_FILE_NAME$="FEA...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PROSPECT_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EXT_INVOICE_CHGS    "
+    TF_DATABASE$="EXT_INVOICE_CHGS    "
+    DATABASE_DESC$="External Invoice Charges                "
+    DISK_FILE_NAME$="ZE0...              "
+    FILE_TYPE$="0"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER+SPECIAL_CHARGE_CODE+LINE_NUMBER                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1236"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=154
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FAX_LOG             "
+    TF_DATABASE$="FAX_LOG             "
+    DATABASE_DESC$="Fax Log File                            "
+    DISK_FILE_NAME$="ZYF...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REQ_ID                                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=182
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FAX_REQUEST_INFO    "
+    TF_DATABASE$="FAX_REQUEST_INFO    "
+    DATABASE_DESC$="Fax Request Information                 "
+    DISK_FILE_NAME$="FX0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FAX_MACHINE+REQUEST_ID                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=164
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FIXED_ASSETS        "
+    TF_DATABASE$="FIXED_ASSETS        "
+    DATABASE_DESC$="Fixed Asset Masterfile                  "
+    DISK_FILE_NAME$="FX0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ASSET_CODE                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=78
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FIXED_ASSET_II      "
+    TF_DATABASE$="FIXED_ASSET_II      "
+    DATABASE_DESC$="Fixed Asset Detail                      "
+    DISK_FILE_NAME$="FX1...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="19"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ASSET_CODE+VENDOR_CODE+ACCESS_NUMBER                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=74
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FLEX FORMAT         "
+    TF_DATABASE$="FLEX FORMAT         "
+    DATABASE_DESC$="Flexible format text                    "
+    DISK_FILE_NAME$="ZY6...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FORMAT_FOR+FORMAT_CODE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=22
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FLEX TEXT DETAIL    "
+    TF_DATABASE$="FLEX TEXT DETAIL    "
+    DATABASE_DESC$="Flexible format text lines              "
+    DISK_FILE_NAME$="ZY7...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="00"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=88
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMS_COUNT_ENTRY_GW  "
+    TF_DATABASE$="FMS_COUNT_ENTRY_GW  "
+    DATABASE_DESC$="FMS Count Entry GW input file format    "
+    DISK_FILE_NAME$="FC1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70410"
+    DFLT_LAST_MOD_TIME$="1504"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=67
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMZ                 "
+    TF_DATABASE$="FMZ                 "
+    DATABASE_DESC$="Cust Inventory&Shipment Detail Activity0"
+    DISK_FILE_NAME$="FMZ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="34"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE_RECEIVING_CUSTO+LOCATION_TYPE_D=DIST,_C=CUST+SHIP_TO_OR_RECEI"
+    KEY_ACCESS_DATA_2$="V                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_CONTACT     "
+    TF_DATABASE$="FM_CUST_CONTACT     "
+    DATABASE_DESC$="                                        "
+    DISK_FILE_NAME$="                    "
+    FILE_TYPE$=" "
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_CONTACTS    "
+    TF_DATABASE$="FM_CUST_CONTACTS    "
+    DATABASE_DESC$="Customer Contacts                       "
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"a"+QUO+"+CUSTOMER_CODE+FORM_CONTACT                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_DEFAULTS    "
+    TF_DATABASE$="FM_CUST_DEFAULTS    "
+    DATABASE_DESC$="Customer O/P defaults                  0"
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"D"+QUO+"+CUSTOMER_CODE                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_CUST_JOB_MASTER  "
+    TF_DATABASE$="FM_CUST_JOB_MASTER  "
+    DATABASE_DESC$="Customer Job Master                    0"
+    DISK_FILE_NAME$="FM1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORM_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=416
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_FORM_SPEC_COMP   "
+    TF_DATABASE$="FM_FORM_SPEC_COMP   "
+    DATABASE_DESC$="Form Spec - Composition file           0"
+    DISK_FILE_NAME$="FMS...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORM_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=164
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_LOCATION_MASTER  "
+    TF_DATABASE$="FM_LOCATION_MASTER  "
+    DATABASE_DESC$="F/M Form Location Record               0"
+    DISK_FILE_NAME$="FM4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORM_CODE+LOCATION                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_LOC_BY_CT_CYCLE  "
+    TF_DATABASE$="FM_LOC_BY_CT_CYCLE  "
+    DATABASE_DESC$="Location Sort by Count Cycle           0"
+    DISK_FILE_NAME$="FMG...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_PMS_COLORS       "
+    TF_DATABASE$="FM_PMS_COLORS       "
+    DATABASE_DESC$="PMS Numbers for colors                 0"
+    DISK_FILE_NAME$="FMO...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PMS_NUMBER                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_PRODUCT_CODES    "
+    TF_DATABASE$="FM_PRODUCT_CODES    "
+    DATABASE_DESC$="Product codes                           "
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"T"+QUO+"+PRODUCT_CODE                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_REPORT_PARAMS    "
+    TF_DATABASE$="FM_REPORT_PARAMS    "
+    DATABASE_DESC$="Forms Mgt Report Parameters             "
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"U"+QUO+"+ CUSTOMER_CODE                                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J50705"
+    DFLT_LAST_MOD_TIME$="0989"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=240
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_REPORT_SUMMARY   "
+    TF_DATABASE$="FM_REPORT_SUMMARY   "
+    DATABASE_DESC$="Forms Mgt Report Data - Summary by Form "
+    DISK_FILE_NAME$="FMC...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + FORM_CODE                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70317"
+    DFLT_LAST_MOD_TIME$="1037"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_RON_DATA         "
+    TF_DATABASE$="FM_RON_DATA         "
+    DATABASE_DESC$="Reorder Notice Data                    0"
+    DISK_FILE_NAME$="FM5...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="26"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="NOTICE_TYPE+NOTICE_FORMAT+CUSTOMER_CODE+LOCATION_CODE+FORM_CODE            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_SHIPMNT_DETAIL   "
+    TF_DATABASE$="FM_SHIPMNT_DETAIL   "
+    DATABASE_DESC$="Detailed Form Activity                  "
+    DISK_FILE_NAME$="FMZ...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="34"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+LOCATION_TYPE+FORM_CODE+ACTIVITY_DATE+SEQ_COUNTER            "
+    KEY_ACCESS_DATA_2$="V                                                                          "
+    DFLT_LAST_MOD_DATE$="K71109"
+    DFLT_LAST_MOD_TIME$="1567"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=336
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_SHIP_TOS         "
+    TF_DATABASE$="FM_SHIP_TOS         "
+    DATABASE_DESC$="Cust/Vendor/Whse Alternate Ship-to      "
+    DISK_FILE_NAME$="FM0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOCATION_TYPE + CUSTOMER_CODE + SHIP_TO                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=326
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_USAGE_BY_LOCATION"
+    TF_DATABASE$="FM_USAGE_BY_LOCATION"
+    DATABASE_DESC$="Usage by Location                       "
+    DISK_FILE_NAME$="FM3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="29"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + FORM_CODE + LOCATION + YEAR + "+QUO+"U"+QUO+"                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=20
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM_WAREHOUSES       "
+    TF_DATABASE$="FM_WAREHOUSES       "
+    DATABASE_DESC$="Warehouse Locations                    0"
+    DISK_FILE_NAME$="FM0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOCATION_CODE_C,D,P+CUSTOMER_OR_VENDOR_CODE,_BLANK+LOCATION_CODE           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMS_MGT_DATA      "
+    TF_DATABASE$="FORMS_MGT_DATA      "
+    DATABASE_DESC$="Forms Mgt Report Data                   "
+    DISK_FILE_NAME$="FMD...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + FORM_CODE + LOCATION_TYPE + LOCATION_CODE                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMS_MGT_REPORTS   "
+    TF_DATABASE$="FORMS_MGT_REPORTS   "
+    DATABASE_DESC$="Forms Mgt Report Info                   "
+    DISK_FILE_NAME$="FMD...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=196
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_SPEC_COMMENT   "
+    TF_DATABASE$="FORM_SPEC_COMMENT   "
+    DATABASE_DESC$="Form Spec - Comment Permanent File     0"
+    DISK_FILE_NAME$="FMV...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORMS_CODE+LINE_NUMBER                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=96
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_SPEC_OTHER     "
+    TF_DATABASE$="FORM_SPEC_OTHER     "
+    DATABASE_DESC$="Form Spec Setup - other                 "
+    DISK_FILE_NAME$="FT0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PRODUCT_CODE+FIELD_NUMBER                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30116"
+    DFLT_LAST_MOD_TIME$="1952"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=124
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_SPEC_PLY       "
+    TF_DATABASE$="FORM_SPEC_PLY       "
+    DATABASE_DESC$="Form Spec - Permanent Ply File         0"
+    DISK_FILE_NAME$="FMU...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORMS_CODE+LINE_NUMBER                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=144
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_TEMPLATE       "
+    TF_DATABASE$="FORM_TEMPLATE       "
+    DATABASE_DESC$="User Defined Form Spec Template        0"
+    DISK_FILE_NAME$="FSE...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TEMPLATE_CODE+SCREEN_NUMBER+FIELD_NUMBER                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J60719"
+    DFLT_LAST_MOD_TIME$="1066"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_USER_DEFINED   "
+    TF_DATABASE$="FORM_USER_DEFINED   "
+    DATABASE_DESC$="Form User Defined Fields                "
+    DISK_FILE_NAME$="FTL...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORM_CODE+FIELD_NUMBER                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K00313"
+    DFLT_LAST_MOD_TIME$="0864"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORM_USER_DEF_SORT  "
+    TF_DATABASE$="FORM_USER_DEF_SORT  "
+    DATABASE_DESC$="Form User Defined Fields Sort           "
+    DISK_FILE_NAME$="FTM...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIELD_NUMBER+CUSTOMER_CODE+FORM_CODE                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_ACCT_BREAKS      "
+    TF_DATABASE$="GL_ACCT_BREAKS      "
+    DATABASE_DESC$="G/L Account Break File                 0"
+    DISK_FILE_NAME$="GL4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="12"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="BREAK_AT_ACCOUNT_NUMBER                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=54
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_CHART_OF_ACCTS   "
+    TF_DATABASE$="GL_CHART_OF_ACCTS   "
+    DATABASE_DESC$="General Ledger Master                  0"
+    DISK_FILE_NAME$="GL1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="12"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="GL_ACCOUNT_NUMBER                                                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_DEPARTMENTS      "
+    TF_DATABASE$="GL_DEPARTMENTS      "
+    DATABASE_DESC$="Department Data Setup                  0"
+    DISK_FILE_NAME$="GLD...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DEPARTMENT_CODE                                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_DETAIL_FILE      "
+    TF_DATABASE$="GL_DETAIL_FILE      "
+    DATABASE_DESC$="G/L Detail Posting File                0"
+    DISK_FILE_NAME$="GL2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="31"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="GL_ACCOUNT_NUMBER+FISCAL_YEAR_ENDING+ACCOUNTING_PERIOD+POSTING_TYPEA=ACT,B="
+    KEY_ACCESS_DATA_2$="B                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=126
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_JOURNALS         "
+    TF_DATABASE$="GL_JOURNALS         "
+    DATABASE_DESC$="General Ledger Journal Codes           0"
+    DISK_FILE_NAME$="GL5...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SOURCE_JOURNAL_CODE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=48
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL_SUMMARY_DATA     "
+    TF_DATABASE$="GL_SUMMARY_DATA     "
+    DATABASE_DESC$="G/L Account Balances                   0"
+    DISK_FILE_NAME$="GL3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="GL_ACCOUNT_NUMBER+FISCAL_YEAR+BALANCE_TYPE                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=96
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_DETAIL_TRANS     "
+    TF_DATABASE$="IC_DETAIL_TRANS     "
+    DATABASE_DESC$="I/C Detailed Transactions               "
+    DISK_FILE_NAME$="IC8...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="38"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUST_ITEM+LOCATION_CODE+FISCAL_YEAR+ACCT_PERIOD+TRANS_DATE+SEQ_NUMBER_2    "
+    KEY_ACCESS_DATA_2$="S                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=102
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEMS_BY_VENOR   "
+    TF_DATABASE$="IC_ITEMS_BY_VENOR   "
+    DATABASE_DESC$="Item sort by Vendor , Product code     0"
+    DISK_FILE_NAME$="IC4...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="37"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PRIMARY_VENDORY_SUPPLIER_COD+PLANT_CODE+PRODUCT_CODE+ITEM_CODE             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_BY_PCODE    "
+    TF_DATABASE$="IC_ITEM_BY_PCODE    "
+    DATABASE_DESC$="Items by product code sort             0"
+    DISK_FILE_NAME$="IC5...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PRODUCT_CODE+ITEM_CODE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_LOCATION    "
+    TF_DATABASE$="IC_ITEM_LOCATION    "
+    DATABASE_DESC$="Inventory by Location File             0"
+    DISK_FILE_NAME$="IC1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+ITEM_CODE+LOCATION                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K30730"
+    DFLT_LAST_MOD_TIME$="1663"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_MASTER      "
+    TF_DATABASE$="IC_ITEM_MASTER      "
+    DATABASE_DESC$="Inventory masterfile                   0"
+    DISK_FILE_NAME$="IC0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+ITEM_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=320
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_ITEM_STATS       "
+    TF_DATABASE$="IC_ITEM_STATS       "
+    DATABASE_DESC$="Inventory Control Item statistics      0"
+    DISK_FILE_NAME$="IC9...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="29"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ITEM_CODE+LOCATION_CODE+FISCAL_YEAR+BALANCE_TYPE                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOC_PC_ITEM_SORT "
+    TF_DATABASE$="IC_LOC_PC_ITEM_SORT "
+    DATABASE_DESC$="Location,Product code, Item code sort  0"
+    DISK_FILE_NAME$="IC6...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="27"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOCATION_CODE+PRODUCT_CODE+ITEM_CODE                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOT_DETAIL       "
+    TF_DATABASE$="IC_LOT_DETAIL       "
+    DATABASE_DESC$="Inventory Lot Detail                    "
+    DISK_FILE_NAME$="ICL...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="42"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + ITEM_CODE + LOCATION_CODE +RECEIPT_DATE + SEQ_NO           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=364
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_LOT_MASTER       "
+    TF_DATABASE$="IC_LOT_MASTER       "
+    DATABASE_DESC$="Inventory Sub-Ledger                   0"
+    DISK_FILE_NAME$="ICF...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="32"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+ITEM_CODE+LOCATION_CODE+RECEIPT_DATE+SEQUENCE_NO             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=320
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC_PRODUCT_CODES    "
+    TF_DATABASE$="IC_PRODUCT_CODES    "
+    DATABASE_DESC$="Product codes                           "
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"T"+QUO+" + PRODUCT_CODE                                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ISSUES_STATUS       "
+    TF_DATABASE$="ISSUES_STATUS       "
+    DATABASE_DESC$="                                        "
+    DISK_FILE_NAME$="ZW8...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="STATUS_CODE+DESCRIPTION                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=28
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ISSUE_CATEGORY      "
+    TF_DATABASE$="ISSUE_CATEGORY      "
+    DATABASE_DESC$="Issue category                          "
+    DISK_FILE_NAME$="ZW9...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="02"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CATEGORY_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=28
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KRAMER_DATA_SETS    "
+    TF_DATABASE$="KRAMER_DATA_SETS    "
+    DATABASE_DESC$="Kramer Data Requirements                "
+    DISK_FILE_NAME$="KS1...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="28"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DATABASE_NAME+SET_NAME                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30116"
+    DFLT_LAST_MOD_TIME$="1936"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=94
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MANUAL_DATA         "
+    TF_DATABASE$="MANUAL_DATA         "
+    DATABASE_DESC$="Client Manual Data                      "
+    DISK_FILE_NAME$="ZWR...              "
+    FILE_TYPE$="0"
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT+MANUAL_CODE                                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=152
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NET_PROC_DETL       "
+    TF_DATABASE$="NET_PROC_DETL       "
+    DATABASE_DESC$="NET PROCEEDS DETAIL FILE                "
+    DISK_FILE_NAME$="CM4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SOURCE_COMPANY_NO+JOB_NUMBER+SEQUENCE_NO                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=384
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NET_PROC_SORT       "
+    TF_DATABASE$="NET_PROC_SORT       "
+    DATABASE_DESC$="Net Proceeds Work file                 0"
+    DISK_FILE_NAME$="CM5...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SOURCE_COMPANY_NO+SALESPERSON_CODE+REPORT_SECTION+JOB_NUMBER+ACTIVITY_RECOR"
+    KEY_ACCESS_DATA_2$="D                                                                          "
+    DFLT_LAST_MOD_DATE$="J60604"
+    DFLT_LAST_MOD_TIME$="1021"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=384
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ONLINE_DOC_HDR      "
+    TF_DATABASE$="ONLINE_DOC_HDR      "
+    DATABASE_DESC$="On-Line Documentation Header            "
+    DISK_FILE_NAME$="ZW4...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REFERENCE_NO                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=150
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ON_CUSTOMER_MASTER  "
+    TF_DATABASE$="ON_CUSTOMER_MASTER  "
+    DATABASE_DESC$="+ON Customer Master file                "
+    DISK_FILE_NAME$="ARM-01              "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 8"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID + CUSTOMER_NUMBER                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=272
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ON_CUSTOMER_PY_SUM  "
+    TF_DATABASE$="ON_CUSTOMER_PY_SUM  "
+    DATABASE_DESC$="+on Customer Payment Summary            "
+    DISK_FILE_NAME$="ARM-06              "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 8"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIRM_ID + CUSTOMER_NUMBER                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=112
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OPERATOR_CODES      "
+    TF_DATABASE$="OPERATOR_CODES      "
+    DATABASE_DESC$="Operator Codes                          "
+    DISK_FILE_NAME$="ZZPARM              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="16"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"o"+QUO+" + OPERATOR_CODE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=1024
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_MTHLY_BOOKINGS   "
+    TF_DATABASE$="OP_MTHLY_BOOKINGS   "
+    DATABASE_DESC$="Monthly Order Booking Summary          0"
+    DISK_FILE_NAME$="FSD...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="12"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DIVISION+SALESPERSON_CODE+ORDER_DATE                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=42
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_OPEN_ORDER       "
+    TF_DATABASE$="OP_OPEN_ORDER       "
+    DATABASE_DESC$="FD Sales Order Header                  0"
+    DISK_FILE_NAME$="FS1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="8 "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K30116"
+    DFLT_LAST_MOD_TIME$="1136"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=224
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_OPEN_ORD_LN      "
+    TF_DATABASE$="OP_OPEN_ORD_LN      "
+    DATABASE_DESC$="FD Sales Order Line Entry              0"
+    DISK_FILE_NAME$="FS2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER+LINE_NUMBER                                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=320
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_ORDER_HISTORY    "
+    TF_DATABASE$="OP_ORDER_HISTORY    "
+    DATABASE_DESC$="Order History File by customer/form    0"
+    DISK_FILE_NAME$="FS6...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="30"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE +TYPE +FORM_CODE +ORDER_NUMBER +SEQ_NO                       "
+    KEY_ACCESS_DATA_2$="_                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=176
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_ORDER_NOTEPAD    "
+    TF_DATABASE$="OP_ORDER_NOTEPAD    "
+    DATABASE_DESC$="Order Notepad                           "
+    DISK_FILE_NAME$="FMN...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40919"
+    DFLT_LAST_MOD_TIME$="1440"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=512
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_ORD_HIST_BY_DAT  "
+    TF_DATABASE$="OP_ORD_HIST_BY_DAT  "
+    DATABASE_DESC$="Order History by Date                   "
+    DISK_FILE_NAME$="FSY...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="36"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE +DATE_SEQ +FORM_CODE +TYPE +ORDER_NUMBER +SEQUENCE_NUMBER_1  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30115"
+    DFLT_LAST_MOD_TIME$="1802"
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_PRODUCT_CODE     "
+    TF_DATABASE$="OP_PRODUCT_CODE     "
+    DATABASE_DESC$="Product Code Master File                "
+    DISK_FILE_NAME$="FMP...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="21"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$=QUO+"T"+QUO+" + PRODUCT_CODE                                                         "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J50301"
+    DFLT_LAST_MOD_TIME$="1082"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OP_SHIPPING         "
+    TF_DATABASE$="OP_SHIPPING         "
+    DATABASE_DESC$="Shipping Information                   0"
+    DISK_FILE_NAME$="PO3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="13"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER+"+QUO+"     "+QUO+"                                                       "
+    KEY_ACCESS_DATA_2$="+                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=308
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ORDER_REQ_GATEWAY   "
+    TF_DATABASE$="ORDER_REQ_GATEWAY   "
+    DATABASE_DESC$="Order/Req Gateway input file format     "
+    DISK_FILE_NAME$="FO1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=179
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ORDER_REQ_GATEWAY_2 "
+    TF_DATABASE$="ORDER_REQ_GATEWAY_2 "
+    DATABASE_DESC$="Order/Req Gateway input file format 1.01"
+    DISK_FILE_NAME$="FO1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J80127"
+    DFLT_LAST_MOD_TIME$="1249"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=351
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ORDER_REQ_GATEWAY_3 "
+    TF_DATABASE$="ORDER_REQ_GATEWAY_3 "
+    DATABASE_DESC$="Order/Req Gateway input file format 2.00"
+    DISK_FILE_NAME$="FO1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J80127"
+    DFLT_LAST_MOD_TIME$="1398"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=401
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ORDER_REQ_GATEWAY_4 "
+    TF_DATABASE$="ORDER_REQ_GATEWAY_4 "
+    DATABASE_DESC$="Order/Req Gateway input file format 2.01"
+    DISK_FILE_NAME$="FO1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K11031"
+    DFLT_LAST_MOD_TIME$="1297"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=446
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OS_ERR_REP          "
+    TF_DATABASE$="OS_ERR_REP          "
+    DATABASE_DESC$="Transmission Error Report File         0"
+    DISK_FILE_NAME$="OS4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="13"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUMBER+LINE_NUMBER+TRANSMISSION_CODE                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_DETAIL           "
+    TF_DATABASE$="PO_DETAIL           "
+    DATABASE_DESC$="Purchase order lines                   0"
+    DISK_FILE_NAME$="PO2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="12"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PO_NUMBER+LINE_NUMBER                                                      "
+    KEY_ACCESS_DATA_2$="T                                                                          "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=354
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_HEADER           "
+    TF_DATABASE$="PO_HEADER           "
+    DATABASE_DESC$="Purchase order header                  0"
+    DISK_FILE_NAME$="PO1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="9 "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PO_NUMBER                                                                  "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=315
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_SORT_BY_VENDOR   "
+    TF_DATABASE$="PO_SORT_BY_VENDOR   "
+    DATABASE_DESC$="P/O sort by Vendor                     0"
+    DISK_FILE_NAME$="PO4...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="VENDOR_CODE+PLANT_CODE+PO_NUMBER                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO_SRT_BY_ITEM      "
+    TF_DATABASE$="PO_SRT_BY_ITEM      "
+    DATABASE_DESC$="Open P/O by Inventory item & Location  0"
+    DISK_FILE_NAME$="PO5...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="37"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="INVENTORY_CODE+LOCATION_CODE+PO_NUMBER+PO_LINE_NUMBER+SHIP_TO_SEQUENCE_CODE"
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PRINTER_CONTROLS    "
+    TF_DATABASE$="PRINTER_CONTROLS    "
+    DATABASE_DESC$="Printer Effects                         "
+    DISK_FILE_NAME$="ZT0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PRINTER_CODE+CHARACTERISTIC                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30116"
+    DFLT_LAST_MOD_TIME$="1892"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=110
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PRODUCT_CATALOG_GW  "
+    TF_DATABASE$="PRODUCT_CATALOG_GW  "
+    DATABASE_DESC$="Product Catalog GW input file format    "
+    DISK_FILE_NAME$="PC1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$=" 0"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70519"
+    DFLT_LAST_MOD_TIME$="1751"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=737
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REORDER_DATA        "
+    TF_DATABASE$="REORDER_DATA        "
+    DATABASE_DESC$="Reorder Data Entry                      "
+    DISK_FILE_NAME$="CS5...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+FORM_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=316
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION         "
+    TF_DATABASE$="REQUISITION         "
+    DATABASE_DESC$="Requisition Entry                       "
+    DISK_FILE_NAME$="FSM...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REQUISITION_NO                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=338
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITIONS_HDR    "
+    TF_DATABASE$="REQUISITIONS_HDR    "
+    DATABASE_DESC$="Requisition Entry File                  "
+    DISK_FILE_NAME$="CS0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="24"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="COMPANY_CUSTOMER_CODE+LOCATION+REQUISITION_NUMBER                          "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=102
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION_DETL    "
+    TF_DATABASE$="REQUISITION_DETL    "
+    DATABASE_DESC$="Requisitions Line File                  "
+    DISK_FILE_NAME$="CS1...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="00"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=114
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="REQUISITION_LINE    "
+    TF_DATABASE$="REQUISITION_LINE    "
+    DATABASE_DESC$="Requisition Line                        "
+    DISK_FILE_NAME$="FSN...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REQUISITION_NO+LINE_NUMBER                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=162
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RESTOCKING_GW       "
+    TF_DATABASE$="RESTOCKING_GW       "
+    DATABASE_DESC$="Restocking Gateway input file format    "
+    DISK_FILE_NAME$="RS1                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70410"
+    DFLT_LAST_MOD_TIME$="1509"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=50
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RFQ_MASTER          "
+    TF_DATABASE$="RFQ_MASTER          "
+    DATABASE_DESC$="RFQ Customer Job Master                0"
+    DISK_FILE_NAME$="QS1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="11"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="RFQ_NUMBER+RFQ_LINE_NUMBER                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J50310"
+    DFLT_LAST_MOD_TIME$="1614"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=640
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00002              "
+    TF_DATABASE$="S00002              "
+    DATABASE_DESC$="Semi-Perm sort: A/RNEW CUSTOMER LIST    "
+    DISK_FILE_NAME$="S00002              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CREDIT_LIMIT                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00044              "
+    TF_DATABASE$="S00044              "
+    DATABASE_DESC$="Semi-Perm sort: A/RJSC                  "
+    DISK_FILE_NAME$="S00044              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CREDIT_LIMIT                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00047              "
+    TF_DATABASE$="S00047              "
+    DATABASE_DESC$="Semi-Perm sort: F/MACTIVITY             "
+    DISK_FILE_NAME$="S00047              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FORM_CODE+CUSTOMER_CODE+ACTIVITY_DATE                                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00048              "
+    TF_DATABASE$="S00048              "
+    DATABASE_DESC$="Semi-Perm sort: 000Y                    "
+    DISK_FILE_NAME$="S00048              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="13"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+LOOKUP                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="1119"
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00057              "
+    TF_DATABASE$="S00057              "
+    DATABASE_DESC$="Semi-Perm sort: JASLANCER               "
+    DISK_FILE_NAME$="S00057              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00062              "
+    TF_DATABASE$="S00062              "
+    DATABASE_DESC$="Semi-Perm sort: SSPHIST BY FORM         "
+    DISK_FILE_NAME$="S00062              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FORM_CODE+CUSTOMER_CODE+ACTIVITY_DATE                                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00102              "
+    TF_DATABASE$="S00102              "
+    DATABASE_DESC$="Semi-Perm sort: MLAC.F. STEPHENS 43169  "
+    DISK_FILE_NAME$="S00102              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="27"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PLANT+FORM_CODE+ORDER_DATE+ORDER_NUMBER                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00105              "
+    TF_DATABASE$="S00105              "
+    DATABASE_DESC$="Semi-Perm sort: LMCO/SYSTEM             "
+    DISK_FILE_NAME$="S00105              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TOPFORM_NUMBER                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00125              "
+    TF_DATABASE$="S00125              "
+    DATABASE_DESC$="Semi-Perm sort: SSPPHONE LIST           "
+    DISK_FILE_NAME$="S00125              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00129              "
+    TF_DATABASE$="S00129              "
+    DATABASE_DESC$="Semi-Perm sort: TMAVENDOR FAX           "
+    DISK_FILE_NAME$="S00129              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FAX_NUMBER_10                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00131              "
+    TF_DATABASE$="S00131              "
+    DATABASE_DESC$="Semi-Perm sort: JRHRUSS                 "
+    DISK_FILE_NAME$="S00131              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="25"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE+CITY+ORDER_DATE                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00139              "
+    TF_DATABASE$="S00139              "
+    DATABASE_DESC$="Semi-Perm sort: XXXXFGHXFG              "
+    DISK_FILE_NAME$="S00139              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+INVOICE_NUMBER_8                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00140              "
+    TF_DATABASE$="S00140              "
+    DATABASE_DESC$="Semi-Perm sort: LMCINVOICE              "
+    DISK_FILE_NAME$="S00140              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="07"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="INVOICE_NUMBER_8                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00142              "
+    TF_DATABASE$="S00142              "
+    DATABASE_DESC$="Semi-Perm sort: LMCOPEN INVOICE         "
+    DISK_FILE_NAME$="S00142              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="17"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="INVOICE_NUMBER_8+CUSTOMER_CODE                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00143              "
+    TF_DATABASE$="S00143              "
+    DATABASE_DESC$="Semi-Perm sort: LMCS/S CUSTOMER LIST    "
+    DISK_FILE_NAME$="S00143              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TOPFORM_NUMBER                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00145              "
+    TF_DATABASE$="S00145              "
+    DATABASE_DESC$="Semi-Perm sort: JRMLEVEL 7              "
+    DISK_FILE_NAME$="S00145              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE+SW_CODE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00233              "
+    TF_DATABASE$="S00233              "
+    DATABASE_DESC$="Semi-Perm sort: JRHPROCWRK              "
+    DISK_FILE_NAME$="S00233              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="15"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SOURCE_COMPANY_NO+JOB_NUMBER+SEQUENCE_NO+ACTIVITY_TYPE                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S00408              "
+    TF_DATABASE$="S00408              "
+    DATABASE_DESC$="Semi-Perm sort: CSITF CUSTOMER FAX LIST "
+    DISK_FILE_NAME$="S00408              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LIST_TYPE+CONTACT_CODE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALESMAN_MASTER     "
+    TF_DATABASE$="SALESMAN_MASTER     "
+    DATABASE_DESC$="Salesperson Masterfile                  "
+    DISK_FILE_NAME$="TP3...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=90
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALESPERSON_MASTER  "
+    TF_DATABASE$="SALESPERSON_MASTER  "
+    DATABASE_DESC$="Salesperson Masterfile                 0"
+    DISK_FILE_NAME$="AR3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=246
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCHEDULING_DATA     "
+    TF_DATABASE$="SCHEDULING_DATA     "
+    DATABASE_DESC$="Software Issues Scheduling              "
+    DISK_FILE_NAME$="ZWS...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CONTROL_NUMBER                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=42
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SEQ_COMM            "
+    TF_DATABASE$="SEQ_COMM            "
+    DATABASE_DESC$="Seq Commissions                         "
+    DISK_FILE_NAME$="U01...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 7"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="INVOICE_NO                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=178
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM_MANIFEST_INFO    "
+    TF_DATABASE$="SM_MANIFEST_INFO    "
+    DATABASE_DESC$="Shipping Manifest Information          0"
+    DISK_FILE_NAME$="SM0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PO_NUMBER+PO_LINE+SHIP_TO_CODE+SEQUENCE_NUMBER                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=196
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM_ORDER_HISTORY    "
+    TF_DATABASE$="SM_ORDER_HISTORY    "
+    DATABASE_DESC$="SM Order History Detail                 "
+    DISK_FILE_NAME$="SM4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PO_NUMBER+PO_LINE_NUMBER+SHIP_TO_CODE+SEQUENCE_NUMBER                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J70916"
+    DFLT_LAST_MOD_TIME$="0968"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=196
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM_SHIPPING_INFO    "
+    TF_DATABASE$="SM_SHIPPING_INFO    "
+    DATABASE_DESC$="Shipping Information for Scale         0"
+    DISK_FILE_NAME$="SH8...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ORDER_NUM       +SHIP_POINT                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=384
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SOFTWARE_ISSUES     "
+    TF_DATABASE$="SOFTWARE_ISSUES     "
+    DATABASE_DESC$="Software Issue Masterfile               "
+    DISK_FILE_NAME$="ZW0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ISSUE_NUMBER                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=706
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SSP_PERSON          "
+    TF_DATABASE$="SSP_PERSON          "
+    DATABASE_DESC$="SSP Persons                             "
+    DISK_FILE_NAME$="ZW7...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SSP_PERSON                                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=34
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUMMARY_BILL        "
+    TF_DATABASE$="SUMMARY_BILL        "
+    DATABASE_DESC$="Monthly Shipment Detail-Version 3.0.3  0"
+    DISK_FILE_NAME$="FMY...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="22"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE+INVOICE_NO+SEQUENCE_NO+SHIP_POINT                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J60205"
+    DFLT_LAST_MOD_TIME$="1551"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=320
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUPPLIER_PRICE      "
+    TF_DATABASE$="SUPPLIER_PRICE      "
+    DATABASE_DESC$="Supplier Price List                    0"
+    DISK_FILE_NAME$="IC2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="34"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CUSTOMER_CODE + ITEM_CODE + VENDOR_CODE + PLANT_CODE                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40727"
+    DFLT_LAST_MOD_TIME$="1415"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUPPORT_ISSUES      "
+    TF_DATABASE$="SUPPORT_ISSUES      "
+    DATABASE_DESC$="Support Issue Database                  "
+    DISK_FILE_NAME$="ZW2...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REF_NO                                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=218
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEMPLATE            "
+    TF_DATABASE$="TEMPLATE            "
+    DATABASE_DESC$="User Defined Form Spec Template        0"
+    DISK_FILE_NAME$="FSE...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TEMPLATE_CODE+SCREEN_NUMBER+FIELD_NUMBER                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=256
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST                "
+    TF_DATABASE$="TEST                "
+    DATABASE_DESC$="                                        "
+    DISK_FILE_NAME$="                    "
+    FILE_TYPE$=" "
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEXT_CONVERSION     "
+    TF_DATABASE$="TEXT_CONVERSION     "
+    DATABASE_DESC$="Text Conversion Data                    "
+    DISK_FILE_NAME$="KS0...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="41"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TEXT_TYPE_CODE+TEXT_TO_LOOK_FOR                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J30118"
+    DFLT_LAST_MOD_TIME$="0938"
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=90
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_AUTH_CONTROL     "
+    TF_DATABASE$="TF_AUTH_CONTROL     "
+    DATABASE_DESC$="TopForm Authorization Masterfi          "
+    DISK_FILE_NAME$="ZWA...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="09"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SERIAL_NUMBER                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=66
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_CUST_MASTER      "
+    TF_DATABASE$="TF_CUST_MASTER      "
+    DATABASE_DESC$="SUPPORT CLIENT PROFILE                  "
+    DISK_FILE_NAME$="SS1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K71019"
+    DFLT_LAST_MOD_TIME$="1812"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=626
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_MODEM_PROFILE    "
+    TF_DATABASE$="TF_MODEM_PROFILE    "
+    DATABASE_DESC$="Support Modem Profiles                  "
+    DISK_FILE_NAME$="SS8                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J40830"
+    DFLT_LAST_MOD_TIME$="1717"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=484
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_SOFTWARE         "
+    TF_DATABASE$="TF_SOFTWARE         "
+    DATABASE_DESC$="TopForm Software Modules                "
+    DISK_FILE_NAME$="SSA                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K31021"
+    DFLT_LAST_MOD_TIME$="1153"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=768
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_SOFTWARE_MODULES "
+    TF_DATABASE$="TF_SOFTWARE_MODULES "
+    DATABASE_DESC$="TopForm Software Modules               0"
+    DISK_FILE_NAME$="SSB...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=656
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_SUPPORT          "
+    TF_DATABASE$="TF_SUPPORT          "
+    DATABASE_DESC$="Support Issue Database                  "
+    DISK_FILE_NAME$="ZW2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="REFERENCE_NUMBER                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=218
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TIME_CATEGORIES     "
+    TF_DATABASE$="TIME_CATEGORIES     "
+    DATABASE_DESC$="Categorize Time log entries             "
+    DISK_FILE_NAME$="TT0                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 2"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TIME_CATEGORY                                                              "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=44
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TIME_LOG            "
+    TF_DATABASE$="TIME_LOG            "
+    DATABASE_DESC$="Timetracking Detail                     "
+    DISK_FILE_NAME$="TT3...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="12"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="ACTIVITY_DATE+SSP_PERSON+LINE_NUMBER                                       "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J51130"
+    DFLT_LAST_MOD_TIME$="1647"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=94
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_BY_CLIENT        "
+    TF_DATABASE$="TK_BY_CLIENT        "
+    DATABASE_DESC$="Time Log (TK2) by Client                "
+    DISK_FILE_NAME$="TK4                 "
+    FILE_TYPE$="3"
+    KEY_SIZE$="31"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE+LOG_DATE+PROJECT_CODE+EMPLOYEE_CODE+SERVICE_CODE+SEQUENCE_COUNT"
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1696"
+    ZA0_UNUSED_1$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_BY_PROJECT       "
+    TF_DATABASE$="TK_BY_PROJECT       "
+    DATABASE_DESC$="Time Log (TK2) by Project               "
+    DISK_FILE_NAME$="TK3                 "
+    FILE_TYPE$="3"
+    KEY_SIZE$="31"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PROJECT_CODE+LOG_DATE+EMPLOYEE_CODE+SERVICE_CODE+CLIENT_CODE+SEQUENCE_COUNT"
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1693"
+    ZA0_UNUSED_1$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_CLIENT           "
+    TF_DATABASE$="TK_CLIENT           "
+    DATABASE_DESC$="Timekeeping Client Data Tasks           "
+    DISK_FILE_NAME$="TK0                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT_CODE                                                                "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1688"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_IN_OUT_LOG       "
+    TF_DATABASE$="TK_IN_OUT_LOG       "
+    DATABASE_DESC$="Timekeeping In/Out Log Data             "
+    DISK_FILE_NAME$="TK5                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="14"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="EMPLOYEE_CODE+LOG_DATE+LOG_TIME                                            "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1711"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_LOG              "
+    TF_DATABASE$="TK_LOG              "
+    DATABASE_DESC$="Timekeeping Log Data                    "
+    DISK_FILE_NAME$="TK2                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="31"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="EMPLOYEE_CODE+LOG_DATE+SERVICE_CODE+PROJECT_CODE+CLIENT_CODE+SEQ_COUNT     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1841"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK_SERVICE          "
+    TF_DATABASE$="TK_SERVICE          "
+    DATABASE_DESC$="Timekeeping Service Data Tasks          "
+    DISK_FILE_NAME$="TK1                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$=" 3"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SERVICE_CODE                                                               "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="K10205"
+    DFLT_LAST_MOD_TIME$="1671"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_CONT_CAT_MASTER  "
+    TF_DATABASE$="TM_CONT_CAT_MASTER  "
+    DATABASE_DESC$="Telemarketing Contact Category Master  0"
+    DISK_FILE_NAME$="ZP1...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CONTACT_CATEGORY_CODE                                                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=48
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_CONT_MANAG_GW    "
+    TF_DATABASE$="TM_CONT_MANAG_GW    "
+    DATABASE_DESC$="Contact Management Gateway File Format  "
+    DISK_FILE_NAME$="CTM                 "
+    FILE_TYPE$="8"
+    KEY_SIZE$="  "
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="                                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J90223"
+    DFLT_LAST_MOD_TIME$="1267"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=300
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_CONT_MASTER      "
+    TF_DATABASE$="TM_CONT_MASTER      "
+    DATABASE_DESC$="Telemarketing Contact Master File      0"
+    DISK_FILE_NAME$="ZP4...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LIST_TYPE+CONTACT_CODE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=388
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_CONT_SOURCE_MAST "
+    TF_DATABASE$="TM_CONT_SOURCE_MAST "
+    DATABASE_DESC$="Telemarketing Contact Source Master Fil0"
+    DISK_FILE_NAME$="ZP2...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CONTACT_SOURCE_CODE                                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=48
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_LIST_MASTER      "
+    TF_DATABASE$="TM_LIST_MASTER      "
+    DATABASE_DESC$="Telemarketing List type master file    0"
+    DISK_FILE_NAME$="ZP0...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LIST_TYPE_CODE                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=64
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_SALES_MASTER     "
+    TF_DATABASE$="TM_SALES_MASTER     "
+    DATABASE_DESC$="Telemarketing Salesperson Master File  0"
+    DISK_FILE_NAME$="ZP7...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="04"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON_CODE                                                           "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM_SEL_CODE_MASTER  "
+    TF_DATABASE$="TM_SEL_CODE_MASTER  "
+    DATABASE_DESC$="Telemarketing Selection Code Master Fil0"
+    DISK_FILE_NAME$="ZP6...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="03"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SELECTION_CODE                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=128
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TOPFORM_CLIENTS     "
+    TF_DATABASE$="TOPFORM_CLIENTS     "
+    DATABASE_DESC$="TopForm Client Masterfile               "
+    DISK_FILE_NAME$="ZWB...              "
+    FILE_TYPE$=" "
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="TOPFORM_NUMBER                                                             "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=544
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP1                 "
+    TF_DATABASE$="TP1                 "
+    DATABASE_DESC$="Customer Alpha Sort                     "
+    DISK_FILE_NAME$="TP1...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="23"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SORT_CODE+CUSTOMER_CODE                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TP2                 "
+    TF_DATABASE$="TP2                 "
+    DATABASE_DESC$="Salesman sort                           "
+    DISK_FILE_NAME$="TP2...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="26"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON+SORT_CODE+CUSTOMER_CODE                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPN                 "
+    TF_DATABASE$="TPN                 "
+    DATABASE_DESC$="Detail file                             "
+    DISK_FILE_NAME$="TPN...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LINE_NUMBER+ITEM_CODE                                                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=43
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPO                 "
+    TF_DATABASE$="TPO                 "
+    DATABASE_DESC$="Open orders by Salesman                 "
+    DISK_FILE_NAME$="TPO...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="08"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="SALESPERSON+ORDER_NUMBER                                                   "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="USER_DEFINED_FIELDS "
+    TF_DATABASE$="USER_DEFINED_FIELDS "
+    DATABASE_DESC$="User Defined Fields                     "
+    DISK_FILE_NAME$="ASV...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="05"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="FIELD_TYPE+FIELD_NUMBER                                                    "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=192
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW1                 "
+    TF_DATABASE$="ZW1                 "
+    DATABASE_DESC$="Issues by Client                        "
+    DISK_FILE_NAME$="ZW1...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="CLIENT                                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWD                 "
+    TF_DATABASE$="ZWD                 "
+    DATABASE_DESC$="Issue sort by priority                  "
+    DISK_FILE_NAME$="ZWD...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="20"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="PRIORITY+STATUS_CODE+INITIAL_DATE+INITIAL_TIME+REF_NO                      "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWG                 "
+    TF_DATABASE$="ZWG                 "
+    DATABASE_DESC$="Topform Client by Lookup                "
+    DISK_FILE_NAME$="ZWG...              "
+    FILE_TYPE$="3"
+    KEY_SIZE$="16"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LOOKUP_CODE+TOPFORM_NUMBER                                                 "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZWL                 "
+    TF_DATABASE$="ZWL                 "
+    DATABASE_DESC$="REMOTE CONNECT LOG                      "
+    DISK_FILE_NAME$="ZWL                 "
+    FILE_TYPE$="2"
+    KEY_SIZE$="10"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="DATE_CALL_STARTED+TIME_CALL_STARTED                                        "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="J41017"
+    DFLT_LAST_MOD_TIME$="1068"
+    ZA0_UNUSED_1$="1"
+    RECORD_SIZE=160
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZY8                 "
+    TF_DATABASE$="ZY8                 "
+    DATABASE_DESC$="Flexible format text lines              "
+    DISK_FILE_NAME$="ZY8...              "
+    FILE_TYPE$="2"
+    KEY_SIZE$="06"
+    ACCESS_PASSWORD$="      "
+    ACCESS_LEVEL$="  "
+    KEY_ACCESS_DATA_1$="LINE_NUMBER+PRINT_LINE                                                     "
+    KEY_ACCESS_DATA_2$="                                                                           "
+    DFLT_LAST_MOD_DATE$="      "
+    DFLT_LAST_MOD_TIME$="    "
+    ZA0_UNUSED_1$=" "
+    RECORD_SIZE=91
+   </RecordData>
+
+</Data>
+
+</PxTable>

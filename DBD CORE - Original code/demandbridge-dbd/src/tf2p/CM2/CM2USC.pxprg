@@ -1,0 +1,143 @@
+0010 REM "Build CMC from CM4 <CM2USC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.9 - 06/06/96 - 11.89 - dmm
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="CM2USC",X1$="Get Sales Report Information"
+0120 DIM Z0$(80,"-"),B0[9],C$(100)
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31],A[32],A[33],A[34],A[35],A[36],A[37],A[38],A[39],A[40]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9]
+0322 IOLIST B0$,B0[0],B0[1],B0[2],B0[3],B0[4],B0[5],B0[6],B0[7],B0[8],B0[9]
+0330 IOLIST C$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O CM4...  02O CMC...  03O AR1...  13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 REM IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 00641,09900
+0700 CALL "ZZINIT",STR(Z[2]:"00")
+0800 REM "Enter dates
+0805 DIM D0$(12),D[1]
+0807 IF Q1$<>"" THEN D0$(1)=Q1$; GOSUB 6200; GOTO 0890
+0810 CALL "ZZENTR","D",D{ALL},D0$,X4$,X3$,25,10,1,6,C0,"","","","CM2USR00","","",""
+0830 CALL "ZZENTR","D",D{ALL},D0$,X4$,X3$,25,12,7,6,C0,"","","","CM2USR02","","",""
+0831 IF ABS(C0)=2 THEN GOTO 0810
+0835 IF D0$(7,6)<D0$(1,6) THEN GOTO 0830
+0870 IF Q1$="" THEN CALL "ZZPROM","0",X3$,Z,"Continue to Start Processing.","","",0; ON Z GOTO 0871,9900,0810
+0880 X$=X3$(9,3)+"CMC"+D0$+X3$(21,6)
+0885 WRITE (Z[13],KEY=X$(1,6))X$
+0900 DIM A[40]
+0905 C0=0
+0940 READ (Z[2],KEY="",DOM=0941)
+1000 REM 
+1005 W5$=""
+1010 READ (Z[1],END=5000)IOL=0310; C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1050 REM "Build record
+1055 DIM B$(160),B[9]; V$=""
+1060 REM "If same job, default salesperson, customer name, and invoice #, IF they are blank, also item code & description
+1065 IF K$=A$(1,12) THEN GOSUB 7500; GOTO 1076
+1070 DIM C$(LEN(C$)); FIND (Z[3],KEY=A$(51,10),DOM=1071)IOL=0330
+1075 K$=A$(1,12),K0$=A$(133,4),K1$=C$(11,35),K2$=A$(61,8),K4$=A$(137,50),K0=A[36],K1=A[37]; IF A$(37,1)="1" THEN K3$=A$(51,10) ELSE V$=A$(51,10),K3$=""; REM "only save customer # if sales record else save off vendor # into V$
+1080 IF POS(A$(37,1)="12")=0 OR A$(16,6)<D0$(1,6) OR A$(16,6)>D0$(7,6) THEN GOTO 1010; REM "Wait till here to check the date, so we get the sales info from type 1 records even if they are in a different period
+1110 GOSUB 7800
+1115 FOR I0=0 TO 7
+1117 IF B[I0]<>0 THEN EXITTO 1120
+1118 NEXT I0
+1119 GOTO 1200; REM "If here, then all buckets are 0, so skip it.
+1120 WRITE (Z[2],KEY=B$(1,60),DOM=1121)IOL=0320; C0=C0+1; GOTO 1200
+1121 REM "If already there, then add to buckets, if activity date> date in record, then update it and the reference number
+1125 READ (Z[2],KEY=B$(1,60),DOM=1120)IOL=0322
+1126 IF POS(" "<>B0$(150,10))<>0 AND A$(37,1)="2" THEN IF B0$(150,10)<>B$(150,10) THEN GOTO 7900
+1127 B0$(150,10)=B$(150,10); REM "Update Vendor number, since we probably won't get it until after the record has already been written.
+1130 FOR I=0 TO 7; B0[I]=B0[I]+B[I]; NEXT I
+1138 IF B0[0]=0 AND B0[1]=0 AND B0[2]=0 AND B0[3]=0 AND B0[4]=0 AND B0[5]=0 AND B0[6]=0 AND B0[7]=0 THEN REMOVE (Z[2],KEY=B0$(1,50),DOM=1141); GOTO 1141; REM "If rec has gone to all zeros, then remove it
+1140 WRITE (Z[2],KEY=B0$(1,60))IOL=0322
+1995 GOTO 1010
+5000 REM "EOJ
+5005 PRINT @(10,15),FNR$(STR(C0:M0$))+" records created.",
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,4),"This program builds the Sales Report Information",@(10,5),"for the specified dates.",
+6030 PRINT @(10,10),"Activity from:",@(21,12),"to:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "Display data
+6210 CALL "ZZDISP","D",D0$(1,6),"",X3$,"","",25,10,X4$
+6215 CALL "ZZDISP","D",D0$(7,6),"",X3$,"","",25,12,X4$
+6245 RETURN 
+7500 REM "Default salesperson, customer name and invoice # if each field is blank
+7510 IF POS(" "<>A$(133,4))=0 THEN A$(133,4)=K0$
+7515 IF POS(" "<>C$(11,35))=0 THEN C$(11,35)=K1$
+7520 IF POS(" "<>A$(61,8))=0 OR A$(37,1)="2" THEN A$(61,8)=K2$; REM "Replace A/P transaction(37,1=2) with a/r invoice # to create correct key
+7525 IF POS(" "<>A$(51,10))=0 OR A$(37,1)="2" THEN V$=A$(51,10),A$(51,10)=K3$; REM "Replace Vendor code in type 2 a/p rec with customer code from a/r type 1 rec. but save it off for later use
+7530 IF POS(" "<>A$(137,50))=0 THEN A$(137,50)=K4$; REM "Item code (10) and item descrpiption
+7535 IF A$(37,1)="2" OR A[36]=0 THEN A[36]=K0; REM "Use service fee from type 1 record
+7537 IF A$(37,1)="2" OR A[37]=0 THEN A[37]=K1; REM "Use Ad fund fee from type 1 record
+7545 RETURN 
+7800 REM "Load B$ and B()
+7805 B$(1)=A$(1,3)+A$(133,4)+C$(11,35)+A$(4,9)+A$(61,8); REM "KEY - source comp, salesperson, customer name,job number,  invoice number
+7807 B$(60,1)="0"
+7810 B$(138,6)=A$(39,6),B$(144,6)=A$(16,6); IF A$(37,1)="1" THEN B$(63,10)=A$(51,10); REM "Inv date, sale date, customer number (if billing record)
+7815 B$(73,10)=A$(137,10),B$(83,40)=A$(147,40),B$(123,15)=A$(22,15); REM "Item code, Item desc, Fact Job Number
+7820 B[0]=A[0]-A[2],B[1]=A[3],B[2]=A[2]; REM "Sale amt(less sales tax), Total Cost, Sales tax
+7823 IF A$(37,1)="2" THEN B$(150,10)=V$; REM "If a/p cost load vendor number into Vendor field
+7825 IF A$(37,1)="2" THEN B[5]=A[23] ELSE B[3]=A[23],B[4]=A[24]; REM "GST cost or GST and PST
+7828 B[1]=B[1]-B[5]; REM "Subtract GST cost from Total Cost
+7830 B[6]=A[4],B[7]=A[1]; REM "Freight Cost and Freight Billed
+7840 B[8]=A[36],B[9]=A[37]; REM "Service Fee % and Ad Fund Fee %
+7895 RETURN 
+7910 B$(60,1)=CHR(ASC(B$(60,1))+1)
+7915 IF B$(60,1)=$8A$ THEN GOTO 7910
+7920 WRITE (Z[2],KEY=B$(1,60),DOM=7910)IOL=0320; GOTO 1995
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(10,7),"There are "+FNR$(STR(T:M0$))+" records to process.",
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8905 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

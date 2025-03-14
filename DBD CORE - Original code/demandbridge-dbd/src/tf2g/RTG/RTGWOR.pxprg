@@ -1,0 +1,86 @@
+0010 ! RTGWOR - Write Remote T/M Output Record
+0035 REM "5.4 - 09/01/05 - 11.776944 - jme - SSP# 187239
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ! ^100,5 - Call/Enter string
+0105 ENTER SP_NAME$,F$,FILE_OP_CDE$,KEY_VAL$,S1$,A,A{ALL}
+0110 ! SP_NAME$=saleperson number (or '    ' for all)
+0115 ! >>  '!'+operator code will substitute the salesperson, if saleperson
+0120 ! >>   not found,  then the record will not be written out if this is
+0125 ! >>   the host
+0126 ! 
+0130 ! F$ = file name
+0135 ! FILE_OP_CDE$= "U"pdate, "D"elete, "C"reate file, "P"rogram file
+0140 ! KEY_VAL$=key value, S1$=string value from record
+0145 ! A=highest array index, A(ALL) array values from record.
+0155 ! 
+0200 ! ^100,5 - Constants & Functions
+0205 C$=$7E$,DATA_SIZE%=428
+0300 ! 300,5 - Iolists & Templates
+0305 IOLIST A$
+0500 ! 500,5 - Open files
+0505 _RT1=HFN; OPEN (_RT1,IOL=*)"RT1"+%C$
+0510 _RT2=HFN; OPEN (_RT2)"RT2"+%C$
+0515 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"
+0600 ! ^100,5 - Get Parameters
+0605 RT_PARM$=""
+0610 CALL "RTGPRM",ERR=*NEXT,RT_PARM$
+1000 ! ^1000,5 - Main processing
+1005 ! Change operator to salesperson, if no salesperson found, then don't
+1010 ! write out if this is the host. If remote, then we are sending mail
+1015 ! back to someone
+1020 IF LEN(SP_NAME$)<1 OR MID(SP_NAME$,1,1)<>"!" THEN GOTO 1200
+1025 IF RT_PARM$(7,1)<>"H" THEN {
+1030 ! If remote, then write out with the salesperson's number, but send all
+1035 ! records, they will be going to people not setup in the remote T/M
+1036 ! file
+1040 SP_NAME$=RT_PARM$(8,4)
+1045 GOTO 1200
+1050  }
+1100 ! ^100,5 - Read RT2
+1105 READ (_RT2,KEY=SP_NAME$(2),DOM=*NEXT)
+1110 K2$=KEY(_RT2,END=1120)
+1115 IF K2$(1,3)=SP_NAME$(2) THEN SP_NAME$=K2$(4); GOTO 1200
+1120 GOTO 9700
+1200 ! ^100,5 - Setup A$ to write out
+1205 DIM A$(83)
+1210 A$(1,4)=SP_NAME$ ! Salesperson
+1215 CALL "RTGNSQ",SP_NAME$,N$
+1220 A$(5,5)=N$ ! Sequence Number
+1225 A$(10,1)=FILE_OP_CDE$ ! Change type
+1230 A$(11,6)=%MACHINE_DATE$ ! Change date
+1235 A$(17,4)=STR(INT(TIM*100):"0000") ! Change time
+1240 A$(21,8)=F$ ! Filename
+1245 A$(29,55)=KEY_VAL$+C$ ! Key value
+1250 GOSUB 2000 ! Pack A(all) into A0$
+1255 DATA_PART$=S1$+C$+A0$
+1300 ! ^100,5 - If DATA_PART$ <= DATA_SIZE% bytes then write out one record
+1305 ! else write continuation
+1310 FIRST_PART$=A$; COMMAND$=A$(10,1)
+1315 IF LEN(DATA_PART$)<=DATA_SIZE% THEN {
+1320 A$=FIRST_PART$+DATA_PART$,A$(10,1)=COMMAND$
+1325 WRITE (_RT1,KEY=A$(1,9))IOL=0305
+1330 GOTO 1400
+1335  } ELSE {
+1340 A$=FIRST_PART$+DATA_PART$(1,DATA_SIZE%)
+1345 DATA_PART$=DATA_PART$(DATA_SIZE%+1),A$(10,1)="*"
+1350 WRITE (_RT1,KEY=A$(1,9))IOL=0305
+1355 CALL "RTGNSQ",SP_NAME$,N$
+1360 FIRST_PART$(5,5)=N$
+1365 GOTO 1315
+1370  }
+1400 ! ^100,5 - Finished writing out
+1405 GOTO 9700
+2000 ! ^1000,5 - Pack the A(all) array that is A units long into A0$
+2005 A0$=""
+2010 IF A<>0 THEN {
+2015 FOR I=0 TO A; A0$=A0$+STR(A[I])+C$; NEXT I
+2020  }
+2025 RETURN 
+9700 ! 9700,5 - Close files and clean up
+9705 CLOSE (_RT1)
+9710 CLOSE (_RT2)
+9715 CLOSE (ZZPARM)
+9800 ! ^100,5 - Return to previous
+9998 ! 9998,1 - End
+9999 END 

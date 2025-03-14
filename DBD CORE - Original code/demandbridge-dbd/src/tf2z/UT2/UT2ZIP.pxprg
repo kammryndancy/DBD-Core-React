@@ -1,0 +1,130 @@
+0010 REM "Build Zip Code file 5 digits only <UT2ZIP>
+0035 REM "5.5 - 10/08/07 - 11.736944 - tma - SSP# 206527
+0037 REM "206527-WO 199160 for longer string on zip code file not included   
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2ZIP",X1$="Build 5 digit Zip Code File - ZP1"
+0120 DIM Z0$(80,"-")
+0130 K0=1,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST C$,C[0],C[1],C[2],C[3],C[4]
+0320 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01L ZY1...  02O ZP4...  03O AR1...  04O AP4...  06O ZZPARM  07O ZY1ZIP  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0620 PRINT @(0,4),"This program will build the Zip Code file (5 digits only) from the contact file (ZP4), customer file (AR1), and the vendor file (AP4)."
+0630 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0800 CALL "ZZINIT","01"
+0820 K$=KEY(Z[7],END=0821); READ RECORD (Z[7],KEY=K$)A$; WRITE RECORD (Z[1],KEY=K$)A$; C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150; GOTO 0820 ELSE GOTO 0820
+1000 FOR F=2 TO 4
+1050 DIM B$(256) ! SSP#206527
+1100 K$=KEY(Z[F],END=3000); READ RECORD (Z[F],KEY=K$)A$
+1110 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1200 ON F-2 GOSUB 7000,7100,7200
+1220 READ (Z[1],KEY=B$(1,3)+"XX    ",DOM=1221)C$; IF B$(10,18)<>C$(10,18) THEN GOTO 1300 ELSE GOSUB 7300; GOTO 1050
+1240 READ (Z[1],KEY=B$(1,5)+"    ",DOM=1241)C$; GOSUB 7300; GOTO 1050
+1260 K$=KEY(Z[1],END=2000); READ (Z[1],KEY=K$)C$; IF K$(6,2)<>"TO" THEN GOTO 1300
+1280 IF B$(4,2)<=K$(4,2) AND B$(4,2)>=K$(8,2) THEN IF B$(10,18)<>C$(10,18) THEN GOTO 2000 ELSE GOSUB 7300; GOTO 1050
+1285 GOTO 2000
+1300 REM 
+1400 REM IF POS(" "<>B$(28,12))=0 THEN LET B$(28,12)=C$(28,12)
+1500 IF POS(" "<>B$(40,3))=0 AND C$(40,3)<>"800" THEN B$(40,3)=C$(40,3)
+2080 IF B$(40,3)="800" THEN B$(40,3)=""
+2100 WRITE (Z[1],KEY=B$(1,9))B$
+2900 GOTO 1050
+3000 NEXT F
+4000 PRINT "EOJ"
+4010 C=T; GOSUB 8150
+4015 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process Complete!!","","",0
+4020 GOTO 9900
+7000 REM "CONTACT FILE
+7010 B$(1,5)=A$(129,5)
+7020 B$(10,18)=A$(111,18)
+7030 B$(28,12)=A$(138,12)
+7040 B$(40,3)=A$(200,3)
+7080 I=134; GOSUB 8000
+7090 RETURN 
+7100 REM 
+7110 B$(1,5)=A$(134,5)
+7120 B$(10,18)=A$(116,18)
+7130 B$(28,12)=A$(143,12)
+7140 B$(40,3)=A$(205,3)
+7180 I=139; GOSUB 8000
+7190 RETURN 
+7200 REM 
+7210 B$(1,5)=A$(124,5)
+7220 B$(10,18)=A$(106,18)
+7230 B$(28,12)=A$(133,12)
+7240 B$(40,3)=A$(195,3)
+7280 I=129; GOSUB 8000
+7290 RETURN 
+7300 REM 
+7310 IF C$(40,3)="   " AND B$(40,3)<>"800" THEN C$(40,3)=B$(40,3)
+7320 REM IF POS(" "<>C$(28,12))=0 THEN LET C$(28,12)=B$(28,12)
+7330 IF C$(40,3)="800" THEN C$(40,3)=""
+7340 WRITE (Z[1],KEY=C$(1,9))C$
+7345 RETURN 
+8010 IF A$(I,4)<>"0000" THEN RETURN 
+8020 A$(I,4)=""
+8030 WRITE RECORD (Z[F],KEY=K$)A$
+8090 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[2],T9,X3$,T2,T0,K,B,D,S0,S1,F$
+8111 CALL "ZZINFO",Z[3],T9,X3$,T3,T0,K,B,D,S0,S1,F$
+8112 CALL "ZZINFO",Z[4],T9,X3$,T4,T0,K,B,D,S0,S1,F$
+8113 CALL "ZZINFO",Z[7],T9,X3$,T7,T0,K,B,D,S0,S1,F$
+8114 T=T2+T3+T4+T7
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "206527-WO 199160 for longer string on zip code file not included   

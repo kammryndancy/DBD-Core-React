@@ -1,0 +1,37 @@
+0010 REM "Setup calendars for new FMS cust <FM2UTZ>
+0035 REM "3.8 - 04/26/95 - 13.58 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "This program looks for FMS customers and sets up calendar years
+0081 REM "1991 to 1993 copied from default customer 00000.
+0082 REM "Used for conversion purposes.
+0100 BEGIN 
+0120 DIM Z$(10,"0")
+0200 REM 
+0210 OPEN (13)"ZZPARM"
+0220 READ (13,KEY=FID(0)+"      ")X3$
+0410 OPEN (1)"AR1"+X3$(9,3)
+0420 OPEN (2)"FMP"+X3$(9,3)
+0430 OPEN (3)"FM1"+X3$(9,3)
+1000 REM 
+1020 READ (1,END=5000)A$
+1040 READ (2,KEY="D"+A$(1,10),DOM=1000)B$
+1045 REM IF B$(24,1)<>"Y" THEN GOTO 01000
+1060 PRINT A$(1,10),"  ",A$(11,35)
+1200 REM 
+1220 FOR X=1991 TO 1995
+1225 READ (2,KEY="E"+A$(1,10)+STR(X:"0000"),DOM=1226); GOTO 1280
+1230 READ (2,KEY="E"+Z$(1,10)+STR(X:"0000"))Q$
+1235 Q$(2,10)=A$(1,10)
+1240 WRITE (2,KEY=Q$(1,15))Q$
+1250 PRINT "WRITTEN"
+1280 NEXT X
+1300 REM 
+1310 READ (3,KEY=A$(1,10),DOM=1311)
+1320 K$=KEY(3,END=1400); READ RECORD (3)C$
+1330 IF K$(1,10)<>A$(1,10) THEN GOTO 1400
+1340 C$(108,1)="Y"
+1350 WRITE RECORD (3,KEY=K$)C$
+1380 GOTO 1320
+1990 GOTO 1000
+9999 END 

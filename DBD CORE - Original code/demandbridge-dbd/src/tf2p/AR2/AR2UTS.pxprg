@@ -1,0 +1,124 @@
+0010 REM "ADD TO AS3 from ARK & AR6    <AR2UTS>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 06/01/94 - 12.53 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UTS",X1$="Add to Alternate Sales Tax from ST Pending"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15],C[16],C[17],C[18],C[19],C[20],C[21],C[22],C[23],C[24],C[25]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ARK...  02O AR6...  03O AS3...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0630 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0680 F0$="C"; IF Q1$<>"" THEN GOTO 0690
+0685 CALL "ZZPROM",".Y",X3$,Z,"Default as 1/2 rate, 'C' type Tax? (No means default at full rate)","","",0; IF Z=1 THEN F0$="F"
+0690 IF F0$="C" THEN PRINT @(0,16),"Default net amount to C-type 1/2 rate", ELSE PRINT @(0,16),"Default net amount to full rate",
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 DIM A$(65),A[15]
+1000 REM 
+1001 REM "C is count of ARK recs processed, C1 is count of records added to AS9
+1009 REM "Read ARK
+1010 READ (Z[1],END=5000)IOL=0310
+1014 REM "Read AR6 if available
+1015 DIM B$(169),B[14]
+1020 READ (Z[2],KEY=A$(1,18),DOM=1021)IOL=0320
+1100 REM "If fiscal year & AP are blank(couldnot find AR6) then calculate from invoice date, using month for period & year for FY.
+1105 IF POS(" "<>B$(127,6))<>0 THEN F$=B$(127,6); GOTO 1120
+1110 J$=FND$(A$(19,6))
+1115 F$=J$(7,4)+J$(1,2)
+2000 REM "Create an AS3 Record AND write out
+2100 REM 
+2120 DIM C$(53),C[25]
+2204 REM "Fiscal Year & Acctg period
+2205 C$(1,6)=F$
+2209 REM "Sales Tax Code
+2210 C$(7,10)=A$(25,10)
+2214 REM "Invoice number
+2215 C$(17,8)=A$(11,8)
+2219 REM "Customer number
+2220 C$(27,10)=A$(1,10)
+2224 REM "Invoice Date
+2225 C$(37,6)=A$(19,6)
+2230 REM "Invoice Net Aount
+2235 C[0]=A[1]
+2240 REM "Determine if taxable, T$="Y" if taxable.
+2245 IF A[6]<>0 OR A[8]<>0 OR A[10]<>0 THEN T$="Y"; GOTO 2250
+2247 IF A[5]=0 AND A[7]=0 AND A[9]=0 THEN T$="Y" ELSE T$="N"
+2260 REM "Put all of net amt into either 1/2 (c) tax buckets or full tax buckets based on F0$ (C=c type, F=full rate type)
+2265 IF F0$="C" THEN C[1]=A[1],C[2]=A[1],C[3]=A[1] ELSE C[4]=A[1],C[5]=A[1],C[6]=A[1]
+2280 REM "Taxable Freight @ full rate from Costed freight in AR6
+2285 IF T$="Y" THEN C[7]=B[12],C[8]=B[12],C[9]=B[12]
+2290 REM "Non Taxable Freight from Costed Freight in AR6
+2295 IF T$<>"Y" THEN C[10]=B[12],C[11]=B[12],C[12]=B[12]
+2300 REM "Tax invoiced
+2305 C[16]=A[6],C[17]=A[8],C[18]=A[10]
+2310 REM "Taxable sale amounts
+2315 C[19]=A[5],C[20]=A[7],C[21]=A[9]
+2710 WRITE (Z[3],KEY=C$(1,26),DOM=2716)IOL=0330; C1=C1+1
+2755 C=C+1
+2760 IF MOD(C,T1)=1 THEN GOSUB 8150
+2995 GOTO 1000
+5000 REM "EOJ
+5010 J$="Process complete!!    "+FNS$(STR(C1:"###,##0"))+" records added to AS3."
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,J$,"","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will add information to the Alternate Sales Tax     ",'LF',"File (AS3) based on invoice totals in the Sales Tax Pending file (ARK).",'LF',"Some data will be retreived from the Invoice History file (AR6). The amounts  ",'LF',"generated will be all stock type or all C type depending on the option selected.",'LF',"If the AS3 record already exists, it will not be overwritten or changed. If the",'LF',"sales tax invoiced is 0, and the taxable amount is not 0, then the invoice   ",'LF',"will be considered a non-taxable invoice. ",'LF',"The AS3 file can be maintained using the AR2MLA program."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "Get approx total number of records T, by div'ing #sectors @512 per, by the record size we are expecting.
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,14),"There are "+STR(T)+" Sales Tax Pending records to process"
+8120 T1=INT(T*.02); IF T1<=1 THEN T1=2; REM " set to 2% of total record,if 1 set to 2 to do mod correctly
+8145 RETURN 
+8150 REM "Display horiz. bar graph given total #, T and current #, C
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T2,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("          "=Z9$+"          ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,115 @@
+0010 REM "Update Inventory Costing Records-Po Rec Update<FM2ICD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 01/18/00 - 17.75 - dmm - SSP# 121104
+0040 REM "Copyright 2000 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Coming from PO2RUA to update FTE and FTF main and FTF transaction records
+0081 REM "A$ & A[ALL] is PO7 record
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,C0,A$,A{ALL},ACN$
+0100 SETERR 9000
+0110 X0$="FM2ICD",X1$="Update Inventory Costing Records-PO Rec Update"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST FTE$,FTE[0],FTE[1],FTE[2],FTE[3],FTE[4],FTE[5],FTE[6],FTE[7],FTE[8],FTE[9],FTE[10],FTE[11],FTE[12],FTE[13],FTE[14],FTE[15]
+0320 IOLIST FTF$,FTF[0],FTF[1],FTF[2],FTF[3],FTF[4],FTF[5],FTF[6],FTF[7],FTF[8],FTF[9],FTF[10],FTF[11],FTF[12],FTF[13],FTF[14],FTF[15]
+0350 IOLIST ICF$,ICF[0],ICF[1],ICF[2],ICF[3],ICF[4],ICF[5],ICF[6],ICF[7],ICF[8],ICF[9],ICF[10],ICF[11],ICF[12]
+0400 IOLIST FTF_2$,FTF_2[0],FTF_2[1],FTF_2[2],FTF_2[3],FTF_2[4],FTF_2[5],FTF_2[6],FTF_2[7],FTF_2[8],FTF_2[9],FTF_2[10],FTF_2[11],FTF_2[12],FTF_2[13],FTF_2[14],FTF_2[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FTE...  02O FTF...  04O FS1...  05O ICF... 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+1000 REM "UPDATE - Update pending buckets of FTE and main FTF records and FTF transaction record(s) to updated buckets
+1005 DIM FTE$(150),FTE[15],FTF$(150),FTF[15],FTF_2$(150),FTF_2[15]
+1010 EXTRACT RECORD (Z[4],KEY=A$(1,8),DOM=9900)FS1$
+1015 KEY$=A$(1,8)+FS1$(237,3)
+1020 EXTRACT (Z[1],KEY=KEY$,DOM=9900)IOL=0310
+1025 READ (Z[2],KEY=KEY$,DOM=1026)
+1030 K$=KEY(Z[2],END=1085); READ (Z[2],KEY=K$)IOL=0320
+1035 IF FTF$(1,11)<>KEY$ THEN GOTO 1085
+1036 IF FTF$(55,1)="U" THEN GOTO 1030; REM "Skip if already updated
+1040 IF FTF$(15,3)<>A$(66,3) THEN GOTO 1030
+1045 EXTRACT (Z[2],KEY=K$(1,14)+"000",DOM=9900)IOL=0400
+1050 FTE[6]=FTE[6]-FTF[9],FTE[3]=FTE[3]+FTF[9],FTE[7]=FTE[7]-(FTF[10]+FTF[11]+FTF[12]),FTE[4]=FTE[4]+FTF[10]+FTF[11]+FTF[12]; IF K$(12,3)="001" THEN FTE[8]=FTE[8]-FTF[8],FTE[5]=FTE[5]+FTF[8] ELSE COST_2_DIST=COST_2_DIST+FTF[9]+FTF[10]
+1052 IF K$(12,3)="001" AND FTF[9]<>0 AND FTF[10]<>0 THEN COST_2_DIST=COST_2_DIST+FTF[9]+FTF[10]; IF FTF[13]<>0 THEN COST_2_DIST=COST_2_DIST-FTF[13]; REM "If product and estimated and actual both not zero then adjust lot(s), reduced by rec now cost which will be any new lots system will set up
+1055 FOR X=8 TO 12; FTF_2[X]=FTF_2[X]-FTF[X],FTF_2[X-6]=FTF_2[X-6]+FTF[X]; NEXT X
+1057 FTF_2$(55,1)="U",FTF_2$(39,6)=X3$(15,6),FTF_2$(45,6)=ACN$; IF POS(" "<>FTF$(29,10))>0 THEN FTF_2$(29,10)=FTF$(29,10); REM "Update status, accounting date, audit control number, vendor invoice number
+1058 IF POS(" "<>FTF$(56,12))>0 THEN FTF_2$(56,12)=FTF$(56,12); REM "G/L account number for inventory in progress
+1060 WRITE (Z[2],KEY=FTF_2$(1,17))IOL=0400
+1063 FOR X=2 TO 6; FTF[X]=FTF[X]+FTF[X+6],FTF[X+6]=0; NEXT X
+1064 FTF$(55,1)="U",FTF$(39,6)=X3$(15,6),FTF$(45,6)=ACN$; REM "Update statue, accounting date, audit control number
+1065 WRITE (Z[2],KEY=K$)IOL=0320
+1070 GOTO 1030
+1085 WRITE (Z[1],KEY=FTE$(1,11))IOL=0310
+1087 IF COST_2_DIST<>0 THEN GOSUB 3000; REM "if non product cost, dist to lots
+1088 IF FTE$(53,1)<>" " THEN FS1$(241,1)="Y"; WRITE RECORD (Z[4],KEY=A$(1,8))FS1$; REM "Set flag in order header if product rec'd to not allow delete
+1090 GOTO 9900
+3000 REM "run through matching lots for this order, total up total qty, then allocate cost_2_dist to lots
+3004 DIM ICF$(269),ICF[12]; TOTAL_QTY=0
+3005 READ (Z[5],KEY=FTE$(26,20)+FTE$(54,4),DOM=3006)
+3010 READ (Z[5],END=3020)IOL=0350; IF ICF$(1,24)<>FTE$(26,20)+FTE$(54,4) THEN GOTO 3020 ELSE IF ICF$(41,8)<>A$(1,8) THEN GOTO 3010
+3013 IF STP(ICF$(125,4),3," ")="" THEN TOTAL_QTY=TOTAL_QTY+ICF[4]*ICF[3] ELSE TOTAL_QTY=TOTAL_QTY+ICF[4]*ICF[2]*ICF[3]
+3018 GOTO 3010
+3020 IF TOTAL_QTY=0 THEN GOTO 3045; REM "We don't have any lots left so get out
+3025 READ (Z[5],KEY=FTE$(26,20)+FTE$(54,4),DOM=3026)
+3030 K5$=KEY(Z[5],END=3040); IF K5$(1,24)<>FTE$(26,20)+FTE$(54,4) THEN GOTO 3040 ELSE EXTRACT (Z[5],KEY=K5$,DOM=3030)IOL=0350; IF ICF$(41,8)<>A$(1,8) THEN READ (Z[5]); GOTO 3030
+3032 IF STP(ICF$(125,4),3," ")="" THEN ICF_QTY=ICF[4]*ICF[3] ELSE ICF_QTY=ICF[4]*ICF[2]*ICF[3]
+3034 ICF_COST=ICF_QTY*COST_2_DIST/TOTAL_QTY; ICF[0]=ICF[0]+ICF_COST,COST_2_DIST=COST_2_DIST-ICF_COST,TOTAL_QTY=TOTAL_QTY-ICF_QTY
+3036 WRITE (Z[5],KEY=K5$)IOL=0350
+3037 IF TOTAL_QTY=0 THEN GOTO 3045; REM "We don't have any lots left so get out
+3038 GOTO 3030
+3040 IF COST_2_DIST<>0 THEN GOTO 3000; REM "Some left, some1 removed an icf record while we weren't looking, distribute what's left
+3045 RETURN 
+5000 REM "EOJ
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

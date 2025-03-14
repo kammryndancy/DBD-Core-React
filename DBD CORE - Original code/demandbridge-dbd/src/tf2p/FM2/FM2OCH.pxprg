@@ -1,0 +1,16 @@
+0010 REM "<FM2OCH> Order Contracts History Maintenance
+0035 REM "5.5 - 08/23/07 - 9.856111 - mhe - SSP# 200893
+0037 REM "200893-Create New Contract number field in order processing        
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 CLEAR 
+0110 ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0150 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access TopForm to Access this program"; IF TCB(13)=1 THEN BEGIN ; RUN "ZMENU" ELSE EXIT 
+0170 %GUI=1
+0200 CALL "FMGOCH",ERR=*NEXT
+0210 %GUI=0
+0250 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56001 REM 08/23/2007 - MHE - Program created.
+56002 REM "200893-Create New Contract number field in order processing        

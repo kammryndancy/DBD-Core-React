@@ -1,0 +1,160 @@
+0010 REM "obsolete inventory  <IC2OIR>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 09/22/03 - 9.295277 - tma - SSP# 164644
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="IC2OIR",X1$="Obsolete Inventory Report"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST ICF$,ICF[0],ICF[1],ICF[2],ICF[3],ICF[4],ICF[5],ICF[6],ICF[7],ICF[8],ICF[9],ICF[10],ICF[11],ICF[12]
+0320 IOLIST B$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ICF...  02O AR1...  03O IC9... 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0535 OPT$=DIM(4,"0")+DIM(4,"9")+"N"; DIM A[5],HOLD_ICF$(269); REM OPT$ 1,4=START WHSE, 5,4=END WHSE, 9,1=COMBINE LIKE LOTS Y/N
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 GOSUB 8200
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM "Setup text file
+0905 ERASE "oi.txt",ERR=0906
+0910 SERIAL "oi.txt",0,0
+0920 OUT=UNT; OPEN PURGE (OUT,OPT="TEXT")"oi.txt"
+0960 SEP$=$09$
+0970 GOSUB 7500
+0980 X$=FND$(X3$(15,6)),THIS_YEAR$=X$(7,4),LAST_YEAR$=STR(NUM(THIS_YEAR$)-1:"0000"),MONTH=NUM(X$(1,2))
+0985 USAGE_MONTHS=12,START_MONTH=12-USAGE_MONTHS+MONTH
+1000 REM "BEGIN MAIN PROCESS
+1010 DIM ICF[12],ICF$(269); READ (Z[1],END=5000)IOL=0310
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1030 DIM AR1$(600); IF STP(ICF$(1,10),1)<>"" THEN FIND (Z[2],KEY=ICF$(1,10),DOM=1031)AR1$
+1035 REM "Apply options
+1040 IF ICF$(21,4)<OPT$(1,4) OR ICF$(21,4)>OPT$(5,4) THEN GOTO 1000; REM "check range, don't get too fancy for now
+1044 REM IF "1125525"=ICF$(11,7) THEN ESCAPE
+1045 IF OPT$(9,1)<>"Y" THEN GOTO 1055; REM COMBINE LIKE LOTS OPTION
+1046 IF ICF$(1,30)=HOLD_ICF$(1,30) THEN HOLD_COST=HOLD_COST+ICF[0]; IF ICF[2]<>0 THEN HOLD_QTY=HOLD_QTY+ICF[2]*ICF[3]*ICF[4] ELSE HOLD_QTY=HOLD_QTY+ICF[3]*ICF[4] END_IF ; GOTO 1000; REM "If same as current one, just add to hold_qty & hold_cost
+1047 REM "if here then we are combining lots (1045) and this is a new lot(1406), so create save icf, load icf from hold info, and then load hold info from saved icf data
+1048 SAVE_ICF$=ICF$,SAVE_COST=ICF[0]; IF ICF[2]<>0 THEN SAVE_QTY=ICF[2]*ICF[3]*ICF[4] ELSE SAVE_QTY=ICF[3]*ICF[4] END_IF ; DIM ICF[12]
+1049 ICF$=HOLD_ICF$,ICF[0]=HOLD_COST,ICF[3]=HOLD_QTY,ICF[4]=1,HOLD_ICF$=SAVE_ICF$,HOLD_COST=SAVE_COST,HOLD_QTY=SAVE_QTY
+1050 IF STP(ICF$,1)="" THEN GOTO 1000; REM "first time it's blank go back
+1100 REM "Build line
+1110 CALL "ZZDISP","AX",ICF$(1,10),"A/R",X3$,X$,"",0,0,X4$
+1115 LINE$=X$+SEP$+ICF$(11,10)+SEP$+AR1$(278,4)+SEP$; REM "Cust#, item#, salesperson
+1120 LINE$=LINE$+ICF$(21,4)+SEP$+FND$(ICF$(25,6))+SEP$; REM "Warehouse, Rec date
+1123 IF ICF[2]<>0 THEN QTY=ICF[2]*ICF[3]*ICF[4] ELSE QTY=ICF[3]*ICF[4]
+1125 LINE$=LINE$+STR(QTY)+SEP$+STR(ICF[0])+SEP$; REM "Qty and total cost
+1200 REM "Get average usage per month, etc.
+1215 DIM TY[13],LY[13],USAGE[24]
+1220 GOSUB 7600
+1225 FOR I=1 TO 12; USAGE[I]=LY[I],USAGE[I+12]=TY[I]; NEXT I
+1230 TOTAL=0
+1235 FOR I=START_MONTH TO START_MONTH+USAGE_MONTHS-1; TOTAL=TOTAL+USAGE[I]; NEXT I
+1240 MON_AVG=TOTAL/USAGE_MONTHS
+1250 REM "given MON_AVG, figure MONTHS_FOR_THIS_LOT, & CUMM_MONTHS
+1255 IF MON_AVG=0 THEN MONTHS_FOR_THIS_LOT=9999 ELSE MONTHS_FOR_THIS_LOT=QTY/MON_AVG
+1260 IF ICF$(1,20)=CURR_ITEM$ THEN CUMM_MONTHS=CUMM_MONTHS+MONTHS_FOR_THIS_LOT ELSE CUMM_MONTHS=MONTHS_FOR_THIS_LOT,CURR_ITEM$=ICF$(1,20)
+1290 LINE$=LINE$+STR(MON_AVG)+SEP$+STR(MONTHS_FOR_THIS_LOT)+SEP$+STR(CUMM_MONTHS)+SEP$; REM "Monthly avg usage, months in this lot, months total usage
+1300 REM "Find # of months old
+1305 LOT_DATE$=ICF$(25,6),CURR_DATE$=X3$(15,6)
+1310 CALL "ZZDATE",X3$,"",CURR_DATE$,LOT_DATE$,D0,4,W1,W2,W3,W4,W5,W0$,W1$,W2$
+1320 LINE$=LINE$+STR(D0)+SEP$
+1500 REM "Write out
+1505 PRINT (OUT)LINE$,$0D0A$,
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility program will create the file oi.txt"
+6025 PRINT @(0,5),"With data from the Lot Detail Table"
+6030 PRINT @(2,9),"Start warehouse:",@(1,10),"Ending warehouse:",@(0,11),"Combine like lots?",
+6035 PRINT @(20,9),OPT$(1,4),@(20,10),OPT$(5,4),@(20,11),OPT$(9,1),
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Put out header lines
+7505 PRINT (OUT)"Printed on: "+FND$(X3$(15,6))+" Warehouses: "+OPT$(1,4)+" - "+OPT$(5,4)+"  combine like lots? "+OPT$(9,1),$0D0A$,
+7510 HEAD$="Customer"+SEP$+"Item Code"+SEP$+"Salesperson"+SEP$
+7512 HEAD$=HEAD$+"Whse"+SEP$+"Receipt date"+SEP$+"Quantity"+SEP$
+7514 HEAD$=HEAD$+"Total Cost"+SEP$+"Avg Mon Usage"+SEP$+"Months of usage"+SEP$+"When used up"+SEP$+"Months old"+SEP$
+7535 PRINT (OUT)HEAD$,$0D0A$,
+7545 RETURN 
+7600 REM "Gather statistics for all whses for this item for this year & last year stats, this year into TY[1-12], last year into LY[1-12]
+7605 IOLIST IC9$,IC9[0],IC9[1],IC9[2],IC9[3],IC9[4],IC9[5],IC9[6],IC9[7],IC9[8],IC9[9],IC9[10],IC9[11],IC9[12],IC9[13]
+7610 DIM IC9[13]
+7615 READ (Z[3],KEY=ICF$(1,20),DOM=7616)
+7620 READ (Z[3],END=7640)IOL=7605; IF IC9$(1,20)<>ICF$(1,20) THEN GOTO 7640
+7629 REM "If usage type, then if this year or last year update correct buckets
+7630 IF IC9$(29,1)="U" THEN IF IC9$(25,4)=THIS_YEAR$ THEN FOR II=1 TO 12; TY[II]=TY[II]+IC9[II]; NEXT II END_IF ELSE IF IC9$(25,4)=LAST_YEAR$ THEN FOR II=1 TO 12; LY[II]=LY[II]+IC9[II]; NEXT II
+7635 GOTO 7620
+7645 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8200 REM "Gather options
+8205 C0=0,X0=-1,X1=1
+8220 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+8225 IF C0>3 OR X0<0 THEN GOTO 8300
+8240 ON X0 GOTO 8400,8450,8500,8300
+8300 REM "Where to go
+8310 CALL "ZZPROM","0",X3$,Z,"","","",X0
+8315 ON Z GOTO 8320,9900,8200
+8320 RETURN 
+8400 REM "Start whse
+8410 CALL "ZZENTR","SZ",A{ALL},OPT$,X4$,X3$,20,9,1,4,C0,"",X$,"","IC2OIR02","","",""
+8440 GOTO 8220
+8450 REM "Ending whse
+8460 CALL "ZZENTR","SZ",A{ALL},OPT$,X4$,X3$,20,10,5,4,C0,"",X$,"","IC2OIR04","","",""
+8490 GOTO 8220
+8500 REM "Combine like lots
+8510 CALL "ZZENTR","Y",A{ALL},OPT$,X4$,X3$,20,11,9,1,C0,"",X$,"","IC2OIR02","","",""
+8540 GOTO 8220
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,53 @@
+0010 REM "CHECK ARB FILE FOR UNPRINTED INVOICES <AR2XBA>
+0035 REM "5.7 - 10/03/11 - 9.264722 - tma - SSP# 249809
+0037 REM "249809-Doing monthend procedure for finance change and getting a   
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0890 SETERR 9000
+0900 REM "This routine runs through the ARB file given and counts
+0910 REM "the number of unprinted invoices. If no unprinted invoices
+0915 REM "are found then X1 is returned as 0, ELSE a message is
+0920 REM "printed giving the number of unfound invoices. 
+0925 REM "If X0 is 1 then the message gives the option of continuing
+0930 REM "IF X0 is 0 or the response was to end then X1 is returned as 1
+0940 REM "IF X0 is 1 and the response is continue then X1 returns as 0
+0950 REM "X0 = continue possible? 0=no, 1=yes
+0955 REM "X1 = returned value, 0=ok, proceed, 1=exit program
+1010 ENTER X3$,X4$,F0,X0,X1
+1100 REM 
+1110 PRINT @(0,20),'CE',
+1120 PRINT @(15,20),"Checking for unprinted invoices: ",
+1150 _FMP=HFN; OPEN (_FMP,ERR=*NEXT)"FMP"+%C$ ! SSP247935 jdf
+2000 REM " CHECK ARB FILE ON F0
+2003 U=0,V=0 ! SSP247935 jdf
+2005 READ (F0,KEY="",DOM=2006)
+2010 READ (F0,END=3000)A$
+2015 DIM FMP$(171); FIND (_FMP,KEY="D"+A$(15,10),ERR=*NEXT,DOM=*NEXT)FMP$(1) ! SSP247935 jdf
+2020 CALL "ZZDISP","A",A$(7,8),"AR6",X3$,"","",48,20,X4$
+2024 REM "Check for cash sale or printed
+2025 IF A$(60,1)<>"Y" AND A$(64,1)<>"P" AND A$(77,1)<>"F" THEN U=U+1
+2027 IF FMP$(24,1)="Y" AND A$(77,1)<>"F" THEN CALL "ZZDATE",X3$,"",A$(180,6),X3$(21,6),D0,1,0,0,0,0,0,"","",""; IF ABS(D0)>3650 THEN V=V+1 ! SSP247935 jdf !SSP#249809
+2030 GOTO 2010
+3000 REM "See if any unprinted ones were found
+3005 READ (F0,KEY="",DOM=3006)
+3010 IF U=0 AND V=0 THEN GOTO 9900 ! SSP247935 jdf
+3015 IF U>0 THEN IF U=1 THEN P$="1 unprinted invoice was found!" ELSE P$=STR(U)+" unprinted invoices were found!" ! SSP247935 jdf
+3017 IF V>0 THEN IF V=1 THEN P$=P$+" 1 invalid ship date was found!" ELSE P$=P$+" "+STR(V)+" invalid ship dates were found!" ! SSP247935 jdf   
+3020 IF X0=0 THEN CALL "ZZPROM",".4",X3$,Z,P$,"","",0 ELSE CALL "ZZPROM",".5",X3$,Z,P$,"","",0
+3025 REM " IF X0=0 THEN EXIT ANYWAY, IF X0=1 THEN Z=0 MEANS CONTINUE,
+3026 REM " Z=1 MEANS END. SET X1=TO Z
+3030 IF X0=0 THEN X1=1 ELSE X1=Z
+3035 GOTO 9900
+9000 REM "error
+9010 EXIT ERR
+9500 REM 
+9510 IF ERR=36 THEN LIST 0010; LIST 0900,1010; EXIT 
+9514 PRINT 'LF',"N1=",N1," I=",I," N0=",N0," N=",N,
+9515 PRINT 'LF',"ERR=",ERR,"  ","TCB(5)=",TCB(5),; INPUT *
+9520 EXIT ERR
+9900 REM "End
+9905 IF _FMP THEN CLOSE (_FMP,ERR=*NEXT); _FMP=0 ! SSP247935 jdf
+9910 PRINT @(0,20),'CE',
+9920 EXIT 
+9999 END 
+56000 REM "247935-Changes to Sales Journal to catch the invalid years/dates   

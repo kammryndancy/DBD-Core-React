@@ -1,0 +1,84 @@
+0010 ! FMGODH.1 - Reprint Prompt for FMGODH
+0030 ! ************************************************************************
+0035 REM "5.4 - 02/09/06 - 11.584166 - jir - SSP# 190146
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ENTER ARG_1$,ARG_2,ARG_3$
+0055 PROCESS "FMGODH","../OPG/OP.EN",ARG_1$,ARG_2$,ARG_3$
+0075 ARG_2=NUM(ARG_2$,ERR=*NEXT)
+0095 EXIT 
+0099 ! *********************************************************
+0100 ! 100 - Initialization
+0110 INIT:
+0120 _SV_KR=PRM('KR'); SET_PARAM 'KR'=0 ! Ensure native handling of KEP()
+0130 GOSUB SETUP_LIBRARY; IF %FLMAINT_MSG$<>"" THEN MESSAGE_LIB %FLMAINT_MSG$
+0190 RETURN 
+0199 ! **********************************************************
+0300 ! 300 - Set up the message library
+0310 SETUP_LIBRARY:
+0320 _SV_MSGLIB$=MSG(*)
+0330 _LANG$=LCS(%NOMAD_DEF_SFX$); IF _LANG$="" THEN _LANG$=LCS(ENV("PVXLANG")); IF _LANG$="" THEN _LANG$=LCS(ENV("LANG")); IF _LANG$="" THEN _LANG$="en"
+0340 MESSAGE_LIB "*msglib."+_LANG$,ERR=*NEXT; GOTO 0360
+0350 MESSAGE_LIB "*msglib.en"
+0360 SET_MSG:GOSUB SETUP_MESSAGES
+0370 RETURN 
+0399 ! *********************************************************
+0500 MAIN_POST_DISPLAY:
+0510 MESSAGE$=ARG_1$; REFRESH_FLG=1
+0595 RETURN 
+0599 ! *************************************************
+0900 ! 900 - Wrapup
+0910 WRAPUP:
+0950 MESSAGE_LIB _SV_MSGLIB$
+0960 SET_PARAM 'KR'=_SV_KR
+0970 RETURN 
+0999 ! ***************************************************************
+9000 ! 9000 - Retrieve messages from the *msglib.xxx library
+9010 SETUP_MESSAGES:
+9020 _FYI$=MSG("FYI"),_ERROR$=MSG("ERROR")
+9030 _MSG_DIRECTORY$=MSG("DIRECTORY")
+9040 _MSG_END_OF_FIL$=MSG("END_OF_FIL")
+9050 _MSG_FILOPNERR1$=MSG("FILOPNERR1")
+9060 _MSG_JUST_CHECK$=MSG("JUST_CHECK")
+9070 _MSG_MANDATORY$=MSG("MANDATORY")
+9080 _MSG_NEXT$=MSG("NEXT")
+9090 _MSG_NON_NUMER$=MSG("NON_NUMER")
+9100 _MSG_NOT_FOUND$=MSG("NOT_FOUND")
+9110 _MSG_OVRWRT_CHG$=MSG("OVRWRT_CHG")
+9120 _MSG_PRECEDING$=MSG("PRECEDING")
+9130 _MSG_PREFIX$=MSG("PREFIX")
+9140 _MSG_REC_ACCESS$=MSG("REC_ACCESS")
+9150 _MSG_REC_ALTERD$=MSG("REC_ALTERD")
+9160 _MSG_REC_CR_NEW$=MSG("REC_CR_NEW")
+9170 _MSG_REC_LOCKED$=MSG("REC_LOCKED")
+9180 _MSG_X$=MSG("REC_MISS","^"),P=POS("^"=_MSG_X$),_MSG_REC_MISS1$=_MSG_X$(1,P-1),_MSG_REC_MISS2$=_MSG_X$(P+1)
+9190 _MSG_REC_NOTFND$=MSG("REC_NOTFND")
+9200 _MSG_REC_NO_1ST$=MSG("REC_NO_1ST")
+9210 _MSG_REC_NO_LST$=MSG("REC_NO_LST")
+9220 _MSG_REC_REMOVE$=MSG("REC_REMOVE")
+9230 _MSG_REC_UPDADD$=MSG("REC_UPDADD")
+9240 _MSG_X$=MSG("REC_VFYDEL","^"),P=POS("^"=_MSG_X$),_MSG_REC_VFYDEL1$=_MSG_X$(1,P-1),_MSG_REC_VFYDEL2$=_MSG_X$(P+1)
+9250 _MSG_X$=MSG("REC_VIEW","^"),P=POS("^"=_MSG_X$),_MSG_REC_VIEW1$=_MSG_X$(1,P-1),_MSG_REC_VIEW2$=_MSG_X$(P+1)
+9260 _MSG_REQ_FIELDS$=MSG("REQ_FIELDS")
+9270 _MSG_START_FILE$=MSG("START_FILE")
+9280 _MSG_UPDATE$=MSG("UPDATE")
+9290 _MSG_UPD_OTHER1$=MSG("UPD_OTHER1")
+9300 _MSG_UPD_OTHER2$=MSG("UPD_OTHER2")
+9310 _MSG_UPD_SAME$=MSG("UPD_SAME")
+9320 _MSG_WARNING$=MSG("WARNING")
+9330 _MSG_CANNOT_WRITE$=MSG("CANT_WRITE")
+9340 _MSG_DUP_UNIQUE$=MSG("DUP_UNIQUE")
+9350 RETURN 
+9399 ! *************************************************
+20000 VERIFY_REPRINT:! Verify they want to reprint
+20010 _ANS$="YES" ! MSGBOX MSG("VERIFY_WSH",MSG("FMGODH_05")),MSG("VERIFY"),"?,YESNO",_ANS$ SSP 190146
+20040 IF _ANS$="YES" THEN ARG_2$="0"; CMD_STR$="END"
+20095 RETURN 
+20099 ! **************************************************
+20100 VERIFY_NO_TO_ALL:! Verify then want to no to all
+20110 _ANS$="YES" ! MSGBOX MSG("VERIFY_WSH",MSG("FMGODH_06")),MSG("VERIFY"),"?,YESNO",_ANS$ SSP 190146
+20140 IF _ANS$="YES" THEN ARG_2$="3"; CMD_STR$="END"
+20195 RETURN 
+20199 ! *******************************************************
+56001 ! "190146-In Reprinting Orders take off the verify of are you sure    
+56002 ! "       that you want to reprint after each yes or no answer"

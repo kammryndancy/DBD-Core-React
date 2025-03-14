@@ -1,0 +1,22 @@
+0010 REM 'KEYP' - GET PREVIOUS KEY
+0035 REM "5.5 - 03/05/07 - 13.350833 - crg - SSP# 205639
+0037 REM "205639-Oracle - FID() and FIB() calls to be replaced with FN%FIB$  
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 SETERR 0061; ENTER C,K$; SETERR 0000; F9$=FN%XFD$(C,6); F$=STP(F9$(9),1); GOTO 0100
+0065 SETERR 0100; ENTER F$,K$
+0100 SETERR 9000
+1000 REM "Read with key, then get the pkey
+1005 OLD_KEY$=K$,K$=""
+1010 CLOSE (14); OPEN (14)F$; F9$=FN%FID$(14); IF F9$(10,1)<>$02$ THEN EXIT 17; REM "if not DIRect or soft file then leave with error
+1020 READ (14,KEY=OLD_KEY$,DOM=1021)
+1030 K$=KEP(14,END=9900); GOTO 9900; REM "get pky, if end of file, then k$ will be '' resulting in 2 being returned
+9000 REM "Error
+9010 EXIT ERR
+9900 REM "end
+9910 IF K$="" THEN EXIT 2
+9920 SETERR 9940
+9930 EXIT 
+9940 RUN "ZMENU"
+9999 END 
+56002 REM "205639-Oracle - FID() and FIB() calls to be replaced with FN%FIB$  

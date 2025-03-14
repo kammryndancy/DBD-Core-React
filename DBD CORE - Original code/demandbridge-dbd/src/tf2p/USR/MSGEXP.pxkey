@@ -1,0 +1,145 @@
+<PxTable>
+ TableName=MSGEXP
+ TableKey=K1225987823
+ FileCreate=KEYED "MSGEXP",100,0,-640,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="MSG"
+    PHYSICALPATH$="../tf2p/USR/MSGEXP"
+    LASTCHANGEDATE$="2008/12/11 17:32"
+    LASTCHANGEBY$="jir"
+    LASTUPDATEDFILE$="2024/09/27 11:44:47-ChaitanyaGun_kianoi2"
+    DESCRIPTION$="Message Lib Exception"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST ENGLISH$:[CHR(100)]"
+    NAME$="ENGLISH"
+    DESCRIPTION$="English"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="F"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST ENGLISH$"
+    NAME$="ENGLISH"
+    DESCRIPTION$="English"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST CANADIAN$"
+    NAME$="CANADIAN"
+    DESCRIPTION$="Canadian"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST UK$"
+    NAME$="UK"
+    DESCRIPTION$="Uk"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST TF_UNUSED_1$"
+    NAME$="TF_UNUSED_1"
+    DESCRIPTION$="Unused 1"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST TF_UNUSED_2$"
+    NAME$="TF_UNUSED_2"
+    DESCRIPTION$="Unused 2"
+    TYPE$="S"
+    LENGTH$="100"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="CHECK"
+    ENGLISH$="CHECK"
+    CANADIAN$="Cheque"
+    UK$="Cheque"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COLOR"
+    ENGLISH$="COLOR"
+    UK$="Colour"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FREIGHT"
+    ENGLISH$="FREIGHT"
+    UK$="Carriage"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="INVENTORY"
+    ENGLISH$="INVENTORY"
+    UK$="Stock"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SALES TAX"
+    ENGLISH$="SALES TAX"
+    CANADIAN$="V. A. T."
+    UK$="V. A. T."
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SHIP VIA"
+    ENGLISH$="SHIP VIA"
+    UK$="Deliver Via"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SHIP-TO"
+    ENGLISH$="SHIP-TO"
+    UK$="Deliver to"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VENDOR"
+    ENGLISH$="VENDOR"
+    UK$="Supplier"
+   </RecordData>
+
+</Data>
+
+</PxTable>

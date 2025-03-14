@@ -1,0 +1,158 @@
+<PxTable>
+ TableName=FRZ
+ TableKey=K1372704556
+ FileCreate=KEYED "FRZ",3,0,-256,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FRZ_Test"
+    PHYSICALPATH$="="+QUO+"../tf2y/FRZ"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:41:57-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:42:50-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST RETRIEVAL_CODE$:[LEN(3)]"
+    NAME$="RETRIEVAL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"RETR_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Retrieval code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST RETRIEVAL_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="RETRIEVAL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"RETR_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Retrieval code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST STATISTICAL_SERIES$:[LEN(3,SEP=SEP)]"
+    NAME$="STATISTICAL_SERIES"
+    DESCRIPTION$="=MSG("+QUO+"STAT_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Statistical Series"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DATA_CODE$:[LEN(8,SEP=SEP)]"
+    NAME$="DATA_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DATA_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Data Code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST BASE_YEAR$:[LEN(4,SEP=SEP)]"
+    NAME$="BASE_YEAR"
+    DESCRIPTION$="=MSG("+QUO+"BASE_YEAR"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Base Year"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST BASE_PERIOD$:[LEN(2,SEP=SEP)]"
+    NAME$="BASE_PERIOD"
+    DESCRIPTION$="=MSG("+QUO+"BASE_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Base Period"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST STARTING_ACCOUNT$:[LEN(12,SEP=SEP)]"
+    NAME$="STARTING_ACCOUNT"
+    DESCRIPTION$="=MSG("+QUO+"STAR_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="12"
+    INTERNALFORMAT$="S"
+    NOTES$="Starting account"
+    TAG$="G/L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST ENDING_ACCOUNT$:[LEN(12,SEP=SEP)]"
+    NAME$="ENDING_ACCOUNT"
+    DESCRIPTION$="=MSG("+QUO+"ENDI_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="12"
+    INTERNALFORMAT$="S"
+    NOTES$="Ending account"
+    TAG$="G/L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FRZ_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="FRZ_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST CURR_VALUE"
+    NAME$="CURR_VALUE"
+    DESCRIPTION$="=MSG("+QUO+"CURR_VALUE"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###,###,###.00-"
+    NOTES$="Current value"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="001"
+    RETRIEVAL_CODE$="001"
+    STATISTICAL_SERIES$="G/L"
+    DATA_CODE$="PTD     "
+    BASE_YEAR$="1992"
+    BASE_PERIOD$="12"
+    STARTING_ACCOUNT$="401010000000"
+    ENDING_ACCOUNT$="401090000000"
+    FRZ_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,80 @@
+0010 REM "Add/Delete RC Numbers for Non-WebEC Order <FM2OBE>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 01/04/10 - 16.494722 - dmm - SSP# 234938
+0037 REM "234938-ShipNotice counts on EDW records containing the external    
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Original workorder 178277/074
+0060 ! Most of the line setup logic is modeled from OF2UAA
+0070 ! CO<0 = Delete (2000), C0>0 = Add (1000)
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,FS2_KEY$,RC$,C0
+0100 SETERR 9000
+0110 X0$="FM2OBE",X1$="Add/Delete RC Numbes for Non-WebEC Order"
+0200 REM "                                                                 
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS                                                          
+0310 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29] ! Master line read
+0340 IOLIST EDW$,EDW[0],EDW[1]
+0350 IOLIST FMPD$,FMPD[0],FMPD[1],FMPD[2],FMPD[3],FMPD[4],FMPD[5]
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS2...  02O EDW...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 READ (Z[13],KEY=X3$(9,3)+"F/M")OPS_PARM$
+0620 IF OPS_PARM$(310,1)<>"Y" THEN GOTO 9900
+0900 ON C0 GOTO 2000,1000,3000
+1000 REM "ADD THE RECORD
+1005 IF RC$="" THEN GOTO 9900
+1010 DIM EDW$(200),EDW[2]; EDW$(1,31)=FS2_KEY$+RC$
+1015 EXTRACT (Z[2],KEY=FS2_KEY$,DOM=*NEXT)IOL=0340; EDW$(12,20)=RC$ ! SSP234938, if there is an existing record we need to extract as there is data other than the RC number that needs to be retained.
+1020 WRITE (Z[2],KEY=FS2_KEY$)IOL=0340
+1050 GOTO 9900
+2000 ! Delete RC Record
+2010 REMOVE (Z[2],KEY=FS2_KEY$,DOM=2090)
+2090 GOTO 9900
+2190 GOTO 9900
+2195 ! 
+3000 REM " REMOVE ALL RECORDS
+3010 READ (Z[2],KEY=FS2_KEY$(1,8),DOM=*NEXT)
+3020 K$=KEY(Z[2],END=3099)
+3030 IF K$(1,8)<>FS2_KEY$(1,8) THEN GOTO 3099
+3040 REMOVE (Z[2],KEY=K$)
+3050 GOTO 3020
+3095 ! 
+3099 GOTO 9900
+3495 ! 
+5000 REM "EOJ                                                              
+5040 GOTO 9900
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "234938-ShipNotice counts on EDW records containing the external

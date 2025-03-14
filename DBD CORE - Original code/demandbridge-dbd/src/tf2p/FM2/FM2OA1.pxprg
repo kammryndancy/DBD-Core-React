@@ -1,0 +1,79 @@
+0010 REM "Order credit problem handler <FM2OA1>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 12/20/05 - 16.978333 - crg - SSP# 189962
+0037 REM "189962-Want the ability for operator to "Suspend" order if they get
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9000
+0120 DIM S0$(20)
+0180 DEF FNS$(Z9$)=Z9$(1,POS("  "=Z9$+"  ")-1)
+0190 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+0300 REM "H0 on way in determines message
+0301 REM "H0=1-over credit limit, 2=on credit hold, 3=balances 2 periods old
+0302 REM "H1 on way out, 1=done, 2=redisplay and return
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15]
+0400 ON H0 GOTO 0410,0410,0420,0430,0440
+0410 H0$="This customer is over their credit limit of "+FNR$(STR(B[5]:"##,###,##0"))+" dollars"; GOTO 0490
+0420 IF B$(361,1)="M" THEN H0$="This customer account is being MONITORED!"; GOTO 0490 ELSE H0$="This customer is on credit hold"; GOTO 0490
+0430 Z=NUM(P0$(99,1)); IF Z=0 THEN Z=3
+0435 H0$="This customer has an "+FNS$(P0$(48+(Z-1)*8,8))+" or older balance"; GOTO 0490
+0440 H0$="Average days to pay is "+STR(H0); GOTO 0490
+0700 REM 
+0705 H1=1
+0710 CALL "ZZPROM","X0AR2EAH",X3$,Z,H0$,"","",0
+0712 IF Z=0 AND (MID(S5$,78,1)="Y" AND H0=2) THEN GOTO 0800; REM " SSP# 142545 
+0715 IF Z=0 AND ((LEN(S5$)>1 AND S5$(36,1)="Y") OR (LEN(SEC$)>1 AND SEC$(36,1)="Y")) THEN GOTO 0800
+0716 IF Z=0 AND H0=1 AND (MID(S5$,75,1)="Y" OR MID(SEC$,75,1)="Y") THEN IF (MID(S5$,97,1)="Y" OR MID(SEC$,97,1)="Y") THEN GOTO 5000 ELSE GOTO 0800; REM "WO131265, 189962 
+0720 ON Z GOTO 9900,1000,2000,3000,9900
+0800 CALL "ZZPROM",".4",X3$,0,"Sorry, you must resolve the credit issue or delete this order","","",0; GOTO 0710
+1000 REM "Display open invoices
+1005 PRINT @(0,3),'CE',
+1010 CALL "AR2MAD",X3$,X4$,"",A$(6,10)
+1090 H1=2; GOTO 9900
+2000 REM "Display credit history
+2005 PRINT @(0,3),'CE',
+2010 CALL "AR2MAC",X3$,X4$,"",A$(6,10)
+2030 FIND (Z[2],KEY=A$(6,10),DOM=2031)IOL=0320
+2090 H1=2; GOTO 9900
+3000 REM "Delete
+3020 H1=0
+3025 IF H1$="FM2ODM" THEN L0=2,Q1$="",L3=1; GOTO 3090
+3030 IF LEN(U1$)<6 THEN RUN "FM2ODM"
+3035 IF U1$(1,6)<>"FM2ODM" THEN Q1=NUM(U1$(7,2)),U1$=U1$(Q1+9); GOTO 3030
+3040 Q1=NUM(U1$(7,2)),U1$="FM2ODM14"+A1$(1,8)+"DELETE"+U1$(Q1+9)
+3060 CLOSE (14); OPEN (14)"ZZPARM"; WRITE (14,KEY=U0$)U0$,U1$
+3090 RUN "FM2ODM"
+5000 REM "Suspend Order and continue" SSP 189962
+5005 A$(314,1)="N"
+5100 CALL "ZZPROM","Y",X3$,Z,"You can continue with this order only if you suspend it! Suspend Order?","","",0; ON Z GOTO 5101,0710
+5200 REM Suspend the Order here
+5210 A$(314,1)="Y"; REM "Order suspended
+5300 H1=1; GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM 
+9710 GOTO 9900
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 RUN H1$
+9999 END 

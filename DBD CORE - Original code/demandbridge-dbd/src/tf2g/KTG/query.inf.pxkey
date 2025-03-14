@@ -1,0 +1,106 @@
+<PxTable>
+ TableName=query.inf
+ TableKey=K1634830607
+ FileCreate=KEYED "query.inf",[1:1:40:"C"]+[2:1:12:"C"]+[3:1:50:"C"]+[4:1:3:"C"]+[5:1:120],[7:1:10]+[1:1:40:"C"]+[2:1:12:"C"]+[3:1:50:"C"]+[4:1:3:"C"]+[5:1:120],0,-4480,BSZ=5,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="Query Persistence"
+    PHYSICALPATH$="query.inf"
+    LASTCHANGEDATE$="2014/01/28 09:10"
+    LASTCHANGEBY$="Jane"
+    LASTUPDATEDFILE$="2021/10/21 11:36:53-jvv"
+    DESCRIPTION$="Query Persistence information"
+    GROUP$="PERSISTENCE"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST USERID$"
+    NAME$="UserID"
+    DESCRIPTION$="User ID"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="1:1:AC,2:2:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST SCREENKEY$:[LEN(SEP,SIZ=12)]"
+    NAME$="ScreenKey"
+    DESCRIPTION$="Panel Key"
+    TYPE$="S"
+    LENGTH$="12"
+    INTERNALFORMAT$="L"
+    KEYDEFINITION$="1:2:AC,2:3:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST SCREENLIBRARY$"
+    NAME$="ScreenLibrary"
+    DESCRIPTION$="Screen Library"
+    TYPE$="S"
+    LENGTH$="50"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="1:3:AC,2:4:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST RECORDTYPE$"
+    NAME$="RecordType"
+    DESCRIPTION$="Record Type"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="1:4:AC,2:5:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST IDENTIFIER$"
+    NAME$="Identifier"
+    DESCRIPTION$="Record Identifier"
+    TYPE$="S"
+    LENGTH$="120"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="1:5:A,2:6:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST DETAILS$"
+    NAME$="Details"
+    DESCRIPTION$="Details"
+    TYPE$="S"
+    LENGTH$="4000"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST LASTUSED$"
+    NAME$="LastUsed"
+    DESCRIPTION$="Julian date last used"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="D"
+    KEYDEFINITION$="2:1:A"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+</Data>
+
+</PxTable>

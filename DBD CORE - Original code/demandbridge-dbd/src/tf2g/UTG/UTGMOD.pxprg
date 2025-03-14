@@ -1,0 +1,23 @@
+0010 REM "TopForm Software Level <UTGMOD>
+0035 ! "6.0 - 01/02/03 - 10.928333 - dmm
+0040 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 SETERR 0055; ENTER Q5
+0130 A$=WHO,A$=" - "+A$(1,3)
+0200 PREINPUT "0035 ! "+QUO+"6.0 - "+DAY+" - "+STR(TIM)+A$
+0300 PREINPUT "0040 ! "+QUO+"Copyright 2003 Computer Software Inc.; Norcross, Georgia"
+0400 PREINPUT "0041 ! "+QUO+"        Licensed Software - All Rights Reserved."
+2000 REM "
+2010 PRGLEVEL=TCB(12),MAIN=PRGLEVEL-1
+2020 SETERR 2200; Q$=PGM(10,MAIN); P0$=Q$
+2025 Q$=LST(Q$); IF Q$(1,4)<>"0010" THEN PRINT 'RB',"THIS PROGRAM HAS NO LINE 10!"
+2030 PRINT 'LF',Q$
+2040 SETERR 2200; Q$=PGM(35,MAIN)
+2050 PRINT LST(Q$)
+2055 PRINT "** BE SURE TO SAVE! **"
+2060 PRINT 'LF',
+2190 GOTO 2300
+2200 SETERR 0000
+2220 PRINT 'RB',"ERROR ENCOUNTERED.  CHECK LINE 10!"
+9940 EXIT 
+9999 END 

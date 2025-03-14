@@ -1,0 +1,8 @@
+0010 REM "Flexible Format Instructions <PO2MPX>"
+0040 REM "Copyright 1986-1989 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+8000 REM "Bkg Instructions"
+8010 PRINT 'SB',@(0,12),"Format Codes A-Z are reserved for TopForm Standard Formats.",'LF','LF',"To modify a standard format or to customize your own format, set up a 1-digit",'LF',"code (valid codes for your use are 0 to 9).  You will then be given an option",'LF',"to copy a TopForm Standard Format from which to start.",'LF'
+8020 PRINT "NOTE:  TopForm standards are subject to change, so you may want to copy the",'LF',"standard you are using to code 1 and then reference it in the printing program.",'SF',
+9900 EXIT 
+9999 END 

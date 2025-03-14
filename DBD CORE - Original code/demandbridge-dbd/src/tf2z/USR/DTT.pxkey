@@ -1,0 +1,349 @@
+<PxTable>
+ TableName=DTT
+ TableKey=K1186605090
+ FileCreate=KEYED "DTT",20,0,-512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="DTT_Types"
+    PHYSICALPATH$="="+QUO+"DTT"+QUO
+    LASTCHANGEDATE$="2013/03/19 16:40"
+    LASTCHANGEBY$="Chaitanya Guntur"
+    LASTUPDATEDFILE$="2024/09/27 11:44:23-ChaitanyaGun_kianoi2"
+    DESCRIPTION$="Output Director Output Types"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST OUTPUT_TYPE$:[LEN(20)]"
+    NAME$="OUTPUT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"ODV"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST OUTPUT_TYPE$:[LEN(20,SEP=SEP)]"
+    NAME$="OUTPUT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"ODV"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_DESCRIPTION$:[LEN(60,SEP=SEP)]"
+    NAME$="TF_DESCRIPTION"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST PRINTER$:[LEN(1,SEP=SEP)]"
+    NAME$="PRINTER"
+    DESCRIPTION$="=MSG("+QUO+"PRINTER"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 1. Printer as an Available Output?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST EMAIL$:[LEN(1,SEP=SEP)]"
+    NAME$="EMAIL"
+    DESCRIPTION$="=MSG("+QUO+"Email"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Type 2. Email as an Available Output?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST FTP$:[LEN(1,SEP=SEP)]"
+    NAME$="FTP"
+    DESCRIPTION$="=MSG("+QUO+"FTP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 3. FTP as an Available Output?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST HTTP$:[LEN(1,SEP=SEP)]"
+    NAME$="HTTP"
+    DESCRIPTION$="=MSG("+QUO+"HTTP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 4. HTTP as an Available Output?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST HTTPS$:[LEN(1,SEP=SEP)]"
+    NAME$="HTTPS"
+    DESCRIPTION$="=MSG("+QUO+"HTTPS"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 5. Https as an Available Output"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FAX$:[LEN(1,SEP=SEP)]"
+    NAME$="FAX"
+    DESCRIPTION$="=MSG("+QUO+"FAX"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 6. Fax as an Available Output?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST WEBEC$:[LEN(1,SEP=SEP)]"
+    NAME$="WEBEC"
+    DESCRIPTION$="=MSG("+QUO+"WEBEC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 7. Save on Server for Webec Display?"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST HOLD$:[LEN(1,SEP=SEP)]"
+    NAME$="HOLD"
+    DESCRIPTION$="=MSG("+QUO+"HOLD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="type 8. Hold For Attachments"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST IMAGE_LIB$:[LEN(1,SEP=SEP)]"
+    NAME$="IMAGE_LIB"
+    DESCRIPTION$="=MSG("+QUO+"IMAGE_LIB"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST NOT_USED$:[LEN(193,SEP=SEP)]"
+    NAME$="NOT_USED"
+    DESCRIPTION$="=MSG("+QUO+"NOT_USED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="193"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="CSR_PO_RECPT_NOT    "
+    OUTPUT_TYPE$="CSR_PO_RECPT_NOT    "
+    TF_DESCRIPTION$="CSR Purchase Order Receipts Notification                    "
+    PRINTER$="N"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$="N"
+    HOLD$="Y"
+    IMAGE_LIB$="Y"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_INVOICE        "
+    OUTPUT_TYPE$="CUST_INVOICE        "
+    TF_DESCRIPTION$="Customer Invoice                                            "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$="Y"
+    WEBEC$="N"
+    HOLD$="Y"
+    IMAGE_LIB$="Y"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_INV_UPD_NOT    "
+    OUTPUT_TYPE$="CUST_INV_UPD_NOT    "
+    TF_DESCRIPTION$="Customer Inventory Adjustment Notification                  "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$="Y"
+    HOLD$="Y"
+    IMAGE_LIB$=" "
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_PO_RECPT_NOT   "
+    OUTPUT_TYPE$="CUST_PO_RECPT_NOT   "
+    TF_DESCRIPTION$="Customer Purchase Order Receipts Notification               "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$="Y"
+    HOLD$="Y"
+    IMAGE_LIB$=" "
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_TRACKING       "
+    OUTPUT_TYPE$="CUST_TRACKING       "
+    TF_DESCRIPTION$="Customer Shipment Tracking                                  "
+    PRINTER$=" "
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$=" "
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUST_WHS_INV_STAT   "
+    OUTPUT_TYPE$="CUST_WHS_INV_STAT   "
+    TF_DESCRIPTION$="Customer Owned Inventory Status                             "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$="Y"
+    HOLD$="Y"
+    IMAGE_LIB$=" "
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KIT_PO_RECPT_NOT    "
+    OUTPUT_TYPE$="KIT_PO_RECPT_NOT    "
+    TF_DESCRIPTION$="Kit Purchase Order Receiving Notification                   "
+    PRINTER$=" "
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$=" "
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PURCHASE_ORDER      "
+    OUTPUT_TYPE$="PURCHASE_ORDER      "
+    TF_DESCRIPTION$="Purchase Order                                              "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$="Y"
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$="Y"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCHEDULED_DBD_RPT   "
+    OUTPUT_TYPE$="SCHEDULED_DBD_RPT   "
+    TF_DESCRIPTION$="Scheduled DBD Reports                                       "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$="N"
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$="N"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCHEDULED_DBRS_RPT  "
+    OUTPUT_TYPE$="SCHEDULED_DBRS_RPT  "
+    TF_DESCRIPTION$="Scheduled DBRS Reports                                      "
+    PRINTER$=" "
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$=" "
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$="N"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WHS_PACKING_LIST    "
+    OUTPUT_TYPE$="WHS_PACKING_LIST    "
+    TF_DESCRIPTION$="Warehouse Packing List                                      "
+    PRINTER$="Y"
+    EMAIL$="Y"
+    FTP$="Y"
+    HTTP$="Y"
+    HTTPS$="Y"
+    FAX$="Y"
+    WEBEC$=" "
+    HOLD$="Y"
+    IMAGE_LIB$="Y"
+    NOT_USED$="                                                                                                                                                                                                 "
+   </RecordData>
+
+</Data>
+
+</PxTable>

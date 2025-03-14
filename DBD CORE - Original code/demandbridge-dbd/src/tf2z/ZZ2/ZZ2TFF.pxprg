@@ -1,0 +1,639 @@
+0010 ! tfFUNCTION.DEF - Define ProvideX global functions for very common and useful procedures
+0020 ! 
+0030 ! 
+0035 REM "5.7 - 11/29/23 - 17.247217 - jvv - SSP# 307465
+0037 REM "307465-ZZGIMP - GUI Import does not back up multisegmented files   
+0040 REM "Copyright 2023 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0045 ! Adding NEA function here, already in function.def but we seem to use it differently, SSP150434
+0050 ! ^ 50 Directory Search - Returns character separated file list string using standard wildcard characters, replaces ZZ2BLS
+0060 ! FN%GET_FILES$(
+0070 ! -----DIRPATH$,      - Target directory
+0080 ! -----FILE_MASK$     - standard string mask chars
+0090 ! -----SEP_CHAR$      - character to delimit fields
+0100 ! -----EXACT_CASE_YN$ - Checks for text case
+0110 ! -----SUB_DIR_YN$)   - Checks All sub directories.  "N" If possible for speed
+0120 ! 
+0130 ! ^ 50 Directory Search - RETURNS Directory File List IN Open Memory File AS device number - new ability, cross platform.
+0140 ! FN%GET_FILES_AS_OPEN_FILE(
+0150 ! -----DIRPATH$,      - Target directory
+0160 ! -----FILE_MASK$     - standard string mask chars
+0170 ! -----EXACT_CASE_YN$ - Checks for text case
+0180 ! 
+0190 ! ^ 50 Hex Test         - RETURNS Boolean for Hex Status
+0200 ! FN%ISHEX(
+0201 ! -----STRHX$)        - String with possible hex codes 
+0210 ! 
+0213 ! ^ 50 Call Stack Search - RETURNS CALL STACK IN STRING AS PRG:LINE>PRG:LINE>
+0216 ! FN%GET_STACK$
+0220 ! 
+0500 ! ^500 Returns character separated file list string using standard wildcard characters, replaces ZZ2BLS
+0510 DEF FN%GET_FILES$(LOCAL DIRPATH$, LOCAL FILE_MASK$, LOCAL SEP_CHAR$, LOCAL EXACT_CASE_YN$, LOCAL SUB_DIR_YN$)
+0520 LOCAL FILES_FOUND$,FILES_LIST$,CMD_LINE$,TF$,FILTER$
+0530 LOCAL CAP_CASE,SUB_CASE,CH1
+0540 IF DIRPATH$="" THEN EXIT 
+0550 IF POS("Yy":EXACT_CASE_YN$)>0 THEN CAP_CASE=1 ELSE CAP_CASE=0
+0560 IF POS("Yy":SUB_DIR_YN$)>0 THEN SUB_CASE=1 ELSE SUB_CASE=0
+0570 CH1=UNT
+0580 IF FILE_MASK$="" OR FILE_MASK$="*" THEN {
+0590 FILTER$=""
+0600  } ELSE {
+0610 IF CAP_CASE=1 THEN {
+0620 FILTER$=" WHERE FILES_FOUND$ LIKE FILE_MASK$"
+0630  } ELSE {
+0640 FILTER$=" WHERE UCS(FILES_FOUND$) LIKE UCS(FILE_MASK$)"
+0650  } }
+0660 CMD_LINE$=" SELECT FILES_FOUND$ FROM DIRPATH$"+FILTER$
+0670 CMD_LINE$+="; IF FILES_FOUND$<>"+QUO+"."+QUO+" AND FILES_FOUND$<>"+QUO+".."+QUO+" THEN{"
+0680 ! SUB DIRECTORY code calls this function recursively
+0690 IF SUB_CASE=1 THEN CMD_LINE$+="; OPEN(CH1)DIRPATH$+DLM+FILES_FOUND$"
+0700 IF SUB_CASE=1 THEN CMD_LINE$+="; TF$ = FID(CH1);CLOSE(CH1);IF TF$(10,1)=$0D$ THEN {"
+0710 IF SUB_CASE=1 THEN CMD_LINE$+="; FILES_LIST$+=FN%GET_FILES$(DIRPATH$+DLM+FILES_FOUND$,FILE_MASK$,SEP_CHAR$,EXACT_CASE_YN$,SUB_DIR_YN$)"
+0720 IF SUB_CASE=1 THEN CMD_LINE$+="; }ELSE{"
+0730 CMD_LINE$+="; FILES_LIST$+=FILES_FOUND$+SEP_CHAR$}}"
+0740 CMD_LINE$+="; NEXT RECORD"
+0750 CMD_LINE$=STR(TCB(4)+30)+CMD_LINE$
+0760 ! PRINT CMD_LINE$ !DEBUG.PRINT
+0770 EXECUTE CMD_LINE$
+0780 ! Execute line goes here, be careful renumbering!
+0790 RETURN FILES_LIST$
+0800 END DEF
+0810 ! 
+0820 ! !^ 100 - Function -
+0830 ! RETURNS Directory File List IN Open Memory File AS device number
+0840 DEF FN%GET_FILES_AS_OPEN_FILE(LOCAL DIRPATH$, LOCAL FILE_MASK$, LOCAL EXACT_CASE_YN$)
+0850 LOCAL FILES_FOUND$,CMD_LINE$,FILTER$
+0860 LOCAL CAP_CASE,CH1
+0870 IF POS("Yy":EXACT_CASE_YN$)>0 THEN CAP_CASE=1 ELSE CAP_CASE=0
+0880 IF DIRPATH$="" THEN EXIT 
+0890 IF FILE_MASK$="" OR FILE_MASK$="*" THEN {
+0900 FILTER$=""
+0910  } ELSE {
+0920 IF CAP_CASE=1 THEN {
+0930 FILTER$=" WHERE FILES_FOUND$ LIKE FILE_MASK$"
+0940  } ELSE {
+0950 FILTER$=" WHERE UCS(FILES_FOUND$) LIKE UCS(FILE_MASK$)"
+0960  } }
+0970 CMD_LINE$=" SELECT FILES_FOUND$ FROM DIRPATH$"+FILTER$
+0980 CMD_LINE$+="; IF FILES_FOUND$<>"+QUO+"."+QUO+" AND FILES_FOUND$<>"+QUO+".."+QUO+" THEN{"
+0990 CMD_LINE$+="; WRITE (CH1,KEY=FILES_FOUND$,DOM=*NEXT)FILES_FOUND$}"
+1000 CMD_LINE$+="; NEXT RECORD"
+1010 IF CH1=0 THEN CH1=UNT
+1020 OPEN (CH1,ERR=1090)"*Memory*"
+1030 CMD_LINE$=STR(TCB(4)+30)+CMD_LINE$
+1040 ! PRINT CMD_LINE$ !DEBUG.PRINT
+1050 EXECUTE CMD_LINE$
+1060 ! Execute line goes here, be careful renumbering!
+1070 ! POSITION CURSOR AT FRONT OF FILE
+1080 READ (CH1,ERR=*NEXT,KEY="")
+1090 RETURN CH1
+1100 PRINT ERR
+1110 END DEF
+1120 ! 
+1130 ! !^ 100 - Function -
+1140 ! RETURNS Boolean for Hex Status
+1150 DEF FN%ISHEX(LOCAL STRHX$)
+1160 LOCAL RETCDE
+1170 IF NUL(STRHX$) THEN GOTO ISHEX_EXIT
+1180 IF MOD(LEN(STRHX$),2)>0 THEN GOTO ISHEX_EXIT
+1190 IF POS("0123456789ABCDEF"^STRHX$)>0 THEN GOTO ISHEX_EXIT
+1200 RETCDE=1
+1210 ISHEX_EXIT:
+1220 RETURN RETCDE
+1230 END DEF
+1240 ! 
+1241 ! !^ 100 RETURNS CALL STACK IN STRING AS PRG:LINE>PRG:LINE>
+1250 DEF FN%GET_STACK$
+1260 LOCAL LEVEL,STKLEVEL
+1270 LOCAL WHERE$,PROGLIST$
+1280 LEVEL=TCB(12,ERR=*NEXT)
+1290 FOR STKLEVEL=1 TO LEVEL STEP 1
+1300 WHERE$=UCS(STK(STKLEVEL))
+1310 PROGLIST$+=MID(WHERE$,POS(DLM=WHERE$,-1)+1)+":"+MID(WHERE$,1,5)+">"
+1320 NEXT 
+1330 RETURN PROGLIST$
+1340 END DEF
+2000 ! 2000 QTY_IN_UM given: qty in eaches, U/M and qty per U/M, return qty in U/M
+2005 DEF FN%QTY_IN_UM(LOCAL QUANTITY, LOCAL UM$, LOCAL QTY_PER_UM)
+2010 LOCAL UM_CHAN,UM_0,UM_1,RET_QTY,DIVISOR
+2015 LOCAL UM_REC$
+2020 RET_QTY=QUANTITY
+2025 UM_CHAN=HFN; OPEN (UM_CHAN,ERR=END_QTY_IN_UM)"ZZPARM"
+2030 DIM UM_REC$(21); FIND (UM_CHAN,KEY="U/M"+PAD(UM$,4,1),DOM=*NEXT)UM_REC$,UM_0,UM_1
+2035 IF UM_REC$(20,1)="Y" THEN DIVISOR=UM_1 ELSE DIVISOR=QTY_PER_UM
+2040 IF DIVISOR<=0 THEN DIVISOR=1
+2045 RET_QTY=QUANTITY/DIVISOR
+2050 END_QTY_IN_UM:
+2055 CLOSE (UM_CHAN,ERR=*NEXT)
+2060 RETURN RET_QTY
+2065 END DEF
+2100 ! ^1000 GET_DATETIME given: Date in either format(MM/DD/YYYY), TopForm YYMMDD format or "" for today's date, Time in TIM format hour.fractional part of hour RETURN a number representing the Julian day.partial part of the day
+2105 DEF FN%GET_DATETIME(LOCAL DATE_IN$, LOCAL TIME_IN)
+2110 LOCAL RET_VAL,CURR_P
+2114 ! default ret_val to today's date to cover any errors, if DATE_IN$ is 6 long assume TopForm format, if 10 long then assume MM/DD/YYYY format, if 8 long assume MM/DD/YY format
+2115 RET_VAL=JUL(0,0,0)
+2120 IF LEN(DATE_IN$)=6 THEN {! TopForm date format
+2125 RET_VAL=JUL((ASC(DATE_IN$(1,1),ERR=*NEXT)+125)*10+NUM(DATE_IN$(2,1),ERR=*NEXT),NUM(DATE_IN$(3,2),ERR=*NEXT),NUM(DATE_IN$(5,2),ERR=*NEXT),ERR=*NEXT)
+2129  } ELSE {
+2130 IF LEN(DATE_IN$)=8 OR LEN(DATE_IN$)=10 THEN {! In MM/DD/YY or MM/DD/YYYY format
+2135 RET_VAL=JUL(NUM(DATE_IN$(7),ERR=*NEXT),NUM(DATE_IN$(1,2),ERR=*NEXT),NUM(DATE_IN$(4,2),ERR=*NEXT),ERR=*NEXT)
+2139  }
+2140  }
+2150 ! Add time NOTE: if date before 1/1/1970 then it will be negative, so subtract time
+2160 CURR_P=PRC; PRECISION 14; IF TIME_IN=0 OR TIME_IN>=24 THEN RET_VAL=RET_VAL+SGN(RET_VAL)*(TIM/24) ELSE RET_VAL=RET_VAL+SGN(RET_VAL)*(TIME_IN/24) END_IF ; PRECISION CURR_P
+2190 RETURN RET_VAL
+2195 END DEF ! GET_DATETIME
+2200 ! ^1000 PRINT_DATETIME$ given: number in datetime format (Julian day.fractional part of a day) return string using DATE_FORMAT$ where DATE_FORMAT$ follows DTE date format mask --- If number is 0 print current date & time
+2205 DEF FN%PRINT_DATETIME$(LOCAL DATETIME, LOCAL DATE_FORMAT$)
+2210 LOCAL CURR_P,RET_VAL$
+2215 IF DATETIME=0 THEN CURR_P=PRC; PRECISION 14; DATETIME=JUL(0,0,0)+(TIM/24); PRECISION CURR_P
+2220 RET_VAL$=""; CURR_P=PRC; PRECISION 14; RET_VAL$=DTE(INT(DATETIME,ERR=*NEXT),SGN(DATETIME)*FPT(DATETIME,ERR=*NEXT)*24:DATE_FORMAT$); PRECISION CURR_P
+2225 RETURN RET_VAL$
+2295 END DEF ! PRINT_DATETIME$
+2300 ! 2300 QTY_IN_EACHES given: qty in u/m, U/M and qty per U/M, return qty in eaches
+2305 DEF FN%QTY_IN_EACHES(LOCAL QUANTITY, LOCAL UM$, LOCAL QTY_PER_UM)
+2310 LOCAL UM_CHAN,UM_0,UM_1,RET_QTY,MULTIPLIER
+2315 LOCAL UM_REC$
+2320 RET_QTY=QUANTITY
+2325 UM_CHAN=HFN; OPEN (UM_CHAN,ERR=END_QTY_IN_EACHES)"ZZPARM"
+2330 DIM UM_REC$(21); FIND (UM_CHAN,KEY="U/M"+PAD(UM$,4,1),DOM=*NEXT)UM_REC$,UM_0,UM_1
+2335 IF UM_REC$(20,1)="Y" THEN MULTIPLIER=UM_1 ELSE MULTIPLIER=QTY_PER_UM
+2340 IF MULTIPLIER<=0 THEN MULTIPLIER=1
+2345 RET_QTY=QUANTITY*MULTIPLIER
+2350 END_QTY_IN_EACHES:
+2355 CLOSE (UM_CHAN,ERR=*NEXT)
+2360 RETURN RET_QTY
+2365 END DEF
+2400 ! ^100 - NEA - Return Array information
+2410 DEF FN%NEA(LOCAL X$, LOCAL Y)
+2420 IF ABS(Y)>3 OR INT(Y)<>Y THEN GOTO 2600
+2430 LOCAL _X$,_X
+2440 IF Y=0 THEN _X$="_X=DIM(READ NUM("+X$+"))"; EXECUTE _X$,ERR=2620; GOTO 2590
+2450 IF Y>0 THEN _X$="_X=DIM(READ NUM("+X$+","+STR(Y)+"))"; EXECUTE _X$,ERR=2620; GOTO 2590
+2460 IF Y<0 THEN _X$="_X=DIM(READ MIN("+X$+","+STR(ABS(Y))+"))"; EXECUTE _X$,ERR=2620; GOTO 2590
+2470 GOTO 2590
+2500 ! ^ 100 - Count number of dimensions 
+2510 LOCAL _N1,_N2,_N3,_X1,_X2,_X3
+2520 _X$="_N1=DIM(READ MIN("+X$+","+STR(1)+"))"; EXECUTE _X$,ERR=2620
+2530 _X$="_N2=DIM(READ MIN("+X$+","+STR(2)+"))"; EXECUTE _X$,ERR=2620
+2540 _X$="_N3=DIM(READ MIN("+X$+","+STR(3)+"))"; EXECUTE _X$,ERR=2620
+2550 _X$="_X1=DIM(READ MAX("+X$+","+STR(1)+"))"; EXECUTE _X$,ERR=2620
+2560 _X$="_X2=DIM(READ MAX("+X$+","+STR(2)+"))"; EXECUTE _X$,ERR=2620
+2570 _X$="_X3=DIM(READ MAX("+X$+","+STR(3)+"))"; EXECUTE _X$,ERR=2620
+2580 _X=0; IF _N1 OR _X1 THEN _X=_X+1; IF _N2 OR _X2 THEN _X=_X+1; IF _N3 OR _X3 THEN _X=_X+1
+2590 RETURN _X
+2600 ! ^100 
+2610 ESCAPE 41
+2620 ESCAPE ERR
+2630 END DEF
+2640 ! 
+2700 ! ^1000 FMT_TFDATE$ given: TF format date, ""=current date, return string using DATE_FORMAT$ where DATE_FORMAT$ follows DTE date format mask --- note should use date only, time not given; If DATE_FORMAT$ is "" or blank then use default system date format
+2705 DEF FN%FMT_TFDATE$(LOCAL TFDATE$, LOCAL DATE_FORMAT$)
+2710 LOCAL RET_VAL$
+2715 IF TFDATE$<>"" AND NUL(TFDATE$) THEN RET_VAL$=TFDATE$; GOTO 2790 ! If tfdate is "" we return today's date, else if it is all spaces, then return the same number of spaces
+2717 IF NUL(DATE_FORMAT$) THEN IF %X3$(48,1)="1" THEN DATE_FORMAT$="%Mz"+%X3$(59,1)+"%Dz"+%X3$(59,1)+"%Yl" ELSE IF %X3$(48,1)="2" THEN DATE_FORMAT$="%Dz"+%X3$(59,1)+"%Mz"+%X3$(59,1)+"%Yl" ELSE DATE_FORMAT$="%Yl"+%X3$(59,1)+"%Mz"+%X3$(59,1)+"%Dz" ! 240570 - If DATE_FORMAT$ is blank or "" then use default company date format - either US or UK version
+2720 RET_VAL$=FN%PRINT_DATETIME$(FN%GET_DATETIME(TFDATE$,0),DATE_FORMAT$)
+2790 RETURN RET_VAL$
+2795 END DEF ! FMT_TFDATE$
+2799 ! 
+3000 ! ^1000 NEXT_FROM_LIST - Given a list (LIST$), whose entries are separated by a single character (LIST_SEP$), return the next entry from the first of the list, the returned entry will have the separator stripped off. The list is unchanged, so you will have to remove first entry try: LIST$=MID(LIST$,LEN(RETURNED_ENTRY$)+2) ** +2 because sep was stripped off & you want to start after it
+3005 DEF FN%NEXT_FROM_LIST$(LOCAL LIST$, LOCAL LIST_SEP$)
+3010 ENTRY$=""
+3015 LOCAL MASK_SEP$
+3020 IF POS(LIST_SEP$="^$.()[]-*+?|\") THEN MASK_SEP$="\"+LIST_SEP$ ELSE MASK_SEP$=LIST_SEP$ ! if it is a mask character then "escape" it by prepending a "\"
+3022 IF POS(LIST_SEP$=$00$) AND SSN>="14" THEN MASK_SEP$="\x"+HTA(LIST_SEP$) ! 299491 - Hex chars must be specified to MSK() as "\xFF"
+3030 ENTRY$=STP(MID(LIST$,MSK(LIST$,"^[^"+MASK_SEP$+"]*"+MASK_SEP$+"|$",ERR=*NEXT),MSL,ERR=*NEXT),1,LIST_SEP$)
+3090 RETURN ENTRY$
+3095 END DEF
+3099 ! 
+4000 ! ^ 1000 ZZDISP - Given a string (IN$) and an ACCT_TYPE (ACCT_TYPE$) then return formatted string. IF %X3 is not set, then ZZWMX3 will be called
+4005 DEF FN%ZZDISP$(LOCAL IN$, LOCAL ACCT_TYPE$)
+4010 LOCAL OUT$
+4015 IF NOT(%X3_SET) THEN CALL "ZZWMX3",ERR=*NEXT
+4020 CALL "ZZDISP",ERR=*NEXT,"AX",IN$,ACCT_TYPE$,%X3$,OUT$,"",0,0,%X4$
+4090 RETURN OUT$
+4095 END DEF
+4099 ! 
+4100 DEF FN%NEXT_SEQ$(LOCAL CURR_SEQ$, LOCAL SEQ_TYPE)
+4105 ! if all $00$'s then default to lowest value
+4110 IF LEN(CURR_SEQ$)=0 THEN RETURN "" ! if "" then return ""
+4115 LOCAL NEW_SEQ$,CARRY,MIN_VALUE,MAX_VALUE,NEW_VALUE,I
+4120 SWITCH SEQ_TYPE
+4125 CASE 0; MIN_VALUE=ASC("0"),MAX_VALUE=ASC("z"); BREAK ! Values="0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz" 0 is 75 possible values, starting with 0
+4130 CASE 1; MIN_VALUE=ASC("0"),MAX_VALUE=254; BREAK ! Values="0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÄÅÇÉÑÖÜáàâãåçéèêëíìîïñóòôöõúùûü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«»… ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙˚¸˝˛"  1 is 206 possible values, starting with 0 & skip $8A$
+4135 CASE 2; MIN_VALUE=ASC(" "),MAX_VALUE=ASC("z"); BREAK ! Values=" !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz"   2 is 91 possible values
+4140 CASE 3; MIN_VALUE=ASC(" "),MAX_VALUE=254; BREAK ! Values=" !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ÄÅÇÉÑÖÜáàâãåçéèêëíìîïñóòôöõúùûü†°¢£§•¶ß®©™´¨≠ÆØ∞±≤≥¥µ∂∑∏π∫ªºΩæø¿¡¬√ƒ≈∆«»… ÀÃÕŒœ–—“”‘’÷◊ÿŸ⁄€‹›ﬁﬂ‡·‚„‰ÂÊÁËÈÍÎÏÌÓÔÒÚÛÙıˆ˜¯˘˙˚¸˝˛"  3 is 222 possible values, skip $8A$
+4145 CASE 4; NEW_SEQ$=STR(NUM(CURR_SEQ$,ERR=ERROR_IN_CALC)+1:DIM(LEN(CURR_SEQ$),"0"),ERR=ERROR_IN_CALC); IF LEN(NEW_SEQ$)>LEN(CURR_SEQ$) THEN GOTO ERROR_IN_CALC ELSE RETURN NEW_SEQ$ ! if len is greater we overflowed counter, give error 41,else return value, case 4 give 10 possible values
+4148 CASE 5; MIN_VALUE=ASC("0"),MAX_VALUE=62; ALLOWED_VALUES$="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; BREAK ! Values="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" 0 is 62 possible values, starting with 0 
+4149 CASE 6; MIN_VALUE=ASC("0"),MAX_VALUE=36; ALLOWED_VALUES$="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; BREAK ! Values="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ" 0 to 36 possible values, starting with 0.  SSP181091
+4150 CASE 7; MIN_VALUE=ASC("0"),MAX_VALUE=36; ALLOWED_VALUES$="0123456789ABCDEFGHJKLMNPQRSTVWXYZ"; BREAK ! Values="0123456789ABCDEFGHJKLMNPQRSTVWXYZ" 0 to 34 possible values, starting with 0. Same as Seq 6 except that vowels I,O and U eliminated
+4154 END SWITCH 
+4155 IF STP(CURR_SEQ$,3,$00$)="" THEN NEW_SEQ$=DIM(LEN(CURR_SEQ$),CHR(MIN_VALUE)); RETURN NEW_SEQ$ ! if all $00$ preset to lowest value
+4160 CARRY=1; NEW_SEQ$=CURR_SEQ$ ! Preset CARRY so we will add to first one, Preset new_seq$ to curr_seq$
+4165 ! step thru, adding the CARRY, as soon as CARRY hits 0, BREAK out of loop, we're done
+4170 FOR I=LEN(CURR_SEQ$) TO 1 STEP -1
+4172 IF SEQ_TYPE=5 OR SEQ_TYPE=6 OR SEQ_TYPE=7 THEN {
+4173 NEW_VALUE=POS(CURR_SEQ$(I,1)=ALLOWED_VALUES$)+CARRY
+4174 IF NEW_VALUE<=1 THEN NEW_SEQ$(I,1)="0",CARRY=0; BREAK ELSE IF NEW_VALUE<=LEN(ALLOWED_VALUES$) THEN NEW_SEQ$(I,1)=ALLOWED_VALUES$(NEW_VALUE,1),CARRY=0; BREAK ELSE NEW_SEQ$(I,1)="0",CARRY=1
+4176  } ELSE {
+4177 NEW_VALUE=ASC(CURR_SEQ$(I,1))+CARRY; IF NEW_VALUE=138 THEN NEW_VALUE=139 ! skip 138 which is ASC of $8A$
+4180 IF NEW_VALUE<MIN_VALUE THEN NEW_SEQ$(I,1)=CHR(MIN_VALUE),CARRY=0; BREAK ELSE IF NEW_VALUE<=MAX_VALUE THEN NEW_SEQ$(I,1)=CHR(NEW_VALUE),CARRY=0; BREAK ELSE NEW_SEQ$(I,1)=CHR(MIN_VALUE),CARRY=1
+4182  }
+4185 NEXT I
+4190 IF CARRY=1 THEN GOTO ERROR_IN_CALC ! if carry then we overflow'ed throw error
+4195 RETURN NEW_SEQ$
+4197 ERROR_IN_CALC:IF ERR=0 THEN ESCAPE 41 ELSE ESCAPE ERR ! if not given error then act like error 41
+4198 END DEF
+4199 ! ********************************************
+4200 ! ^4200 FN%HAS_MODULE - Given 2 character MODULE_CODE$, return 1 if module is enable, 0 otherwise
+4205 DEF FN%HAS_MODULE(LOCAL MODULE_CODE$)
+4210 LOCAL RESULT$,DATE$,HAS_MODULE
+4220 CALL "ZZ2PRP",ERR=*NEXT,MODULE_CODE$,RESULT$,DATE$
+4280 IF RESULT$="Y" THEN HAS_MODULE=1
+4290 RETURN HAS_MODULE
+4295 END DEF
+4299 ! ******************************************************
+4300 ! ^ HTML_ESC: Given string, Return HTML/XML escaped string
+4305 DEF FN%HTML_ESC$(LOCAL X$)
+4310 LOCAL TRANS$,TC
+4311 IF NUL(%TRANS_HTML_ESC$) THEN {
+4315 TRANS$="&"+$05$+"&amp;"+"<"+$04$+"&lt;"+">"+$04$+"&gt;"+QUO+$06$+"&quot;"
+4320 IF %EC_XML_OPTION THEN TRANS$+="'"+$06$+"&apos;" ! SSP247374, fix for apostrophe, 255771, EC XML server only
+4322 FOR TC=127 TO 255; TRANS$+=CHR(TC)+$06$+"&#"+STR(TC)+";"; NEXT TC
+4327 %TRANS_HTML_ESC$=TRANS$
+4329  }
+4330 TRANSLATE X$,%TRANS_HTML_ESC$
+4340 RETURN X$
+4345 END DEF
+4349 ! ******************************************************
+4350 DEF FN%FIB$(LOCAL CHAN)
+4360 LOCAL CHAN_FIB$
+4370 LOCAL NUM_RECS,SAVE_FF,SAVE_PO
+4375 IF NOT(%TFEXTDB) THEN RETURN FIB(CHAN) ! External db not used
+4380 ! Save env. and Set parameters
+4390 SAVE_FF=PRM('FF'); SAVE_PO=PRM('PO')
+4400 SET_PARAM 'FF'=0; SET_PARAM 'PO'=1
+4410 ! Get default system FIB string
+4420 CHAN_FIB$=FIB(CHAN,ERR=ERR_FIB)
+4430 ! Defer to system FIB if not external DB or version < 7
+4440 IF UCS(MID(CHAN_FIB$,19,1))<>"O" OR SSN<"07" THEN {! GOTO DONE_FIB
+4442 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+4444 CHAN_FIB$=FIB(CHAN,ERR=ERR_FIB)
+4446 GOTO DONE_FIB
+4449  }
+4450 ! External db channel - build FIB
+4460 ! (1,3) - Current record count
+4470 NUM_RECS=10000000; CALL "UPDEX1;GET_COUNT",ERR=ERR_FIB,CHAN,NUM_RECS
+4480 CHAN_FIB$(1,3)=BIN(NUM_RECS,3)
+4485 ! (4,6) - Filename
+4490 CHAN_FIB$(4,6)=CHAN_FIB$(25,6)
+4495 ! (10,1) - File type
+4500 CHAN_FIB$(10,1)=$02$ ! Keyed
+4510 GOTO DONE_FIB
+4520 ERR_FIB:! Throw an err 12
+4525 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+4530 IF ERR=0 THEN ESCAPE 12 ELSE ESCAPE ERR
+4540 DONE_FIB:! Done, so reset env as it was and return
+4550 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+4560 RETURN CHAN_FIB$
+4570 END DEF
+4580 ! 
+4700 DEF FN%FIN$(LOCAL CHAN, LOCAL OPTION$)
+4710 LOCAL VALUE$
+4720 LOCAL NUM_RECS,SAVE_FF,SAVE_PO
+4725 IF NOT(%TFEXTDB) THEN RETURN FIN(CHAN,OPTION$) ! External db not used
+4730 ! Save env. and Set parameters
+4740 SAVE_FF=PRM('FF'); SAVE_PO=PRM('PO')
+4750 SET_PARAM 'FF'=0; SET_PARAM 'PO'=1
+4760 ! Get default system FIB string
+4770 CHAN_FIB$=FIB(CHAN,ERR=ERR_FIN)
+4780 ! Defer to system FIN if not external DB or version < 7
+4790 IF UCS(MID(CHAN_FIB$,19,1))<>"O" OR SSN<"07" THEN VALUE$=FIN(CHAN,OPTION$,ERR=ERR_FIN); GOTO DONE_FIN
+4800 ! External db channel
+4810 SWITCH UCS(OPTION$)
+4820 CASE "NUMREC","RECORDS_USED"
+4830 ! Current record count
+4840 NUM_RECS=10000000; CALL "UPDEX1;GET_COUNT",ERR=ERR_FIN,CHAN,NUM_RECS
+4850 VALUE$=STR(NUM_RECS); BREAK
+4852 CASE "MAXREC","RECORDS_ALLOWED"
+4854 VALUE$="9999999999"; BREAK
+4860 DEFAULT 
+4870 ! All other options, defer to system FIN
+4880 VALUE$=FIN(CHAN,OPTION$,ERR=ERR_FIN)
+4890 END SWITCH 
+4895 GOTO DONE_FIN
+4900 ERR_FIN:! Throw an err 12
+4905 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+4910 IF ERR=0 THEN ESCAPE 12 ELSE ESCAPE ERR
+4920 DONE_FIN:! Done, so reset env as it was and return
+4930 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+4940 RETURN VALUE$
+4950 END DEF
+4960 ! 
+5000 DEF FN%FFN(LOCAL FILENAME$)
+5010 LOCAL LO_CHAN,HFN_CHAN,PATH$
+5020 IF SSN<"07" OR NOT(%TFEXTDB) THEN RETURN FFN(FILENAME$)
+5030 LO_CHAN=-1; HFN_CHAN=HFN; OPEN (HFN_CHAN,ERR=ERR_FFN)FILENAME$
+5040 PATH$=PTH(HFN_CHAN); CLOSE (HFN_CHAN)
+5050 LO_CHAN=FFN(PATH$)
+5080 DONE_FFN:
+5090 RETURN LO_CHAN
+5095 ERR_FFN:
+5096 FFNERR=ERR; IF FFNERR=0 THEN RETURN FFN(FILENAME$) ELSE RETURN LO_CHAN
+5100 END DEF
+5105 ! 
+5150 DEF FN%FID$(LOCAL CHAN)
+5160 LOCAL CHAN_FID$
+5170 LOCAL NUM_RECS,SAVE_FF,SAVE_PO
+5175 IF NOT(%TFEXTDB) THEN RETURN FID(CHAN) ! External db not used
+5180 ! Save env. and Set parameters
+5190 SAVE_FF=PRM('FF'); SAVE_PO=PRM('PO')
+5200 SET_PARAM 'FF'=0; SET_PARAM 'PO'=1
+5210 ! Get default system FID string
+5220 CHAN_FID$=FID(CHAN,ERR=ERR_FID)
+5230 ! Defer to system FID if not external DB or version < 7
+5240 IF UCS(MID(CHAN_FID$,19,1))<>"O" OR SSN<"07" THEN {! GOTO DONE_FID
+5250 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+5260 CHAN_FID$=FID(CHAN,ERR=ERR_FID)
+5270 GOTO DONE_FID
+5280  }
+5290 ! External db channel - build FID
+5300 ! (1,3) - Current record count
+5310 NUM_RECS=10000000; CALL "UPDEX1;GET_COUNT",ERR=ERR_FID,CHAN,NUM_RECS
+5320 CHAN_FID$(1,3)=BIN(NUM_RECS,3)
+5330 ! (4,6) - Filename
+5340 CHAN_FID$(4,6)=CHAN_FID$(25,6)
+5350 ! (10,1) - File type
+5360 CHAN_FID$(10,1)=$02$ ! Keyed
+5370 GOTO DONE_FID
+5380 ERR_FID:! Throw an err 12
+5385 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+5390 IF ERR=0 THEN ESCAPE 12 ELSE ESCAPE ERR
+5400 DONE_FID:! Done, so reset env as it was and return
+5410 SET_PARAM 'FF'=SAVE_FF; SET_PARAM 'PO'=SAVE_PO
+5420 RETURN CHAN_FID$
+5430 END DEF
+5440 ! 
+5500 ! FN%GET_BASENAME$(
+5502 ! - FILEPATH$,     - Input file path, can be relative or absolute path, must not be null
+5504 ! 
+5506 ! - RETURNS base filename
+5508 ! 
+5510 DEF FN%GET_BASENAME$(LOCAL FILEPATH$)
+5520 LOCAL BASENAME$,DLMPOS
+5530 IF NUL(FILEPATH$) THEN ESCAPE 10
+5540 FILEPATH$=STP(FILEPATH$,1,DLM) ! Get rid of a trailing file delimiter
+5550 DLMPOS=POS(DLM=FILEPATH$,-1) ! Find position of last delimiter
+5560 IF DLMPOS THEN BASENAME$=MID(FILEPATH$,DLMPOS+1) ELSE BASENAME$=FILEPATH$
+5590 RETURN BASENAME$
+5595 END DEF
+5599 ! 
+5600 ! FN%GET_DIRNAME$(
+5602 ! - FILEPATH$,     - Input file path, can be relative or absolute path, must not be null
+5604 ! 
+5606 ! - RETURNS name of directory that contains the specified file, no trailing delimiter
+5608 ! 
+5610 DEF FN%GET_DIRNAME$(LOCAL FILEPATH$)
+5620 LOCAL DIRNAME$,DLMPOS
+5630 IF NUL(FILEPATH$) THEN ESCAPE 10
+5640 FILEPATH$=STP(FILEPATH$,1,DLM) ! Get rid of a trailing file delimiter
+5650 DLMPOS=POS(DLM=FILEPATH$,-1) ! Find position of last delimiter
+5660 IF DLMPOS THEN DIRNAME$=MID(FILEPATH$,1,DLMPOS-1) ELSE DIRNAME$="."
+5690 RETURN DIRNAME$
+5695 END DEF
+5699 ! 
+5700 ! FN%RENAME(
+5702 ! - FROM$, - Original file path, can be relative or absolute path, must not be null,
+5704 ! - TO$,   - Final target file path, can be relative or absolute path, must not be null,
+5706 ! - This version of the function supports renaming of multi-segmented files
+5708 ! )
+5710 DEF FN%RENAME(LOCAL FROM$, LOCAL TO$)
+5715 LOCAL I
+5720 RENAME FROM$,TO$
+5725 FOR I=1 TO 99
+5730 RENAME FROM$+"."+STR(I:"000"),TO$+"."+STR(I:"000"),ERR=*BREAK
+5735 NEXT I
+5745 RETURN 0
+5749 ! 
+5750 ! FN%ERASE(
+5752 ! - FILE$, - file to be erased, can be relative or absolute path, must not be null null,
+5756 ! - This version of the function supports erasing of multi-segmented files
+5758 ! )
+5760 DEF FN%ERASE(LOCAL FILE$)
+5765 LOCAL I
+5770 ERASE FILE$
+5775 FOR I=1 TO 99
+5780 ERASE FILE$+"."+STR(I:"000"),ERR=*BREAK
+5785 NEXT I
+5795 RETURN 0
+5799 ! 
+5800 DEF FN%DIRECTORY(LOCAL DIR$)
+5810 LOCAL X
+5815 DIR$=STP(DIR$,1,DLM)
+5830 OPEN (HFN,ERR=*NEXT)DIR$; CLOSE (LFO); RETURN 0 ! Directory exists, nothing more to do return
+5840 X=POS(DLM=DIR$,-1)
+5850 IF X<=1 THEN DIRECTORY DIR$,ERR=*NEXT ELSE I=FN%DIRECTORY(MID(DIR$,1,X-1)); DIRECTORY DIR$,ERR=*NEXT
+5895 RETURN 0
+5899 ! 
+5900 ! FN%TCB87$(
+5902 ! - FMT$, - Input format for the ps command, see "man ps" for more info, 
+5903 ! defaults to "%U %P", which is the User and Process ID
+5904 ! 
+5906 ! - RETURNS process information, each field separated by a space
+5908 ! 
+5920 DEF FN%TCB87$(LOCAL FMT$)
+5925 LOCAL TCB_87,OSCHN,PSLINE$
+5930 TCB_87=TCB(87); IF TCB_87=0 THEN GOTO DONE_TCB87
+5935 PSLINE$=STR(TCB_87)
+5940 IF POS("LINUX"=UCS(SYS))=0 THEN GOTO DONE_TCB87
+5950 IF NUL(FMT$) THEN FMT$="%U %p"
+5960 OPEN (HFN,ERR=DONE_TCB87)"<ps -eo "+QUO+FMT$+QUO+" | grep "+STR(TCB_87)+" | grep -v grep | tr -s ' ' ' '"; OSCHN=LFO
+5970 READ RECORD (OSCHN,END=*NEXT)PSLINE$
+5980 CLOSE (OSCHN)
+5990 DONE_TCB87:
+5995 RETURN PSLINE$
+5998 END DEF
+5999 ! 
+6000 ! FN%STP$(
+6002 ! - INSTR$, - Input source string, can be blank
+6003 ! - STRLIST$, - Char separated list of strings that could appear in the input string INSTR$
+6004 ! - STPTYPE, - Type of operation: 1 - Strip leading (default) , 2 - Strip trailing, 3 - Strip all occurances
+6005 ! - SEPCHAR$, - Separator char used within STRLIST$, defaults to SEP if none specified
+6006 ! 
+6007 ! - RETURNS source string after the list of strings have been stripped from it
+6008 ! 
+6010 DEF FN%STP$(LOCAL INSTR$, LOCAL STRLIST$, LOCAL STPTYPE, LOCAL SEPCHAR$)
+6013 LOCAL S,STP2POS,MSKCHAR,RETVAL$
+6014 IF STPTYPE<=0 THEN STPTYPE=1 ! defaults to strip leading chars
+6015 IF LEN(SEPCHAR$)<>1 THEN SEPCHAR$=SEP ! If single seperator char not specified then default to SEP
+6020 RETVAL$=INSTR$
+6025 IF POS(SEPCHAR$+SEPCHAR$=STRLIST$)>0 THEN STRLIST$=SUB(STRLIST$,SEPCHAR$+SEPCHAR$,SEPCHAR$); GOTO *SAME ! Remove empty strings in list
+6030 STRLIST$=STP(STRLIST$,0,SEPCHAR$) ! Remove leading separator character if it is present
+6035 NEXT_STP:
+6040 IF LEN(STRLIST$)<=0 THEN GOTO DONE_STP ! All strings have been processed, exit
+6045 S=POS(SEPCHAR$=STRLIST$)
+6050 IF S THEN STR$=MID(STRLIST$,1,S-1),STRLIST$=MID(STRLIST$,S+1) ELSE STR$=STRLIST$,STRLIST$="" ! Get next string to strip
+6055 ON STPTYPE GOTO STP_DEF,STP_1,STP_2,STP_3,STP_1
+6060 STP_1:IF POS(STR$=RETVAL$)=1 THEN RETVAL$=MID(RETVAL$,LEN(STR$)+1) ! Strip off the string if it occurs as a prefix
+6069 GOTO STP_DEF
+6070 STP_2: STP2POS=POS(STR$=RETVAL$,-1); IF STP2POS<>0 AND (STP2POS+LEN(STR$)-1)=LEN(RETVAL$) THEN IF STP2POS=1 THEN RETVAL$="" ELSE RETVAL$=MID(RETVAL$,1,STP2POS-1) ! Strip off the string if it occurs as a suffix
+6079 GOTO STP_DEF
+6080 STP_3: RETVAL$=SUB(RETVAL$,STR$,"") ! Strip off every occurance of the string
+6083 STP_DEF:! Strip done or unknown type code
+6085 GOTO NEXT_STP
+6090 DONE_STP:
+6095 RETURN RETVAL$
+6098 END DEF
+6099 ! 
+6100 ! FN%TIMRND$ - Timestamp_Random - to create a unique identifier, will be used in EC3BYB for global tag timestamp_random, SSP250181
+6110 DEF FN%TIMRND$
+6120 LOCAL RND$,OUT$,TIM_RND$
+6130 RND$=STR(INT(RND*1000000):"0000000")
+6140 OUT$=DTE(JUL(DAY)+((TIM+(TCB(44)/3600))/24),*:"%Y%Mz%Dz%Hz%mz%sz")
+6150 TIM_RND$=OUT$+RND$
+6180 RETURN TIM_RND$
+6190 END DEF
+6195 ! 
+6200 ! FN%ISOPEN - Check if channel is open or not - SSP#251100
+6210 DEF FN%ISOPEN(LOCAL CHAN)
+6215 LOCAL ISOPEN; ISOPEN=(CHAN AND POS(HTA(BIN(CHAN,2,ERR=*NEXT),ERR=*NEXT)=HTA(CHN))>0)
+6220 RETURN ISOPEN
+6225 END DEF
+6229 ! 
+6230 ! FN%ISOPENFILE - Check if channel is open and if it is the file it is supposed to be (crosswiring prevention check) - DBSPT-95803
+6231 DEF FN%ISOPENFILE(LOCAL CHAN, LOCAL FILE$)
+6235 LOCAL ISOPEN; ISOPEN=(FN%ISOPEN(CHAN) AND MID(FID(CHAN),4,LEN(FILE$))=FILE$)
+6240 RETURN ISOPEN
+6245 END DEF
+6249 ! 
+6250 ! FN%SENDMAIL$ - Send email notification with minimal input - SSP#248040
+6255 DEF FN%SENDMAIL$(LOCAL TO$, LOCAL FROM$, LOCAL CC$, LOCAL BCC$, LOCAL SUBJECT$, LOCAL MESSAGE$, LOCAL ATTACH$, LOCAL OPTIONS$)
+6260 LOCAL MPARM$,ZZPARM,CLOSE_IT,RETMSG$,MAILSERVER$,DM,ERRORMESG$,BODYENCODING$ ! SSP 305003
+6265 ZZPARM=FFN("ZZPARM"); IF ZZPARM<0 THEN CLOSE_IT=1; OPEN (HFN,ERR=ERR_ZZPARM)"ZZPARM"; ZZPARM=LFO
+6270 FIND (ZZPARM,KEY=%C$+"EML",DOM=ERR_MAIL_PARM)MPARM$
+6275 MAILSERVER$=STP(MPARM$(7,60)); IF NUL(FROM$) THEN FROM$=STP(MPARM$(67,50),2); IF NUL(FROM$) THEN DM=MSK(MAILSERVER$,"\..*\..*$"); IF DM<>0 THEN FROM$="dbd@"+MAILSERVER$(DM+1) ELSE FROM$="dbd@"+MAILSERVER$
+6276 BODYENCODING$=""; IF POS("<html"=LCS(MESSAGE$))>0 THEN BODYENCODING$="text/html" ! SSP 305003
+6277 CALL "*web/email",ERR=*NEXT,FROM$,FROM$,TO$,CC$,BCC$,SUBJECT$,MESSAGE$,ATTACH$,"N",MAILSERVER$,SERVERTIMEOUT,LINEWRAPSAT,BODYENCODING$,ERASEIT,ERRORMESG$
+6279 CWDIR HWD
+6280 DONE_SENDMAIL:
+6282 IF NOT(NUL(ERRORMESG$)) THEN RETMSG$=ERRORMESG$
+6284 IF CLOSE_IT THEN CLOSE (ZZPARM)
+6285 RETURN RETMSG$
+6289 ! 
+6290 ERR_ZZPARM: RETMSG$="Error: Cannot open ZZPARM file"; GOTO DONE_SENDMAIL
+6291 ERR_MAIL_PARM: RETMSG$="Error: No mail parameters found"; GOTO DONE_SENDMAIL
+6295 END DEF
+6299 ! 
+6300 ! FN%GETDDFNAME$ - Get logical filename from Providex data dictionary - 218038
+6305 DEF FN%GETDDFNAME$(LOCAL TFNAME$)
+6307 LOCAL DDF,TMPKEY$,TMPNAME$,LOGFILE$
+6310 IF LEN(STP(TFNAME$,2))<3 THEN ESCAPE 10
+6315 OPEN (HFN)"providex.ddf"; DDF=LFO
+6320 READ (DDF,KNO=1,KEY=STP(TFNAME$,2),DOM=*NEXT)
+6325 TMPKEY$=KEY(DDF,KNO=1,END=DDF_DONE); READ (DDF,KEY=TMPKEY$,KNO=1)TMPNAME$; IF MID(TMPKEY$,1,LEN(STP(TFNAME$,2)))<>UCS(STP(TFNAME$,2)) THEN GOTO DDF_DONE
+6330 LOGFILE$=TMPNAME$
+6335 DDF_DONE:
+6336 IF (DDF) THEN CLOSE (DDF)
+6340 RETURN LOGFILE$ ! Return the logical filename
+6345 END DEF
+6349 ! 
+6350 ! FN%URL_ESC: Given string, Return URL encoded string SSP245897
+6355 DEF FN%URL_ESC$(LOCAL X$)
+6360 TRANSLATE X$,"&"+$03$+"%"+HTA("&")+"<"+$03$+"%"+HTA("<")+">"+$03$+"%"+HTA(">")+QUO+$03$+"%"+HTA(QUO)+"'"+$03$+"%"+HTA("'")
+6390 RETURN X$
+6395 END DEF
+6399 ! 
+6600 ! ^100 - NTD$ - return DTE
+6605 ! *conv.tbd/function.def changed between pvx 7.5 and 7.6 - the original version is copied here to preserve the old behaviour
+6610 DEF FN%NTD$(LOCAL T, LOCAL Y$)
+6620 LOCAL M$,X,P
+6630 M$=Y$
+6640 X=POS("CC"=M$); IF X THEN M$(X,2)="YY"
+6650 X=POS("YYYY"=M$); IF X THEN M$=M$(1,X-1)+"%Yl"+M$(X+4)
+6660 X=POS("YY"=M$); IF X THEN M$=M$(1,X-1)+"%Yz"+M$(X+2)
+6670 ! 
+6680 X=POS("MONTH"=UCS(M$)); IF X THEN M$=M$(1,X-1)+"%Ml"+M$(X+5)
+6690 X=POS("MON"=UCS(M$)); IF X THEN M$=M$(1,X-1)+"%Ms"+M$(X+3)
+6700 X=POS("MM"=M$); IF X THEN M$=M$(1,X-1)+"%Mz"+M$(X+2)
+6710 ! 
+6720 X=POS("DDD"=M$); IF X THEN M$=M$(1,X-1)+"%Js"+M$(X+3)
+6730 X=POS("DAY"=UCS(M$)); IF X THEN M$=M$(1,X-1)+"%Dl"+M$(X+3)
+6740 X=POS("DD"=M$); IF X THEN M$=M$(1,X-1)+"%Dz"+M$(X+2)
+6750 X=POS("DY"=UCS(M$)); IF X THEN M$=M$(1,X-1)+"%Ds"+M$(X+2)
+6760 ! 
+6770 X=POS("HH"=M$); IF X THEN M$=M$(1,X-1)+"%Hz"+M$(X+2)
+6780 X=POS("MI"=M$); IF X THEN M$=M$(1,X-1)+"%mz"+M$(X+2)
+6790 X=POS("SS"=M$); IF X THEN M$=M$(1,X-1)+"%sz"+M$(X+2)
+6800 ! 
+6810 X=POS("AM"=M$); IF X THEN M$=M$(1,X-1)+"%P"+M$(X+2)
+6820 X=POS("PM"=M$); IF X THEN M$=M$(1,X-1)+"%P"+M$(X+2)
+6830 X=POS("am"=M$); IF X THEN M$=M$(1,X-1)+"%p"+M$(X+2)
+6840 X=POS("pm"=M$); IF X THEN M$=M$(1,X-1)+"%p"+M$(X+2)
+6850 X=PRC; PRECISION 8; P=FPT(T)*24; PRECISION X
+6860 RETURN DTE(INT(T),P:M$)
+6870 END DEF
+6880 ! 
+7000 ! SSP270466 - FN%TEXT_FILE_ROTATE - serial file too large, rename, create using same name, open
+7010 DEF FN%TEXT_FILE_ROTATE(LOCAL CHAN)
+7015 LOCAL OLDFILE$,THEFILE$
+7020 THEFILE$=PTH(CHAN)
+7025 OLDFILE$=THEFILE$+"."+FN%TIMRND$
+7030 RENAME THEFILE$,OLDFILE$
+7035 SERIAL THEFILE$
+7040 NEWCHAN=HFN
+7045 OPEN LOCK (NEWCHAN)THEFILE$
+7080 RETURN NEWCHAN
+7090 END DEF
+7095 ! 
+7100 ! WO291110 - Implement increment function using numbers then aplha for sequences
+7110 DEF FN%INCR$(LOCAL OLDSEQ$)
+7120 LOCAL NUMMASK$,MAXVAL$
+7125 NUMMASK$=DIM(LEN(OLDSEQ$),"0"),MAXVAL$=DIM(LEN(OLDSEQ$),"9")
+7130 IF NUL(OLDSEQ$) THEN {
+7135 NEWSEQ$=STR(1:NUMMASK$) ! Initialize if blank string
+7140  } ELSE {
+7145 IF OLDSEQ$<MAXVAL$ THEN {
+7150 NEWSEQ$=STR(NUM(OLDSEQ$)+1:NUMMASK$) ! Increment as number if between 001 - 998
+7153  } ELSE {
+7155 NEWSEQ$=FN%NEXT_SEQ$(OLDSEQ$,6) ! Increment as alphanumeric if 999
+7160  }
+7165  }
+7185 IF NUL(NEWSEQ$) THEN ESCAPE 41 ! If no sequence calculated by now, raise error
+7190 RETURN NEWSEQ$
+7195 END DEF
+7200 ! FN%MCOPY(
+7202 ! - FROM$, - Original file path, can be relative or absolute path, must not be null,
+7204 ! - TO$,   - Final target file path, can be relative or absolute path, must not be null,
+7206 ! - This version of the function supports copying of multi-segmented files
+7208 ! )
+7210 DEF FN%MCOPY(LOCAL FROM$, LOCAL TO$)
+7215 LOCAL I
+7220 INVOKE "cp "+QUO+FROM$+QUO+" "+QUO+TO$+QUO+" 2> /dev/null"
+7225 FOR I=1 TO 99
+7230 INVOKE "cp "+QUO+FROM$+"."+STR(I:"000")+QUO+" "+QUO+TO$+"."+STR(I:"000")+QUO+" 2> /dev/null",ERR=*BREAK
+7235 NEXT I
+7245 RETURN 0
+7246 END DEF
+7249 ! 
+9999 END 
+56002 REM "210364-Move *conv.tbd/tffunction.def to regular program ZZ2TFF     
+56004 REM "202107-Oracle Database integration with TopForm                    
+56006 REM "205460-Oracle - FIN(CHANNEL,"NUMREC") changed to use FN%FIN$()     
+56007 REM "212150-After Upgrade takes longer for A/P jounal to update.        
+56008 REM "242458-EC Server feature - Ability to save archived requests    
+56009 REM "240570-GUI Printing - Support for queueing and scheduling reports. 
+56010 REM "246342-Enhanced RENAME and ERASE functions to support multi-segmented files
+56012 REM "247374-EC3XPN XML special characters, need to add apostrophe.      
+56014 REM "248257-Modify the Error Handler program, report more information   
+56016 REM "248154-CIG; Program to enter strings of data to remove from the    
+56018 REM "250181-Global function TIMRND$ and global tag timestamp_random.    
+56020 REM "248040-Global function to send an email notification.           
+56022 REM "218038-Errors during Fiscal year utility, better error handling
+56024 REM "245897-Modify EC3PC5 to support URL encoded versions of the catalog
+56026 REM "272901-See 272617/074; error 12 DTGTOD 11650 first time Output Dir 
+56028 REM "270466-Unattended printing log gets to the maximum size and stops  
+56029 REM "277659-Modify Division Next Order# sequence logic, allow for alpha 
+56030 REM "291110-Modify SM files three character BOX_NUMBER to sequence using
+56031 REM "DBSPT-90078-Escape non-printable chars in XML
+56032 REM "DBSPT-95803 - DR1 and DR2 file channels crosswiring         
+56033 REM "307465-ZZGIMP - GUI Import does not back up multisegmented files   

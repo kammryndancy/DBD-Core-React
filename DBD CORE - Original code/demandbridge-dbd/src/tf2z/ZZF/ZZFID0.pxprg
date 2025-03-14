@@ -1,0 +1,16 @@
+0010 REM "File plus FID defined? <ZZFID0>
+0030 REM "Copyright (C) 1988 Computer Software Inc; Norcross, Ga.
+0035 REM "3.7 - 01/27/94 - 11.78 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; ENTER X3$,X4$,Q0$,Q1$
+0150 DIM Q0$(12); Q0$(1,12)=Q1$(1,10)
+0155 Q0$(11,2)=FID(0)
+0160 IF Q0$(8,3)="..." THEN Q0$(8,3)=X3$(9,3)
+0200 CLOSE (14,ERR=0201)
+0300 OPEN (14,ERR=0301)Q0$(5); GOTO 9900
+0400 IF ERR<>12 THEN Q0$=""; GOTO 9900
+0500 SORT Q0$(5),35,2500
+9900 CLOSE (14,ERR=9901)
+9910 EXIT 
+9999 END 

@@ -1,0 +1,17 @@
+# Default Unform commandline options - DO NOT CHANGE
+#
+# Output format is PDF
+-p pdf
+
+# Do not buffer job text for lookahead purposes; saves parsing time
+-notextjob 
+
+# Turn off any archive commands for the job
+-noarc 
+
+# Do not suppress blank pages, process them same as non-blank pages
+-pb 
+
+# Use rule file for jobs
+-f dbdata/dbrpt.rul
+

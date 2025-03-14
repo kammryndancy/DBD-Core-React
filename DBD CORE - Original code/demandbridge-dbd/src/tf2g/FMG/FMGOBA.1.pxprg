@@ -1,0 +1,23 @@
+0010 REM "Call feature driven pricing from order entry <FMGOBA>
+0035 REM "3.1.2 - 02/08/90 - 16.24
+0040 REM "Copyright 1990 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Given A$=VEND_DIV$+VEND_CODE$+COST_UM$+SELL_UM$,A[0],A[2],A[5] SET, I$=Item Group (1,10) and Features (11,10), A(ALL)=FS2 numerics,Q8,Q9 numerics to set
+0051 REM " P9 = PRECISION - ADDED 3.1.2
+0055 REM "Call FM2OB9"
+0095 SETERR 9000
+0100 ENTER X3$,A$,I$,A{ALL},Q8,Q9,P9
+1000 REM 
+1010 A1$=A$(1,10)+I$
+1015 C$=A$(11,4),C0=A[2]
+1020 P$=A$(15,4),P0=A[5]
+1025 Q=A[0]
+1030 C=0,P=0
+1100 REM 
+1110 CALL "FM2OB9",X3$,A1$,C$,C0,P$,P0,Q,C,P,P9
+1120 Q8=C,Q9=P
+1190 GOTO 9900
+9000 REM "Error
+9010 EXIT ERR
+9900 EXIT 
+9999 END 

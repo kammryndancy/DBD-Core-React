@@ -1,0 +1,36 @@
+0010 ! EMGMBA EDI Management Parameter Setupup
+0035 REM "5.7 - 09/16/15 - 16.010277 - tma - SSP# 279691
+0037 REM "279691-EDI Parameters do not exist in GUI                          
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0060 PROCESS "EMGMBA","tf2g/EMG/EM.EN"
+0070 ! IF TCB(13)=1 THEN RUN "ZMENU"
+0080 EXIT 
+0100 INIT:! ^100,5 - Initialize routine
+0300 ! 300,5 - Iolists & Templates
+0305 DIM EMG$:"A1:C(6),A001:C(15),A002:C(30),A003:C(30),A004:C(30),A005:C(20),A006:C(2),A007:C(9),A008:C(9),A009:C(30),A010:C(30),A011:C(2),A012:C(30),A013:C(60),A014:C(2),A015:C(3),A016:C(2),A017:C(2)"
+0310 EMG_IOL:IOLIST EMG$
+0315 GLOBAL_IOL:IOLIST %CUST_NAME$,%CUST_NAME1$
+0500 ! 500,5 - Open files
+0505 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"
+0510 EXIT 
+1000 READ_REC:! ^1000,5 - Read data for EDI parameters
+1015 READ DATA FROM "" TO IOL=EMG_IOL
+1020 READ (ZZPARM,KEY=%C$+"E/M",DOM=*NEXT)IOL=EMG_IOL; GOTO 1035
+1025 MSGBOX "This entry is not on file. "+SEP+"Add this entry?","Attention","?,YESNO,2",ANSWER$
+1030 IF ANSWER$="NO" THEN CMD_STR$="E"; EXIT 
+1040 REFRESH_FLG=1
+1045 EXIT 
+1050 ! 
+1100 WRITE_REC:! ^100,5 - Write EDI Paramters
+1105 WRITE (ZZPARM,KEY=%C$+"E/M")IOL=EMG_IOL
+1110 CMD_STR$="E"
+1115 RETURN 
+1120 ! 
+9700 WRAPUP:! 9700,5 - Clean up
+9705 READ DATA FROM "" TO IOL=GLOBAL_IOL
+9710 CLOSE (ZZPARM)
+9715 EXIT 
+9999 END 
+56000 REM "279691-EDI Parameters do not exist in GUI                          

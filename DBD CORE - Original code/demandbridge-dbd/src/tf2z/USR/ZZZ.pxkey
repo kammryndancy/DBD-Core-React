@@ -1,0 +1,2239 @@
+<PxTable>
+ TableName=ZZZ
+ TableKey=K1372704767
+ FileCreate=KEYED "ZZZ",10,0,-256,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZZZ_TerminalTable"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/ZZZ"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:16-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:36-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TERMINAL_TABLE$:[LEN(8)]"
+    NAME$="TERMINAL_TABLE"
+    DESCRIPTION$="=MSG("+QUO+"TERM_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="P"
+    NOTES$="Terminal Table"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST MNEMONIC_CODE$:[LEN(2)]"
+    NAME$="MNEMONIC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"MNEM_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Mnemonic Code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TERMINAL_TABLE$:[LEN(8,SEP=SEP)]"
+    NAME$="TERMINAL_TABLE"
+    DESCRIPTION$="=MSG("+QUO+"TERM_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Terminal Table"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST MNEMONIC_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="MNEMONIC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"MNEM_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Mnemonic Code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST CODE_TO_TRANSMIT$:[LEN(35,SEP=SEP)]"
+    NAME$="CODE_TO_TRANSMIT"
+    DESCRIPTION$="=MSG("+QUO+"CODE_T_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="35"
+    INTERNALFORMAT$="S"
+    NOTES$="Code to transmit to terminal"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST NUM_OF_NULLS$:[LEN(2,SEP=SEP)]"
+    NAME$="NUM_OF_NULLS"
+    DESCRIPTION$="=MSG("+QUO+"NUM_O_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Number of nulls"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST CURSOR_UPDATE_FLAG$:[LEN(1,SEP=SEP)]"
+    NAME$="CURSOR_UPDATE_FLAG"
+    DESCRIPTION$="=MSG("+QUO+"CURS_U_F"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Cursor update flag"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST SPECIAL_EDIT_CODE$:[LEN(1,SEP=SEP)]"
+    NAME$="SPECIAL_EDIT_CODE"
+    DESCRIPTION$="=MSG("+QUO+"SPEC_E_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Special edit code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST FORGRND_BCKGRND_CODE$:[LEN(1,SEP=SEP)]"
+    NAME$="FORGRND_BCKGRND_CODE"
+    DESCRIPTION$="=MSG("+QUO+"FORG_B_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Foreground/background code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST TERMS_TABLE_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="TERMS_TABLE_DESC"
+    DESCRIPTION$="=MSG("+QUO+"TERM_T_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST TERMS_PTR_BOTH_CODE$:[LEN(1,SEP=SEP)]"
+    NAME$="TERMS_PTR_BOTH_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TERM_P_B_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Term, Ptr, Both, Other"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST ZZZ_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="ZZZ_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BA"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BA"
+    CODE_TO_TRANSMIT$="$1B293A1012                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BB"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BB"
+    CODE_TO_TRANSMIT$="KE4G                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BD"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BD"
+    CODE_TO_TRANSMIT$="K E4F                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BF"
+    CODE_TO_TRANSMIT$="K E4I                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BG"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BG"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BR"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BR"
+    CODE_TO_TRANSMIT$="KE4I                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BS"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BS"
+    CODE_TO_TRANSMIT$="$08                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="4"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BU"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BU"
+    CODE_TO_TRANSMIT$="KE4J                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BV"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BV"
+    CODE_TO_TRANSMIT$="$201B3445                          "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BX"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BX"
+    CODE_TO_TRANSMIT$="KE4@E4G                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 BZ"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="BZ"
+    CODE_TO_TRANSMIT$="$085B                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CE"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CE"
+    CODE_TO_TRANSMIT$="KEJ                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CF"
+    CODE_TO_TRANSMIT$="KEHE4H                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="6"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CH"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CH"
+    CODE_TO_TRANSMIT$="KEH                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CL"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CL"
+    CODE_TO_TRANSMIT$="KEIE4H                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="2"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CN"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CN"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CO"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CO"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CR"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CR"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="5"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 CS"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="CS"
+    CODE_TO_TRANSMIT$="KELE4H                             "
+    NUM_OF_NULLS$="06"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="1"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 DN"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="DN"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 DO"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="DO"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EA"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EA"
+    CODE_TO_TRANSMIT$="$0D10141B293B                      "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EB"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EB"
+    CODE_TO_TRANSMIT$="KE4H                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EG"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EG"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EP"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EP"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 ER"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="ER"
+    CODE_TO_TRANSMIT$="KE4H                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 ES"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="ES"
+    CODE_TO_TRANSMIT$="KE                                 "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EU"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EU"
+    CODE_TO_TRANSMIT$="KE4H                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EX"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EX"
+    CODE_TO_TRANSMIT$="KE4H                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 EZ"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="EZ"
+    CODE_TO_TRANSMIT$="$5D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 FF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="FF"
+    CODE_TO_TRANSMIT$="$0C                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G0"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G0"
+    CODE_TO_TRANSMIT$="$54                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G1"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G1"
+    CODE_TO_TRANSMIT$="$4C                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G2"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G2"
+    CODE_TO_TRANSMIT$="$5B                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G3"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G3"
+    CODE_TO_TRANSMIT$="$5D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G4"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G4"
+    CODE_TO_TRANSMIT$="$7D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G5"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G5"
+    CODE_TO_TRANSMIT$="$4A                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G6"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G6"
+    CODE_TO_TRANSMIT$="$7C                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G7"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G7"
+    CODE_TO_TRANSMIT$="$2A                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G8"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G8"
+    CODE_TO_TRANSMIT$="$2B                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 G9"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="G9"
+    CODE_TO_TRANSMIT$="$7B                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GA"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GA"
+    CODE_TO_TRANSMIT$="$2D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GB"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GB"
+    CODE_TO_TRANSMIT$="$2A                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GC"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GC"
+    CODE_TO_TRANSMIT$="$3D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GD"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GD"
+    CODE_TO_TRANSMIT$="$5F                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GE"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GE"
+    CODE_TO_TRANSMIT$="$7C                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GF"
+    CODE_TO_TRANSMIT$="$2A                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GP"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GP"
+    CODE_TO_TRANSMIT$="$2A2A2A2A2A2A2A2A2A2A              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GQ"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GQ"
+    CODE_TO_TRANSMIT$="$2D2D2D2D2D2D2D2D2D2D              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GR"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GR"
+    CODE_TO_TRANSMIT$="$2A2A2A2A2A2A2A2A2A2A              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GT"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GT"
+    CODE_TO_TRANSMIT$="$3D3D3D3D3D3D3D3D3D3D              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 GU"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="GU"
+    CODE_TO_TRANSMIT$="$2A2A2A2A2A2A2A2A2A2A              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 LD"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="LD"
+    CODE_TO_TRANSMIT$="KEOE4H                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="3"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 LF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="LF"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="5"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 LI"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="LI"
+    CODE_TO_TRANSMIT$="KENE4H                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="4"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 PE"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="PE"
+    CODE_TO_TRANSMIT$="$0D10141B293B                      "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 PS"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="PS"
+    CODE_TO_TRANSMIT$="$1B293A1012                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 RB"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="RB"
+    CODE_TO_TRANSMIT$="$07                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 SB"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="SB"
+    CODE_TO_TRANSMIT$="KE4@                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="2"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 SF"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="SF"
+    CODE_TO_TRANSMIT$="KE4H                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 T1"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="T1"
+    CODE_TO_TRANSMIT$="KE r!! 8"+QUO+"PE4H                      "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 T2"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="T2"
+    CODE_TO_TRANSMIT$="KE r!! 8$DE4H                      "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 TR"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="TR"
+    CODE_TO_TRANSMIT$="$1B2138                            "
+    NUM_OF_NULLS$="99"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 VT"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="VT"
+    CODE_TO_TRANSMIT$="KEA                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="7"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IBM3151 YN"
+    TERMINAL_TABLE$="IBM3151 "
+    MNEMONIC_CODE$="YN"
+    CODE_TO_TRANSMIT$="K? (Y/N)                           "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBA"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BA"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBB"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BB"
+    CODE_TO_TRANSMIT$="KE[5m                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBD"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BD"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBF"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BF"
+    CODE_TO_TRANSMIT$="K E[7m                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBG"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BG"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBH"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BH"
+    CODE_TO_TRANSMIT$="KE[7mE[31m                         "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBR"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BR"
+    CODE_TO_TRANSMIT$="KE[42mE[37m                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBS"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BS"
+    CODE_TO_TRANSMIT$="$08                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="4"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBU"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BU"
+    CODE_TO_TRANSMIT$="KE[45mE[37m                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORBV"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="BV"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCE"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CE"
+    CODE_TO_TRANSMIT$="KE[44mE[33mE[0J                    "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCF"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CF"
+    CODE_TO_TRANSMIT$="KE[0;0f                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="6"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCH"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CH"
+    CODE_TO_TRANSMIT$="KE[0;0f                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCL"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CL"
+    CODE_TO_TRANSMIT$="KE[44mE[33mE[K                     "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="2"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCN"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CN"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCO"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CO"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCR"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CR"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="5"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORCS"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="CS"
+    CODE_TO_TRANSMIT$="KE[1mE[44mE[33mE[2JE[0;0f          "
+    NUM_OF_NULLS$="06"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="1"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORDC"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="DC"
+    CODE_TO_TRANSMIT$="$1B5B50                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORDN"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="DN"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORDO"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="DO"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREA"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EA"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREB"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EB"
+    CODE_TO_TRANSMIT$="KE[0mE[1m                          "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREG"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EG"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREH"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EH"
+    CODE_TO_TRANSMIT$="KE[0mE[97m                         "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREP"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EP"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORER"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="ER"
+    CODE_TO_TRANSMIT$="KE[44mE[33m                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORES"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="ES"
+    CODE_TO_TRANSMIT$="KE                                 "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLOREU"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="EU"
+    CODE_TO_TRANSMIT$="KE[44mE[33m                        "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORFF"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="FF"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORLD"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="LD"
+    CODE_TO_TRANSMIT$="KE[1M                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="2"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORLF"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="LF"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORLI"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="LI"
+    CODE_TO_TRANSMIT$="KE[1L                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="2"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORRB"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="RB"
+    CODE_TO_TRANSMIT$="$07                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORRC"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="RC"
+    CODE_TO_TRANSMIT$="$2C2052455455524E20544F20434F4E5449"
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORRM"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="RM"
+    CODE_TO_TRANSMIT$="$2052455455524E20544F20434F4E54494E"
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORSB"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="SB"
+    CODE_TO_TRANSMIT$="KE[37m                             "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="2"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORSF"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="SF"
+    CODE_TO_TRANSMIT$="KE[1mE[44mE[33m                    "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORVT"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="VT"
+    CODE_TO_TRANSMIT$="KE[1A                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="7"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SCOCOLORYN"
+    TERMINAL_TABLE$="SCOCOLOR"
+    MNEMONIC_CODE$="YN"
+    CODE_TO_TRANSMIT$="K? (Y/N)                           "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BA"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BA"
+    CODE_TO_TRANSMIT$="$18                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BB"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BB"
+    CODE_TO_TRANSMIT$="$1B4732                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BG"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BG"
+    CODE_TO_TRANSMIT$="$1B4802                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BH"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BH"
+    CODE_TO_TRANSMIT$="KE(                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BR"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BR"
+    CODE_TO_TRANSMIT$="$1B4734                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BS"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BS"
+    CODE_TO_TRANSMIT$="$08                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="4"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BU"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BU"
+    CODE_TO_TRANSMIT$="$1B4738                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BX"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BX"
+    CODE_TO_TRANSMIT$="$1B4772                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    BZ"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="BZ"
+    CODE_TO_TRANSMIT$="$5B                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CE"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CE"
+    CODE_TO_TRANSMIT$="$1B59                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CF"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CF"
+    CODE_TO_TRANSMIT$="KE(E&E;E'                          "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CH"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CH"
+    CODE_TO_TRANSMIT$="$1E                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CL"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CL"
+    CODE_TO_TRANSMIT$="KE(ET                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CR"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CR"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    CS"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="CS"
+    CODE_TO_TRANSMIT$="KE+                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="B"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EA"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EA"
+    CODE_TO_TRANSMIT$="$14                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EB"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EB"
+    CODE_TO_TRANSMIT$="$1B4730                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EG"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EG"
+    CODE_TO_TRANSMIT$="$1B4803                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EH"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EH"
+    CODE_TO_TRANSMIT$="KE)                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EP"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EP"
+    CODE_TO_TRANSMIT$="NULL                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    ER"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="ER"
+    CODE_TO_TRANSMIT$="$1B4730                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    ES"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="ES"
+    CODE_TO_TRANSMIT$="KE                                 "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EU"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EU"
+    CODE_TO_TRANSMIT$="$1B4730                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EX"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EX"
+    CODE_TO_TRANSMIT$="$1B4730                            "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    EZ"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="EZ"
+    CODE_TO_TRANSMIT$="$5D                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    FF"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="FF"
+    CODE_TO_TRANSMIT$="$0C                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    LD"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="LD"
+    CODE_TO_TRANSMIT$="KE(ER                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="9"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    LF"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="LF"
+    CODE_TO_TRANSMIT$="$0A0D                              "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="1"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    LI"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="LI"
+    CODE_TO_TRANSMIT$="$1B281B45                          "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="9"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    PE"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="PE"
+    CODE_TO_TRANSMIT$="$14                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    PS"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="PS"
+    CODE_TO_TRANSMIT$="$18                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    RB"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="RB"
+    CODE_TO_TRANSMIT$="$07                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    RC"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="RC"
+    CODE_TO_TRANSMIT$="$2C2052455455524E20544F20434F4E5449"
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    RM"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="RM"
+    CODE_TO_TRANSMIT$="$2052455455524E20544F20434F4E54494E"
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    SB"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="SB"
+    CODE_TO_TRANSMIT$="KE)                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="2"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    SF"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="SF"
+    CODE_TO_TRANSMIT$="KE(                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="1"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    SP"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="SP"
+    CODE_TO_TRANSMIT$="$20                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    T1"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="T1"
+    CODE_TO_TRANSMIT$="KE`:                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    T2"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="T2"
+    CODE_TO_TRANSMIT$="KE`;                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    T3"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="T3"
+    CODE_TO_TRANSMIT$="KE`;                               "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    TR"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="TR"
+    CODE_TO_TRANSMIT$="KE6                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="9"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    VT"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="VT"
+    CODE_TO_TRANSMIT$="$0B                                "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="3"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WYSE    YN"
+    TERMINAL_TABLE$="WYSE    "
+    MNEMONIC_CODE$="YN"
+    CODE_TO_TRANSMIT$="K? (Y/N)                           "
+    NUM_OF_NULLS$="00"
+    CURSOR_UPDATE_FLAG$="0"
+    SPECIAL_EDIT_CODE$="0"
+    FORGRND_BCKGRND_CODE$="0"
+    TERMS_TABLE_DESC$="                              "
+    TERMS_PTR_BOTH_CODE$=" "
+    ZZZ_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

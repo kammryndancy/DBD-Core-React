@@ -1,0 +1,40 @@
+<PxTable>
+ TableName=IC.cus.EN
+ TableKey=K1165345576
+ FileCreate=KEYED "IC.cus.EN",27,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00006
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ICGMAZ.1    sbb         001"
+    FIELD_1$="U"
+    FIELD_2$="000001"
+    FIELD_3$="_U000001.dat"
+    FIELD_4$="MINIMUM_ORDER"
+    FIELD_5$="PAD(CUSTOMER$,10,$00$)+ITEM_CODE$"
+    FIELD_6$="U"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ICGMAZ.1    sbb         002"
+    FIELD_1$="U"
+    FIELD_2$="000001"
+    FIELD_3$="_U000001.dat"
+    FIELD_4$="ASSEMBLY_ITEM"
+    FIELD_5$="PAD(CUSTOMER$,10,$00$)+ITEM_CODE$"
+    FIELD_6$="U"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ICGMAZ.1    sbb         003"
+    FIELD_1$="A"
+    FIELD_2$="000023"
+    FIELD_3$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_4$="SPER_CODE"
+    FIELD_5$="CUSTOMER$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

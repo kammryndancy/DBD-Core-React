@@ -1,0 +1,5 @@
+cd /usr/lib/pvx/z.kmc/www_dev
+
+# for testing -> echo send_xml_file -url $1 #  2> /dev/null
+
+send_xml_file -url $1  2> /dev/null

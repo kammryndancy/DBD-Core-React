@@ -1,0 +1,8 @@
+0010 REM "Finance Charge Invoice Printing Selection <AR2RCF>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.0
+0040 REM "Copyright 1986-1989 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+9900 RUN "AR2EBS"
+9999 END 

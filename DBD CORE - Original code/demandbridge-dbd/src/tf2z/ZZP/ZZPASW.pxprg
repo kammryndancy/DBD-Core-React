@@ -1,0 +1,30 @@
+0010 REM "Password \ Access Control <ZZPASW>                                   
+0030 REM "(C) 1985-1988 Basic Ideas, Inc; Atlanta, GA. USA                     
+0035 REM "This software contains trade secrets and proprietary information"    
+1020 ENTER X3$,P9$,P0$,P1$,W0,W1,O
+1040 DIM S$(20)
+1045 IF X3$(43,2)="SU" THEN O=0; GOTO 9940
+1050 S0=1; IF P9$="" THEN P9$="AC"
+2020 L0$=X3$(239,1); CALL "ZZLANG",X3$,L0$
+2040 IF W0=0 THEN W0=40,W1=22
+2090 GOSUB 5200
+2190 GOTO 9900
+5200 REM "PASSWORD                                                             
+5202 GOSUB 5400
+5205 IF P0$=S$(1,6) THEN GOTO 5400 ELSE O=-1,P$=STR(3+P0:"00"),O$=FNS$(L0$(118,20)); PRINT 'SF',
+5215 PRINT @(W0-LEN(O$)-3,W1),O$,":",; O0=LEN(O$)
+5240 DIM O$(6); PRINT 'RB',; CALL "ZZENTR","SPUT",X{ALL},O$,X4$,X3$,W0,W1,1,6,C0,"","","","","","",""
+5250 IF O$=P0$ THEN O=0,S0=0; GOTO 5400 ELSE IF ABS(O)>2 THEN GOTO 5900 ELSE O=O-1; GOTO 5240
+5400 REM "                                                                     
+5410 IF P1$>X3$(43,2) THEN P$="04"; EXITTO 5900 ELSE GOTO 5450
+5450 REM "                                                                     
+5455 O=0
+5490 RETURN 
+5900 REM "                                                                     
+5905 O=-1
+5925 CALL "ZZPROM",P9$+P$,X3$,A,"","","",0
+5990 RETURN 
+8915 DEF FNS$(Z$)=Z$(1,POS(S$=Z$+S$)-1)
+9930 IF W0>0 THEN PRINT @(W0-O0-3,W1),S$(O0+1),
+9940 EXIT 
+9999 END 

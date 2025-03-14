@@ -1,0 +1,400 @@
+<PxTable>
+ TableName=ZF4
+ TableKey=K1372704713
+ FileCreate=KEYED "ZF4",5,0,-512,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZF4_PrnOpt"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/ZF4"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:10-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:28-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST OPTION_CODE$:[LEN(5)]"
+    NAME$="OPTION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="P"
+    NOTES$="Option code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST OPTION_CODE$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST OPTION_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="OPTION_DESC"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST NOTES_1$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTES_1"
+    DESCRIPTION$="=MSG("+QUO+"NOTES_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Notes #1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST NOTES_2$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTES_2"
+    DESCRIPTION$="=MSG("+QUO+"NOTES_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Notes #2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST NOTES_3$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTES_3"
+    DESCRIPTION$="=MSG("+QUO+"NOTES_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Notes #3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST NOTES_4$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTES_4"
+    DESCRIPTION$="=MSG("+QUO+"NOTES_4"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Notes #4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST NOTES_5$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTES_5"
+    DESCRIPTION$="=MSG("+QUO+"NOTES_5"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Notes #5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST ZF4_UNUSED_1$:[LEN(SEP,SIZ=21)]"
+    NAME$="ZF4_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="21"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST PARAMETER_SIZE"
+    NAME$="PARAMETER_SIZE"
+    DESCRIPTION$="=MSG("+QUO+"PARA_S"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#0-"
+    NOTES$="Parameter size"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST NUM_OF_PARAMETERS"
+    NAME$="NUM_OF_PARAMETERS"
+    DESCRIPTION$="=MSG("+QUO+"NUM_O_PARA"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#0-"
+    NOTES$="Number of Parameters"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST ZF4_UNUSED_2"
+    NAME$="ZF4_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF4 Unused 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST ZF4_UNUSED_3"
+    NAME$="ZF4_UNUSED_3"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF4 Unused 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ZF4_UNUSED_4"
+    NAME$="ZF4_UNUSED_4"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF4 Unused 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST ZF4_UNUSED_5"
+    NAME$="ZF4_UNUSED_5"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF4 Unused 5"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="2OF5 "
+    OPTION_CODE$="2OF5 "
+    OPTION_DESC$="Interleaved 2 of 5 barcode    "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BC39 "
+    OPTION_CODE$="BC39 "
+    OPTION_DESC$="Code 39 (3 of 9) barcode      "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BOLD "
+    OPTION_CODE$="BOLD "
+    OPTION_DESC$="Bold printing                 "
+    NOTES_1$="For OKI521 - applies to whole line.     "
+    NOTES_2$="                                        "
+    NOTES_3$="                                        "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C128A"
+    OPTION_CODE$="C128A"
+    OPTION_DESC$="Code 128 Set A barcode        "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C128B"
+    OPTION_CODE$="C128B"
+    OPTION_DESC$="Code 128 Set B barcode        "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C128C"
+    OPTION_CODE$="C128C"
+    OPTION_DESC$="Code 128 Set C barcode        "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DBLHT"
+    OPTION_CODE$="DBLHT"
+    OPTION_DESC$="Double Height Printing        "
+    NOTES_1$="Some printers may not be able to mix    "
+    NOTES_2$="single & double height printing on the  "
+    NOTES_3$="same line.                              "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EAN13"
+    OPTION_CODE$="EAN13"
+    OPTION_DESC$="13 digit EAN barcode          "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EAN8 "
+    OPTION_CODE$="EAN8 "
+    OPTION_DESC$="8 digit EAN barcode           "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FONT0"
+    OPTION_CODE$="FONT0"
+    OPTION_DESC$="Datamax Font 0                "
+    NOTES_1$="1=rotation, 2=width multiplier, 3=height"
+    NOTES_2$="multiplier                              "
+    NOTES_3$="                                        "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=4
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="L_BEG"
+    OPTION_CODE$="L_BEG"
+    OPTION_DESC$="                              "
+    NOTES_1$="                                        "
+    NOTES_2$="                                        "
+    NOTES_3$="                                        "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PSTNT"
+    OPTION_CODE$="PSTNT"
+    OPTION_DESC$="PostNet Barcode               "
+    NOTES_1$="                                        "
+    NOTES_2$="                                        "
+    NOTES_3$="                                        "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UNDRL"
+    OPTION_CODE$="UNDRL"
+    OPTION_DESC$="Underline text                "
+    NOTES_1$="                                        "
+    NOTES_2$="                                        "
+    NOTES_3$="                                        "
+    NOTES_4$="                                        "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UPC-A"
+    OPTION_CODE$="UPC-A"
+    OPTION_DESC$="UPC type A barcode            "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UPC-E"
+    OPTION_CODE$="UPC-E"
+    OPTION_DESC$="UPC type E barcode            "
+    NOTES_1$="Params: 1 + 2 = 00 to 24 to set height  "
+    NOTES_2$="in 6/72"+QUO+" increments. 3=Black bar width  "
+    NOTES_3$="1-7, 4=narrow bar width 1-7, 5=width    "
+    NOTES_4$="ratio 1-7                               "
+    NOTES_5$="                                        "
+    ZF4_UNUSED_1$="                     "
+    PARAMETER_SIZE=3
+    NUM_OF_PARAMETERS=5
+   </RecordData>
+
+</Data>
+
+</PxTable>

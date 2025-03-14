@@ -1,0 +1,21 @@
+0010 ! LSTALINE - List A Line of code from an external program                  
+0020 ! Version 0.2 - Copyright EDIAS Software Intl BV                           
+0030 ENTER (PROG$),(LINE),CODE$
+0040 CHANNEL=UNT; IF CHANNEL=-1 THEN EXIT 14 ! No free channels                 
+0050 TYPE$="?"; OPEN INPUT (CHANNEL,ERR=BADPGM)PROG$
+0060 TYPE$=MID(FIB(CHANNEL),19,1)
+0070 BADPGM:CLOSE (CHANNEL); IF TYPE$<>"P" THEN EXIT 12 ! Not a pgm            
+0080 LINE$=STP(STR(LINE:"#0000",ERR=BADLINE),2)+" "; GOTO LISTPGM
+0090 BADLINE:EXIT 21 ! Bad statement number to list                            
+0100 LISTPGM:PRINT 'WINDOW'(0,-8,80,5),'CI',
+0110 PRM_XT=PRM('XT'),PRM_NE=PRM('NE'),OKAY=0,CODE$=""
+0120 SET_PARAM -'XT','NE' ! No exit in console mode, error in subprogram        
+0130 EXEC$="LOAD "+QUO+PROG$+QUO+" ; " ! Load PGM to de-list                    
+0140 EXEC$+="CODE$=LST(PGM("+STR(LINE)+")),OKAY=1" ! LIST line                  
+0150 PREIN$="LOAD "+QUO+PGN+QUO ! Load the current pgm                          
+0160 ! The following commands MUST be on the same line !!!                      
+0170 GO$="GOTO "+STR(1+TCB(4)); PREINPUT PREIN$; PREINPUT GO$; PREINPUT "RUN"; EXECUTE EXEC$+";"+PREIN$+";"+GO$,ERR=*ESCAPE
+0180 PRINT 'CI','POP',; SET_PARAM 'XT'=PRM_XT,'NE'=PRM_NE
+0190 IF OKAY=0 OR CODE$="" THEN EXIT 18 ! Protected or empty program file       
+0200 ! IF POS(line$=code$)<>1 THEN LET code$="" ! Only return SAME line         
+0210 EXIT 

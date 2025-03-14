@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Cycle Processing" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Physical Count Audit/Usage Update</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapUtilities.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapBody.js">/*<![CDATA[*/ /*]]>*/</script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">Physical Count Audit/Usage Update</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;margin-left: 0;margin-right: auto;">
+            <tbody>
+                <tr>
+                    <td><span style="font-weight: bold;font-style: normal;font-size: 8pt;font-family: Verdana;">DB&#160;Distributor &gt; Print Management &gt; Cycle Processing &gt; Physical Count Audit/Usage Update (F/M P5)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav" style="font-weight: bold;font-style: italic;">&#160;</p>
+        <p class="Nav"><a name="kanchor21"></a>The next step in running your PM Cycle is the updating of the data collected since the start of the cycle. This process requires the printing of the Physical Count Usage Audit Report that will be followed by the <a href="Completing Cycle.htm">Cycle Update</a>. The following areas are affected by the update:</p>
+        <p class="Nav">&#160;</p>
+        <ul style="list-style-type: square;">
+            <li value="1"> 
+Create Item Customer Location Data Records</li>
+            <li value="2">Item Usage/Cost Statistics</li>
+            <li value="3">Item Average Monthly Usage</li>
+            <li value="4">Last Count Information (Counted Locations Only)
+</li>
+            <li value="5">Shipments Since Data
+</li>
+            <li value="6">PM Report Data</li>
+        </ul>
+        <p>&#160;</p>
+        <p>As with the Cycle Processor itself, this report can be run by customer, or by count cycle code. The Physical Count Usage Audit Report is designed to report the PM data that will be posted by the subsequent update. The information on this report will differ in layout depending upon the PM Method being used at the customer's location. Following the printing of the Physical Count Usage Audit Report, DB Distributor will proceed to the update phase. </p>
+        <p>&#160;</p>
+        <p>Following the completion of this update, there are some additional processing steps that need to be taken prior to completing the cycle. These steps include the printing of the <a href="Restocking Report.htm">Restocking Report</a> and the printing of <a href="Customer Reports.htm">Customer PM Reports</a>.</p>
+        <p>&#160;</p>
+        <p>The following is additional information on the areas that are updated at this time:</p>
+        <p>&#160;</p>
+        <p><u>Create Item Customer Location Data Records</u>
+        </p>
+        <p>If first-time counts were entered during the Cycle for previously non-counted items, the update will attempt to post various pieces of information to the Customer Location Data sub menu option record on the Item Master. If this record does not exist at the time the update is run, it will be automatically created. DB&#160;Distributor will also set the following prompt to 'Y' if the customer location PM Method is 'C' (Counted):
+Is item counted at this location? Y.
+With this field now set, the item will print on the next printing of the count sheets for the customer's location.
+</p>
+        <p>&#160;</p>
+        <p><u>Item Usage/Cost Statistics</u>
+        </p>
+        <ul>
+            <li value="1">Counted Locations - The update will post the usage figures reported on the Physical Count Usage Analysis Report to the customer's usage calendar (available under the Item Usage History sub menu option on the Item Master). The data is updated in the customer period(s) and year(s) between the last count date and the current count date.</li>
+            <li value="2">Issue Based Locations - Posting to the customer's usage calendar for Issue Based items is not required during the Cycle update, as posting occurs following the updating of completed shipments to a customer's location.</li>
+            <li value="3">Cost Statistics Record - There is an additional Cost statistical record, which is designed to represent the system's estimate as to the cost (based on Sell Price) of the usage at a customer's location. At the point that the usage quantity is updated, a calculation is made to determine the cost of that usage, using the current Sell price. This dollar amount is then updated to a Cost statistics record for the same customer year and period(s) as the usage quantity.</li>
+        </ul>
+        <p>&#160;</p>
+        <p><u>Item Average Monthly Usage</u>
+        </p>
+        <p>For Counted or Issue Based locations, DB&#160;Distributor will update the item's Average Monthly Usage figures. For Issue Based locations, the calculation is controlled by your PM System Parameters settings.
+If a count is updated for an item, the actual usage for the period of time since the last count is calculated by DB Distributor. This quantity is posted to the Customer Calendar as the usage for the period.
+</p>
+        <p>&#160;</p>
+        <p><u>Last Count Information</u>
+        </p>
+        <p>For those items which counts were entered, the last count date and quantity fields (available under the Customer Location Data sub menu option on the Item Master) are updated with the count date and total count quantity as entered in the count entry program and reported on the Physical Count Usage Analysis Report.
+Note:  Adjustment (ADJ) entries made in “Count Entry” do not affect the “Count Quantity”. They are separated out and posted to the “Shipments Since” field (e.g. Count entered: 1,500 ADJ: -1,000 Updated Count: 1,500).
+</p>
+        <p>&#160;</p>
+        <p><u>Shipments Since Data</u>
+        </p>
+        <ul>
+            <li value="1">Reduced by Frozen Shipment Figures - For Counted locations, the current Shipments Since field for this location (available under the Customer Location Data sub menu option on the Item Master) is reduced by the quantity shown on the Physical Count Usage Audit Report's "Shipments" columns. This quantity represents the shipments that had been completely processed at the time the cycle was started and the location data frozen. </li>
+            <li value="2">Adjustment (ADJ) Entries - If Adjustment (ADJ) entries were made for an item during count entry, the adjustment quantity will be added to the result of subtracting the frozen "Shipments Since" figures from the current "Shipments Since" field (discussed above). The negative adjustment quantity, when added to the Shipments field, would be offset when the corresponding unprocessed shipment was updated.</li>
+        </ul>
+        <p>&#160;</p>
+        <p><u>PM Report Data</u>
+        </p>
+        <p>Following the posting of the above-mentioned figures, DB&#160;Distributor will automatically run the PM Report Update. This process accumulates all of the needed data for generation of the PM reports.</p>
+        <p>
+        </p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

@@ -1,0 +1,87 @@
+0010 ! DTGEMP - Data Transport Email Parameter
+0035 REM "5.7 - 02/25/13 - 14.113611 - crg - SSP# 261527
+0037 REM "261527-Output Director - The automated reports don't seem to be    
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0052 IF NUL(%WDX$) THEN MSGBOX "You must be using Windx to access this program"; GOTO 0075
+0055 PROCESS "DTGEMP","../DTG/DT.EN"
+0075 IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0090 ! 
+0100 ! 100 - Initialization
+0110 INIT:
+0120 ! 
+0130 X0$="DTGEMP",X1$="Email Parameter Setup"
+0140 ! 
+0150 X0=-1,X2=-1
+0160 CALL "ZZCOMP",X0$,X11$,X2$,X3$,X4$,X5$,X0,X1,X2; IF X1>0 THEN GOSUB WRAPUP
+0170 ! 
+0190 DIM Z[NUM(X3$(60,3))]
+0200 ! Files
+0210 Z$="06O ZZPARM  "
+0220 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0
+0400 ! System Parameters
+0490 RETURN 
+0500 ! 500 - Main panel post_display logic
+0510 MAIN_POST_DISPLAY:
+0520 GOSUB GET_SYS_PARAM
+0540 GOSUB LOAD_SCREEN
+0780 REFRESH_FLG=1
+0790 RETURN 
+0900 ! 900 - Wrapup
+0910 WRAPUP:
+0920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+0970 RETURN 
+2000 ! Load Screen with Parameter Information
+2010 LOAD_SCREEN:
+2020 EML_SERV_ADDR$=PARAM$(7,60)
+2025 DFT_EML$=PARAM$(67,50)
+2280 REFRESH_FLG=1
+2290 RETURN 
+2500 ! load Information into Parameter String
+2510 LOAD_INFO:
+2520 PARAM$(7,60)=EML_SERV_ADDR$
+2530 PARAM$(67,50)=DFT_EML$
+2790 RETURN 
+3000 ! Write the record
+3010 WRITE_REC:
+3020 GOSUB LOAD_INFO
+3040 WRITE (Z[6],KEY=X3$(9,3)+"EML")PARAM$
+3080 CMD_STR$="END"
+3090 RETURN 
+5000 ! Check Changes
+5010 CHECK_CHANGES:
+5020 GOSUB WRITE_REC
+5090 RETURN 
+8000 ! Add Messages
+8010 ADD_MSG:
+8020 MSGBOX MSG("ADD_RECORD"),MSG("VERIFY"),"?,YESNO",ANS$
+8030 IF ANS$="NO" THEN CMD_STR$="END"; RETURN 
+8040 DIM PARAM$(255)
+8050 NEXT_ID=EML_SERV_ADDR.CTL
+8090 RETURN 
+9000 ! Parameters
+9010 GET_SYS_PARAM:
+9015 DIM PARAM$(255)
+9020 EXTRACT (Z[6],KEY=X3$(9,3)+"EML",DOM=*NEXT)
+9030 READ (Z[6],KEY=X3$(9,3)+"EML",DOM=*NEXT)PARAM$
+9090 RETURN 
+9999 END 
+10000 SELECT_DOT_COM:
+10010 DOT_COM$=STP(DOT_COM$,3," ")
+10020 IF POS(".com"=DOT_COM$)=0 OR POS(".net"=DOT_COM$)=0 OR POS(".biz"=DOT_COM$)=0 OR POS(".org"=DOT_COM$)=0 THEN NEXT_ID=DOT_COM.CTL
+10030 PARAM$(67,50)=DOT_COM$
+10090 RETURN 
+10099 ! 
+10100 REM "Ability to test the current settings
+10105 TEST_SETTINGS:
+10110 PROCESS "DTGEMP.T","",TMP_TO$,TMP_SUB$,TMP_ACTION$
+10115 IF TMP_ACTION$<>"CANCEL" THEN {
+10117 TMP_MESG$="Test email message sent on "+DTE(0:"%Y-%Mz-%Dz at %Hz:%mz:%sz")+" under company "+X3$(9,3)+" by operator "+X3$(40,3)+" ["+WHO+"] and terminal "+FID(0)+":"+$0D0A0D0A$+"Email Server: "+EML_SERV_ADDR$+$0D0A$+"Default From: "+DFT_EML$
+10120 TMP_RESPMSG$=""; TMP_RESPMSG$=FN%SENDMAIL$(TMP_TO$,"","","",TMP_SUB$,TMP_MESG$,"","")
+10125 IF NUL(TMP_RESPMSG$) THEN TMP_RESPMSG$="Test email sent."
+10130 MSGBOX TMP_RESPMSG$,MSG("WARNING"),"!"
+10135  }
+10145 RETURN 
+10149 ! 
+56000 REM "192290-Shipping confirmation email was not sent to buyer.          
+56002 REM "261527-Ability to test the current email server settings easily    

@@ -1,0 +1,368 @@
+<PxTable>
+ TableName=AP.EN.CUST.csi
+ TableKey=K1402336473
+ FileCreate=KEYED "AP.EN.CUST.csi",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_AP2     0000"
+    FIELD_1$="AP2_Term"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="45"
+    FIELD_5$="20"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_AP2"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"AP2"+QUO+"+%C$"
+    FIELD_18$="2023/05/15 16:52:38 ErikaMason"
+    FIELD_19$="APGMPE"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP2     0001"
+    FIELD_1$="TERMS_CODE"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TERMS_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="2"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP2     0002"
+    FIELD_1$="TERMS_DESC"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TERMS_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP2     0003"
+    FIELD_1$="PRCNT_DISC_ALLOWED"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PERC_D_A"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##.00-"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP2     0004"
+    FIELD_1$="DAYS_TILL_DUE"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DAYS_T_D"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0000"
+    FIELD_1$="AP4_Vend"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"VENDORS"+QUO+")"
+    FIELD_8$="2"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"AP4"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2015/01/27 11:51 lmc"
+    FIELD_21$="R"
+    FIELD_23$="U0000000"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.VEND_DIV$+_MN_.VEND_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0001"
+    FIELD_1$="VEND_LOOKUP"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="10"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="10"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0002"
+    FIELD_1$="Formula:TBL(SGN(%AP_DIV_LEN),"+QUO+QUO+",_MN_.VEND_DIV$+"+QUO+"-"+QUO+")+_MN_.VEND_CODE$(1,%VEND_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0003"
+    FIELD_1$="VEND_NAME"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="25"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0004"
+    FIELD_1$="VEND_PHONE"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="(XXX)XXX-XXXX.XXXX"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0005"
+    FIELD_1$="VEND_FAX"
+    FIELD_4$="18"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_FAX"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="(XXX)XXX-XXXX.XXXX"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0006"
+    FIELD_1$="VEND_ADDR_1"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="25"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_A_1"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0007"
+    FIELD_1$="VEND_CITY"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="11"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_CITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="16"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0008"
+    FIELD_1$="VEND_ST"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="4"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_ST"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="2"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     0009"
+    FIELD_1$="VEND_ZIP"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="10"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_ZIP"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="XXXXX.XXXX"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0000"
+    FIELD_1$="AP4_Vend"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"VENDORS"+QUO+")"
+    FIELD_8$="2"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"AP4"+QUO+"+%C$"
+    FIELD_18$="2014/06/09 13:56 lmc"
+    FIELD_19$="APGMAA"
+    FIELD_21$="R"
+    FIELD_23$="U0000000"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.VEND_DIV$+_MN_.VEND_CODE$+_MN_.VEND_NAME$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0001"
+    FIELD_1$="VEND_LOOKUP"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0002"
+    FIELD_1$="Formula:TBL(SGN(%AP_DIV_LEN),"+QUO+QUO+",_MN_.VEND_DIV$+"+QUO+"-"+QUO+")+_MN_.VEND_CODE$(1,%VEND_LEN)"
+    FIELD_4$="12"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0003"
+    FIELD_1$="VEND_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0004"
+    FIELD_1$="VEND_ADDR_1"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_A_1"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0005"
+    FIELD_1$="VEND_ST"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_ST"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="2"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0006"
+    FIELD_1$="VEND_CITY"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_CITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="16"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0007"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.VEND_ZIP$,"+QUO+"ZIP"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ZIP_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0008"
+    FIELD_1$="VEND_PHONE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="=%PHONE_MASK$+"+QUO+"XXXX"+QUO
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

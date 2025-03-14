@@ -1,0 +1,104 @@
+<PxTable>
+ TableName=DR.EN.CUST.asc
+ TableKey=K1531929204
+ FileCreate=KEYED "DR.EN.CUST.asc",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0000"
+    FIELD_1$="DR1_FilesToReplicate"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="87"
+    FIELD_5$="20"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"DATA_REP"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"DR1"+QUO+"+%C$"
+    FIELD_18$="2014/10/21 16:16 Chaitanya Guntur"
+    FIELD_19$="DRGMBA"
+    FIELD_21$="R"
+    FIELD_23$="U0K000M0"
+    FIELD_24$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0001"
+    FIELD_1$="Formula:_MN_.FILE_TO_REPLICATE$+_MN_.SEQ_NUM$"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"FILE2REP"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0002"
+    FIELD_1$="REP_DESC"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REP_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0003"
+    FIELD_1$="DR_TARGET"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DR_TARGET"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="20"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0004"
+    FIELD_1$="REPLICATE"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REP_NOW"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0005"
+    FIELD_1$="QUE_PRIORITY"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"Q_PRIORITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DR1     0006"
+    FIELD_1$="BYPASS_FILTERS"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"BYPASS_FIL"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="1"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

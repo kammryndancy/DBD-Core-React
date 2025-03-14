@@ -1,0 +1,82 @@
+0010 REM "EC Skeleton EC Function <EC3SKL>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 07/11/11 - 14.385 - dmm - SSP# 247556
+0037 REM "247556-EC3IL0 is not adding the EOL like other EC programs.        
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3SKL",X1$="EC Skeleton Function                     "
+0120 EOL$=$0D0A$; EOL$=ATH(STP(EC_PARM$(57,8),1)) ! SSP274556, remove REM
+0127 HTML_TEXT$="Content-type: text/html"
+0140 DIM MESS_INFO$[20]
+0150 REM "EC$[1]=ESB session record, EC$[2]=client number        , ec$[3]=message from server to called program, EC$[4]=formatted date, EC$[5]=formatted time EC$[6]=ECA2$ available web catalogs (concatonated string) EC$[7]=customer webec parms (ECS)  EC$[8]=image path (customer if set otherwise from ec_parm) EC$[9]=ST_LIST sort code record EC$[10]=reporting whse list EC$[11]=(1,4)warehouse code to use for o/e FM2RT0  (5,4)=would contain the 'other'warehouse for availability checking o/e messaging <not passed to FM2RT0, EC$[12]=email params,see 8000s [13] UNUSED ,[14]=ECY$, [15]=inventory system parameters [16]=Credict Card code/desc list [17]=active webcode [18-20] unused                                                                 
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+1000 REM "Process DATA array
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1020 T_IN=POS("."=TAG$); IF T_IN THEN TAG_PARM$=MID(TAG$,T_IN+1),TAG$=MID(TAG$,1,T_IN-1) ELSE TAG_PARM$=""
+1025 SWITCH TAG$ ! 1185 end switch
+1035 CASE "template"; TEMPLATE$=VALUE$; BREAK
+1180 DEFAULT ; VIA TAG$=VALUE$; BREAK ! Set to same name variable as TAG$
+1185 END SWITCH ! 1050
+1190 NEXT I
+1195 DIM BYBINFO$[5]; BYBINFO$[1]=PGN,BYBINFO$[2]="999999.20040601",BYBINFO$[3]=TEMPLATE$,BYBOPTIONS$=""
+1210 ! perform any data creation function here - update a worksheet, etc
+1503 ! status and status_msg are given as examples
+1504 IF NOT(NUL(%BASIC2$)) THEN GOTO 2990 ! Skip outputting template if additional program to be done
+1505 CLOSE (100); OPEN (100,OPT="TEXT",ERR=9000)TEMPLATE$
+1510 READ (100,END=2950)LINE$; LINE$=FNBYB$(LINE$)
+1515 CHKTAG=1
+1520 WHILE CHKTAG ! 2800 wend
+1522 P1=MSK(LINE$,"\?tf\?[^?]*\?"); IF P1=0 THEN CHKTAG=0; BREAK
+1530 TAG$=LINE$(P1,MSL); LINE1$=LINE$(1,P1-1),LINE2$=MID(LINE$,P1+MSL)
+1600 SWITCH TAG$ ! 2790 end switch
+1610 CASE "?tf?status_msg?"; NN=FNN(STR(STATUS)); BREAK
+2785 DEFAULT ; LINE$=LINE1$+LINE2$ ! didn't match existing tag, so remove it
+2790 END SWITCH ! 1600
+2800 WEND ! 1520
+2810 PRINT (OUTPUT)LINE$,EOL$, ! SSP274556, add ,EOL$, and remove check for "" 
+2900 GOTO 1510; REM next read 
+2990 GOTO 9900
+5100 ADD_MSG_TO_LOG:! Add message to log file
+5105 ! Add other info as needed here
+5110 MOUT$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|"
+5135 MX=FN%_LOG_MESSAGE("MESG",MOUT$)
+5145 RETURN 
+5149 ! 
+8800 DEF FNBYB$(LOCAL DATA$)
+8801 ! Send DATA$ through EC3BYB
+8820 CALL "EC3BYB",ERR=*NEXT,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,DATA$,BYBINFO${ALL},BYBOPTIONS$,100 ! 227154
+8840 RETURN DATA$
+8845 END DEF
+8849 ! *****************************************************
+8850 DEF FNM$(LOCAL AMOUNT, LOCAL MASK$)
+8855 ! if AMOUNT is 0 then return null string, else STR AMOUNT with MASK and strip leading and trailing blanks
+8860 IF AMOUNT=0 THEN RETURN "" ELSE RETURN STP(STR(AMOUNT:MASK$),2)
+8895 END DEF
+8899 ! **********************************************************
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+8920 DEF FNN(LOCAL DATA$)
+8925 LINE$=LINE1$+DATA$+LINE2$
+8930 RETURN 0
+8949 ! *****************************
+8950 ! FND$ - Standard date routine
+8955 DEF FND$(LOCAL DATE_IN$, LOCAL SPECIAL_FORMAT$)
+8960 LOCAL DATE_OUT$
+8965 IF NUL(DATE_IN$) THEN DATE_OUT$="" ELSE IF NOT(NUL(SPECIAL_FORMAT$)) THEN DATE_OUT$=FN%FMT_TFDATE$(DATE_IN$,SPECIAL_FORMAT$) ELSE CALL "ZZDISP","DX",DATE_IN$,"",X3$,DATE_OUT$,"",0,0,X4$
+8970 RETURN DATE_OUT$
+8975 END DEF
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56002 REM "227154-Modify EC3BYB to support a condition tag : ?tf?if?[expr]    
+56004 REM "247556-EC3IL0 is not adding the EOL like other EC programs.        

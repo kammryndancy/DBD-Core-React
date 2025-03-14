@@ -1,0 +1,70 @@
+<PxTable>
+ TableName=GL.EN.CUST.jir
+ TableKey=K1195137493
+ FileCreate=KEYED "GL.EN.CUST.jir",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00034
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_GL1     0000"
+    FIELD_1$="GL1_AcctNum"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="55"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"GL_ACCT_N"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"GL1"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2003/10/25 08:52 jir"
+    FIELD_19$="GLGMAA"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GL1     0001"
+    FIELD_1$="GL_ACCT"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="14"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ACCT_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_27$="ZZWLKU;QRY_DISP"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GL1     0002"
+    FIELD_1$="GL_ACCT_DESC"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="36"
+    FIELD_5$="0"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GL1     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+   </RecordData>
+
+</Data>
+
+</PxTable>

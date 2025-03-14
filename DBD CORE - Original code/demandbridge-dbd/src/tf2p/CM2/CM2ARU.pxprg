@@ -1,0 +1,210 @@
+0010 REM "Franchise Audit Report Update <CM2ARU>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 09/06/03 - 9.813611 - tma - SSP# 162848
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="CM2ARU",X1$="Franchise Audit Report Update"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0170 IF POS("MS"=UCS(SYS)) THEN ISWIN=1 ELSE ISWIN=0
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27]
+0330 IOLIST I9,C$,C[0],C[1]
+0340 IOLIST D$,D[0],D[1],D[2],D[3],D[4],D[5],D[6],D[7],D[8],D[9],D[10],D[11],D[12],D[13],D[14]
+0360 IOLIST F$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O CMD...  06O ARH...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0605 PRINT @(22,6),'SB',"Master Company: ",'SF',X3$(9,3),
+0610 GOSUB 6000
+0620 IF Q1$="" THEN GOSUB 6800
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "Clear CMD file
+0710 CALL "ZZINIT",STR(Z[1]:"00")
+0900 REM 
+0990 C0$="",C1$=""; REM "C0$ is current company number, C1$ is previous company number
+0995 C=0; GOSUB 8150
+1000 REM "Go thru the companies
+1005 READ (Z[13],KEY="CMP"+C0$,DOM=1006); REM "reposition ZZPARM
+1010 READ (Z[13],END=5000)A0$; IF A0$(1,3)<>"CMP" THEN GOTO 5000
+1040 C0$=A0$(4,3); IF C0$<>X3$(9,3) THEN IF C0$<J$(1,3) OR C0$>J$(4,3) THEN GOTO 1000
+1043 IF A0$(195,1)=" " AND A0$(4,3)<>X3$(9,3) THEN GOTO 1000; REM "Skip other master companies
+1054 CLOSE (14); OPEN (14,ERR=1000)"AR1"+C0$; CLOSE (14); REM "Check to see if company has data on this system, if not just skip
+1100 REM "Open files
+1105 IF C1$<>"" THEN Z$="02C API"+C1$+"  03C APJ"+C1$+"  04C AR6"+C1$+"  05C AR7"+C1$+"  "+"07C APQ"+C1$+"  08C AR8"+C1$+"  " ELSE Z$=""
+1110 Z$=Z$+"02O API"+C0$+"  03O APJ"+C0$+"  04O AR6"+C0$+"  05O AR7"+C0$+"  "+"07O APQ"+C0$+"  08O AR8"+C0$+"  "
+1120 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1121,1995
+1125 C1$=C0$
+1150 REM 
+1155 PRINT @(0,13),'CL',@(10,13),"Company: ",C0$,
+1160 PRINT @(0,14),'CL',@(0,15),'CL',@(0,16),'CL',@(0,17),'CL',@(10,14),"A/P:",@(10,16),"A/R:",
+1200 REM "Process A/P invoices
+1204 F5=Z[2]; REM "Process API first
+1205 DIM B$(124),B[27]
+1207 F9=F5; GOSUB 8200
+1210 READ (F5,END=1295)IOL=0320; IF LEN(B$)<100 THEN GOTO 1210; REM "Skip control records
+1211 C2=C2+1; IF MOD(C2,F7)=1 THEN IF F5=Z[2] THEN CALL "ZZBARG",X3$,"HG",14,15,40,F6,F8,C2 ELSE CALL "ZZBARG",X3$,"HG",15,15,40,F6,F8,C2
+1212 C5$=B$(118,3); GOSUB 7900
+1213 IF C6$="N" OR B$(118,3)<J$(1,3) OR B$(118,3)>J$(4,3) THEN GOTO 1210; REM "Skip companies that are out of range or don't have data on system (C6$ set in 7900's
+1214 IF B$(1,2)<>"00" THEN GOTO 1210
+1215 GOSUB 7700
+1220 A$(1,3)=B$(118,3),A$(4,2)="AP",A$(6,10)=B$(1,10),A$(16,10)=B$(11,10); REM "Source company, Type -AP, Vendor Code, invoice number
+1225 A$(32,6)=B$(21,6),A$(38,9)=B$(56,10); REM "Invoice date, PFG job Number
+1250 IF F5=Z[2] THEN B0=B[2],B1=B[13],B2=B[0],B3=Z[3] ELSE B0=B[2],B1=0,B2=0,B3=0; REM "orig amt, curr balance, link to transactions, transaction data file slot
+1255 FLAG$="",SEQ$="",C$=""
+1260 GOSUB 7800; REM "Update buckets and write out
+1290 GOTO 1210
+1295 IF F5=Z[2] THEN CALL "ZZBARG",X3$,"HG",14,15,40,F6,F8,F8 ELSE CALL "ZZBARG",X3$,"HG",15,15,40,F6,F8,F8
+1297 IF F5=Z[2] THEN F5=Z[7]; GOTO 1205; REM "IF just finished API, do APQ, history how.
+1300 REM "Process A/R invoices
+1304 F5=Z[4]; REM "Start with AR6
+1305 DIM D$(180),D[14]
+1307 F9=F5; GOSUB 8200
+1308 IF F5=Z[4] THEN F4=16 ELSE F4=17
+1310 READ (F5,END=1395)IOL=0340
+1311 C2=C2+1; IF MOD(C2,F7)=1 THEN CALL "ZZBARG",X3$,"HG",F4,15,40,F6,F8,C2
+1315 DIM F$(35); READ (Z[6],KEY=D$(1,2),DOM=1321)IOL=0360; REM "Get division record to determine source company
+1318 C5$=F$(33,3); GOSUB 7900
+1320 IF C6$="N" OR F$(33,3)<J$(1,3) OR F$(33,3)>J$(4,3) THEN GOTO 1310; REM "Skip companies outside the range or don't have data on system, C6$ set in 7900's
+1322 GOSUB 7700
+1325 A$(1,3)=F$(33,3),A$(4,2)="AR",A$(6,10)=D$(1,10),A$(16,10)=D$(11,8); REM "Source company (from division info),Type - AR,Customer code, invoice number
+1330 A$(32,6)=D$(20,6); IF F5=Z[4] THEN A$(38,9)=D$(66,8) ELSE A$(38,9)=D$(53,8); REM "Invoice date, PFG job number
+1350 IF F5=Z[4] THEN B0=D[2],B1=D[3],B2=D[1],B3=Z[5] ELSE B0=D[4],B1=0,B2=0,B3=0; REM "orig amt, curr balance, link to transactions, transaction data file slot
+1360 GOSUB 7800; REM "Update buckets and write out
+1390 GOTO 1310
+1395 CALL "ZZBARG",X3$,"HG",F4,15,40,F6,F8,F8
+1396 IF F5=Z[4] THEN F5=Z[8]; GOTO 1305; REM "IF done with AR6, now do AR8
+1950 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1995 GOTO 1000
+5000 REM "EOJ
+5005 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,3),"This utility will update A/R and A/P audit information ",@(10,4),"for the master company and franchises indicated.",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6800 REM "Enter process to use
+6806 J$="   "+$7E7E7E$; GOSUB 6850
+6810 CALL "ZZENTR","ZU>",A{ALL},J$,X4$,X3$,38,8,1,3,C0,"","","CMP","CM2ARU00","ZZ2CAA","",""; IF ABS(C0)>4 THEN GOSUB 6000; GOSUB 6850; C0=ABS(C0)-5; ON C0 GOTO 6810,6811
+6820 CALL "ZZENTR","ZU<",A{ALL},J$,X4$,X3$,38,10,4,3,C0,"","","CMP","CM2ARU02","ZZ2CAA","",""; IF ABS(C0)>4 THEN GOSUB 6000; GOSUB 6850; C0=ABS(C0)-5; ON C0 GOTO 6820,6821
+6822 IF ABS(C0)=2 THEN GOTO 6810
+6835 GOSUB 6900
+6837 M$="There are "+STR(T)+" companies to process, proceed?"
+6840 CALL "ZZPROM",".Y",X3$,Z,M$,"","",0; ON Z GOTO 6841,6805
+6845 RETURN 
+6850 REM "Display companies
+6855 PRINT @(0,8),'CE','SB',@(18,8),"Starting Franchise:",@(20,10),"Ending Franchise:",'SF',
+6860 CALL "ZZDISP","S>",J$(1,3),"",X3$,"","",38,8,X4$
+6865 CALL "ZZDISP","S<",J$(4,3),"",X3$,"","",38,10,X4$
+6895 RETURN 
+6900 REM "Count the number of franchises to do
+6910 T=0
+6915 READ (Z[13],KEY="CMP",DOM=6916)
+6920 K$=KEY(Z[13],END=6940); IF K$(4,3)<J$(1,3) THEN READ (Z[13]); GOTO 6920 ELSE IF K$(1,3)<>"CMP" OR K$(4,3)>J$(4,3) THEN GOTO 6940
+6925 READ (Z[13],KEY=K$)J1$; IF J1$(195,1)="1" THEN T=T+1
+6935 GOTO 6920
+6940 T=T+1; T0=INT(T*.02); IF T0<=1 THEN T0=2
+6945 RETURN 
+7000 REM "Copy a file F$ from company code C0$ to company code C1$. If K0 <>0, copy only records whose key from K0 for K1chars matches K0$.
+7001 REM "IF S=1 means sort file, S=0 means DIRect file
+7003 IF C0$="149" THEN ESCAPE 
+7005 CLOSE (10); CLOSE (11)
+7006 IF K0=0 THEN GOTO 7100
+7010 OPEN (10)F$+C0$
+7015 OPEN (11)F$+C1$; CALL "ZZINIT","11"
+7016 IF K0=1 THEN READ (10,KEY=K0$,DOM=7017); REM "Preread if checking against highest part of key
+7018 PRINT @(20,15),F$+C1$,
+7019 C9=0
+7020 K$=KEY(10,END=7080)
+7023 C9=C9+1; IF MOD(C9,100)=1 THEN PRINT @(27,15),C9:"##,###",
+7025 IF S=0 THEN READ RECORD (10,KEY=K$)B$ ELSE READ (10)
+7029 REM "If checking key and it is highest part of key(K0=1), then we can leave on the first mismatch
+7030 IF K0<>0 THEN IF K$(K0,K1)<>K0$ THEN IF K0=1 THEN GOTO 7080 ELSE GOTO 7020
+7040 IF S=0 THEN WRITE RECORD (11,KEY=K$)B$ ELSE WRITE (11,KEY=K$)
+7050 GOTO 7020
+7095 RETURN 
+7100 REM "If take all keys then do unix copy for specified DIRectory
+7102 IF ISWIN THEN J$="copy /y "+HWD+DLM+"z.144d"+DLM+"tf2d"+DLM+F$+DLM+F$+"149 "+HWD+DLM+"z.144d"+DLM+"tf2d"+DLM+F$+DLM+F$+C1$; GOTO 7110
+7105 J$="cp "+HWD+DLM+"z.144d"+DLM+"tf2d"+DLM+F$+DLM+F$+"149 "+HWD+DLM+"z.144d"+DLM+"tf2d"+DLM+F$+DLM+F$+C1$
+7118 PRINT @(20,15),F$+C1$,'CL'
+7150 INVOKE J$
+7195 RETURN 
+7700 REM "Setup A$ and A()
+7705 DIM A$(50),A[6]
+7710 A$(26,6)=X3$(21,6)
+7745 RETURN 
+7800 REM "See if record exists and get it if it does exist, mark as from franchise or master, add amounts to proper set of buckets, go thru transactions, add up and place in proper bucket
+7801 REM "B0=orig amt, B1=current balance, B2=index to transaction detail, B3=file slot of transaction data (amounts assumed to be in bucket 0).
+7805 READ (Z[1],KEY=A$(1,25),DOM=7806)IOL=0310
+7820 IF A0$(195,1)=" " THEN A$(48,1)="Y",O=3 ELSE A$(47,1)="Y",O=0; REM "found at master (195,1=" ") or at franchise; set O for offset to buckets
+7822 IF F5<>Z[2] AND F5<>Z[4] THEN IF A0$(195,1)=" " THEN A$(50,1)="Y" ELSE A$(49,1)="Y"; REM "IF doing history files then set flag to indicate history coming from master or franchise
+7825 A[0+O]=A[0+O]+B0,A[1+O]=A[1+O]+B1; REM "update original amount and current amount
+7850 REM "Run thru transactions to get transation total, use file slot B3, 1st is at B2
+7855 DIM C[1]
+7860 IF FLAG$="END" THEN GOTO 7880
+7865 CALL "AR2XAB",X3$,X4$,B3,I$,B2,C$,C{ALL},FLAG$,SEQ$,"R"
+7870 IF FLAG$="NONE" THEN GOTO 7880
+7875 L0=L0+C[0]; GOTO 7860
+7880 A[2+O]=L0
+7890 WRITE (Z[1],KEY=A$(1,25))IOL=0310
+7895 RETURN 
+7900 REM "See if company C5$ has data on system answer in C6$
+7905 IF C5$=C7$ THEN C6$=C8$; GOTO 7945; REM "IF already checked this company, just pass the answer along
+7910 C7$=C5$,C8$="Y",C6$="Y"
+7920 CLOSE (14); OPEN (14,ERR=7921)"AR1"+C5$; GOTO 7945
+7921 C8$="N",C6$="N"
+7945 RETURN 
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"H",19,10,50,T1,T,C
+8195 RETURN 
+8200 REM "Determine # records on file slot F9 return in F8, mod factor in F7
+8210 CALL "ZZINFO",F9,J9,X3$,F8,J0,K,B,D,S0,S1,F$
+8230 F7=INT(F8*.02); IF F7<=1 THEN F7=2
+8235 C2=0,F6=0; REM "C2 is counter, F6 is time (set to 0 to reset)
+8245 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

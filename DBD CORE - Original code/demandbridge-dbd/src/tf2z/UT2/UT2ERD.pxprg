@@ -1,0 +1,31 @@
+0010 REM "Erase & Redefine File <UT2ERD>
+0035 REM "3.3 - 08/03/90 - 15.63
+0040 REM "Copyright 1990 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 BEGIN 
+0110 REM "File in question
+0120 OPEN (2)"ZZE"
+0130 OPEN (3)"ZZPARM"
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+1000 CLOSE (1)
+1005 PRINT 'CS',"<UT2ERD> UT2=utility, ERD= Erase and ReDefine files"
+1010 INPUT "Enter File Name (or F4 to end): ",F$
+1020 IF CTL=4 THEN GOTO 9000
+1040 OPEN (1,ERR=1000)F$
+1060 IF LEN(F$)<3 THEN GOTO 1200
+1080 DIM K$(6); K$(1,3)=F$
+1100 READ (2,KEY=K$,DOM=1200)A$
+1110 CALL "ZZFMAP",X3$
+1140 GOTO 1400
+1200 REM 
+1220 INPUT "File not in ZZE! Continue? (Y/N): ",Q$
+1240 IF POS(Q$="Yy")>0 THEN GOTO 1400 ELSE IF POS(Q$="Nn")>0 THEN GOTO 1000 ELSE GOTO 1220
+1400 REM 
+1420 INPUT "Last Chance - Do it? (Y/N): ",Q$
+1440 IF POS(Q$="Yy")>0 THEN GOTO 1500 ELSE IF POS(Q$="Nn")>0 THEN GOTO 1000 ELSE GOTO 1420
+1500 REM 
+1520 CALL "ZZINIT","01"
+1540 PRINT "File ",F$," erased and redefined",; INPUT 'RB',"  Cr to continue ",*
+1560 GOTO 1000
+9000 REM 
+9999 END 

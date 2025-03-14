@@ -1,0 +1,105 @@
+0010 REM "Fix Bad Index file links in ARB <SP2AR1>                                     
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 01/27/06 - 18.124444 - kmc - SSP# 192063
+0037 REM "192063-Program to fix bad index file issues in ARB                 
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="SP2AR1",X1$="Index Problem in ARB"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30]
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM "BEGIN MAIN PROCESS                                               
+1090 PRINT @(0,12),'CE',
+1100 INPUT @(0,12),"Batch Number or blank for no batch: ",B$,
+1105 IF CTL=4 THEN GOTO 9900
+1110 IF NUL(B$) THEN F$="ARB"+X3$(9,3) ELSE F$="ARB"+MID(B$,1,4)
+1120 PRINT @(10,13),"File: "+F$
+1140 F=HFN; OPEN (F,ERR=ERROR_ON_OPEN)F$
+1200 PRINT @(0,16),'CL',; INPUT @(0,16),"Invoice number: ",I$,
+1205 T$=PAD(I$,7,0,"0")+" "
+1210 PRINT @(7,17),"Invoice: "+T$
+1300 ! find invoice
+1305 READ (F,KEY="",DOM=*NEXT)
+1310 K$=KEY(F,END=END_OF_FILE); READ (F)
+1320 IF K$(7,8)=T$ THEN INV_KEY$=K$; GOTO GOT_INVOICE
+1325 GOTO 1310
+1350 END_OF_FILE:! If here, then not found
+1360 PRINT @(35,17),"Invoice not found!",
+1370 GOTO 1200
+1400 GOT_INVOICE:
+1405 DIM A[30]
+1410 EXTRACT (F,KEY=INV_KEY$)IOL=0310
+1425 PRINT @(35,17),'CL',"Invoice Found",
+1430 PRINT @(25,18),"Customer:",; CALL "ZZDISP","A",A$(15,10),"A/R",X3$,"","",35,18,X4$
+1435 PRINT @(25,19),"    Name: ",STP(A$(25,35)),
+1440 PRINT @(25,20),"   Order:",; CALL "ZZDISP","A",A$(92,8),"O/P",X3$,"","",35,20,X4$
+1500 ! Ask to fix
+1505 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Fix Record?","","",0; ON Z GOTO *NEXT,9900
+1520 A[0]=0,A[20]=0
+1525 WRITE (F,KEY=INV_KEY$)IOL=0310
+1600 ! Fix ART line  file by resetting busy flag and 0 the delete chain just in case any loops in delete chain
+1605 L=HFN; OPEN (L)"ART"+MID(B$,1,4)
+1610 EXTRACT (L,IND=0)A0,A1,A2,A3,A4,A5
+1615 A5=-1 ! Reset busy flag
+1620 A2=0 ! Clear delete chain link
+1680 WRITE (L,IND=0)A0,A1,A2,A3,A4,A5
+1900 ! done
+5000 REM "EOJ                                                              
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program is designed to be used when deleting an A/R invoice",@(0,5),"results in the program 'Locking up'. This program will clear the link",@(0,6),"to both the G/L and Invoice line index files.",@(0,8),"After running this for the invoice it is HIGHLY recommended that",@(0,9),"nothing else be done in the batch.",@(0,10),"The invoices should be printed and the update completed.",@(0,11),"<F4> key will leave at any time.",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8000 ERROR_ON_OPEN:
+8005 PRINT @(0,20),"Error "+STR(ERR)+" on open"; INPUT *
+8010 GOTO 1100
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9905 CLOSE (F,ERR=*PROCEED); CLOSE (L,ERR=*PROCEED)
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

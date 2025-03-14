@@ -1,0 +1,10 @@
+0010 ! DRGUT0 - Data Replication Check Replication
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/05/12 - 18.226111 - crg - SSP# 243677
+0037 REM "243677-Datarep utility to verify tables against Pvx data and make  
+0040 REM "Copyright 2012 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 PROCESS "DRGUT0","../DRG/DR.EN"
+0060 EXIT 
+56002 REM "209252-Modify Data Rep to allow output to multiple database        
+56004 REM "243677-Datarep utility to verify tables against Pvx data and make  

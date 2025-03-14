@@ -1,0 +1,13 @@
+0010 REM "WYCOLOR1"
+0100 REM "Set background
+0110 PRINT 'ES',"m8|-",
+0200 REM "Set reverse
+0210 PRINT 'ES',"m1s-",
+0300 REM "Set underline
+0340 PRINT 'ES',"m3g-",
+0400 REM "SET FOREGROUND"
+0420 PRINT 'ES',"m0~0",
+0440 PRINT 'ES',"m0v0",
+9900 REM 
+9950 RUN "ZMENU"
+9999 END 

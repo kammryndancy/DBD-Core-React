@@ -1,0 +1,19 @@
+0010 REM "Fix FMPS   <FIXFMPS>
+0050 REM "This program was created to increase the size of the records
+0052 REM "of the Type 'S' records in the FMP file. This is needed because
+0054 REM "of the addition of the Pick Priority to the record.
+0095 BEGIN 
+0100 FMP_CHN=HFN
+0110 OPEN (FMP_CHN)"FMP"+%C$
+0120 READ (FMP_CHN,KEY="S",DOM=0140)
+0130 GOSUB NEXT_KEY
+0140 CLOSE (FMP_CHN)
+0150 END 
+0200 NEXT_KEY:
+0210 FMPS_KEY$=KEY(FMP_CHN,END=*RETURN)
+0220 IF FMPS_KEY$(1,1)<>"S" THEN GOTO *RETURN
+0230 EXTRACT (FMP_CHN,KEY=FMPS_KEY$)FMPS$
+0240 FMPS$=PAD(FMPS$,280)
+0250 WRITE (FMP_CHN,KEY=FMPS_KEY$)FMPS$
+0260 GOTO NEXT_KEY
+0290 RETURN 

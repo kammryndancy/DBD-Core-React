@@ -1,0 +1,760 @@
+<PxTable>
+ TableName=ZY0
+ TableKey=K971278666
+ FileCreate=KEYED "ZY0",6,0,-128,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZY0_State"
+    PHYSICALPATH$="August 28,2003 10:7am"
+    LASTCHANGEDATE$="dmm"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST ST_CODE$:[LEN(2)]"
+    NAME$="ST_CODE"
+    DESCRIPTION$="=MSG("+QUO+"ST_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="State code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST ST_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="ST_CODE"
+    DESCRIPTION$="=MSG("+QUO+"ST_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="State code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST ST_NAME$:[LEN(30,SEP=SEP)]"
+    NAME$="ST_NAME"
+    DESCRIPTION$="=MSG("+QUO+"ST_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Name"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST BEG_THREE_ZIP$:[LEN(3,SEP=SEP)]"
+    NAME$="BEG_THREE_ZIP"
+    DESCRIPTION$="=MSG("+QUO+"BEG_T_Z"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Begining 3 Zip #'s for state"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST ENDING_THREE_ZIP$:[LEN(3,SEP=SEP)]"
+    NAME$="ENDING_THREE_ZIP"
+    DESCRIPTION$="=MSG("+QUO+"ENDI_T_Z"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Ending 3 #'s zip for state"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST FINANCE_CHARGES$:[LEN(SEP,SIZ=1)]"
+    NAME$="FINANCE_CHARGES"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+    NOTES$="Finance charges on fin charges"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST MIN_FIN_CHARGE"
+    NAME$="MIN_FIN_CHARGE"
+    DESCRIPTION$="=MSG("+QUO+"MIN_F_C"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##.00-"
+    NOTES$="Minimum finance charge"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST BAL_AMT_1"
+    NAME$="BAL_AMT_1"
+    DESCRIPTION$="=MSG("+QUO+"BAL_AMT_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###.00-"
+    NOTES$="Balance Amount 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FINANCE_CHARGE_1"
+    NAME$="FINANCE_CHARGE_1"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###.00-"
+    NOTES$="Finance Charge 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST BAL_AMT_2"
+    NAME$="BAL_AMT_2"
+    DESCRIPTION$="=MSG("+QUO+"BAL_AMT_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###.00-"
+    NOTES$="Balance Amount 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST FINANCE_CHARGE_2"
+    NAME$="FINANCE_CHARGE_2"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###.00-"
+    NOTES$="Finance Charge 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST BAL_AMT_3"
+    NAME$="BAL_AMT_3"
+    DESCRIPTION$="=MSG("+QUO+"BAL_AMT_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###.00-"
+    NOTES$="Balance Amount 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST FINANCE_CHARGE_3"
+    NAME$="FINANCE_CHARGE_3"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###.00-"
+    NOTES$="Finance Charge 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST BAL_AMT_4"
+    NAME$="BAL_AMT_4"
+    DESCRIPTION$="=MSG("+QUO+"BAL_AMT_4"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###.00-"
+    NOTES$="Balance Amount 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST FINANCE_CHARGE_4"
+    NAME$="FINANCE_CHARGE_4"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C_4"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###.00-"
+    NOTES$="Finance Charge 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST BAL_AMT_5"
+    NAME$="BAL_AMT_5"
+    DESCRIPTION$="=MSG("+QUO+"BAL_AMT_5"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###.00-"
+    NOTES$="Balance Amount 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST FINANCE_CHARGE_5"
+    NAME$="FINANCE_CHARGE_5"
+    DESCRIPTION$="=MSG("+QUO+"FINA_C_5"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="###.00-"
+    NOTES$="Finance Charge 5"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="AK"
+    ST_CODE$="AK"
+    ST_NAME$="Alaska                        "
+    BEG_THREE_ZIP$="995"
+    ENDING_THREE_ZIP$="999"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AL"
+    ST_CODE$="AL"
+    ST_NAME$="Alabama                       "
+    BEG_THREE_ZIP$="350"
+    ENDING_THREE_ZIP$="369"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR"
+    ST_CODE$="AR"
+    ST_NAME$="Arkansas                      "
+    BEG_THREE_ZIP$="716"
+    ENDING_THREE_ZIP$="729"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AZ"
+    ST_CODE$="AZ"
+    ST_NAME$="Arizona                       "
+    BEG_THREE_ZIP$="850"
+    ENDING_THREE_ZIP$="865"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CA"
+    ST_CODE$="CA"
+    ST_NAME$="California                    "
+    BEG_THREE_ZIP$="900"
+    ENDING_THREE_ZIP$="966"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CO"
+    ST_CODE$="CO"
+    ST_NAME$="Colorado                      "
+    BEG_THREE_ZIP$="800"
+    ENDING_THREE_ZIP$="816"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CT"
+    ST_CODE$="CT"
+    ST_NAME$="Connecticut                   "
+    BEG_THREE_ZIP$="060"
+    ENDING_THREE_ZIP$="069"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DC"
+    ST_CODE$="DC"
+    ST_NAME$="District of Columbia          "
+    BEG_THREE_ZIP$="200"
+    ENDING_THREE_ZIP$="205"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DE"
+    ST_CODE$="DE"
+    ST_NAME$="Delaware                      "
+    BEG_THREE_ZIP$="197"
+    ENDING_THREE_ZIP$="199"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FL"
+    ST_CODE$="FL"
+    ST_NAME$="Florida                       "
+    BEG_THREE_ZIP$="320"
+    ENDING_THREE_ZIP$="342"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GA"
+    ST_CODE$="GA"
+    ST_NAME$="Georgia                       "
+    BEG_THREE_ZIP$="300"
+    ENDING_THREE_ZIP$="319"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GU"
+    ST_CODE$="GU"
+    ST_NAME$="Guam                          "
+    BEG_THREE_ZIP$="969"
+    ENDING_THREE_ZIP$="   "
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HI"
+    ST_CODE$="HI"
+    ST_NAME$="Hawaii                        "
+    BEG_THREE_ZIP$="967"
+    ENDING_THREE_ZIP$="968"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IA"
+    ST_CODE$="IA"
+    ST_NAME$="Iowa                          "
+    BEG_THREE_ZIP$="500"
+    ENDING_THREE_ZIP$="528"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ID"
+    ST_CODE$="ID"
+    ST_NAME$="Idaho                         "
+    BEG_THREE_ZIP$="832"
+    ENDING_THREE_ZIP$="838"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IL"
+    ST_CODE$="IL"
+    ST_NAME$="Illinois                      "
+    BEG_THREE_ZIP$="600"
+    ENDING_THREE_ZIP$="629"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IN"
+    ST_CODE$="IN"
+    ST_NAME$="Indiana                       "
+    BEG_THREE_ZIP$="460"
+    ENDING_THREE_ZIP$="479"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KS"
+    ST_CODE$="KS"
+    ST_NAME$="Kansas                        "
+    BEG_THREE_ZIP$="660"
+    ENDING_THREE_ZIP$="679"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KY"
+    ST_CODE$="KY"
+    ST_NAME$="Kentucky                      "
+    BEG_THREE_ZIP$="400"
+    ENDING_THREE_ZIP$="427"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LA"
+    ST_CODE$="LA"
+    ST_NAME$="Louisiana                     "
+    BEG_THREE_ZIP$="700"
+    ENDING_THREE_ZIP$="714"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MA"
+    ST_CODE$="MA"
+    ST_NAME$="Massachusetts                 "
+    BEG_THREE_ZIP$="010"
+    ENDING_THREE_ZIP$="027"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MD"
+    ST_CODE$="MD"
+    ST_NAME$="Maryland                      "
+    BEG_THREE_ZIP$="206"
+    ENDING_THREE_ZIP$="219"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ME"
+    ST_CODE$="ME"
+    ST_NAME$="Maine                         "
+    BEG_THREE_ZIP$="039"
+    ENDING_THREE_ZIP$="049"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MI"
+    ST_CODE$="MI"
+    ST_NAME$="Michigan                      "
+    BEG_THREE_ZIP$="480"
+    ENDING_THREE_ZIP$="499"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MN"
+    ST_CODE$="MN"
+    ST_NAME$="Minnesota                     "
+    BEG_THREE_ZIP$="550"
+    ENDING_THREE_ZIP$="567"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MO"
+    ST_CODE$="MO"
+    ST_NAME$="Missouri                      "
+    BEG_THREE_ZIP$="630"
+    ENDING_THREE_ZIP$="658"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS"
+    ST_CODE$="MS"
+    ST_NAME$="Mississippi                   "
+    BEG_THREE_ZIP$="386"
+    ENDING_THREE_ZIP$="397"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MT"
+    ST_CODE$="MT"
+    ST_NAME$="Montanta                      "
+    BEG_THREE_ZIP$="590"
+    ENDING_THREE_ZIP$="599"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NC"
+    ST_CODE$="NC"
+    ST_NAME$="North Carolina                "
+    BEG_THREE_ZIP$="270"
+    ENDING_THREE_ZIP$="289"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ND"
+    ST_CODE$="ND"
+    ST_NAME$="North Dakota                  "
+    BEG_THREE_ZIP$="580"
+    ENDING_THREE_ZIP$="588"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NE"
+    ST_CODE$="NE"
+    ST_NAME$="Nebraska                      "
+    BEG_THREE_ZIP$="680"
+    ENDING_THREE_ZIP$="693"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NH"
+    ST_CODE$="NH"
+    ST_NAME$="New Hampshire                 "
+    BEG_THREE_ZIP$="030"
+    ENDING_THREE_ZIP$="038"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NJ"
+    ST_CODE$="NJ"
+    ST_NAME$="New Jersey                    "
+    BEG_THREE_ZIP$="070"
+    ENDING_THREE_ZIP$="089"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NM"
+    ST_CODE$="NM"
+    ST_NAME$="New Mexico                    "
+    BEG_THREE_ZIP$="870"
+    ENDING_THREE_ZIP$="884"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NV"
+    ST_CODE$="NV"
+    ST_NAME$="Nevada                        "
+    BEG_THREE_ZIP$="890"
+    ENDING_THREE_ZIP$="898"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NY"
+    ST_CODE$="NY"
+    ST_NAME$="New York                      "
+    BEG_THREE_ZIP$="090"
+    ENDING_THREE_ZIP$="149"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OH"
+    ST_CODE$="OH"
+    ST_NAME$="Ohio                          "
+    BEG_THREE_ZIP$="430"
+    ENDING_THREE_ZIP$="458"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OK"
+    ST_CODE$="OK"
+    ST_NAME$="Oklahoma                      "
+    BEG_THREE_ZIP$="730"
+    ENDING_THREE_ZIP$="749"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OR"
+    ST_CODE$="OR"
+    ST_NAME$="Oregon                        "
+    BEG_THREE_ZIP$="970"
+    ENDING_THREE_ZIP$="979"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PA"
+    ST_CODE$="PA"
+    ST_NAME$="Pennsylvania                  "
+    BEG_THREE_ZIP$="150"
+    ENDING_THREE_ZIP$="196"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PR"
+    ST_CODE$="PR"
+    ST_NAME$="Puerto Rico                   "
+    BEG_THREE_ZIP$="006"
+    ENDING_THREE_ZIP$="009"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RI"
+    ST_CODE$="RI"
+    ST_NAME$="Rhode Island                  "
+    BEG_THREE_ZIP$="028"
+    ENDING_THREE_ZIP$="029"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SC"
+    ST_CODE$="SC"
+    ST_NAME$="South Carolina                "
+    BEG_THREE_ZIP$="270"
+    ENDING_THREE_ZIP$="289"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SD"
+    ST_CODE$="SD"
+    ST_NAME$="South Dakota                  "
+    BEG_THREE_ZIP$="570"
+    ENDING_THREE_ZIP$="577"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TN"
+    ST_CODE$="TN"
+    ST_NAME$="Tennessee                     "
+    BEG_THREE_ZIP$="370"
+    ENDING_THREE_ZIP$="385"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TX"
+    ST_CODE$="TX"
+    ST_NAME$="Texas                         "
+    BEG_THREE_ZIP$="750"
+    ENDING_THREE_ZIP$="799"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UT"
+    ST_CODE$="UT"
+    ST_NAME$="Utah                          "
+    BEG_THREE_ZIP$="840"
+    ENDING_THREE_ZIP$="847"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VA"
+    ST_CODE$="VA"
+    ST_NAME$="Virginia                      "
+    BEG_THREE_ZIP$="220"
+    ENDING_THREE_ZIP$="246"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VT"
+    ST_CODE$="VT"
+    ST_NAME$="Vermont                       "
+    BEG_THREE_ZIP$="050"
+    ENDING_THREE_ZIP$="059"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WA"
+    ST_CODE$="WA"
+    ST_NAME$="Washington                    "
+    BEG_THREE_ZIP$="980"
+    ENDING_THREE_ZIP$="994"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WI"
+    ST_CODE$="WI"
+    ST_NAME$="Wisconsin                     "
+    BEG_THREE_ZIP$="530"
+    ENDING_THREE_ZIP$="549"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WV"
+    ST_CODE$="WV"
+    ST_NAME$="West Virginia                 "
+    BEG_THREE_ZIP$="247"
+    ENDING_THREE_ZIP$="268"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WY"
+    ST_CODE$="WY"
+    ST_NAME$="Wyoming                       "
+    BEG_THREE_ZIP$="820"
+    ENDING_THREE_ZIP$="831"
+    FINANCE_CHARGES$="Y "
+    FINANCE_CHARGE_1=18
+   </RecordData>
+
+</Data>
+
+</PxTable>

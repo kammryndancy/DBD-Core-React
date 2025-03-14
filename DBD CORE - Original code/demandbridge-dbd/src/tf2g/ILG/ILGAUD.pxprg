@@ -1,0 +1,115 @@
+0010 ! <ILGAUD> Setup Image Library File Processing for audit reports
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 02/12/12 - 17.496111 - jvv - SSP# 213924
+0037 REM "213924-Summary bill in Image Library - isn't automatic archive     
+0040 REM "Copyright 2012 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0085 ! given image library report_type$ open image library pdf output file and place channel number in %IL_AUDIT_CHAN
+0090 CLEAR ; SETERR 0095; ENTER X3$,X4$,REPORT_TYPE$,REPORT_IMG$; GOTO 0100 ! SSP 213924
+0095 SETERR 0100; ENTER X3$,X4$,REPORT_TYPE$
+0100 SETERR 9000
+0110 X0$="ILGAUD",X1$="Audit Report Image Library Processing"
+0200 RTYPE=0; IF STP(REPORT_IMG$,2)<>"" THEN RTYPE=1 ! SSP 213924
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O IL1... "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+1000 ! Start Processing
+1010 CLOSE (%IL_PDF,ERR=*PROCEED); %IL_PDF=0,%IL_FILE_NAME$=""
+1012 IF RTYPE THEN GOTO 1020 ! SSP 213924
+1015 IF NUL(MID(X3$,178,6)) THEN GOTO 9900 ! If null audit control number, then leave
+1020 IF NOT(FN%ISOPEN(%IL_CODES)) THEN PERFORM "ILGFUN;BUILD_DOC_LIST" ! 251100
+1025 FIND (%IL_CODES,KEY=REPORT_TYPE$,DOM=9900)IMAGE_CODE$,IMAGE_DESC$,IMAGE_DIR$,IMAGE_TYPE$ ! If not valid 2 character report type then leave
+1030 IF NUL(IMAGE_DIR$) THEN GOTO 9900 ! 192639 If image_dir blank then leave silently
+1040 IF FN%HAS_MODULE("UF") AND (%UF_CHAN<>0) THEN %IL_USE_UNFORM=1 ELSE %IL_USE_UNFORM=0 ! 237164 - If Unform module is available and printing to Unform printer, set flag to make I/L also use Unform for Audit reports, see *dev/tf_ildpdf
+1050 ! Create output name based on Report type, and X3$ info
+1055 HOLD_PRINT_OPT$=%PRINT_OPT$; IF NOT(NUL(%TF_TITLE$)) THEN %PRINT_OPT$="TITLE=&TITLE - "+X3$(178,4)+"."+X3$(182,2)+";" ELSE %PRINT_OPT$=""
+1058 IF RTYPE THEN IDESC$=REPORT_IMG$ ELSE IDESC$=STP(X3$(178,6)) ! SSP213924
+1060 %IL_FILE_NAME$=IMAGE_DIR$+DLM+REPORT_TYPE$+"_"+IDESC$+"_"+FN%PRINT_DATETIME$(FN%GET_DATETIME("",0),"%Y%Mz%Dz_%Hz%mz%sz")+".pdf" ! [SSP-200047]
+1061 ! Verify that output directory exists
+1062 TEST_CHAN=HFN; OPEN (TEST_CHAN,ERR=*NEXT)IMAGE_DIR$; CLOSE (TEST_CHAN); GOTO OPEN_PDF
+1063 IF POS("MS"=SYS) THEN DIRECTORY "[WDX]"+IMAGE_DIR$ ELSE INVOKE "mkdir -p "+IMAGE_DIR$+" >/dev/null" ! SSP 199586
+1070 OPEN_PDF: %IL_PDF=HFN; OPEN (%IL_PDF,ERR=ERR_ON_OPEN)"IL_PDF"
+1075 IF RTYPE THEN GOTO 9900 ! SSP 213924
+1080 GOSUB ADD_TO_IL
+1090 FINISHED_WITH_OPEN:
+1095 %PRINT_OPT$=HOLD_PRINT_OPT$,%IL_FILE_NAME$=""
+1096 GOTO 9900
+1099 ! ***********************************************************
+2000 ADD_TO_IL:! Add entry to image library
+2010 TF_REF_1$=X3$(178,6),TF_REF_2$=X3$(21,6),IMG_KEY$="" ! SSP 208706
+2060 CALL "ILGFUN;ADD_IMAGE",ERR=*NEXT,Z[1],IMG_KEY$,REPORT_TYPE$,TF_REF_1$,TF_REF_2$,%IL_FILE_NAME$ ! SSP 208706
+2070 IF POS(REPORT_TYPE$="R0R1R2R3RH")<>0 THEN REPORT_TYPE$+=IMG_KEY$ ! SSP 208706 SSP 222879 216198 
+2095 RETURN 
+2099 ! *********************************************************
+4000 ADD_AUDIT:! Routine to add rec to IL2 for specific audit control numbers per detail record ssp 207806
+4010 ENTER IL2_CHANNEL,X3$,IMAGE_TYPE$,ILG_REF$,IL2_CONTROL_ID$,IL2_REF1$,IL2_REF2$
+4020 IF NUL(MID(X3$,178,6)) OR NUL(MID(ILG_REF$,1,5)) THEN GOTO 4500 ! If null audit control number or IL2 KEY then exit; !ssp 208706
+4100 ! CALL: given file channel of IL2, Optional IMAGE_TYPE,TOPFORM_REF_1,TOPFORM_REF_2, and IMAGE_PATH, create new IL2 record (returning IMAGE_KEY$) with CREATED_BY set to operator from %X3$, CREATED_ON, and CREATED_AT set to current date and time --
+4110 LOCAL IL2$
+4115 IF IL2_CHANNEL=0 THEN IL2_CHANNEL=HFN; OPEN (IL2_CHANNEL,IOL=*)"IL2"+%C$
+4130 DIM IL2$:IOL(IL2_CHANNEL); IF NOT(FN%ISOPEN(%IL_CODES)) THEN PERFORM "ILGFUN;BUILD_DOC_LIST" ! 251100
+4140 IL2.IMAGE_TYPE$=PAD(IMAGE_TYPE$,2)
+4145 IL2.IMAGE_IL1$=PAD(ILG_REF$,5),IL2.AUDIT_ID$=MID(X3$,178,6)
+4148 IL2.CONTROL_ID$=PAD(IL2_CONTROL_ID$,30)
+4150 IL2.TOPFORM_REF_1$=PAD(IL2_REF1$,10),IL2.TOPFORM_REF_2$=PAD(IL2_REF2$,30)
+4160 IL2.CREATED_ON$=DTE(JUL(0,0,0):"YYYYMMDD"),IL2.CREATED_ON$=CHR(NUM(IL2.CREATED_ON$(1,3))-125)+IL2.CREATED_ON$(4)
+4170 IL2.CREATED_AT$=DTE(0:"%Hz%mz%sz")
+4180 IL2.CREATED_BY$=PAD(MID(%X3$,40,3),3); IF NUL(IL2.CREATED_BY$) THEN IL2.CREATED_BY$=PAD(WHO,3) ! Use TopForm operator if known, else use o/s login info
+4210 IL2.IL2_UNUSED$=DIM(76)
+4220 ! Write UNIQUE IL2 RECORDque key
+4230 PREV_ADDR$=KEL(IL2_CHANNEL,KNO=0,END=*PROCEED); IF PREV_ADDR$="" THEN IL2.IMAGE_KEY$=DIM(5,$00$) ELSE IL2.IMAGE_KEY$=PREV_ADDR$
+4240 NEW_KEY: IL2.IMAGE_KEY$=FN%NEXT_SEQ$(IL2.IMAGE_KEY$,5)
+4250 WRITE (IL2_CHANNEL,KEY=IL2.IMAGE_KEY$,DOM=NEW_KEY,REC=IL2$)
+4500 EXIT 
+4599 ! ******************************************************************
+5000 FIND_AUDIT:! SSP 208706
+5010 ENTER ILG_AUDIT$,ILG_REF$,IL2_CHANNEL,AUDIT_OK
+5020 LOCAL IL2$
+5030 AUDIT_OK=0
+5040 IF IL2_CHANNEL=0 THEN IL2_CHANNEL=HFN; OPEN (IL2_CHANNEL,IOL=*)"IL2"+%C$
+5050 DIM IL2$:IOL(IL2_CHANNEL)
+5060 FIND (IL2_CHANNEL,KNO=2,KEY=ILG_AUDIT$,DOM=5090)IL2$
+5065 ILG_REF$=IL2.IMAGE_IL1$,AUDIT_OK=1
+5999 EXIT 
+7500 ERR_ON_OPEN:! Error opening output file. if 12 setup link file else don't open file
+7505 IF ERR<>12 THEN %IL_PDF=0; GOTO FINISHED_WITH_OPEN
+7520 ERASE "IL_PDF",ERR=*NEXT
+7525 SERIAL "IL_PDF",ERR=*PROCEED; TMP_FILE=HFN; OPEN (TMP_FILE,ISZ=256)"IL_PDF"
+7530 WRITE RECORD (TMP_FILE)"[Pvxdev]/tmp                                                        tf_ilpdf                                                                                                                                                                                    "
+7535 CLOSE (TMP_FILE)
+7545 GOTO OPEN_PDF
+7549 ! *****************************************************
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 ! "199586-Getting an error when printing PO receiving journal.        
+56004 REM "200047-Need to add CIG journal to Image Library.                   
+56005 REM "208706-Audit control numbers are duplicating from last year        
+56007 REM "222879-An audit journal with the same number and 2                 
+56008 REM "216198-Need to add Kit Production report to Image Library          
+56010 REM "251100-PE(014, ILGFUN-2510) when trying to view an order in order  
+56012 REM "213924-Summary bill in Image Library - isn't automatic archive     

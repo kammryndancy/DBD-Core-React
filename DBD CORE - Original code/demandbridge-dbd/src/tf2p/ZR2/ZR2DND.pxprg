@@ -1,0 +1,115 @@
+0010 REM "Start New Document in Repository <ZR2DND>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 08/16/03 - 8.840277 - dmm - SSP# 133604
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "INPUT - K9$ = Key value of document, length 40, (eg cust + inv #)
+0071 REM "OUTPUT - P$ = Repository Parameters, init'ed here
+0072 REM "              1,1 = Keep Objects? (Y/N)
+0073 REM "              2,8 = Storage file name (eg. ZR3... )
+0074 REM "             10,10= Repsitory Code
+0075 REM "             20,40= Key value
+0076 REM "             60,2 = Version
+0077 REM "             62,5 = Index into repository file
+0078 REM "             67,4 = Current Page number
+0079 REM "             71,3 = Current line number (the next to be used)
+0080 REM "             74,4 = Maximum line length
+0081 REM "             79,3 = Source company code
+0082 REM "             82,1 = Keep latest version only
+0083 REM "INPUT - D$ = Default information
+0084 REM "              1,10=date & time deposited, 13,3=operator,16,30=description, used to replace P$(53,43); IF '' THEN NO DEFAULT
+0085 REM "key value, version, index, current page, & current line are set in here
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,K9$,D$,P$
+0100 SETERR 9000
+0110 X0$="ZR2DND",X1$="Start New Document in Repository"
+0120 DIM S$(40)
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4]
+0311 IOLIST A0$,A0[0],A0[1],A0[2],A0[3],A0[4]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZR1...  02O ZR2...  03O ZR0...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+1000 REM "Get & verify index from ZR0, create ZR1 record & write out, and init parameters in P$
+1100 REM "Get index, Verify, Update
+1105 DIM C$(76),C[4]
+1120 EXTRACT (Z[3],KEY=P$(10,10),DOM=1995)IOL=0330
+1125 I$=C$(60,5); CALL "ZR2DII",X3$,X4$,I$
+1130 REM "Open source file & verify index is not used
+1135 Z$="04O "+P$(2,8)+" "; GOSUB 9750; ON Z0 GOTO 1136,9900
+1140 FIND (Z[4],KEY=I$,DOM=1141)
+1145 K$=KEY(Z[4],END=1180); IF K$(1,LEN(I$))<>I$ THEN GOTO 1180
+1150 REM "If here, index was in file, so increment I$ and try again
+1155 CALL "ZR2DII",X3$,X4$,I$
+1160 GOTO 1140
+1180 REM "Index is ok , update ZR0
+1185 C$(60,5)=I$
+1190 WRITE (Z[3],KEY=P$(10,10))IOL=0330
+1200 REM "Create ZR1 record. Look for other versions of the same document
+1205 DIM A$(133),A[4]
+1210 A$(1,10)=P$(10,10),A$(11,40)=K9$,A$(51,2)="01"; REM "Key part
+1215 A$(53,6)=X3$(21,6); REM "Date & Time
+1220 T9=TIM,A$(59,4)=STR(INT(T9):"00")+STR(FPT(T9)*100:"00")
+1225 A$(63,3)=X3$(40,3); REM "operator
+1230 A$(66,30)=C$(11,30); REM "Description
+1235 A$(96,8)=P$(2,8),A$(104,5)=I$; REM "File name and Index
+1237 A$(119,3)=P$(79,3); REM "Source company
+1240 A[0]=1; REM "pages
+1260 REM "Substitute default values if needed
+1265 IF D$<>"" THEN A$(53,43)=D$
+1280 WRITE (Z[1],KEY=A$(1,52),DOM=1281)IOL=0310; GOTO 1285
+1281 IF P$(82,1)="Y" THEN GOTO 7500
+1282 A$(51,2)=STR(NUM(A$(51,2))+1:"00"); GOTO 1280; REM "Inc. Version number
+1285 A1$=A$(96,13)+A$(1,10)+A$(11,30)+A$(51,2); WRITE (Z[2],KEY=A1$); REM "Alternate sort file
+1400 REM "Fill in P$
+1405 P$(10,10)=A$(1,10),P$(20,40)=A$(11,40),P$(60,2)=A$(51,2); REM "Fill in document key part (rep. code, key value, & version)
+1410 P$(62,5)=A$(104,5); REM "Index in rep file
+1414 REM "Current page set to 0000, use ZR2DNP to increment to 1st page
+1415 P$(67,4)="0000",P$(71,3)="001"; REM "Current page number and line
+1995 GOTO 9900
+7500 REM "If keep only latest version then remove the current version and add new record
+7503 DIM A0$(LEN(A$)),A0[4]; READ (Z[1],KEY=A$(1,52),DOM=1280)IOL=0311
+7505 IF POS(" "<>A0$(96,8))=0 OR POS(" "<>A0$(104,5))=0 THEN GOTO 7595
+7510 Z$="04O "+A0$(96,8)+" "; GOSUB 9750; ON Z0 GOTO 7511,7595
+7515 READ (Z[4],KEY=A0$(104,5),DOM=7516)
+7520 K$=KEY(Z[4],END=7540); IF K$(1,5)<>A0$(104,5) THEN GOTO 7540
+7525 REMOVE (Z[4],KEY=K$,DOM=7520); GOTO 7520
+7550 Z$="04CU"+A0$(96,8)+" "; GOSUB 9750; ON Z0 GOTO 7551,7595
+7595 REMOVE (Z[1],KEY=A$(1,52),DOM=7596)
+7597 GOTO 1280; REM "Try the write again
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 IF %GUI THEN EXIT ELSE RUN "ZMENU"
+9999 END 

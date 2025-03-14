@@ -1,0 +1,67 @@
+0010 REM "Send Data via HTTP <EC3SND>                                     
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 12/04/02 - 9.540833 - lms - SSP# 148759
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 ! URL$ must begin with http://.... or https://... and is path to use ex: http://www.topform.com/ecnew/cgi-bin/ecclientde.pl, if https then will use port 443 instead of port 80
+0061 ! CONTENT$ is url encoded list of data to send ex: basic=EC3PC0&user=topform&password=demo&template=prdcat.htm& - if CONTENT$ is "" then GET is used instead of PST
+0062 ! OPTION$ is options, if contains "T{"+seconds till timeout+"}"=# of seconds to wait on response, default is 30 seconds ex: T{60}
+0063 ! PROXY$ - if proxy server is used, is either DNS name or IP address, without http:// on front, ex: 10.6.72.14
+0064 ! RETURN$ will contain response returned from the POST or GET
+0070 ! data is sent using HTTP POST Method
+0078 ! NOTES: if port not specified on proxy$ or url$ then port 80 used
+0080 ! URL$="https://www.topform.com/ecnew/cgi-bin/ecclientde.pl",CONTENT$="user=topform&password=demo&template=prdcat.htm&basic=EC3PC0&"; PROXY$="10.6.72.14"; GOTO 0101
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,URL$,CONTENT$,PROXY$,OPTION$,RETURN$
+0100 SETERR 9000
+0110 X0$="EC3SND",X1$="Send Data via HTTP"
+0120 RETURN$=""
+0400 ! Decode options
+0405 TIME_OUT=30,T_O$=""
+0410 T_O$=MID(OPTION$,MSK(OPTION$,"T{.*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0415 IF T_O$<>"" THEN TIME_OUT=NUM(MID(T_O$,MSK(T_O$,"[0-9]+"),MSL),ERR=*NEXT)
+0420 IF CONTENT$="" THEN DO_GET=1 ELSE DO_POST=1
+0450 PORT=80
+0455 IF UCS(MID(URL$,1,6))="HTTPS:" THEN GOSUB DO_HTTPS; GOTO 9900
+0460 IF PROXY$<>"" THEN {
+0465 SERVER$=STP(PROXY$)
+0466 TMP=POS(":"=SERVER$); IF TMP<>0 THEN TMP$=MID(SERVER$,TMP+1); SERVER$=MID(SERVER$,1,TMP-1); PORT=NUM(TMP$,ERR=*NEXT)
+0470  } ELSE {
+0475 HTTP$="http"
+0480 SERVER$=""; TURL$=URL$
+0481 STMP$=MID(TURL$,MSK(TURL$,HTTP$+"://[^/]*/",ERR=*NEXT),MSL,ERR=*NEXT)
+0485 IF STMP$<>"" THEN SERVER$=MID(STMP$,LEN(HTTP$)+4,LEN(STMP$)-(LEN(HTTP$)+4),ERR=*NEXT) ELSE IF TURL$=URL$ THEN TURL$=TURL$+"/"; GOTO 0481 ! if first time thru and no stmp$ then we might have server name with no / ex: http://www.abc.com
+0486 TMP=POS(":"=SERVER$); IF TMP<>0 THEN TMP$=MID(SERVER$,TMP+1); SERVER$=MID(SERVER$,1,TMP-1); PORT=NUM(TMP$,ERR=*NEXT)
+0490  }
+0500 ! check url if it is of the form http://www.topform.com then we will need to add '/' to the end or MS IIS proxy servers will complain
+0510 IF MSK(URL$,"[^/]/[^/]")=0 THEN URL$=URL$+"/"
+1000 ! Open port
+1010 PORT_CHAN=HFN; OPEN (PORT_CHAN)"[tcp]"+SERVER$+";"+STR(PORT)
+1100 ! either GET or POST the data
+1105 IF DO_GET THEN {
+1110 WRITE RECORD (PORT_CHAN)"GET "+URL$+" HTTP/1.0"+$0D0A0D0A$
+1150  } ELSE {
+1155 WRITE RECORD (PORT_CHAN)"POST "+URL$+" HTTP/1.0 "+$0D0A$
+1157 WRITE RECORD (PORT_CHAN)"User-Agent: TopForm Web.ec Client 0.1"+$0D0A$
+1158 WRITE RECORD (PORT_CHAN)"Content-Type: application/x-www-formurlencoded"+$0D0A$
+1160 WRITE RECORD (PORT_CHAN)"Content-length: "+STR(LEN(CONTENT$))+$0D0A$
+1162 WRITE RECORD (PORT_CHAN)$0D0A$ ! end of header
+1165 WRITE RECORD (PORT_CHAN)CONTENT$+$0D0A$
+1190  }
+1200 ! Get results & put into RETURN$
+1205 READ RECORD (PORT_CHAN,TIM=TIME_OUT,END=1220)IN$; RETURN$=RETURN$+IN$; GOTO *SAME
+1900 ! 
+1905 CLOSE (PORT_CHAN)
+1999 GOTO 9900
+2000 DO_HTTPS:! handle https request by using wget on PC client
+2005 CALL "ZZ2CMD",X3$,X4$,"{HTTPS}",URL$,"NR"+OPTION$,RET,CMD_RET$
+2040 RETURN$=CMD_RET$
+2095 RETURN 
+2099 ! 
+9000 REM "ERROR PROCESSING                                                 
+9005 RETURN$="ERR: "+STR(ERR)+"  line#: "+STR(TCB(5))
+9010 EXIT ERR
+9900 REM "END PROGRAM                                      
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,39 @@
+0010 REM " Get UNIX/Xenix login name <ZSTRTU.GUI>
+0015 Q$="VERSION: ZZ-3.0A"
+0030 REM "(C) 1984,1985,1986,1987 Basic Ideas, Inc; Atlanta, Ga.
+0035 ! "6.0 - 08/28/02 - 7.951388 - rms
+0040 ! "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+1020 ENTER X3$,P$,T$,X0$
+1030 P$="",O3$=""
+1040 SETERR 9800
+1050 ! *** GUI DEMO ***  IF LEN(X3$)>=77 THEN IF X3$(77,1)="D" THEN P$="N/A"; GOTO 9900; REM "If DOS return N/A
+2000 REM "Check for user defined routine
+2020 SETERR 2200; CALL "ZSTRTUU",ERR=2200,X3$,P$; IF P$>"" THEN GOTO 9900
+2200 SETERR 9800
+4400 REM "GET UNIX LOGIN
+4405 F0=14; IF X3$>"" THEN F0=NUM(X3$(60,3)); IF F0=0 THEN F0=14
+4406 GOTO 4541 ! <MK>
+4410 CLOSE (F0); OPEN (F0)"ZZPARM"; D0$=FID(F0)
+4505 O9$="",D0=ASC(D0$(20,1)); CLOSE (F0); OPEN (F0,ERR=4590)"D"+STR(D0); D0$=FID(F0); CLOSE (F0); D0$=D0$(4,6)+D0$(21),D0$=FNS$(D0$)
+4510 IF POS("MS"=SYS)=1 THEN GOTO 4600
+4520 IF POS("HP"=SYS)=1 THEN INVOKE "umask 0;echo $LOGNAME >"+D0$+"/"+FID(0)+"TEMP"+";echo $TERM >>"+D0$+"/"+FID(0)+"TEMP"; GOTO 4531
+4530 INVOKE "umask 0;echo $LOGNAME  >"+D0$+"/"+FID(0)+"TEMP"+"; echo $TERM >>"+D0$+"/"+FID(0)+"TEMP"
+4535 CLOSE (F0); OPEN (F0,ERR=4590)FID(0)+"TEMP"
+4540 READ RECORD (F0)P$
+4541 P$=WHO+$0A$+"ansi"+$0A$; IF POS("UNIX"=SYS)<>0 THEN GOTO 4543
+4542 IF LEN(WHO)<>3 THEN P$=""+$0A$+"ansi"+$0A$ ! *** GUI DEMO *** For NT users need to be blank 177446 Ultra
+4560 P=POS($0A$=P$)-1,Q$=P$(P+2),P$=P$(1,P)
+4600 REM "GET TERMINAL CODE
+4610 P=POS($0A$=Q$),T0$=Q$(1,P-1),Q$=Q$(P+1)
+4620 CLOSE (F0); OPEN (F0)"ZZPARM"
+4630 DIM X$(20); X$(1,4)="term",X$(5,12)=T0$
+4640 FIND (F0,KEY=X$(1,16),DOM=4700)X$
+4650 T$=X$(17,9)
+4690 GOTO 9900
+4700 REM 
+4790 GOTO 9900
+8910 DEF FNS$(X$)=X$(1,POS("  "=X$+"  ")-1)
+9820 O9$=""
+9940 EXIT 
+9999 END 

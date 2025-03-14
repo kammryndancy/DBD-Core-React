@@ -1,0 +1,234 @@
+0010 REM "Change ZZWSEC keys - DB Distributor <UT2SEC>
+0015 REM "Prog Type: I -370032  
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 01/09/12 - 16.558611 - dmm - SSP# 249775
+0037 REM "249775-Changes to sales tax parameters and tax calculations to     
+0040 REM "Copyright 2012 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0110 X0$="UT2SEC",X1$="Change ZZWSEC keys - DB Distributor"
+0120 DIM S$(40),A[2]
+0130 K0=13,K1=3
+0135 C9=-1
+0140 M0$="###,###,###.00-"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(65,1)>"2" THEN PRECISION NUM(X3$(65,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ZZWSEC  02S ZZWSEC  13O ZZPARM "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0600 REM "
+0680 GOSUB 6000
+0690 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0; ON S0 GOTO 0691,9900
+0900 ! 
+0910 GOSUB BACKUP_FILE
+0990 READ (Z[1],KEY="",DOM=0991)
+1000 REM "
+1010 K$=KEY(Z[1],END=END_OF_ZZWSEC_FILE); READ RECORD (Z[1],KEY=K$)A$
+1020 PRINT @(10,10),K$,
+1025 IF POS("TopForm Fax Request Inquiry"=K$)>0 THEN GOSUB FIX_FAX1; GOTO DONE_WITH_KEY
+1030 IF POS("Clear TopForm Fax Requests"=K$)>0 THEN GOSUB FIX_FAX2; GOTO DONE_WITH_KEY
+1035 IF POS("TopForm e-Business"=K$)>0 THEN GOSUB FIX_EBUSINESS; GOTO DONE_WITH_KEY
+1040 IF POS("TopForm Optional Modules"=K$)>0 AND (POS("KIT"=K$)>0 OR POS("EDI"=K$)>0) THEN GOSUB FIX_OPTIONAL; GOTO DONE_WITH_KEY
+1045 IF POS("Scale Ship Via tf Ship Via"=K$)>0 OR POS("Get Shipping File to TopForm"=K$)>0 THEN GOSUB FIX_SH; GOTO DONE_WITH_KEY
+1050 IF POS("WebEC/DB Dist Batches"=K$)>0 OR POS("WebEC Info by Order"=K$)>0 THEN GOSUB FIX_AR; GOTO DONE_WITH_KEY ! SSP221193
+1055 IF POS("Link Sys User w/ TopForm User"=K$)>0 THEN GOSUB FIX_ZZ; GOTO DONE_WITH_KEY ! SSP223702
+1060 IF POS("Customer Specific Messages"=K$)>0 THEN GOSUB FIX_MSG; GOTO DONE_WITH_KEY ! SSP224729
+1065 IF POS("Print Management"=K$)>0 AND POS("Item Notes"=K$)>0 THEN GOSUB FIX_NOTES; GOTO DONE_WITH_KEY ! SSP225665
+1070 IF POS("Warehouse Management System"=K$)>0 AND POS("Bin Type Maintenance"=K$)>0 THEN GOSUB FIX_BINTYPE; GOTO DONE_WITH_KEY ! SSP#228231
+1075 IF POS("JetForm/Flex Format"=K$)>0 THEN GOSUB FIX_EFDOC; GOTO DONE_WITH_KEY ! SSP245508
+1080 IF POS("PDF Document Preferences"=K$)>0 OR POS("PDF Monitor"=K$)>0 OR POS("PDF Printing Parameters"=K$)>0 OR POS("PDF User Preferences"=K$)>0 OR POS("User Specific PDF Printing"=K$)>0 THEN GOSUB FIX_PDF; GOTO DONE_WITH_KEY ! SSP245712
+1085 IF POS("State Control Code"=K$)>0 THEN GOSUB FIX_TAX; GOTO DONE_WITH_KEY ! WO249775
+1500 IF POS("TopForm"=K$)=0 THEN GOTO DONE_WITH_KEY
+1800 K1$=K$
+1810 K1$=SUB(K1$,"TopForm","DB Distributor")
+1820 WRITE RECORD (Z[2],KEY=K1$)A$
+1830 REMOVE (Z[1],KEY=K$)
+1900 DONE_WITH_KEY:
+1980 GOTO 1000
+1990 END_OF_ZZWSEC_FILE:
+1995 GOTO 5000
+5000 REM "End of entries
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,0,"Process complete","","",0
+5090 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6060 PRINT @(5,4),'CE',"This utility will process the GUI Security file ZZWSEC and update any",@(5,5),"menu changes.", ! SSP#228275
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6390 RETURN 
+7000 BACKUP_FILE:
+7010 BACKUP_FILE$=PTH(Z[1])+"_UT2SEC_"+DTE(0:"%Yl%Mz%Dz")
+7012 ERASE BACKUP_FILE$,ERR=*NEXT
+7015 DIRECT BACKUP_FILE$,127,0,1024
+7020 CLOSE (Z[1]); OPEN (Z[1],ISZ=20480)"ZZWSEC"
+7025 _BCK=HFN; OPEN (_BCK,ISZ=20480)BACKUP_FILE$
+7030 READ RECORD (Z[1],END=END_COPY)A$
+7035 WRITE RECORD (_BCK)A$
+7040 GOTO 7030
+7050 END_COPY:
+7060 CLOSE (Z[1]); OPEN (Z[1])"ZZWSEC"
+7065 CLOSE (_BCK)
+7090 RETURN 
+7095 ! 
+7100 FIX_FAX1:
+7110 K1$=K$
+7120 K1$=SUB(K1$,"TopForm Fax Request Inquiry","Fax Request Inquiry")
+7130 WRITE RECORD (Z[2],KEY=K1$)A$
+7140 REMOVE (Z[1],KEY=K$)
+7190 RETURN 
+7199 ! 
+7200 FIX_FAX2:
+7210 K1$=K$
+7220 K1$=SUB(K1$,"Clear TopForm Fax Requests","Clear Fax Requests")
+7230 WRITE RECORD (Z[2],KEY=K1$)A$
+7240 REMOVE (Z[1],KEY=K$)
+7290 RETURN 
+7295 ! 
+7300 FIX_EBUSINESS:
+7310 K1$=K$
+7320 K1$=SUB(K1$,"TopForm e-Business","DB Distributor Toolkits")
+7325 K1$=SUB(K1$,"TOPS","Office Products")
+7330 K1$=SUB(K1$,"EC Promo","Promo")
+7335 K1$=SUB(K1$,"Sage","Sage Promo")
+7340 K1$=SUB(K1$,"WebEC","eCommerce")
+7345 K1$=SUB(K1$,"Save TopForm Environment","Save Environment")
+7350 K1$=SUB(K1$,"TopForm Order Ref","Order Reference")
+7355 K1$=SUB(K1$,"Move United File to TopForm","Move File to DB Dist")
+7360 K1$=SUB(K1$,"Import United Shipping Info","Import Shipping Info")
+7365 K1$=SUB(K1$,"Import United Invoices","Import Invoices")
+7370 K1$=SUB(K1$,"New EC Promo Product","New Promo Product")
+7375 K1$=SUB(K1$,"Initial Build of EC Promo","Initial Build of Promo")
+7377 K1$=SUB(K1$,"Customer Specific Messages","Worksheet Messages") ! SSP224729
+7380 WRITE RECORD (Z[2],KEY=K1$)A$
+7385 REMOVE (Z[1],KEY=K$)
+7390 RETURN 
+7395 ! 
+7400 FIX_OPTIONAL:
+7410 K1$=K$
+7420 K1$=SUB(K1$,"TopForm Optional Modules","DB Distributor Optional Modules")
+7430 K1$=SUB(K1$,"KIT","Kit Management")
+7435 K1$=SUB(K1$,"EDI","Electronic Data Management")
+7450 WRITE RECORD (Z[2],KEY=K1$)A$
+7460 REMOVE (Z[1],KEY=K$)
+7490 RETURN 
+7495 ! 
+7500 FIX_SH:
+7510 K1$=K$
+7520 K1$=SUB(K1$,"Scale Ship Via tf Ship Via","Scale Ship Via to DB Ship Via")
+7525 K1$=SUB(K1$,"Get Shipping File to TopForm","Get Shipping File to DB Dist")
+7550 WRITE RECORD (Z[2],KEY=K1$)A$
+7560 REMOVE (Z[1],KEY=K$)
+7590 RETURN 
+7595 ! 
+7600 FIX_AR:! SSP221193
+7610 K1$=K$
+7620 K1$=SUB(K1$,"WebEC/DB Dist Batches","EC Credit Card Batches")
+7625 K1$=SUB(K1$,"WebEC Info by Order","Credit Card Info by Order")
+7650 WRITE RECORD (Z[2],KEY=K1$)A$
+7660 REMOVE (Z[1],KEY=K$)
+7690 RETURN 
+7695 ! 
+7700 FIX_ZZ:! SSP223702
+7710 K1$=K$
+7720 K1$=SUB(K1$,"Link Sys User w/ TopForm User","Link Sys User with DBD User")
+7750 WRITE RECORD (Z[2],KEY=K1$)A$
+7760 REMOVE (Z[1],KEY=K$)
+7790 RETURN 
+7795 ! 
+7800 FIX_MSG:! SSP224729
+7810 K1$=K$
+7820 K1$=SUB(K1$,"Customer Specific Messages","Worksheet Messages")
+7850 WRITE RECORD (Z[2],KEY=K1$)A$
+7860 REMOVE (Z[1],KEY=K$)
+7890 RETURN 
+7895 ! 
+7900 FIX_NOTES:! SSP225665
+7910 K1$=K$
+7920 K1$=SUB(K1$,"Item Notes","Notes")
+7950 WRITE RECORD (Z[2],KEY=K1$)A$
+7960 REMOVE (Z[1],KEY=K$)
+7990 RETURN 
+7995 ! 
+8000 FIX_BINTYPE:! SSP#228231
+8010 K1$=K$
+8020 K1$=SUB(K1$,"Bin Type Maintenance","Storage Type Maintenance")
+8030 WRITE RECORD (Z[2],KEY=K1$)A$
+8040 REMOVE (Z[1],KEY=K$)
+8050 RETURN 
+8051 ! 
+8100 FIX_EFDOC:! SSP245508
+8110 K1$=K$
+8120 K1$=SUB(K1$,"JetForm/Flex Format","Document/Flex Format")
+8150 WRITE RECORD (Z[2],KEY=K1$)A$
+8160 REMOVE (Z[1],KEY=K$)
+8190 RETURN 
+8195 ! 
+8200 FIX_PDF:! SSP245712
+8210 K1$=K$
+8220 K1$=SUB(K1$,"PDF Document Preferences","Proxy Document Preferences")
+8225 K1$=SUB(K1$,"PDF Monitor","Proxy Monitor")
+8230 K1$=SUB(K1$,"PDF Printing Parameters","Proxy Printing Parameters")
+8235 K1$=SUB(K1$,"PDF User Preferences","Proxy User Preferences")
+8240 K1$=SUB(K1$,"User Specific PDF Printing","User Specific Proxy Printing")
+8250 WRITE RECORD (Z[2],KEY=K1$)A$
+8260 REMOVE (Z[1],KEY=K$)
+8290 RETURN 
+8295 ! 
+8300 FIX_TAX:! WO249775
+8310 K1$=K$
+8320 K1$=SUB(K1$,"State Control Code","Tax Code Import Parameters")
+8330 WRITE RECORD (Z[2],KEY=K1$)A$
+8335 REMOVE (Z[1],KEY=K$)
+8340 RETURN 
+8345 ! 
+8910 DEF FND$(Z9$)=Z9$(3,2)+"/"+Z9$(5,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "212146-New company name. Menu, documentation, etc. 
+56002 REM "221193-CHUI and GUI places that refer to WebEC or TopForm.
+56004 REM "223702-Setup/System Utility Functions/Administrator Function/Link
+56006 REM "224729-Modify GUI and CHUI menus to drop E/C, U3 entry. It is no
+56008 REM "225665-Cannot delete item notes in gui.
+56010 REM "228231-WMS - Setup Bin type setup is misnamed                      
+56012 REM "245508-Changes to E/F menu related to UnForm release.              
+56014 REM "245712-The name "PDF Printing" is not accurate or appropriate for  
+56016 REM "249775-Changes to sales tax parameters and tax calculations to     

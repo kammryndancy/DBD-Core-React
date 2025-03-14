@@ -1,0 +1,121 @@
+0010 REM "Process Credit Card Approval File update Topform <EC3LTT>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 05/24/04 - 14.116666 - lms - SSP# 171572
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC3LTT",X1$="Import Credit Card Approval File"
+0120 DIM Z0$(80,"-"),Z1$(20,"0"),C[15],D[4],E[4]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST EDD$,EDD[0],EDD[1],EDD[2],EDD[3],EDD[4],EDD[5],EDD[6]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O VERISIGN.TXT   02O EDD...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0540 REM "CLOSE (Z[1]); OPEN (Z[1],ISZ=200)"VERISIGN.TXT"
+0600 REM "
+0605 REM "ESCAPE
+0610 GOSUB 6000
+0630 GOSUB 8100
+0635 CLOSE (1); OPEN LOCK (1,OPT="TEXT")"VERISIGN.TXT"
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM 
+0920 H0$=$0A$
+0950 CLOSE (1); OPEN LOCK (1,OPT="TEXT")"VERISIGN.TXT"
+1000 REM "Read Data file
+1100 READ (Z[1],END=5000)R$
+1101 IF LEN(R$)=0 THEN GOTO 1100
+1170 C1=C1+1
+1180 GOSUB 2000
+1210 DIM EDD[6]; READ (Z[2],KEY=ORD_DIV$+ORDER$,DOM=1211)IOL=0310; GOTO 1220
+1211 CALL "ZZPROM",".4",X3$,Z,"Order:"+ORD_DIV$+"-"+ORDER$(1,6)+"  Seq: "+ORDER$(7,3)+" does not exist","","",0
+1212 GOTO 1100
+1220 EDD$(88,30)=REF$+"-"+APPROVAL$
+1250 WRITE (Z[2],KEY=EDD$(1,11))IOL=0310
+1260 GOTO 1100
+1300 IF MOD(C1,T0)=1 THEN GOSUB 8150; PRINT @(0,14),'LD',@(15,20),A$(1,2)+"-"+A$(3,4)+"-"+A$(7,4)+"  "+A$(11,25),
+1900 GOTO 1000
+2000 REM "PARSE RECORDS
+2010 RESULT$=R$(1,POS(","=R$)-1)
+2015 R$=R$(POS(","=R$)+1)
+2020 REF$=R$(1,POS(","=R$)-1)
+2030 R$=R$(POS(","=R$)+1)
+2040 MSG$=R$(1,POS(","=R$)-1)
+2050 R$=R$(POS(","=R$)+1)
+2060 APPROVAL$=R$(1,POS(","=R$)-1)
+2070 R$=R$(POS(","=R$)+1)
+2080 ADDRESS$=R$(1,POS(","=R$)-1)
+2090 R$=R$(POS(","=R$)+1)
+2100 ZIP$=R$(1,POS(","=R$)-1)
+2110 R$=R$(POS(","=R$)+1)
+2120 ADDR$=R$(1,POS(","=R$)-1)
+2130 R$=R$(POS(","=R$)+1)
+2140 ORD_DIV$=R$(1,POS(","=R$)-1)
+2150 R$=R$(POS(","=R$)+1)
+2160 ORDER$=R$(1,9)
+2180 RETURN 
+5000 REM "EOJ
+5015 X$="Process complete"
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+5200 REM "COMPLETE CYCLE
+5290 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program update the Credit Card Info File (EDD) from a file named 'VERISIGN',"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6610 GOTO 6510
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8112 T=INT(T0*B/200.0046)
+8114 REM 'SUBTRACT 2 , 1 FOR HEADER & 1 FOR TRAILER
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.004); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",12,10,50,T1,T,C1
+8195 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8950 DEF FNS(Z9$)=POS(" "<>Z9$)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

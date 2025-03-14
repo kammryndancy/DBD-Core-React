@@ -1,0 +1,192 @@
+<PxTable>
+ TableName=OE0
+ TableKey=K1372704623
+ FileCreate=KEYED "OE0",2,[1:43:2]+[1:1:2],0,-256,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="OE0_OrderException"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/OE0"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:05-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:12-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST EXCEPTION_CODE$:[LEN(2)]"
+    NAME$="EXCEPTION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"EXCE_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Exception Code"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST EXCEPTION_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="EXCEPTION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"EXCE_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Exception Code"
+    KEYDEFINITION$="1:1:A,2:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST EXCEPTION_CODE_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="EXCEPTION_CODE_DESC"
+    DESCRIPTION$="=MSG("+QUO+"EXCE_C_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Exception Code Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST PRIORITY_LEVEL$:[LEN(2,SEP=SEP)]"
+    NAME$="PRIORITY_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"PRIO_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Priority Level"
+    KEYDEFINITION$="2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST SIGN_COMPARISON$:[LEN(2,SEP=SEP)]"
+    NAME$="SIGN_COMPARISON"
+    DESCRIPTION$="=MSG("+QUO+"COMP_SIGN"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST OE0_UNUSED_1$:[LEN(SEP,SIZ=13)]"
+    NAME$="OE0_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="13"
+    INTERNALFORMAT$="L"
+    NOTES$="Not in Use"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST LOW_GP_EXCEPTION_AMT"
+    NAME$="LOW_GP_EXCEPTION_AMT"
+    DESCRIPTION$="=MSG("+QUO+"LOW_G_E_A"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="Low GP Exception Amt"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST OE0_UNUSED_2"
+    NAME$="OE0_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="OE0 Unused 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST OE0_UNUSED_3"
+    NAME$="OE0_UNUSED_3"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="OE0 Unused 3"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="CL"
+    EXCEPTION_CODE$="CL"
+    EXCEPTION_CODE_DESC$="Customer over credit limit              "
+    PRIORITY_LEVEL$="20"
+    SIGN_COMPARISON$="  "
+    OE0_UNUSED_1$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GP"
+    EXCEPTION_CODE$="GP"
+    EXCEPTION_CODE_DESC$="Low Gross Profit                        "
+    PRIORITY_LEVEL$="40"
+    SIGN_COMPARISON$="< "
+    OE0_UNUSED_1$="             "
+    LOW_GP_EXCEPTION_AMT=20
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IN"
+    EXCEPTION_CODE$="IN"
+    EXCEPTION_CODE_DESC$="Order marked incomplete by operator     "
+    PRIORITY_LEVEL$="10"
+    SIGN_COMPARISON$="  "
+    OE0_UNUSED_1$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OL"
+    EXCEPTION_CODE$="OL"
+    EXCEPTION_CODE_DESC$="Order execeeds operator order limit     "
+    PRIORITY_LEVEL$="60"
+    SIGN_COMPARISON$="  "
+    OE0_UNUSED_1$="             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PD"
+    EXCEPTION_CODE$="PD"
+    EXCEPTION_CODE_DESC$="Customer Past Due Balance               "
+    PRIORITY_LEVEL$="30"
+    SIGN_COMPARISON$="> "
+    OE0_UNUSED_1$="             "
+    LOW_GP_EXCEPTION_AMT=50
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TE"
+    EXCEPTION_CODE$="TE"
+    EXCEPTION_CODE_DESC$="Terms Exception                         "
+    PRIORITY_LEVEL$="50"
+    SIGN_COMPARISON$="  "
+    OE0_UNUSED_1$="             "
+   </RecordData>
+
+</Data>
+
+</PxTable>

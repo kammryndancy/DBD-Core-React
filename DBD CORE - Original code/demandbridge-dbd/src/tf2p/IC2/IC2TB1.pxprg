@@ -1,0 +1,28 @@
+0010 REM "Inventory Transaction entry delete of lots <IC2TB1>
+0035 REM "3.5 - 02/08/92 - 13.42
+0040 REM "Copyright 1991 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9000; SETESC 9300
+0110 ENTER X3$,X4$,F1,A$,B$,A
+0116 REM "F1=file slot of entry file
+0117 REM "A$=ICA record, B$=ICB record,
+0118 REM "A = INDEX OF LINE
+0140 M9$="00000    "
+8200 REM "Delete of line, reset ICF records and remove temp file records
+8205 IF A>99999 THEN ESCAPE ELSE X$=B$(26,20)+B$(8,4)+"TR"+STR(A:M9$)
+8210 CALL "IC2LCA",X3$,X4$,"d",15,X$,0,0,0
+8280 GOSUB 8300
+8295 GOTO 9900
+8300 REM "Remove records from temporary file
+8303 IF A>99999 THEN ESCAPE ELSE X$="TR"+STR(A:M9$)
+8305 READ (F1,KEY=X$,DOM=8306)
+8320 K$=KEY(F1,END=8340); READ (F1)
+8325 IF K$(1,LEN(X$))<>X$ THEN GOTO 8340
+8330 REMOVE (F1,KEY=K$,DOM=8320)
+8335 GOTO 8320
+8345 RETURN 
+9000 REM 
+9005 EXIT ERR
+9900 REM 
+9930 EXIT 
+9999 END 

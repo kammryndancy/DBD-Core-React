@@ -1,0 +1,79 @@
+0010 ! SAGMPA - SAGE module parameter setup
+0035 REM "5.7 - 08/20/09 - 0.001111 - crg - SSP# 232282
+0037 REM "232282-Product code and special charge for apparel items in SAGE
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access this program" ELSE PROCESS "SAGMPA","../SAG/SA.EN"
+0055 IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0090 ! 
+0100 ! 100 - Initialization
+0110 INIT:
+0120 ! 
+0130 X0$="SAGMPA",X1$="SAGE Module Parameter Setup"
+0140 ! 
+0150 X0=-1,X2=-1
+0160 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2; IF X1>0 THEN GOSUB WRAPUP
+0170 ! 
+0190 DIM Z[NUM(X3$(60,3))]
+0200 ! Files
+0210 Z$="01X ZZPARM  06O ZZPARM  "
+0220 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0
+0230 GOSUB READ_INFO
+0300 ! Iolist Section
+0310 IOLIST SG$(1,LEN(SG$)),SG[0],SG[1],SG[2]
+0490 RETURN 
+0500 ! 500 - Main panel post_display logic
+0510 MAIN_POST_DISPLAY:
+0780 REFRESH_FLG=1
+0790 RETURN 
+0900 ! 900 - Wrapup
+0910 WRAPUP:
+0920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+0970 RETURN 
+1000 ! Get XML Parameter Information
+1010 READ_INFO:
+1020 DIM SG$(512),SG[2]
+1030 READ (Z[1],KEY=X3$(9,3)+"SAGE",DOM=ADD_MSG)IOL=0310
+1050 B_SG$=SG$
+1090 RETURN 
+2000 ! Load Screen with Parameter Information
+2010 LOAD_SCREEN:
+2020 SAG.X001$=SG$(10,3) ! Default product code
+2021 SAG.X002$=SG$(13,1) ! Item type
+2022 SAG.X003$=SG$(14,10) ! 3rd Party Id
+2023 SAG.X004$=SG$(24,3) ! Apparel product code - WO 232282
+2024 SAG.X005$=SG$(27,10) ! Apparel special charge code - WO 232282
+2085 REFRESH_FLG=1
+2090 RETURN 
+3000 ! Write the record
+3010 WRITE_REC:
+3030 IF SG$=B_SG$ THEN RETURN 
+3040 WRITE (Z[6],KEY=X3$(9,3)+"SAGE")IOL=0310
+3080 B_SG$=SG$
+3090 RETURN 
+4000 ! Load Parameter string with user input from screen
+4010 LOAD_INFO:
+4020 SG$(10,3)=SAG.X001$ ! Default product code
+4021 SG$(13,1)=SAG.X002$ ! Item type
+4022 SG$(14,10)=SAG.X003$ ! 3rd Party Id
+4023 SG$(24,3)=SAG.X004$ ! Apparel product code - WO 232282
+4024 SG$(27,10)=SAG.X005$ ! Apparel special charge code - WO 232282
+4085 WRITE (Z[6],KEY=X3$(9,3)+"SAGE")IOL=0310
+4090 RETURN 
+5000 ! Check Changes
+5010 CHECK_CHANGES:
+5030 IF B_SG$=SG$ THEN RETURN 
+5040 MSGBOX MSG("REC_ALTERD"),MSG("UPDATED"),"?,YESNO",ANS$
+5050 IF ANS$="NO" THEN RETURN 
+5060 GOSUB WRITE_REC
+5090 RETURN 
+8000 ! Add Messages
+8010 ADD_MSG:
+8020 MSGBOX MSG("ADD_RECORD"),MSG("VERIFY"),"?,YESNO",ANS$
+8030 IF ANS$="NO" THEN CMD_STR$="END"; RETURN 
+8040 DIM SG$(512); B_SG$=SG$
+8045 SG$(1,7)=X3$(9,3)+"SAGE"
+8050 NEXT_ID=SAG.X001.CTL
+8090 RETURN 
+9999 END 
+56002 REM "232282-Product code and special charge for apparel items in SAGE

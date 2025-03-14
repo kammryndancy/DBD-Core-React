@@ -1,0 +1,124 @@
+0010 REM "Build AXL sort records from ARL records <AR2UXL>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 03/10/09 - 8.4975 - tma - SSP# 228079
+0037 REM "228079-AR2UXL - Change verbage from TopForm to Demand Bridge       
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "To invoke this utility in background, make sure Q1$<>""
+0055 REM "To invoke this utility in  GUI interactive mode, Q1$="" and %GUI=1
+0056 REM "To invoke this utility in CHUI interactive mode, Q1$="" and %GUI=0 
+0060 ! 
+0070 IF %GUI AND NUL(Q1$) THEN PROCESS "ARGUXL","../ARG/AR.EN"; IF TCB(13)=1 THEN RUN "ZMENU" ELSE EXIT 
+0080 ! 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="AR2UXL",X1$="Build ARX records from ARL records"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0210 IF %GUI OR NOT(NUL(Q1$)) THEN X0=-1
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0299 CALL "ZZ2PRP","TW",TAX_FILE$,""; IF TAX_FILE$<>"Y" THEN CALL "ZZPROM",".4",X3$,Z,"ACCESS DENIED!! The Sales Tax File Download System is not an installed Module.","","",0; GOTO 9900; REM " SSP # 149046                       
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7]
+0330 IOLIST C$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ARL...  03O AXL...  05O AR5...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 IF NOT(%GUI) AND NUL(Q1$) THEN GOSUB 6000
+0630 GOSUB 8100
+0640 IF Q1$="" THEN IF NOT(%GUI) THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900 ELSE GOTO *RETURN
+0650 PROCEED:
+0700 CALL "ZZINIT",STR(Z[3]:"00")
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 DIM A$(65),A[15]
+1000 REM 
+1001 REM "C is count of ARK recs processed, C1 is count of records added to AS9
+1009 REM "Read ARL
+1010 READ (Z[1],END=5000)IOL=0310
+1014 REM "Read AR5 
+1015 DIM B$(191," "); REM SSP 208463
+1020 READ (Z[5],KEY=A$(7,10),DOM=1021)B$
+1021 REM IF LEN(B$)=0 THEN GOTO 1000; REM SSP 208463
+1030 REM "IF B$(119,2)+B$(79,25)+B$(121,25)=DIM(52) THEN GOTO 1000
+2000 REM "Create an AXL Record AND write out
+2100 REM 
+2120 DIM C$(76)
+2204 REM "Fiscal Year & Acctg period
+2205 C$(1,6)=A$(1,6)
+2207 IF B$(119,2)+B$(79,25)+B$(121,25)=DIM(52) THEN C$(7,2)=B$(1,2),C$(11,25)=C$(9,25),C$(34,35)=B$(11,25); GOTO 2214
+2209 REM "Sales Tax Code
+2210 C$(7,2)=B$(119,2); REM "State ssp 208463
+2211 C$(9,25)=B$(121,25); REM " COUNTY
+2212 C$(34,25)=B$(79,25); REM : CITY
+2214 REM "Invoice number
+2215 C$(59,8)=A$(17,8)
+2240 REM "TAX CODE
+2245 C$(67,10)=A$(7,10); REM " TAX CODE
+2246 IF C$(7,2)=DIM(2) THEN C$(7,2)=A$(7,2); REM SSP 208463
+2710 WRITE (Z[3],KEY=C$(1,76),DOM=2716); C1=C1+1
+2755 C=C+1
+2760 IF MOD(C,T1)=1 THEN GOSUB 8150
+2995 GOTO 1000
+5000 REM "EOJ
+5010 J$="Process complete!!    "+FNS$(STR(C1:"###,##0"))+" records added to AXL."
+5020 IF Q1$="" THEN IF NOT(%GUI) THEN CALL "ZZPROM",".4",X3$,Z,J$,"","",0 ELSE MSGBOX "Process complete!!","F.Y.I.",("!,TIM=3")
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(5,4),"This DBI utility program will add records to the ""Sales Tax Payable",@(5,5),"by County/City"" Sort File (AXL) based on invoice information in the ",@(5,6),"""Sales Tax Payable"" file (ARL).", ! SSP#228079
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "Get approx total number of records T, by div'ing #sectors @512 per, by the record size we are expecting.
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 IF NOT(%GUI) AND NUL(Q1$) THEN PRINT @(0,14),"There are "+STR(T)+" Sales Tax Pending records to process"
+8120 T1=INT(T*.02); IF T1<=1 THEN T1=2; REM " set to 2% of total record,if 1 set to 2 to do mod correctly
+8130 PROC_REC=T; REFRESH_FLG=1
+8145 RETURN 
+8150 REM "Display horiz. bar graph given total #, T and current #, C
+8155 IF NUL(Q1$) OR (NOT(NUL(Q1$)) AND NOT(%GUI)) THEN IF NOT(%GUI) THEN CALL "ZZBARG",X3$,"HG",19,10,50,T2,T,C ELSE CALL "ZZBARG",X3$,"HG",6.5,1,20,T2,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("          "=Z9$+"          ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 END_PROC:
+9905 ! PRINT @(0,4),'CL',@(0,5),'CL',@(0,6),'CL',@(0,14),'CL',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 CMD_STR$="END"
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "208463-see 207882 - If using Veratax and you delete a sales tax 
+56002 REM "223368-Veratax Sales Tax Payble report needs option to run in GUI

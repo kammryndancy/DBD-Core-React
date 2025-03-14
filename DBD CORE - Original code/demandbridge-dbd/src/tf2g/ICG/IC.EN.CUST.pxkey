@@ -1,0 +1,223 @@
+<PxTable>
+ TableName=IC.EN.CUST
+ TableKey=K1190995087
+ FileCreate=KEYED "IC.EN.CUST",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0000"
+    FIELD_1$="IC1_InventoryLoc"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="97"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"INV_LOC_DT"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"IC1"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2009/02/12 07:57 tma"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.LOC_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0001"
+    FIELD_1$="LOC_CODE"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOCATION"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0002"
+    FIELD_1$="LOC_DESC"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LOC_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="35"
+    FIELD_30$="FM0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0003"
+    FIELD_1$="Formula:FN%QTY_IN_UM(%ONHAND,IC0.SELL_UM$,IC0.SELL_QTY_PER)"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ONHAND"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="###,###,###.00-"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0004"
+    FIELD_1$="Formula:FN%QTY_IN_UM(_MN_.TF_COMMITTED,IC0.SELL_UM$,IC0.SELL_QTY_PER)"
+    FIELD_4$="14"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"COMMITTED"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##,###,###.00-"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0005"
+    FIELD_1$="Formula:FN%QTY_IN_UM(%ONHAND,IC0.SELL_UM$,IC0.SELL_QTY_PER)-FN%QTY_IN_UM(_MN_.TF_COMMITTED,IC0.SELL_UM$,IC0.SELL_QTY_PER)"
+    FIELD_4$="15"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"AVAILABLE"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="###,###,###.00-"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   0006"
+    FIELD_1$="Formula:FN%QTY_IN_UM(_MN_.ON_PO,IC0.SELL_UM$,IC0.SELL_QTY_PER)"
+    FIELD_4$="14"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ON_PO"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##,###,###.00-"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   F001"
+    FIELD_1$="IC0_Item"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"IC0"+QUO+"+%C$"
+    FIELD_8$="-1"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$+_MN_.ITEM_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="IC0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   F002"
+    FIELD_1$="FM0_Loc"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"FM0"+QUO+"+%C$"
+    FIELD_8$="-1"
+    FIELD_9$="0"
+    FIELD_10$=QUO+"D"+QUO+"+_MN_.CUST_DIV$+_MN_.CUST_CODE$+_MN_.LOC_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="FM0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   F003"
+    FIELD_1$="AR1_Cust"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_23$="000000000"
+    FIELD_30$="AR1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_IC1.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%CUST$+%ITEM$"
+    FIELD_13$="C"+QUO+"UPDSYO;VAL_QRY_LIST"+QUO+",REPS$,AR1.SPER_CODE$,AR1.SPER_CODE_2$,AR1.SPER_CODE_3$,AR1.SPER_CODE_4$,AR1.SPER_CODE_5$; CALL "+QUO+"FMGODB;AVAIL_CALC"+QUO+",_MN_.BEG_BAL,_MN_.RECEIPTS,_MN_.SALES,_MN_.ADJUSTMENTS,IC0.INVENTORY_QTY_PER,IC0.INVENTORY_UM$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   0000"
+    FIELD_1$="*File==%ICA$"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="66"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=%ICGTDA$"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="=%ICA$"
+    FIELD_18$="2004/02/12 18:22 jir"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_29$="_MN_.FLD#1$(1,12)"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   0001"
+    FIELD_1$="Fld#1(1,4)"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   0002"
+    FIELD_1$="Fld#1(5,2)"
+    FIELD_4$="4"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ACCT_P"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   0003"
+    FIELD_1$="Fld#1(7,6)"
+    FIELD_4$="9"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REF"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   0004"
+    FIELD_1$="Fld#1(13,40)"
+    FIELD_4$="35"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REMARK"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ICA_A   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+   </RecordData>
+
+</Data>
+
+</PxTable>

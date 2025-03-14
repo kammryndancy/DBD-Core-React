@@ -1,0 +1,236 @@
+<PxTable>
+ TableName=ZA3000
+ TableKey=K1007399587
+ FileCreate=KEYED "ZA3000",26,200,792,BSZ=4,OPT="0"
+ MaxFields=00001
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="ADD_ON_DATE               "
+    FIELD_1$="ADD_ON_DATE               Convert ADDON dates to TF format   ADONDDATE:D,RESULT:D                                           PDRESULT="+QUO+"      "+QUO+";                                            IF DATE(1,1)<>"+QUO+" "+QUO+"AND DATE(1,1)<>CHR(1)                         THEN TEMP=ASC(DATE(1,1))-1;                                      RESULT=CHR(ASC("+QUO+"A"+QUO+")+INT(TEMP/10))                                 +STR( MOD( TEMP,10))                                        +STR( ASC( DATE(2,1))-1:"+QUO+"00"+QUO+")                               +STR( ASC( DATE(3))-1:"+QUO+"00"+QUO+")                                                                                                                                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ALREADY_HIT               "
+    FIELD_1$="ALREADY_HIT               If piece of data already hit       ALRHTNEW_KEY:S, OLD_KEYS:S, RESULT:B                           PBTHERE:N = POS( NEW_KEY= OLD_KEYS, LEN(NEW_KEY));                                                                        IF THERE >0                                                    THEN RESULT="+QUO+"1"+QUO+"                                          ELSE                                                           OLD_KEYS = OLD_KEYS + NEW_KEY;                              RESULT ="+QUO+"0"+QUO+"                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ANYWHERE_IN               "
+    FIELD_1$="ANYWHERE_IN               If string is anywhere in another   ANYWHSOURCE:S, TARGET:S                                        FBSTR( SGN( POS( SOURCE=TARGET)):"+QUO+"0"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_STATUS                 "
+    FIELD_1$="AR_STATUS                 Return AR Status                   ARSTACREDIT_LIMIT:N, CURRENT_BAL:N, SINCE_ACTIVE:N, RESULT:S   PSRESULT = "+QUO+"OK "+QUO+", OVER_LIMIT:B= STR( SGN( INT( CURRENT_BAL    /CREDIT_LIMIT)):"+QUO+"0"+QUO+");                                                                                                   IF OVER_LIMIT @TRUE                                            THEN RESULT="+QUO+"O/L"+QUO+"                                        ELSE IF SINCE_ACTIVE >45                                       THEN RESULT = "+QUO+"INA"+QUO+"\                                                                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR_STATUS_CODE            "
+    FIELD_1$="AR_STATUS_CODE            CALCULATE AR STATUS COMMENT        STATSBALANCE:N, CREDIT_LIMIT:N, RESULT:S                       PSRESULT="+QUO+QUO+";                                                  IF CREDIT_LIMIT =0 THEN RESULT ="+QUO+"C.O.D"+QUO+"                     ELSE IF BALANCE > CREDIT_LIMIT THEN RESULT ="+QUO+"OVER LIMIT"+QUO+"       ELSE IF BALANCE > .75*CREDIT_LIMIT THEN RESULT ="+QUO+"CLOSE"+QUO+"     ELSE IF BALANCE > .5 *CREDIT_LIMIT RESULT="+QUO+"HALFWAY"+QUO+"         ELSE IF BALANCE = .5 *CREDIT_LIMIT RESULT="+QUO+"HALFWAY"+QUO+"                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BLANK                     "
+    FIELD_1$="BLANK                     Check string field for all blanks  BLANKDATA:S                                                    FBSTR(ABS(SGN(POS("+QUO+" "+QUO+"<>DATA))-1))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CAP_FIRST                 "
+    FIELD_1$="CAP_FIRST                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CHANGE_DATE               "
+    FIELD_1$="CHANGE_DATE               Chg date to M,D,Y                  CHGDTDATE:D, MONTH:N, DAY:N, YEAR:N                            PNMONTH= NUM(DATE(3,2)),                                        DAY= NUM(DATE(5,2)),                                       YEAR= @YEAR_IN(DATE)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CHG_DATE_6                "
+    FIELD_1$="CHG_DATE_6                Change MMDDYY dates                CHGDTOLD_DATE:S, RESULT:D                                      PDRESULT=@TF_YEAR(OLD_DATE(5,2))+OLD_DATE(1,2)+OLD_DATE(3,2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COST_CTR_CATEGORY         "
+    FIELD_1$="COST_CTR_CATEGORY         Turner cost center category        TRNCCSHIPTO:S, RESULT:S                                        PSRESULT= @GET_CATEG_1 (SHIPTO);                              IF RESULT = "+QUO+"Z"+QUO+" RESULT = @GET_CATEG_2 (SHIPTO);             IF RESULT = "+QUO+"Z"+QUO+" RESULT = @GET_CATEG_3 (SHIPTO)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CUSTOMER_TYPE             "
+    FIELD_1$="CUSTOMER_TYPE             Return Customer Type                    SALES:N                                                   FSCHR(ASC("+QUO+"A"+QUO+")+8-EPT(SALES))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DATE_OF                   "
+    FIELD_1$="DATE_OF                   Calculate date from Year, Month, Dy     YEAR:N, MONTH:N, DAY:N                                    FDCHR(ASC("+QUO+"A"+QUO+")+INT(YEAR/10))+STR(MOD(YEAR,10))+               STR(MONTH :"+QUO+"00"+QUO+")+                                           STR(DAY :"+QUO+"00"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_BETWEEN              "
+    FIELD_1$="DAYS_BETWEEN              Calculate # of days between 2 datesDYSBTDATE2:D,DATE1:D,RESULT:N                                  PNIF DATE1(1,1)="+QUO+" "+QUO+" OR DATE2(1,1)="+QUO+" "+QUO+"                            RESULT=0                                                 ELSE                                                           RESULT= @JULIAN_DATE( DATE1)                                      - @JULIAN_DATE( DATE2)                                                                                                                                                                                                                                                                                                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DAYS_IN                   "
+    FIELD_1$="DAYS_IN                   Return number of days in a month   DYSINDATE:S, RESULT:N                                          PNRESULT=0, DAYS:S="+QUO+"312831303130313130313031"+QUO+",                MONTH:N= NUM(DATE(3,2)), MAXDAYS = NUM(DAYS(MONTH           ,2)) ; IF MONTH=2 YEAR=@YEAR_OF (DATE); IF INT (YEAR/4) =   YEAR/4 MAXDAYS=29                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FALSE                     "
+    FIELD_1$="FALSE                     Condition False (Boolean)                                                                         C <> "+QUO+"1"+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FILL                      "
+    FIELD_1$="FILL                      Fill routine (BBx)                 FILL0LENGTH:N, FILL:S, RESULT:S                                PSRESULT="+QUO+QUO+"\                                                  IF LEN(RESULT)< LENGTH RESULT=RESULT+FILL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_CATEG_1               "
+    FIELD_1$="GET_CATEG_1               Turner cost center category        TRNC1SHIPTO:S, RESULT:S                                        PSRESULT="+QUO+"Z"+QUO+"; IF SHIPTO ="+QUO+"1100"+QUO+" RESULT="+QUO+"A"+QUO+"ELSE                IF SHIPTO>="+QUO+"1300"+QUO+" AND SHIPTO<="+QUO+"1337"+QUO+" THEN RESULT="+QUO+"B"+QUO+" ELSE   IF SHIPTO>="+QUO+"1500"+QUO+" AND SHIPTO<="+QUO+"1531"+QUO+" RESULT="+QUO+"C"+QUO+" ELSE        IF SHIPTO >="+QUO+"2500"+QUO+" AND SHIPTO<="+QUO+"2508"+QUO+" RESULT ="+QUO+"D"+QUO+" ELSE      IF SHIPTO="+QUO+"0001"+QUO+" RESULT="+QUO+"F"+QUO+" ELSE IF SHIPTO ="+QUO+"0002"+QUO+"RESULT="+QUO+"G"+QUO+"                                                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_CATEG_2               "
+    FIELD_1$="GET_CATEG_2               Second batch of categories         TRNC2SHIPTO:S, RESULT:S                                        PSIF SHIPTO >"+QUO+"6000"+QUO+" AND SHIPTO <"+QUO+"7000"+QUO+" RESULT="+QUO+"L"+QUO+" ELSE IF     SHIPTO >="+QUO+"7000"+QUO+" RESULT="+QUO+"P"+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_CUST_DATA             "
+    FIELD_1$="GET_CUST_DATA             Get customer data                  GCUSTCUSTOMER_CODE:S, DATA:N                                   P DATA=0;                                                     CLOSE(14);OPEN(14)"+QUO+"TP0"+QUO+";                                    READ(14,KEY=CUSTOMER_CODE)*,DATA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_NAME                  "
+    FIELD_1$="GET_NAME                  Retrieve Data Name from Text       GNAMETEXT:S, RESULT:S                                          PSRESULT="+QUO+QUO+"\                                                  TEXT=@UPPER_CASE(TEXT)\                                                                                                 \FOR INDEX:N =1 TO 20;                                      IF TEXT(INDEX,1)="+QUO+" "+QUO+"                                           TEXT(INDEX,1)="+QUO+"_"+QUO+"\                                       RESULT =RESULT + TEXT(INDEX,1)\                             NEXT INDEX                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GET_SORT_KEY              "
+    FIELD_1$="GET_SORT_KEY              Return sort key from string        GSORTSOURCE:S, MAXLENGTH:N, RESULT:S                           PSKEY:S = @UPPER_CASE(SOURCE);DIM BLANKS:S (LENGTH);             IF POS("+QUO+"THE "+QUO+"=KEY)=1                                           THEN KEY=KEY(5)                                          ELSE IF POS("+QUO+"A "+QUO+"=KEY)=1                                        THEN KEY=KEY(3)\                                      RESULT= KEY;                                                   IF LEN(RESULT) > MAXLENGTH                                     THEN RESULT=RESULT(1,MAXLENGTH)                          ELSE                                                           RESULT=RESULT+ BLANKS(1,MAXLENGTH -LEN(RESULT))                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IN                        "
+    FIELD_1$="IN                        If a value is in a string          00000STRING1:S,STRING2:S,RESULT:B                              PBTEMP:N= LEN(STRING1);                                       RESULT= STR(SGN( POS( STRING1 = STRING2, TEMP)):"+QUO+"0"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JULIAN_DATE               "
+    FIELD_1$="JULIAN_DATE               Calculate Julian Date              JLIANDATE:D, RESULT:N                                          *ND1=@YEAR_IN(DATE),D2=NUM(DATE(3,2)),D3=NUM(DATE(5,2))\      D7=D1-1,D4=INT(D7/400),D7=D7-D4*400,D5=INT(D7/100),D7=D7-D5 *100,D6=INT(D7/D4),D7=D7-D6*4;DAYS:S="+QUO+"312831303130313130313031"+QUO+"\  IF D7=3AND (D6<24 OR D5=3) DAYS(3,2)="+QUO+"29"+QUO+"\            IF STR(D3 :"+QUO+"00"+QUO+")<=DAYS((D2-1)*2+1,2) THEN D=D3,D9=D2-1;IF D9  > 0 THEN D=D+NUM(DAYS((D9-1)*2+1,2)),D9=D9-1\             IF D>0 THEN D=D4*146097+D5*36524+D6*1461+D7*365+D \         IF D>639796 THEN D=D+2 ELSE D=0                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MONTH_IN                  "
+    FIELD_1$="MONTH_IN                  Return month of a date             00000DATE:D                                                    FSDATE(3,2)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW_DATE                  "
+    FIELD_1$="NEW_DATE                  Return calculated date             NEWDTDATE:D,DAYS:N,RESULT:D                                    P*MANUALLY CODED ROUTINE TO RETURN A                          NEW DATE BASED ON AN EXISTING DATE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PACKED_2                  "
+    FIELD_1$="PACKED_2                  Packed numeric, 2 digits precision UNPK2PACKED_DATA:S                                             FNDEC(PACKED_DATA)*.01                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PAGE                      "
+    FIELD_1$="PAGE                      Page number of report              00000                                                          C STR(W8:"+QUO+"000"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PERCENT_OF                "
+    FIELD_1$="PERCENT_OF                Calc percentage of 2 numbers       PERCTNUMBER1:N, NUMBER2:N, RESULT:N                            PNRESULT=0;                                                   IF NUMBER2 <>0 RESULT= 100*NUMBER1 / NUMBER2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTY_IN_UNITS              "
+    FIELD_1$="QTY_IN_UNITS              Calc Qty in Units                  QTYUNQTY:N, UNIT_CODE:S, QTY_UNIT:N, RESULT:N                  PNRESULT=0;                                                   IF UNIT_CODE="+QUO+"M   "+QUO+" RESULT = QTY                            ELSE IF QTY_UNIT <>0 RESULT = QTY / QTY_UNIT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SELECT_FORMS              "
+    FIELD_1$="SELECT_FORMS              Selected form codes                SFORMFORM_CODE:S, RESULT:N                                     PNRESULT=0\                                                   IF FORM_CODE = "+QUO+"0001000   "+QUO+" OR FORM_CODE ="+QUO+"0000100   "+QUO+" OR   FORM_CODE = "+QUO+"APCHECK   "+QUO+" RESULT =1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SUBSTRING                 "
+    FIELD_1$="SUBSTRING                 Return portion of string as result      STRING:S, STARTPOS:N, LENGTH:N                            FSSTRING(STARTPOS, LENGTH)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEMP_FILE                 "
+    FIELD_1$="TEMP_FILE                 Allow Temp File                                                                                   C F0=NUM(X3$(60,3));CLOSE(F0)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TERM                      "
+    FIELD_1$="TERM                      Term of mortgage                   TERM PRINCIPAL:N, PAYMENT:N, INTEREST_RATE:N, TERM:N           P IF PRINCIPAL > 0 THEN                                          INT_AMT = PRINCIPAL*INTEREST_RATE/12;                       PRIN_AMT = PAYMENT - INT_AMT;                               PRINCIPAL = PRINCIPAL - PRIN_AMT;                           TERM= TERM+1;                                               TERM (PRINCIPAL, PAYMENT, INTEREST_RATE, TERM)                                                                                                                                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST                      "
+    FIELD_1$="TEST                      Recursion example                  TEST TIMES:N, VALUE:N, RES:N                                   P                                                             IF TIMES >0 THEN                                              TIMES=TIMES-1;                                              @TEST (TIMES,VALUE/10,RES)                                                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST_MACRO                "
+    FIELD_1$="TEST_MACRO                Test table of values               TESTAAMOUNT:N, RESULT:N                                        PNRESULT = AMOUNT * .1; IF AMOUNT <0 RESULT = 0 ELSE          IF AMOUNT > 1000 RESULT = AMOUNT * .08 ;                    IF AMOUNT > 5000 RESULT = AMOUNT * .05                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF_YEAR                   "
+    FIELD_1$="TF_YEAR                   Convert YY format to TopForm Year  TOPYRDATE:D,RESULT:D                                           PDRESULT="+QUO+"  "+QUO+";                                                IF DATE<>"+QUO+"  "+QUO+" AND LEN(DATE)=2                                  THEN TEMP=NUM(DATE);                                             RESULT=CHR(ASC("+QUO+"A"+QUO+")+INT(TEMP/10))                                 +STR( MOD( TEMP,10))                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TMA                       "
+    FIELD_1$="TMA                       TEST of macro                      00001NUM1:N, NUM2:N, NUM3:N, RESULT:N                          PNIF NUM2>NUM3                                                   RESULT = NUM1 * NUM2                                     ELSE                                                           RESULT = NUM1 * NUM3                                                                                                                                                                                                                                                                                                                                                                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TODAY                     "
+    FIELD_1$="TODAY                     Today's Date                       TODAY                                                          CDX3$(21,6)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TOTAL_COST                "
+    FIELD_1$="TOTAL_COST                Total Cost                         TLCOSCOST:N,SELL_UM:S,SELLING_QUANTITY:N,QTY:N,RESULT:N        PNIF SELLING_QUANTITY=0 OR SELL_UM="+QUO+"LOT "+QUO+"                     RESULT=COST                                                 ELSE IF SELL_UM="+QUO+"M   "+QUO+"                                      RESULT=COST*SELLING_QUANTITY/1000                           ELSE RESULT=COST*SELLING_QUANTITY/QTY                                                                                                                                                                                                                                                                                                                                                                                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TOTAL_SALE                "
+    FIELD_1$="TOTAL_SALE                Total Sale                         TSALESELLING_AMT:N,SELL_UM:S,SELLING_QUANTITY:N,QTY:N,RESULT:N PNIF SELLING_QUANTITY=0 OR SELL_UM="+QUO+"LOT "+QUO+"                     RESULT=SELLING_AMT                                          ELSE IF SELL_UM="+QUO+"M   "+QUO+"                                      RESULT=SELLING_AMT*SELLING_QUANTITY/1000                    ELSE IF SELL_UM="+QUO+"EACH"+QUO+"                                      RESULT=SELLING_AMT*SELLING_QUANTITY                         ELSE RESULT=SELLING_AMT*SELLING_QUANTITY/QTY                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TRIM                      "
+    FIELD_1$="TRIM                      Trim trailing blanks from string   TRIMXSTRING:S                                                  FSSTRING(1,POS("+QUO+"          "+QUO+"=STRING+"+QUO+"          "+QUO+")-1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TRUE                      "
+    FIELD_1$="TRUE                      True value (Y/N or Boolean)                                                                       C ="+QUO+"1"+QUO+"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UPPER_CASE                "
+    FIELD_1$="UPPER_CASE                Return uppercase of string         UCASESOURCE:S, RESULT:S                                        PSRESULT=SOURCE, CONVERSION= ASC("+QUO+"a"+QUO+")- ASC("+QUO+"A"+QUO+");              FOR INDEX=1 TO LEN(SOURCE);                                    IF  SOURCE(INDEX,1) >= "+QUO+"a"+QUO+"                                  AND SOURCE(INDEX,1) <="+QUO+"z"+QUO+"                                      RESULT(INDEX,1)= CHR(ASC(SOURCE(INDEX,1))-CONVERSION);      NEXT INDEX                                               ELSE                                                           NEXT INDEX                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YEAR_IN                   "
+    FIELD_1$="YEAR_IN                   Return numeric year in date        YEARNDATE:D                                                    FN1900+                                                       10*ASC(DATE(1,1))-65                                        +NUM(DATE(2,1))                                             -1570*POS("+QUO+" "+QUO+"=DATE(1,1))                                                                                                                                                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YN_TO_BOOLEAN             "
+    FIELD_1$="YN_TO_BOOLEAN             Convert Yes/No type to Boolean          DATA:S                                                    FBSTR(POS("+QUO+"Y"+QUO+"=DATA):"+QUO+"0"+QUO+")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+</Data>
+
+</PxTable>

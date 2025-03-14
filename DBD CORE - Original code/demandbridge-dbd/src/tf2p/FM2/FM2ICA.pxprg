@@ -1,0 +1,122 @@
+0010 REM "Add/Delete Inventory Costing Records-OE <FM2ICA>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 07/12/02 - 12.042222 - tma - SSP# 150756
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Coming from either FM2ODH or FM2ODZ to either delete or add FTE/FTF records, WO111482
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,C0,A$,A{ALL},B$
+0100 SETERR 9000
+0110 X0$="FM2ICA",X1$="Add/Delete Inventory Costing Records-OE"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST FTE$,FTE[0],FTE[1],FTE[2],FTE[3],FTE[4],FTE[5],FTE[6],FTE[7],FTE[8],FTE[9],FTE[10],FTE[11],FTE[12],FTE[13],FTE[14],FTE[15]
+0320 IOLIST FTF$,FTF[0],FTF[1],FTF[2],FTF[3],FTF[4],FTF[5],FTF[6],FTF[7],FTF[8],FTF[9],FTF[10],FTF[11],FTF[12],FTF[13],FTF[14],FTF[15]
+0330 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FTE...  02O FTF...  03O FS2...  04O PO3...  05O FTJ...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0900 ON C0 GOTO 1000,2000
+1000 REM "DELETE
+1010 IF PROG$="FM2ODZ" THEN IF A$="ALL" THEN GOTO 1045 ELSE GOTO 1070
+1015 DIM FTE$(150),FTE[15]; READ (Z[1],KEY=A$(118,8)+A$(237,3),DOM=1090)IOL=0310
+1016 IF FTE$(61,1)="Y" THEN GOTO 1090; REM "SSP129790, if order deleted with costs then don't delete transactions
+1017 SORT$=FTE$(12,34)+FTE$(1,11); REMOVE (Z[5],KEY=SORT$,DOM=1018)
+1020 REMOVE (Z[1],KEY=A$(118,8)+A$(237,3),DOM=1021)
+1025 GOTO 1090
+1045 REM "Remove records pertaining to all lines, full delete
+1047 DIM FTE$(150),FTE[15]; READ (Z[1],KEY=B$(118,8)+B$(237,3),DOM=1090)IOL=0310; IF FTE$(61,1)="Y" THEN GOTO 1090; REM "SSP129790
+1050 K$=B$(118,8)+B$(237,3); READ (Z[2],KEY=K$,DOM=1051)
+1055 K0$=KEY(Z[2],END=1090)
+1060 IF K0$(1,LEN(K$))<>K$ THEN GOTO 1090
+1065 REMOVE (Z[2],KEY=K0$,DOM=1055); GOTO 1055
+1070 REM "Remove records pertaining to one line
+1072 DIM FTE$(150),FTE[15]; READ (Z[1],KEY=B$(118,8)+B$(237,3),DOM=1090)IOL=0310; IF FTE$(61,1)="Y" THEN GOTO 0190; REM "SSP129790
+1075 K$=B$(118,8)+B$(237,3)+A$(6,3); READ (Z[2],KEY=K$,DOM=1076)
+1080 K0$=KEY(Z[2],END=1090); IF K0$(1,LEN(K$))<>K$ THEN GOTO 1090
+1085 REMOVE (Z[2],KEY=K0$,DOM=1080); GOTO 1080
+1090 GOTO 9900
+2000 REM "ADD
+2010 IF PROG$="FM2ODZ" THEN GOTO 2100
+2020 DIM FTE$(150),FTE[15]
+2025 IF POS(" "<>A$(237,3))>0 THEN EXTRACT (Z[1],KEY=A$(118,8)+A$(237,3),DOM=2026)IOL=0310; SORT$=FTE$(12,34)+FTE$(1,11); REMOVE (Z[5],KEY=SORT$,DOM=2026)
+2030 FTE$(1,8)=A$(118,8),FTE$(12,4)=A$(93,4),FTE$(16,10)=A$(6,10); REM "Order number, salesperson, cust code
+2035 DIM FS2$(228),FS2[29]; READ (Z[3],KEY=A$(118,8)+"001",DOM=2090)IOL=0330
+2040 IF POS(" "<>FS2$(161,10))>0 THEN FTE$(26,10)=FS2$(161,10) ELSE FTE$(26,10)=A$(6,10); REM "Cust code for item
+2045 FTE$(36,10)=FS2$(19,10),FTE$(46,3)=FS2$(29,3),FTE$(49,4)=FS2$(120,4); REM "Item code, product code, cost u/m
+2047 DIM PO3$(100); READ (Z[4],KEY=A$(118,8)+" "+"0011",DOM=2048)PO3$
+2048 IF PO3$(11,1)="D" THEN FTE$(54,4)=PO3$(12,4); REM "Warehouse
+2050 FTE[0]=FS2[2],FTE[1]=FS2[0]; REM "Cost qty per unit, qty ordered
+2055 FTE[2]=A[7]; REM "Order cost
+2070 IF POS(" "<>A$(237,3))>0 THEN WRITE (Z[1],KEY=A$(118,8)+A$(237,3))IOL=0310; GOTO 2085; REM "Existing record extracted above, we are updating infor
+2075 A$(237,3)="000",FTE$(9,3)=A$(237,3),FTE$(58,3)="000"
+2080 WRITE (Z[1],KEY=A$(118,8)+A$(237,3),DOM=2081)IOL=0310; GOTO 2085
+2081 IF NUM(A$(237,3))=999 THEN ESCAPE ELSE A$(237,3)=STR(NUM(A$(237,3))+1:"000"); FTE$(9,3)=A$(237,3); GOTO 2080
+2085 SORT$=FTE$(12,34)+FTE$(1,11); WRITE (Z[5],KEY=SORT$)
+2090 GOTO 9900
+2100 REM "Add or update 'main' line records, called from FM2ODZ
+2110 IF STP(B$(237,3),3," ")="" THEN GOTO 2190; REM "If there isn't a header record then get out
+2120 DIM FTF$(150),FTF[15]; EXTRACT (Z[2],KEY=B$(118,8)+B$(237,3)+A$(6,3)+"000",DOM=2121)IOL=0320
+2125 FTF$(1,8)=B$(118,8),FTF$(9,3)=B$(237,3),FTF$(12,3)=A$(6,3),FTF$(15,3)="000"; REM "Order number, seq, line number, 000 for 'main' line record
+2130 FTF$(18,1)=A$(9,1),FTF$(19,10)=A$(94,10); REM "PO code, vendor
+2135 FTF$(39,6)=X3$(21,6); REM "System date
+2140 FTF$(51,4)=A$(120,4); REM "Cost u/m
+2145 FTF[0]=A[2],FTF[1]=A[0]; IF FTF[1]=0 THEN FTF[1]=1; REM "Cost qty per u/m, qty ordered, extension only specials
+2150 FTF[7]=A[1]; IF FTF[7]=0 AND A[3]<>0 AND A[2]<>0 THEN FTF[7]=A[3]/A[2]; REM "Unit cost, if extension not zero use that (extension only specials)
+2155 FTF$(68,10)=A$(19,10); REM "Item code or special charge code
+2185 WRITE (Z[2],KEY=FTF$(1,17))IOL=0320
+2190 GOTO 9900
+5000 REM "EOJ
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

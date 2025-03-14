@@ -1,0 +1,105 @@
+0010 ! FSGUT1 - Order History Non-Stock to Custom
+0020 SETESC 9300; SETERR 9000
+0035 ! "6.0 - 04/05/04 - 02:04 PM - jir
+0040 ! "Copyright 2004 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 PROCESS "FSGUT1","../FSG/FS.EN"
+0060 EXIT 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0105 INIT:
+0110 X0$="FS2UT1",X1$="Order History Non-Stock to Custom"
+0120 DIM Z0$(80,"-"),B[8],C[31]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15],C[16],C[17],C[18],C[19],C[20],C[21],C[22],C[23],C[24],C[25],C[26],C[27],C[28],C[29],C[30],C[31]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FS9...  02O FS6...  03O FM1...  04O FS7...  05O FS8...  06OSFS6...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000; GOSUB 8100
+0615 RETURN 
+0620 X$="Leave blank to NOT update statistics"
+0625 DIM D$(6); CALL "ZZENTR","D",A{ALL},D$,X4$,X3$,65,10,1,6,C0,"",X$,"","FS2UT100","","",""; IF POS(" "<>D$)=0 THEN D$="" ELSE D1$=CHR(ASC(D$(1,1))-1)+D$(2)
+0640 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0950 ML_MESS.CTL'VALUE$="Progress will be reported every 100 entries..."
+0990 READ (Z[2],KEY="",DOM=0991)
+1000 REM 
+1020 READ (Z[2],END=5000)IOL=0320; C1=C1+1
+1030 IF MOD(C1,100)=1 THEN ML_MESS1.CTL'VALUE$=STR(C1)+"  "+B$(1,29)
+1040 IF B$(11,1)<>"H" THEN GOTO 1000
+1050 READ (Z[3],KEY=B$(1,10)+B$(12,10),DOM=1000)IOL=0330
+1100 READ RECORD (Z[2],KEY=B$(1,30))R$
+1120 R$(11,1)="B"
+1140 WRITE RECORD (Z[6],KEY=R$(1,30),DOM=1000)R$; IF RT_PARM$<>"" THEN CUST$=R$(1,10); CALL "RT2WOC",ERR=1141,X3$,X4$,CUST$,"FS6...","U",R$(1,30)
+1150 REMOVE (Z[2],KEY=B$(1,30))
+1160 REMOVE (Z[4],KEY=B$(31,3)+B$(11,1)+B$(12,10)+B$(1,10)+B$(22,9),DOM=1161)
+1170 WRITE (Z[4],KEY=R$(31,3)+R$(11,1)+R$(12,10)+R$(1,10)+R$(22,9))
+1180 REMOVE (Z[5],KEY=B$(1,10)+B$(22,8)+B$(11,11)+B$(30,1),DOM=1181)
+1190 WRITE (Z[5],KEY=R$(1,10)+R$(22,8)+R$(11,11)+R$(30,1))
+1200 REMOVE (Z[1],KEY=B$(22,8)+B$(12,10)+B$(30,1),DOM=1201)
+1300 REM "STATS?  I=0 YTD, I=1 LYTD
+1320 IF D$="" THEN GOTO 1000
+1330 IF B$(48,6)<D1$ THEN GOTO 1000 ELSE IF B$(48,6)>=D$ THEN I=0 ELSE I=1
+1340 EXTRACT (Z[3],KEY=B$(1,10)+B$(12,10))IOL=0330
+1350 J=8+I*4
+1360 C[J]=C[J]+1,C[J+1]=C[J+1]+B[5],C[J+2]=C[J+2]+B[6],C[J+3]=C[J+3]+B[7]
+1390 WRITE (Z[3])IOL=0330
+1990 GOTO 1000
+5000 REM "EOJ
+5020 IF Q1$<>"*" THEN MSGBOX "Process complete",MSG("CONFIRMING"),"!,TIM=5"
+5040 CMD_STR$="E"; EXIT 
+6000 REM "BACKGROUND
+6001 RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6040 PRINT @(0,4),"Order history records will be sarched for non-stock items",'LF',"and if there is now a item code set up that matches the non-stock",'LF',"item code, the record will be transfered to custom item status and the",'LF',"non-stock record removed.",
+6060 PRINT @(0,10),"To update Item Master YTD & LYTD data enter date YTD begins:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 ML_MESS$="There are "+STR(T)+" records to process",REFRESH_FLG=1
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 END_PRG:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

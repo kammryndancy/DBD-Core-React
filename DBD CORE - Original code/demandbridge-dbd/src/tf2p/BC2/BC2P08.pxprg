@@ -1,0 +1,154 @@
+0010 REM "Printer Option Package for Datamax DMX400 <BC2P08>                   
+0015 REM "Prog Type: IP-3.1.2                                                  
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 08/09/02 - 12.105555 - dff - SSP# 150785
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0069 REM "IF P$='?' THEN P$ is returned with description of printer driver     
+0070 REM "P$ is ptr string from ZZPARM if not found, we'll try to read a ha    rd coded one                                                              
+0071 REM "D$ is the data to printe                                             
+0072 REM "O$ is option code string, each option code is 5 chars long           
+0073 REM "Q$ is for future sturff                                              
+0074 REM "D1$ is string to print including print codes, etc.                   
+0075 REM "L0$ is for stuff that must go on  front of line, and applies to w    hole line, L1$ goes on end of line to turn off L0$                        
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,P$,D$,O$,Q$,D1$,L0$,L1$
+0100 SETERR 9000
+0105 IF P$="?" THEN P$="Datamax DMX400 Printer Driver"; GOTO 9920; REM "SKIP ZZFLES CALL @ 9910                                                 
+0110 X0$="BC2P05",X1$="Printer Option Package for Datamax DMX400"
+0120 DIM S$(80)
+0550 REM "At least pass the data back, no matter what happens                  
+0551 D1$=D$,L0$="",L1$=""
+0600 REM "If no printer codes record given try and read one                    
+0603 P$=STP(P$,1)
+0605 IF P$<>"" THEN GOTO 0621
+0610 CLOSE (14); OPEN (14)"ZZPARM"
+0620 FIND (14,KEY="ptrDMX400  ",DOM=9900)P$
+1000 REM "Each field on the DMX400 is printed on seperate line. This is a l ittle different than someother label printer drivers. Each line (conta ining 1 field)has the following format abcdeeeffffgggghhhhhh where a=R otation (1-4), b=font or barcode style, c=width multiplier, d =height  multiplier, e=barcode height (in .01") F=ROW POSITION (.01") g= column  position (.01"), H=DATA. EACH LINE MUST BE TERMINATED WITH A <CR>. WE  WILL ADD A DEFAULT SET OF ABCDEEEFFFFGGGG TO THE FRONT OF THE DATA WE  GOT INTO D1$ TO BE PASSED BACK. WE WILL INCLUDE THE <CR> SINCE THE LI NEFEEDS ARE STRIPPED FOR L TYPE PRINTING. EACH OPTION WILL TWEAK THE D 1$ STRING IN THE CORRECT POSITION FOR THAT OPTION. ALL OPTIONS WILL HA VE PARAM 1 AS THE ROTATION #, PARAM 2 AS WIDTH MULTIPLIER, PARAM 3 AS  HEIGHT MULTIPLIER, AND PARAM 4 AS BAR CODE HEIGHT IN .01". NOTE: the s tart of label and end of label are given by the L_BEG and L_POS comman ds                                                                     
+1002 REM "Defaults are a=1 (0 deg), b=0 (font 0),c=1,d=1 (regular size), e= 000, f=0000, g=0000 (upper left corner)                                
+1005 D1$="101100000000000"+D$+$0D$
+1010 FOR I=1 TO LEN(O$)-20+1 STEP 20
+1015 O1$=O$(I+5,15)
+1017 REM "FONT0->FONT9 are handled  by the same routine                     
+1018 IF O$(I,4)="FONT" THEN GOSUB 2100; GOTO 1026
+1020 P=POS(O$(I,5)="PSTNTBC39 EAN8 EAN13UPC-AUPC-E2OF5 C128AC128BC128CL _POSL_BEGL_END"); IF P>0 THEN P=INT((P+4)/5)
+1025 ON P GOSUB 2000,2250,2300,2350,2400,2450,2500,2550,2600,2650,2700,2750,2800,2850,2000
+1119 IF STP(O$(I,5),1)<>"" AND O$(I,2)<>"L_" THEN GOSUB 7550; REM "Set values b ased on params if needed                                                   
+1190 NEXT I
+1195 GOTO 9900
+2000 REM 'DO NOTHING SUBROUTINE                                             
+2095 RETURN 
+2100 REM "FONT0-FONT9 Font choice, set font type based on last character of  option                                                                
+2110 D1$(2,1)=O$(I+4,1)
+2118 REM "LET D1$="H14"+$0D$+D1$                                            
+2145 RETURN 
+2250 REM "PSTNT - PostNet code                                              
+2255 D1$(2,1)="p"
+2295 RETURN 
+2300 REM "BC39 - Barcode 3 of 9                                             
+2305 D1$(2,1)="A"
+2310 IF FN%NMV(D$)=1 THEN D1$=D1$(1,15)+D$+$0D$; REM "Redo data part to removenon alphabetic characters IF THIS IS A NUMERIC                           
+2345 RETURN 
+2350 REM "EAN8  - EAN 8 digit barcode        
+2355 D1$(2,1)="G"
+2395 RETURN 
+2400 REM "EAN13 - EAN 13 digit barcode       
+2405 D1$(2,1)="F"
+2445 RETURN 
+2450 REM "UPC-A - UPC-A 10 digit barcode     
+2455 D1$(2,1)="B"
+2495 RETURN 
+2500 REM "UPC-E - UPC-E 6 digit barcode      
+2505 D1$(2,1)="C"
+2545 RETURN 
+2550 REM "2OF5 - Interleaved 2 of 5 barcode  
+2555 D1$(2,1)="D"
+2595 RETURN 
+2600 REM "C128A - Code 128 set A             
+2605 D1$(2,1)="S"
+2645 RETURN 
+2650 REM "C128B - Code 128 Set B             
+2655 D1$(2,1)="E"
+2695 RETURN 
+2700 REM "C128C - Code 128 Set C             
+2705 D1$(2,1)="E"
+2745 RETURN 
+2750 REM "L_POS - Change ffff field to row and gggg field to column. Conver t .1/inch to .01/inch                                                  
+2755 X9=0,Y9=0; IF LEN(O1$)<8 THEN GOTO 2795
+2756 Y9=NUM(O1$(1,4),ERR=2757)*10
+2757 X9=NUM(O1$(5,4),ERR=2758)*10
+2760 D1$(8,4)=STR(X9:"0000"),D1$(12,4)=STR(Y9:"0000")
+2795 RETURN 
+2800 REM "L_BEG - Start of label indicator                                  
+2805 REM "Before label, set printer to feed after the label to tear off     
+2808 D1$=$02$+"00220"+$0D$+$02$+"f240"+$0D$+$02$+"M1300"+$0D$
+2809 REM "Start the label now                                               
+2810 D1$=D1$+$02$+"L"+$0D$
+2812 D1$=D1$+"PE"+$0D$+"SE"+$0D$
+2815 REM "Set default sizing                                                
+2816 D1$=D1$+"D11"+$0D$
+2845 RETURN 
+2850 REM "L_END - End of lable indicator                                    
+2855 D1$="E"+$0D$
+2895 RETURN 
+2920 NEXT O
+7500 REM "Decode expected NUMERIC parameters from O1$ into O() array, curre nt maximum # of parameters is set to 10. Positionality will be maintai ned. Array vluase of -9999 indicate parameters was blank or not a numb er. O1 is  highest parameter found, O2 is number of valid parameters f ound                                                                   
+7510 DIM O[10]; O1=0,O2=0,W$=O1$; REM "W$ is work string containing O 1$                                                                     
+7515 IF W$="" THEN GOTO 7535
+7520 IF LEN(W$)<=3 THEN W0$=W$,W$="" ELSE W0$=W$(1,3),W$=W$(4)
+7525 O1=O1+1; O[O1]=0; IF POS(" "<>W0$)=0 THEN GOTO 7515
+7530 O[O1]=NUM(W0$,ERR=7510),O2=O2+1; GOTO 7515
+7534 REM "Set defaults                                                      
+7535 IF O[1]=0 AND O[2]=0 THEN O[1]=1,O[2]=2; REM "Height in dots      
+7537 IF O[4]=0 THEN O[4]=4; REM "Narrow bar width in dots               
+7545 RETURN 
+7550 REM "All FIELDS have the same params etc, only a code changes, so, giv en code D1$, adjust proper elements. param 1=rotation, param 2=widthmu ltiplier, param 3=height multiplier, param 4= barcode height           
+7555 GOSUB 7500
+7560 IF O[1]<>0 THEN D1$(1,1)=STR(O[1]:"0")
+7561 IF O[2]<>0 THEN D1$(3,1)=STR(O[2]:"0")
+7562 IF O[3]<>0 THEN D1$(4,1)=STR(O[3]:"0")
+7563 IF O[4]<>0 THEN D1$(5,3)=STR(O[4]:"000")
+7595 RETURN 
+8000 REM "TESTING- Print string D1$, skipping 'es'               
+8003 PRINT @(0,18),'CE'
+8005 FOR D=1 TO LEN(D1$)
+8010 IF D1$(D,1)=$1B$ THEN PRINT "<ESC>", ELSE PRINT D1$(D,1),
+8020 NEXT D
+8040 INPUT *
+8045 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9000 REM "ERROR PROCESSING                                   
+9001 ESCAPE 
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                   
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC                                          
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES                                               
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM                                        
+9900 REM "END PROGRAM                                         
+9910 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0           
+9911 ESCAPE 
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

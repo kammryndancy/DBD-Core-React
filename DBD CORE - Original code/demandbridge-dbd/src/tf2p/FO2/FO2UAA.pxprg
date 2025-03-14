@@ -1,0 +1,219 @@
+0010 REM "<FO2UAA> Update Order Requisition Gateway
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 09/05/13 - 8.387777 - tma - SSP# 265494
+0037 REM "265494-Getting error in order req maintenance                      
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 REM "Q0$="" unless called from maintenance (FO2DAA), then it's A$(1,30), which is the key to FO0..., Q1$="*"
+0100 SETERR 9000
+0110 X0$="FO2UAA",X1$="Update Order Requisition Gateway"
+0120 DIM Z0$(80,"-"),S0$(40)
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 IF Q0$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$; REM "FO0-Header
+0320 IOLIST B$,B[0],B[1]; REM "FO2-Lines
+0330 IOLIST A1$; REM "Temp Header-used for call to FM2RTO
+0340 IOLIST B1$,B1[0],B1[1]; REM "Temp Lines-used for call to FM2RTO
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15],E[16],E[17],E[18],E[19],E[20],E[21],E[22],E[23],E[24],E[25],E[26],E[27],E[28],E[29],E[30],E[31],E[32]; REM "IC0, used for validity check
+0360 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29],G[30]; REM "FM1, used for validity check
+0370 IOLIST H$; REM "FO5-Parameters
+0380 IOLIST I$,I[0],I[1],I[2],I[3],I[4],I[5],I[6],I[7],I[8],I[9],I[10],I[11],I[12],I[13],I[14],I[15]; REM "FM4
+0500 REM " Files
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "Slots 10 & 11 will be used for temp files!!!, 12 will be used for text file in 7600's
+0510 Z$="01L FO0... 02L FO2... 03O AR1... 04O FM0... 05O FM1... 06O IC0... 07O FO5... 08O FM4... 09O AR5... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 DIM GOR$(50); READ (Z[13],KEY=X3$(9,3)+"GOR",DOM=0551)GOR$
+0555 FILE_CREATED$="N"
+0600 REM "
+0610 IF Q0$="" THEN IF Q1$<>"G" THEN GOSUB 6000
+0620 IF Q0$="" THEN IF Q1$<>"G" THEN GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "Create Temp Files used for call to FM2RTO
+0705 K9$="[512]{H}"
+0710 CALL "ZZ2SRT",X3$,X4$,Z[13],Z[1],24,K9$,0,"NN"
+0715 Z$="10O "+K9$
+0717 J1$=K9$; REM "Will use in 9900's to erase temp file
+0720 K9$="[256]{L}"
+0725 CALL "ZZ2SRT",X3$,X4$,Z[13],Z[2],27,K9$,0,"NN"
+0730 Z$=Z$+"11O "+K9$
+0732 J2$=K9$; REM "Will use in 9900's to erase temp file
+0735 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0736,9900
+0900 DIM A$(376),B$(230),B[2]; REM " SSP# 139226 - LOCKED UNDER THIS CALL SO CHANGE WILL BE RELEASED
+0990 READ (Z[1],KEY="",DOM=0991)
+1000 REM "Process FO0
+1005 IF Q0$<>"" THEN READ (Z[1],KEY=Q0$,DOM=9900)IOL=0310; GOTO 1020
+1010 K1$=KEY(Z[1],END=5000); READ (Z[1],KEY=K1$,DOM=1010)IOL=0310
+1015 IF Q0$="" THEN IF Q1$<>"G" THEN C=C+1; IF MOD(C,T0)=0 THEN GOSUB 8150
+1020 IF A$(149,1)<>"Y" AND STP(A$(150,8),3," ")="" THEN GOSUB 2000; GOSUB 2100; REM "Not on hold, no order number, ok to create req
+1090 IF Q0$<>"" THEN GOTO 9900
+1095 GOTO 1010
+2000 REM "Write FO0 header to temp file
+2002 IF Q0$<>"" THEN GOSUB 7000; REM "Called from maintenance, need validity checks
+2005 DIM A1$(426),A1[1]; REM " SSP# 139226
+2007 A1$(1,24)=A$(1,24); REM "Cust code, location, first 10 of req#
+2010 A1$(25,1)=A$(149,1); REM "Req on hold?
+2012 A1$(33,6)=A$(159,6); REM "Req date
+2015 A1$(39,30)=A$(51,30); REM "Attn name
+2017 A1$(69,15)=A$(88,15); REM "Ship via
+2020 A1$(84,6)=A$(81,6); REM "Needed by
+2022 A1$(138,5)=A$(25,5); REM "Last 5 of req number
+2025 A1$(143,20)=A$(31,20); REM "Ordered by
+2027 A1$(163,1)=A$(87,1); REM "Ship Via Code
+2030 A1$(164,1)=A$(103,1); REM "How to ship code
+2032 A1$(165,15)=A$(104,15); REM "How to ship desc
+2035 A1$(180,30)=A$(119,30); REM "Inside delivery/Ship with
+2037 A1$(210,8)=A$(150,8); REM "Order number
+2040 A1$(218,87)=A$(204,87); REM "Manual ship-to info
+2042 A1$(305,35)=A$(291,35); REM "Mark for
+2045 A1$(340,10)=A$(326,10); REM "Sales tax code
+2047 A1$(350,1)=A$(336,1); REM "Taxable?
+2050 A1$(351,35)=A$(341,35); REM "Manual ship-to customer name
+2060 A1$(386,40)=A$(376,40); REM " Email Address - SSP# 139226
+2090 WRITE (Z[10],KEY=A1$(1,24))IOL=0330
+2095 RETURN 
+2100 REM "Write FO2 lines to temp file
+2110 DIM B1$(232),B1[2]; REM " SSP# 139226 - LOCKED UNDER THIS CALL SO CHANGE WILL BE RELEASED
+2115 READ (Z[2],KEY=A$(1,30),DOM=2116)
+2120 READ (Z[2],END=2190)IOL=0320
+2125 IF B$(1,30)<>A$(1,30) THEN GOSUB 2200; GOTO 2195
+2127 IF Q0$<>"" THEN GOSUB 7100; REM "Called from maintenance, need validity checks
+2130 B1$(1,24)=B$(1,24); REM "Cust code, location, first 10 of req#
+2135 B1$(25,3)=B$(31,3); REM " Line number
+2140 B1$(28,1)=B$(34,1); IF B1$(28,1)="X" THEN B1$(28,1)="C"; REM "Line type
+2145 B1$(29,20)=B$(35,20); REM "Item code
+2150 B1$(67,40)=B$(73,40); REM "Item description
+2155 B1$(107,4)=B$(113,4); REM "Unit
+2160 B1$(111,4)=B$(117,4); REM "Ship from whse
+2165 B1[0]=B[0]; REM "Quantity
+2170 B1[1]=B[1]; REM "Qty per unit
+2175 B1$(115,50)=B$(122,50); REM "Shipment Confirmation Info
+2176 B1$(228,5)=B$(172,5); REM " Print Flags - SSP# 139226
+2180 WRITE (Z[11],KEY=B1$(1,27))IOL=0340
+2185 GOTO 2120
+2190 GOSUB 2200
+2195 RETURN 
+2200 REM "Call FM2RTO to create reqs
+2205 F1$=FN%FID$(Z[10]),F1$=F1$(4,6),F2$=FN%FID$(Z[11]),F2$=F2$(4,6); REM "F1$ is temp header file, F2$ is temp lines file      ! [205703]-changed FID() to FN%FID$()
+2210 READ (Z[10],KEY="",DOM=2211)
+2215 READ (Z[10])IOL=0330
+2217 DIM H$(120); FIND (Z[7],KEY=A1$(1,10),DOM=2218)IOL=0370; REM "Customer GOR parameters
+2218 OPTION$=""; GOSUB 7500; REM "Added OPTION$,WO#84245,4/18/97. Set OPTION$ and create files as necessary
+2219 IF H$(78,1)<>" " THEN OPTION$+="A"+H$(78,1) ! WO157163, Alternate order number sequence
+2220 IF A1$(25,1)<>"Y" AND A1$(26,1)<>"Y" THEN CALL "FM2RTO",X3$,X4$,0,A1$,A1{ALL},F1$,F2$,OPTION$
+2225 IF A1$(26,1)="Y" THEN A$(150,8)=F1$,A$(196,1)="0",A$(158,1)=A1$(27,1); WRITE (Z[1],KEY=A$(1,30))IOL=0310; REM "Order number, Status is OK, Contains B/O Lotted Items
+2235 CALL "ZZINIT",STR(Z[10]:"00")+STR(Z[11]:"00"); REM "Init temp files each time in case of dup req #'s
+2240 IF STP(A$(291,35),3," ")="" THEN GOTO 2241 ELSE IF A1$(26,1)="Y" AND GOR$(15,1)="D" THEN GOSUB 7600; REM "WO118747
+2295 RETURN 
+5000 REM "EOJ
+5010 IF Q1$<>"G" THEN T=C; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Processing Order Requisition Gateway Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Called from the maintenance, need to do validity checks before calling FM2RTO
+7005 S1$="0"; REM "Status code
+7010 READ (Z[3],KEY=A$(1,10),DOM=7011); GOTO 7013
+7011 S1$="1",A$(149,1)="Y"; REM "Got the DOM, invalid cust code
+7013 IF POS(A$(196,1)="CDEFI")<>0 THEN S1$="I",A$(149,1)="Y"; GOTO 7070; REM "If this req was previously on hold because of an invalid blank location, set status, put on hold
+7015 IF STP(A$(11,4),3," ")="" THEN GOTO 7020
+7017 READ (Z[4],KEY="C"+A$(1,14),DOM=7018); GOTO 7020
+7018 IF S1$="1" THEN S1$="3" ELSE S1$="2",A$(149,1)="Y"; REM "Got the DOM, invalid location code
+7020 IF STP(A$(326,10),3," ")="" THEN GOTO 7025 ELSE READ (Z[9],KEY=A$(326,10),DOM=7021); GOTO 7025
+7021 IF S1$="0" THEN S1$="G",A$(149,1)="Y" ELSE S1$="H"
+7070 A$(196,1)=S1$; WRITE (Z[1],KEY=A$(1,30))IOL=0310
+7080 DIM H$(76); FIND (Z[7],KEY=A$(1,10),DOM=7081)IOL=0370; REM "Parameters
+7082 IF STP(H$(11,10),3," ")="" THEN F3=0 ELSE F3=1; REM "Alt. inv. customer
+7085 LIMIT=0; LIMIT=NUM(H$(71,3),ERR=7086); REM "Set % of mthly avg as limit
+7095 RETURN 
+7100 REM "Validity checks for FO2 file
+7110 DIM E$(188),E[33]; READ (Z[6],KEY=B$(35,20),DOM=7111)IOL=0350; B$(121,1)=" "; IF B$(34,1)="I" AND H$(75,1)<>"Y" THEN B$(121,1)="8",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; GOTO 7115 ELSE GOTO 7113
+7111 B$(121,1)="7",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; GOTO 7120; REM "Got the DOM, invalid item code
+7113 IF POS(" "<>B$(35,10))>0 THEN IF (F3=1 AND (B$(35,10)<>H$(11,10) AND B$(35,10)<>A$(1,10))) OR (F3=0 AND B$(35,10)<>A$(1,10)) THEN B$(121,1)="6",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; GOTO 7125
+7115 IF B$(34,1)=" " OR B$(34,1)="I" THEN GOTO 7120 ELSE IF B$(34,1)="C" OR B$(34,1)="X" THEN DIM G$(350),G[31]; READ (Z[5],KEY=B$(35,20),DOM=7116)IOL=0360; IF G$(311,6)<>"      " THEN GOSUB 7200; GOTO 7120 ELSE GOTO 7120; REM "Check item security
+7116 B$(121,1)="A",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; REM "Got the DOM, no item master
+7120 IF B[0]>0 AND LIMIT>0 AND B$(121)=" " THEN DIM I$(100),I[16]; FIND (Z[8],KEY=B$(1,10)+B$(45,10)+B$(11,4),DOM=7121)IOL=0380; IF I[0]>0 AND B[0]>LIMIT*I[0]/100 THEN B$(121,1)="B",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; REM "Check quantity against limit from parms
+7125 WRITE (Z[2],KEY=B$(1,33))IOL=0320
+7195 RETURN 
+7200 REM "Item security
+7210 Q$=G$(311,6); FOR X=1 TO POS("  "=Q$,2) STEP 2
+7220 IF POS(Q$(X,2)=H$(51,20),2)=0 THEN EXITTO 7230 ELSE NEXT X; RETURN 
+7230 B$(121,1)="9",A$(149,1)="Y",A1$(25,1)="Y"; WRITE (Z[1],KEY=A$(1,30))IOL=0310; WRITE (Z[10],KEY=A1$(1,24))IOL=0330; RETURN 
+7500 REM "Create RS3 file for exceptions if necessary
+7510 IF H$(76,1)="Y" THEN OPTION$=OPTION$+"E" ELSE GOTO 7550; REM "No BO'ing, exception report
+7520 IF RS3_FILE$>"" THEN GOTO 7590; REM "RS3 file already created
+7525 RS3_FILE$="RS3"+FID(0)
+7530 IF Q0$>"" THEN CLOSE (14); OPEN (14,ERR=7531)RS3_FILE$; CLOSE (14); GOTO 7590; REM "Coming from maintenance, file already out there
+7535 ERASE RS3_FILE$,ERR=7536; GOTO 7535
+7540 DIRECT RS3_FILE$,24,0,128,0,0
+7550 IF H$(77,1)="Y" THEN OPTION$=OPTION$+"W"; REM "WO105427, try opposite whse
+7590 RETURN 
+7600 REM "WO118747, Create text file for company 288, mark for + order no
+7610 IF FILE_CREATED$="Y" THEN GOTO 7650
+7615 TIME$=STR(TIM:"00.00")
+7620 TEXT_FILE$=X3$(23,4)+TIME$(1,2)+TIME$(4,2)+STR(RND(1000):"000"),DIR$=HWD+DLM+"data" ! SSP#265494
+7625 SERIAL DIR$+"/"+TEXT_FILE$,9,0,ERR=7626; GOTO 7635
+7630 TEXT_FILE$(7,2)=STR(NUM(TEXT_FILE$(7,2))+1:"00"); GOTO 7625
+7635 ! Z$="12O "+TEXT_FILE$
+7640 ! CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7641,7690
+7642 FILE_CREATED$="Y"
+7645 Z[12]=HFN; OPEN LOCK (Z[12],OPT="TEXT")DIR$+"/"+TEXT_FILE$
+7650 CALL "ZZDISP","AX",A$(150,8),"O/P",X3$,ORD$,"",0,0,X4$
+7655 MARK_FOR$=STP(A$(291,35),1)
+7660 RECORD$=QUO+MARK_FOR$+QUO+","+QUO+ORD$+QUO
+7665 RECORD$=RECORD$+$0D0A$; REM "SSP120999
+7670 PRINT (Z[12])RECORD$
+7690 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 ERASE J1$,ERR=9930; ERASE J2$,ERR=9930; REM "Erase temp files created in 700's
+9925 IF FILE_CREATED$="Y" THEN CLOSE (Z[12]); DIR$=HWD+DLM+"data"; RENAME DIR$+DLM+TEXT_FILE$ TO DIR$+DLM+"TF"+TEXT_FILE$; REM "WO118747
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56002 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$
+56003 REM "265494-Getting error in order req maintenance                      ,File name the same

@@ -1,0 +1,2847 @@
+<PxTable>
+ TableName=ZY8
+ TableKey=K1578343566
+ FileCreate=KEYED "ZY8",2,[1:63:3]+[1:1:2],[1:3:60:"C"]+[1:1:2],[1:66:60:"C"]+[1:1:2],[1:126:60:"C"]+[1:1:2],[1:186:60:"C"]+[1:1:2],0,-640,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZY8_Country"
+    PHYSICALPATH$="2020/01/06 15:45"
+    LASTCHANGEBY$="Chaitanya.Guntur"
+    LASTUPDATEDFILE$="2020/01/06 15:46:26-Chaitanya.Guntur"
+    DESCRIPTION$="ZY8_Country"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST COUNTRY_CODE$:[LEN(2)]"
+    NAME$="COUNTRY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COUNTRY_CD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A,2:2:A,3:2:A,4:2:A,5:2:A,6:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST COUNTRY_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="COUNTRY_CODE"
+    DESCRIPTION$="=MSG("+QUO+"COUNTRY_CD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A,2:2:A,3:2:A,4:2:A,5:2:A,6:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST COUNTRY_DESC$:[LEN(60,SEP=SEP)]"
+    NAME$="COUNTRY_DESC"
+    DESCRIPTION$="=MSG("+QUO+"CTRY_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="3:1:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST ALPHA3_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="ALPHA3_CODE"
+    DESCRIPTION$="=MSG("+QUO+"ALPHA3_CD"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="2:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST ALT_DESC_1$:[LEN(60,SEP=SEP)]"
+    NAME$="ALT_DESC_1"
+    DESCRIPTION$="=MSG("+QUO+"ALT_DESC_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="4:1:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ALT_DESC_2$:[LEN(60,SEP=SEP)]"
+    NAME$="ALT_DESC_2"
+    DESCRIPTION$="=MSG("+QUO+"ALT_DESC_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="5:1:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ALT_DESC_3$:[LEN(60,SEP=SEP)]"
+    NAME$="ALT_DESC_3"
+    DESCRIPTION$="=MSG("+QUO+"ALT_DESC_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="6:1:AC"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST ZY8_UNUSED$:[LEN(SEP,SIZ=200)]"
+    NAME$="ZY8_UNUSED"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="200"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="AD"
+    COUNTRY_CODE$="AD"
+    COUNTRY_DESC$="Andorra                                                     "
+    ALPHA3_CODE$="AND"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AE"
+    COUNTRY_CODE$="AE"
+    COUNTRY_DESC$="United Arab Emirates                                        "
+    ALPHA3_CODE$="ARE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AF"
+    COUNTRY_CODE$="AF"
+    COUNTRY_DESC$="Afghanistan                                                 "
+    ALPHA3_CODE$="AFG"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AG"
+    COUNTRY_CODE$="AG"
+    COUNTRY_DESC$="Antigua And Barbuda                                         "
+    ALPHA3_CODE$="ATG"
+    ALT_DESC_1$="Antigua & Barbuda                                           "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AI"
+    COUNTRY_CODE$="AI"
+    COUNTRY_DESC$="Anguilla                                                    "
+    ALPHA3_CODE$="AIA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AL"
+    COUNTRY_CODE$="AL"
+    COUNTRY_DESC$="Albania                                                     "
+    ALPHA3_CODE$="ALB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AM"
+    COUNTRY_CODE$="AM"
+    COUNTRY_DESC$="Armenia                                                     "
+    ALPHA3_CODE$="ARM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AO"
+    COUNTRY_CODE$="AO"
+    COUNTRY_DESC$="Angola                                                      "
+    ALPHA3_CODE$="AGO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AQ"
+    COUNTRY_CODE$="AQ"
+    COUNTRY_DESC$="Antarctica                                                  "
+    ALPHA3_CODE$="ATA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR"
+    COUNTRY_CODE$="AR"
+    COUNTRY_DESC$="Argentina                                                   "
+    ALPHA3_CODE$="ARG"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AS"
+    COUNTRY_CODE$="AS"
+    COUNTRY_DESC$="American Samoa                                              "
+    ALPHA3_CODE$="ASM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AT"
+    COUNTRY_CODE$="AT"
+    COUNTRY_DESC$="Austria                                                     "
+    ALPHA3_CODE$="AUT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AU"
+    COUNTRY_CODE$="AU"
+    COUNTRY_DESC$="Australia                                                   "
+    ALPHA3_CODE$="AUS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AW"
+    COUNTRY_CODE$="AW"
+    COUNTRY_DESC$="Aruba                                                       "
+    ALPHA3_CODE$="ABW"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AZ"
+    COUNTRY_CODE$="AZ"
+    COUNTRY_DESC$="Azerbaijan                                                  "
+    ALPHA3_CODE$="AZE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BA"
+    COUNTRY_CODE$="BA"
+    COUNTRY_DESC$="Bosnia And Herzegovina                                      "
+    ALPHA3_CODE$="BIH"
+    ALT_DESC_1$="Bosnia                                                      "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BB"
+    COUNTRY_CODE$="BB"
+    COUNTRY_DESC$="Barbados                                                    "
+    ALPHA3_CODE$="BRB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BD"
+    COUNTRY_CODE$="BD"
+    COUNTRY_DESC$="Bangladesh                                                  "
+    ALPHA3_CODE$="BGD"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BE"
+    COUNTRY_CODE$="BE"
+    COUNTRY_DESC$="Belgium                                                     "
+    ALPHA3_CODE$="BEL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BF"
+    COUNTRY_CODE$="BF"
+    COUNTRY_DESC$="Burkina Faso                                                "
+    ALPHA3_CODE$="BFA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BG"
+    COUNTRY_CODE$="BG"
+    COUNTRY_DESC$="Bulgaria                                                    "
+    ALPHA3_CODE$="BGR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BH"
+    COUNTRY_CODE$="BH"
+    COUNTRY_DESC$="Bahrain                                                     "
+    ALPHA3_CODE$="BHR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BI"
+    COUNTRY_CODE$="BI"
+    COUNTRY_DESC$="Burundi                                                     "
+    ALPHA3_CODE$="BDI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BJ"
+    COUNTRY_CODE$="BJ"
+    COUNTRY_DESC$="Benin                                                       "
+    ALPHA3_CODE$="BEN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BL"
+    COUNTRY_CODE$="BL"
+    COUNTRY_DESC$="Saint Bartholemy                                            "
+    ALPHA3_CODE$="BLM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BM"
+    COUNTRY_CODE$="BM"
+    COUNTRY_DESC$="Bermuda                                                     "
+    ALPHA3_CODE$="BMU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BN"
+    COUNTRY_CODE$="BN"
+    COUNTRY_DESC$="Brunei Darussalam                                           "
+    ALPHA3_CODE$="BRN"
+    ALT_DESC_1$="Brunei                                                      "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BO"
+    COUNTRY_CODE$="BO"
+    COUNTRY_DESC$="Bolivia                                                     "
+    ALPHA3_CODE$="BOL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BQ"
+    COUNTRY_CODE$="BQ"
+    COUNTRY_DESC$="Bonaire, Sint Eustatius And Saba                            "
+    ALPHA3_CODE$="BES"
+    ALT_DESC_1$="Caribbean Netherlands                                       "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BR"
+    COUNTRY_CODE$="BR"
+    COUNTRY_DESC$="Brazil                                                      "
+    ALPHA3_CODE$="BRA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BS"
+    COUNTRY_CODE$="BS"
+    COUNTRY_DESC$="Bahamas                                                     "
+    ALPHA3_CODE$="BHS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BT"
+    COUNTRY_CODE$="BT"
+    COUNTRY_DESC$="Bhutan                                                      "
+    ALPHA3_CODE$="BTN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BV"
+    COUNTRY_CODE$="BV"
+    COUNTRY_DESC$="Bouvet Island                                               "
+    ALPHA3_CODE$="BVT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BW"
+    COUNTRY_CODE$="BW"
+    COUNTRY_DESC$="Botswana                                                    "
+    ALPHA3_CODE$="BWA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BY"
+    COUNTRY_CODE$="BY"
+    COUNTRY_DESC$="Belarus                                                     "
+    ALPHA3_CODE$="BLR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BZ"
+    COUNTRY_CODE$="BZ"
+    COUNTRY_DESC$="Belize                                                      "
+    ALPHA3_CODE$="BLZ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CA"
+    COUNTRY_CODE$="CA"
+    COUNTRY_DESC$="Canada                                                      "
+    ALPHA3_CODE$="CAN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CC"
+    COUNTRY_CODE$="CC"
+    COUNTRY_DESC$="Cocos Islands                                               "
+    ALPHA3_CODE$="CCK"
+    ALT_DESC_1$="Keeling Islands                                             "
+    ALT_DESC_2$="Cocos                                                       "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CD"
+    COUNTRY_CODE$="CD"
+    COUNTRY_DESC$="Congo                                                       "
+    ALPHA3_CODE$="COD"
+    ALT_DESC_1$="Democratic Republic Of The Congo                            "
+    ALT_DESC_2$="Kinshasa                                                    "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CF"
+    COUNTRY_CODE$="CF"
+    COUNTRY_DESC$="Central African Republic                                    "
+    ALPHA3_CODE$="CAF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CG"
+    COUNTRY_CODE$="CG"
+    COUNTRY_DESC$="Congo                                                       "
+    ALPHA3_CODE$="COG"
+    ALT_DESC_1$="Brazzaville                                                 "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CH"
+    COUNTRY_CODE$="CH"
+    COUNTRY_DESC$="Switzerland                                                 "
+    ALPHA3_CODE$="CHE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CI"
+    COUNTRY_CODE$="CI"
+    COUNTRY_DESC$="Ivory Coast                                                 "
+    ALPHA3_CODE$="CIV"
+    ALT_DESC_1$="Cote D'ivoire                                               "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CK"
+    COUNTRY_CODE$="CK"
+    COUNTRY_DESC$="Cook Islands                                                "
+    ALPHA3_CODE$="COK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CL"
+    COUNTRY_CODE$="CL"
+    COUNTRY_DESC$="Chile                                                       "
+    ALPHA3_CODE$="CHL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CM"
+    COUNTRY_CODE$="CM"
+    COUNTRY_DESC$="Cameroon                                                    "
+    ALPHA3_CODE$="CMR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CN"
+    COUNTRY_CODE$="CN"
+    COUNTRY_DESC$="China                                                       "
+    ALPHA3_CODE$="CHN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CO"
+    COUNTRY_CODE$="CO"
+    COUNTRY_DESC$="Colombia                                                    "
+    ALPHA3_CODE$="COL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CR"
+    COUNTRY_CODE$="CR"
+    COUNTRY_DESC$="Costa Rica                                                  "
+    ALPHA3_CODE$="CRI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CU"
+    COUNTRY_CODE$="CU"
+    COUNTRY_DESC$="Cuba                                                        "
+    ALPHA3_CODE$="CUB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CV"
+    COUNTRY_CODE$="CV"
+    COUNTRY_DESC$="Cabo Verde                                                  "
+    ALPHA3_CODE$="CPV"
+    ALT_DESC_1$="Cape Verde                                                  "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CW"
+    COUNTRY_CODE$="CW"
+    COUNTRY_DESC$="Curacao                                                     "
+    ALPHA3_CODE$="CUW"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CX"
+    COUNTRY_CODE$="CX"
+    COUNTRY_DESC$="Christmas Island                                            "
+    ALPHA3_CODE$="CXR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CY"
+    COUNTRY_CODE$="CY"
+    COUNTRY_DESC$="Cyprus                                                      "
+    ALPHA3_CODE$="CYP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CZ"
+    COUNTRY_CODE$="CZ"
+    COUNTRY_DESC$="Czechia                                                     "
+    ALPHA3_CODE$="CZE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DE"
+    COUNTRY_CODE$="DE"
+    COUNTRY_DESC$="Germany                                                     "
+    ALPHA3_CODE$="DEU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DJ"
+    COUNTRY_CODE$="DJ"
+    COUNTRY_DESC$="Djibouti                                                    "
+    ALPHA3_CODE$="DJI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DK"
+    COUNTRY_CODE$="DK"
+    COUNTRY_DESC$="Denmark                                                     "
+    ALPHA3_CODE$="DNK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DM"
+    COUNTRY_CODE$="DM"
+    COUNTRY_DESC$="Dominica                                                    "
+    ALPHA3_CODE$="DMA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DO"
+    COUNTRY_CODE$="DO"
+    COUNTRY_DESC$="Dominican Republic                                          "
+    ALPHA3_CODE$="DOM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="DZ"
+    COUNTRY_CODE$="DZ"
+    COUNTRY_DESC$="Algeria                                                     "
+    ALPHA3_CODE$="DZA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EC"
+    COUNTRY_CODE$="EC"
+    COUNTRY_DESC$="Ecuador                                                     "
+    ALPHA3_CODE$="ECU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EE"
+    COUNTRY_CODE$="EE"
+    COUNTRY_DESC$="Estonia                                                     "
+    ALPHA3_CODE$="EST"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EG"
+    COUNTRY_CODE$="EG"
+    COUNTRY_DESC$="Egypt                                                       "
+    ALPHA3_CODE$="EGY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EH"
+    COUNTRY_CODE$="EH"
+    COUNTRY_DESC$="Western Sahara                                              "
+    ALPHA3_CODE$="ESH"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ER"
+    COUNTRY_CODE$="ER"
+    COUNTRY_DESC$="Eritrea                                                     "
+    ALPHA3_CODE$="ERI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ES"
+    COUNTRY_CODE$="ES"
+    COUNTRY_DESC$="Spain                                                       "
+    ALPHA3_CODE$="ESP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ET"
+    COUNTRY_CODE$="ET"
+    COUNTRY_DESC$="Ethiopia                                                    "
+    ALPHA3_CODE$="ETH"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FI"
+    COUNTRY_CODE$="FI"
+    COUNTRY_DESC$="Finland                                                     "
+    ALPHA3_CODE$="FIN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FJ"
+    COUNTRY_CODE$="FJ"
+    COUNTRY_DESC$="Fiji                                                        "
+    ALPHA3_CODE$="FJI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FK"
+    COUNTRY_CODE$="FK"
+    COUNTRY_DESC$="Falkland Islands                                            "
+    ALPHA3_CODE$="FLK"
+    ALT_DESC_1$="Malvinas                                                    "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM"
+    COUNTRY_CODE$="FM"
+    COUNTRY_DESC$="Micronesia                                                  "
+    ALPHA3_CODE$="FSM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FO"
+    COUNTRY_CODE$="FO"
+    COUNTRY_DESC$="Faroe Islands                                               "
+    ALPHA3_CODE$="FRO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FR"
+    COUNTRY_CODE$="FR"
+    COUNTRY_DESC$="France                                                      "
+    ALPHA3_CODE$="FRA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GA"
+    COUNTRY_CODE$="GA"
+    COUNTRY_DESC$="Gabon                                                       "
+    ALPHA3_CODE$="GAB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GB"
+    COUNTRY_CODE$="GB"
+    COUNTRY_DESC$="Great Britain                                               "
+    ALPHA3_CODE$="GBR"
+    ALT_DESC_1$="United Kingdom                                              "
+    ALT_DESC_2$="Uk                                                          "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GD"
+    COUNTRY_CODE$="GD"
+    COUNTRY_DESC$="Grenada                                                     "
+    ALPHA3_CODE$="GRD"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GE"
+    COUNTRY_CODE$="GE"
+    COUNTRY_DESC$="Georgia                                                     "
+    ALPHA3_CODE$="GEO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GF"
+    COUNTRY_CODE$="GF"
+    COUNTRY_DESC$="French Guiana                                               "
+    ALPHA3_CODE$="GUF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GG"
+    COUNTRY_CODE$="GG"
+    COUNTRY_DESC$="Guernsey                                                    "
+    ALPHA3_CODE$="GGY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GH"
+    COUNTRY_CODE$="GH"
+    COUNTRY_DESC$="Ghana                                                       "
+    ALPHA3_CODE$="GHA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GI"
+    COUNTRY_CODE$="GI"
+    COUNTRY_DESC$="Gibraltar                                                   "
+    ALPHA3_CODE$="GIB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GL"
+    COUNTRY_CODE$="GL"
+    COUNTRY_DESC$="Greenland                                                   "
+    ALPHA3_CODE$="GRL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GM"
+    COUNTRY_CODE$="GM"
+    COUNTRY_DESC$="Gambia                                                      "
+    ALPHA3_CODE$="GMB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GN"
+    COUNTRY_CODE$="GN"
+    COUNTRY_DESC$="Guinea                                                      "
+    ALPHA3_CODE$="GIN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GP"
+    COUNTRY_CODE$="GP"
+    COUNTRY_DESC$="Guadeloupe                                                  "
+    ALPHA3_CODE$="GLP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GQ"
+    COUNTRY_CODE$="GQ"
+    COUNTRY_DESC$="Equatorial Guinea                                           "
+    ALPHA3_CODE$="GNQ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GR"
+    COUNTRY_CODE$="GR"
+    COUNTRY_DESC$="Greece                                                      "
+    ALPHA3_CODE$="GRC"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GS"
+    COUNTRY_CODE$="GS"
+    COUNTRY_DESC$="South Georgia And The South Sandwich Islands                "
+    ALPHA3_CODE$="SGS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GT"
+    COUNTRY_CODE$="GT"
+    COUNTRY_DESC$="Guatemala                                                   "
+    ALPHA3_CODE$="GTM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GU"
+    COUNTRY_CODE$="GU"
+    COUNTRY_DESC$="Guam                                                        "
+    ALPHA3_CODE$="GUM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GW"
+    COUNTRY_CODE$="GW"
+    COUNTRY_DESC$="Guinea-Bissau                                               "
+    ALPHA3_CODE$="GNB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="GY"
+    COUNTRY_CODE$="GY"
+    COUNTRY_DESC$="Guyana                                                      "
+    ALPHA3_CODE$="GUY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HK"
+    COUNTRY_CODE$="HK"
+    COUNTRY_DESC$="Hong Kong                                                   "
+    ALPHA3_CODE$="HKG"
+    ALT_DESC_1$="China, Hong Kong Special Administrative Region              "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HM"
+    COUNTRY_CODE$="HM"
+    COUNTRY_DESC$="Heard Island And Mcdonald Islands                           "
+    ALPHA3_CODE$="HMD"
+    ALT_DESC_1$="Heard & Mcdonald Islands                                    "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HN"
+    COUNTRY_CODE$="HN"
+    COUNTRY_DESC$="Honduras                                                    "
+    ALPHA3_CODE$="HND"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HR"
+    COUNTRY_CODE$="HR"
+    COUNTRY_DESC$="Croatia                                                     "
+    ALPHA3_CODE$="HRV"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HT"
+    COUNTRY_CODE$="HT"
+    COUNTRY_DESC$="Haiti                                                       "
+    ALPHA3_CODE$="HTI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="HU"
+    COUNTRY_CODE$="HU"
+    COUNTRY_DESC$="Hungary                                                     "
+    ALPHA3_CODE$="HUN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ID"
+    COUNTRY_CODE$="ID"
+    COUNTRY_DESC$="Indonesia                                                   "
+    ALPHA3_CODE$="IDN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IE"
+    COUNTRY_CODE$="IE"
+    COUNTRY_DESC$="Ireland                                                     "
+    ALPHA3_CODE$="IRL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IL"
+    COUNTRY_CODE$="IL"
+    COUNTRY_DESC$="Israel                                                      "
+    ALPHA3_CODE$="ISR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IM"
+    COUNTRY_CODE$="IM"
+    COUNTRY_DESC$="Isle Of Man                                                 "
+    ALPHA3_CODE$="IMN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IN"
+    COUNTRY_CODE$="IN"
+    COUNTRY_DESC$="India                                                       "
+    ALPHA3_CODE$="IND"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IO"
+    COUNTRY_CODE$="IO"
+    COUNTRY_DESC$="British Indian Ocean Territory                              "
+    ALPHA3_CODE$="IOT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IQ"
+    COUNTRY_CODE$="IQ"
+    COUNTRY_DESC$="Iraq                                                        "
+    ALPHA3_CODE$="IRQ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IR"
+    COUNTRY_CODE$="IR"
+    COUNTRY_DESC$="Iran                                                        "
+    ALPHA3_CODE$="IRN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS"
+    COUNTRY_CODE$="IS"
+    COUNTRY_DESC$="Iceland                                                     "
+    ALPHA3_CODE$="ISL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IT"
+    COUNTRY_CODE$="IT"
+    COUNTRY_DESC$="Italy                                                       "
+    ALPHA3_CODE$="ITA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JE"
+    COUNTRY_CODE$="JE"
+    COUNTRY_DESC$="Jersey                                                      "
+    ALPHA3_CODE$="JEY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JM"
+    COUNTRY_CODE$="JM"
+    COUNTRY_DESC$="Jamaica                                                     "
+    ALPHA3_CODE$="JAM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JO"
+    COUNTRY_CODE$="JO"
+    COUNTRY_DESC$="Jordan                                                      "
+    ALPHA3_CODE$="JOR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JP"
+    COUNTRY_CODE$="JP"
+    COUNTRY_DESC$="Japan                                                       "
+    ALPHA3_CODE$="JPN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KE"
+    COUNTRY_CODE$="KE"
+    COUNTRY_DESC$="Kenya                                                       "
+    ALPHA3_CODE$="KEN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KG"
+    COUNTRY_CODE$="KG"
+    COUNTRY_DESC$="Kyrgyzstan                                                  "
+    ALPHA3_CODE$="KGZ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KH"
+    COUNTRY_CODE$="KH"
+    COUNTRY_DESC$="Cambodia                                                    "
+    ALPHA3_CODE$="KHM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KI"
+    COUNTRY_CODE$="KI"
+    COUNTRY_DESC$="Kiribati                                                    "
+    ALPHA3_CODE$="KIR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KM"
+    COUNTRY_CODE$="KM"
+    COUNTRY_DESC$="Comoros                                                     "
+    ALPHA3_CODE$="COM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KN"
+    COUNTRY_CODE$="KN"
+    COUNTRY_DESC$="Saint Kitts And Nevis                                       "
+    ALPHA3_CODE$="KNA"
+    ALT_DESC_1$="St. Kitts & Nevis                                           "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KP"
+    COUNTRY_CODE$="KP"
+    COUNTRY_DESC$="North Korea                                                 "
+    ALPHA3_CODE$="PRK"
+    ALT_DESC_1$="Democratic People's Republic Of Korea                       "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KR"
+    COUNTRY_CODE$="KR"
+    COUNTRY_DESC$="South Korea                                                 "
+    ALPHA3_CODE$="KOR"
+    ALT_DESC_1$="Republic Of Korea                                           "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KW"
+    COUNTRY_CODE$="KW"
+    COUNTRY_DESC$="Kuwait                                                      "
+    ALPHA3_CODE$="KWT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KY"
+    COUNTRY_CODE$="KY"
+    COUNTRY_DESC$="Cayman Islands                                              "
+    ALPHA3_CODE$="CYM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="KZ"
+    COUNTRY_CODE$="KZ"
+    COUNTRY_DESC$="Kazakhstan                                                  "
+    ALPHA3_CODE$="KAZ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LA"
+    COUNTRY_CODE$="LA"
+    COUNTRY_DESC$="Laos                                                        "
+    ALPHA3_CODE$="LAO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LB"
+    COUNTRY_CODE$="LB"
+    COUNTRY_DESC$="Lebanon                                                     "
+    ALPHA3_CODE$="LBN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LC"
+    COUNTRY_CODE$="LC"
+    COUNTRY_DESC$="Saint Lucia                                                 "
+    ALPHA3_CODE$="LCA"
+    ALT_DESC_1$="St. Lucia                                                   "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LI"
+    COUNTRY_CODE$="LI"
+    COUNTRY_DESC$="Liechtenstein                                               "
+    ALPHA3_CODE$="LIE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LK"
+    COUNTRY_CODE$="LK"
+    COUNTRY_DESC$="Sri Lanka                                                   "
+    ALPHA3_CODE$="LKA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LR"
+    COUNTRY_CODE$="LR"
+    COUNTRY_DESC$="Liberia                                                     "
+    ALPHA3_CODE$="LBR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LS"
+    COUNTRY_CODE$="LS"
+    COUNTRY_DESC$="Lesotho                                                     "
+    ALPHA3_CODE$="LSO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LT"
+    COUNTRY_CODE$="LT"
+    COUNTRY_DESC$="Lithuania                                                   "
+    ALPHA3_CODE$="LTU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LU"
+    COUNTRY_CODE$="LU"
+    COUNTRY_DESC$="Luxembourg                                                  "
+    ALPHA3_CODE$="LUX"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LV"
+    COUNTRY_CODE$="LV"
+    COUNTRY_DESC$="Latvia                                                      "
+    ALPHA3_CODE$="LVA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="LY"
+    COUNTRY_CODE$="LY"
+    COUNTRY_DESC$="Libya                                                       "
+    ALPHA3_CODE$="LBY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MA"
+    COUNTRY_CODE$="MA"
+    COUNTRY_DESC$="Morocco                                                     "
+    ALPHA3_CODE$="MAR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MC"
+    COUNTRY_CODE$="MC"
+    COUNTRY_DESC$="Monaco                                                      "
+    ALPHA3_CODE$="MCO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MD"
+    COUNTRY_CODE$="MD"
+    COUNTRY_DESC$="Moldova                                                     "
+    ALPHA3_CODE$="MDA"
+    ALT_DESC_1$="Republic Of Moldova                                         "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ME"
+    COUNTRY_CODE$="ME"
+    COUNTRY_DESC$="Montenegro                                                  "
+    ALPHA3_CODE$="MNE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MF"
+    COUNTRY_CODE$="MF"
+    COUNTRY_DESC$="Saint Martin                                                "
+    ALPHA3_CODE$="MAF"
+    ALT_DESC_1$="St. Martin                                                  "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MG"
+    COUNTRY_CODE$="MG"
+    COUNTRY_DESC$="Madagascar                                                  "
+    ALPHA3_CODE$="MDG"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MH"
+    COUNTRY_CODE$="MH"
+    COUNTRY_DESC$="Marshall Islands                                            "
+    ALPHA3_CODE$="MHL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MK"
+    COUNTRY_CODE$="MK"
+    COUNTRY_DESC$="North Macedonia                                             "
+    ALPHA3_CODE$="MKD"
+    ALT_DESC_1$="Macedonia                                                   "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ML"
+    COUNTRY_CODE$="ML"
+    COUNTRY_DESC$="Mali                                                        "
+    ALPHA3_CODE$="MLI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MM"
+    COUNTRY_CODE$="MM"
+    COUNTRY_DESC$="Myanmar                                                     "
+    ALPHA3_CODE$="MMR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MN"
+    COUNTRY_CODE$="MN"
+    COUNTRY_DESC$="Mongolia                                                    "
+    ALPHA3_CODE$="MNG"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MO"
+    COUNTRY_CODE$="MO"
+    COUNTRY_DESC$="Macau                                                       "
+    ALPHA3_CODE$="MAC"
+    ALT_DESC_1$="China, Macao Special Administrative Region                  "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MP"
+    COUNTRY_CODE$="MP"
+    COUNTRY_DESC$="Northern Mariana Islands                                    "
+    ALPHA3_CODE$="MNP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MQ"
+    COUNTRY_CODE$="MQ"
+    COUNTRY_DESC$="Martinique                                                  "
+    ALPHA3_CODE$="MTQ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MR"
+    COUNTRY_CODE$="MR"
+    COUNTRY_DESC$="Mauritania                                                  "
+    ALPHA3_CODE$="MRT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MS"
+    COUNTRY_CODE$="MS"
+    COUNTRY_DESC$="Montserrat                                                  "
+    ALPHA3_CODE$="MSR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MT"
+    COUNTRY_CODE$="MT"
+    COUNTRY_DESC$="Malta                                                       "
+    ALPHA3_CODE$="MLT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MU"
+    COUNTRY_CODE$="MU"
+    COUNTRY_DESC$="Mauritius                                                   "
+    ALPHA3_CODE$="MUS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MV"
+    COUNTRY_CODE$="MV"
+    COUNTRY_DESC$="Maldives                                                    "
+    ALPHA3_CODE$="MDV"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MW"
+    COUNTRY_CODE$="MW"
+    COUNTRY_DESC$="Malawi                                                      "
+    ALPHA3_CODE$="MWI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MX"
+    COUNTRY_CODE$="MX"
+    COUNTRY_DESC$="Mexico                                                      "
+    ALPHA3_CODE$="MEX"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MY"
+    COUNTRY_CODE$="MY"
+    COUNTRY_DESC$="Malaysia                                                    "
+    ALPHA3_CODE$="MYS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MZ"
+    COUNTRY_CODE$="MZ"
+    COUNTRY_DESC$="Mozambique                                                  "
+    ALPHA3_CODE$="MOZ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NA"
+    COUNTRY_CODE$="NA"
+    COUNTRY_DESC$="Namibia                                                     "
+    ALPHA3_CODE$="NAM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NC"
+    COUNTRY_CODE$="NC"
+    COUNTRY_DESC$="New Caledonia                                               "
+    ALPHA3_CODE$="NCL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NE"
+    COUNTRY_CODE$="NE"
+    COUNTRY_DESC$="Niger                                                       "
+    ALPHA3_CODE$="NER"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NF"
+    COUNTRY_CODE$="NF"
+    COUNTRY_DESC$="Norfolk Island                                              "
+    ALPHA3_CODE$="NFK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NG"
+    COUNTRY_CODE$="NG"
+    COUNTRY_DESC$="Nigeria                                                     "
+    ALPHA3_CODE$="NGA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NI"
+    COUNTRY_CODE$="NI"
+    COUNTRY_DESC$="Nicaragua                                                   "
+    ALPHA3_CODE$="NIC"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NL"
+    COUNTRY_CODE$="NL"
+    COUNTRY_DESC$="Netherlands                                                 "
+    ALPHA3_CODE$="NLD"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NO"
+    COUNTRY_CODE$="NO"
+    COUNTRY_DESC$="Norway                                                      "
+    ALPHA3_CODE$="NOR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NP"
+    COUNTRY_CODE$="NP"
+    COUNTRY_DESC$="Nepal                                                       "
+    ALPHA3_CODE$="NPL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NR"
+    COUNTRY_CODE$="NR"
+    COUNTRY_DESC$="Nauru                                                       "
+    ALPHA3_CODE$="NRU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NU"
+    COUNTRY_CODE$="NU"
+    COUNTRY_DESC$="Niue                                                        "
+    ALPHA3_CODE$="NIU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NZ"
+    COUNTRY_CODE$="NZ"
+    COUNTRY_DESC$="New Zealand                                                 "
+    ALPHA3_CODE$="NZL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="OM"
+    COUNTRY_CODE$="OM"
+    COUNTRY_DESC$="Oman                                                        "
+    ALPHA3_CODE$="OMN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PA"
+    COUNTRY_CODE$="PA"
+    COUNTRY_DESC$="Panama                                                      "
+    ALPHA3_CODE$="PAN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PE"
+    COUNTRY_CODE$="PE"
+    COUNTRY_DESC$="Peru                                                        "
+    ALPHA3_CODE$="PER"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PF"
+    COUNTRY_CODE$="PF"
+    COUNTRY_DESC$="French Polynesia                                            "
+    ALPHA3_CODE$="PYF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PG"
+    COUNTRY_CODE$="PG"
+    COUNTRY_DESC$="Papua New Guinea                                            "
+    ALPHA3_CODE$="PNG"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PH"
+    COUNTRY_CODE$="PH"
+    COUNTRY_DESC$="Philippines                                                 "
+    ALPHA3_CODE$="PHL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PK"
+    COUNTRY_CODE$="PK"
+    COUNTRY_DESC$="Pakistan                                                    "
+    ALPHA3_CODE$="PAK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL"
+    COUNTRY_CODE$="PL"
+    COUNTRY_DESC$="Poland                                                      "
+    ALPHA3_CODE$="POL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PM"
+    COUNTRY_CODE$="PM"
+    COUNTRY_DESC$="Saint Pierre And Miquelon                                   "
+    ALPHA3_CODE$="SPM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PN"
+    COUNTRY_CODE$="PN"
+    COUNTRY_DESC$="Pitcairn                                                    "
+    ALPHA3_CODE$="PCN"
+    ALT_DESC_1$="Pitcairn Islands                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PR"
+    COUNTRY_CODE$="PR"
+    COUNTRY_DESC$="Puerto Rico                                                 "
+    ALPHA3_CODE$="PRI"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PS"
+    COUNTRY_CODE$="PS"
+    COUNTRY_DESC$="Palestine                                                   "
+    ALPHA3_CODE$="PSE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PT"
+    COUNTRY_CODE$="PT"
+    COUNTRY_DESC$="Portugal                                                    "
+    ALPHA3_CODE$="PRT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PW"
+    COUNTRY_CODE$="PW"
+    COUNTRY_DESC$="Palau                                                       "
+    ALPHA3_CODE$="PLW"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PY"
+    COUNTRY_CODE$="PY"
+    COUNTRY_DESC$="Paraguay                                                    "
+    ALPHA3_CODE$="PRY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QA"
+    COUNTRY_CODE$="QA"
+    COUNTRY_DESC$="Qatar                                                       "
+    ALPHA3_CODE$="QAT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RE"
+    COUNTRY_CODE$="RE"
+    COUNTRY_DESC$="Reunion                                                     "
+    ALPHA3_CODE$="REU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RO"
+    COUNTRY_CODE$="RO"
+    COUNTRY_DESC$="Romania                                                     "
+    ALPHA3_CODE$="ROU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RS"
+    COUNTRY_CODE$="RS"
+    COUNTRY_DESC$="Serbia                                                      "
+    ALPHA3_CODE$="SRB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RU"
+    COUNTRY_CODE$="RU"
+    COUNTRY_DESC$="Russia                                                      "
+    ALPHA3_CODE$="RUS"
+    ALT_DESC_1$="Russian Federation                                          "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RW"
+    COUNTRY_CODE$="RW"
+    COUNTRY_DESC$="Rwanda                                                      "
+    ALPHA3_CODE$="RWA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SA"
+    COUNTRY_CODE$="SA"
+    COUNTRY_DESC$="Saudi Arabia                                                "
+    ALPHA3_CODE$="SAU"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SB"
+    COUNTRY_CODE$="SB"
+    COUNTRY_DESC$="Solomon Islands                                             "
+    ALPHA3_CODE$="SLB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SC"
+    COUNTRY_CODE$="SC"
+    COUNTRY_DESC$="Seychelles                                                  "
+    ALPHA3_CODE$="SYC"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SD"
+    COUNTRY_CODE$="SD"
+    COUNTRY_DESC$="Sudan                                                       "
+    ALPHA3_CODE$="SDN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SE"
+    COUNTRY_CODE$="SE"
+    COUNTRY_DESC$="Sweden                                                      "
+    ALPHA3_CODE$="SWE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SG"
+    COUNTRY_CODE$="SG"
+    COUNTRY_DESC$="Singapore                                                   "
+    ALPHA3_CODE$="SGP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SH"
+    COUNTRY_CODE$="SH"
+    COUNTRY_DESC$="Saint Helena                                                "
+    ALPHA3_CODE$="SHN"
+    ALT_DESC_1$="St. Helena                                                  "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SI"
+    COUNTRY_CODE$="SI"
+    COUNTRY_DESC$="Slovenia                                                    "
+    ALPHA3_CODE$="SVN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SJ"
+    COUNTRY_CODE$="SJ"
+    COUNTRY_DESC$="Svalbard And Jan Mayen Islands                              "
+    ALPHA3_CODE$="SJM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SK"
+    COUNTRY_CODE$="SK"
+    COUNTRY_DESC$="Slovakia                                                    "
+    ALPHA3_CODE$="SVK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SL"
+    COUNTRY_CODE$="SL"
+    COUNTRY_DESC$="Sierra Leone                                                "
+    ALPHA3_CODE$="SLE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SM"
+    COUNTRY_CODE$="SM"
+    COUNTRY_DESC$="San Marino                                                  "
+    ALPHA3_CODE$="SMR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SN"
+    COUNTRY_CODE$="SN"
+    COUNTRY_DESC$="Senegal                                                     "
+    ALPHA3_CODE$="SEN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SO"
+    COUNTRY_CODE$="SO"
+    COUNTRY_DESC$="Somalia                                                     "
+    ALPHA3_CODE$="SOM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SR"
+    COUNTRY_CODE$="SR"
+    COUNTRY_DESC$="Suriname                                                    "
+    ALPHA3_CODE$="SUR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS"
+    COUNTRY_CODE$="SS"
+    COUNTRY_DESC$="South Sudan                                                 "
+    ALPHA3_CODE$="SSD"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ST"
+    COUNTRY_CODE$="ST"
+    COUNTRY_DESC$="Sao Tome And Principe                                       "
+    ALPHA3_CODE$="STP"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SV"
+    COUNTRY_CODE$="SV"
+    COUNTRY_DESC$="El Salvador                                                 "
+    ALPHA3_CODE$="SLV"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SX"
+    COUNTRY_CODE$="SX"
+    COUNTRY_DESC$="Sint Maarten                                                "
+    ALPHA3_CODE$="SXM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SY"
+    COUNTRY_CODE$="SY"
+    COUNTRY_DESC$="Syria                                                       "
+    ALPHA3_CODE$="SYR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SZ"
+    COUNTRY_CODE$="SZ"
+    COUNTRY_DESC$="Eswatini                                                    "
+    ALPHA3_CODE$="SWZ"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TC"
+    COUNTRY_CODE$="TC"
+    COUNTRY_DESC$="Turks And Caicos Islands                                    "
+    ALPHA3_CODE$="TCA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TD"
+    COUNTRY_CODE$="TD"
+    COUNTRY_DESC$="Chad                                                        "
+    ALPHA3_CODE$="TCD"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TF"
+    COUNTRY_CODE$="TF"
+    COUNTRY_DESC$="French Southern Territories                                 "
+    ALPHA3_CODE$="ATF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TG"
+    COUNTRY_CODE$="TG"
+    COUNTRY_DESC$="Togo                                                        "
+    ALPHA3_CODE$="TGO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TH"
+    COUNTRY_CODE$="TH"
+    COUNTRY_DESC$="Thailand                                                    "
+    ALPHA3_CODE$="THA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TJ"
+    COUNTRY_CODE$="TJ"
+    COUNTRY_DESC$="Tajikistan                                                  "
+    ALPHA3_CODE$="TJK"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TK"
+    COUNTRY_CODE$="TK"
+    COUNTRY_DESC$="Tokelau                                                     "
+    ALPHA3_CODE$="TKL"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TL"
+    COUNTRY_CODE$="TL"
+    COUNTRY_DESC$="Timor-Leste                                                 "
+    ALPHA3_CODE$="TLS"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TM"
+    COUNTRY_CODE$="TM"
+    COUNTRY_DESC$="Turkmenistan                                                "
+    ALPHA3_CODE$="TKM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TN"
+    COUNTRY_CODE$="TN"
+    COUNTRY_DESC$="Tunisia                                                     "
+    ALPHA3_CODE$="TUN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TO"
+    COUNTRY_CODE$="TO"
+    COUNTRY_DESC$="Tonga                                                       "
+    ALPHA3_CODE$="TON"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TR"
+    COUNTRY_CODE$="TR"
+    COUNTRY_DESC$="Turkey                                                      "
+    ALPHA3_CODE$="TUR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TT"
+    COUNTRY_CODE$="TT"
+    COUNTRY_DESC$="Trinidad And Tobago                                         "
+    ALPHA3_CODE$="TTO"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TV"
+    COUNTRY_CODE$="TV"
+    COUNTRY_DESC$="Tuvalu                                                      "
+    ALPHA3_CODE$="TUV"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TW"
+    COUNTRY_CODE$="TW"
+    COUNTRY_DESC$="Taiwan                                                      "
+    ALPHA3_CODE$="TWN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TZ"
+    COUNTRY_CODE$="TZ"
+    COUNTRY_DESC$="Tanzania                                                    "
+    ALPHA3_CODE$="TZA"
+    ALT_DESC_1$="Tanzania                                                    "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UA"
+    COUNTRY_CODE$="UA"
+    COUNTRY_DESC$="Ukraine                                                     "
+    ALPHA3_CODE$="UKR"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UG"
+    COUNTRY_CODE$="UG"
+    COUNTRY_DESC$="Uganda                                                      "
+    ALPHA3_CODE$="UGA"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UM"
+    COUNTRY_CODE$="UM"
+    COUNTRY_DESC$="United States Minor Outlying Islands                        "
+    ALPHA3_CODE$="UMI"
+    ALT_DESC_1$="U.S. Outlying Islands                                       "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="US"
+    COUNTRY_CODE$="US"
+    COUNTRY_DESC$="United States                                               "
+    ALPHA3_CODE$="USA"
+    ALT_DESC_1$="United States Of America                                    "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UY"
+    COUNTRY_CODE$="UY"
+    COUNTRY_DESC$="Uruguay                                                     "
+    ALPHA3_CODE$="URY"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UZ"
+    COUNTRY_CODE$="UZ"
+    COUNTRY_DESC$="Uzbekistan                                                  "
+    ALPHA3_CODE$="UZB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VA"
+    COUNTRY_CODE$="VA"
+    COUNTRY_DESC$="Holy See                                                    "
+    ALPHA3_CODE$="VAT"
+    ALT_DESC_1$="Vatican City                                                "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VC"
+    COUNTRY_CODE$="VC"
+    COUNTRY_DESC$="Saint Vincent And The Grenadines                            "
+    ALPHA3_CODE$="VCT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VE"
+    COUNTRY_CODE$="VE"
+    COUNTRY_DESC$="Venezuela                                                   "
+    ALPHA3_CODE$="VEN"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VG"
+    COUNTRY_CODE$="VG"
+    COUNTRY_DESC$="British Virgin Islands                                      "
+    ALPHA3_CODE$="VGB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VI"
+    COUNTRY_CODE$="VI"
+    COUNTRY_DESC$="United States Virgin Islands                                "
+    ALPHA3_CODE$="VIR"
+    ALT_DESC_1$="U.S. Virgin Islands                                         "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VN"
+    COUNTRY_CODE$="VN"
+    COUNTRY_DESC$="Vietnam                                                     "
+    ALPHA3_CODE$="VNM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="VU"
+    COUNTRY_CODE$="VU"
+    COUNTRY_DESC$="Vanuatu                                                     "
+    ALPHA3_CODE$="VUT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WF"
+    COUNTRY_CODE$="WF"
+    COUNTRY_DESC$="Wallis And Futuna Islands                                   "
+    ALPHA3_CODE$="WLF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WS"
+    COUNTRY_CODE$="WS"
+    COUNTRY_DESC$="Samoa                                                       "
+    ALPHA3_CODE$="WSM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YE"
+    COUNTRY_CODE$="YE"
+    COUNTRY_DESC$="Yemen                                                       "
+    ALPHA3_CODE$="YEM"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YT"
+    COUNTRY_CODE$="YT"
+    COUNTRY_DESC$="Mayotte                                                     "
+    ALPHA3_CODE$="MYT"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA"
+    COUNTRY_CODE$="ZA"
+    COUNTRY_DESC$="South Africa                                                "
+    ALPHA3_CODE$="ZAF"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZM"
+    COUNTRY_CODE$="ZM"
+    COUNTRY_DESC$="Zambia                                                      "
+    ALPHA3_CODE$="ZMB"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW"
+    COUNTRY_CODE$="ZW"
+    COUNTRY_DESC$="Zimbabwe                                                    "
+    ALPHA3_CODE$="ZWE"
+    ALT_DESC_1$="                                                            "
+    ALT_DESC_2$="                                                            "
+    ALT_DESC_3$="                                                            "
+    ZY8_UNUSED$="                                                                                                                                                                                                        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

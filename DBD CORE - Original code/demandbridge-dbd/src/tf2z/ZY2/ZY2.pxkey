@@ -1,0 +1,843 @@
+<PxTable>
+ TableName=ZY2
+ TableKey=K971281876
+ FileCreate=KEYED "ZY2",7,0,-114,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZY2_SeqDesc"
+    PHYSICALPATH$="="+QUO+"../tf2z/ZY2/ZY2"+QUO
+    LASTCHANGEDATE$="2006/07/27 15:28:09-lms"
+    LASTUPDATEDFILE$="2021/04/20 17:13:59-root"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST TF_LANGUAGE$:[LEN(1)]"
+    NAME$="TF_LANGUAGE"
+    DESCRIPTION$="=MSG("+QUO+"LANGUAGE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="P"
+    NOTES$="Language"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST SEQ_NUM$:[LEN(2)]"
+    NAME$="SEQ_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Sequence Number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TF_LANGUAGE$:[LEN(1,SEP=SEP)]"
+    NAME$="TF_LANGUAGE"
+    DESCRIPTION$="=MSG("+QUO+"LANGUAGE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Language"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST SEQ_NUM$:[LEN(2,SEP=SEP)]"
+    NAME$="SEQ_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Sequence Number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST CARDINAL_NUM_DESC$:[LEN(20,SEP=SEP)]"
+    NAME$="CARDINAL_NUM_DESC"
+    DESCRIPTION$="=MSG("+QUO+"CARD_N_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Cardinal Number Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST ORDINAL_NUM_DESC$:[LEN(20,SEP=SEP)]"
+    NAME$="ORDINAL_NUM_DESC"
+    DESCRIPTION$="=MSG("+QUO+"ORDI_N_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Ordinal Number"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ORDINAL_ABBR_DESC$:[LEN(8,SEP=SEP)]"
+    NAME$="ORDINAL_ABBR_DESC"
+    DESCRIPTION$="=MSG("+QUO+"ORDI_A_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Ordinal Abbreviation"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST MONTH_IN_THE_YEAR$:[LEN(20,SEP=SEP)]"
+    NAME$="MONTH_IN_THE_YEAR"
+    DESCRIPTION$="=MSG("+QUO+"MONT_I_T_Y"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Month in the Year"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST MONTH_NAME$:[LEN(8,SEP=SEP)]"
+    NAME$="MONTH_NAME"
+    DESCRIPTION$="=MSG("+QUO+"MONTH_NAME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Month Name"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST DAY_IN_WEEK$:[LEN(20,SEP=SEP)]"
+    NAME$="DAY_IN_WEEK"
+    DESCRIPTION$="=MSG("+QUO+"DAY_I_W_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Day in the Week"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST DAY_IN_WEEK_ABBR$:[LEN(8,SEP=SEP)]"
+    NAME$="DAY_IN_WEEK_ABBR"
+    DESCRIPTION$="=MSG("+QUO+"DAY_I_W_A"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Day in the Week abbreviation"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST ZY2_UNUSED_1$:[LEN(SEP,SIZ=1)]"
+    NAME$="ZY2_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+    NOTES$="Unused"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$=" 00"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="00"
+    CARDINAL_NUM_DESC$="Zero                "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="                    "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 01"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="01"
+    CARDINAL_NUM_DESC$="One                 "
+    ORDINAL_NUM_DESC$="First               "
+    ORDINAL_ABBR_DESC$="1st     "
+    MONTH_IN_THE_YEAR$="January             "
+    MONTH_NAME$="JAN     "
+    DAY_IN_WEEK$="Sunday              "
+    DAY_IN_WEEK_ABBR$="SUN     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 02"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="02"
+    CARDINAL_NUM_DESC$="Two                 "
+    ORDINAL_NUM_DESC$="Second              "
+    ORDINAL_ABBR_DESC$="2nd     "
+    MONTH_IN_THE_YEAR$="February            "
+    MONTH_NAME$="FEB     "
+    DAY_IN_WEEK$="Monday              "
+    DAY_IN_WEEK_ABBR$="MON     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 03"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="03"
+    CARDINAL_NUM_DESC$="Three               "
+    ORDINAL_NUM_DESC$="Third               "
+    ORDINAL_ABBR_DESC$="3rd     "
+    MONTH_IN_THE_YEAR$="March               "
+    MONTH_NAME$="MAR     "
+    DAY_IN_WEEK$="Tuesday             "
+    DAY_IN_WEEK_ABBR$="TUE     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 04"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="04"
+    CARDINAL_NUM_DESC$="Four                "
+    ORDINAL_NUM_DESC$="Fourth              "
+    ORDINAL_ABBR_DESC$="4th     "
+    MONTH_IN_THE_YEAR$="April               "
+    MONTH_NAME$="APR     "
+    DAY_IN_WEEK$="Wednesday           "
+    DAY_IN_WEEK_ABBR$="WED     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 05"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="05"
+    CARDINAL_NUM_DESC$="Five                "
+    ORDINAL_NUM_DESC$="Fifth               "
+    ORDINAL_ABBR_DESC$="5th     "
+    MONTH_IN_THE_YEAR$="May                 "
+    MONTH_NAME$="MAY     "
+    DAY_IN_WEEK$="Thursday            "
+    DAY_IN_WEEK_ABBR$="THU     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 06"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="06"
+    CARDINAL_NUM_DESC$="Six                 "
+    ORDINAL_NUM_DESC$="Sixth               "
+    ORDINAL_ABBR_DESC$="6th     "
+    MONTH_IN_THE_YEAR$="June                "
+    MONTH_NAME$="JUN     "
+    DAY_IN_WEEK$="Friday              "
+    DAY_IN_WEEK_ABBR$="FRI     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 07"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="07"
+    CARDINAL_NUM_DESC$="Seven               "
+    ORDINAL_NUM_DESC$="Seventh             "
+    ORDINAL_ABBR_DESC$="7th     "
+    MONTH_IN_THE_YEAR$="July                "
+    MONTH_NAME$="JUL     "
+    DAY_IN_WEEK$="Saturday            "
+    DAY_IN_WEEK_ABBR$="SAT     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 08"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="08"
+    CARDINAL_NUM_DESC$="Eight               "
+    ORDINAL_NUM_DESC$="Eighth              "
+    ORDINAL_ABBR_DESC$="8th     "
+    MONTH_IN_THE_YEAR$="August              "
+    MONTH_NAME$="AUG     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 09"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="09"
+    CARDINAL_NUM_DESC$="Nine                "
+    ORDINAL_NUM_DESC$="Ninth               "
+    ORDINAL_ABBR_DESC$="9th     "
+    MONTH_IN_THE_YEAR$="September           "
+    MONTH_NAME$="SEP     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 10"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="10"
+    CARDINAL_NUM_DESC$="Ten                 "
+    ORDINAL_NUM_DESC$="Tenth               "
+    ORDINAL_ABBR_DESC$="10th    "
+    MONTH_IN_THE_YEAR$="October             "
+    MONTH_NAME$="OCT     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 11"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="11"
+    CARDINAL_NUM_DESC$="Eleven              "
+    ORDINAL_NUM_DESC$="Eleventh            "
+    ORDINAL_ABBR_DESC$="11th    "
+    MONTH_IN_THE_YEAR$="November            "
+    MONTH_NAME$="NOV     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$=" 12"
+    TF_LANGUAGE$=" "
+    SEQ_NUM$="12"
+    CARDINAL_NUM_DESC$="Twelve              "
+    ORDINAL_NUM_DESC$="Twelveth            "
+    ORDINAL_ABBR_DESC$="12th    "
+    MONTH_IN_THE_YEAR$="December            "
+    MONTH_NAME$="DEC     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="0Z"
+    CARDINAL_NUM_DESC$="ero                 "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="                    "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="01"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="1J"
+    CARDINAL_NUM_DESC$="anuary        JanPer"
+    ORDINAL_NUM_DESC$="iod 1       One     "
+    ORDINAL_ABBR_DESC$="       F"
+    MONTH_IN_THE_YEAR$="irst          1st   "
+    MONTH_NAME$="  Sunday"
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="02"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="2F"
+    CARDINAL_NUM_DESC$="ebruary       FebPer"
+    ORDINAL_NUM_DESC$="iod 2       Two     "
+    ORDINAL_ABBR_DESC$="       S"
+    MONTH_IN_THE_YEAR$="econd         2nd   "
+    MONTH_NAME$="  Monday"
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="03"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="3M"
+    CARDINAL_NUM_DESC$="arch          MarPer"
+    ORDINAL_NUM_DESC$="iod 3       Three   "
+    ORDINAL_ABBR_DESC$="       T"
+    MONTH_IN_THE_YEAR$="hird          3rd   "
+    MONTH_NAME$="  Tuesda"
+    DAY_IN_WEEK$="y        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="04"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="4A"
+    CARDINAL_NUM_DESC$="pril          AprPer"
+    ORDINAL_NUM_DESC$="iod 4       Four    "
+    ORDINAL_ABBR_DESC$="       F"
+    MONTH_IN_THE_YEAR$="ourth         4th   "
+    MONTH_NAME$="  Wednes"
+    DAY_IN_WEEK$="day      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="05"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="5M"
+    CARDINAL_NUM_DESC$="ay            MayPer"
+    ORDINAL_NUM_DESC$="iod 5       Five    "
+    ORDINAL_ABBR_DESC$="       F"
+    MONTH_IN_THE_YEAR$="ifth          5th   "
+    MONTH_NAME$="  Thursd"
+    DAY_IN_WEEK$="ay       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="06"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="6J"
+    CARDINAL_NUM_DESC$="une           JunPer"
+    ORDINAL_NUM_DESC$="iod 6       Six     "
+    ORDINAL_ABBR_DESC$="       S"
+    MONTH_IN_THE_YEAR$="ixth          6th   "
+    MONTH_NAME$="  Friday"
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="07"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="7J"
+    CARDINAL_NUM_DESC$="uly           JulPer"
+    ORDINAL_NUM_DESC$="iod 7       Seven   "
+    ORDINAL_ABBR_DESC$="       S"
+    MONTH_IN_THE_YEAR$="eventh        7th   "
+    MONTH_NAME$="  Saturd"
+    DAY_IN_WEEK$="ay       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="08"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="8A"
+    CARDINAL_NUM_DESC$="ugust         AugPer"
+    ORDINAL_NUM_DESC$="iod 8       Eight   "
+    ORDINAL_ABBR_DESC$="       E"
+    MONTH_IN_THE_YEAR$="ighth         8th   "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="09"
+    TF_LANGUAGE$="0"
+    SEQ_NUM$="9S"
+    CARDINAL_NUM_DESC$="eptember      SepPer"
+    ORDINAL_NUM_DESC$="iod 9       Nine    "
+    ORDINAL_ABBR_DESC$="       N"
+    MONTH_IN_THE_YEAR$="ineth         9th   "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="10"
+    TF_LANGUAGE$="1"
+    SEQ_NUM$="0O"
+    CARDINAL_NUM_DESC$="ctober        OctPer"
+    ORDINAL_NUM_DESC$="iod 10      Ten     "
+    ORDINAL_ABBR_DESC$="       T"
+    MONTH_IN_THE_YEAR$="enth          10th  "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="11"
+    TF_LANGUAGE$="1"
+    SEQ_NUM$="1N"
+    CARDINAL_NUM_DESC$="ovember       NovPer"
+    ORDINAL_NUM_DESC$="iod 11      Eleven  "
+    ORDINAL_ABBR_DESC$="       E"
+    MONTH_IN_THE_YEAR$="leventh       11th  "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="12"
+    TF_LANGUAGE$="1"
+    SEQ_NUM$="2D"
+    CARDINAL_NUM_DESC$="ecember       DecPer"
+    ORDINAL_NUM_DESC$="iod 12      Twelve  "
+    ORDINAL_ABBR_DESC$="       T"
+    MONTH_IN_THE_YEAR$="welfth        12th  "
+    MONTH_NAME$="        "
+    DAY_IN_WEEK$="         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F01"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="01"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Janvier             "
+    MONTH_NAME$="JAN     "
+    DAY_IN_WEEK$="Lundi               "
+    DAY_IN_WEEK_ABBR$="LUN     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F02"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="02"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Fevrier             "
+    MONTH_NAME$="FEV     "
+    DAY_IN_WEEK$="Mardi               "
+    DAY_IN_WEEK_ABBR$="MAR     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F03"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="03"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Mars                "
+    MONTH_NAME$="MAR     "
+    DAY_IN_WEEK$="Mercredi            "
+    DAY_IN_WEEK_ABBR$="MER     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F04"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="04"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Avril               "
+    MONTH_NAME$="AVR     "
+    DAY_IN_WEEK$="Jeudi               "
+    DAY_IN_WEEK_ABBR$="JEU     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F05"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="05"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Mai                 "
+    MONTH_NAME$="MAI     "
+    DAY_IN_WEEK$="Vendredi            "
+    DAY_IN_WEEK_ABBR$="VEN     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F06"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="06"
+    CARDINAL_NUM_DESC$="Six                 "
+    ORDINAL_NUM_DESC$="Sixieme             "
+    ORDINAL_ABBR_DESC$="6eme    "
+    MONTH_IN_THE_YEAR$="Juin                "
+    MONTH_NAME$="JUI     "
+    DAY_IN_WEEK$="Samdi               "
+    DAY_IN_WEEK_ABBR$="SAM     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F07"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="07"
+    CARDINAL_NUM_DESC$="Sept                "
+    ORDINAL_NUM_DESC$="Septiemme           "
+    ORDINAL_ABBR_DESC$="7eme    "
+    MONTH_IN_THE_YEAR$="Juillet             "
+    MONTH_NAME$="JUL     "
+    DAY_IN_WEEK$="Dimanche            "
+    DAY_IN_WEEK_ABBR$="DIM     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F08"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="08"
+    CARDINAL_NUM_DESC$="Huit                "
+    ORDINAL_NUM_DESC$="Huitieme            "
+    ORDINAL_ABBR_DESC$="8me     "
+    MONTH_IN_THE_YEAR$="Ao–t                "
+    MONTH_NAME$="AOU     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F09"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="09"
+    CARDINAL_NUM_DESC$="Neuf                "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Septembre           "
+    MONTH_NAME$="SEP     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F10"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="10"
+    CARDINAL_NUM_DESC$="Dix                 "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Octobre             "
+    MONTH_NAME$="OCT     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F11"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="11"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Novembre            "
+    MONTH_NAME$="NOV     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F12"
+    TF_LANGUAGE$="F"
+    SEQ_NUM$="12"
+    CARDINAL_NUM_DESC$="                    "
+    ORDINAL_NUM_DESC$="                    "
+    ORDINAL_ABBR_DESC$="        "
+    MONTH_IN_THE_YEAR$="Decembre            "
+    MONTH_NAME$="DEC     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N01"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="01"
+    CARDINAL_NUM_DESC$="Een                 "
+    ORDINAL_NUM_DESC$="Eerste              "
+    ORDINAL_ABBR_DESC$="1ste    "
+    MONTH_IN_THE_YEAR$="Januari             "
+    MONTH_NAME$="JAN     "
+    DAY_IN_WEEK$="Zondag              "
+    DAY_IN_WEEK_ABBR$="ZON     "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N02"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="02"
+    CARDINAL_NUM_DESC$="Twee                "
+    ORDINAL_NUM_DESC$="Tweede              "
+    ORDINAL_ABBR_DESC$="2de     "
+    MONTH_IN_THE_YEAR$="Februari            "
+    MONTH_NAME$="FEB     "
+    DAY_IN_WEEK$="Maandag             "
+    DAY_IN_WEEK_ABBR$="MA      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N03"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="03"
+    CARDINAL_NUM_DESC$="Drie                "
+    ORDINAL_NUM_DESC$="Derde               "
+    ORDINAL_ABBR_DESC$="3de     "
+    MONTH_IN_THE_YEAR$="Maart               "
+    MONTH_NAME$="MA      "
+    DAY_IN_WEEK$="Dinsdag             "
+    DAY_IN_WEEK_ABBR$="DI      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N04"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="04"
+    CARDINAL_NUM_DESC$="Vier                "
+    ORDINAL_NUM_DESC$="Vierde              "
+    ORDINAL_ABBR_DESC$="4de     "
+    MONTH_IN_THE_YEAR$="April               "
+    MONTH_NAME$="AP      "
+    DAY_IN_WEEK$="Woensdag            "
+    DAY_IN_WEEK_ABBR$="WO      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N05"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="05"
+    CARDINAL_NUM_DESC$="Vijf                "
+    ORDINAL_NUM_DESC$="Vijfde              "
+    ORDINAL_ABBR_DESC$="5de     "
+    MONTH_IN_THE_YEAR$="Mei                 "
+    MONTH_NAME$="MEI     "
+    DAY_IN_WEEK$="Donderdag           "
+    DAY_IN_WEEK_ABBR$="DO      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N06"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="06"
+    CARDINAL_NUM_DESC$="Zes                 "
+    ORDINAL_NUM_DESC$="Zesde               "
+    ORDINAL_ABBR_DESC$="6de     "
+    MONTH_IN_THE_YEAR$="Juni                "
+    MONTH_NAME$="JUNI    "
+    DAY_IN_WEEK$="Vrijdag             "
+    DAY_IN_WEEK_ABBR$="VR      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N07"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="07"
+    CARDINAL_NUM_DESC$="Zeven               "
+    ORDINAL_NUM_DESC$="Zevende             "
+    ORDINAL_ABBR_DESC$="7de     "
+    MONTH_IN_THE_YEAR$="Juli                "
+    MONTH_NAME$="JULI    "
+    DAY_IN_WEEK$="Zaterdag            "
+    DAY_IN_WEEK_ABBR$="ZA      "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N08"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="08"
+    CARDINAL_NUM_DESC$="Acht                "
+    ORDINAL_NUM_DESC$="Achtste             "
+    ORDINAL_ABBR_DESC$="8ste    "
+    MONTH_IN_THE_YEAR$="Augustus            "
+    MONTH_NAME$="AUG     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N09"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="09"
+    CARDINAL_NUM_DESC$="Negen               "
+    ORDINAL_NUM_DESC$="Negende             "
+    ORDINAL_ABBR_DESC$="9de     "
+    MONTH_IN_THE_YEAR$="September           "
+    MONTH_NAME$="SEP     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N10"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="10"
+    CARDINAL_NUM_DESC$="Tien                "
+    ORDINAL_NUM_DESC$="Tiende              "
+    ORDINAL_ABBR_DESC$="10de    "
+    MONTH_IN_THE_YEAR$="Oktober             "
+    MONTH_NAME$="OKT     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N11"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="11"
+    CARDINAL_NUM_DESC$="Elf                 "
+    ORDINAL_NUM_DESC$="Elfde               "
+    ORDINAL_ABBR_DESC$="11de    "
+    MONTH_IN_THE_YEAR$="November            "
+    MONTH_NAME$="NOV     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="N12"
+    TF_LANGUAGE$="N"
+    SEQ_NUM$="12"
+    CARDINAL_NUM_DESC$="Twaalf              "
+    ORDINAL_NUM_DESC$="Twaalfde            "
+    ORDINAL_ABBR_DESC$="12de    "
+    MONTH_IN_THE_YEAR$="December            "
+    MONTH_NAME$="DEC     "
+    DAY_IN_WEEK$="                    "
+    DAY_IN_WEEK_ABBR$="        "
+    ZY2_UNUSED_1$=" "
+   </RecordData>
+
+</Data>
+
+</PxTable>

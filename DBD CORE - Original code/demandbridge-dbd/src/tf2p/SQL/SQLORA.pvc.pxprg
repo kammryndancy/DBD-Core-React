@@ -1,0 +1,12 @@
+0010 ! SQLORA - Oracle Class
+0035 REM "5.5 - 01/03/07 - 13.783888 - jme - SSP# 202107
+0037 REM "202107-Oracle, MySQL Database definition                           
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 DEF CLASS "SQLORA"
+0110 LIKE "SQLGEN"
+0200 ! start variable list
+0210 LOCAL _FILENO,_KEYNO,COMPANY$
+0220 PROPERTY OPEN_STATUS
+8999 END DEF
+9999 END 

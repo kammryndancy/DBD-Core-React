@@ -1,0 +1,157 @@
+0010 REM "Consolidated Pick List Add to Print file <PO2PBC>
+0035 REM "5.6 - 12/10/08 - 8.356388 - tma - SSP# 178491
+0037 REM "178491-Expand number of sequence of consolidated packing list      
+0040 REM "Copyright 2008 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000 ! SSP218343
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="PO2PBC",X1$="Consolidated Pick List Printing"
+0120 DIM A$(168),B$(200),B[13],S0$(40),P9$(138)
+0140 M0$="###,###",M1$="###,###.00"
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0180 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0190 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+0220 W3=60
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3),W[4]
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0260 CALL "ZZRPTP",X3$,X0$,X1$,V9$,V0,Q0$,Q1$,Q2$,Q3$,Q4$,Q5$,Q6$
+0300 REM "I/O lists
+0305 REM "IOLIST FOR FS1 - Sales order Header
+0310 IOLIST A$
+0315 REM "IOLIST FOR FS2 - Sales order line
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13]
+0325 REM "IOLIST FOR POI - Consolidated Pick List Print File
+0330 IOLIST C$,C[0],C[1],C[2],C[3]
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11]
+0360 IOLIST F$,F[0],F[1],F[2],F[3],F[4],F[5],F[6],F[7],F[8],F[9],F[10],F[11],F[12],F[13],F[14],F[15],F[16],F[17],F[18],F[19],F[20],F[21],F[22],F[23],F[24],F[25],F[26],F[27],F[28],F[29],F[30]
+0370 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6]
+0400 IOLIST I$
+0410 IOLIST F0$,F0[0],F0[1],F0[2],F0[3],F0[4],F0[5],F0[6],F0[7],F0[8],F0[9],F0[10],F0[11],F0[12],F0[13],F0[14],F0[15],F0[16],F0[17],F0[18]
+0420 IOLIST J5$
+0450 IOLIST X3$,X4$,V1$
+0490 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0500 REM "Files
+0504 DIM P[1]
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01O PO6...  02O FS2...  03O POI...  04O FS1...  05O IC1...  06O IC0...  07O ICF...  13O ZZPARM  "
+0520 GOSUB 8100
+0580 READ (Z[13],KEY=X3$(9,3)+"F/M")P0$,*,*,*,*,*,*,P[0]
+0590 READ (Z[13],KEY="CMP"+X3$(9,3))P5$
+0800 REM "Alternate Sort Info & total dim
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[2]; U=10,U0=2,U[0]=0,U[1]=1,U[2]=9,T0=0,U0$="    ",T5$="          "; GOTO 0850
+0850 DIM T[T0,T1]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM "Position read
+0905 REM "set key file to read from
+0910 CALL "ZZFLES",X3$,Y1$,Y0$,"00O PO6...  ",Z{ALL},Z0,0; IF Z0>0 THEN GOTO 9900 ELSE U1=Z[0]
+0990 READ (U1,KEY="B"+V2$(1,4),DOM=0991)
+0995 IF V8$<>"A" THEN PRINT @(16,17),"Generating Consolidated Pick List",
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000); READ (U1)
+1007 IF U$(1,1)<>"B" THEN GOTO 5000
+1020 IF U$(2,4)>V2$(5,4) THEN GOTO 5000
+1100 REM "Get record
+1110 U9$=U$
+1155 DIM A$(168); READ (Z[4],KEY=U$(6,8),DOM=8850)IOL=0310
+1160 DIM B$(200),B[13]; FIND (Z[2],KEY=U$(6,11),DOM=8850)IOL=0320
+1300 REM "Read other data
+1500 REM "Print Data
+1505 PRINT @(25,19),'CE'; CALL "ZZDISP","A",U$(6,8),"O/P",X3$,"","",25,19,X4$
+1509 REM "If not lotted fill out POI record and write, else go get lot info
+1510 IF B$(2,1)="Y" THEN GOTO 2000
+1515 DIM C$(115),C[3]
+1519 REM "Read IC1
+1520 DIM E$(50),E[11]; READ (Z[5],KEY=B$(161,10)+B$(19,10)+U$(2,4),DOM=1000)IOL=0350
+1600 REM "Fill out POI record
+1605 REM "On the Warehouse #, the first char will be set to '0' to eliminate the difference between 9000 accounts and 0000 accounts. ie. 9001 will become 0001
+1610 C$(1,4)="0"+B$(11,3),C$(5,10)=E$(35,10),C$(15,10)=B$(161),C$(25,10)=B$(19)
+1615 C$(38,8)=B$(147),C$(46,3)=B$(6),C$(49,12)=B$(171)
+1620 C$(61,9)=B$(104),C$(70,9)=B$(189)
+1625 C$(85,10)=B$(94),C$(95,4)=B$(90)
+1630 C[3]=B[0]
+1650 REM "If the selling U/M is fixed (e.g. M's or C's) then if the carton pack is not zero use it, else use the inv unit of measure (even if it is a fixed type like M's or C's)
+1655 DIM M$(21),M[3]; READ (Z[13],KEY="U/M"+B$(124,4),DOM=1656)M$,M[0],M[1],M[2]
+1660 IF M$(20,1)="N" THEN C$(108,4)=B$(124,4),C[1]=B[5],C[0]=B[0]/B[5]; GOTO 1695
+1665 IF B[12]<>0 THEN C$(108,4)="CASE",C[1]=B[12],C[0]=B[0]/B[12]; GOTO 1695
+1670 DIM F$(150),F[30]; READ (Z[6],KEY=B$(161,10)+B$(19,10),DOM=1671)IOL=0360
+1674 IF F[15]=0 THEN F[15]=1
+1675 C$(108,4)=F$(124,4),C[1]=F[15],C[0]=B[0]/F[15]
+1695 REM "1650-1695 setting of qty & unit of measure
+1710 GOSUB 7500
+1995 GOTO 8850
+2000 REM "Do lotted inventory here
+2001 REM "For each matching record in the ICF file that is on this order, build a POI record.
+2005 DIM G$(220),G[6]
+2010 READ (Z[7],KEY=B$(161,10)+B$(19,10)+U$(2,4),DOM=2011)
+2015 READ (Z[7],END=2045)IOL=0370
+2020 IF G$(1,24)<>B$(161,10)+B$(19,10)+U$(2,4) THEN GOTO 2045
+2024 REM "Is it on this order line?
+2025 IF G$(110,11)<>B$(147,8)+B$(6,3) THEN GOTO 2015
+2035 GOSUB 2100
+2040 GOTO 2015
+2090 GOTO 8850
+2100 REM "Place lot in G$ into POI file
+2105 DIM C$(115),C[3]
+2110 C$(1,4)="0"+B$(11,3),C$(5,10)=G$(100),C$(15,10)=B$(161),C$(25,10)=B$(19)
+2115 C$(38,8)=B$(147),C$(46,3)=B$(6),C$(49,12)=G$(56)
+2120 C$(61,9)=G$(82),C$(70,9)=G$(91),C$(79,6)=G$(215)
+2125 C$(85,10)=G$(68),C$(95,4)=G$(78)
+2130 IF POS(" "<>G$(124,4))<>0 THEN C[3]=G[2]*G[3]*G[4] ELSE C[3]=G[3]*G[4]
+2135 C$(108,4)=G$(121),C$(112,4)=G$(125)
+2140 C[0]=G[4],C[1]=G[3],C[2]=G[2]
+2190 GOSUB 7500
+2195 RETURN 
+5000 REM "End of Print
+5200 REM "
+5305 PRINT @(0,17),'CE',
+5340 Y4$="PO2PBA"
+5345 GOTO 9900
+7400 REM "Read report selection parameters"" to see if running in auto print mode, set V8$ to "A" if we are
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0490
+7482 IF V1$(1,3)="???" THEN V8$="A",V7$=V1$(4,2)
+7485 Z$="12C ZZP     "
+7486 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7487,9900
+7490 RETURN 
+7500 REM "Write out POI record & set sequence #
+7505 C$(35,3)="000"
+7510 WRITE (Z[3],KEY=C$(1,37),DOM=7511)IOL=0330; GOTO 7540
+7515 REM "C$(35,3)=STR(NUM(C$(35,3))+1:"000") !SSP#178491
+7518 KEY$=C$(1,37); CALL "IC2LCC",X3$,X4$,Z[3],35,3,LAST_ONE$,KEY$; C$(1,37)=KEY$; GOTO 7510 ! SSP#178491
+7520 GOTO 7510
+7545 RETURN 
+8100 REM "Open files
+8120 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+8140 RETURN 
+8850 REM "Remove key U$ from U1 and goto 1000
+8855 REMOVE (U1,KEY=U$,DOM=1000); GOTO 1000
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM "TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 IF NOT(NUL(Y4$)) THEN IF %GUI THEN CALL Y4$,ERR=9931 ELSE RUN Y4$,ERR=9931 ! SSP#218343
+9940 IF %GUI=0 THEN RUN "ZMENU" ELSE EXIT ! SSP#218343
+9999 END 
+56000 REM "218343-When running the consolidated pick list, it boots you off   

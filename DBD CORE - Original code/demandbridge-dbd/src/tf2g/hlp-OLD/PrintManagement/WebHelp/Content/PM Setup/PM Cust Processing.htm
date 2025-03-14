@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="PM Setup|PM Customer Setup" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>PM Customer - Processing Controls</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">PM Customer - Processing Controls</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p class="Nav" style="font-style: normal;font-weight: normal;">The processing controls allows you to setup how this customer, and their items, will function within the Print Management module.
+</p>
+        <p class="Nav" style="font-style: normal;font-weight: normal;">
+        </p>
+        <table style="width: 100%;margin-left: 0;margin-right: auto;">
+            <col style="width: 101px;" />
+            <col style="width: 546px;" />
+            <tbody>
+                <tr>
+                    <td style="font-size: 8pt;font-weight: bold;">Field</td>
+                    <td style="font-size: 8pt;font-weight: bold;">Description</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Last Completed FMS&#160;Year/Period</td>
+                    <td style="font-size: 8pt;">Available options: 01 to 13, This parameter identifies the period in which PM reporting was last completed. Once set, this parameter will be maintained by the Print Management system and will be incremented following the start of a PM Cycle for a customer. For new PM customers this parameter should be set to the period prior to the period in which the customer will first be included in PM cycle processing. For example, if the first period in which this customer will be included in the PM cycle is '06', then the correct setting for this parameter would be '05'.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Num of Periods to retain Dist. Detail Hist</td>
+                    <td style="font-size: 8pt;">Available options: 01 to 99.  
+Recommended setting: 3. 
+This parameter allows you to identify the number of periods you wish to save distribution detail for this customer. The main consideration in setting this parameter is the storage capacity of your computer. The more period distribution detail is maintained, the greater the storage requirements will be. Since the distribution detail file contains a record of every activity affecting a form, this file will be fairly large.
+This parameter may be changed at a later date with the only effect being the selection of distribution detail data to be cleared during period-end processing.
+</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Num of Prior Years Usage Hist to retain</td>
+                    <td style="font-size: 8pt;">Available options: 01 to 99. 
+
+This parameter allows you to identify the number of years of usage history to retain for this customer. It is recommended that you retain at least one year of usage history so that you will have the option of generating reorder notice usage graphs from a prior year's period. DB Distributor is able to store usage history in a space-conserving format. As a result, each year of usage history requires very little disk space.
+This parameter may be changed at a later date with the only effect being the selection of distribution detail data to be cleared during period-end processing.
+</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">FMS&#160;Cycle</td>
+                    <td style="font-size: 8pt;">You may group customers to be processed by assigning them the same PM cycle code. If you specify when beginning cycle processing to process by PM cycle, DB Distributor will select those customers whose PM cycle match the cycle that is entered in this parameter.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Should Stock Items be excluded from setup as FMS&#160;Items</td>
+                    <td style="font-size: 8pt;">If this is set to "Y", any stock items added to the items masterfile would have the FMS&#160;flag set to "N".</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Does Cust have multiple ship-to's</td>
+                    <td style="font-size: 8pt;">Y&#160;or N. Tells the system if this customer has more than one ship-to location.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Default Ship-to</td>
+                    <td style="font-size: 8pt;">This parameter is used by DB Distributor to default prompting for a customer's location within the Print Management system and customer's ship-to location setup/inquiry. A valid ship-to location must be used.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Default Warehouse</td>
+                    <td style="font-size: 8pt;">Default warehouse for this customer in your system.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Cost Code format</td>
+                    <td style="font-size: 8pt;">Should the Cost Code format include the Cost Center, Department, or both. None can also be selected.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Store the Dept section of the cost code in Item Master</td>
+                    <td style="font-size: 8pt;">If the Cost Code includes the Department section, you can choose is the Department field should be viewable in the Custom Item Setup panel.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Track usage of KIT&#160;components</td>
+                    <td style="font-size: 8pt;">For your KIT&#160;items, should the component items have usage statistics kept for them.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p>Continue to <a href="PM Cust Reporting.htm">Reporting Controls</a></p>
+        <p>Back to <a href="PM Customer Setup.htm">PM Customer Setup</a></p>
+        <p class="Nav">&#160;</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

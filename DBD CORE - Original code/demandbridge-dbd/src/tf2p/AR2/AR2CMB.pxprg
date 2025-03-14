@@ -1,0 +1,33 @@
+0010 REM "Display for AR2CMA <AR2CMB>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 04/25/00 - 13.72 - dmm - SSP# 121235
+0040 REM "Copyright 2000 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ENTER X3$,X4$,A$,A{ALL},M0$,M1$,M2$,I
+0110 K9=0
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+1000 REM 
+1010 ON I GOTO 1020,1030
+1020 GOSUB 6000; GOTO 9900
+1030 GOSUB 6200; GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6010 DIM Z0$(80,"-")
+6060 PRINT @(5,3),"Customer code:",@(38,3),"Name:",@(0,4),"Credit memo number:",@(0,5),Z0$,
+6070 PRINT @(10,6),"Credit memo date:",@(6,7),"Original invoice no.:",@(5,8),"Original invoice date:",@(13,9),"Customer code:",@(17,10),"Item code:",@(18,11),"Quantity:",@(13,12),"Employee code:",@(15,13),"Reason code:",@(9,14),"Credit memo total:",@(2,17),"Notes:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6224 CALL "ZZDISP","D",A$(19+K9,6),"",X3$,"","",28,6,X4$
+6228 CALL "ZZDISP","A",A$(25+K9,8),"AR6",X3$,"","",28,7,X4$
+6236 CALL "ZZDISP","D",A$(33+K9,6),"",X3$,"","",28,8,X4$
+6240 CALL "ZZDISP","A",A$(39+K9,10),"A/R",X3$,"","",28,9,X4$
+6243 CALL "ZZDISP","A",A$(49+K9,10),"ICE",X3$,"","",28,10,X4$
+6250 PRINT @(28,11),A[0]:"####,##0",@(28,12),A$(59+K9,7),@(28,13),A$(66+K9,3),@(28,14),A[1]:"#,###,##0.00",
+6260 PRINT @(9,17),A$(69+K9,60),@(9,18),A$(129+K9,60),@(9,19),A$(189+K9,60),
+6390 RETURN 
+9000 REM "ERROR
+9010 EXIT ERR
+9900 REM "END
+9930 EXIT 
+9999 END 

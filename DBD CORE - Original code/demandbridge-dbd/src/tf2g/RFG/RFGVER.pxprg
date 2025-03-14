@@ -1,0 +1,16 @@
+0010 REM "Current WW version <RFGVER>
+0035 REM "5.4 - 04/06/06 - 14.256388 - jme - SSP# 180032
+0037 REM "180032-Wireless Warehousing                                        
+0040 REM "Copyright 2006 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X2$,X1$,X0$
+1030 X0$=""
+1035 A$="WW370",X1$=A$(1,2),X2$=A$(3)
+1040 A$=HTA(A$)
+1050 A$=STR(%SSN:"0000000000")+A$
+1060 K$="@"+STR(%SSN)
+1080 CALL "ZZCRYP",X3$,K$,"","E",A$,A{ALL},C9$,X9
+1085 X0$=C9$
+1090 GOTO 9900
+9940 EXIT 
+9999 END 

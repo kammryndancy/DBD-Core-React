@@ -1,0 +1,524 @@
+0010 REM "Electronic Commerce Support Server <EC4SRV>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 05/06/05 - 13.045 - jme - SSP# 183904
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "When started, looks for info to set SID$(Server ID). Is looking for argument of the form 'id=name', 'env=ENVCODE', currently ignores all other arguements. If not found, the prompts for server id
+0053 REM "Until server id is found in server masterfile, errors will be logged to webec_start_log on Disk 0
+0055 REM "If file named 'END.'+'server id' is found, server will exit
+0056 REM "If file name 'RESTART.'+server id is found, server will restart
+0060 REM "OPTIONS: D=debug(don't set IN_WEBEC$), X=XML processing on input files, L=display log to the screen even if not interactive
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0104 VERSION$="EV3154"
+0105 GOSUB EVAL_ARGS ! 6500
+0110 X0$="EC4SRV",X1$="Electronic Commerce Support Server",XX$="^^"
+0120 EOL$=$0D0A$
+0122 REM "Param$ 1,4 = end of line characters, 5,8=standard header, 13,8= standard trailer template
+0125 DIM EC$[20],PARAM$(100); PARAM$(1,4)=EOL$,PARAM$(5,8)="WWWHD01",PARAM$(13,8)="WWWTR01"
+0127 HTML_TEXT$="Content-type: text/html",HTML_HEADER$=HTML_TEXT$+EOL$+EOL$
+0130 IF POS(";U"=SYS)<>0 THEN SYS_TYPE$="U",PN_SEP$="/",LS_COMMAND$="ls" ELSE SYS_TYPE$="W",PN_SEP$="\",LS_COMMAND$="dir"
+0132 GOSUB 6050; REM "Open start log "WEBEC_START_LOG" to log errors until we have a log file
+0135 REM "Get TopForm Environment, for now use EC4SRV, later make it argument
+0140 CLOSE (14); OPEN (14,ERR=0141)%DATAPATH$+DLM+"ZZPARM"; READ (14,KEY="TFE"+ENV_ID$,DOM=8805)X3$,*,X4$; X3$(1,8)=FID(0)+DIM(6),X3$(169,3)=FID(0)
+0141 WRITE (14,KEY=X3$(1,8))X3$,"",X4$; %X3$=X3$,%X4$=X4$
+0145 CLOSE (14); OPEN (14)"ZZPARM"; DIM EC_PARM$(1275); READ (14,KEY=X3$(9,3)+"S/S",DOM=0146)EC_PARM$(1); GOTO 0150
+0150 EOL$=ATH(STP(EC_PARM$(57,8),1))
+0155 FOR I=1 TO 3; TMP$=CHR(ASC(X3$(8+I,1))+I); IF TMP$>"9" THEN TMP$="9" END_IF ; XXX$=XXX$+TMP$; NEXT I
+0190 SET_PARAM 'LU' ! We do so much with text files, don't lock them
+0200 ! Initialization
+0202 GOSUB 6000; REM "Get server id into SID$
+0205 %BASEPAGEREF$=STP(ECY$(256,60),2),%CGICOMMAND$=STP(ECY$(316,60),2),%TIMEOUT$=ECY$(376,5),%RELOGINTEMPLATE$=STP(EC_PARM$(72,40),2)
+0206 ERASE "RESTART."+STP(SID$,3),ERR=0207; REM "Remove RESTART file if any
+0210 IF IMODE AND STP(ECY$(176,20),3," ")="" THEN INPUT "File mask: ",FILEMASK$ ELSE FILEMASK$=STP(ECY$(176,20),1); REM "file name maske
+0212 IF IMODE AND STP(ECY$(196,60),3," ")="" THEN INPUT "Log file: ",LOGFILE$ ELSE LOGFILE$=STP(ECY$(196,60),1); REM "Log file name
+0214 SLEEP=1; REM IF IMODE THEN INPUT "Sleep seconds: ",TMP$; IF TMP$="" THEN LET SLEEP=1 ELSE LET SLEEP=NUM(TMP$,ERR=00215) FI ELSE LET SLEEP=NUM(ARG(4),ERR=00215); REM "seconds to sleep, default to 1
+0216 SERVER_OPTIONS$=STP(ECY$(423,10),1); IF IMODE THEN INPUT "Option string["+SERVER_OPTIONS$+"]: ",I_OPTION$; SERVER_OPTIONS$=SERVER_OPTIONS$+I_OPTION$; REM "Get options string
+0217 GOSUB 6200; REM "Set flags based on server options
+0218 GOSUB 6300; REM "load memory file with processes
+0219 GOSUB 4300; REM "set EC variabl
+0220 REM "Open log file, send initial messages
+0221 USE_START_LOG=0; REM "151249 CLOSE (98); REM "Done with the start log
+0222 IF LOGFILE$="" THEN %NO_LOG=1; GOTO 0236 ELSE LOGFILE$=STP(ECY$(56,60),3)+DLM+STP(LOGFILE$,3); REM "If no log file, don't log to disk
+0224 CLOSE (14); OPEN (14,ERR=0233)LOGFILE$; CLOSE (14); REM "Try to open logfile to see if it exists, if not then goto create new one 
+0226 ERASE LOGFILE$+".bu",ERR=0227
+0230 %WEBEC_LOG_FILE=33003; GOSUB DEFINE_LOG_FUNCTION; CLOSE (%WEBEC_LOG_FILE); RENAME LOGFILE$,LOGFILE$+".bu"; GOTO 0224; REM "Rename logfile, then loop back to make sure there is not another logfile$
+0232 REM "For tbred, touch the file (won't work on NT), then SET DIR to correct directory and open the file, under PVX we will use the full path
+0233 SERIAL LOGFILE$
+0235 CLOSE (%WEBEC_LOG_FILE); OPEN (%WEBEC_LOG_FILE)LOGFILE$
+0236 PAST_LOG_OPEN=1; REM "We can now signal errors
+0240 PRECISION 14; START_TIME=TIM; PRECISION 2; MESS$="TopForm WWW Support Server initiated "; IF X3$(48,1)="2" THEN MESS$=MESS$+DTE(0:"%Dz %Ms,%Y %Hz:%mz:%sz") ELSE MESS$=MESS$+DTE(0:"%Ms %Dz,%Y %Hz:%mz:%sz"); GOSUB 7500
+0245 GOSUB SHOW_OPTIONS ! 6800
+0260 REM "Variables to track
+0262 FILES_DONE=0; PRECISION 14; LAST_TIME=TIM; PRECISION 2
+0285 REM "set CHECK_TIME for expired file processing (see 7750)
+0286 CHECK_TIME=0; CHECK_TIME=NUM(EC_PARM$(112,3),ERR=0287)
+0287 MESS$="Expired files check time|"+STR(CHECK_TIME:"000")+"|"; GOSUB 7500
+0296 IF DEBUG_OPTION THEN %IN_WEBEC$="N" ELSE %IN_WEBEC$="Y" END_IF ; %WEBSSERR$=""; REM " ssp 131928
+0300 REM "Open EC files
+0301 GLOBALFILES$=""
+0305 FILE_NAME$="ESA",FSLOT=33004; GOSUB 7700
+0310 FILE_NAME$="ESB",FSLOT=33005; GOSUB 7700
+0315 FILE_NAME$="ESC",FSLOT=33006; GOSUB 7700
+0350 FILE_NAME$="ZZPARM",FSLOT=33013; GOSUB 7710
+0353 REM "do not use FSLOT 33018 - used in 6300 for process scheduling
+0400 REM "Search for files
+0410 REM "Check D0 for END file, and RESTART file
+0412 IF LOOP_COUNT++>10 THEN LOOP_COUNT=1; CLOSE (%WEBEC_LOG_FILE); OPEN (%WEBEC_LOG_FILE)LOGFILE$ ! every 10 loops, close & open logfile to force flush to disk
+0413 IF SCHED_LOOP_COUNT++>60 THEN SCHED_LOOP_COUNT=1; GOSUB 6400; REM "every 60 loops check to see if scheduled background processes to be run
+0415 CLOSE (14); OPEN (14,ERR=0416)"END."+STP(SID$,3); MESS$="Found END."+STP(SID$,3)+" file",MTYPE$="EXIT"; GOSUB 7500; ECZ$(16,10)="ENDED",ECZ[2]=0; GOSUB 6100; GOTO 9900; REM "If END.+SERVER ID file found then stop Note: All spaces removed from server id to make usable END name, note in status record as 'ENDED' so we know how it stopped, and clear process id
+0416 CLOSE (14); OPEN (14,ERR=0417)"RESTART."+STP(SID$,3); MESS$="Found RESTART."+STP(SID$,3)+" file",MTYPE$="EXIT"; GOSUB 7500; ECZ$(16,10)="RESTART"; GOSUB 6100; RESET ; BEGIN ; GOTO 0001; REM "If RESTART.+SERVER ID file found then restart Note: All spaces removed from server id to make usable END name, note in status record as 'RESTART' so we know how it stopped and go back to beginning
+0417 GOSUB 7800; REM "Update x3$ info
+0420 FIND$=FILEMASK$; GOSUB 7600; GOSUB 6100; IF FILES$="" THEN GOSUB 7550; WAIT SLEEP; GOTO 0410; REM "Update stats before each search
+0425 IF MSK(FILES$,"[^\|]*\|") THEN FILE_NAME$=FILES$(1,MSL-1); FILES$=MID(FILES$,MSL+1); GOSUB PROCESS_A_FILE; GOTO *SAME
+0430 GOTO 0420
+0495 GOTO 9900
+0500 PROCESS_A_FILE:
+0510 CLOSE (33001); OPEN LOCK (33001,OPT="TEXT",ERR=*NEXT)FILE_NAME$; GOTO FILE_OK
+0515 E=ERR; IF E=0 OR E=12 THEN RETURN ELSE OPEN LOCK (33001,OPT="TEXT")FILE_NAME$; GOTO FILE_OK ! if an error 0 or 12 then just return file is in use by another server or was processed by another server. IF other error then try again and let error logic handle the error
+0525 FILE_OK:! If here, then the file is ok to process
+0530 FILES_DONE+=1; IN_NAME$=%SERVER_DIR$+FILE_NAME$; OUT_NAME$=IN_NAME$+".o",TMP_NAME$=IN_NAME$+".x"; NEW_FILE_NAME$=IN_NAME$+".z"; %WEBEC_FILE_NAME$=FILE_NAME$ ! Create output name from input name, strip off leading directory/166502
+0535 MESS$="FILE|"+FILE_NAME$+"|"; GOSUB 7500; ECZ$(26,20)=FILE_NAME$,ECZ[3]=ECZ[3]+1; GOSUB 6100; REM "log file name, update server stats
+0545 RENAME FILE_NAME$,NEW_FILE_NAME$ ! rename file on disk so possible other webec servers won't keep trying to get it. We leave FILE_NAME$ so references to the file will be consistant
+0550 CLOSE (33002)
+0555 ERASE TMP_NAME$,ERR=*NEXT
+0560 SERIAL TMP_NAME$
+0565 OPEN (33002,OPT="TEXT")TMP_NAME$
+0600 REM "initialize IN$ array and set INDEX to starting element
+0610 GOSUB 7100
+1000 REM ' read text file input values
+1010 READ (33001,END=1100,ERR=9000)IN_STR$
+1015 REM "if tilde in the string then drop the tilde and everything after it
+1016 LEFT_OVER$="",TPOS=POS($7E$=IN_STR$); IF TPOS>0 THEN IF TPOS=1 THEN GOTO 1010 ELSE LEFT_OVER$=IN_STR$(TPOS+1),IN_STR$=IN_STR$(1,TPOS-1); REM "134017
+1029 REM "if = in string split into tag and tag value around the =, if no '=' is found then the line is a continuation of the previous value, add an end of line to the string stored for the previous tag (INDEX is still pointing to the right place), and then the new line
+1030 P=POS("="=IN_STR$); IF P=0 THEN IN$[INDEX,1]=IN$[INDEX,1]+EOL$+IN_STR$; GOTO LOOP_BOTTOM ELSE TAG$=STP(IN_STR$(1,P-1),2),TAG_VALUE$=STP(IN_STR$(P+1),2,$0D$); REM "135245
+1045 INDEX=INDEX+1
+1050 IF POS("?tf?"=TAG_VALUE$)<>0 THEN TAG_VALUE$=""; REM "We cannot (at this time) allow any tag_values with a '?tf?' in them, it can hang the called programs. In the future we may allow such tags to do advanced stuff, but we should put the exceptions here.                                           
+1055 IN$[INDEX,0]=TAG$,IN$[INDEX,1]=TAG_VALUE$
+1095 LOOP_BOTTOM:IF LEFT_OVER$<>"" THEN IN_STR$=LEFT_OVER$,LEFT_OVER$=""; GOTO 1016 ELSE GOTO 1010; REM "134017
+1101 IF INDEX=0 THEN ITMP$=FN%XFD$(1,0); ISIZE=DEC(ITMP$(38,4)); CLOSE (1); CLOSE (2); IF ISIZE=0 THEN ERASE FILE_NAME$,ERR=1199; GOTO 1199 ELSE GOTO 1199; REM "If no records found then we probably opened the file before it is finished, so close it, but don't erase and we'll catch it on the next loop around  SSP#153429
+1102 GOSUB 7000; REM "After getting $IN[] go set variables
+1103 IF (PRINT_DOC=0 AND %SESSIONID$="" AND LOGGINGIN$<>"Y") OR TEMPLATE$="" OR CALL_PROG$="" THEN GOSUB 7250; GOTO 1199
+1104 IF %SESSIONID$<>"" THEN GOSUB 4000; IF SESSION_OK=0 THEN GOSUB 4200; GOTO 1190
+1105 IF NO_HEADER$<>"Y" THEN PRINT (33002)HTML_HEADER$,; REM "Initialize file header, unless no header
+1106 GOSUB CALL_A_PROG
+1190 REM "Done with this file                                                  
+1191 CLOSE (33001); IF ARCHIVE_INCOMING THEN ERASE IN_NAME$+".za",ERR=*PROCEED; RENAME NEW_FILE_NAME$,IN_NAME$+".za",ERR=*NEXT ELSE ERASE NEW_FILE_NAME$,ERR=*NEXT ! 166395                                                        
+1192 CLOSE (33002)
+1193 IF REMOVE_FILE$="Y" THEN ERASE TMP_NAME$,ERR=1195; GOTO 1195 ELSE ERASE OUT_NAME$,ERR=1194; REM "Rename tmpe file  to out file,127390-if remove_file$ is Y                                                                    
+1194 RENAME TMP_NAME$,OUT_NAME$
+1198 %QUIET_MODE=0
+1199 RETURN 
+1200 CALL_A_PROG:REM " Call specified program
+1205 GOSUB 3100; REM "prefix web code on template name if needed and check template is found
+1210 MESS$="FILE|"+FILE_NAME$+"|SESSION ID|"+%SESSIONID$+"|PROGRAM|"+CALL_PROG$+"|REMOTE HOST|"+REMOTE_HOST$+"|TEMPLATE|"+TEMPLATE$+"|INDEX|"+STR(TEMPLATE_INDEX); GOSUB 7500
+1212 PRECISION 14; PT=TIM; PRECISION 2
+1215 %WEBSSERR$=""
+1217 ECZ$(16,10)=CALL_PROG$; GOSUB 6100; REM "record current process
+1220 CALL CALL_PROG$,ERR=1225,X3$,X4$,EC_PARM$,EC${ALL},IN${ALL},INDEX,33002
+1222 IF %LGNMSG$<>"" THEN GOSUB 4200; REM relogin html
+1224 GOTO 1230
+1225 REM "Error occured
+1226 MESS$="ERROR|"+STR(ERR)+"|PROGRAM|"+CALL_PROG$+"|",MTYPE$="EXCP"; GOSUB 7500; ECZ$(16,10)="IDLE",ECZ[8]=ECZ[8]+1; GOSUB 6100; GOTO 1400; REM "log error, update server stats & goto process error
+1230 REM "Resume normal processing
+1232 PRECISION 14; ET=TIM; ET$=STR((ET-PT)*3600:"0.000000"); PRECISION 2; REM 
+1233 MESS$="FILE|"+FILE_NAME$+"|SESSION ID|"+%SESSIONID$+"|PROGRAM|"+CALL_PROG$+"|TIME|"+ET$+"|"; GOSUB 7500
+1234 IF %WEBSSERR$<>"" THEN GOTO 1500
+1235 CLOSE (100); REM "Close template if it was left open.
+1238 ECZ$(16,10)="IDLE"; REM "set status, will write out at 1260, no matter what  156412
+1242 ECZ[4]=ECZ[4]+1; REM "add to issues processed
+1260 GOSUB 6100; REM "write out stat results 156412
+1290 IF %BASIC2$<>"" THEN CALL_PROG$=%BASIC2$,%BASIC2$=""; GOTO 1210
+1295 CALL_A_PROG_END:RETURN 
+1400 REM "Process errors by adding .err on file original file name & renameing (so we don't process again), then send  error message back to server
+1403 ERR_NO=ERR,LINE_NO=TCB(5)
+1405 CLOSE (1); RENAME DISK_NO,IN_NAME$,IN_NAME$+".err",ERR=1445
+1410 PRINT (33002,ERR=1445)HTML_HEADER$,
+1415 FILE_NAME$=PARAM$(5,8); GOSUB SEND_FILE; REM "Send file header
+1430 PRINT (33002)"<P>",EOL$,
+1432 PRINT (33002)"<BR>An error occured while processing your request",EOL$,
+1434 PRINT (33002)"<BR>Please contact this web site to report it",EOL$,
+1436 PRINT (33002)"<BR>Code "+STR(ERR_NO)+"-"+STR(LINE_NO),EOL$,
+1437 PRINT (33002)"<BR>P=",CALL_PROG$,"|",EOL$,
+1440 FILE_NAME$=PARAM$(13,8); GOSUB SEND_FILE; REM " Send trailer of html
+1445 RETURN 
+1500 REM "%WEBSSERR$ was set so we had an err handle be renaming file and returning and error page. In this first phase it will be static, we will add called program later -> 1500-1545 131928
+1504 MESS$="ERROR|"+%WEBSSERR$+"|PROGRAM|"+CALL_PROG$+"|FILE|"+FILE_NAME$+"|SESSION ID|"+SESSIONID$,MTYPE$="EXCP"; GOSUB 7500; ECZ$(16,10)="IDLE",ECZ[8]=ECZ[8]+1; GOSUB 6100; REM "log error, set server status to idle, add to error count
+1505 CLOSE (1); RENAME IN_NAME$,IN_NAME$+".err",ERR=1506
+1509 REM "Re init output file so that it only has the error message instead of a partial page
+1510 CLOSE (33002); OPEN (33002,OPT="TEXT")TMP_NAME$
+1511 REM "Setup ERR$[] to call EC3  to output error page with template if provided. If provided try web_code (set in 1200's->3100's) on error template to allow for custom templates
+1512 DIM ERR$[1,1]
+1513 PRINT (33002,ERR=*NEXT)HTML_HEADER$, ! ssp 146555/EV3154
+1515 IF STP(EC_PARM$(981,40),3," ")="" THEN GOTO 1535 ELSE ERR_TEMPLATE$=STP(EC_PARM$(981,40),2); REM "If blank then goto to default page
+1517 CLOSE (101); OPEN (101,ERR=1518)WEB_CODE$+ERR_TEMPLATE$; CLOSE (101); ERR_TEMPLATE$=WEB_CODE$+ERR_TEMPLATE$; GOTO 1520
+1519 CLOSE (101); OPEN (101,ERR=1535)ERR_TEMPLATE$; CLOSE (101); REM "check name without web_code, if not found then skip to default logic
+1520 TMP$=GBL("CALL_PROG",CALL_PROG$); REM "Store call prog for use in EC3BYB
+1522 CLOSE (100); OPEN (100,OPT="TEXT",ERR=1535)ERR_TEMPLATE$
+1526 READ (100,END=1530)LINE$; CALL "EC3BYB",ERR=1535,X3$,X4$,EC_PARM$,EC${ALL},ERR${ALL},0,2,LINE$; PRINT (33002)LINE$,EOL$,; GOTO 1526
+1530 CLOSE (100)
+1534 GOTO 1541
+1535 REM "If no error template or error then use this default page
+1538 PRINT (33002)"<P>",EOL$,"<BR>An error occured while processing your request",EOL$,"<BR>Please contact this web site to report it",EOL$,
+1540 PRINT (33002)"<BR>Message=",%WEBSSERR$,EOL$,"<BR>",EOL$,""
+1545 RETURN 
+3000 SEND_FILE:REM "Put contents of FILE_NAME$ to (2)      
+3020 CALL "WWWSND",ERR=SEND_FILE_END,PARAM$,FILE_NAME$,33002
+3045 SEND_FILE_END:RETURN 
+3100 REM "Take template_index as index into IN$[] with template name, check buyer info, if web group set, then try to open template with webgroup prefix, if found, change template code to that. If not found check regular template code, if not found then substitute nof template from parameters
+3105 WEB_CODE$=""
+3125 CLOSE (101); OPEN (101,ERR=3126)TEMPLATE$; IF POS(%SERVER_TEMPLATE_DIR$=PTH(101))=0 THEN GOTO 3130; END_IF ; CLOSE (101); GOTO 3140
+3127 REM "Not found so substitue template not found template
+3130 IN$[TEMPLATE_INDEX,1]=STP(EC_PARM$(128,40),1)
+3131 %TEMPLATE$=STP(EC_PARM$(128,40),1)
+3145 RETURN 
+4000 REM check session time, get customer info
+4003 DIM EC$[20]
+4004 SESSION_OK=0
+4010 PRECISION 14; DIM ECB[3]; EXTRACT (33005,KEY=%SESSIONID$,DOM=4011,ERR=4011)ECB$,ECB[0],ECB[1],ECB[2]; PRECISION 2; GOTO 4012
+4011 %LGNMSG$="Your session has expired.  Please re-enter your Login Id and Password"; RETURN 
+4022 PRECISION 14
+4023 ELAPSED_TIME=0; ELAPSED_TIME=INT((FN%GET_DATETIME("",0)-ECB[1])*1440)
+4024 PRECISION 2
+4025 REM IF NUM(%TIMEOUT$)>0 THEN PRECISION 14; IF ELAPSED_TIME>=NUM(%TIMEOUT$) THEN %LGNMSG$="Your session has expired.  Please re-enter your Login Id and Password"; PRECISION 2; WRITE (33006,KEY=%SESSIONID$)ECB$,ECB[0],ECB[1],ECB[2]; REMOVE (33005,KEY=%SESSIONID$); RETURN 
+4030 PRECISION 2
+4035 SS1=UNT; OPEN (SS1)"SS1"
+4040 NOFL=1; SET_PARAM -'XI'; READ (SS1,KEY=ECB$(8,10),DOM=*NEXT)SS1$; NOFL=0
+4041 SET_PARAM 'XI'
+4042 CLOSE (SS1)
+4045 IF NOFL THEN %LGNMSG$="Client record does not exist. Please re-enter your Login Id and Password"; RETURN 
+4050 %CLIENT$=SS1$(1,10),%CLIENTNAME$=SS1$(11,35); %SUPPLAN$=SS1$(691,1)
+4090 SESSION_OK=1
+4095 RETURN 
+4200 REM ' relogin
+4210 NOLGNT=1; CLOSE (101); OPEN (101,OPT="TEXT",ERR=*NEXT)%RELOGINTEMPLATE$; NOLGNT=0
+4215 IF NOLGNT THEN %WEBSSERR$="RE-LOGIN TEMPLATE PAGE DOES NOT EXIST"; EXITTO 1500
+4220 READ (101,END=4290)LINE$
+4225 P1=MSK(LINE$,"\?SS\?[^?]*\?")
+4230 IF P1>0 THEN {
+4235 PLEN=MSL; TAG$=LINE$(P1,PLEN)
+4240 SWITCH TAG$ ! 4270 end switch
+4245 CASE "?ss?loginmsg?"
+4250 LINE$=LINE$(1,P1-1)+%LGNMSG$+LINE$(P1+PLEN+1)
+4255 BREAK
+4260 DEFAULT 
+4265 LINE$=LINE$(1,P1-1)+LINE$(P1+PLEN+1)
+4270 END SWITCH ! 4240
+4285  } ! 4230
+4290 %LGNMSG$=""
+4295 RETURN 
+4300 REM "Set EC$[4] to formatted date and EC$[5] to formatted time, ec$[14] toECY$,                     info
+4305 EC$[4]=DTE(0:"%Mz/%Dz/%Y"); REM "clarity change,157847
+4315 EC$[5]=DTE(0:"%Hz:%mz:%sz")
+4320 EC$[14]=ECY$
+4345 RETURN 
+6000 REM "Evaluate arguments to find server id
+6004 SID$="",SF_SLOT=99,STAT_SLOT=97
+6005 FOR I=0 TO NAR
+6007 TMP$=ARG(I); IF TMP$(1,3)="id=" THEN SID$=STP(TMP$(4),1); EXITTO 6011
+6010 NEXT I
+6015 IF SID$<>"" THEN IMODE=0,%DISPLAY_LOG=0; GOTO 6030 ELSE IMODE=1,%DISPLAY_LOG=1
+6020 PRINT 'CS',@(0,0),"WWW Server, Interactive mode"
+6025 INPUT "Server id: ",SID$
+6030 CLOSE (SF_SLOT); FSLOT=SF_SLOT,FILE_NAME$="ESY"; GOSUB 7700
+6035 DIM SKEY$(15),ECY$(512); SKEY$(1)=SID$; FIND (SF_SLOT,KEY=SKEY$,DOM=6036)ECY$(1); GOTO 6038
+6036 IF IMODE THEN PRINT SID$," is not a valid server id"; GOTO 6025 ELSE MESS$="Invalid Server ID|"+SID$+"|",MTYPE$="EXIT"; GOSUB 7500; GOTO 9900
+6038 MESS$="START|SID|"+SID$+"|"; GOSUB 7500
+6039 PRINT 'CAPTION'(STP(SID$,1)+" Web.ss Server"),
+6040 CLOSE (STAT_SLOT); FSLOT=STAT_SLOT,FILE_NAME$="ESZ"; GOSUB 7700; REM "Open status file
+6041 REMOVE (STAT_SLOT,KEY=SID$,DOM=6042); REM "remove any existing status record
+6042 DIM ECZ$(128),ECZ[18]; ECZ$(1,15)=SID$,ECZ$(16,10)="IDLE"; PRECISION 14; ECZ[1]=FN%GET_DATETIME("",0); PRECISION 2; ECZ[2]=DEC($00$+GID); GOSUB 6100; REM "Clear stat record, set server id, current process, start time, process id, then call stat write routine
+6043 %SERVER_DIR$=STP(ECY$(56,60),1," ")+DLM,%SERVER_TEMPLATE_DIR$=%SERVER_DIR$; REM " for now,make template same as server, but it will be able to be different soon
+6044 PREFIX (1)%SERVER_DIR$; REM "Set Prefix 1 to use as the server directory
+6045 RETURN 
+6050 REM "151249, just set use_start_log, don't actually open now -Open the start log 'webec_start_log' on slot 98. Append to file if it exists, it will be on disk 0
+6055 ! SERIAL "webss_start_log",ERR=6056
+6060 ! CLOSE (98); OPEN (98,OPT="TEXT")"webss_start_log"
+6065 USE_START_LOG=1
+6095 RETURN 
+6100 REM "Write out ESZ status info, updating date/time info
+6105 IOLIST ECZ$,ECZ[0],ECZ[1],ECZ[2],ECZ[3],ECZ[4],ECZ[5],ECZ[6],ECZ[7],ECZ[8],ECZ[9],ECZ[10],ECZ[11],ECZ[12],ECZ[13],ECZ[14],ECZ[15],ECZ[16],ECZ[17],ECZ[18]
+6110 PRECISION 14; ECZ[0]=FN%GET_DATETIME("",0); PRECISION 2
+6115 ECZ[9]=POS("|"=FILES$,1,0); REM "Get count of files by looking for sepeartor
+6120 ECZ[10]=NUM(FIN(33005,"RECORDS_USED",ERR=*NEXT),ERR=*NEXT); REM "Set # of active sessions SSP#159281
+6134 DIM SID_KEY$(15); SID_KEY$(1)=SID$
+6140 PRECISION 14; WRITE (STAT_SLOT,KEY=SID_KEY$)IOL=6105; PRECISION 2; REM "write must be at precision 14 to preserve the time info
+6145 RETURN 
+6150 REM "Output stat info to log
+6155 MTYPE$="STAT"
+6160 MESS$="SID|"+SID$+"|DOING|"+ECZ$(16,10)+"|LAST FILE|"+STP(ECZ$(26,20),1)+"|PID|"+STR(ECZ[2])+"|"
+6165 MESS$=MESS$+"FILES DONE|"+STR(ECZ[3])+"|ORDERS DONE|"+STR(ECZ[4])+"|ORDER LINES|"+STP(STR(ECZ[5]),2)+"|VALID LOGINS|"+STR(ECZ[6])+"|INVALID LOGINS|"+STR(ECZ[7])+"|ERRORS|"+STR(ECZ[8])+"|"
+6190 GOSUB 7500
+6195 RETURN 
+6200 REM "Set flags based on server options so we aren't POSing into the string all the time and this serves also as a list of options
+6210 IF POS("D"=SERVER_OPTIONS$)<>0 THEN DEBUG_OPTION=1
+6212 IF POS("X"=SERVER_OPTIONS$)<>0 THEN XML_OPTION=1
+6214 IF POS("L"=SERVER_OPTIONS$)<>0 THEN %DISPLAY_LOG=1
+6216 IF POS("A"=SERVER_OPTIONS$)<>0 THEN ARCHIVE_INCOMING=1 ! 166395
+6245 RETURN 
+6300 REM "load background processes
+6302 CLOSE (33018); OPEN (33018)"*MEMORY*"
+6303 EDL_NAME$="EDL"+X3$(9,3)
+6304 CLOSE (1000); OPEN (1000)EDL_NAME$
+6308 READ (1000,KEY=SID$,DOM=6309)
+6310 EDLKEY$=KEY(1000,END=6340); IF EDLKEY$(1,LEN(SID$))<>SID$ THEN GOTO 6340 ELSE DIM EDL$(255); READ (1000,KEY=EDLKEY$)EDL$(1)
+6312 DIM SCHED$(100)
+6320 SCHED$(1,6)=X3$(21,6),SCHED$(11,3)="000"; REM "next date - sequence
+6321 SCHED$(14,1)=EDL$(66,1); REM "command type
+6322 SCHED$(15,40)=EDL$(67,40); REM "command   
+6323 SCHED$(55,1)=EDL$(127,1); REM "repeat control
+6324 SCHED$(56,4)=EDL$(128,4); REM "repeat every xx minutes
+6325 SCHED$(60,10)=EDL$(107,10); REM "request file suffix
+6329 CALL "EC4DAT",X3$,3,CURRTIME$,"",""; SCHED$(7,4)=CURRTIME$
+6330 WRITE (33018,KEY=SCHED$(1,13),DOM=6331)SCHED$; MESS$="PROCESS SCHEDULE: "+SCHED$(1,6)+"/"+SCHED$(7,4)+" for "+STP(EDL$(26,40),1); GOSUB 7500; GOTO 6310
+6331 SCHED$(11,3)=STR(NUM(SCHED$(11,3))+1:"000"); GOTO 6330
+6340 CLOSE (1000)
+6345 GOSUB 6400; REM "execute starup jobs
+6349 RETURN 
+6400 REM "check if process needs to be run
+6405 CALL "EC4DAT",X3$,3,CURRTIME$,CURRDATE$,""
+6406 MESS$="PROCESS SCHEDULE: Checking jobs at "+CURRDATE$+"|"+CURRTIME$; GOSUB 7500
+6407 READ (33018,KEY="",DOM=6408)
+6410 READ (33018,END=6481)SCHED$
+6412 IF SCHED$(1,6)>CURRDATE$ THEN GOTO 6410
+6414 IF SCHED$(7,4)>CURRTIME$ THEN GOTO 6410
+6418 REMOVE (33018,KEY=SCHED$(1,13)); REM "going to process
+6419 NEWTIME=NUM(SCHED$(7,4))+(NUM(SCHED$(56,4))/60*100)
+6420 ON POS(SCHED$(55,1)="MN")-1 GOTO 6421,6430
+6421 IF NUM(SCHED$(56,4))<1 THEN GOTO 6430; REM "repeat x minutes
+6422 SCHED_SCRIPT$=SCHED$(15,40)
+6423 IF NEWTIME<2400 THEN NEWTIME$=STR(NEWTIME:"0000"),NEWDATE$=CURRDATE$; GOTO 6426
+6424 CALL "EC4DAT",X3$,2,CURRDATE$,CURRDATEYMD$,""; CALL "EC4DAT",X3$,9,CURRDATEYMD$,"1",NEXTDAYYMD$; CALL "EC4DAT",X3$,1,NEXTDAYYMD$,NEXTDAY$,""
+6425 IF NEWTIME-2400<0 THEN NEWTIME=1 ELSE NEWTIME=NEWTIME-2400 END_IF ; NEWTIME$=STR(NEWTIME:"0000"),NEWDATE$=NEXTDAY$
+6426 SCHED$(1,6)=NEWDATE$,SCHED$(7,4)=NEWTIME$,SCHED$(11,3)="000"
+6428 WRITE (33018,KEY=SCHED$(1,13),DOM=6429)SCHED$; MESS$="PROCESS SCHEDULE: **Schedule job for "+SCHED$(1,6)+"/"+SCHED$(7,4); GOSUB 7500; READ (33018,KEY="",DOM=6430); REM "need to reset memory file key to start if new file added as ptr is set to EOF
+6429 SCHED$(11,3)=STR(NUM(SCHED$(11,3))+1:"000"); GOTO 6428
+6440 REM "create process request file
+6442 TEMPPRFILE$=%SERVER_DIR$+"TMP"+STP(ECY$(1,15),3," ")
+6443 ERASE TEMPPRFILE$,ERR=6444
+6444 SERIAL TEMPPRFILE$
+6454 CLOSE (1000); OPEN LOCK (1000)TEMPPRFILE$
+6460 PRINT (1000)"basic=EC4PR0"
+6461 PRINT (1000)"command_type="+SCHED$(14,1)
+6462 PRINT (1000)"command="+STP(SCHED$(15,40),1)
+6463 PRINT (1000)"remove_file=Y"
+6464 PRINT (1000)""
+6470 CLOSE (1000); FILESEQ=1
+6471 NEWPRFILE$=%SERVER_DIR$+STR(FILESEQ:"0000")+STP(SCHED$(60,10),3," "); OPEN (1000,ERR=6473)NEWPRFILE$; CLOSE (1000)
+6472 FILESEQ=FILESEQ+1; GOTO 6471
+6473 CLOSE (1000); RENAME TEMPPRFILE$,NEWPRFILE$
+6474 MESS$="Creating scheduled process file: "+NEWPRFILE$; GOSUB 7500
+6480 GOTO 6410
+6495 RETURN 
+6500 EVAL_ARGS:! Evaluate ARGS and Initialize argument controlled variables - SSP#137061
+6505 SID$="",ENV_ID$="EC4SRV  "
+6510 FOR I=0 TO NAR
+6520 ARG$="",ENV$=""; _A$=ARG(I),_P=POS("="=_A$); ARG$=MID(_A$,1,_P-1),VALUE$=MID(_A$,_P+1)
+6525 SWITCH ARG$
+6530 CASE "id"; SID$=VALUE$; BREAK
+6540 CASE "env"; ENV_ID$=PAD(VALUE$,8); BREAK
+6575 END SWITCH 
+6580 NEXT I
+6595 RETURN 
+6599 ! 
+6800 SHOW_OPTIONS:! print EC SERVER info to log/screen
+6805 MESS$="Version|"+VERSION$+"|"; GOSUB 7500
+6810 IF IMODE THEN MESS$="Interactive mode ON" ELSE MESS$="Interactive mode OFF" END_IF ; GOSUB 7500
+6815 MESS$="Task id|"+FID(0)+"|"; GOSUB 7500
+6820 MESS$="Filemask|"+FILEMASK$+"|"; GOSUB 7500
+6825 MESS$="Log file|"+LOGFILE$+"|"; IF %NO_LOG THEN MESS$=MESS$+"  LOGGING IS TURNED OFF!!!!!",MTYPE$="WARN" END_IF ; GOSUB 7500
+6830 MESS$="Sleep seconds|"+STR(SLEEP:"0")+"|"; GOSUB 7500
+6835 MESS$="Options|"+SERVER_OPTIONS$+"|"; GOSUB 7500
+6890 RETURN 
+6899 ! 
+7000 REM "Given IN$[], set CONTROL variables - see 7100 & 7150 for init logic
+7001 %BASIC2$="",%SESSIONID$="",LOGGINGIN$="N",PRINT_DOC=0,%TEMPLATE$="",SHOW_TAGS=0,%RNTEMPLATE$="",ISSUE$="",TMPCLIENT$=""
+7005 FOR J=1 TO INDEX
+7010 SWITCH IN$[J,0]
+7015 CASE "basic"
+7017 CALL_PROG$=IN$[J,1]; BREAK
+7025 CASE "template"
+7027 %TEMPLATE$=IN$[J,1],TEMPLATE$=IN$[J,1],TEMPLATE_INDEX=J
+7028 BREAK
+7030 CASE "remote_addr","remote_host"
+7032 REMOTE_HOST$=IN$[J,1]; BREAK
+7035 CASE "basic2"
+7037 IF %BASIC2$="" THEN %BASIC2$=IN$[J,1]
+7039 BREAK
+7040 CASE "session_id"
+7042 %SESSIONID$=IN$[J,1]; BREAK
+7045 CASE "login"
+7047 IF IN$[J,1]="IN" THEN LOGGINGIN$="Y"
+7049 BREAK
+7050 CASE "print_doc"
+7055 PRINT_DOC=1
+7059 BREAK
+7060 CASE "rntemplate"
+7062 %RNTEMPLATE$=IN$[J,1],TEMPLATE$=IN$[J,1],TEMPLATE_INDEX=J
+7064 BREAK
+7065 CASE "issuenum"
+7067 ISSUE$=IN$[J,1]
+7069 BREAK
+7070 CASE "client"
+7075 TMPCLIENT$=STP(IN$[J,1],3)
+7077 BREAK
+7080 END SWITCH 
+7085 NEXT J
+7090 IF ISSUE$<>"" THEN %TEMPLATE$=%RNTEMPLATE$,%BASIC2$="EC4PD1"
+7092 IF STP(ISSUE$,2)="HELP" OR STP(ISSUE$,2)="help" AND TMPCLIENT$="500" THEN %TEMPLATE$="ssresearchsum.htm",%BASIC2$="EC4RS1"
+7095 RETURN 
+7100 REM "Initialize CONTROL variables and IN$[]
+7110 CALL_PROG$="",USER_ID$="",PASSWORD$="",TEMPLATE_INDEX=0,REMOTE_HOST$="",LOGIN_TEMPLATE$=""; REM "Clear before looking for session_id
+7111 REMOVE_FILE$="",NO_HEADER$=""; REM "127390
+7115 EMAIL_RESULTS$="",EMAIL_ACTION_CODE$="" ! WO166006
+7117 ALTERNATE_USER$="" ! WO170184
+7139 REM "IN$[0] will be for environment information, so INDEX will start @ 1
+7140 INDEX=0,IN_MAX=200; REM "Start with 200 will expand if needed later
+7142 DIM IN$[IN_MAX,1]; REM "element 0 is 'tag', element 1 is the value
+7145 RETURN 
+7149 ! 
+7250 REM "153429 - If CALL_PROG$ was "" then delete the file, it isn't good. Log that the file was deleted - may need to add logic to display contents of IN$[]                                                                    
+7255 MESS$="WebEC function not found, removing file|"+STP(FILE_NAME$)+"|",MTYPE$="WARN"; GOSUB 7500
+7260 CLOSE (33001); ERASE NEW_FILE_NAME$,ERR=*NEXT
+7265 CLOSE (33002); ERASE TMP_NAME$,ERR=*NEXT ! get rid of output file         
+7270 CLOSE (100)
+7295 RETURN 
+7299 ! 
+7300 GET_FIRST_CC_MATCH:! Using Cost Center Shipto DDL feature, need to set active shipto to the first one that will appear on list
+7305 DIM SHIPTO$(618); READ (33008,KEY="C"+ECA$(51,10),DOM=*NEXT)
+7310 K$=KEY(33008,END=GET_FIRST_CC_MATCH_END); READ (33008,KEY=K$)SHIPTO$(1)
+7315 IF K$(1,11)<>"C"+ECA$(51,10) THEN GOTO GET_FIRST_CC_MATCH_END
+7320 IF SHIPTO$(236,9)=ECA$(726,9) THEN ECB$(1167,4)=SHIPTO$(12,4) ELSE GOTO 7310
+7345 GET_FIRST_CC_MATCH_END:RETURN 
+7349 ! 
+7500 REM "Put MESS$ in log & display to screen if IMODE
+7501 REM "MTYPE$ is type, clear it after, if '' then say info
+7502 REM "valid are INFO,WARN,EXIT,EXCP,STAT,EMAIL
+7504 IF %QUIET_MODE THEN GOTO 7541
+7505 IF MTYPE$="" THEN MTYPE$="INFO"
+7510 IF X3$(48,2)="2" THEN OUT$=DTE(0:"%Y-%Dz-%Mz|%Hz:%mz:%sz")+"|"+MTYPE$+"|"+MESS$ ELSE OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MTYPE$+"|"+MESS$; PRECISION 2
+7520 IF USE_START_LOG THEN GOTO *NEXT ELSE IF %NO_LOG THEN GOTO 7540 ELSE PRINT (%WEBEC_LOG_FILE)OUT$; REM "151249, if start_log set, don't do anything We may use the start log until we have the server id
+7540 IF %DISPLAY_LOG THEN PRINT OUT$
+7541 MTYPE$=""
+7545 RETURN 
+7550 REM "Idle tasks, these are done if no files found
+7560 REM "approx every 15 mins give stat to say we're alive & print # done
+7564 PRECISION 14
+7565 IF NUM(DTE(0,(TIM-LAST_TIME):"%m"),ERR=*NEXT)>=15 THEN GOSUB 6150; LAST_TIME=TIM
+7566 PRECISION 2
+7570 GOSUB 7750; REM "Check to see if time to remove expired tasks
+7595 RETURN 
+7600 REM "Given FIND$ as file mask, search the server directory for files thatmatch
+7604 FILES$=""
+7610 SELECT F_NAME$ FROM STP(ECY$(56,60),1," ") WHERE F_NAME$ LIKE FIND$
+7620 FILES$=FILES$+F_NAME$+"|"
+7630 NEXT RECORD 
+7645 RETURN 
+7700 REM "Given FILE_NAME$ and FSLOT open file on fslot, try w/comp code, then without, if not able to open log message and leave
+7705 CLOSE (FSLOT); OPEN (FSLOT,ERR=7706)FILE_NAME$+X3$(9,3); GOTO 7720
+7710 CLOSE (FSLOT); OPEN (FSLOT,ERR=8815)FILE_NAME$; GOTO 7720
+7745 RETURN 
+7750 REM "Check to see if time to remove expired tasks based on EC_PARM$(112,3), if 0 then never remove expired tasks
+7752 GOTO 7795; REM dont expire: test
+7755 IF CHECK_TIME=0 THEN GOTO 7795
+7760 PRECISION 14; ELAPSED_TIME=(FN%GET_DATETIME("",0)-EXP_LAST_CHECKED)*60*24; IF ELAPSED_TIME>=CHECK_TIME THEN PRECISION 2; GOTO 7761 ELSE PRECISION 2; GOTO 7795 ! SSP#158061
+7765 MOVED$=""; CALL "EC4EXP",X3$,X4$,MOVED$,"EC4SRV"
+7766 ACT_SESS=NUM(FIN(33005,"RECORDS_USED",ERR=*NEXT),ERR=*NEXT) ! # of active sessions
+7770 MESS$="EXP FILE CHECK|Sessions expired|"+MOVED$+"|Sessions still active|"+STP(STR(ACT_SESS:"###,##0"),2)+"|Elapsed time(minutes)|"+STR(ELAPSED_TIME)+"|"; GOSUB 7500
+7790 PRECISION 14; EXP_LAST_CHECKED=FN%GET_DATETIME("",0); PRECISION 2
+7795 RETURN 
+7800 REM "Set dates in X3$ to current date based on TIM
+7805 DTMP$=DTE(0:"%Y%Mz%Dz")
+7810 DATE$=CHR(INT((NUM(DTMP$(1,4))-1900)/10)+65)+DTMP$(4,5)
+7815 X3$(15,6)=DATE$,X3$(21,6)=DATE$
+7845 RETURN 
+8000 REM "Process email params in EC$[12]
+8001 REM "EC$[12] is a string of repeated elements
+8002 REM "element information
+8003 REM "{ } surround each packet with [around each tag]  {[tag]data[tag]data}{[tag]data[tag]data}
+8005 DIM ETEXT_NEEDED$(30); ETEXT_NEEDED$(1,10)="email",ETEXT_NEEDED$(16,10)="email",ETEXT_NEEDED$(11,5)="00001",ETEXT_NEEDED$(26,5)="00002"; CALL "EC3BYC",X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,ETEXT_NEEDED$,ETEXT${ALL}
+8008 ETAG_LIST$="001<email>002<subject>",ETAG_COUNT=2
+8009 REM "get next packet
+8010 IF STP(EC$[12],1)="" THEN GOTO 8070
+8012 START_PACKET=POS("{"=EC$[12]),END_PACKET=POS("}"=EC$[12])
+8013 IF START_PACKET=0 THEN IF END_PACKET=0 THEN EC$[12]=""; GOTO 8010 ELSE EC$[12]=EC$[12](END_PACKET+1); GOTO 8010; REM "get starting position of packet - if problem clear to next }
+8014 IF END_PACKET=0 THEN EC$[12]=""; GOTO 8010; REM "no correct termination of packets
+8015 PACKET$=EC$[12](START_PACKET+1,END_PACKET-START_PACKET),EC$[12]=EC$[12](END_PACKET+1)
+8016 IF PACKET$="" THEN GOTO 8040 END_IF ; START_TAG=POS("["=PACKET$),END_TAG=POS("]"=PACKET$); IF END_TAG=0 THEN END_TAG=POS("}"=PACKET$) END_IF ; IF END_TAG=0 THEN END_TAG=LEN(PACKET$)
+8017 ETAG$="<"+PACKET$(START_TAG+1,END_TAG-(START_TAG+1))+">"; IF END_TAG=LEN(PACKET$) THEN PACKET$="" ELSE PACKET$=PACKET$(END_TAG+1); REM "get tag and remove from packet
+8018 DATA_END=POS("["=PACKET$); IF DATA_END=0 THEN DATA_END=POS("}"=PACKET$) END_IF ; IF DATA_END=0 THEN DATA_END=LEN(PACKET$) END_IF ; DATA$=PACKET$(1,DATA_END-1); IF DATA_END=LEN(PACKET$) THEN PACKET$=""
+8019 ELIST_START=POS(ETAG$=ETAG_LIST$); IF ELIST_START=0 THEN GOTO 8016 ELSE ELIST_INDEX=NUM(ETAG_LIST$(ELIST_START-3,3))
+8020 ON ELIST_INDEX GOTO 8039,8021,8022,8039
+8021 EMAIL_ADDRESS$=DATA$; GOTO 8039
+8022 SUBJECT$=DATA$; GOTO 8039
+8039 GOTO 8016
+8040 REM "packet parsed - FINAL PROCESSING for current message
+8041 REM "** TO DO NEXT **
+8042 REM "need to get header/footer email 3rd party text
+8043 REM "next write the header/page/footer (with processing logic for tags in the email header) to a file
+8044 REM "write an ".EM" file that contains  "BASIC=EC3EM0  SESSION_ID=  TEMPLATE=<FILENAME FROM ABOVE>
+8045 REM "EC3EM0 - new program to get file open "TEMPLATE" and send to email system and delete .em file and email document
+8048 MESS$="Initiating email",MTYPE$="EMAIL"; GOSUB 7500; MESS$="Destination e-mail address: "+EMAIL_ADDRESS$; MTYPE$="EMAIL"; GOSUB 7500; MESS$="Subject: "+SUBJECT$,MTYPE$="EMAIL"; GOSUB 7500
+8050 GOSUB 8100; REM "send email
+8060 GOTO 8010
+8070 REM "all tags processed
+8095 RETURN 
+8100 REM "Copy output file to new file before returning the output file
+8101 REM "Use port 1001 and 1002
+8105 CLOSE (1001); CLOSE (1002)
+8110 PRECISION 5; EMAIL_FILE$=%SERVER_DIR$+"TMP"+STR(INT(RND*100000)); PRECISION 2
+8111 OPEN (1002,ERR=8115)EMAIL_FILE$; CLOSE (1002); GOTO 8110; REM "if we can open the file then it is in use, try again
+8115 REM "Create file, then open files and copy
+8120 SERIAL EMAIL_FILE$,DISK_NO,0,ERR=8110
+8121 OPEN (1001,ERR=8145)TMP_NAME$; OPEN (1002)EMAIL_FILE$; MESS$="Creating temp HTML e-mail file "+EMAIL_FILE$,MTYPE$="EMAIL"; GOSUB 7500
+8122 TEXT_IN$=ETEXT$[1]; GOSUB 8150
+8123 WRITE RECORD (1002)TEXT_IN$; REM "write out email header
+8125 READ RECORD (1001,SIZ=8192,END=8129)COPY$; COPY$=STP(COPY$,1,$00$); IF MID(COPY$,1,LEN(HTML_TEXT$))=HTML_TEXT$ THEN COPY$=MID(COPY$,LEN(HTML_TEXT$)+1) END_IF ; IF COPY$="" THEN GOTO 8125 ELSE WRITE RECORD (1002,SIZ=LEN(COPY$))COPY$; GOTO 8125 ! strip off html_header if here, it is covered in email open
+8129 WRITE RECORD (1002)ETEXT$[2]; REM "write out email closing
+8130 PRECISION 5; EMAIL_ACTION_FILE$=%SERVER_DIR$+STR(INT(RND*100000))+".em"; PRECISION 2; CLOSE (1003); OPEN (1003,ERR=8131)EMAIL_ACTION_FILE$; GOTO 8130; REM "find unused tmp file name for email control file
+8131 SERIAL EMAIL_ACTION_FILE$,DISK_NO,0,ERR=8140; OPEN (1003)EMAIL_ACTION_FILE$
+8132 WRITE RECORD (1003)"basic=EC3EM0"; WRITE RECORD (1003)"template="+EMAIL_FILE$; WRITE RECORD (1003)"session_id="+EC$[1](1213,64); WRITE RECORD (1003)"remove_file=Y"
+8133 MESS$="Posting e-mail to send : "+EMAIL_ACTION_FILE$,MTYPE$="EMAIL"; GOSUB 7500
+8134 ! this is the old line 8132!  WRITE RECORD (1003)"basic=EC3EM0"; WRITE RECORD (1003)"template="+EMAIL_FILE$; WRITE RECORD (1003)"session_id="+EC$[1](1,7); WRITE RECORD (1003)"remove_file=Y"
+8140 CLOSE (1001); CLOSE (1002); CLOSE (1003)
+8145 RETURN 
+8150 REM "call parser for email text
+8151 REM "TEXT_IN$ = text to be parsed / returned
+8155 DIM ETAG_VALUES$[ETAG_COUNT]; ETAG_VALUES$[1]=EMAIL_ADDRESS$,ETAG_VALUES$[2]=SUBJECT$
+8170 CALL "EC3BYD",X3$,X4$,EC_PARM$,EC${ALL},"?tf?","?",ETAG_LIST$,ETAG_COUNT,ETAG_VALUES${ALL},TEXT_IN$
+8195 RETURN 
+8600 SET_READONLY:
+8610 SET_PARAM 'XI'
+8640 SET_READONLY_END:RETURN 
+8645 ! 
+8650 CLEAR_READONLY:
+8660 SET_PARAM -'XI'
+8690 CLEAR_READONLY_END:RETURN 
+8695 ! 
+8800 REM "error exits
+8805 MESS$="Unable to read TopForm environment|"+ENV_ID$+"|",MTYPE$="EXIT"; GOSUB 7500; GOTO 9900
+8815 MESS$="Unable to open "+FILE_NAME$+" file",MTYPE$="EXIT"; GOSUB 7500; EXITTO 9900
+8820 MESS$="Unable to open rpc server "+RPC_SERVER$+" on "+RCP_ADDRESS$,MTYPE$="EXIT"; GOSUB 7500; GOTO 9900
+8905 DEF FN_1ST_ONLY$(Z9$)=TBL(SGN(POS(","=Z9$)),Z9$,MID(Z9$,1,POS(","=Z9$)-1))
+9000 REM "ERROR PROCESSING
+9005 IF PAST_LOG_OPEN THEN MTYPE$="EXCP",MESS$="Error: "+STR(ERR)+" Line: "+STR(TCB(5)); ERRM$=MESS$; GOSUB 7500; MTYPE$="EXIT",MESS$="Leaving because of Program Exception"; GOSUB 7500
+9007 IF IMODE THEN INPUT (0,TIM=10,ERR=*NEXT)ERRM$+" <RET> ",*
+9010 GOSUB 1400; BEGIN ; GOTO 0001
+9090 GOTO 9900
+9900 REM "End
+9945 SET_PARAM -'LU' ! turn off don't lock text file mode
+9950 IF IMODE THEN RUN "ZMENU" ELSE RELEASE 
+9999 END 
+10000 DEFINE_LOG_FUNCTION:! define the global log function to use
+10010 DEF FN%_LOG_MESSAGE(LOCAL MESSAGE_TYPE$, LOCAL MESSAGE$)
+10012 LOCAL OUT$
+10015 IF NOT(%QUIET_MODE) THEN {
+10020 IF NUL(MESSAGE_TYPE$) THEN MESSAGE_TYPE$="INFO"
+10025 IF %X3$(48,2)="2" THEN OUT$=DTE(0:"%Y-%Dz-%Mz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$ ELSE OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$; PRECISION 2
+10030 IF %NO_LOG THEN GOTO *NEXT ELSE PRINT (%WEBEC_LOG_FILE)OUT$
+10035 IF %DISPLAY_LOG THEN PRINT OUT$
+10080  } ! NOT (%QUIET_MODE)
+10085 RETURN 1
+10090 END DEF
+10095 RETURN 
+10099 ! 

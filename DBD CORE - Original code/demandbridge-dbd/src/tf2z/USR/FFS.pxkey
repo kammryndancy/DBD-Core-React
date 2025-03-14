@@ -1,0 +1,424 @@
+<PxTable>
+ TableName=FFS
+ TableKey=K1300296335
+ FileCreate=KEYED "FFS",6,0,352,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FSE_UserDefSpecTemplate"
+    PHYSICALPATH$="2007/08/21 17:39"
+    LASTCHANGEDATE$=":15-tma"
+    LASTUPDATEDFILE$="2011/03/03 18:06:32-lmc"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Template Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST SCREEN_NUM$:[LEN(1,SEP=SEP)]"
+    NAME$="SCREEN_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SCREEN_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Screen Number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST FIELD_NUM$:[LEN(2,SEP=SEP)]"
+    NAME$="FIELD_NUM"
+    DESCRIPTION$="=MSG("+QUO+"FIELD_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Field Number"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST FIELD_DESC$:[LEN(20,SEP=SEP)]"
+    NAME$="FIELD_DESC"
+    DESCRIPTION$="=MSG("+QUO+"FIELD_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Field Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST DATA_TYPE$:[LEN(6,SEP=SEP)]"
+    NAME$="DATA_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DATA_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Data Type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST MAX_LENGTH$:[LEN(3,SEP=SEP)]"
+    NAME$="MAX_LENGTH"
+    DESCRIPTION$="=MSG("+QUO+"MAX_LENGTH"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Maximum field length"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST FLD_HORIZ_DENTRY_POS$:[LEN(3,SEP=SEP)]"
+    NAME$="FLD_HORIZ_DENTRY_POS"
+    DESCRIPTION$="=MSG("+QUO+"FLD_H_D_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Field's horizontal data entry position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST FLD_VERT_DENTRY_POS$:[LEN(3,SEP=SEP)]"
+    NAME$="FLD_VERT_DENTRY_POS"
+    DESCRIPTION$="=MSG("+QUO+"FLD_V_D_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Field's vertical data entry position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST FLD_DFLT_VAL_RSP_VER$:[LEN(30,SEP=SEP)]"
+    NAME$="FLD_DFLT_VAL_RSP_VER"
+    DESCRIPTION$="=MSG("+QUO+"F_D_V_R_V"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Fields default value/response verify"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST FLD_TXT_HDG_ON_SCRN$:[LEN(40,SEP=SEP)]"
+    NAME$="FLD_TXT_HDG_ON_SCRN"
+    DESCRIPTION$="=MSG("+QUO+"F_T_H_O_S"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Field's text heading on screen"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST FLD_TXT_HDG_HORIZNTL$:[LEN(3,SEP=SEP)]"
+    NAME$="FLD_TXT_HDG_HORIZNTL"
+    DESCRIPTION$="=MSG("+QUO+"FLD_T_H_H"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Field's text heading horizontal position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST FLD_TXT_HDG_VERTICAL$:[LEN(3,SEP=SEP)]"
+    NAME$="FLD_TXT_HDG_VERTICAL"
+    DESCRIPTION$="=MSG("+QUO+"FLD_T_H_V"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Field's text heading vertical position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST F1_HDG_TEXT_1$:[LEN(20,SEP=SEP)]"
+    NAME$="F1_HDG_TEXT_1"
+    DESCRIPTION$="=MSG("+QUO+"F_H_T_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 1 Output Heading Text 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST F1_HDG_TEXT_2$:[LEN(20,SEP=SEP)]"
+    NAME$="F1_HDG_TEXT_2"
+    DESCRIPTION$="=MSG("+QUO+"F_H_T_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 1 Output Heading 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST F1_COLUMN_POS_$:[LEN(3,SEP=SEP)]"
+    NAME$="F1_COLUMN_POS_"
+    DESCRIPTION$="=MSG("+QUO+"F_C_P_"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 1 Output Column position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST F1_LINE_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="F1_LINE_NUM"
+    DESCRIPTION$="=MSG("+QUO+"F_L_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 1 Output Line Number"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST F1_OUTPUT_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="F1_OUTPUT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"F_O_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 1 Output Type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=18
+    IOLOBJ$="IOLIST F2_HDG_TEXT_1$:[LEN(20,SEP=SEP)]"
+    NAME$="F2_HDG_TEXT_1"
+    DESCRIPTION$="=MSG("+QUO+"F2_H_T_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 2 Output Heading Text 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=19
+    IOLOBJ$="IOLIST F2_HDG_TEXT_2$:[LEN(20,SEP=SEP)]"
+    NAME$="F2_HDG_TEXT_2"
+    DESCRIPTION$="=MSG("+QUO+"F2_H_T_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 2 Output Heading Text 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=20
+    IOLOBJ$="IOLIST F2_COLUMN_POS$:[LEN(3,SEP=SEP)]"
+    NAME$="F2_COLUMN_POS"
+    DESCRIPTION$="=MSG("+QUO+"F_C_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 2 Output Column Position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=21
+    IOLOBJ$="IOLIST F2_LINE_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="F2_LINE_NUM"
+    DESCRIPTION$="=MSG("+QUO+"F2_L_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 2 Output Line Number"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=22
+    IOLOBJ$="IOLIST F2_OUTPUT_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="F2_OUTPUT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"F2_O_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 2 Output Type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=23
+    IOLOBJ$="IOLIST F3_HDG_TEXT_1$:[LEN(20,SEP=SEP)]"
+    NAME$="F3_HDG_TEXT_1"
+    DESCRIPTION$="=MSG("+QUO+"F3_H_T_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 3 Output Heading Text 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=24
+    IOLOBJ$="IOLIST F3_HDG_TEXT_2$:[LEN(20,SEP=SEP)]"
+    NAME$="F3_HDG_TEXT_2"
+    DESCRIPTION$="=MSG("+QUO+"F3_H_T_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="20"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 3 Output Heading Text 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=25
+    IOLOBJ$="IOLIST F3_COLUMN_POS$:[LEN(3,SEP=SEP)]"
+    NAME$="F3_COLUMN_POS"
+    DESCRIPTION$="=MSG("+QUO+"F3_C_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 3 Output Column Position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=26
+    IOLOBJ$="IOLIST F3_LINE_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="F3_LINE_NUM"
+    DESCRIPTION$="=MSG("+QUO+"F3_L_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Format 3 Output Line Number"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=27
+    IOLOBJ$="IOLIST F3_OUTPUT_TYPE$:[LEN(SEP,SIZ=1)]"
+    NAME$="F3_OUTPUT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"F3_O_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+    NOTES$="Format 3 Output Type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=28
+    IOLOBJ$="IOLIST FSE_NUM1"
+    NAME$="FSE_NUM1"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=29
+    IOLOBJ$="IOLIST FSE_NUM2"
+    NAME$="FSE_NUM2"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=30
+    IOLOBJ$="IOLIST FSE_NUM3"
+    NAME$="FSE_NUM3"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=31
+    IOLOBJ$="IOLIST FSE_NUM4"
+    NAME$="FSE_NUM4"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=32
+    IOLOBJ$="IOLIST FSE_NUM5"
+    NAME$="FSE_NUM5"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=33
+    IOLOBJ$="IOLIST FSE_NUM6"
+    NAME$="FSE_NUM6"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    TAG$="###,###.00-"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=34
+    IOLOBJ$="IOLIST TEMPLATE_CODE$:[LEN(3)]"
+    NAME$="TEMPLATE_CODE"
+    DESCRIPTION$="=MSG("+QUO+"TEMP_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Template Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=35
+    IOLOBJ$="IOLIST SCREEN_NUM$:[LEN(1)]"
+    NAME$="SCREEN_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SCREEN_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="P"
+    NOTES$="Screen Number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=36
+    IOLOBJ$="IOLIST FIELD_NUM$:[LEN(2)]"
+    NAME$="FIELD_NUM"
+    DESCRIPTION$="=MSG("+QUO+"FIELD_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Field Number"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+</Data>
+
+</PxTable>

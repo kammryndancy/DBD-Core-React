@@ -1,0 +1,155 @@
+0010 REM "Calculate cost & price for Feature Driven Pricing <FM2OB9>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 02/27/13 - 13.385833 - dmm - SSP# 261559
+0037 REM "261559-FM2OB9; If item group missing and in EC need email/error msg
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 REM "Given Vendor&item group&feature list, and quantity, computer price & cost
+0065 REM A$=VENDOR+FORM GROUP + FEATURE LIST, Q=QUANTITY, C = COST, P= PRICE
+0066 REM A$(1,10)=VENDOR, A$(11,10)=FORM GROUP, A$(21,10)=FEATURE LIST
+0067 REM "C$=cost u/m, C0=cost qty per unit
+0068 REM "P$=price u/m, P0=price qty per unit
+0069 REM " P9 = PRECISION -added 3.1.2
+0100 ENTER X3$,A$,C$,C0,P$,P0,Q,C,P,P9,ORDER$,ERR=*NEXT ! SSP224363, added ORDER$, need if coming from OF2UAA, all others will get ERR and goto next line
+0110 PRECISION P9
+0120 DIM H[12]; C=0,P=0
+0380 IOLIST H$,H[0],H[1],H[2],H[3],H[4],H[5],H[6],H[7],H[8],H[9],H[10],H[11],H[12]
+0390 IOLIST J$,J[0],J[1],J[2],J[3],J[4],J[5],J[6],J[7],J[8],J[9],J[10],J[11],J[12],J[13],J[14],J[15],J[16],J[17],J[18],J[19],J[20],J[21],J[22],J[23],J[24],J[25]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FE0...  02O FE1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0800 REM "Recalc all costs
+0805 GOSUB SET_READONLY ! SSP261559/261554
+0810 GOSUB 1000
+0820 GOSUB 2000
+0830 GOTO 9900
+1000 REM "Init
+1005 DIM R[25],F[25],J[25]; F0=0,F1=0
+1010 FIND (Z[1],KEY=A$(1,20),DOM=3000)IOL=0380
+1018 REM "Set H1 to index of highest break
+1019 H1=1
+1020 IF H1=12 THEN GOTO 1021 ELSE IF H[H1+1]<>0 THEN H1=H1+1; GOTO 1020
+1050 GOSUB 7500
+1055 GOSUB 7600
+1060 REM "Decide which break we will be using (H2), to use to check for a zero cost on a feature to give a warning
+1065 H2=2
+1070 IF H2=H1+1 THEN H2=H1; GOTO 1076
+1075 IF Q<H[H2] THEN H2=H2-1; GOTO 1076 ELSE H2=H2+1; GOTO 1070
+1100 REM 
+1101 REM "If cost is zero then add to warning list W$
+1102 E0$=FNS$(A$(21,10))
+1103 W$=""
+1105 IF E0$="" THEN GOTO 1181
+1110 FOR I1=1 TO LEN(E0$)
+1115 IF E0$(I1,1)=" " THEN GOTO 1180
+1120 READ (Z[2],KEY=A$(1,20)+E0$(I1,1)+"  ",DOM=1121)IOL=0390; GOTO 1125
+1121 W$=W$+E0$(I1,1); GOTO 1180
+1125 ON POS(J$(64,1)="OFR") GOTO 1180,1130,1140,1150
+1130 REM "One time
+1135 F0=F0+J[12],F1=F1+J[25]; GOTO 1180
+1140 REM "Flat charges
+1145 F0=F0+J[12],F1=F1+J[25],F[H2]=F[H2]+J[H2-1],F[H2+13]=F[H2+13]+J[H2+12]
+1146 IF J[H2-1]=0 THEN W$=W$+E0$(I1,1)
+1147 GOTO 1180
+1150 REM "Running charges
+1155 F0=F0+J[12],F1=F1+J[25],R[H2]=R[H2]+J[H2-1],R[H2+13]=R[H2+13]+J[H2+12]
+1156 IF J[H2-1]=0 THEN W$=W$+E0$(I1,1)
+1157 GOTO 1180
+1180 NEXT I1
+1200 REM "Any warnings to give?
+1205 IF W$="" THEN GOTO 1230
+1210 M$="Price feature"
+1215 IF LEN(W$)=1 THEN M$=M$+" "+W$+" is" ELSE M$=M$+"s "; FOR I=1 TO LEN(W$); M$=M$+W$(I,1); NEXT I; M$=M$+" are"
+1220 M$=M$+" not available at this quantity level"
+1223 IF %IN_WEBEC$="Y" THEN GOTO 1290
+1225 CALL "ZZPROM",".4",X3$,0,"|WARNING - "+M$,"","",0
+1295 RETURN 
+2000 REM "Figure costs for selling breaks
+2005 C=0,P=0
+2007 IF Q=0 THEN GOTO 2090
+2010 GOSUB 2100
+2090 RETURN 
+2100 REM "Given selling break Q compute cost and price
+2101 PRECISION 14
+2120 C=F0+F[H2]+Q/U0*(R[H2]*U0/1000)
+2122 P=F1+F[H2+13]+Q/S0*(R[H2+13]*S0/1000)
+2125 C=C/(Q/U0)
+2128 P=P/(Q/S0)
+2140 PRECISION P9
+2142 C=C+0,P=P+0
+2144 PRECISION 2
+2145 RETURN 
+3000 REM "Item group not on file.
+3005 IF %IN_WEBEC$="Y" THEN GOTO 3050 ! SSP224363, SSP261559 was only for 101 and 500, need for all
+3019 M$="|WARNING - Item Group "+FNS$(A$(11,10))+" is not on file!"
+3020 CALL "ZZPROM",".4",X3$,0,M$,"","",0; GOTO 3090 ! SSP224363
+3050 ! SSP224363, we are in WebEC and the group is missing, attempt to email information about the missing record and the order. SSP261559, was only for company 101, need to do this for all distributors, also set last EC err so response will indicate problem.
+3060 DIM EC_PARM$(1275); FIND (Z[13],KEY=X3$(9,3)+"E/C",DOM=*NEXT)EC_PARM$(1) ! SSP261559, add DIM and DOM to NEXT instead of 3090
+3065 MAIL_TO$=STP(MID(EC_PARM$,596,60),2),MESSAGE$="Item Group "+FNS$(A$(11,10))+" for Vendor "+A$(1,10)+" is missing when creating order "+ORDER$,SUBJECT$="Item Group is not on file!" ! SSP224363
+3070 ! SSP261559, don't do this IF NUL(MAIL_TO$) THEN MAIL_TO$=WHO ! SSP224363
+3080 IF NOT(NUL(MAIL_TO$)) THEN EMAILMSG$=FN%SENDMAIL$(MAIL_TO$,"","","",SUBJECT$,MESSAGE$,"","") ! SSP261559, use standard function instead of INVOKE "echo "+QUO+MESSAGE$+QUO+" | mail -s"+QUO+SUBJECT$+QUO+" "+MAIL_TO$ 
+3085 LAST_WEBEC_ERR$=MESSAGE$; LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$) ! SSP261559, set global last webec err, will be included in response
+3090 GOTO 9900
+7400 SET_READONLY:! SSP261559/261554
+7410 SET_PARAM 'XI'
+7420 SET_READONLY_END:RETURN 
+7430 CLEAR_READONLY:
+7435 SET_PARAM -'XI'
+7440 CLEAR_READONLY_END:RETURN 
+7500 REM "Get selling u/m stuff
+7501 REM "S0 is qty / and S1 is ext. /
+7502 DIM S$(21),S[1]
+7503 READ (Z[13],KEY="U/M"+P$,DOM=7504)S$,S[0],S[1]
+7505 S1=S[0]; IF S$(20,1)<>"Y" THEN S0=P0 ELSE S0=S[0]
+7515 IF S0=0 THEN S0=1
+7520 IF S1=0 THEN S1=1
+7545 RETURN 
+7600 REM "Get cost u/m
+7601 REM "U0 is qty / and U1 is ext. /
+7602 DIM U$(21),U[1]
+7603 READ (Z[13],KEY="U/M"+C$,DOM=7604)U$,U[0],U[1]
+7605 U1=U[0]; IF U$(20,1)<>"Y" THEN U0=C0 ELSE U0=U[0]
+7615 IF U0=0 THEN U0=1
+7620 IF U1=0 THEN U1=1
+7645 RETURN 
+8900 REM 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("          "=Z9$+"          "))
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,"FM2OB9",Y7$,X3$,Y5,Y6,Y7,Y8,0 ! SSP224363
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM "PROG FLOW
+9705 GOSUB CLEAR_READONLY ! SSP261559/261554, in case we get here somehow, need to clear readonly before we might write to ZZPARM
+9710 IF U1$="" THEN REMOVE (Z[13],KEY=U0$,DOM=9900); GOTO 9900
+9720 WRITE (Z[13],KEY=U0$)U0$,U1$
+9725 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9730 RUN U1$(1,6)
+9800 REM "EXIT PROGRAM
+9810 IF U0$>"" THEN GOTO 9700
+9900 REM "END PROGRAM
+9905 GOSUB CLEAR_READONLY ! SSP261559/261554
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 PRECISION 2; EXIT 
+9999 END 
+56002 REM "208897-All orders from specific items crash WebEC                  
+56004 REM "224363-See 222620, EC3SRV is getting the Item group is not on file
+56006 REM "261559-FM2OB9; If item group missing and in EC need email/error msg also add READONLY logic for SSP261554

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Update Out of Date in Current Period</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <p style="margin-right: 0px;margin-left: 0px;margin-top: 0.5em;margin-bottom: 0.5em;">&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 698px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;padding-left: 0px;padding-right: 0em;vertical-align: middle;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;">Update Out-of-Date Usage in Current Period?</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p>This parameter is concerned with the effect of shipments which have ship dates prior to the most recent ship date. This situation generally arises when returns are entered. This parameter only effects processing if both of the following are true:</p>
+        <p>&#160;</p>
+        <ul style="list-style-type: square;">
+            <li value="1">The location being shipped is Issue based</li>
+            <li value="2">The out-of-date (or current) ship date is before the last ship date</li>
+        </ul>
+        <p>&#160;</p>
+        <p>Set to Yes - Using the Yes option will cause the system to capture the entire quantity as usage in the month corresponding to the ship date. Note: A negative usage quantity for a month could result if a return were entered with a ship date in a month in which either no shipments occurred or in a month in which the return exceeded shipments.</p>
+        <p>&#160;</p>
+        <p>Set to No - If the previous parameter is set to Yes, then setting this parameter to No will cause the out-of-date shipment to be posted entirely based on the date of the last shipment. If the previous parameter is set to No, then setting this parameter to No will cause the out-of-date shipment to be prorated between the out-of-date shipment date and the last shipment date. Note: Regardless of option selected, a credit amount will still be accumulated to the "Shipments Since" field on the Item Master - Customer Location Data screen. An excessively large credit amount may force this field to become negative and could distort the Average Monthly Usage calculation. It is recommended that all returns be processed as soon as they are received to reduce the likelihood of this occurring.</p>
+        <p>&#160;</p>
+        <p>Return to <a href="System Parameters.htm">PM&#160;System Parameters</a></p>
+        <div style="width: 100%;position: relative;">
+            <p>&#160;</p>
+        </div>
+        <div style="width: 100%;position: relative;" />
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

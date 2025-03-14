@@ -1,0 +1,434 @@
+0010 REM "Order entry Gateway Interface <EC3OE0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/29/24 - 10.066835 - crg - SSP# 307495
+0037 REM "307495-IMPL-543: Allow line unit price override for Office products
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0085 REM "WK$ is worksheet number
+0086 REM "CALLRETURN=>0=OK,1=worksheet not found
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},WK$,CALLRETURN
+0100 SETERR 9000
+0110 X0$="EC3OE0",X1$="WebEC Order Entry Gateway Interface"
+0150 LNW$="" ! SSP224259, keep track of lines not written
+0160 HAS_EO_MODULE=FN%HAS_MODULE("EO") ! 267129
+0300 REM "IOLISTS
+0310 IOLIST OFA$,OFA[0],OFA[1],OFA[2],OFA[3],OFA[4],OFA[5]
+0320 IOLIST OFB$,OFB[0],OFB[1],OFB[2],OFB[3],OFB[4],OFB[5],OFB[6],OFB[7]
+0330 IOLIST OFC$,OFC[0],OFC[1],OFC[2],OFC[3],OFC[4],OFC[5]
+0340 IOLIST OFD$,OFD[0],OFD[1],OFD[2],OFD[3],OFD[4]
+0350 IOL_OFE:IOLIST OFE$
+0410 IOLIST ECD$(1)
+0420 IOLIST ECE$,ECE[0],ECE[1],ECE[2],ECE[3],ECE[4],ECE[5],ECE[6],ECE[7],ECE[8] ! 155076
+0430 IOL_EEF:IOLIST EEF$,EEF[0],EEF[1],EEF[2],EEF[3],EEF[4] ! 224917
+0440 IOL_EEN:IOLIST EEN$ ! 298437
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O OFA...  02O OFB...  03O OFC... 04O OFD... 05O OFE... 06O OFF... 10O ECB... 11O ECD... 12O ECE... 13O ZZPARM  14O EDN...  15O AR1...  16O FM0...  17OSECE...  18O EDU...  19O EEF...  20O EEJ...  21O EEN...  22O EEO...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0536 READ (Z[13],KEY=X3$(9,3)+"F/M")FMPARM$ ! 267129, SSP267430
+1000 REM "Process ECD and ECE records into OF files
+1005 REM "Extract file to prevent mods, will will be updating info in 1100's
+1010 DIM ECD$(1580); EXTRACT (Z[11],KEY=WK$,DOM=1011)IOL=0410; GOTO 1015
+1011 CALLRETURN=1; GOTO 9900; REM "Set CALLRETURN to 1 to indicate worksheet not found
+1015 GOSUB 2000; REM "Setup OFA - Order Header
+1020 GOSUB 2050; REM "Setup OFC - Shipping Instructions - General
+1025 GOSUB 2100; REM "Setup OFBs - Order line records
+1027 GOSUB 2500; REM "SETUP OFC - Shipping Instructions - Special/Split
+1029 GOSUB RETRIEVE_EEJ ! SSP263818, Setup OFF - Order Notepad
+1030 IF PO_ACTION$="C" THEN GOTO PROCESS_CANCEL_ACTION; REM " Bypass OF2UAA, process cancel action, re-join flow at 1155
+1040 IF EC_PARM$(1173,1)="Y" THEN GOSUB 7700 ! WO 193640
+1050 IF HAS_EO_MODULE AND MID(FMPARM$,280,1)="Y" THEN IF ECD$(1137,1)="Y" THEN GOSUB VALIDATE_JOB_COSTING; IF NOT(JOB_COST_FAIL) THEN OFA$(428,1)="N"; WRITE (Z[1],KEY=OFA$(1,8))IOL=0310 ELSE GOTO ERR_JOB_COSTING ! 267129
+1100 REM "Call OF2UAA to create order from OFA-OFF
+1110 IF CURR_LINE<=0 THEN RETURN$="No Order"; GOTO 1155 ! SSP158174, if no lines then don't create order. SSP180950
+1120 OPTION$=OPTION$+"G"; REM "webec always loads warehouses into elogisticst  warehouse group
+1130 OPTION$="EC["+OFA$(1,8)+"|"+ECD$(1,10)+"]"+OPTION$; REM "Setup for OF2UAA to use webec files and the correct number {128591}
+1140 MESS$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|WORKSHEET|"+ECD$(1,10)+"|MESSAGE|ABOUT TO CALL OF2UAA TO CREATE ORDER|"; MX=FN%_LOG_MESSAGE_WITH_FLUSH("MESG",MESS$) ! SSP182127
+1150 %MORE_THAN_205$="N"; CALL "OF2UAA",X3$,X4$,OPTION$,RETURN$
+1155 IF RETURN$="" THEN GOTO 1200; REM "If return$='' then error occured, skip order number updating and emailing
+1160 ECD$(235,8)=RETURN$; WRITE (Z[11],KEY=WK$)IOL=0410; READ RECORD (Z[14],KEY=WK$,DOM=*NEXT)EDN$; EDN$(235,8)=ECD$(235,8); WRITE RECORD (Z[14],KEY=WK$)EDN$ ! SSP166022, if there is an approval worksheet then write order number to it
+1161 GOSUB 7200; GOSUB 7250 ! SSP164844, write FS2 line numbers to ECE records, SSP268437, write PO3 line number and shipping point data to EEF records 
+1162 CALL "ZZDISP","AX",ECD$(235,8),"O/P",X3$,ORDER_NO$,"",0,0,X4$ ! 156412
+1163 CUST_PO$=DIM(15),CUST_PO$=MID(ECD$,40,10)+MID(ECD$,163,5) ! SSP307344-DBD-163
+1165 ORDER_INFO$="Y"+STR(CURR_LINE:"000")+ORDER_NO$+"CUST_PO:"+CUST_PO$; ORDER_INFO$=GBL("ORDER_INFO",ORDER_INFO$); REM "set ORDER_INFO for server to see 156412 SSP307344-DBD-163
+1166 ORDER_INFO_2$=ECD$(235,8); ORDER_INFO_2$=GBL("ORDER_INFO_2",ORDER_INFO_2$) ! SSP168874, need order number unformatted for FS1 lookup/message
+1168 IF %MORE_THAN_205$="Y" THEN GOSUB 7300 ! SSP176229
+1175 IF ECD$(507,1)="Y" AND ECD$(508,1)<>"I" THEN GOTO 1176 END_IF ; REQUESTED_EMAIL_ACTION$="O"; GOSUB 8550; REM "Send 'O'rder emails if needed - 146930 do not process email if credit card and not invoiced
+1180 REM "Clear current worksheet # in session record on disk & in memory
+1181 ! Commented out 1185,1186 - Z[5] is not the ECB file so the following code never worked, except EC$[1](97,10) getting blanked out. And that is a bad side effect because for credit card orders it happens too soon.
+1185 ! EC$[1](97,10)=""; EXTRACT RECORD (Z[5],KEY=EC$[1](1,7),DOM=1187)ECB$
+1186 ! ECB$(97,10)=""; WRITE RECORD (Z[5],KEY=EC$[1](1,7))ECB$
+1200 REM "Now clear files we used
+1205 IF %EC_DEBUG THEN GOTO 1295 ! SSP270567, don't clear OF files, need for debugging purposes, will clear manually
+1210 FOR I=2 TO 5 ! SSP269583, was 6 but 6 is OFF needs to be by key of 8
+1215 READ (Z[I],KEY=OFA$(1,8),DOM=1216)
+1220 K$=KEY(Z[I],END=1225); IF K$(1,8)<>OFA$(1,8) THEN GOTO 1225 ELSE REMOVE (Z[I],KEY=K$,DOM=1220); GOTO 1220
+1225 NEXT I
+1230 REMOVE (Z[1],KEY=OFA$(1,8),DOM=1231); REM "Remove OFA record
+1235 REMOVE (Z[6],KEY=OFA$(1,8),DOM=*NEXT) ! SSP269583, remove OFF record
+1295 GOTO 9900
+2000 REM "Setup OFA - Order Header
+2005 DIM OFA$(1000),OFA[5]
+2006 JOB_COST_FAIL=0 ! 267129 - Flag to keep running track of validation checks in case job costing is requested for this order later on, if not requested then no harm done
+2010 GOSUB 7100; OFA$(1,8)=ECD$(26,2)+GOENUM$; REM "Get next Order Entry Gateway Number, add division from customer
+2012 OFA$(9,10)=ECD$(26,10),OFA$(19,1)="N",OFA$(20,6)=ECD$(58,6); REM "customer number, update P/O only => N, order date
+2013 IF ECD$(53,2)<>DIM(2) THEN OFA$(321,2)=ECD$(53,2); REM "terms code for order 146930
+2014 OFA$(26,15)=ECD$(40,10)+ECD$(163,5),OFA$(41,6)=ECD$(109,6),OFA$(47,20)=ECD$(168,20); REM "Cust p/O, date req, ordered by
+2016 OFA$(67,20)="",OFA$(87,1)="N",OFA$(88,8)=""; REM "ordered by greeting-NU,repeat order Y/N, repeat order # - NU
+2017 OFA$(199,122)=ECD$(523,122); REM "pass through billto address override ssp 151620
+2018 OFA$(131,68)=ECD$(411,68),OFA$(424,4)=ECD$(1099,4); REM "pass through credit card information.  WO227413, add CVV
+2019 OFA$(96,1)="",OFA$(97,8)="",OFA$(105,8)=""; REM "Processed=>N, order number assigned, order number requested
+2020 OFA$(113,3)=""; REM "FOG error-code, Hold flag=>N
+2021 IF EC$[7](597,1)="Y" THEN OFA$(116,1)="N"; GOTO *NEXT END_IF ; IF ECD$(507,1)="Y" THEN OFA$(116,1)="Y" ELSE OFA$(116,1)="N"; REM "if cc order then place onhold flag / 161156 set hold off if parm at customer level
+2022 OFA[0]=0,OFA[0]=NUM(ECD$(1114,11),ERR=*NEXT); REM "Freight in Amount. WO237271, 3p_freight
+2023 OFA$(440,12)=ECD$(1125,12) ! WO257735, packing list alternate selection
+2024 OFA$(105,8)=ECD$(499,8) ! Requested TopForm Order Number. SSP185087
+2025 %BUYER_ID$=ECD$(11,15); REM " THIS WAS 8,15...FILE LAYOUT SHOWS 11,15
+2026 ! OFA$(323,15)=ECD$(11,15); REM " SSP 158518; SSP 206478
+2027 OFA$(334,30)=ECD$(1009,30),OFA$(364,30)=ECD$(1039,30),OFA$(394,30)=ECD$(1069,30) ! WO215369, primary function, additional 1, additional2
+2028 OFA$(429,10)=ECD$(1103,10) ! WO232721, sales tax code
+2029 OFA$(439,1)=ECD$(1113,1) ! WO233493, suspend packing list?
+2030 %SESSION_ID$=EC$[1](1,7) ! SSP170914, was ECD$(1,7)
+2031 OFA$(452,20)=ECD$(1139,20),OFA$(472,6)=ECD$(1159,6) ! WO291781, contract number and contract date
+2032 OFA$(478,4)=ECD$(1165,4) ! WO294934, csr
+2033 OFA$(482,10)=ECD$(1169,10) ! SSP306664, ec_source
+2035 %ORDER_SOURCE$="WEB "
+2037 OFA$(323,10)=WK$ ! WO168683
+2038 IF POS(ECD$(789,1)="BS")>0 THEN OFA$(333,1)=ECD$(789,1) ! Order type: B-Bill as shipped, S-Stock PO
+2040 WRITE (Z[1],KEY=OFA$(1,8))IOL=0310
+2045 RETURN 
+2050 REM "Setup OFC - Shipping Instructions - General
+2055 DIM OFC$(500),OFC[5]
+2057 GEN_SHIP$=""
+2060 OFC$(1,8)=OFA$(1,8),OFC$(9,1)="",OFC$(10,3)="",OFC$(13,1)=" "; REM "FOG nubmer, P/O code=>blank, Line #=>blank, Seq #=> blank
+2061 IF OFA$(333,1)="B" THEN IF SP_SHIP$="Y" THEN GEN_SHIP$="Y",SP_SHIP$="",OFC$(10,3)=ECE$(25,3),OFC$(13,1)="1",OFC[0]=ECE[1],OFC[1]=ECE[0] ! ELSE GOTO 2095
+2062 IF OFA$(333,1)="B" AND GEN_SHIP$="Y" OR OFA$(333,1)="S" THEN GOTO 2063; END_IF ; GEN_SHIP$="Y",OFC$(14,1)="C",OFC$(15,4)=ECD$(36,4),OFC$(19,9)="",OFC$(28,20)=ECD$(479,20); GOTO 2064; REM "Location type="C", Shipto code, Location code=>blank, Receiving dept=>blank
+2063 OFC$(14,1)="D"; WHSE$=""; GOSUB GET_WHSE_FROM_BUSUNIT; IF NUL(WHSE$) THEN DEF_WHSE$=""; GOSUB GET_DEF_WAREHOUSE; OFC$(15,4)=DEF_WHSE$; ELSE OFC$(15,4)=WHSE$ END_IF ; OFC$(19,9)="",OFC$(28,20)=ECD$(479,20); REM "Location type="D", Warehouse code, Location code=>blank, Receiving dept=>blank
+2064 OFC$(48,30)=ECD$(64,30),OFC$(78,30)=ECD$(243,30),OFC$(108,30)=ECD$(273,30),OFC$(138,16)=ECD$(303,16),OFC$(154,2)=ECD$(319,2),OFC$(156,9)=ECD$(321,9); REM "Attention, Addr 1, Addr 2, City, State, Zip
+2066 OFC$(166,1)="",OFC$(167,1)=ECD$(189,1),OFC$(168,1)=ECD$(188,1),OFC$(169,15)="",OFC$(184,15)=ECD$(205,30); REM "Ship FOB=>blank, How to Ship, Ship Via, Inside deliv=>blank, Ship with(really only 15 long here) ssp#163775
+2068 OFC$(199,35)=ECD$(330,35); REM "Mark For
+2069 OFC$(234,35)=ECD$(376,35); REM "company name
+2070 OFC$(318,15)=ECD$(94,15) ! Ship via desc - 156200
+2074 REM " Shipping Qty/Unit, Quanity to ship left at zero
+2075 IF EC$[2](1091,1)<>"Y" THEN OFC$(278,40)=ECD$(677,40) ! WO179708, email address. WO271988, if bypass set then don't want to update order email address.
+2077 OFC$(169,15)=ECD$(737,15),OFC$(333,15)=ECD$(752,15) ! SSP191554, inside delivery, account number
+2079 OFC$(348,1)=ECD$(767,1),OFC$(349,20)=ECD$(768,20) ! WO190633, method payment, shipper ID
+2080 OFC$(369,10)=ECD$(1103,10) ! WO232721, sales tax code
+2082 OFC$(379,2)=ECD$(1179,2) ! SSP307210, man_country
+2090 WRITE (Z[3],KEY=OFC$(1,13))IOL=0330
+2095 RETURN 
+2100 REM "Setup OFBs - Order line records
+2105 CURR_LINE=0; READ (Z[12],KEY=ECD$(1,10),DOM=2106)
+2110 DIM ECE$(499),ECE[8]; READ (Z[12],END=2130)IOL=0420; IF ECE$(1,10)<>ECD$(1,10) THEN GOTO 2130 ! 155076
+2111 IF ECE$(28,1)<>"M" AND ECE[0]=0 AND ECE$(310,1)<>"C" THEN LNW$+=ECE$(25,3); GOTO 2110 ELSE IF ECE$(295,1)="Y" THEN REMOVE (Z[12],KEY=ECE$(1,10)+ECE$(25,3),DOM=2110); GOTO 2110 ELSE IF ECE$(28,1)="M" AND ECE$(259,3)<>DIM(3) AND POS(ECE$(259,3)=LNW$,3)>0 THEN GOTO 2110; REM " if line set to be removed at purchase then do so.  SSP168408, 228,20 in PVX used for item code starting with SSP146902.  SSP180950, if qty ordered is 0, then don't add line to file, just go get the next one.  If this was the only line, then logic on line 1110 to check CURR_LINE should kick in and there won't be a call to OF2UAA to make the order.  SSP182251, was only checking for 0 qty, but then msg lines would not write, added check to make sure not a message line. WO 198994 - added check to allow zero qty for lines being cancelled. SSP224259, keep track of lines not written in LSW$, will use for check of M type lines that are companions, if the master is not written then we don't want to write the companion M line either.
+2112 IF ECE$(18,1)="O" THEN GOSUB 7000; REM "office supply item - create IC0
+2113 CURR_LINE=CURR_LINE+1; IF %IN_WEBEC$<>"Y" THEN IF CURR_LINE>200 THEN GOTO 2130; REM "Increment line number, if > 200 then we can't add any more. SSP176229, OF2UAA will handle situation of over 205 lines
+2115 GOSUB 2150; REM "Setup OFB record from ECE data
+2116 IF OFA$(333,1)="B" THEN SP_SHIP$="Y"; GOSUB 2055
+2120 IF CURR_LINE>1 AND NOT(POS(ECE$(28,1)="MS")) THEN ERR_EJC_CODE=2,JOB_COST_FAIL=1,ERR_EJC_MSG$="Worksheet line "+ECE$(25,3)+": Multiple items ordered" ! 267129 - This line is not the first but is an Item line, not valid if job costing is requested for this order later on, so remember it
+2125 GOTO 2110
+2145 RETURN 
+2150 REM "Setup OCB record from ECE data
+2155 DIM OFB$(500),OFB[7]
+2160 OFB$(1,8)=OFA$(1,8),OFB$(9,3)=ECE$(25,3),OFB$(12,1)=ECE$(28,1),OFB$(13,1)=""; REM "FOG number,Line number, Line Type, Custom Line type=>blank {use line number from ece instead of curr_line 128591}
+2161 IF ECE$(467,1)<>DIM(1) THEN OFB$(13,1)=ECE$(467,1) ! SSP268433, item line type (NECSB)
+2162 OFB$(14,1)=ECE$(129,1),OFB$(15,10)=ECE$(29,10),OFB$(25,10)=ECE$(39,10),OFB$(45,40)=ECE$(67,40); REM "P/O code,Customer code, Form code, Description
+2163 IF NUL(OFB$(14,1)) THEN NON_POLINES_EXIST=1 ELSE GOSUB RETRIEVE_EEN ! 224917 - Used in validation 7800s; 298437 - Setup PO Comments
+2164 OFB$(85,14)=ECE$(115,14); REM "85,10-Vendor code, 95,4-Plant code, 99,9-Starting number, 108,9-Ending number left blank
+2166 OFB$(117,4)=ECE$(107,4),OFB$(139,4)=ECE$(111,4); REM "Selling unit, 121,12-Vend job #, 133,6-Vend job date left blank, Ship from warehouse
+2167 IF OFB$(139,4)<>DIM(4) THEN OFB$(145,48)=OFB$(139,4) ELSE OFB$(145,48)=ECE$(165,48); REM "E-logistics whse_list. WO153930, if whse passed in then use it instead.
+2168 IF OFA$(333,1)="B" THEN OFB$(143,1)="Y"; REM "143,1-Special shipping?, 144,1-FOG error code, 193, 6-Unused left blank
+2169 OFB$(193,5)=ECE$(13,5); REM "Print Flags
+2170 OFB[0]=ECE[1]; REM "Sell qty/per                      
+2171 OFB[1]=ECE[2],OFB[2]=ECE[3] ! Price, Cost - 155076
+2172 OFB[3]=ECE[0]; OFB[5]=ECE[7]; REM "Quantity ordered, 4-Carton pack=0, 5-Unit IMS Price, 6-7-Unused=0
+2174 OFB$(198,20)=ECE$(262,20); REM " SSP# 163746
+2176 QUANTITY=OFB[3],PRICE=OFB[1],COST=OFB[2],B$=OFA$(9,10)+DIM(5)+OFA$(20,6); DIM I[40]; IF POS(OFB$(12,1)="MS",1)=0 AND ECE$(18,1)="O" THEN CALL "OS2OBC",X3$,X4$,OFB$(25,10),I{ALL},B$,"EC3OE0",PRICE,"",COST,QUANTITY; IF OFB[2]<>COST THEN OFB[2]=COST END_IF ; ECE[3]=COST; IF OFB[1]=0 THEN OFB[1]=PRICE; REM " SSP# 163477
+2180 OFB$(218,3)=ECE$(25,3) ! WO168683
+2182 OFB$(221,1)=ECE$(297,1),OFB$(222,3)=ECE$(259,3) ! SSP192375, has companion items, master item line number
+2183 OFB$(225,1)=ECE$(299,1) ! SSP 193685
+2184 IF ECE$(310,1)="C" THEN PO_ACTION$="C"; REM " Check and record if even one line has "Cancel" action
+2185 OFB$(226,10)=ECE$(311,10) ! SSP 199548
+2186 IF EC_PARM$(1173,1)="Y" THEN GOSUB 7800 ! WO 193640
+2187 OFB$(237,3)=ECE$(321,3) ! SSP221299, external line number
+2188 OFB$(240,1)=ECE$(424,1) ! SSP244424, suspend PO
+2189 OFB$(241,20)=ECE$(427,20),OFB$(261,20)=ECE$(447,20) ! WO257735, external field 1 and 2 for EDW
+2190 WRITE (Z[2],KEY=OFB$(1,11))IOL=0320
+2192 DIM EEO$(126); READ (Z[22],KEY=ECE$(1,10)+ECE$(25,3),DOM=*NEXT)EEO$(1); GOSUB EEO_TO_OFD ! WO300154
+2195 RETURN 
+2500 REM "Setup OFC - Special Shipping Instructions
+2510 SETUP_OFC:
+2511 IF NOT(HAS_EO_MODULE) THEN RETURN ! 267129
+2515 SET_ORDER_TYPE$=""
+2520 READ (Z[19],KEY=ECD$(1,10),DOM=*NEXT)
+2530 ! 
+2540 NEXT_EEF:
+2550 DIM OFC$(500),OFC[5],EEF$(628),EEF[4]
+2560 READ (Z[19],END=EEF_DONE)IOL=IOL_EEF; IF EEF$(1,10)<>ECD$(1,10) THEN GOTO EEF_DONE
+2565 DIM ECE$(499),ECE[8]; FIND (Z[12],KEY=EEF$(1,13),DOM=NEXT_EEF)IOL=0420; IF ECE[0]=0 THEN GOTO NEXT_EEF ! Make sure valid ECE line exists for this EEF; invalid ECE lines removed in the 2100s, ECE lines with quantity zero do not make it into OFB
+2570 ! 
+2580 OFC$(1,8)=OFA$(1,8),OFC$(9,1)=""; REM "FOG nubmer, P/O code=>blank
+2590 OFC$(10,3)=EEF$(11,3); REM "Line # => ECE line#
+2600 IF NUM(EEF$(14,3),ERR=ERR_EEF_SEQ)>35 THEN GOTO ERR_EEF_SEQ END_IF ; OFC$(13,1)=FNS$(EEF$(14,3)); REM "Seq # => Numeric val of EEF SEQ# - max 35 special ship lines per order line
+2610 OFC$(14,1)=EEF$(17,1),OFC$(15,4)=EEF$(18,4); GOSUB VALIDATE_SPECIAL_SHIPPING; REM "Location type="C/D", Shipto code
+2620 OFC$(19,9)="",OFC$(28,20)=""; REM "Location code=>blank, Receiving dept=>blank
+2630 OFC$(48,30)=EEF$(24,30),OFC$(78,87)=EEF$(116,87); REM "Attention, Addr 1, Addr 2, City, State, Zip
+2640 OFC$(166,1)="",OFC$(168,1)=EEF$(69,1),OFC$(167,1)=EEF$(70,1); REM "Ship FOB=>blank, Ship Via, How to Ship 
+2650 OFC$(169,15)=EEF$(273,15),OFC$(184,15)=EEF$(86,30); REM "Inside delivery, Ship with (really only 15 long here)
+2660 OFC$(199,35)=EEF$(203,35); REM "Mark For
+2670 OFC$(234,35)=EEF$(238,35); REM "company name
+2680 OFC$(318,15)=EEF$(54,15) ! Ship via desc - 249773
+2690 OFC$(278,40)=EEF$(328,40),OFC$(333,15)=EEF$(288,15) ! email address, account number
+2695 OFC$(369,10)=EEF$(368,10) ! WO232721, sales tax code
+2696 OFC$(379,2)=EEF$(432,2) ! SSP307210, country
+2700 OFC$(348,1)=EEF$(303,1),OFC$(349,20)=EEF$(304,20) ! method payment, shipper ID
+2720 OFC[0]=EEF[1],OFC[1]=EEF[0]; REM " Shipping Qty/Unit, Quantity to ship
+2730 ! 
+2740 WRITE (Z[3],KEY=OFC$(1,13))IOL=0330
+2742 GOSUB UPDATE_SPEC_SHIP_FLAG
+2750 GOTO NEXT_EEF
+2760 EEF_DONE:
+2770 IF SET_ORDER_TYPE$="B" THEN OFA$(333,1)=SET_ORDER_TYPE$; OFA$(428,1)="Y"; WRITE (Z[1],KEY=OFA$(1,8))IOL=0310 ! REMOVE (Z[3],KEY=PAD(OFA$(1,8),13),ERR=*NEXT)
+2780 RETURN 
+2790 ! 
+2800 ERR_EEF_SEQ:
+2810 MESS$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|WORKSHEET|"+ECD$(1,10)+"|INVALID SPECIAL SHIP SEQUENCE|"+EEF$(1,10)+"|"+EEF$(11,3)+"|"+EEF$(14,3)+"|"; MX=FN%_LOG_MESSAGE("EXCP",MESS$)
+2820 GOTO NEXT_EEF
+2999 ! 
+3000 REM "Update OFB special shipping flag
+3005 UPDATE_SPEC_SHIP_FLAG:
+3010 READ (Z[2],KEY=OFC$(1,8)+OFC$(10,3),ERR=*RETURN)IOL=0320
+3015 OFB$(143,1)="Y"
+3040 WRITE (Z[2],KEY=OFC$(1,8)+OFC$(10,3),ERR=*RETURN)IOL=0320
+3045 RETURN 
+3049 ! 
+7000 REM "create IC0 from OS0 office supply item
+7020 CALL "OS2C02",X3$,X4$,ECE$(39,10),ITEM_ADDED$
+7045 RETURN 
+7100 REM "Get next GOE record number
+7105 DIM OFPARM$(256); GOE_NUM=1
+7115 EXTRACT (Z[13],KEY=X3$(9,3)+"O/F",DOM=7116)OFPARM$
+7120 GOE_NUM=NUM(OFPARM$(7,6),ERR=7121)
+7125 GOE_NUM=GOE_NUM+1
+7130 IF GOE_NUM>999999 THEN GOE_NUM=1
+7135 GOENUM$=STR(GOE_NUM:"000000")
+7140 OFPARM$(7,6)=GOENUM$; WRITE (Z[13],KEY=X3$(9,3)+"O/F")OFPARM$
+7145 RETURN 
+7200 ! Write FS2 line number from OF2UAA to ECE records, SSP164844
+7210 P=POS("|"=RETURN$); IF P=0 THEN GOTO *RETURN
+7215 LINE_NUM_LIST$=RETURN$(P+1)
+7216 P1=POS("|"=LINE_NUM_LIST$); IF P1>0 THEN SS_LINE_NUM_LIST$=LINE_NUM_LIST$(P1+1),LINE_NUM_LIST$=LINE_NUM_LIST$(1,P1-1) ! SSP268437
+7220 IF LEN(LINE_NUM_LIST$)<8 THEN GOTO *RETURN
+7225 ECE_LINE$=LINE_NUM_LIST$(1,3),FS2_LINE$=LINE_NUM_LIST$(5,3)
+7230 IF LEN(LINE_NUM_LIST$)>8 THEN LINE_NUM_LIST$=LINE_NUM_LIST$(9) ELSE LINE_NUM_LIST$=""
+7235 EXTRACT RECORD (Z[12],KEY=WK$+ECE_LINE$,DOM=*NEXT)ECE2$; IF ECE2$(282,3)=DIM(3) THEN ECE2$(282,3)=FS2_LINE$ END_IF ; WRITE RECORD (Z[12],KEY=WK$+ECE_LINE$)ECE2$
+7240 GOTO 7220
+7245 RETURN ! SSP268437, added return here because adding 7250's routine
+7249 ! 
+7250 ! Write PO3 line number and shipping point from OF2UAA to EEF records, SSP268437
+7255 IF SS_LINE_NUM_LIST$="" THEN GOTO *RETURN
+7260 IF LEN(SS_LINE_NUM_LIST$)<10 THEN GOTO *RETURN
+7265 OFC_LINE$=SS_LINE_NUM_LIST$(1,3),OFC_SEQ$=SS_LINE_NUM_LIST$(4,1),PO3_LINE$=SS_LINE_NUM_LIST$(6,3),PO3_SEQ$=SS_LINE_NUM_LIST$(9,1)
+7270 EEF_LINE$=OFC_LINE$
+7275 SS=POS(OFC_SEQ$="123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"),EEF_SEQ$=STR(SS:"000")
+7280 IF LEN(SS_LINE_NUM_LIST$)>10 THEN SS_LINE_NUM_LIST$=SS_LINE_NUM_LIST$(11) ELSE SS_LINE_NUM_LIST$=""
+7285 EXTRACT RECORD (Z[19],KEY=WK$+EEF_LINE$+EEF_SEQ$,DOM=*NEXT)EEF2$; EEF2$(378,3)=PO3_LINE$,EEF2$(381,1)=PO3_SEQ$; WRITE RECORD (Z[19],KEY=WK$+EEF_LINE$+EEF_SEQ$)EEF2$
+7290 GOTO 7260
+7295 RETURN 
+7299 ! 
+7300 ! SSP176229, Order requested has more than 205 lines, need to log message and send email
+7305 MESSAGE$="More than 205 lines requested for order "+ORDER_NO$+", check this order for missing lines."
+7310 CALL "EC3CMD",X3$,X4$,EC${ALL},"L",MESSAGE$,"","","","",RETURN_CODE
+7315 IF STP(EC$[14](442,40),1)>"" THEN EMAIL$=STP(EC$[14](442,40),1) ELSE GOTO *RETURN
+7320 ESUBJECT$="Order No. "+ORDER_NO$+" has more than 205 lines"
+7325 CALL "EC3CMD",X3$,X4$,EC${ALL},"E",MESSAGE$,ESUBJECT$,EMAIL$,"","",RETURN_CODE
+7340 RETURN 
+7345 ! 
+7400 SET_READONLY:
+7410 SET_PARAM 'XI'
+7420 SET_READONLY_END:RETURN 
+7430 CLEAR_READONLY:
+7435 SET_PARAM -'XI'
+7440 CLEAR_READONLY_END:RETURN 
+7445 ! 
+7450 REM " Get default warehouses for Stock PO OR Bill as shipped order
+7451 GET_DEF_WAREHOUSE:
+7455 DIM AR1$(600); GOSUB SET_READONLY
+7460 FIND (Z[15],KEY=ECD$(26,10),DOM=7480)AR1$
+7465 IF OFA$(333,1)="B" THEN DEF_WHSE$=AR1$(475,4) ELSE IF OFA$(333,1)="S" THEN DEF_WHSE$=AR1$(479,4)
+7480 GOSUB CLEAR_READONLY
+7495 RETURN 
+7500 ! 
+7501 REM " Get warehouse from business unit
+7502 GET_WHSE_FROM_BUSUNIT:
+7503 ! PRINT "Getting warehouse"," ECD$ : ",ECD$(1,10)
+7505 GOSUB SET_READONLY
+7506 DIM ECE$(499),ECE[8]; READ (Z[17],KEY=ECD$(1,10),DOM=*NEXT)
+7507 READ (Z[17],END=7540)IOL=0420; IF ECE$(1,10)<>ECD$(1,10) THEN GOTO 7540
+7510 IF ECE$(300,10)=DIM(10) THEN GOTO 7540
+7515 READ (Z[16],KNO=6,KEY=ECE$(300,10)+"D"+DIM(14),DOM=*NEXT)
+7520 KEY_FM0$=KEY(Z[16],KNO=6,END=7540); IF MID(KEY_FM0$,1,10)<>ECE$(300,10) THEN GOTO 7540
+7525 WHSE$=MID(KEY_FM0$,22,4)
+7540 GOSUB CLEAR_READONLY
+7544 READ (Z[16],KNO=0,KEY="",DOM=*NEXT) ! Reset key# to primary key
+7545 RETURN 
+7550 ! 
+7560 REM " Process Cancel order line action
+7561 PROCESS_CANCEL_ACTION:
+7590 DIM ECE$(499),ECE[8]; READ (Z[17],KEY=ECD$(1,10),DOM=*NEXT)
+7600 READ (Z[17],END=7651)IOL=0420; IF ECE$(1,10)<>ECD$(1,10) THEN GOTO 7651
+7610 IF ECE$(310,1)<>"C" THEN GOTO 7600; REM "Check if this line is to be cancelled
+7620 RET_VAL=0,MESG$="",ORDER_NUM$=""
+7623 CALL "EC3WSC",ERR=*NEXT,X3$,X4$,EC_PARM$,EC${ALL},ECD$(789,1),ECD$(40,10)+ECD$(163,5),ECE$(25,3),ECE[0],RET_VAL,MESG$,ORDER_NUM$
+7630 MESS$="SESSION ID|"+EC$[1](1,7)+"|FILE|"+%WEBEC_FILE_NAME$+"|WORKSHEET|"+ECD$(1,10)+"|MESSAGE|CANCELLING ORDER LINE|"+ECD$(789,1)+"|"+ECD$(40,10)+ECD$(163,5)+"|"+ECE$(25,3)+"|"+STR(RET_VAL)+" - "+MESG$; MX=FN%_LOG_MESSAGE_WITH_FLUSH("MESG",MESS$)
+7640 RETURN$=ORDER_NUM$
+7650 GOTO 7600
+7660 GOTO 1155
+7670 ! 
+7700 REM " Process approval comments as message lines - WO 193640
+7710 IF EC_PARM$(1173,1)<>"Y" THEN GOTO *RETURN
+7711 READ (Z[18],KEY=ECD$(1,10),DOM=*RETURN)EDU$
+7715 EDU_COMMENT$=STP(STP(EDU$(82,240),3,$0D$),3,$0A$); IF NUL(STP(EDU_COMMENT$,2)) THEN GOTO *RETURN
+7718 NEXT_LINE=0; READ (Z[2],KEY=OFA$(1,8)+$FF$,DOM=*NEXT)
+7719 LAST_OFB_KEY$=KEP(Z[2]); IF OFA$(1,8)<>LAST_OFB_KEY$(1,8) THEN GOTO *RETURN
+7720 NEXT_LINE=NUM(LAST_OFB_KEY$(9,3),ERR=*NEXT)
+7721 DIM OFB$(500),OFB[7]
+7722 OFB$(1,8)=OFA$(1,8),OFB$(12,1)="M",OFB$(13,1)=""; REM "FOG number, Linenumber, Line Type, Custom Line type
+7723 OFB$(117,4)=ECE$(107,4),OFB$(139,4)=ECE$(111,4); REM "Selling unit, 121,12-Vend job #, 133,6-Vend job date left blank, Ship from warehouse
+7724 ! OFB$(139,4)=APP_WHSE$; REM " warehouse
+7725 OFB$(85,14)=APP_VEND_PLANT$; REM " vendor , plant
+7726 OFB$(14,1)=APP_PO_CODE$; REM " P/O code
+7727 OFB$(193,5)="SP"; REM "Print Flags
+7730 FOR APP_LINE=1 TO 6
+7740 APP_COMMENT$=STP(MID(EDU_COMMENT$,1+(APP_LINE-1)*40,40),2); IF NUL(APP_COMMENT$) THEN GOTO *CONTINUE
+7741 ! PRINT "Comment line: "+STR(NEXT_LINE:"000")+" ->"+APP_COMMENT$
+7750 NEXT_LINE=NEXT_LINE+1
+7760 OFB$(9,3)=STR(NEXT_LINE:"000"),OFB$(45,40)=APP_COMMENT$
+7770 WRITE (Z[2],KEY=OFB$(1,11))IOL=0320
+7780 NEXT APP_LINE
+7790 RETURN 
+7799 ! 
+7800 REM " Save first P/O Code, Vendor, Plant ; for use in 7700's
+7810 IF NUL(APP_PO_CODE$+APP_VEND_PLANT$) THEN GOTO *NEXT ELSE GOTO 7845
+7820 IF NUL(ECE$(129,1)+ECE$(115,14)) THEN GOTO 7825
+7830 APP_PO_CODE$=ECE$(129,1),APP_VEND_PLANT$=ECE$(115,14)
+7845 RETURN 
+7849 ! 
+7850 REM "Validate order shipping locations
+7851 ! B type order: can only ship to distributor owned warehouses
+7852 ! Sales order: can only ship to cust locations and cust-owned warehouses
+7855 VALIDATE_SPECIAL_SHIPPING:
+7865 IF IS_SET_ORDER_TYPE THEN {! Skip these checks for first line only
+7868 IF SET_ORDER_TYPE$="B" AND (OFC$(14,1)<>"D" OR OFC$(15,1)="9" OR NON_POLINES_EXIST) THEN ERR_ESS_CODE=1; EXITTO ERR_SPECIAL_SHIPPING
+7870 IF SET_ORDER_TYPE$<>"B" AND (OFC$(14,1)="D" AND OFC$(15,1)<>"9") THEN ERR_ESS_CODE=2; EXITTO ERR_SPECIAL_SHIPPING
+7875  }
+7880 IF OFC$(14,1)="D" AND OFC$(15,1)<>"9" THEN SET_ORDER_TYPE$="B"; REM "Is "B" type order if shipping to non-9000 warehouse.
+7881 IF OFC$(14,1)="D" AND NUL(ECE$(129,1)) THEN ERR_ESS_CODE=3; EXITTO ERR_SPECIAL_SHIPPING ! Cannot have shipment to warehouse if not a PO to vendor
+7882 IF NOT(JOB_COST_FAIL) THEN IF EEF$(11,3)<>"001" OR EEF$(14,3)<>"001" THEN ERR_EJC_CODE=3,JOB_COST_FAIL=1,ERR_EJC_MSG$="Worksheet line "+EEF$(11,3)+" and shipping point "+EEF$(14,3)+": Invalid special shipping requested" ! 267129 - This special shipping line is not for the first order line or is a split shipment, not valid if job costing is requested for this order later on, so remember it; That is, if another validation has not failed already
+7885 IF NOT(IS_SET_ORDER_TYPE) THEN IS_SET_ORDER_TYPE=1 ! Remember that we have been through here before
+7890 RETURN 
+7899 ! 
+7900 ERR_SPECIAL_SHIPPING:
+7910 EC3OE0_ERR$="ERR ESS"+STR(ERR_ESS_CODE:"000")+": SPECIAL SHIPPING VALIDATION FAILED - Worksheet:"+MID(ECD$,1,10)+", Line:"+MID(EEF$,11,3)+", Ship Line:"+MID(EEF$,14,3)+", Location:"+MID(EEF$,17,5); EC3OE0_ERR$=GBL("LAST_WEBEC_ERR",EC3OE0_ERR$)
+7945 EXITTO 1155 ! Rejoin flow after call to OF2UAA, order will not be created
+7949 ! 
+7950 ERR_JOB_COSTING:! 267129
+7960 EC3OE0_ERR$="ERR EJC"+STR(ERR_EJC_CODE:"000")+": JOB COSTING VALIDATION FAILED - Worksheet:"+MID(ECD$,1,10)+": "+ERR_EJC_MSG$; EC3OE0_ERR$=GBL("LAST_WEBEC_ERR",EC3OE0_ERR$)
+7995 GOTO 1155 ! Rejoin flow after call to OF2UAA, order will not be created
+7999 ! 
+8000 VALIDATE_JOB_COSTING:! 267129
+8005 ! Note - validation checks elsewhere may have already set JOB_COST_FAIL flag
+8010 IF OFA$(333,1)<>"B" AND ECD$(1137,1)="Y" THEN ERR_EJC_CODE=1,JOB_COST_FAIL=1,ERR_EJC_MSG$="Job costing requested for non-BAS order" ! Job costing was requested for non-BAS order
+8095 RETURN 
+8099 ! 
+8550 REM "Add email addresses, if any, to EC$[12]
+8551 REM "REQUESTED_EMAIL_ACTION$ = this is the action to process
+8555 CALL "ZZDISP","AX",ECD$(235,8),"O/P",X3$,ORDER_NO$,"",0,0,X4$
+8560 FOR EI=0 TO 3; ON EI GOTO 8561,8562,8563,8564
+8561 EMAIL_ADDR$=STP(EC$[2](109,60),2),EMAIL_ACTIONS$=STP(EC$[2](256,10),2); GOTO 8565
+8562 EMAIL_ADDR$=STP(EC$[2](169,60),2),EMAIL_ACTIONS$=STP(EC$[2](266,10),2); GOTO 8565
+8563 EMAIL_ADDR$=STP(EC$[2](340,60),2),EMAIL_ACTIONS$=STP(EC$[2](460,10),2); GOTO 8565
+8564 EMAIL_ADDR$=STP(EC$[2](400,60),2),EMAIL_ACTIONS$=STP(EC$[2](470,10),2); GOTO 8565
+8565 IF POS(REQUESTED_EMAIL_ACTION$=EMAIL_ACTIONS$)=0 THEN GOTO 8580; REM "If the action being requested is not in current email then skip
+8567 IF EMAIL_ADDR$="" THEN GOTO 8580; REM "Skip if address blank
+8570 ETMP$="{[email]"+EMAIL_ADDR$; REM "Email address
+8572 CALL "EC3SEM",X3$,X4$,EC_PARM$,EC${ALL},"EMAILSUB_"+REQUESTED_EMAIL_ACTION$,ECD$(1,10),SUBJECT$; ETMP$=ETMP$+"[subject]"+SUBJECT$
+8579 ETMP$=ETMP$+"}",EC$[12]=EC$[12]+ETMP$
+8580 NEXT EI
+8595 RETURN 
+8900 REM "Functions
+8910 DEF FNS$(Z9$)=TBL(NUM(Z9$)<10,CHR(ASC("A")+NUM(Z9$)-10),STR(NUM(Z9$):"0")) ! CHAR(3) SEQ# (1-35) => CHAR(1) SEQ# (1-9,A-Z)
+9000 REM "ERROR PROCESSING SSP258921 FIX ERROR LOGIC
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928,164851 ->not if 1024,keep last_webec_err as is.  SSP258921, REMOVED CHECK IF J<>1024, WHY WAS THAT HERE?
+9090 GOTO 9900
+9900 REM "END PROGRAM  SSP258921 FIX END SECTION
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+10950 RETRIEVE_EEJ:! SSP263818, get notepad fields if any and write to OFF, was being done in EC3WS1 after order created but repeat of FMN, FT6 record was never being created because of the timing, moving this to OF2UAA creation will resolve that.
+10955 DIM EEJ$(1210); FIND (Z[20],KEY=ECD$(1,10),DOM=*RETURN)EEJ$(1)
+10960 IF STP(EEJ$(11,500))="" THEN GOTO *RETURN ! we have EEJ for this worksheet but no notepad fields populated
+10970 DIM OFF$(508)
+10975 OFF$(1,8)=OFA$(1,8)
+10980 OFF$(9,500)=EEJ$(11,500)
+10985 WRITE (Z[6],KEY=OFF$(1,8))OFF$
+10995 RETURN 
+10999 ! 
+11000 RETRIEVE_EEN:REM "298437 - Setup OFE - PO Comments
+11010 READ (Z[21],KEY=ECE$(1,10)+ECE$(25,3),DOM=*NEXT)
+11020 NEXT_EEN: EENK$=KEY(Z[21],END=EEN_DONE); DIM EEN$(100); READ (Z[21],KEY=EENK$)IOL=IOL_EEN
+11025 IF MID(EENK$,1,13)<>ECE$(1,10)+ECE$(25,3) THEN GOTO EEN_DONE
+11030 DIM OFE$(94); OFE$(1,8)=OFA$(1,8); OFE$(9,1)=OFB$(14,1)
+11060 OFE$(10,3+1+60)=EEN$(14,3+1+60) ! Comment Seq Num, Print Y/N, PO Comment
+11070 WRITE (Z[5],KEY=OFE$(1,12))IOL=IOL_OFE
+11080 GOTO NEXT_EEN
+11090 EEN_DONE:
+11095 RETURN 
+11099 ! 
+11100 EEO_TO_OFD:! WO300154
+11105 DIM OFD$(310),OFD[4]
+11110 OFD$(1,8)=OFB$(1,8),OFD$(9,1)=OFB$(14,1)
+11115 OFD$(172,12)=EEO$(15,12) ! Plant quote number
+11140 WRITE (Z[4],KEY=OFD$(1,9))IOL=0340
+11145 RETURN 
+11149 ! 
+56000 ! Program changes starting 01/24/06
+56010 REM "191554-Need new tag in WebEC, carry through to order, in general 
+56015 REM "192375-After comp items are billed/removed, being added back if
+56020 REM "190633-Two WebEC tags, bill_m and shipper_id, data to pass into
+56030 REM "193685-XML orders coming in from Printegra are multiplying by 1000,
+56032 REM "193640-WebEC parameter to check approval worksheet for approver    
+56034 REM "198994-Import XML to create cust supply p.o. and sls order p.o     
+56036 REM "203486-Issues with XML POs: Not customer specific, ship-to loc.code
+56038 REM "206187-Issue when approver changes an order line to qty of 0.      
+56040 REM "206478-WebEC send order confirmation email but order not in TopForm
+56042 REM "221299-DBE: line_number tag from DBE clobbers companions 221089/487
+56044 REM "215369-Primary function by customer, can be up to three levels,
+56046 ! 224259-If qty is zero, we don't write line, need to check for M compaions
+56048 REM "227413-Credit card transactions need to support CVV security field
+56049 REM "224917-EC modifications to support B-type orders, special shipping.
+56050 REM "232721-Add sales_tax_code tag to EC Order Entry program, if valid
+56052 REM "233493-Retrieve/process DSSI PO files, create/send DSSI PO Acks.
+56054 REM "237271-EC output/input tags for 3rd party frt calculation, share
+56056 REM "244424-EC3WS1 line level input tag to indicate the PO should not be
+56057 REM "246807-Credit card order entry page loses worksheet number    
+56058 REM "249773-Sourcing Bench Support; Add tags to EC3PCG, trigger to setup
+56060 REM "257735-EDI940; Trigger alternate packing list format for one end   
+56062 REM "258921-WM GETS ERROR IN EC3OE0 BUT ERROR LOGIC WRONG BAD REPORT
+56064 REM "263818-Order Notepad data for EC orders is not in the Repeat Order 
+56065 REM "267129-Webec development for supporting job costing on BAS orders. 
+56066 REM "267430-(13-EC3OE0-line 536) 267129 added 536 should be Z[13]       
+56068 REM "268437-Sourcing Bench; need special shipping details in response.  
+56070 REM "268433-Input/output tag item_line_type (NECSB) for Sourcing Bench  
+56072 REM "269583-EC3OE0 not removing OFF (notepad) temp records. See 269535  
+56074 REM "270567-DBE DEV to support split shipping, ECE split to multiple FS2
+56076 REM "271988-EC tag to bypass sending order confirmation to entered email
+56078 REM "291781-Contract Number tag for WebEC order entry API.  For use with
+56080 REM "294934-csr tag for EC Orders, configure in FlowPoint for Noosh     
+56082 REM "298437-Implement support for parsing input block of text and import
+56084 REM "300154-EC Input tag for Plant Quote Number, new EC file for PO data
+56086 REM "306664-EC input tag to describe the source.  EC_SOURCE ECD/OFA/FS1 
+56088 REM "307210-DBD-75-International shipping address - add country code           
+56090 REM "307344-DBD-163;Add Customer PO Number to EC Order Confirmation Log 
+56091 REM "307487-DBD-459: Webec order line tag for "line_unit_imsprice"      
+56092 REM "307495-IMPL-543: Allow line unit price override for Office products

@@ -1,0 +1,81 @@
+0010 REM "EC Logger Utility<EC3LOG>"
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/18/13 - 12.521666 - crg - SSP# 263917
+0037 REM "263917-WIP server going down frequently, requires manual restart   
+0040 REM "Copyright 2013 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 LOG_EC_ENV:
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3LOG",X1$="EC Logger Utility"
+0500 ! 
+0510 EXT$=".dmp"
+0520 REM "Open .dmp file
+0530 ++SEQ; IF SEQ>9999 THEN ESCAPE 12; END_IF ; DMP_FILE$=%SERVER_DIR$+%WEBEC_FILE_NAME$+"."+STR(SEQ:"0000")+EXT$
+0540 SERIAL DMP_FILE$,ERR=0530
+0550 DMP_CHAN=HFN; OPEN PURGE (DMP_CHAN,ERR=0530)DMP_FILE$
+1500 ! 
+1510 MX=FNDMP("X3$",X3$)
+1520 MX=FNDMP("X4$",X4$)
+1530 MX=FNDMP("EC_PARM$",EC_PARM$)
+1540 ! 
+1610 REM "Number of entries in DATA${ALL}
+1620 MX=FNDMP("NUM_ENTRIES",STR(NUM_ENTRIES))
+1630 ! 
+1640 REM "Output file
+1650 MX=FNDMP("Output channel",PTH(OUTPUT))
+1660 ! 
+3000 REM "Process DATA array
+3010 FOR I=1 TO NUM_ENTRIES
+3020 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+3030 MX=FNDMP("DATA$["+STR(I)+",0]",TAG$)
+3040 MX=FNDMP("DATA$["+STR(I)+",1]",VALUE$)
+3050 NEXT I
+3060 ! 
+3100 REM "Dump scheduled jobs for EC Server
+3105 MX=FNDMP("Scheduled Jobs: ","Start")
+3110 JOBCHAN=33018,JOBNUM=0
+3130 READ (33018,KEY="",DOM=*NEXT)
+3140 READ (33018,END=3190)SCHED$
+3150 MX=FNDMP("Job: "+STR(++JOBNUM:"###0"),SCHED$)
+3160 GOTO 3140
+3190 MX=FNDMP("Scheduled Jobs: ","Done")
+3195 ! 
+3200 REM "Dump other interesting variables
+3210 MX=FNDMP("Channels Open",STR(LEN(HTA(CHN))/4)) ! Length of CHN variable, contains open channels, 2 bytes per channel
+3220 MX=FNDMP("Max memory TCB(15)",STR(TCB(15))) ! Max Memory
+3230 MX=FNDMP("Max users",STR(TCB(23))) ! Max users 
+3240 MX=FNDMP("Users available",STR(TCB(24))) ! Users available
+3299 ! 
+5010 REM "End of data dump to file
+5015 IF DMP_CHAN<>0 THEN CLOSE (DMP_CHAN,ERR=*NEXT); GOSUB DMP_TO_ARCHIVE_DIR ! SSP242458, was line 9905, moved to line 5015, and added archive logic if applicable
+5020 GOTO 9900
+5030 ! 
+8350 DMP_TO_ARCHIVE_DIR:! SSP242458
+8355 IF STP(DMP_FILE$)="" OR %SERVER_DIR$=%ARCHIVE_DIR$ OR STP(%ARCHIVE_DIR$)="" THEN GOTO *RETURN
+8360 JUST_FILE_NAME$=FN%GET_BASENAME$(DMP_FILE$) ! Get file name
+8365 DF_NAME$=JUST_FILE_NAME$ ! dmp file name
+8370 DF_FULL_NAME$=%ARCHIVE_DIR$+DF_NAME$ ! Full path dmp file
+8375 ERASE DF_FULL_NAME$,ERR=*NEXT
+8380 RENAME DMP_FILE$,DF_FULL_NAME$,ERR=*NEXT; GOTO DMP_RENAME_DONE
+8385 INVOKE "mv -f "+DMP_FILE$+" "+DF_FULL_NAME$,ERR=*NEXT ! Try unix mv if RENAME failed
+8390 DMP_RENAME_DONE:
+8395 RETURN 
+8399 ! 
+8750 FNDMP:
+8751 DEF FNDMP(LOCAL NAME$, LOCAL DATA$)
+8760 PRINT (DMP_CHAN)NAME$,":-->:",DATA$,"|=|"
+8790 RETURN 0
+8791 END DEF
+8799 ! ********************************************************
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56000 ! Program changes starting 02/09/07
+56002 REM "204760-EC logger utility created for debugging purposes
+56004 REM "242458-EC Server feature - Ability to save archived requests to    

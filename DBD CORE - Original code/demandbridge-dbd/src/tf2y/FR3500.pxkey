@@ -1,0 +1,1768 @@
+<PxTable>
+ TableName=FR3500
+ TableKey=K971278415
+ FileCreate=KEYED "FR3500",12,0,-64,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR3_ColDet"
+    PHYSICALPATH$="="+QUO+"FR3"+QUO+"+%C$"
+    LASTCHANGEDATE$="2009/08/18 08:29"
+    LASTCHANGEBY$="tma"
+    LASTUPDATEDFILE$="2024/07/05 11:32:31-LoriCave_aalhel"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST FORMAT_CONTROL_CODE$:[LEN(5)]"
+    NAME$="FORMAT_CONTROL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"FORM_C_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="P"
+    NOTES$="Format control code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST COLUMN_NUMBER$:[LEN(3)]"
+    NAME$="COLUMN_NUMBER"
+    DESCRIPTION$="=MSG("+QUO+"COLU_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Column number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST FORMAT_CONTROL_CODE$:[LEN(5,SEP=SEP)]"
+    NAME$="FORMAT_CONTROL_CODE"
+    DESCRIPTION$="=MSG("+QUO+"FORM_C_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Format control code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST COLUMN_NUMBER$:[LEN(3,SEP=SEP)]"
+    NAME$="COLUMN_NUMBER"
+    DESCRIPTION$="=MSG("+QUO+"COLU_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Column number"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DATA_TO_PRINT$:[LEN(8,SEP=SEP)]"
+    NAME$="DATA_TO_PRINT"
+    DESCRIPTION$="=MSG("+QUO+"DATA_T_P"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="Data to print"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST NUMERIC_PRINT_MASK$:[LEN(4,SEP=SEP)]"
+    NAME$="NUMERIC_PRINT_MASK"
+    DESCRIPTION$="=MSG("+QUO+"NUME_P_M"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Numeric print mask"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST COLUMN_JUSTIFICATION$:[LEN(3,SEP=SEP)]"
+    NAME$="COLUMN_JUSTIFICATION"
+    DESCRIPTION$="=MSG("+QUO+"COLU_J"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Column justification"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST NEGATIVE_REP$:[LEN(SEP,SIZ=1)]"
+    NAME$="NEGATIVE_REP"
+    DESCRIPTION$="=MSG("+QUO+"NEG_REP"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST ADDITIONAL_WIDTH"
+    NAME$="ADDITIONAL_WIDTH"
+    DESCRIPTION$="=MSG("+QUO+"ADDI_W"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#0-"
+    NOTES$="Additional width"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST PRINT_OFFSET"
+    NAME$="PRINT_OFFSET"
+    DESCRIPTION$="=MSG("+QUO+"PRIN_O"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#0-"
+    NOTES$="Print offset"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="00060001"
+    FORMAT_CONTROL_CODE$="00060"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AL100001"
+    FORMAT_CONTROL_CODE$="AL100"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AL100100"
+    FORMAT_CONTROL_CODE$="AL100"
+    COLUMN_NUMBER$="100"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AL100200"
+    FORMAT_CONTROL_CODE$="AL100"
+    COLUMN_NUMBER$="200"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BAL  001"
+    FORMAT_CONTROL_CODE$="BAL  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BAL  002"
+    FORMAT_CONTROL_CODE$="BAL  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="P01     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BAL  003"
+    FORMAT_CONTROL_CODE$="BAL  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BAL  006"
+    FORMAT_CONTROL_CODE$="BAL  "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 001"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 002"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="BBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 003"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 004"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="EBALLY  "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 005"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="P09     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BBAL 006"
+    FORMAT_CONTROL_CODE$="BBAL "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="YRTOT   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BIL  001"
+    FORMAT_CONTROL_CODE$="BIL  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BIL  002"
+    FORMAT_CONTROL_CODE$="BIL  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BIL  003"
+    FORMAT_CONTROL_CODE$="BIL  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="LY.EBAL "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BSHET001"
+    FORMAT_CONTROL_CODE$="BSHET"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BSHET002"
+    FORMAT_CONTROL_CODE$="BSHET"
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BSHET003"
+    FORMAT_CONTROL_CODE$="BSHET"
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BSHET004"
+    FORMAT_CONTROL_CODE$="BSHET"
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YINCR   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUD  001"
+    FORMAT_CONTROL_CODE$="BUD  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUD  002"
+    FORMAT_CONTROL_CODE$="BUD  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTDBUDG "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUD  003"
+    FORMAT_CONTROL_CODE$="BUD  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="PTDBUDGV"
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUD  004"
+    FORMAT_CONTROL_CODE$="BUD  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YTDBUDG "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUD  005"
+    FORMAT_CONTROL_CODE$="BUD  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="YTDBUDGV"
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUDTS010"
+    FORMAT_CONTROL_CODE$="BUDTS"
+    COLUMN_NUMBER$="010"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUDTS020"
+    FORMAT_CONTROL_CODE$="BUDTS"
+    COLUMN_NUMBER$="020"
+    DATA_TO_PRINT$="P02B    "
+    NUMERIC_PRINT_MASK$="    "
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BUDTS030"
+    FORMAT_CONTROL_CODE$="BUDTS"
+    COLUMN_NUMBER$="030"
+    DATA_TO_PRINT$="P03B    "
+    NUMERIC_PRINT_MASK$="    "
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCC  001"
+    FORMAT_CONTROL_CODE$="CCC  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CCC  002"
+    FORMAT_CONTROL_CODE$="CCC  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="1022"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COL1 001"
+    FORMAT_CONTROL_CODE$="COL1 "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COL1 002"
+    FORMAT_CONTROL_CODE$="COL1 "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="COL1 003"
+    FORMAT_CONTROL_CODE$="COL1 "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDP  001"
+    FORMAT_CONTROL_CODE$="EDP  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDP  002"
+    FORMAT_CONTROL_CODE$="EDP  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="EDP  003"
+    FORMAT_CONTROL_CODE$="EDP  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS001001"
+    FORMAT_CONTROL_CODE$="IS001"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS001005"
+    FORMAT_CONTROL_CODE$="IS001"
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS001006"
+    FORMAT_CONTROL_CODE$="IS001"
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS001007"
+    FORMAT_CONTROL_CODE$="IS001"
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="YTDDIFF "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01 001"
+    FORMAT_CONTROL_CODE$="IS01 "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01 002"
+    FORMAT_CONTROL_CODE$="IS01 "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01 003"
+    FORMAT_CONTROL_CODE$="IS01 "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IS01 004"
+    FORMAT_CONTROL_CODE$="IS01 "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YTDDIFF "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW  001"
+    FORMAT_CONTROL_CODE$="NEW  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW  002"
+    FORMAT_CONTROL_CODE$="NEW  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="BBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW  003"
+    FORMAT_CONTROL_CODE$="NEW  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="NEW  004"
+    FORMAT_CONTROL_CODE$="NEW  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="PCHG    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  001"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="003"
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  002"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="030"
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  003"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="PTD%    "
+    NUMERIC_PRINT_MASK$="0310"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  004"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="PTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  005"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="PTDLY%  "
+    NUMERIC_PRINT_MASK$="0310"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  006"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  007"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="YTD%    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  008"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="008"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="P/L  009"
+    FORMAT_CONTROL_CODE$="P/L  "
+    COLUMN_NUMBER$="009"
+    DATA_TO_PRINT$="YTDLY%  "
+    NUMERIC_PRINT_MASK$="0310"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  001"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  002"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="P01     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  003"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="P02     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  004"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="P03     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  005"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="P04     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  006"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="P05     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER  007"
+    FORMAT_CONTROL_CODE$="PER  "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="P06     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 001"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 002"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="P07     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 003"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="P08     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 004"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="P09     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 005"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="P10     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 006"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="P11     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PER1 007"
+    FORMAT_CONTROL_CODE$="PER1 "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="P12     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PINC 001"
+    FORMAT_CONTROL_CODE$="PINC "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PINC 002"
+    FORMAT_CONTROL_CODE$="PINC "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PINCR   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PINC 003"
+    FORMAT_CONTROL_CODE$="PINC "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YINCR   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  001"
+    FORMAT_CONTROL_CODE$="PL1  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  002"
+    FORMAT_CONTROL_CODE$="PL1  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  003"
+    FORMAT_CONTROL_CODE$="PL1  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="PTD%    "
+    NUMERIC_PRINT_MASK$="0310"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  004"
+    FORMAT_CONTROL_CODE$="PL1  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PL1  005"
+    FORMAT_CONTROL_CODE$="PL1  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="YTD%    "
+    NUMERIC_PRINT_MASK$="0310"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTD1A001"
+    FORMAT_CONTROL_CODE$="QTD1A"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTD1A002"
+    FORMAT_CONTROL_CODE$="QTD1A"
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="QTR1    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTD1A003"
+    FORMAT_CONTROL_CODE$="QTD1A"
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="QTR2    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTD1A004"
+    FORMAT_CONTROL_CODE$="QTD1A"
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="QTR3    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTD1A005"
+    FORMAT_CONTROL_CODE$="QTD1A"
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="QTR4    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  001"
+    FORMAT_CONTROL_CODE$="QTR  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  002"
+    FORMAT_CONTROL_CODE$="QTR  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="QTR1    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  003"
+    FORMAT_CONTROL_CODE$="QTR  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="QTR2    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  004"
+    FORMAT_CONTROL_CODE$="QTR  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="QTR3    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QTR  005"
+    FORMAT_CONTROL_CODE$="QTR  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="QTR4    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1000100"
+    FORMAT_CONTROL_CODE$="R1000"
+    COLUMN_NUMBER$="100"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1000150"
+    FORMAT_CONTROL_CODE$="R1000"
+    COLUMN_NUMBER$="150"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1000200"
+    FORMAT_CONTROL_CODE$="R1000"
+    COLUMN_NUMBER$="200"
+    DATA_TO_PRINT$="YTDBUDG "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001100"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="100"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001150"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="150"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001200"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="200"
+    DATA_TO_PRINT$="YTDBUDG "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001220"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="220"
+    DATA_TO_PRINT$="YTDBUDGV"
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001250"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="250"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001300"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="300"
+    DATA_TO_PRINT$="YINCR   "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="R1001350"
+    FORMAT_CONTROL_CODE$="R1001"
+    COLUMN_NUMBER$="350"
+    DATA_TO_PRINT$="RUSS/TST"
+    NUMERIC_PRINT_MASK$="    "
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001025"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="025"
+    DATA_TO_PRINT$="BBAL    "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001030"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="030"
+    DATA_TO_PRINT$="PTDBUDG "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001040"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="040"
+    DATA_TO_PRINT$="YTDBUDGV"
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001050"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="050"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001060"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="060"
+    DATA_TO_PRINT$="YTDBUDG "
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001070"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="070"
+    DATA_TO_PRINT$="YTDBUDGV"
+    NUMERIC_PRINT_MASK$="0802"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RP001090"
+    FORMAT_CONTROL_CODE$="RP001"
+    COLUMN_NUMBER$="090"
+    DATA_TO_PRINT$="YTD%    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  001"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="001"
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  002"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="P01     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  003"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="P02     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  004"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="P03     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  005"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="P04     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  006"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="P05     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  007"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="P06     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  008"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="008"
+    DATA_TO_PRINT$="P07     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  009"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="009"
+    DATA_TO_PRINT$="P08     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  010"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="010"
+    DATA_TO_PRINT$="P09     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  011"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="011"
+    DATA_TO_PRINT$="P10     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  012"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="012"
+    DATA_TO_PRINT$="P11     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="S/S  013"
+    FORMAT_CONTROL_CODE$="S/S  "
+    COLUMN_NUMBER$="013"
+    DATA_TO_PRINT$="P12     "
+    NUMERIC_PRINT_MASK$="0701"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SBS  001"
+    FORMAT_CONTROL_CODE$="SBS  "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SBS  002"
+    FORMAT_CONTROL_CODE$="SBS  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SBS  003"
+    FORMAT_CONTROL_CODE$="SBS  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="EBALLY  "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC 001"
+    FORMAT_CONTROL_CODE$="SINC "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC 002"
+    FORMAT_CONTROL_CODE$="SINC "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC 004"
+    FORMAT_CONTROL_CODE$="SINC "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="PTD%    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC 006"
+    FORMAT_CONTROL_CODE$="SINC "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SINC 007"
+    FORMAT_CONTROL_CODE$="SINC "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="YTD%    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SPSH 001"
+    FORMAT_CONTROL_CODE$="SPSH "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SPSH 002"
+    FORMAT_CONTROL_CODE$="SPSH "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SPSH 003"
+    FORMAT_CONTROL_CODE$="SPSH "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   001"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   002"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="P01     "
+    NUMERIC_PRINT_MASK$="0833"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   003"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="P02     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   004"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="P03     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   005"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="P04     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   006"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="006"
+    DATA_TO_PRINT$="P05     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   007"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="007"
+    DATA_TO_PRINT$="P06     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   008"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="008"
+    DATA_TO_PRINT$="P07     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   009"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="009"
+    DATA_TO_PRINT$="P08     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   010"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="010"
+    DATA_TO_PRINT$="P09     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   011"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="011"
+    DATA_TO_PRINT$="P10     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   012"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="012"
+    DATA_TO_PRINT$="P11     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="SS   013"
+    FORMAT_CONTROL_CODE$="SS   "
+    COLUMN_NUMBER$="013"
+    DATA_TO_PRINT$="P12     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST 001"
+    FORMAT_CONTROL_CODE$="TEST "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST1001"
+    FORMAT_CONTROL_CODE$="TEST1"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST1002"
+    FORMAT_CONTROL_CODE$="TEST1"
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="EBAL    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TEST1003"
+    FORMAT_CONTROL_CODE$="TEST1"
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="EBALLY  "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="080"
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TESTA001"
+    FORMAT_CONTROL_CODE$="TESTA"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TESTA002"
+    FORMAT_CONTROL_CODE$="TESTA"
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TESTA003"
+    FORMAT_CONTROL_CODE$="TESTA"
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TESTA004"
+    FORMAT_CONTROL_CODE$="TESTA"
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YTD%    "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="P                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WORR 001"
+    FORMAT_CONTROL_CODE$="WORR "
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WORR 002"
+    FORMAT_CONTROL_CODE$="WORR "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="035"
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WORR 003"
+    FORMAT_CONTROL_CODE$="WORR "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="PTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WORR 004"
+    FORMAT_CONTROL_CODE$="WORR "
+    COLUMN_NUMBER$="004"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="WORR 005"
+    FORMAT_CONTROL_CODE$="WORR "
+    COLUMN_NUMBER$="005"
+    DATA_TO_PRINT$="YTDLY   "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="XXX  002"
+    FORMAT_CONTROL_CODE$="XXX  "
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="XXX  003"
+    FORMAT_CONTROL_CODE$="XXX  "
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YYYYY001"
+    FORMAT_CONTROL_CODE$="YYYYY"
+    COLUMN_NUMBER$="001"
+    DATA_TO_PRINT$="TITLE   "
+    NUMERIC_PRINT_MASK$="0035"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="T                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YYYYY002"
+    FORMAT_CONTROL_CODE$="YYYYY"
+    COLUMN_NUMBER$="002"
+    DATA_TO_PRINT$="PTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="B                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="YYYYY003"
+    FORMAT_CONTROL_CODE$="YYYYY"
+    COLUMN_NUMBER$="003"
+    DATA_TO_PRINT$="YTD     "
+    NUMERIC_PRINT_MASK$="0822"
+    COLUMN_JUSTIFICATION$="   "
+    NEGATIVE_REP$="A                "
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,103 @@
+0010 REM "Tag processing for linemessage section in EC3WS0 <EC3MG0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 04/03/18 - 15.206944 - crg - SSP# 297474
+0037 REM "297474-Our DBRS 138 e-commerce report has no entries since 12/7.   
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "OPTIONS$(1,1) = order review (passed from EC3WS1)
+0051 REM "OPTIONS$(2,1) = Y if coming from order approval files
+0052 ! SSP172214 - If coming from purchase approval, still show the messages for this worksheet in EC0 in addition to any found in EDT.  Don't show message numbers 60,61,62 from EC0, this is the message that says the order needs approval
+0053 REM "OPTIONS$(3,1) = Y indicates do not embed <br> tags when multiple messages
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},TABLE_HTML$,ECE$,MESS_INFO${ALL},OPTIONS$
+0100 SETERR 9000
+0105 OPTIONS$=PAD(OPTIONS$,30)
+0110 X0$="EC3MG0",X1$="linemessage section processing"
+0120 EOL$=$0D0A$
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EC0...  02O EDT...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 IF OPTIONS$(2,1)="Y" THEN MESSCHAN=Z(2),FIRST_TIME$="Y" ELSE MESSCHAN=Z(1)
+0900 REM "set initial variables
+0902 ORDER_REVIEW$=OPTIONS$(1,1)
+0903 BR_TAG$="<br>"; IF MID(OPTIONS$,3,1)="Y" THEN BR_TAG$=""; REM "204967
+1000 REM "Process all messages for current line
+1020 READ (MESSCHAN,KEY=ECE$(1,10)+ECE$(25,3),DOM=*NEXT) ! Position at beginning - 213340
+1030 SEQ=0,CURR_MSG$=ECE$(11,2); IF STP(CURR_MSG$,3," ")="" AND MESSCHAN=Z[1] THEN GOTO 1490 ! SSP224259, added check of MESSCHAN to CURR_MSG$ check, if we are looking at EDT (MESSCHAN=Z[2]) then we need to check for any messages added to EDT during approval
+1031 ! IF ECE$(18,1)="O" THEN GOTO 1490; REM "disable all line messages for office supply items.  SSP185533, want to show approval messages, see line 1036
+1032 REM "read in message
+1033 MESSKEY$=KEY(MESSCHAN,END=1490); IF MID(MESSKEY$,1,13)<>ECE$(1,10)+ECE$(25,3) THEN GOTO 1490 ELSE SEQ$=MID(MESSKEY$,14,3); SEQ=NUM(SEQ$,ERR=1490) ! 213340
+1034 DIM EC0$(295); READ (MESSCHAN,KEY=ECE$(1,10)+ECE$(25,3)+SEQ$,DOM=1490)EC0$ ! 213340
+1035 IF OPTIONS$(2,1)="Y" AND POS(EC0$(27,5)="00060000610006200063",5)>0 THEN GOTO 1032 ! SSP172214, if displaying messages on PA detail page, then don't show original approval message from order entry page, WO242686
+1036 IF ECE$(18,1)="O" AND POS(EC0$(27,5)="0000100002000600006100062000630002000021",5)=0 THEN GOTO 1032 ! SSP185533, if TOPS item only show approval messages, 226534, 233077, WO242686
+1037 IF LEN(EC0$)<295 THEN EC0$=PAD(EC0$,295)
+1040 IF EC0$(272,1)="Y" THEN GOTO 1032; REM "ck if message to be displayed. SSP178440, was GOTO 1490, changed because there could be other messages to display for this worksheet line
+1041 IF EC0$(275,1)="Y" AND ORDER_REVIEW$<>"Y" THEN GOTO 1490; REM "message set for order_review only and order not in review - bypass
+1042 MESSAGE$=EC0$(32,240),MESSAGE_NUMBER$=STP(STR(NUM(EC0$(27,5)):"#####"),2); REM "158247
+1100 GOSUB 3900
+1110 IF SEQ=1 THEN RETURNED_MSG_SECTION$=RETURNED_MSG_SECTION$+MSG_SECTION$ ELSE RETURNED_MSG_SECTION$=RETURNED_MSG_SECTION$+BR_TAG$+MSG_SECTION$
+1120 GOTO 1032; REM "loop back for additional messages - ssp 154319
+1490 IF OPTIONS$(2,1)="Y" AND FIRST_TIME$="Y" THEN FIRST_TIME$="N",MESSCHAN=Z[1]; GOTO 1000 ! SSP172214, show messages original buyer saw when placing the order
+1500 TABLE_HTML$=RETURNED_MSG_SECTION$
+1900 GOTO 9900
+3000 REM "pre-process message:
+3017 IF ECX$(16,1)="Y" THEN GOTO 3045; REM "If don't display, then skip this section
+3020 MTMP$=STP(ECX$(20,240),1)
+3025 MS2_INDEX=POS("?tf?"=MTMP$); IF MS2_INDEX=0 THEN GOTO 3040
+3026 MSEND2_INDEX=POS("?"=MTMP$(MS2_INDEX+4)),MTMP_TAG$=MTMP$(MS2_INDEX+4,MSEND2_INDEX-1),MTMP1$=MTMP$(1,MS2_INDEX-1),MTMP2$=MTMP$(MS2_INDEX+MSEND2_INDEX+4)
+3030 MINFO$=""; IF NUM(MTMP_TAG$,ERR=3031)<=FN%NEA("MESS_INFO$",1) THEN MINFO$=MESS_INFO$[NUM(MTMP_TAG$,ERR=3031)]
+3032 MTMP$=MTMP1$+MINFO$+MTMP2$
+3035 GOTO 3025
+3085 MESSAGE$=MTMP$
+3090 RETURN 
+3900 REM "Get message lines section in TABLE_HTML$ and generate MSG_SECTION$ containing an entry for each message
+3902 MSG_SECTION$="",MSG_TAGS$="001<message>002<message_number>"; REM "158247
+3906 MSG$=TABLE_HTML$
+3915 MSG_INDEX=POS("?tf?"=MSG$); IF MSG_INDEX=0 THEN GOTO 3991
+3916 MSGEND_INDEX=POS("?"=MSG$(MSG_INDEX+4)),MSG_TAG$=MSG$(MSG_INDEX+4,MSGEND_INDEX-1),MSG1$=MSG$(1,MSG_INDEX-1),MSG2$=MSG$(MSG_INDEX+MSGEND_INDEX+4),MSG_POS=POS("<"+MSG_TAG$+">"=MSG_TAGS$); IF MSG_POS=0 THEN MSG$=MSG1$+MSG2$,MSG_INDEX=0 ELSE MSG_INDEX=NUM(MSG_TAGS$(MSG_POS-3,3))
+3920 ON MSG_INDEX GOTO 3989,3921,3922,3989; REM "158247
+3921 MSG$=MSG1$+FN%HTML_ESC$(STP(MESSAGE$,2))+MSG2$; GOTO 3990; REM "message
+3922 MSG$=MSG1$+MESSAGE_NUMBER$+MSG2$; GOTO 3990; REM "message_number  158247
+3990 GOTO 3915
+3991 REM "** if memory overload will have to return in string array -  IF LEN(MSG_SECTION$)+LEN(MSG$)>64000 THEN PRINT (OUTPUT) MSG_SECTION$,EOL$; LET MSG_SECTION$="" ELSE LET MSG_SECTION$=MSG_SECTION$+MSG$
+3992 MSG_SECTION$=MSG_SECTION$+MSG$
+3995 RETURN 
+8910 DEF FND$(Z9$)=Z9$(1*2+1,2)+"/"+Z9$(7-1*2,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "204967-Need to change settings on WebEC message 00001 and 00002,   
+56003 REM "213340-WebEC item ordered and out of stock message did not display 
+56004 REM "224259-Issue with purchase approval when an item is set to a qty ofSAVE
+56005 REM "226534-Modify EC3WS1 and OS2OBC to handle invalid items or absent  
+56006 REM "233077-Not all EC messages show for Office Products on worksheet   
+56007 REM "242686-Custom project using the EC Budget module.                  
+56008 REM "297474-Our DBRS 138 e-commerce report has no entries since 12/7.   

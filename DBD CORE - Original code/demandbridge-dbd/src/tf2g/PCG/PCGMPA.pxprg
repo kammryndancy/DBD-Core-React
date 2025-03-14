@@ -1,0 +1,41 @@
+0010 ! PCG Parameter Setup <PCGMPA>
+0020 ! "5.0 - 08/30/02 - 10.913055 - rms
+0030 ! "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0035 REM "5.7 - 09/04/15 - 14.401944 - crg - SSP# 279767
+0037 REM "279767-Prod Cat Gateway System Parameters - CHUI and GUI use diff  
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0060 PROCESS "PCGMPA","../PCG/PC.EN"
+0070 END 
+0080 INIT:
+0200 ! ^200,10 Setup
+0210 DIM PCG$:"A1:C(6),A2:C(3),A3:C(4)"
+0300 ! ^300,10 - Iolist
+0310 PCG_IOL:IOLIST PCG$
+0320 ! 
+0500 ! ^ 500,10 - Open Files
+0510 _ZZPARM=HFN; OPEN (_ZZPARM)"ZZPARM"
+0520 RETURN 
+0530 ! 
+1000 ! ^1000,10 Read in parameters
+1010 READ_REC:
+1020 PARM_KEY$=%C$+"GPC",KEY_SIZE=LEN(PARM_KEY$) ! 279767
+1030 READ DATA FROM "" TO IOL=PCG_IOL
+1040 PCG$(1,KEY_SIZE)=PARM_KEY$
+1050 READ (_ZZPARM,KEY=PARM_KEY$,DOM=*NEXT)IOL=PCG_IOL
+1060 REFRESH_FLG=1
+1070 RETURN 
+1080 ! 
+1200 ! ^1200,10 Write out parameters
+1210 WRITE_REC:
+1220 WRITE (_ZZPARM,KEY=PARM_KEY$)IOL=PCG_IOL
+1230 CMD_STR$="E"
+1240 RETURN 
+1250 ! 
+9900 ! ^9900,10 - Wrap up
+9910 WRAP_UP:
+9920 CLOSE (_ZZPARM)
+9930 RETURN 
+9999 END 
+56001 REM "279767-Prod Cat Gateway System Parameters - CHUI and GUI use diff  

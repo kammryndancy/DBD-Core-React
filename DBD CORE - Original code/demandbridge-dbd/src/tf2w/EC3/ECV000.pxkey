@@ -1,0 +1,1157 @@
+<PxTable>
+ TableName=ECV000
+ TableKey=K1002038427
+ FileCreate=KEYED "ECV000",23,0,128,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ECV_SortElement"
+    PHYSICALPATH$="April 24,2002 11:9am"
+    LASTCHANGEDATE$="dmm"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST CUST_DIV$:[LEN(2)]"
+    NAME$="CUST_DIV"
+    DESCRIPTION$="=MSG("+QUO+"CUST_DIV"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST CUST_CODE$:[LEN(8)]"
+    NAME$="CUST_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CUST_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="P"
+    NOTES$="customer code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST SORT_CODE$:[LEN(10)]"
+    NAME$="SORT_CODE"
+    DESCRIPTION$="=MSG("+QUO+"SORT_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="sort code"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-4
+    IOLOBJ$="IOLIST ELEMENT_NUMB$:[LEN(3)]"
+    NAME$="ELEMENT_NUMB"
+    DESCRIPTION$="=MSG("+QUO+"ELEM_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="element number"
+    KEYDEFINITION$="1:4:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST CUST_DIV$:[LEN(2,SEP=SEP)]"
+    NAME$="CUST_DIV"
+    DESCRIPTION$="=MSG("+QUO+"CUST_DIV"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST CUST_CODE$:[LEN(8,SEP=SEP)]"
+    NAME$="CUST_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CUST_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="8"
+    INTERNALFORMAT$="S"
+    NOTES$="customer code"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST SORT_CODE$:[LEN(10,SEP=SEP)]"
+    NAME$="SORT_CODE"
+    DESCRIPTION$="=MSG("+QUO+"SORT_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="sort code"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST ELEMENT_NUMB$:[LEN(3,SEP=SEP)]"
+    NAME$="ELEMENT_NUMB"
+    DESCRIPTION$="=MSG("+QUO+"ELEM_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="element number"
+    KEYDEFINITION$="1:4:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST DATA_TYPE_DATAORTEXT$:[LEN(1,SEP=SEP)]"
+    NAME$="DATA_TYPE_DATAORTEXT"
+    DESCRIPTION$="=MSG("+QUO+"DATA_T_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="data type (1-data   T-text)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ECV_UNUSED_1$:[LEN(2,SEP=SEP)]"
+    NAME$="ECV_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="unused"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST STRING_POS$:[LEN(3,SEP=SEP)]"
+    NAME$="STRING_POS"
+    DESCRIPTION$="=MSG("+QUO+"STRING_POS"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="string position"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST DESC_OR_TEXT$:[LEN(40,SEP=SEP)]"
+    NAME$="DESC_OR_TEXT"
+    DESCRIPTION$="=MSG("+QUO+"DESC_O_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="description or text"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST LENGTH$:[LEN(3,SEP=SEP)]"
+    NAME$="LENGTH"
+    DESCRIPTION$="=MSG("+QUO+"LENGTH"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="length"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST DATA_TYPE$:[LEN(5,SEP=SEP)]"
+    NAME$="DATA_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"DATA_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="data type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST ACCOUNT_TYPE$:[LEN(9,SEP=SEP)]"
+    NAME$="ACCOUNT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"ACCT_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="9"
+    INTERNALFORMAT$="S"
+    NOTES$="account type"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST SOURCE_FILE$:[LEN(6,SEP=SEP)]"
+    NAME$="SOURCE_FILE"
+    DESCRIPTION$="=MSG("+QUO+"SRC_FILE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="source file"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST ECV_UNUSED_2$:[LEN(SEP,SIZ=28)]"
+    NAME$="ECV_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="28"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="012"
+    DESC_OR_TEXT$="Ship-to code                            "
+    LENGTH$="004"
+    DATA_TYPE$="SU   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FM0   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="T"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="   "
+    DESC_OR_TEXT$="-                                       "
+    LENGTH$="001"
+    DATA_TYPE$="     "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="      "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="051"
+    DESC_OR_TEXT$="address line 1                          "
+    LENGTH$="030"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FM0   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="T"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="   "
+    DESC_OR_TEXT$=",                                       "
+    LENGTH$="002"
+    DATA_TYPE$="     "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="      "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO005"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="005"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="111"
+    DESC_OR_TEXT$="city                                    "
+    LENGTH$="016"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FM0   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO006"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="006"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="127"
+    DESC_OR_TEXT$="state                                   "
+    LENGTH$="002"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FM0   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          DDL_SHIPTO007"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="DDL_SHIPTO"
+    ELEMENT_NUMB$="007"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="127"
+    DESC_OR_TEXT$="state                                   "
+    LENGTH$="002"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FM0   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EMAILSUB_O001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="EMAILSUB_O"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="T"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="   "
+    DESC_OR_TEXT$="Confirmation of your QBF Requisition (# "
+    LENGTH$="038"
+    DATA_TYPE$="     "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="      "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EMAILSUB_O002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="EMAILSUB_O"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="235"
+    DESC_OR_TEXT$="Order Number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="ECD   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          EMAILSUB_O003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="EMAILSUB_O"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="T"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="   "
+    DESC_OR_TEXT$=")                                       "
+    LENGTH$="002"
+    DATA_TYPE$="     "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="      "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_BYDAT001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_BYDAT"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_BYDAT002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_BYDAT"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_BYDAT003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_BYDAT"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CITY 001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CITY "
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CITY 002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CITY "
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="106"
+    DESC_OR_TEXT$="City                                    "
+    LENGTH$="016"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="PO3   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CITY 003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CITY "
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CITY 004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CITY "
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CUSPO001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CUSPO"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CUSPO002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CUSPO"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="028"
+    DESC_OR_TEXT$="Customer PO no                          "
+    LENGTH$="015"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CUSPO003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CUSPO"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_CUSPO004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_CUSPO"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ILINE001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ILINE"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ILINE002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ILINE"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ILINE003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ILINE"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ILINE004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ILINE"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Line number -should be < 207 for FS6 use"
+    LENGTH$="003"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS2   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ITEM 001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ITEM "
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ITEM 002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ITEM "
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="019"
+    DESC_OR_TEXT$="Form code or message type for messages  "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS2   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ITEM 003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ITEM "
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ITEM 004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ITEM "
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ITEM 005"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ITEM "
+    ELEMENT_NUMB$="005"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Line number -should be < 207 for FS6 use"
+    LENGTH$="003"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS2   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_OTYPE001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_OTYPE"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_OTYPE002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_OTYPE"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_OTYPE003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_OTYPE"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="022"
+    DESC_OR_TEXT$="Order type                              "
+    LENGTH$="001"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_OTYPE004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_OTYPE"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_SHPTO001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_SHPTO"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_SHPTO002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_SHPTO"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_SHPTO003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_SHPTO"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_STATE001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_STATE"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_STATE002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_STATE"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="122"
+    DESC_OR_TEXT$="State                                   "
+    LENGTH$="002"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="PO3   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_STATE003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_STATE"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_STATE004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_STATE"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ZIP  001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ZIP  "
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ZIP  002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ZIP  "
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="124"
+    DESC_OR_TEXT$="Zip code                                "
+    LENGTH$="009"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="PO3   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ZIP  003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ZIP  "
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OSKW_ZIP  004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OSKW_ZIP  "
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_BYDATE 001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_BYDATE "
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_BYDATE 002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_BYDATE "
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_BYDATE 003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_BYDATE "
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_CUSTPO 001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_CUSTPO "
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_CUSTPO 002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_CUSTPO "
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="028"
+    DESC_OR_TEXT$="Customer PO no                          "
+    LENGTH$="015"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_CUSTPO 003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_CUSTPO "
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_LOCDATE001"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_LOCDATE"
+    ELEMENT_NUMB$="001"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="006"
+    DESC_OR_TEXT$="Customer Code                           "
+    LENGTH$="010"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_LOCDATE002"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_LOCDATE"
+    ELEMENT_NUMB$="002"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="012"
+    DESC_OR_TEXT$="Ship to                                 "
+    LENGTH$="004"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="PO3   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_LOCDATE003"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_LOCDATE"
+    ELEMENT_NUMB$="003"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="016"
+    DESC_OR_TEXT$="Order date                              "
+    LENGTH$="006"
+    DATA_TYPE$="SR   "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="          OS_LOCDATE004"
+    CUST_DIV$="  "
+    CUST_CODE$="        "
+    SORT_CODE$="OS_LOCDATE"
+    ELEMENT_NUMB$="004"
+    DATA_TYPE_DATAORTEXT$="1"
+    ECV_UNUSED_1$="  "
+    STRING_POS$="118"
+    DESC_OR_TEXT$="Order number                            "
+    LENGTH$="008"
+    DATA_TYPE$="S    "
+    ACCOUNT_TYPE$="         "
+    SOURCE_FILE$="FS1   "
+    ECV_UNUSED_2$="                            "
+   </RecordData>
+
+</Data>
+
+</PxTable>

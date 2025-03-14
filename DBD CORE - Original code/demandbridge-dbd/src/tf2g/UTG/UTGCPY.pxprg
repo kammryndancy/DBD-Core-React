@@ -1,0 +1,13 @@
+0010 ! UTGCPY Copy File, Panel Library
+0035 ! "6.0 - 07/15/04 - 05:07 PM - jir
+0040 ! "Copyright 2004 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0050 EXIT 
+0100 COPY_FROM:
+0110 FR=HFN; OPEN (FR,ERR=NO_FILE)COPY_FROM$
+0115 COPY_FROM$=PTH(FR)
+0120 CLOSE (FR)
+0130 COPY_TO$=COPY_FROM$,COPY_TO$=SUB(COPY_TO$,"/tf2g/","/rel/tftg/"),REFRESH_FLG=1
+0140 EXIT 
+0150 NO_FILE: MSGBOX DB_COPY$+" : "+COPY_FROM$+SEP+"No Found",MSG("WARNING"),"INFO,TIM=3"; NEXT_ID=COPY_FROM.CTL,COPY_FROM$=""
+9999 END 

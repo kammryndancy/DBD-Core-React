@@ -1,0 +1,10 @@
+0010 REM "Build Item Expanded Description <FM2MAZ>
+0175 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+1020 ENTER X3$,H8$,H9$
+8000 REM "Build desc from H8$
+8010 H9$=FNS$(H8$(24,8)); IF H9$<>"" THEN H9$=H9$+QUO; IF POS(" "<>H8$(32,8))<>0 THEN H9$=H9$+" x  "
+8020 H9$=H9$+FNS$(H8$(32,8)); IF H9$<>"" THEN IF POS(" "<>H8$(32,8))<>0 THEN H9$=H9$+QUO+" " ELSE H9$=H9$+" "
+8030 IF NUM(H8$(40,2))<>0 THEN H9$=H9$+H8$(40,2)+" Ply "
+8040 H9$=H9$+FNS$(H8$(42,40))
+9940 EXIT 
+9999 END 

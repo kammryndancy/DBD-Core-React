@@ -1,0 +1,126 @@
+0010 REM "<BC2P03> Printer Option Package for DEC LG02
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 08/09/02 - 11.952777 - dff - SSP# 150785
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0069 REM "IF P$='?' THEN P$ is returned with description of printer driver
+0070 REM "P$ is ptr string from ZZPARM if not found, we'll try to read a hard coded one
+0071 REM "D$ is the data to printe
+0072 REM "O$ is option code string, each option code is 5 chars long
+0073 REM "Q$ is for future sturff
+0074 REM "D1$ is string to print including print codes, etc.
+0075 REM "L0$ is for stuff that must go on  front of line, and applies to whole line, L1$ goes on end of line to turn off L0$
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,P$,D$,O$,Q$,D1$,L0$,L1$
+0100 SETERR 9000
+0105 IF P$="?" THEN P$="DEC LG02 Printer Driver"; GOTO 9920; REM "Skip ZZFLES call @ 9910
+0110 X0$="BC2P03",X1$="Printer Option Package for DEC LG02"
+0120 DIM S$(80)
+0550 REM "At least pass the data back, no matter what happens
+0551 D1$=D$,L0$="",L1$=""
+0600 REM "If no printer codes record given try and read one
+0603 P$=STP(P$,1)
+0605 IF P$<>"" THEN GOTO 0621
+0610 CLOSE (14); OPEN (14)"ZZPARM"
+0620 FIND (14,KEY="ptrDECLG02 ",DOM=9900)P$
+1000 REM "Look at each option, add codes to front & back of D1$ as needed
+1010 FOR I=1 TO LEN(O$)-20 STEP 20
+1015 O1$=O$(I+5,15)
+1020 P=POS(O$(I,5)="DBLHTBOLD UNDRLPSTNTBC39DEAN8 EAN13UPC-AUPC-E2OF5DC128AC128BC128C"); IF P>0 THEN P=INT((P+4)/5)
+1025 ON P GOSUB 2000,2100,2150,2200,2250,2300,2350,2400,2450,2500,2550,2600,2650,2700,2000
+1190 NEXT I
+1195 GOTO 9900
+2000 REM 'DO NOTHING SUBROUTINE
+2095 RETURN 
+2100 REM "DBLHT - Double height on for field then off
+2103 IF D1$="" OR POS(" "<>D1$)=0 THEN GOTO 2145
+2104 REM "Set D2$ to actual data, S2$ to trailing spaces, print D2$ double height then print S2$ to space properly, otherwise spacing is off
+2105 DIM S0$(LEN(D1$))
+2110 D2$=D1$(1,POS(S0$=D1$+S0$)-1)
+2115 DIM S2$(LEN(D1$)-LEN(D2$))
+2125 D1$=$009B$+"1;2;0;0;0'r"+$1B$+"% 1"+D2$+$1B$+"%@"+S2$
+2145 RETURN 
+2150 REM "BOLD - Bold printing
+2155 D1$=$9B$+"1m"+D1$+$9B$+"22m"
+2195 RETURN 
+2200 REM "UNDRL - Underline
+2205 D1$=$9B$+"4m"+D1$+$9B$+"24m"
+2245 RETURN 
+2250 REM "PSTNT - PostNet code
+2255 REM "Not supported
+2295 RETURN 
+2300 REM "BC39 - Barcode 3 of 9
+2305 C5$="0"; GOSUB 7550
+2345 RETURN 
+2350 REM "EAN8  - EAN 8 digit barcode
+2355 REM "Not supported
+2395 RETURN 
+2400 REM "EAN13 - EAN 13 digit barcode
+2405 REM "Not Supported
+2445 RETURN 
+2450 REM "UPC-A - UPC-A 10 digit barcode
+2455 REM "Not Supported
+2495 RETURN 
+2500 REM "UPC-E - UPC-E 6 digit barcode
+2505 REM "Not Supported
+2545 RETURN 
+2550 REM "2OF5 - Interleaved 2 of 5 barcode
+2555 C5$="1"; GOSUB 7550
+2595 RETURN 
+2600 REM "C128A - Code 128 set A
+2605 REM "Not Supported
+2645 RETURN 
+2650 REM "C128B - Code 128 Set B
+2655 REM "Not Supported
+2695 RETURN 
+2700 REM "C128C - Code 128 Set C
+2705 REM "Not Supported
+2745 RETURN 
+7500 REM "Decode expected NUMERIC parameters from O1$ into O() array, current maximum # of parameters is set to 10. Positionality will be maintained. Array vluase of -9999 indicate parameters was blank or not a number. O1 is  highest parameter found, O2 is number of valid parameters found
+7510 DIM O[10]; O1=0,O2=0,W$=O1$; REM "W$ is work string containing O1$
+7515 IF W$="" THEN GOTO 7545
+7520 IF LEN(W$)<=3 THEN W0$=W$,W$="" ELSE W0$=W$(1,3),W$=W$(4)
+7525 O1=O1+1; O[O1]=0; IF POS(" "<>W0$)=0 THEN GOTO 7515
+7530 O[O1]=NUM(W0$,ERR=7510),O2=O2+1; GOTO 7515
+7545 RETURN 
+7550 REM "All barcodes have the same params etc, only a code changes, so, given code C5$ print a barcode
+7555 GOSUB 7500
+7559 REM "Setup barcade params string, C5$ is type,O(1) is narrow bar width, 0 is Quiet zone, use default size, O(2) is wide bar width, O(3) is intercharacter gap, O(4) is height, 0 is no character encoding, O(5) is orientation, and 3 means print characters at bottom
+7560 D2$=$9B$+C5$+";"+STR(O[1])+";"+"0;"+STR(O[2])+";"+STR(O[3])+";"+STR(O[4])+";"+"0;"+STR(O[5])+";"+"3"+"'q"
+7565 D1$=D2$+$1B$+"% 0"+FNS$(D1$)+$1B$+"%@"
+7595 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

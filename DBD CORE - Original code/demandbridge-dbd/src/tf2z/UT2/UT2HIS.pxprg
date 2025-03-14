@@ -1,0 +1,99 @@
+0010 REM "Mark historical records in AR7/APJ for direct files <UT2HIS>
+0035 REM "5.7 - 10/25/17 - 13.151666 - tma - SSP# 295857
+0037 REM "295857-Research AR Onaccount balances being cleared as part of     
+0040 REM "Copyright 2017 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,EOM$ ! SSP#225538
+0100 SETERR 9000
+0110 X0$="UT2HIS",X1$="Mark historical records AR7/APJ"
+0120 DIM Z0$(80,"-")
+0125 DIM G[4],D[4],Y[4],P[8],X0[4],X1[4],S$(10)
+0200 REM "                                                                    
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0310 IOLIST AR8$,AR8[0],AR8[1],AR8[2],AR8[3],AR8[4],AR8[5],AR8[6],AR8[7]
+0320 IOLIST AR7$(1),AR7[0],AR7[1]
+0330 IOLIST APQ$,APQ[0],APQ[1],APQ[2],APQ[3],APQ[4],APQ[5],APQ[6],APQ[7],APQ[8],APQ[9],APQ[10],APQ[11],APQ[12],APQ[13],APQ[14],APQ[15],APQ[16],APQ[17],APQ[18],APQ[19],APQ[20],APQ[21],APQ[22],APQ[23],APQ[24],APQ[25],APQ[26],APQ[27]
+0340 IOLIST APJ$(1),APJ[0]
+0400 DIM AR8[7],AR7$(70),AR7[1],APQ[27],APJ$(80),APJ[1]
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X AR8...  02O AR7...  03O APQ...  04O APJ...  05O AR6...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 IF EOM$="AP" THEN GOTO 1100 ! SSP#225538
+0965 FILE_ID=Z[2],FILE_ID$="AR7"; GOSUB 8100
+1000 DIM AR7(70),AR7[1]
+1005 READ (Z[1],KEY="",DOM=*NEXT) ! SSP#225538
+1010 AR8_KEY$=KEY(Z[1],END=1100); READ (Z[1],KEY=AR8_KEY$)IOL=0310
+1020 COUNT=COUNT+1; IF MOD(COUNT,T0)=1 THEN GOSUB 8150
+1030 READ (Z[2],KEY=AR8_KEY$(1,18),DOM=*NEXT)
+1040 AR7_KEY$=KEY(Z[2],END=1090); READ (Z[2],KEY=AR7_KEY$)IOL=0320
+1050 IF AR7_KEY$(1,18)<>AR8$(1,18) THEN GOTO 1090
+1060 IF AR7$(40,6)>AR8$(118,6) THEN GOTO 1040
+1065 IF AR7_KEY$(11,7)="ONACCNT" THEN READ (Z[5],KEY=AR7_KEY$(1,18),DOM=*NEXT); GOTO 1010 ! SSP#295857
+1070 AR7$(49,1)="H"; WRITE (Z[2],KEY=AR7_KEY$)IOL=0320
+1080 GOTO 1040
+1090 GOTO 1010
+1100 IF EOM$="AR" THEN GOTO 5000 ! SSP#225538
+1105 DIM APJ$(80),APJ[1]; FILE_ID=Z[4],FILE_ID$="APJ",COUNT=0; GOSUB 8100 ! SSP#225538
+1107 READ (Z[3],KEY="",DOM=*NEXT) ! SSP#225538
+1110 APQ_KEY$=KEY(Z[3],END=5000); READ (Z[3],KEY=APQ_KEY$)IOL=0330
+1120 COUNT=COUNT+1; IF MOD(COUNT,T0)=1 THEN GOSUB 8150
+1130 READ (Z[4],KEY=APQ_KEY$(1,20),DOM=*NEXT)
+1140 APJ_KEY$=KEY(Z[4],END=1190); READ (Z[4],KEY=APJ_KEY$)IOL=0340
+1150 IF APJ_KEY$(1,20)<>APQ_KEY$(1,20) THEN GOTO 1190
+1160 IF APJ$(37,6)>APQ$(100,6) THEN GOTO 1140
+1170 APJ$(58,1)="H"; WRITE (Z[4],KEY=APJ_KEY$)IOL=0340
+1180 GOTO 1140
+1190 GOTO 1110
+5000 REM "End of files                                                    
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND             
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,4),"This Demandbridge utility program will mark the historical",@(15,5),"files AR7 and APJ records as history records",
+6050 PRINT (0,ERR=6051)'SF',
+6090 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",FILE_ID,T9,X3$,T,T0,K,B,D,S0,S1,F$ ! SSP#239590
+8115 PRINT @(0,17),"File: ",FILE_ID$,", there are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and lookfor avalue of 1. IF T0 is 1, then nothing would get reported. We lookfor a result of 1 because this causes the first record to automaticallystart the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, COUNT, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,COUNT
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0
+9790 RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "239590-Trying to close AR and getting PE(042, UT2HIS-8110).        
+56001 REM "295857-Research AR Onaccount balances being cleared as part of     

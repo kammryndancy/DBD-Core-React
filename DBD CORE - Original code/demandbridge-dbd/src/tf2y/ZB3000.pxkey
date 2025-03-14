@@ -1,0 +1,619 @@
+<PxTable>
+ TableName=ZB3000
+ TableKey=K1007399617
+ FileCreate=KEYED "ZB3000",29,1000,256,BSZ=4,OPT="0"
+ MaxFields=00004
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001002"
+    FIELD_1$="001SAMPLE-01           001002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001014"
+    FIELD_1$="001SAMPLE-01           001014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001051"
+    FIELD_1$="001SAMPLE-01           001051AR_CUSTOMER_MASTER  SALESPERSON_CODE     04        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001057"
+    FIELD_1$="001SAMPLE-01           001057AR_CUSTOMER_MASTER  CREDIT_LIMIT        T11        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001070"
+    FIELD_1$="001SAMPLE-01           001070AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-01           001092"
+    FIELD_1$="001SAMPLE-01           001092AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001002"
+    FIELD_1$="001SAMPLE-02           001002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001014"
+    FIELD_1$="001SAMPLE-02           001014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001051"
+    FIELD_1$="001SAMPLE-02           001051AR_CUSTOMER_MASTER  SALESPERSON_CODE     04        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001057"
+    FIELD_1$="001SAMPLE-02           001057AR_CUSTOMER_MASTER  SALESPERSON_NAME     35        "
+    FIELD_2$="AR_SLS_MASTER       "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001094"
+    FIELD_1$="001SAMPLE-02           001094AR_CUSTOMER_MASTER  AR_BALANCE           14        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           001110"
+    FIELD_1$="001SAMPLE-02           001110AR_CUSTOMER_MASTER  CREDIT_LIMIT         11        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           002014"
+    FIELD_1$="001SAMPLE-02           002014AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           002040"
+    FIELD_1$="001SAMPLE-02           002040AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           002068"
+    FIELD_1$="001SAMPLE-02           002068AR_CUSTOMER_MASTER  @"+QUO+"HOLD"+QUO+"              09        "
+    FIELD_4$=QUO+"On hold? "+QUO+"                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-02           002077"
+    FIELD_1$="001SAMPLE-02           002077AR_CUSTOMER_MASTER  CREDIT_HOLD          06        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001002"
+    FIELD_1$="001SAMPLE-03           001002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001014"
+    FIELD_1$="001SAMPLE-03           001014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001051"
+    FIELD_1$="001SAMPLE-03           001051AR_CUSTOMER_MASTER  SALESPERSON_CODE     04        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001057"
+    FIELD_1$="001SAMPLE-03           001057AR_CUSTOMER_MASTER  SALESPERSON_NAME     35        "
+    FIELD_2$="AR_SLS_MASTER       "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001094"
+    FIELD_1$="001SAMPLE-03           001094AR_CUSTOMER_MASTER  AR_BALANCE           14        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           001110"
+    FIELD_1$="001SAMPLE-03           001110AR_CUSTOMER_MASTER  CREDIT_LIMIT         11        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           002014"
+    FIELD_1$="001SAMPLE-03           002014AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           002040"
+    FIELD_1$="001SAMPLE-03           002040AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           002066"
+    FIELD_1$="001SAMPLE-03           002066AR_CUSTOMER_MASTER  @"+QUO+"HOLD"+QUO+"              08        "
+    FIELD_4$=QUO+"On hold?"+QUO+"                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-03           002076"
+    FIELD_1$="001SAMPLE-03           002076AR_CUSTOMER_MASTER  CREDIT_HOLD          06        "
+    FIELD_4$=QUO+"On hold?"+QUO+"                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001002"
+    FIELD_1$="001SAMPLE-04           001002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001014"
+    FIELD_1$="001SAMPLE-04           001014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001051"
+    FIELD_1$="001SAMPLE-04           001051AR_CUSTOMER_MASTER  SALESPERSON_CODE     04        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001057"
+    FIELD_1$="001SAMPLE-04           001057AR_CUSTOMER_MASTER  SALESPERSON_NAME     35        "
+    FIELD_2$="AR_SLS_MASTER       "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001094"
+    FIELD_1$="001SAMPLE-04           001094AR_CUSTOMER_MASTER  AR_BALANCE           14        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           001110"
+    FIELD_1$="001SAMPLE-04           001110AR_CUSTOMER_MASTER  CREDIT_LIMIT         11        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           002014"
+    FIELD_1$="001SAMPLE-04           002014AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           002040"
+    FIELD_1$="001SAMPLE-04           002040AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           002066"
+    FIELD_1$="001SAMPLE-04           002066AR_CUSTOMER_MASTER  @"+QUO+"HOLD"+QUO+"              08        "
+    FIELD_4$=QUO+"On hold?"+QUO+"                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-04           002076"
+    FIELD_1$="001SAMPLE-04           002076AR_CUSTOMER_MASTER  CREDIT_HOLD          06        "
+    FIELD_4$=QUO+"On hold?"+QUO+"                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           001014"
+    FIELD_1$="001SAMPLE-05           001014AR_CUSTOMER_MASTER  SALESPERSON_CODE    H04        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           001020"
+    FIELD_1$="001SAMPLE-05           001020AR_CUSTOMER_MASTER  SALESPERSON_NAME    H35        "
+    FIELD_2$="AR_SLS_MASTER       "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           002002"
+    FIELD_1$="001SAMPLE-05           002002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           002014"
+    FIELD_1$="001SAMPLE-05           002014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           002051"
+    FIELD_1$="001SAMPLE-05           002051AR_CUSTOMER_MASTER  AR_BALANCE           14        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           002067"
+    FIELD_1$="001SAMPLE-05           002067AR_CUSTOMER_MASTER  CREDIT_LIMIT         11        "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           002080"
+    FIELD_1$="001SAMPLE-05           002080AR_CUSTOMER_MASTER  CREDIT_HOLD          06        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           003014"
+    FIELD_1$="001SAMPLE-05           003014AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-05           003036"
+    FIELD_1$="001SAMPLE-05           003036AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-10           001002"
+    FIELD_1$="001SAMPLE-10           001002AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-10           002002"
+    FIELD_1$="001SAMPLE-10           002002AR_CUSTOMER_MASTER  ADDRESS_LINE_#1      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-10           003002"
+    FIELD_1$="001SAMPLE-10           003002AR_CUSTOMER_MASTER  ADDRESS_LINE_#2      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-10           004002"
+    FIELD_1$="001SAMPLE-10           004002AR_CUSTOMER_MASTER  CITY_STATE_ZIP       35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-11           001002"
+    FIELD_1$="001SAMPLE-11           001002AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-11           002002"
+    FIELD_1$="001SAMPLE-11           002002AR_CUSTOMER_MASTER  ADDRESS_LINE_#1      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-11           003002"
+    FIELD_1$="001SAMPLE-11           003002AR_CUSTOMER_MASTER  ADDRESS_LINE_#2      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-11           004002"
+    FIELD_1$="001SAMPLE-11           004002AR_CUSTOMER_MASTER  CITY_STATE_ZIP       35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           001002"
+    FIELD_1$="001SAMPLE-20           001002AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           001055"
+    FIELD_1$="001SAMPLE-20           001055AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           002040"
+    FIELD_1$="001SAMPLE-20           002040AR_CUSTOMER_MASTER  DATE_ACCOUNT_OPENED  10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           003002"
+    FIELD_1$="001SAMPLE-20           003002AR_CUSTOMER_MASTER  PURCHASING_AGENT     20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-20           004002"
+    FIELD_1$="001SAMPLE-20           004002AR_CUSTOMER_MASTER  DESCRIPTION          30        "
+    FIELD_2$="AR_TERMS_CODES      "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_TERMS_CODES*     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           001002"
+    FIELD_1$="001SAMPLE-30           001002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           001014"
+    FIELD_1$="001SAMPLE-30           001014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           001051"
+    FIELD_1$="001SAMPLE-30           001051AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           001073"
+    FIELD_1$="001SAMPLE-30           001073AR_CUSTOMER_MASTER  PHONE_NUMBER         24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           003002"
+    FIELD_1$="001SAMPLE-30           003002AR_OPEN_INVOICES    INVOICE_NUMBER       10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           003014"
+    FIELD_1$="001SAMPLE-30           003014AR_OPEN_INVOICES    INVOICE_DATE         10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           003026"
+    FIELD_1$="001SAMPLE-30           003026AR_OPEN_INVOICES    INVOICE_DUE_DATE     10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-30           003038"
+    FIELD_1$="001SAMPLE-30           003038AR_OPEN_INVOICES    INVOICE_BALANCE     T13        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           001001"
+    FIELD_1$="001SAMPLE-40           001001AR_CUSTOMER_MASTER  SALESPERSON_CODE    H04        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           001006"
+    FIELD_1$="001SAMPLE-40           001006AR_CUSTOMER_MASTER  SALESPERSON_NAME    H35        "
+    FIELD_2$="AR_SLS_MASTER       "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_SLS_MASTER*      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002002"
+    FIELD_1$="001SAMPLE-40           002002AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+    FIELD_3$="AR_CUST_STATS_SALES AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002014"
+    FIELD_1$="001SAMPLE-40           002014AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+    FIELD_3$="AR_CUST_STATS_SALES AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002051"
+    FIELD_1$="001SAMPLE-40           002051AR_CUSTOMER_MASTER  YEAR                 04        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002057"
+    FIELD_1$="001SAMPLE-40           002057AR_CUSTOMER_MASTER  QTR_1_TOTAL         T08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002070"
+    FIELD_1$="001SAMPLE-40           002070AR_CUSTOMER_MASTER  QTR_2_TOTAL         T08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002083"
+    FIELD_1$="001SAMPLE-40           002083AR_CUSTOMER_MASTER  QTR_3_TOTAL         T08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002092"
+    FIELD_1$="001SAMPLE-40           002092AR_CUSTOMER_MASTER  QTR_4_TOTAL         T08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002101"
+    FIELD_1$="001SAMPLE-40           002101AR_CUSTOMER_MASTER  YEAR_TOTAL          T08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-40           002110"
+    FIELD_1$="001SAMPLE-40           002110AR_CUSTOMER_MASTER  YEAR_TOTAL          P08        "
+    FIELD_2$="AR_CUST_STATS_SALES "
+    FIELD_3$="AR_CUSTOMER_MASTER  AR_CUST_STATS_SALES*"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           001001"
+    FIELD_1$="001SAMPLE-50           001001FM_CUST_JOB_MASTER  SALESPERSON_CODE    H04        "
+    FIELD_2$="AR_CUSTOMER_MASTER  "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           001006"
+    FIELD_1$="001SAMPLE-50           001006FM_CUST_JOB_MASTER  SALESPERSON_NAME    H35        "
+    FIELD_2$="AR_CUSTOMER_MASTER  AR_SLS_MASTER       "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           001060"
+    FIELD_1$="001SAMPLE-50           001060FM_CUST_JOB_MASTER  CUSTOMER_CODE       H12        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           001073"
+    FIELD_1$="001SAMPLE-50           001073FM_CUST_JOB_MASTER  CUSTOMER_NAME       H35        "
+    FIELD_2$="AR_CUSTOMER_MASTER  "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           003001"
+    FIELD_1$="001SAMPLE-50           003001FM_CUST_JOB_MASTER  FORM_CODE            10        "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           003012"
+    FIELD_1$="001SAMPLE-50           003012FM_CUST_JOB_MASTER  DESCRIPTION          43        "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001SAMPLE-50           003056"
+    FIELD_1$="001SAMPLE-50           003056FM_CUST_JOB_MASTER  DATE_LAST_ORDERED    10        "
+    FIELD_3$="FM_CUST_JOB_MASTER  AR_CUSTOMER_MASTER* "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         001016"
+    FIELD_1$="001TIME REPORT         001016TK_LOG              EMPLOYEE_CODE        10                                  Employee Code                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         001027"
+    FIELD_1$="001TIME REPORT         001027TK_LOG              AMOUNT              T14                                  Amount                                                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         001042"
+    FIELD_1$="001TIME REPORT         001042TK_LOG              CLIENT_CODE          12                                  Client Code                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         001055"
+    FIELD_1$="001TIME REPORT         001055TK_LOG              HOURS               T07                              0320Hours                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="001TIME REPORT         001063"
+    FIELD_1$="001TIME REPORT         001063TK_LOG              LOG_DATE             12                                  Log Date                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001001"
+    FIELD_1$="002SAMPLE-80           001001AR_CUSTOMER_MASTER  CUSTOMER_CODE        10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001012"
+    FIELD_1$="002SAMPLE-80           001012AR_CUSTOMER_MASTER  CUSTOMER_NAME        35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001048"
+    FIELD_1$="002SAMPLE-80           001048AR_CUSTOMER_MASTER  ADDRESS_LINE_#1      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001079"
+    FIELD_1$="002SAMPLE-80           001079AR_CUSTOMER_MASTER  ADDRESS_LINE_#2      30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001110"
+    FIELD_1$="002SAMPLE-80           001110AR_CUSTOMER_MASTER  CITY_STATE_ZIP       35        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001146"
+    FIELD_1$="002SAMPLE-80           001146AR_CUSTOMER_MASTER  PHONE                24        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001171"
+    FIELD_1$="002SAMPLE-80           001171AR_CUSTOMER_MASTER  CREDIT_CONTACT       20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="002SAMPLE-80           001192"
+    FIELD_1$="002SAMPLE-80           001192AR_CUSTOMER_MASTER  HIGH_CREDIT          11        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPAST DUE CUSTOMERS  001002"
+    FIELD_1$="A/RPAST DUE CUSTOMERS  001002CUSTOMER.MASTER     CUSTOMER_CODE        09        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPAST DUE CUSTOMERS  001013"
+    FIELD_1$="A/RPAST DUE CUSTOMERS  001013CUSTOMER.MASTER     SALESPERSON          03        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RPAST DUE CUSTOMERS  001018"
+    FIELD_1$="A/RPAST DUE CUSTOMERS  001018CUSTOMER.MASTER     SALESPERSON_NAME     30        "
+    FIELD_2$="SALESPERSON.MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES CUST LIST     001002"
+    FIELD_1$="A/RSALES CUST LIST     001002CUSTOMER.MASTER     CUSTOMER_CODE        09        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES CUST LIST     001013"
+    FIELD_1$="A/RSALES CUST LIST     001013CUSTOMER.MASTER     CUSTOMER_NAME        30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES CUST LIST     001045"
+    FIELD_1$="A/RSALES CUST LIST     001045CUSTOMER.MASTER     ADDRESS_LINE_1       30        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES CUST LIST     001077"
+    FIELD_1$="A/RSALES CUST LIST     001077CUSTOMER.MASTER     ZIP_CODE             10        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="A/RSALES CUST LIST     002013"
+    FIELD_1$="A/RSALES CUST LIST     002013CUSTOMER.MASTER     SALESPERSON_NAME     30       A"
+    FIELD_2$="SALESPERSON.MASTER  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001002"
+    FIELD_1$="JSCHOT PROSPECTS       001002PROSPECT            PROSPECT_CODE        06        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001010"
+    FIELD_1$="JSCHOT PROSPECTS       001010PROSPECT            COMPANY_NAME         40        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001052"
+    FIELD_1$="JSCHOT PROSPECTS       001052PROSPECT            CONTACT              20        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001074"
+    FIELD_1$="JSCHOT PROSPECTS       001074PROSPECT            BAROMETER            01        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001077"
+    FIELD_1$="JSCHOT PROSPECTS       001077PROSPECT            FOLLOW_UP_DATE       06        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JSCHOT PROSPECTS       001085"
+    FIELD_1$="JSCHOT PROSPECTS       001085PROSPECT            FOLLOW_UP_COMNT      40        "
+   </RecordData>
+
+</Data>
+
+</PxTable>

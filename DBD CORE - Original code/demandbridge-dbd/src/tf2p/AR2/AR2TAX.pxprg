@@ -1,0 +1,149 @@
+0010 REM "Sales Tax Conversion <AR2TAX> for Client 288
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 02/19/02 - 11.449166 - dmm - SSP# 146151
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2CNV",X1$="Sales Tax Conversion",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0125 V8$="000811152999"
+0130 K0=20,K1=1
+0135 C9=-1
+0140 M0$="###,###,##0",M2$="###,##0"
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0305 DIM BLANK$(80," ")
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27],B[28],B[29],B[30],B[31],B[32],B[33],B[34],B[35],B[36],B[37],B[38],B[39],B[40]
+0325 IOLIST TAX_CODE$,TC[0],TC[1],TC[2],TC[3]
+0370 IOLIST SHIP_TO$
+0400 IOLIST CUST$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O AR5...  03O FM0...  04O STAX.TXT  10O AR1...  13O ZZPARM  "
+0511 REM "LET Z$="01X KT0...  02O IC0...  03O FM0...  04O KT3...  10O AR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 CLOSE (Z[4]); OPEN LOCK (Z[4],OPT="TEXT")"STAX.TXT"; REM "Close and reopen as text file
+0550 REM "FIND (Z[13],KEY=X3$(9,3)+"KIT") P1$
+0560 FIND (Z[13],KEY=X3$(9,3)+"I/C")P0$
+0600 REM "
+0615 DIM M5[1]; M5$="###,###.00 ",M5[0]=621,M5[1]=2; IF P0$(45,1)>"2" THEN DIM M5$(11,"0"); M5[1]=NUM(P0$(45,1)),M5$(1,10-M5[1])="##########",M5$(POS("0"=M5$),1)=".",M5[0]=(10-M5[1])*100+M5[1]*10
+0620 V1=2
+1000 REM "
+1010 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1070 GOSUB 6000
+1080 GOSUB 8100
+1095 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 1096,9900
+1100 REM "Process the STAX.TXT file
+1105 I9=0,L0=25,I9$="",SKIP_SHIP_TO$="",END_MESSAGE$=FN%CDS$+", Starting Tax Conversion program AR2TAX"; GOSUB 8000
+1110 READ (Z[4],END=7900)STAX$
+1120 I9=I9+1; IF MOD(I9,T0)=1 THEN GOSUB 8150
+1121 DIM C[15],TC[3]
+1140 IF LEN(STAX$)<L0 THEN I9$=STAX$; DIM STAX$(L0); STAX$(1)=I9$,REASON$="Record is short"; GOSUB BAD_RECORD; GOTO 1110
+1200 REM "Validate Customer Code to AR1
+1220 FIND (Z[10],KEY=STAX$(1,10),DOM=1221)IOL=0400; GOTO 1226
+1224 REASON$="Customer code not found in AR1"; GOSUB BAD_RECORD; GOTO 1110
+1250 REM "Validate Sales Tax Code
+1270 READ (Z[2],KEY=STAX$(15,10),DOM=1271)IOL=0325; GOTO 1275
+1271 REASON$="Sales Tax Code not found in AR5"; GOSUB BAD_RECORD; GOTO 1110
+1300 REM "Validate Location/Ship To
+1310 IF STAX$(11,4)="    " THEN SKIP_SHIP_TO$="Y"; GOTO 1322
+1320 READ (Z[3],KEY="C"+STAX$(1,10)+STAX$(11,4),DOM=1321)IOL=0370; GOTO 1325
+1321 REASON$="Location/ship-to not valid"; GOSUB BAD_RECORD; GOTO 1110
+1350 REM "Validate that Tax Exempt flag is Y or N
+1360 IF POS(STAX$(25,1)="YyNnSs")=0 THEN REASON$="Invalid Tax Exempt Status Flag"; GOSUB BAD_RECORD; GOTO 1110
+1800 REM "Set key and read for existing customer record, if found do extract then write, otherwise just write it
+1820 READ (Z[10],KEY=STAX$(1,10))
+1821 IF SKIP_SHIP_TO$="Y" THEN GOTO 1830
+1825 READ (Z[3],KEY="C"+STAX$(1,14))
+1830 UPDATE_COUNT=UPDATE_COUNT+1
+1850 REM "MODIFY
+1851 IF SKIP_SHIP_TO$<>"Y" THEN GOTO 1872
+1855 EXTRACT (Z[10],KEY=STAX$(1,10))IOL=0400
+1860 CUST$(235,11)=STAX$(15,11)
+1870 WRITE (Z[10],KEY=CUST$(1,10))IOL=0400
+1872 IF SKIP_SHIP_TO$="Y" THEN GOTO 2000
+1875 EXTRACT (Z[3],KEY="C"+STAX$(1,14))IOL=0370
+1880 SHIP_TO$(224,10)=STAX$(15,10); SHIP_TO$(283,1)=STAX$(25,1)
+1885 WRITE (Z[3],KEY=SHIP_TO$(1,15))IOL=0370
+2000 GOTO 1110
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6006)'SB',
+6070 PRINT @(0,3),"The Sales Tax Conversion program will read the STAX.TXT file located in the"+'LF'+"TopForm data directory and after validating the data will update existing"+'LF'+"Customer Master records (AR1 file) or Location/Ship-To records (FM0)."+'LF'+'LF'+"If any records are not processed, the reason will be written to the"+'LF'+" "+HWD+DLM+"TAX_LOG file."+'LF'+'LF'+"When processing is complete, the STAX.TXT file will be renamed STAX_OLD.TXT."+'LF'+'LF'+"Record counts will be written to the TAX_LOG file."+'LF'+"This file should be checked for errors. ",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7800 BAD_RECORD:REM "Write message to GPC_LOG, couldn't process this record
+7805 BAD_REC_COUNT=BAD_REC_COUNT+1
+7810 MESSAGE$="Bad record, Reason: "+REASON$
+7820 BAD_REC$="Record: "+STAX$
+7830 SYS_CALL$="echo "+QUO+MESSAGE$+QUO+" >> "+HWD+DLM+"TAX_LOG"
+7835 INVOKE SYS_CALL$
+7840 SYS_CALL$="echo "+QUO+BAD_REC$+QUO+" >> "+HWD+DLM+"TAX_LOG"
+7845 INVOKE SYS_CALL$
+7890 BAD_RECORD_END:RETURN 
+7900 REM "Close and rename STAX file and write counts to log file
+7910 CLOSE (Z[4])
+7915 ERASE "STAX_OLD.TXT",ERR=7916; GOTO 7915
+7920 RENAME 0,"STAX.TXT","STAX_OLD.TXT"
+7930 END_MESSAGE$=FN%CDS$+", "+STR(I9:"0000")+" records read from the STAX file"
+7935 GOSUB 8000
+7945 IF UPDATE_COUNT<>0 THEN END_MESSAGE$=STR(UPDATE_COUNT:"0000")+" STAX records were updated"; GOSUB 8000
+7950 IF BAD_REC_COUNT<>0 THEN END_MESSAGE$=STR(BAD_REC_COUNT:"0000")+" records were not processed"; GOSUB 8000
+7980 PRINT @(0,15),'CE',
+7985 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+7990 GOTO 9900
+8000 REM "Write out to TAX Log
+8020 SYS_CALL$="echo "+QUO+END_MESSAGE$+QUO+" >> "+HWD+DLM+"TAX_LOG"
+8030 INVOKE SYS_CALL$
+8040 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8105 REM "CALL "ZZINFO",Z[4],T9,X3$,T,T0,K,B,D,S0,S1,F2$
+8106 REM "LET T=T0
+8107 T=0
+8110 ! CLOSE (14); OPEN (14)"D0"
+8111 ! DIR_PATH$=FID(14); DIR_PATH$=DIR_PATH$(4,6)+STP(DIR_PATH$(21),1)
+8112 FULL_PATH$=%DATAPATH$+"/STAX.TXT" ! FULL_PATH$=DIR_PATH$+"/STAX"
+8113 ! CLOSE (14); OPEN (14,OPT="SHELL")"cat "+FULL_PATH$+" | wc -l"; READ (14)NUM_REC$
+8114 CALL "ZZ2FNC;SERIALRECCNT",Z[4],T ! T=NUM(NUM_REC$,ERR=8130)
+8115 PRINT @(0,12),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

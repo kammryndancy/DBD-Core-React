@@ -1,0 +1,209 @@
+0010 REM "merging utility for indexed files <UT2MRI>
+0020 SETESC 0000; SETERR 0000
+0035 REM "4.5 - 02/19/01 - 9.8 - pet - SSP# 122512
+0040 REM "Copyright 2000 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2MRI",X1$="Index File Merging Utility"
+0120 DIM Z0$(80,"-")
+0135 C9=-1,C1=0,C2=0,C3=0,C4=0
+0199 REM ******************************************************************
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0250 DIM Y[4],A[27],B[11]
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM ******************************************************************
+0302 REM 310=AR6  311=AR8  312=API  313=APQ  314=APN
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14]
+0311 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6]
+0312 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27]
+0313 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27]
+0314 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7]
+0318 REM 320=ARO  321=AR7  322=APJ  323=APK  324=APO
+0320 IOLIST B0,B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11]
+0321 IOLIST B0,B$,B[0],B[1]
+0322 IOLIST B0,B$,B[0]
+0323 IOLIST B0,B$,B[0],B[1]
+0324 IOLIST B0,B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7]
+0399 REM ******************************************************************
+0400 REM "Prompt for company
+0401 GOSUB 6000
+0405 DIM FILENAME$[6](8),RECCNT[6],T[27]
+0407 FOR XX=1 TO 30; CLOSE (XX); NEXT XX; CLOSE (32000)
+0410 REM 
+0442 X$="Enter the file name to merge"
+0448 XX$="        ",C0=0,X0=0,X1=1
+0449 SETERR 9000; X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>1 THEN X0=MAX(1,X0-2)
+0450 IF X0>6 THEN GOTO 0495
+0451 IF X0=5 THEN IF POS(FILENAME$[1](1,3)="APNAR8",3)<>0 THEN GOTO 0495; REM "APN and AR8 only have one index, so skip entry of second one.
+0452 XX$=FILENAME$[X0]; REM "Default to prior entry (if there has been one)
+0455 CALL "ZZENTR","SUX",A{ALL},XX$,X4$,X3$,30,X0+9,1,8,C0,"","{3"+X$,"","","","",""; IF ABS(C0)>6 THEN GOTO 0442
+0456 IF ABS(C0)=4 THEN GOTO 9900; REM "If <F4> pressed then exit program
+0458 IF ABS(C0)=2 THEN GOTO 0449; REM "If back arrow pressed restart at previous field
+0459 IF STP(XX$,3)="" AND X0<>5 THEN GOTO 0455; REM "If no entry and default empty then wait here
+0462 FOR XX=1 TO 6; IF XX<>X0 AND STP(FILENAME$[XX],3)<>"" AND STP(XX$,3)=STP(FILENAME$[XX],3) THEN EXITTO 0455 END_IF ; NEXT XX
+0465 CHAN=X0
+0470 CLOSE (CHAN); OPEN (CHAN,ERR=0452)XX$
+0472 FILENAME$[CHAN]=XX$,XX$="        "
+0474 GOSUB 7600
+0476 RECCNT[CHAN]=NUMRECS
+0480 PRINT @(0,X0+9),@(40,X0+9)," recs: ",STR(RECCNT[CHAN]:"##,###,###"),
+0490 GOTO 0449
+0495 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Does this look correct?","","",0; ON Z GOTO 0500,0496
+0496 X0=0; GOTO 0449
+0599 REM ******************************************************************
+0600 REM "Ready, Set, .....
+0610 HEAD_FILE$=FILENAME$[1](1,3)
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0990 C1=0; PRINT @(10,18),"Merging file(s)...",; REM "Go!!!
+0999 REM ******************************************************************
+1000 REM "Process file
+1010 K$=KEY(1,END=2000)
+1012 IF HEAD_FILE$="AR6" THEN READ (1,KEY=K$)IOL=0310
+1014 IF HEAD_FILE$="AR8" THEN READ (1,KEY=K$)IOL=0311
+1016 IF HEAD_FILE$="API" THEN READ (1,KEY=K$)IOL=0312
+1017 IF HEAD_FILE$="APQ" THEN READ (1,KEY=K$)IOL=0313
+1018 IF HEAD_FILE$="APN" THEN READ (1,KEY=K$)IOL=0314
+1020 C1=C1+1; IF MOD(C1,50)=0 THEN PRINT @(30,18),"Records processed: ",C1,"  ",C2,"  ",C3,"  ",C4,"         "
+1040 IF POS(HEAD_FILE$="AR6 API APQ ",4)>0 THEN TODO=2 ELSE TODO=1
+1045 FOR INDEX=0 TO TODO-1
+1050 IF INDEX=0 THEN INDIN=2,INDOUT=4 ELSE INDIN=5,INDOUT=6
+1052 DETAIL_FILE$=FILENAME$[INDIN](1,3)
+1054 B0=A[INDEX]; REM PRINT "Starting index pointer is: ",B0,"  ",DETAIL_FILE$
+1060 IF B0>0 THEN C2=C2+1 ELSE SAV_PTR=0; GOTO 1120
+1110 GOSUB 1500
+1115 IF C3<>C4 THEN ESCAPE 
+1120 A[INDEX]=SAV_PTR; REM PRINT "New index pointer is: ",SAV_PTR,"  ",DETAIL_FILE$
+1125 NEXT INDEX
+1130 IF HEAD_FILE$="AR6" THEN WRITE (3,KEY=K$)IOL=0310
+1132 IF HEAD_FILE$="AR8" THEN WRITE (3,KEY=K$)IOL=0311
+1134 IF HEAD_FILE$="API" THEN WRITE (3,KEY=K$)IOL=0312
+1136 IF HEAD_FILE$="APQ" THEN WRITE (3,KEY=K$)IOL=0313
+1138 IF HEAD_FILE$="APN" THEN WRITE (3,KEY=K$)IOL=0314
+1150 GOTO 1000
+1499 REM *****************************************************************
+1500 REM "Process detail records for a header record
+1502 REM "New Master Record
+1505 REM ****************************************
+1507 REM "Initialize Storage Area
+1520 INDEX_REC_CNT=0,CMD$="I",D_KSIZ=3,K1$="",B$="",T$="",RC=0; DIM T2$[1],T[1],T3$[1]
+1530 CALL "ZZRCAP",X3$,X4$,CMD$,D_KSIZ,0,K1$,B$,B{ALL},T$,T2${ALL},T{ALL},T3${ALL},RC
+1540 DETAIL_FILE$=FILENAME$[INDIN](1,3)
+1599 REM ******************************
+1600 REM "Store detail records
+1605 INDEX_REC_CNT=0,SAV_PTR=0
+1608 IF INT(B0)<>B0 THEN ESCAPE ; RETURN 
+1610 IF DETAIL_FILE$="ARO" THEN READ (INDIN,IND=B0)IOL=0320
+1612 IF DETAIL_FILE$="AR7" THEN READ (INDIN,IND=B0)IOL=0321
+1614 IF DETAIL_FILE$="APJ" THEN READ (INDIN,IND=B0)IOL=0322; B$(1,10)=A$(1,10)
+1616 IF DETAIL_FILE$="APK" THEN READ (INDIN,IND=B0)IOL=0323; B$(1,10)=A$(1,10)
+1618 IF DETAIL_FILE$="APO" THEN READ (INDIN,IND=B0)IOL=0324
+1630 REM INPUT Z$; IF Z$<>"" THEN ESCAPE
+1635 C3=C3+1,INDEX_REC_CNT=INDEX_REC_CNT+1,K1$=STR(INDEX_REC_CNT:"000"),CMD$="P"
+1637 REM T B$(1,10)=A$(1,10)
+1640 CALL "ZZRCAP",X3$,X4$,CMD$,D_KSIZ,0,K1$,B$,B{ALL},T$,T2${ALL},T{ALL},T3${ALL},RC
+1660 IF B0<1 THEN GOTO 1700
+1670 GOTO 1610
+1700 REM ****************************************************************
+1710 REM "Transfer stored records to target file
+1720 REM "Retrieve detail records in REVERSE order
+1735 SAVE_PTR=0
+1740 CMD$="R,"+STR(INDEX_REC_CNT-1),RC=0
+1745 IF INDEX_REC_CNT<1 THEN GOTO 1795
+1750 CALL "ZZRCAP",X3$,X4$,CMD$,D_KSIZ,0,K1$,B$,B{ALL},T$,T2${ALL},T{ALL},T3${ALL},RC
+1751 IF RC<>0 THEN ESCAPE 
+1752 REM ** ESCAPE
+1755 REM "Allocate record slot
+1760 F=INDOUT,A9=0; GOSUB 5200; B0=SAV_PTR
+1764 IF DETAIL_FILE$="ARO" THEN WRITE (INDOUT,IND=A9)IOL=0320
+1766 IF DETAIL_FILE$="AR7" THEN WRITE (INDOUT,IND=A9)IOL=0321
+1768 IF DETAIL_FILE$="APJ" THEN WRITE (INDOUT,IND=A9)IOL=0322
+1770 IF DETAIL_FILE$="APK" THEN WRITE (INDOUT,IND=A9)IOL=0323
+1772 IF DETAIL_FILE$="APO" THEN WRITE (INDOUT,IND=A9)IOL=0324
+1780 C4=C4+1,SAV_PTR=A9,INDEX_REC_CNT=INDEX_REC_CNT-1; GOTO 1740
+1795 RETURN 
+1999 REM ******************************************************************
+2000 REM "End of job
+2100 PRINT @(24,19),"Final records processed: ",C1,"  ",C2,"  ",C3,"  ",C4,"       "
+2200 END 
+2310 RESET 
+2320 BEGIN 
+2330 GOTO 0001; REM TEST CODE <<<<<<<<
+2990 GOTO 9900
+3999 REM ******************************************************************
+4900 REM "END OF LINES
+4920 CALL "ZZEXPF",X3$,X4$,"X"+STR(F),"",G9; IF G9>0 THEN GOTO 9800
+4930 CALL "ZZINFO",F,X0,X3$,0,Z,0,0,0,0,0,""; Y[3]=Z-1
+4940 GOTO 5215
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+5200 REM "GET NEXT INDEX TO FILE IN A9
+5210 EXTRACT (F,IND=0,ERR=5295)IOL=0290
+5212 IF Y[4]=-2 THEN READ (F); GOTO 5270
+5215 IF Y[0]>=Y[3] OR Y[2]>=Y[3] THEN GOTO 4900 ELSE Y[4]=-2
+5220 WRITE (F,IND=0)IOL=0290
+5230 IF Y[1]<1 THEN A9=Y[2],Y[2]=Y[2]+1 ELSE A9=Y[1]; READ (F,IND=A9)Y[1]
+5240 Y[0]=Y[0]+1,Y[4]=-1
+5250 WRITE (F,IND=0)IOL=0290
+5260 RETURN 
+5270 LOCK (F,ERR=5210); Y[4]=-1; GOTO 5215
+5290 RETURN 
+5295 IF ERR<>0 THEN GOTO 9000 ELSE RETRY 
+5999 REM ******************************************************************
+6000 REM "BACKGROUND
+6010 PRINT @(0,3),"This program will merge two sets of DIRECT files with IN"+"DEXED transactions",@(0,4),"Specify the DIRECT file first followed by"+" the INDEXED file",@(0,5),"The files being merged MUST NOT BE IN USE "+"during this process.",
+6020 PRINT @(8,10),"Source Direct file:",@(7,11),"Source Indexed file:",@(8,12),"Target Direct file:",@(7,13),"Target Indexed file:"
+6030 PRINT @(4,14),"Source Indexed file #2:",@(4,15),"Target Indexed file #2:"
+6190 RETURN 
+7600 REM "Get the number of recrods out of the channel provided
+7610 CALL "ZZINFO",CHAN,0,X3$,NUMRECS,0,0,0,0,0,0,""
+7620 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set a"+"nd before the Proceed? question. Set T to total # to do (by calli"+"ng ZZINFO) and T0 to the reporting interval (report every T0 numb"+"er of records) this is typically 2% of total; This also prints a "+"message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",1,T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look "+"for avalue of 1. IF T0 is 1, then nothing would get reported. We "+"look for a result of 1 because this causes the first record to au"+"tomatically start the reporting instead of waiting until the T0't"+"h record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar g"+"raph given total #, T and current #, C, and time counter T1 (T1 i"+"s init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8899 REM ******************************************************************
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9099 REM ******************************************************************
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9299 REM ******************************************************************
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9499 REM ******************************************************************
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9899 REM ******************************************************************
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

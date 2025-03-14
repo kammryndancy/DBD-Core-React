@@ -1,0 +1,73 @@
+0010 REM "Import Write Method - AP GATEWAY-COMBINE LINES <IM2W08>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 12/12/18 - 9.444722 - dmm - SSP# 295922
+0037 REM "295922-Import Module support for Accts Payable Gateway             
+0040 REM "Copyright 2018 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "COMMAND$ -> O+filename=open file, C=close file, W=Write record, ?=who am I description
+0081 REM "OPTION$ -> Options, if needed
+0082 REM "RECORD$ -> data to write out to file
+0083 REM "RETURN_CODE -> 0=ok, -1=end of file, else error code
+0084 REM "INTERNAL_USE -> Array of values used by this program from invocation to invocation, must be preserved by calling program
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,COMMAND$,OPTION$,RECORD$,RETURN_CODE,INTERNAL_USE${ALL}
+0100 SETERR 9000
+0110 X0$="IM2W08",X1$="Import Write Method - AP Gateway-Combine Lines"
+0200 REM "Initialization
+0205 RETURN_CODE=0
+0210 IF FN%NEA("INTERNAL_USE$",0)=0 THEN DIM INTERNAL_USE$[10]
+0211 REM "INTERNAL_USE$[1]=Filename we are using
+0212 REM "INTERNAL_USE$[2]=Current GAP header & lines list
+0400 REM "Command Director
+0405 IF COMMAND$="" THEN GOTO 9900
+0410 ON POS(COMMAND$(1,1)="OCW?") GOTO 9900,OPEN_FILE,CLOSE_FILE,WRITE_RECORD,WHO_AM_I,9900
+0600 WHO_AM_I:REM "Return in Record$ a description of this method
+0610 RECORD$="Write text, but combine into 1 record with many lines, for AP Gateway"
+0695 WHO_AM_I_END:GOTO 9900
+0700 OPEN_FILE:REM "open filename that is COMMAND$(2). Check for exists first.
+0701 REM "Always create as text file,store filename in INTERNAL_USE$[1]
+0702 REM "Hardcoded to use file channel 32502
+0705 INTERNAL_USE$[1]=COMMAND$(2)
+0707 ERASE COMMAND$(2),ERR=0708; GOTO 0707
+0708 SERIAL COMMAND$(2),0,0
+0710 CLOSE (32502); OPEN LOCK (32502,OPT="TEXT",ERR=0711)INTERNAL_USE$[1]; GOTO 0715
+0711 RETURN_CODE=ERR; GOTO 9900
+0795 OPEN_FILE_END:GOTO 9900
+0800 WRITE_RECORD:REM "Write a record, err goes into return code
+0801 REM "store a record header INTERNAL_USE$[2], but don't write out yet, if the next line matches the header part (positions 1,284) then just add the lines part (RECORD$(285,24)) to INTERNAL_USE$[2]. If the header is different, then write out INTERNAL_USE$[2], and store RECORD$ into it. The close_file is responsible for flushing the final one to the output.
+0815 IF INTERNAL_USE$[2]="" THEN INTERNAL_USE$[2]=RECORD$; GOTO 0895
+0820 IF RECORD$(1,284)=INTERNAL_USE$[2](1,284) THEN INTERNAL_USE$[2]=INTERNAL_USE$[2]+RECORD$(285) ELSE PRINT (32502)INTERNAL_USE$[2]; INTERNAL_USE$[2]=RECORD$
+0895 WRITE_RECORD_END:GOTO 9900
+0900 CLOSE_FILE:REM "Finish processing & close file
+0910 IF INTERNAL_USE$[2]<>"" THEN PRINT (32502)INTERNAL_USE$[2]; REM "Flush pending req to disk
+0950 CLOSE (32502)
+0995 CLOSE_FILE_END:GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "295922-Import Module support for Accts Payable Gateway             

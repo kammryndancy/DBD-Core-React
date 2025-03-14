@@ -1,0 +1,106 @@
+0010 ! HTML - Generic fixed font HTML driver
+0020 IF MNM('F#',LFO)<>"" THEN EXIT 
+0030 F_TRUE=LFO
+0035 REM "5.1 - 12/03/02 - 19.9525 - kmc - SSP# 156023
+0040 F$=FNOPT$("FILE=","")
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF NUL(F$) THEN GET_FILE_BOX WRITE F$,"","Html output file","Html Files (*.htm *.html)|*.htm;*.html,All files|*.*,","htm"
+0060 IF F$="" THEN EXIT 12
+0070 ERASE F$,ERR=*NEXT
+0080 SERIAL F$
+0090 F=HFN
+0100 OPEN PURGE (F,BSZ=5000)F$
+0110 MNEMONIC (F_TRUE)'F#'=STR(F)
+0120 MNEMONIC (F_TRUE)'P#'="0"
+0130 SETDEV (F_TRUE) PROGRAM PGN
+0140 END 
+1000 ! 1000 - Pre write logic
+1010 PRE_WRITE:
+1020 LOCAL FC,KY$,RN,RC$,O,RC_OT$,F,F_TRUE,EOF_FLG
+1030 ENTER FC,KY$,RN,RC$
+1040 F_TRUE=LFA
+1050 F=NUM(MNM('F#',LFA))
+1060 PGNO=NUM(MNM('P#',LFA)) ! Get current page #
+1070 ! 
+1080 GOSUB DOC_HEADER
+1090 ! 
+1100 OUT_LOOP:
+1110 ! IF RC$="" THEN RETURN 0
+1120 GOSUB PAGE_HEADER
+1130 TRANSLATE RC$,$2001A0$+$0D04$+"    "+$0A00$
+1140 O=POS($0C$=RC$); IF O=0 THEN PRINT (F)RC$+"    "; RETURN 0
+1150 IF O>1 THEN PRINT (F)RC$(1,O-1)+"    "
+1160 RC$=RC$(O+1)
+1170 MNEMONIC (F_TRUE)'T#'=""
+1180 GOTO OUT_LOOP
+2000 ! 2000 - Close logic
+2010 PRE_CLOSE:
+2020 LOCAL F,F_TRUE,EOF_FLG,P$
+2030 F_TRUE=LFA
+2040 F=NUM(MNM('F#',F_TRUE))
+2050 IF F=0 THEN EXIT 
+2060 GOSUB DOC_HEADER
+2070 EOF_FLG=1
+2080 GOSUB PAGE_HEADER
+2090 MNEMONIC (F_TRUE)'F#'="0"
+2100 PRINT (F)"</body><html>"
+2110 P$=SUB(PTH(F),"[WDX]","")
+2120 CLOSE (F)
+2130 IF FNOPT$("SHOW","NO")<>"NO" THEN SYSTEM_HELP P$
+2140 EXIT 
+3000 ! ^1000 - Document header
+3010 ! 
+3020 DOC_HEADER:
+3030 IF MNM('H#',F_TRUE)<>"" THEN RETURN 
+3040 PRINT (F)"<html>"
+3050 ! 
+3060 PRINT (F)"<head>"
+3070 PRINT (F)"<meta http-equiv=""Content-type"""
+3080 PRINT (F)"content=""text/html; charset=iso-8859-1"">"
+3090 LOCAL X$; X$=STK(-1); X$=X$(POS("\/":"\"+X$,-1))
+3100 PRINT (F)"<title>"+FNOPT$("TITLE=","Report from "+X$)+"</title>"
+3110 PRINT (F)"</head>"
+3120 ! 
+3130 PRINT (F)"<body bgcolor=""#"+FNOPT$("BACK=","FFFFFF")+""" text=""#"+FNOPT$("TEXT=","000000")+""">"
+3140 PRINT (F)"<a name=""page1""></a>"
+3150 PRINT (F)"<font face="""+FNOPT$("FONT=","Courier")+QUO+">"
+3160 MNEMONIC (F_TRUE)'H#'="done"
+3170 RETURN 
+4000 ! ^1000 - Pageheader
+4010 ! 
+4020 PAGE_HEADER:
+4030 LOCAL PGNO
+4040 IF EOF_FLG=0 AND MNM('T#',F_TRUE)<>"" THEN RETURN 
+4050 PGNO=NUM(MNM('P#',F_TRUE))
+4060 IF PGNO>0 THEN PRINT (F)"</pre><hr>"
+4070 PGNO++
+4080 MNEMONIC (F_TRUE)'P#'=STR(PGNO)
+4090 ! 
+4100 PRINT (F)"<font face=""Verdana"">"+"<strong>"
+4110 PRINT (F)"<a name=""page"+STR(PGNO)+"""></a>"
+4120 IF EOF_FLG THEN PRINT (F)"<a name=""page999999""></a>"
+4130 IF EOF_FLG=0 THEN PRINT (F)"Page:"+STR(PGNO) ELSE PRINT (F)"End of report"
+4140 ! 
+4150 ! Next page jump 
+4160 ! 
+4170 IF EOF_FLG=0 THEN PRINT (F)"<a href=""#page"+STR(PGNO+1)+""">Next page</a>"
+4180 ! 
+4190 ! Prior Page jump
+4200 IF PGNO>1 THEN PRINT (F)$A0$+"<a href=""#page"+STR(PGNO-1)+""">Prior page</a>"
+4210 IF PGNO>2 THEN PRINT (F)$A0$+"<a href=""#page1"">First page</a>"
+4220 IF EOF_FLG=0 THEN PRINT (F)$A0$+"<a href=""#page999999"">Last page</a>"
+4230 PRINT (F)"<hr></strong></font>"
+4235 PRINT (F)"<pre>"
+4240 MNEMONIC (F_TRUE)'T#'="done"
+4250 RETURN 
+5000 ! 5000 - Get option
+5010 DEF FNOPT$(LOCAL O$, LOCAL D$)
+5020 LOCAL X$,O
+5030 X$=FIN(F_TRUE,"FILENAME"); O=POS(";"=X$); IF O=0 THEN X$="" ELSE X$=X$(O)
+5040 X$=X$+";"+OPT(F_TRUE)+";"
+5050 O=POS(";"+UCS(O$)=UCS(X$))
+5060 IF O=0 THEN RETURN D$
+5070 X$=X$(O+1+LEN(O$))
+5080 RETURN X$(1,POS(";"=X$)-1)
+5090 END DEF
+9999 END 

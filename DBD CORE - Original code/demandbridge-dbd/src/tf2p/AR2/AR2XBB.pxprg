@@ -1,0 +1,48 @@
+0010 REM "Invoice Update FS3 verification <AR2XBB>
+0035 REM "3.1.3 - 04/26/90 - 10.06
+0040 REM "Copyright 1990 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9900
+0110 ENTER X3$,X4$,X0
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5]
+0311 IOLIST A$,A[0],STR(A[1]),A[2],A[3],A[4],A[5]
+0320 IOLIST B$
+0500 REM "FILES
+0505 Z=NUM(X3$(60,3)); DIM Z[Z]
+0510 Z$="01O FS3...  02O ARB...  "
+0515 Z$=Z$+"13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 PRINT @(0,22),'CE',@(3,22),"Now checking:",
+1000 REM 
+1010 DIM A$(36),A[5]
+1020 K$=KEY(Z[1],END=9800); READ (Z[1],KEY=K$)IOL=0310
+1030 PRINT @(20,22),K$(1,8),"-",K$(9,8),"-",K$(17,4),
+1060 FIND (Z[2],DOM=2000,KEY=A$(31,6)+A$(1,8))IOL=0320
+1080 GOTO 1000
+2000 REM "No FY/AP - run thru ARB and try to find it.
+2020 READ (Z[2],KEY="",DOM=2021)
+2050 READ (Z[2],END=2200)IOL=0320
+2060 IF A$(1,8)<>B$(7,8) OR A$(9,8)<>B$(92,8) THEN GOTO 2050
+2070 EXTRACT (Z[1],KEY=K$)IOL=0310
+2080 A$(31,6)=B$(1,6)
+2090 WRITE (Z[1])IOL=0311
+2100 GOTO 1000
+2200 REM "No matching ARB record!
+2205 X$="FS3 record exist with no associated ARB record"
+2210 PRINT @(0,3),'CE',
+2220 PRINT @(0,8),"Update will not be initiated.  Please contact CSI Support.",
+2230 PRINT @(0,10),"Sorry for the inconvenience, but the potential exists for a Program Exception",'LF',"during a phase of the Invoice Update."
+2240 PRINT @(0,13),"FS3 (31,6)=",A$(31,6),"  Invoice#=",A$(1,8),"  Order#=",A$(9,8),
+2280 CALL "ZZPROM",".4",X3$,0,X$,"","",0
+2300 GOTO 9900
+9800 REM "Good EOJ
+9810 X0=0
+9820 READ (Z[2],KEY="",DOM=9821)
+9830 GOTO 9910
+9900 REM "END PROGRAM
+9905 X0=1
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 PRINT @(0,22),'CE',
+9930 EXIT 
+9999 END 

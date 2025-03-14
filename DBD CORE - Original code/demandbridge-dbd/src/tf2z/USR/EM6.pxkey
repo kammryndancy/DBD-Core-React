@@ -1,0 +1,144 @@
+<PxTable>
+ TableName=EM6
+ TableKey=K1049573023
+ FileCreate=KEYED "EM6",14,0,-256,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="EM6_Pos"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/EM6"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:41:50-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:42:36-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="Document code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST TF_LEVEL$:[LEN(1)]"
+    NAME$="TF_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"LEVEL"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="P"
+    NOTES$="Level"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST POSITION_NUM$:[LEN(3)]"
+    NAME$="POSITION_NUM"
+    DESCRIPTION$="=MSG("+QUO+"POSI_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Position number"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10,SEP=SEP)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Document code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_LEVEL$:[LEN(1,SEP=SEP)]"
+    NAME$="TF_LEVEL"
+    DESCRIPTION$="=MSG("+QUO+"LEVEL"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Level"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST POSITION_NUM$:[LEN(3,SEP=SEP)]"
+    NAME$="POSITION_NUM"
+    DESCRIPTION$="=MSG("+QUO+"POSI_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Position number"
+    KEYDEFINITION$="1:3:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST SEGMENT_ID$:[LEN(3,SEP=SEP)]"
+    NAME$="SEGMENT_ID"
+    DESCRIPTION$="=MSG("+QUO+"SEGMENT_ID"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Segment ID"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST TF_DESC$:[LEN(SEP,SIZ=40)]"
+    NAME$="TF_DESC"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="L"
+    NOTES$="Description"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="810       H020"
+    DOC_CODE$="810       "
+    TF_LEVEL$="H"
+    POSITION_NUM$="020"
+    SEGMENT_ID$="BIG"
+    TF_DESC$="Beginning segment for invoice           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="810       H070"
+    DOC_CODE$="810       "
+    TF_LEVEL$="H"
+    POSITION_NUM$="070"
+    SEGMENT_ID$="N1 "
+    TF_DESC$="Name                                    "
+   </RecordData>
+
+</Data>
+
+</PxTable>

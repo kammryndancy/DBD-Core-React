@@ -1,0 +1,63 @@
+0010 REM "<IM2P02> Post-process-GRS-Tully-Wihr
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.5 - 04/29/02 - 11.47 - dmm - SSP# 129993
+0040 REM "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "Done for WO129993, Tully-Wihr never implemented this WO as written, ended up still using an ftp server so transfers will still be needed in the original way.  See SSP145621.  Will put this program in release in case it's needed in the future.
+0070 REM "Post-process, will run after import processing
+0075 REM " Copied from IM2P00, WO129993
+0080 REM "OPTION$ -> IF ='?' THEN return WHO AM I ELSE Options if needed to control operation
+0081 REM "ORIGINAL$ -> Import code which contains alternate customer code for customer we are processing
+0082 REM "FORMATTED$ -> Won't return anything here
+0083 REM "RET_CODE -> 0=ok,1=not ok
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,OPTION$,ORIGINAL$,FORMATTED$,FORMAT_ARRAY${ALL},RET_CODE
+0100 SETERR 9000
+0110 X0$="IM2P02",X1$="Post-process-GRS-Tully-Wihr"
+0200 REM "Initialization
+0205 RET_CODE=0
+0400 REM "Where to go
+0405 IF OPTION$="?" THEN GOTO WHO_AM_I
+0500 REM "FILES
+0550 GOTO FORMAT_ORIGINAL
+0600 WHO_AM_I:REM "Return in FORMATTED$ a description of this method
+0605 REM "Description should be no longer than 28 for display purposes
+0610 FORMATTED$="Post-process-GRS-Tully-Wihr"
+0695 WHO_AM_I_END:GOTO 9900
+1000 FORMAT_ORIGINAL:REM " Perform all post-processing, if problems set RET_CODE to 1
+1005 ALT_CODE$=ORIGINAL$(5,6)
+1010 CALL "IM2F03",X3$,X4$,"",ALT_CODE$,CUST_CODE$,ARRAY${ALL},RETURN_CODE
+1012 FILE$=LCS(ALT_CODE$(1,1))+ALT_CODE$(3,2)
+1014 REM "Move processed files for this customer to archive directory
+1015 SYS_CALL$="mv /usr/lib/basic/occ_in/tw"+FILE$+"* /usr/lib/basic/occ_archive"
+1017 INVOKE SYS_CALL$
+1095 FORMAT_ORIGINAL_END:GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

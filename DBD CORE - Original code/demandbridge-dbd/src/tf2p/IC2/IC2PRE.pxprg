@@ -1,0 +1,14 @@
+0010 REM "Set Inventory Unit Price Prescision <IC2PRE>
+0035 REM "3.1.2 - 02/14/90 - 10.8
+0040 REM "Copyright 1990 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "M6$=mask to use, M6(0)=ZZENTR requirement, M6(1)=Precision
+0051 REM "M1$,M1,M2$,M2 not presently used
+0090 SETERR 9000
+0100 ENTER X3$,F,M6$,M6{ALL},M1$,M1,M2$,M2
+0630 FIND (F,KEY=X3$(9,3)+"I/C")P1$
+0640 DIM M6[1]; M6$="###,###.00 ",M6[0]=621,M6[1]=2; IF NUM(P1$(45,1))>2 THEN DIM M6$(11,"0"); M6[1]=NUM(P1$(45,1)),M6$(1,10-M6[1])="##########",M6$(POS("0"=M6$),1)=".",M6[0]=(10-M6[1])*100+M6[1]*10
+5000 GOTO 9900
+9000 EXIT ERR
+9900 EXIT 
+9999 END 

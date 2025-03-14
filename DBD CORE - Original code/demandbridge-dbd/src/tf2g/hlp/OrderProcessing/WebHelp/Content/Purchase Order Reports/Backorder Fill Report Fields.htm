@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="" MadCap:InPreviewMode="false" MadCap:PreloadImages="false" MadCap:RuntimeFileType="Topic" MadCap:TargetType="WebHelp" lang="en-us" xml:lang="en-us" class="" MadCap:PathToHelpSystem="../../" MadCap:HelpSystemFileName="Order_Processing.xml" MadCap:SearchType="Stem">
+    <!-- saved from url=(0016)http://localhost -->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>Backorder Fill Report Fields</title>
+        <link href="../SkinSupport/Slideshow.css" rel="stylesheet" />
+        <link href="../SkinSupport/MadCap.css" rel="stylesheet" />
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapAll.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapTopicAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p style="margin-right: 0px;margin-left: 0px;margin-top: 0.5em;margin-bottom: 0.5em;">&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic_24x17.gif" style="width: 24;height: 17;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-variant: small-caps;font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;">Backorder Fill Report Fields</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;margin-left: 0;margin-right: auto;">
+            <col style="width: 101px;" />
+            <col style="width: 548px;" />
+            <tbody>
+                <tr>
+                    <td style="font-size: 8pt;font-weight: bold;">Field</td>
+                    <td style="font-size: 8pt;font-weight: bold;">Description</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;vertical-align: top;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;">Print Receipt Detail?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Selecting "yes" causes the report to print the detail for what has been received into the warehouse.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;vertical-align: top;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;">Reprint Picking Slips?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Selecting "yes" triggers two events when you print the report and clear it: first, lots are committed to the orders that had been on backorder, and second, packing lists are reprinted for the orders that are being filled.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;vertical-align: top;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;">Create Records for CIG?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Setting this to "yes" causes Customer Invoicing Gateway records to be setup for the orders being filled.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;vertical-align: top;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;">Exclude Order lines that have lotted inventory assigned?</td>
+                    <td style="font-size: 8pt;text-align: justify;">Select Yes, No, or Print them and mark them with multiple asterisks.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;vertical-align: top;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;">Mark Suspended items and eliminate them from lot selection?</td>
+                    <td style="font-size: 8pt;text-align: justify;">This question centers on how the system should handle lines on orders that have inventory already committed awaiting invoicing.  These lines are flagged on the Back Order Fill Report with multiple asterisks (*****).  This may happen if the additional goods required to complete the order are received that same day (or at least prior to invoicing the partial shipment). Under these circumstances, additional procedures need to be followed to make certain the backordered quantity gets filled.                         
+                                                                                
+After printing the Back Order Fill Report, clear it.  The orders that can be filled at this time have pick tickets printed for them.  If your parameters are set up to auto-select the lots, the system does so after clearing the report, and the order line information is adjusted accordingly.     
+                                                                                
+Pick tickets are not printed for the lines marked with multiple asterisks.  A maintenance procedure needs to be in place to process the orders that are marked with multiple asterisks(*****).  You must  go to Order Entry for the backordered order number and modify the line to select the lots and reprint the packing list.  You should not try to make the additional selection of these items until the order has passed through billing. There is programming in place that prevents you from accessing an order where "Invoicing is in Progress."  Therefore, you should first update your Sales Journal, and then you should be able to call up these exception orders and select your lots.     
+</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007-2016 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

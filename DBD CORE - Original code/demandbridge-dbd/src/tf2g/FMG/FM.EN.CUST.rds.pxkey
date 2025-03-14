@@ -1,0 +1,147 @@
+<PxTable>
+ TableName=FM.EN.CUST.rds
+ TableKey=K1266598096
+ FileCreate=KEYED "FM.EN.CUST.rds",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20000"
+    FIELD_1$="FM1_Form"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="82"
+    FIELD_5$="31"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"ITEMS"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="="+QUO+"FM1"+QUO+"+%C$"
+    FIELD_18$="2010/12/08 12:21 lgs"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.ITEM_CODE$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20001"
+    FIELD_1$="ITEM_CODE"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20002"
+    FIELD_1$="ITEM_DESC"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ITEM_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20003"
+    FIELD_1$="LEFT_RIGHT"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LEFT_RIGHT"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="8"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20004"
+    FIELD_1$="TOP_BOTTOM"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TOP_BOTTOM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="8"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20005"
+    FIELD_1$="PLYS"
+    FIELD_4$="3"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PLYS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20006"
+    FIELD_1$="PROD_CODE"
+    FIELD_4$="4"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20007"
+    FIELD_1$="ACTIVE_STATUS"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"ACTI_S"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20008"
+    FIELD_1$="PROD_CODE"
+    FIELD_4$="17"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PROD_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM20009"
+    FIELD_1$="LAST_ORDER_DATE"
+    FIELD_4$="16"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"LAST_O_D"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="6"
+    FIELD_19$="*ZZWQRY"
+    FIELD_27$="ZZWDTE;DISPLAY"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_FM1_ITM2SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%customer$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,42 @@
+0010 ! <UTGFPH> Fix tf2g and tf2p paths in Nomads Librarys
+0035 REM "5.5 - 09/07/07 - 16.605277 - jdf - SSP# 211380
+0037 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0105 SET_PARAM 'XI'
+0108 PRINT 'CS'; INPUT "base directory: ",BD$; IF NUL(BD$) THEN BD$="/usr/lib/pvx/tf2g"
+0110 OPEN (1)"< find "+STP(BD$)+" -name '*.EN' -print "
+0195 PRINT 'CS'; PRINT "Processing Nomads Libraries...."
+0200 SELECT LIB$ FROM (1)
+0210 ! PRINT LIB$
+0220 GOSUB PROCESS_LIBRARY
+0280 NEXT RECORD 
+0290 SET_PARAM -'XI'
+0294 PRINT "../tf2d="+STR(A_TF2D_1)+" tf2d="+STR(A_TF2D_2)+" ../tf2g="+STR(A_TF2G_1)+" ./tf2g="+STR(A_TF2G_2)+" tf2g="+STR(A_TF2G_3)+" /usr/lib/pvx/="+STR(A_USR_LIB),'LF'
+0295 PRINT "Done"
+1000 PROCESS_LIBRARY:! Process library in LIB$
+1010 CLOSE (2); OPEN (2,ERR=PL_END)LIB$
+1015 TF2D_1=0,TF2D_2=0,TF2G_1=0,TF2G_2=0,TF2G_3=0,USR_LIB=0
+1020 TF_LIST$=""
+1100 PROCESS_RECORD:
+1105 K$=KEY(2,END=DONE_WITH_RECORDS); READ RECORD (2,KEY=K$,DOM=*SAME)LIB_REC$
+1200 EXAMINE_REC:
+1204 IF POS("/usr/lib/pvx"=LIB_REC$) THEN USR_LIB+=1; TF_LIST$+='LF'+"  /usr/lib/pvx/ "+K$
+1205 IF POS("../tf2d"=LIB_REC$) THEN TF2D_1+=1; TF_LIST$+='LF'+"  ../tf2d "+K$; GOTO TF2G
+1210 IF POS("tf2d"=LIB_REC$) THEN TF2D_2+=1; TF_LIST$+='LF'+"  tf2d "+K$; GOTO TF2G
+1250 TF2G:! process tf2g fixes
+1255 ! IF POS("../tf2g"=LIB_REC$) THEN TF2G_1+=1; GOTO TF2G_DONE
+1260 ! IF POS("./tf2g"=LIB_REC$) THEN TF2G_2+=1; GOTO TF2G_DONE
+1265 ! IF POS("tf2g"=LIB_REC$) THEN TF2G_3+=1; GOTO TF2G_DONE
+1270 TF2G_DONE:
+1595 GOTO PROCESS_RECORD
+1600 DONE_WITH_RECORDS:
+1710 A_TF2D_1+=TF2D_1,A_TF2D_2+=TF2D_2,A_TF2G_1+=TF2G_1,A_TF2G_2+=TF2G_2,A_TF2G_3+=TF2G_3,A_USR_LIB+=USR_LIB
+1720 ! PRINT "tf2d_1="+STR(TF2D_1)+" tf2d_2="+STR(TF2D_2)+" tf2g_1="+STR(TF2G_1)+" tf2g_2="+STR(TF2G_2)+" tf2g_3="+STR(TF2G_3),'LF'
+1725 IF NOT(NUL(TF_LIST$)) THEN PRINT LIB$+TF_LIST$
+1900 PL_END:
+1995 RETURN 
+1999 ! *******************************************
+9999 END 
+56000 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 

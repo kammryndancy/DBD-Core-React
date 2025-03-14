@@ -1,0 +1,144 @@
+0010 REM "Send Data via HTTP(S) <ZZ2SND>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 02/10/15 - 11.8275 - crg - SSP# 275437
+0037 REM "275437-589: Iron Mountain now requires HTTPS, HTTP set to redirect 
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0060 ! URL$ must begin with http://... or https://... and is path to use ex: http://www.topform.com/ecnew/cgi-bin/ecclientde.pl, if https then will use port 443 instead of port 80
+0061 ! CONTENT$ is url encoded list of data to send ex: basic=EC3PC0&user=topform&password=demo&template=prdcat.htm& - if CONTENT$ is "" then GET is used instead of PST
+0062 ! OPTION$ is options:
+0063 ! "T{"+seconds till timeout+"}"=# of seconds to wait on response, default is 30 seconds ex: T{60}
+0064 ! "F{"+file to POST+"}"= file to be POSTed to the HTTP server at the given URL
+0065 ! "C{"+content-type+"}"= content type of POST request, eg: text/xml or application/octet-stream
+0070 ! "O{"+output file name+"}"= file in which to save the response
+0071 ! "H{"+custom request header+"}"= custom HTTP request header to be sent to server
+0075 ! PROXY$ - if proxy server is used, is either DNS name or IP address, without http:// on front, ex: 10.6.72.14
+0076 ! RETURN$ will contain response returned from the POST or GET or Error message
+0077 ! RETURN_CODE will contain status code: 0 for success, -1 for error
+0078 ! NOTES: if port not specified on proxy$ or url$ then port 80 used
+0080 ! URL$="https://www.topform.com/ecnew/cgi-bin/ecclientde.pl",CONTENT$="user=topform&password=demo&template=prdcat.htm&basic=EC3PC0&"; PROXY$="10.6.72.14"; GOTO 0101
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,URL$,CONTENT$,PROXY$,OPTION$,RETURN_CODE,RETURN$
+0100 SETERR 9000
+0110 X0$="ZZ2SND",X1$="Send Data via HTTP(S)"
+0120 RETURN$=""
+0400 ! Decode options
+0405 PORT=80,TIME_OUT=30,T_O$="",F_O$="",CONTENT_TYPE$="application/x-www-formurlencoded",CUSTOM_HEADER$=""
+0410 ! Option T: Timeout
+0411 T_O$=MID(OPTION$,MSK(OPTION$,"T{[^}]*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0415 IF T_O$<>"" THEN TIME_OUT=NUM(MID(T_O$,MSK(T_O$,"[0-9]+"),MSL),ERR=*NEXT)
+0420 ! Option F: File to POST, pathname
+0421 F_O$=MID(OPTION$,MSK(OPTION$,"F{[^}]*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0430 IF F_O$<>"" THEN POST_FILE$=MID(F_O$,3,LEN(F_O$)-3)
+0431 ! Option C: Content-type of request
+0432 C_O$=MID(OPTION$,MSK(OPTION$,"C{[^}]*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0436 IF C_O$<>"" THEN CONTENT_TYPE$=MID(C_O$,3,LEN(C_O$)-3)
+0437 ! Option O: output file pathname
+0438 O_O$=MID(OPTION$,MSK(OPTION$,"O{[^}]*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0439 IF O_O$<>"" THEN OUT_FILE$=MID(O_O$,3,LEN(O_O$)-3)
+0440 ! Option H: Custom request header
+0441 H_O$=MID(OPTION$,MSK(OPTION$,"H{[^}]*}",ERR=*NEXT),MSL,ERR=*NEXT)
+0442 IF H_O$<>"" THEN CUSTOM_HEADER$=MID(H_O$,3,LEN(H_O$)-3)
+0443 ! 
+0445 IF CONTENT$="" AND POST_FILE$="" THEN DO_GET=1 ELSE DO_POST=1
+0460 IF PROXY$<>"" THEN {
+0465 SERVER$=STP(PROXY$)
+0466 TMP=POS(":"=SERVER$); IF TMP<>0 THEN TMP$=MID(SERVER$,TMP+1); SERVER$=MID(SERVER$,1,TMP-1); PORT=NUM(TMP$,ERR=*NEXT)
+0470  } ELSE {
+0475 HTTP$="http"; IF UCS(MID(URL$,1,6))="HTTPS:" THEN HTTP$="https"; PORT=443; SECURE$=";SECURE" ! Used for SSL handshake, triggers PVX SSL module
+0480 SERVER$=""; TURL$=URL$
+0481 STMP$=MID(TURL$,MSK(TURL$,HTTP$+"://[^/]*/",ERR=*NEXT),MSL,ERR=*NEXT)
+0485 IF STMP$<>"" THEN SERVER$=MID(STMP$,LEN(HTTP$)+4,LEN(STMP$)-(LEN(HTTP$)+4),ERR=*NEXT) ELSE IF TURL$=URL$ THEN TURL$=TURL$+"/"; GOTO 0481 ! if first time thru and no stmp$ then we might have server name with no / ex: http://www.abc.com
+0486 TMP=POS(":"=SERVER$); IF TMP<>0 THEN TMP$=MID(SERVER$,TMP+1); SERVER$=MID(SERVER$,1,TMP-1); PORT=NUM(TMP$,ERR=*NEXT)
+0490  }
+0500 ! check url if it is of the form http://www.topform.com then we will need to add '/' to the end or MS IIS proxy servers will complain
+0510 IF MSK(URL$,"[^/]/[^/]")=0 THEN URL$=URL$+"/"
+1000 ! Open port
+1010 PORT_CHAN=HFN; OPEN (PORT_CHAN)"[tcp]"+SERVER$+";"+STR(PORT)+SECURE$
+1100 ! either GET or POST the data
+1105 IF DO_GET THEN {
+1110 WRITE RECORD (PORT_CHAN)"GET "+URL$+" HTTP/1.0"+$0D0A0D0A$
+1150  } ELSE {
+1151 IF POST_FILE$<>"" THEN {
+1152 CONTENT$=""; FILE_CHAN=HFN; OPEN (FILE_CHAN)POST_FILE$
+1153 READ RECORD (FILE_CHAN,END=1155,ERR=1155)F_IN$; CONTENT$+=F_IN$; GOTO *SAME
+1154  }
+1155 WRITE RECORD (PORT_CHAN)"POST "+URL$+" HTTP/1.0 "+$0D0A$
+1157 WRITE RECORD (PORT_CHAN)"User-Agent: TopForm HTTP Client 1.0"+$0D0A$
+1158 WRITE RECORD (PORT_CHAN)"Content-Type: "+CONTENT_TYPE$+$0D0A$
+1159 IF NOT(NUL(CUSTOM_HEADER$)) THEN WRITE RECORD (PORT_CHAN)CUSTOM_HEADER$+$0D0A$
+1160 WRITE RECORD (PORT_CHAN)"Content-length: "+STR(LEN(CONTENT$))+$0D0A$
+1162 WRITE RECORD (PORT_CHAN)$0D0A$ ! end of header
+1165 WRITE RECORD (PORT_CHAN)CONTENT$+$0D0A$
+1190  }
+1200 ! Get results & put into RETURN$
+1205 READ RECORD (PORT_CHAN,TIM=TIME_OUT,END=1220,ERR=9000)IN$; RETURN$+=IN$; GOTO *SAME
+1210 ! 
+1905 CLOSE (PORT_CHAN)
+1910 ! 
+1920 IF OUT_FILE$<>"" THEN {
+1931 OUT_CHAN=HFN
+1932 OPEN PURGE (OUT_CHAN,ERR=1933)OUT_FILE$; GOTO 1940
+1935 SERIAL OUT_FILE$,ERR=9000; GOTO 1932
+1940 WRITE (OUT_CHAN,ERR=9000)RETURN$
+1950 CLOSE (OUT_CHAN)
+1960  }
+1970 ! 
+1980 ! PRINT RETURN$; IF WHO="crg" THEN ESCAPE 
+1999 GOTO 9900
+2099 ! 
+9000 REM "ERROR PROCESSING
+9005 RETURN_CODE=-1; RETURN$="ERR: "+STR(ERR)+"  line#: "+STR(TCB(5))
+9010 EXIT ERR
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 UNIX_HTTP:
+10002 MSG$="ZZ2SND|DIR|"+FROM_DIR$; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10005 CMD_CHAN=UNT; OPEN (CMD_CHAN,ERR=*RETURN)FROM_DIR$
+10010 NEXT_HTTP2:
+10020 READ (CMD_CHAN,END=*RETURN)NEXT_FILE$; IF NEXT_FILE$="." OR NEXT_FILE$=".." OR NEXT_FILE$(LEN(NEXT_FILE$)-3,4)=".bad" OR NEXT_FILE$(LEN(NEXT_FILE$)-3,4)=".err" THEN GOTO *SAME
+10025 NEXT_FILE$=STP(NEXT_FILE$,3," ")
+10030 IF URL$<>"" THEN {! 10105
+10035 URL$=STP(URL$,2),RESPONSE$="",ERRORMESG$=""
+10040 CONTENT$="",FILENO=UNT; OPEN (FILENO,OPT="TEXT")STP(FROM_DIR$,2)+"/"+NEXT_FILE$
+10045 READ RECORD (FILENO,END=*NEXT)FIL_REC$; CONTENT$=CONTENT$+FIL_REC$; GOTO *SAME
+10050 CLOSE (FILENO)
+10055 ERR_FILE$=FROM_DIR$+"/"+NEXT_FILE$+".err"
+10060 OPTION$="C{ text/xml; charset=utf-8}O{"+ERR_FILE$+"}" ! 220758
+10065 IF SOAP$<>"" THEN OPTION$=OPTION$+"H{"+SOAP$+"}"
+10070 MSG$="ZZ2SND|URL|"+URL$+"|CONTENT (upto 100Bytes)|"+MID(CONTENT$,1,100)+"|PROXY|"+PROXY$+"|OPTIONS|"+OPTION$+"|"; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10080 CALL "ZZ2SND",X3$,X4$,URL$,CONTENT$,PROXY$,OPTION$,RETURN_CODE,RETURN$
+10082 MSG$="ZZ2SND|RET|"+STR(RETURN_CODE)+"|"+RETURN$; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10085 IF VAL_RESP$<>"" THEN IF POS(VAL_RESP$=RETURN$)=0 THEN ERRORMESG$="failed"
+10105  } ! 10030
+10110 IF ERRORMESG$="" THEN INVOKE "rm -f "+FROM_DIR$+"/"+NEXT_FILE$ ELSE INVOKE "mv "+FROM_DIR$+"/"+NEXT_FILE$+" "+FROM_DIR$+"/"+NEXT_FILE$+".bad"
+10115 IF ERRORMESG$="" THEN ERASE ERR_FILE$,ERR=*NEXT
+10120 GOTO NEXT_HTTP2
+10150 END_OF_HTTP:
+10160 CLOSE (CMD_CHAN)
+10170 MSG$="ZZ2SND|DONE|"; MX=FN%TOD_LOG("INFO",MSG$,1,0)
+10190 RETURN 
+10198 ! 
+10199 ! 
+11000 SEND_FULL_DIR:
+11010 ENTER X3$,X4$,URL$,DIRECTORY$,HTTP_TYPE$,VAL_RESP$
+11015 IF URL$<>"" THEN IF URL$(1,1)="#" THEN GOSUB PARSE_OPTIONS
+11020 IF POS("http://"=URL$)=0 AND POS("HTTP://"=URL$)=0 AND HTTP_TYPE$="H" THEN IF POS("HTTPS://"=UCS(URL$))=0 THEN URL$="http://"+URL$ ! 275437
+11025 IF POS("https://"=URL$)=0 AND POS("HTTPS://"=URL$)=0 AND HTTP_TYPE$="S" THEN URL$="https://"+URL$
+11030 FROM_DIR$=DIRECTORY$
+11050 GOSUB UNIX_HTTP
+11090 EXIT 
+12000 PARSE_OPTIONS:
+12010 OPT_FILE$=URL$(2); OPT_FILE$=STP(OPT_FILE$)
+12020 TXT_CHAN=UNT; OPEN LOCK (TXT_CHAN,OPT="TEXT",ERR=*RETURN)OPT_FILE$
+12040 URL$="",SOAP$=""
+12050 READ (TXT_CHAN,END=12080)TEXT$
+12055 IF POS("SOAP:"=TEXT$)=1 AND LEN(TEXT$)>6 THEN SOAP$=TEXT$(6)
+12057 IF POS("URL:"=TEXT$)=1 AND LEN(TEXT$)>5 THEN URL$=TEXT$(5)
+12060 GOTO 12050
+12080 CLOSE (TXT_CHAN)
+12090 RETURN 
+56002 REM "203107-Output Director Phase 2
+56003 REM "230554-Output Director fails every other day                       

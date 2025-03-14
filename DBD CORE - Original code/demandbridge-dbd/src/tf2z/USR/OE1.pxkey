@@ -1,0 +1,149 @@
+<PxTable>
+ TableName=OE1
+ TableKey=K1372704624
+ FileCreate=KEYED "OE1",2,0,-256,BSZ=1,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="OE1_OrderStatus"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/OE1"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:05-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:12-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST OES_STATUS_CODE$:[LEN(2)]"
+    NAME$="OES_STATUS_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OES_S_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="OES Status Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST OES_STATUS_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="OES_STATUS_CODE"
+    DESCRIPTION$="=MSG("+QUO+"OES_S_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="OES Status Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST OES_STATUS_CODE_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="OES_STATUS_CODE_DESC"
+    DESCRIPTION$="=MSG("+QUO+"OES_S_C_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="OES Status Code Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST OE1_UNUSED_1$:[LEN(SEP,SIZ=18)]"
+    NAME$="OE1_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="18"
+    INTERNALFORMAT$="L"
+    NOTES$="Not in Use 0"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST OE1_UNUSED_2"
+    NAME$="OE1_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="OE1 Unused 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST OE1_UNUSED_3"
+    NAME$="OE1_UNUSED_3"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="OE1 Unused 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST OE1_UNUSED_4"
+    NAME$="OE1_UNUSED_4"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="##,###,###.00-"
+    NOTES$="OE1 Unused 4"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="A "
+    OES_STATUS_CODE$="A "
+    OES_STATUS_CODE_DESC$="Approved to Process                     "
+    OE1_UNUSED_1$="                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="C "
+    OES_STATUS_CODE$="C "
+    OES_STATUS_CODE_DESC$="Complete, Ready to Process              "
+    OE1_UNUSED_1$="                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="D "
+    OES_STATUS_CODE$="D "
+    OES_STATUS_CODE_DESC$="Disapproved                             "
+    OE1_UNUSED_1$="                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="F "
+    OES_STATUS_CODE$="F "
+    OES_STATUS_CODE_DESC$="Finished - Resubmit for Complete        "
+    OE1_UNUSED_1$="                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="H "
+    OES_STATUS_CODE$="H "
+    OES_STATUS_CODE_DESC$="Hold by User                            "
+    OE1_UNUSED_1$="                  "
+   </RecordData>
+
+</Data>
+
+</PxTable>

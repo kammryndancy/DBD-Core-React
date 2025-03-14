@@ -1,0 +1,93 @@
+0010 REM "Lot Storage Charge <AR2EAZ>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 10/18/05 - 9.446111 - tma - SSP# 188738
+0037 REM "188738-Different questions on GPPP O/H amount of several invoices  
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM "The commission code points to a storage house charge (3/14/96) which contains the procedure to compute the charge based upon lenght of time in the warehouse
+0050 REM "A$=Invoice Header (ARB), B$=Invoice line (ART), C9$=commission code
+0051 REM " C9 returned with storage charge
+0052 REM "W/O#71095 to add % of cost to lot that has a storage charge
+0090 CLEAR ; SETERR 0100; ENTER X3$,A$,B$,T0,C9$
+0100 SETERR 9000
+0110 X0$="AR2EAZ",T0=0
+0170 FID_0$=FID(0); IF %IN_WEBEC$="Y" THEN FID_0$(1,1)="G"
+0200 DIM D[17],C[1]
+0210 IF POS(" "<>MID(A$,92,8))=0 OR MID(B$,47,3)="   " THEN GOTO 9900
+0220 D0$=A$(180,6); IF POS(" "<>D0$)=0 THEN GOTO 9900
+0230 IF POS(B$(1,1)="IC")=0 OR B$(89,4)<"0001" OR B$(89,4)>"8999" THEN GOTO 9900
+0240 IF C9$(34,1)=" " THEN GOTO 9900
+0330 IOLIST C$,C[0]
+0340 IOLIST D$,D[0],D[1],D[2],D[3],D[4],D[5],D[6],D[7],D[8],D[9],D[10],D[11],D[12],D[13],D[14],D[15],D[16],D[17]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="03O ICF...  04O AR4...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0540 READ (Z[4],KEY="@"+C9$(34,1)+"   ",DOM=9900)IOL=0340
+0980 K$=B$(55,20)
+0990 READ (Z[3],KEY=K$,DOM=0991)
+1000 REM 
+1100 READ (Z[3],END=2000)IOL=0330
+1120 IF K$<>C$(1,LEN(K$)) THEN GOTO 2000
+1140 IF A$(92,8)+B$(47,3)<>C$(110,11) THEN GOTO 1100
+1160 D1$=C$(25,6); IF POS(" "<>D1$)=0 THEN GOTO 1100
+1180 GOSUB 1500
+1200 GOTO 1100
+1500 REM "Compute Storage Charge for this lot - Q1 = number of days stored
+1520 CALL "ZZDATE",X3$,"",D1$,D0$,Q1,1,0,0,0,0,0,"","",""; IF Q1=0 THEN Q1=1
+1540 GOSUB 8300
+1560 REM "Check the Base Bucket - If filled in then for type 6's will be intrepreted as the number of days in a period.  The number of periods will be computed and multiplied times the Q2 table rate per period value.  Otherwise, Q2 will be the value used.
+1570 REM "REM PRINT 'CS',"D0$=",D0$," D1$=",D1$," Q1=",Q1," D(1)=",D(1)," C(0)=",C(0),; INPUT *
+1580 IF D[1]<>0 THEN Q3=INT(Q1/D[1])
+1600 IF Q3=0 THEN Q3=1
+1609 REM "Q4=Storage charge, Q5=Load provided there is a storage charge, Q6 is amount subject to minimum/maximum test (For National Graphics only Q5 is subjectto the min/max test."
+1610 Q4=C[0]*Q2*Q3*.01,Q5=C[0]*D[17]*.01
+1615 IF Q4=0 THEN GOTO 1690
+1620 IF POS(X3$(9,3)="376",3)>0 THEN Q6=Q5 ELSE Q6=Q4+Q5
+1630 IF D[0]>0 AND Q6<D[0] THEN Q6=D[0]
+1640 IF D[16]>0 AND Q6>D[16] THEN Q6=D[16]
+1650 IF POS(X3$(9,3)="376",3)>0 THEN Q6=Q6+Q4
+1680 T0=T0+Q6
+1681 REM "REM PRINT "Q2=",Q2," Q3=",Q3," C(0)=",C(0)," D(17)=",D(17)," Q4=",Q4,"  T0=",T0,; INPUT *
+1690 RETURN 
+2000 REM "Update Array value
+2090 GOTO 9900
+8300 REM "Run value Q1 though table to get Q2
+8305 Q2=0
+8310 FOR I0=2 TO 14 STEP 2
+8315 IF D[I0]=0 OR D[I0]>ABS(Q1) THEN Q2=D[I0-1]; EXITTO 8340
+8320 NEXT I0
+8325 Q2=D[15]
+8340 RETURN 
+8350 REM "House chg based on number of cartons
+8360 Q1=0,Q1=NUM(C0$(3,4),ERR=8361)
+8525 SET_READONLY_END:RETURN 
+8530 CLEAR_READONLY:REM "Restore previous setting
+8535 SET_PARAM 'XI'=SAVE_XI ! restore previous setting
+8545 CLEAR_READONLY_END:RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "END PROGRAM
+9905 IF FID_0$(1,1)<>"G" THEN PRINT @(0,22),'CL',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

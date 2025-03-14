@@ -1,0 +1,109 @@
+0010 REM "File Layout Display  <UT2FLA>
+0035 REM "3.7 - 03/29/94 - 12.63 - jsc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 CLEAR 
+0105 SETERR 0107
+0106 ENTER F1$
+0107 SETERR 0000
+0110 CLOSE (14,ERR=0111)
+0120 OPEN (14)"ZZPARM"
+0130 FIND (14,DOM=0131,KEY=FID(0)+"      ")C0$; C0$=C0$(9,3)
+0190 CLOSE (14); OPEN (14)"ZZE"
+0200 DIM Z0$(80,"-")
+0210 M0$="##,##0-",L=8,L9=L
+0220 F0$="IndexedSerial Direct Sort   ProgramText   66666666777777778888888899999999Directry"
+0230 IF F1$<>"" THEN GOTO 0930
+0905 PRINT 'CS',"CSI File Layout Display & File Information Utility",'LF'
+0910 PRINT 'LF',"Enter file name (with F2 doublespaces) -or- F1 for file index -or- F4 to exit: "
+0920 INPUT F1$
+0925 IF F1$>"" THEN CALL "YUCASE","",F1$,Q$; F1$=Q$
+0930 IF CTL=1 THEN GOTO 3000
+0935 IF CTL=2 THEN L1=2 ELSE L1=1
+0940 IF CTL=4 THEN GOTO 9800 ELSE IF F1$="" OR LEN(F1$)>6 THEN GOTO 0900
+0960 DIM F2$(6); F2$(1,6)=F1$
+0965 FIND (14,KEY=F2$,DOM=0966)A$; GOTO 1000
+0975 IF Q$<>F2$ THEN F2$=Q$; GOTO 0965
+1000 IF LEN(F1$)=3 OR LEN(F1$)=4 THEN F3$=F1$(1,3)+C0$
+1005 CLOSE (14); OPEN (14,ERR=1100)F3$
+1007 CALL "ZZINFO",14,Q,X3$,U,N,K,R,D,T,S0,""
+1040 GOTO 1180
+1100 F3$=F1$
+1110 OPEN (14,ERR=1111)F3$; GOTO 1007
+1170 E$="File not defined!!"
+1180 PRINT 'CS',; GOSUB 6000; GOSUB 6200
+1200 CLOSE (14)
+1210 OPEN (14)"ZZF"
+1280 CLOSE (14); OPEN (14)"ZZF"
+1300 READ (14,KEY=F1$,DOM=1301)
+1330 L=L9; PRINT @(0,L),'CE',
+1400 READ (14,END=4000)B$
+1420 IF A$(1,6)<>B$(1,6) THEN GOTO 4000
+1440 IF L>20 THEN GOTO 2000
+1500 DIM D$(40,".")
+1520 D$(1,POS("   "=B$(13,40)+"   ")-1)=B$(13,40)
+1540 PRINT @(0,L),D$,
+1550 PRINT @(42),B$(7,1),@(45),B$(53,1),@(51),B$(10,3),@(57),B$(56,3),@(62),B$(59,9),@(71),B$(68,8),
+1600 L=L+L1
+1620 GOTO 1400
+2000 REM "EOP"
+2010 PRINT @(5,21),"CR for next line -or- enter number of lines (up to",12/L1,") -or- F4: ",
+2015 PRINT @(5,22),"Enter 'N' for start of numerics, R to restart",
+2020 INPUT Q$,@(0,22),'CL',@(0,21),'CE',
+2021 IF Q$="N" THEN Q$="12"; READ (14,KEY=A$(1,6)+"2",DOM=2022)
+2022 IF Q$="R" THEN GOTO 1300
+2030 IF CTL=4 THEN GOTO 4010
+2032 Q=ABS(INT(NUM(Q$,ERR=2033)))*L1
+2035 IF Q<1 THEN Q=L1
+2037 IF Q>12 THEN Q=12
+2040 FOR I=1 TO Q; PRINT @(0,8),'LD',; NEXT I
+2060 L=L-Q
+2080 GOTO 1500
+3000 REM "List ZZE"
+3020 PRINT 'CS','SB',@(25,0),"CSI File Index from ZZE",@(0,1),"File",@(7),"Type      Key Size   Bytes/Rec  Description",@(0,2),Z0$,'SF',
+3080 L=3
+3100 READ (14,END=4000)A$
+3120 IF L>20 THEN GOTO 3200
+3140 PRINT @(0,L),A$(1,6),; Q=-6; GOSUB 6500; PRINT @(39),A$(7,40),
+3160 L=L+2
+3180 GOTO 3100
+3200 REM "EOP
+3220 INPUT @(10,22),"CR to continue -or- enter file name to start at -or- F4: ",Q$,@(0,22),'CL',
+3240 IF CTL=4 THEN GOTO 4010
+3250 L=3; PRINT @(0,L),'CE',
+3260 IF LEN(Q$)>0 AND LEN(Q$)<7 THEN READ (14,KEY=Q$,DOM=3100)A$
+3270 GOTO 3101
+4000 INPUT @(10,22),"End of file - CR to continue ",'RB',*
+4010 F1$=""
+4020 GOTO 0190
+6000 REM "Background"
+6020 PRINT 'SB',@(0,1),Z0$,@(5,2),"File",@(13,2),"File Type   Key Size  Bytes/Rec  Disk   Records   Used    Avail"
+6030 PRINT @(0,3),"ZZE:",@(0,4),"Dsk:",@(0,5),Z0$
+6100 PRINT @(0,6),"Description",@(41),"Seq Type Pos/Ix Len  ActType Verify",
+6180 PRINT @(0,7),Z0$,
+6199 RETURN 
+6200 PRINT 'SF'
+6202 PRINT @(5,3),F2$,@(5,4),F3$,
+6205 IF A$="" THEN DIM A$(6); PRINT @(25,0),F1$,@(13,3),"File not in ZZE!!",; GOTO 6290
+6210 PRINT @(25,0),A$(1,6),"  ",A$(7,40),@(0,3),
+6220 Q=0; GOSUB 6500
+6290 IF LEN(E$)>0 THEN PRINT @(13,4),E$,; RETURN 
+6300 PRINT @(13,4),F0$(T*7+1,7),
+6310 IF K<>0 THEN PRINT @(27),K:"00", ELSE PRINT @(27),"n/a",
+6320 IF T<>2 THEN PRINT @(38),R:"0000", ELSE PRINT @(38),"n/a",
+6330 PRINT @(48),D:"0",
+6340 PRINT @(52),N:M0$,
+6350 IF T=2 OR T=3 THEN PRINT @(61),U:M0$,@(69),N-U:M0$,
+6399 RETURN 
+6500 REM "Display ZZE"
+6520 IF A$(47,1)<>" " THEN PRINT (0,ERR=6521)@(13+Q),F0$(POS(A$(47,1)="IzDS T")*7-6,7), ELSE PRINT @(13+Q),"Unknown",
+6530 IF NUM(A$(48,2))<>0 THEN PRINT @(27+Q),A$(48,2), ELSE PRINT @(27+Q),"n/a",
+6540 IF A$(47,1)<>"S" THEN PRINT @(38+Q),A$(50,4), ELSE PRINT @(38+Q),"n/a",
+6545 RETURN 
+8900 PRINT @(0,20),
+8920 ESCAPE 
+9800 CLOSE (14,ERR=9801)
+9810 SETERR 9900
+9820 EXIT 
+9900 RUN "ZMENU"
+9999 END 

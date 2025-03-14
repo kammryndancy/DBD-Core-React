@@ -1,0 +1,1199 @@
+<PxTable>
+ TableName=ZZO
+ TableKey=K971278645
+ FileCreate=KEYED "ZZO",59,0,-128,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZZO_SysNote"
+    PHYSICALPATH$="June 25,2003 1:1pm"
+    LASTCHANGEDATE$="rds"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST NOTE_TYPE$:[LEN(3)]"
+    NAME$="NOTE_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="P"
+    NOTES$="Note Type (number)"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST NOTE_KEY$:[LEN(40)]"
+    NAME$="NOTE_KEY"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_KEY"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="P"
+    NOTES$="Key to note (variable length)"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-3
+    IOLOBJ$="IOLIST NOTE_DATE$:[LEN(6)]"
+    NAME$="NOTE_DATE"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_DATE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    NOTES$="Date of note"
+    KEYDEFINITION$="1:3:A"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-4
+    IOLOBJ$="IOLIST NOTE_TIME$:[LEN(4)]"
+    NAME$="NOTE_TIME"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_TIME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Time of note"
+    KEYDEFINITION$="1:4:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-5
+    IOLOBJ$="IOLIST SEQ_NUM$:[LEN(2)]"
+    NAME$="SEQ_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    NOTES$="Sequence Counter"
+    KEYDEFINITION$="1:5:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST NOTE_TYPE$:[LEN(3,SEP=SEP)]"
+    NAME$="NOTE_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_TYPE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Note Type (number)"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST NOTE_KEY$:[LEN(40,SEP=SEP)]"
+    NAME$="NOTE_KEY"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_KEY"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Key to note (variable length)"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST NOTE_DATE$:[LEN(6,SEP=SEP)]"
+    NAME$="NOTE_DATE"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_DATE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Date of note"
+    KEYDEFINITION$="1:3:A"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST NOTE_TIME$:[LEN(4,SEP=SEP)]"
+    NAME$="NOTE_TIME"
+    DESCRIPTION$="=MSG("+QUO+"NOTE_TIME"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Time of note"
+    KEYDEFINITION$="1:4:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST SEQ_NUM$:[LEN(2,SEP=SEP)]"
+    NAME$="SEQ_NUM"
+    DESCRIPTION$="=MSG("+QUO+"SEQ_NUM"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Sequence Counter"
+    KEYDEFINITION$="1:5:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST OPER_CODE_ADD_NOTE$:[LEN(3,SEP=SEP)]"
+    NAME$="OPER_CODE_ADD_NOTE"
+    DESCRIPTION$="=MSG("+QUO+"OPER_C_A_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Operator code adding note"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST PERM_TEMP_NOTE$:[LEN(1,SEP=SEP)]"
+    NAME$="PERM_TEMP_NOTE"
+    DESCRIPTION$="=MSG("+QUO+"PERM_T_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="P=Permanent , T=Temporary note"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST MY_FOLLOW_UP_DATE$:[LEN(6,SEP=SEP)]"
+    NAME$="MY_FOLLOW_UP_DATE"
+    DESCRIPTION$="=MSG("+QUO+"M_F_U_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="My follow-up date"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST MAIL_NOTE_TO_OP_CODE$:[LEN(3,SEP=SEP)]"
+    NAME$="MAIL_NOTE_TO_OP_CODE"
+    DESCRIPTION$="=MSG("+QUO+"M_N_T_O_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="also mail this note to operator code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST FOLLOW_UP_DATE$:[LEN(SEP,SIZ=6)]"
+    NAME$="FOLLOW_UP_DATE"
+    DESCRIPTION$="=MSG("+QUO+"FOLL_U_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="L"
+    NOTES$="For follow-up on date (other operator)"
+    CLASS$="DATE-KKMMDD"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST LINE_OF_MESSAGE$:[LEN(SEP,SIZ=60)]"
+    NAME$="LINE_OF_MESSAGE"
+    DESCRIPTION$="=MSG("+QUO+"LINE_O_M"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="J41111"
+    NOTE_TIME$="1145"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="dlk"
+    PERM_TEMP_NOTE$="T"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="87633 "
+    NOTE_TIME$="8854"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="this is the second test.                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885500"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="J41111"
+    NOTE_TIME$="1144"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="dlk"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885501"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="87633 "
+    NOTE_TIME$="8855"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This is a test                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885502"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="87633 "
+    NOTE_TIME$="8855"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="of the                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885503"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="87633 "
+    NOTE_TIME$="8855"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="notes                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              87633 885504"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="87633 "
+    NOTE_TIME$="8855"
+    SEQ_NUM$="04"
+    LINE_OF_MESSAGE$="program.                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89618 977400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90605"
+    NOTE_TIME$="0225"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90512"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90513                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89618 977401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89618 "
+    NOTE_TIME$="9774"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS TO TEST THE INCORRECT SHIFTING                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89618 977402"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89618 "
+    NOTE_TIME$="9774"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="OF THE MAIL MESSAGE                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89621 840300"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1596"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89621 840301"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8403"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="The customer has made a deposit for future orders so that   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89621 840302"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8403"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="they can get off COD status.                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 109400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1094"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="   "
+    PERM_TEMP_NOTE$=" "
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 109401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="1094"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This customer never pays on time.  Next time they are 60    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 109402"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="1094"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="days or more past due, they go on COD!                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 109800"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1098"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="   "
+    PERM_TEMP_NOTE$=" "
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 109801"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="1098"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This means WAR!                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 829600"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1703"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90602"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90603                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 829601"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8296"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This message goes to me on 6/2 and on 6/3 1989              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 829603"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8296"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="And many happy returns                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 829605"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8296"
+    SEQ_NUM$="05"
+    LINE_OF_MESSAGE$="The end                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 830900"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1690"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90605"
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 830901"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8309"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This is a test message coming to me from                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 830902"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8309"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="the note system.                                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 830904"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8309"
+    SEQ_NUM$="04"
+    LINE_OF_MESSAGE$="This is only a test                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 833400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1665"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90612"
+    MAIL_NOTE_TO_OP_CODE$="WMZ"
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 833401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8334"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS A TEST                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 834200"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1657"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="WMZ"
+    FOLLOW_UP_DATE$="I90601                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 834201"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8342"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS A TEST MAIL FROM NOTE ENTRY                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 881400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1185"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 881401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8814"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Rick has spoken with them about their past due balance,     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 881402"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8814"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="and advised them of the ir rights.                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 889800"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1101"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="   "
+    PERM_TEMP_NOTE$=" "
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 889801"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8898"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This is the last note for today                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              89622 889803"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8898"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="ANd that's the truth                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              90669 018800"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="I60720"
+    NOTE_TIME$="0188"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="   "
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              90669 018801"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="0188"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS LINE 1                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              90669 018802"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="0188"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="LINE 2                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              90669 018803"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="0188"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="LINE 3                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000100000                              90669 018805"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000100000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="0188"
+    SEQ_NUM$="05"
+    LINE_OF_MESSAGE$="LIBE 5                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 851400"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1485"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="ASG"
+    FOLLOW_UP_DATE$="I90602                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 851401"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8514"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Support can continue until 6/4                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 851900"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1480"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="ASG"
+    FOLLOW_UP_DATE$="I90602                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 851901"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8519"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Mary called on 6/1 to check on invoices.                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 851903"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8519"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="Support can continue until 6/4 unless otherwise noted.      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 853600"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1463"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 853601"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8536"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="And that's the truth                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 853800"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1461"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 853801"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8538"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="American advertising is a subsidiary of                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100001000000                             89621 853802"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00001000000                             "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8538"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="Amoco Oil Company.                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89617 835600"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="I90606"
+    NOTE_TIME$="1643"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="ASG"
+    FOLLOW_UP_DATE$="I90609                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89617 835601"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="89617 "
+    NOTE_TIME$="8356"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This customer will be on COD                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89618 976600"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="I90605"
+    NOTE_TIME$="0233"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90606"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90607                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89618 976601"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="89618 "
+    NOTE_TIME$="9766"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This is to verify that the new note                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89618 976602"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="89618 "
+    NOTE_TIME$="9766"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="program correctly sends mail                                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89622 829200"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1707"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90602"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90603                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000200000                              89622 829201"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000200000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8292"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="FOLLOW UP ON 6/2 AND 6/3 1989                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              89621 842700"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1572"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              89621 842701"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8427"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Fridays are rainy days                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              89621 842703"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8427"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="Etc.                                                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              89622 828900"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1710"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90612"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90619                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              89622 828901"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8289"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="FOLLOWUP ON 6/12 AND 6/19                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              90669 992600"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="I60720"
+    NOTE_TIME$="0073"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90612"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90613                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              90669 992601"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="9926"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS S TEST                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000300000                              90669 992604"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000300000                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="9926"
+    SEQ_NUM$="04"
+    LINE_OF_MESSAGE$="THIS IS A TEST                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000400000                              89617 835900"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000400000                              "
+    NOTE_DATE$="I90606"
+    NOTE_TIME$="1640"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90609                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000400000                              89617 835901"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000400000                              "
+    NOTE_DATE$="89617 "
+    NOTE_TIME$="8359"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This customer is on COD                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000400000                              89617 848700"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000400000                              "
+    NOTE_DATE$="I90606"
+    NOTE_TIME$="1512"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="ASG"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90608"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90608                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000400000                              89617 848701"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000400000                              "
+    NOTE_DATE$="89617 "
+    NOTE_TIME$="8487"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This messsage came from the notes system.                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010000400000                              89617 848702"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="0000400000                              "
+    NOTE_DATE$="89617 "
+    NOTE_TIME$="8487"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="It was a perm note about foxplan                            "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100PARKSMIT                              89524 890300"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00PARKSMIT                              "
+    NOTE_DATE$="I90907"
+    NOTE_TIME$="1096"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="CSI"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90915"
+    MAIL_NOTE_TO_OP_CODE$="CSI"
+    FOLLOW_UP_DATE$="I90907                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100PARKSMIT                              89524 890301"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00PARKSMIT                              "
+    NOTE_DATE$="89524 "
+    NOTE_TIME$="8903"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Mary - please check the quotes which we have                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00100PARKSMIT                              89524 890302"
+    NOTE_TYPE$="001"
+    NOTE_KEY$="00PARKSMIT                              "
+    NOTE_DATE$="89524 "
+    NOTE_TIME$="8903"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="gotten for this customer.                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200AMPAD 00                              90669 993100"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00AMPAD 00                              "
+    NOTE_DATE$="I60720"
+    NOTE_TIME$="0068"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="I90612"
+    MAIL_NOTE_TO_OP_CODE$="JSC"
+    FOLLOW_UP_DATE$="I90613                "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200AMPAD 00                              90669 993101"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00AMPAD 00                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="9931"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="THIS IS LINE 1                                              "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200AMPAD 00                              90669 993102"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00AMPAD 00                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="9931"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="LINE 2                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200AMPAD 00                              90669 993103"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00AMPAD 00                              "
+    NOTE_DATE$="90669 "
+    NOTE_TIME$="9931"
+    SEQ_NUM$="03"
+    LINE_OF_MESSAGE$="LINE 3                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89557 849700"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="I90805"
+    NOTE_TIME$="1502"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89557 849701"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="89557 "
+    NOTE_TIME$="8497"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This is a test note about WISE.                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89621 852700"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="I90602"
+    NOTE_TIME$="1472"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89621 852701"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8527"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="Payments only made if appropriate detailed expense          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89621 852702"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="89621 "
+    NOTE_TIME$="8527"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="register accompany payment request!z                        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89622 838600"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="I90601"
+    NOTE_TIME$="1613"
+    SEQ_NUM$="  "
+    OPER_CODE_ADD_NOTE$="JSC"
+    PERM_TEMP_NOTE$="P"
+    MY_FOLLOW_UP_DATE$="      "
+    MAIL_NOTE_TO_OP_CODE$="   "
+    FOLLOW_UP_DATE$="                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89622 838601"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8386"
+    SEQ_NUM$="01"
+    LINE_OF_MESSAGE$="This vendor must have all checks personally approved        "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="00200WISE  00                              89622 838602"
+    NOTE_TYPE$="002"
+    NOTE_KEY$="00WISE  00                              "
+    NOTE_DATE$="89622 "
+    NOTE_TIME$="8386"
+    SEQ_NUM$="02"
+    LINE_OF_MESSAGE$="by Mr. Farquar in Acctg.                                    "
+   </RecordData>
+
+</Data>
+
+</PxTable>

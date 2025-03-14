@@ -1,0 +1,65 @@
+0010 ! ZZWIOL - Create iolist from data dictionary
+0035 REM "5.7 - 09/27/23 - 13.45285 - jvv - SSP# 307459
+0037 REM "307459-DBD-414 Change to ZZWIOL                                    
+0040 REM "Copyright 2023 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ! ^100,5 - Call/Enter String
+0105 ! Enter channel of file with internal iolist, desired variable id
+0110 ! returns iolist with variable names based on position of variable
+0115 ! in string
+0119 SETERR 1150
+0120 ENTER CHAN,VAR_ID$,RET_IOL$
+0122 IF VAR_ID$="QRY" THEN FLAG=1,VAR_ID$=""
+0125 IF NOT(CHAN) THEN EXIT 
+0126 IF POS("[OCI]"=UCS(PTH(CHAN)))<>0 THEN GOSUB GET_IOL_FROM_DICT; EXIT 
+0130 IF STP(VAR_ID$,2)="" THEN VAR_ID$="A"
+0135 IF VAR_ID$="B" THEN RET_IOL$=LST(IOL(CHAN)); EXIT ! SSP 307459
+0140 ! ^100,5 - Constants & functions
+0160 I=0,START_POS=1,IND_NUM=1
+1000 ! ^1000,5 - Main processing
+1005 ! Read thru the data dictionary associated with the file to get
+1010 ! field attributes
+1011 ! WHILE G$<>"L" - jir
+1015 DICTIONARY READ (CHAN,IND=IND_NUM,ERR=1110)A$,B$,C$,D$,E$,F$,G$
+1016 ! First field doesn't need number
+1025 IF I THEN VAR$=VAR_ID$+STR(I) ELSE VAR$=VAR_ID$
+1026 ! Look for substring or last substring
+1060 NVAR$=LST(A$),NVAR$=NVAR$(POS(" "=NVAR$)+1)
+1065 IF FLAG THEN GOSUB CHECK_MSG
+1090 ! Add to new iolist
+1091 IF RET_IOL$="" THEN RET_IOL$="IOLIST "
+1095 RET_IOL$+=NVAR$+","
+1100 IND_NUM++
+1105 GOTO 1011 ! WEND jir
+1110 ! Strip off last comma
+1115 RET_IOL$=MID(RET_IOL$,1,LEN(RET_IOL$)-1)
+1116 ! 9000,5 - Exit
+1117 ! IF WHO="jir" THEN PRINT "----------------------"
+1120 IF FLAG THEN MENS$=MID(MENS$,1,LEN(MENS$)-1),VAR_ID$=MENS$
+1150 EXIT 
+2000 CHECK_MSG:
+2010 IF STP(C$)="" THEN C$="=MSG("+QUO+B$+QUO+")"
+2020 MENS$=MENS$+C$(2)+","
+2030 RETURN 
+2040 ! 
+2050 GET_IOL_FROM_DICT:
+2055 READ DATA FROM SUB(UCS(PTH(CHAN)),";",SEP) TO PFX_CMD$,DDF_FILE$,PFX_OPT$
+2070 DDE_KEY0:IOLIST DDE_A$,DDE_B$
+2080 DDF=HFN; OPEN (DDF,ERR=*RETURN)"providex.ddf"
+2090 READ (DDF,KEY=DDF_FILE$,KNO=1,DOM=DDE_DONE)
+2100 DDF_K$=KEC(DDF,KNO=0)
+2110 DDE=HFN; OPEN (DDE,ERR=*RETURN)"providex.dde"
+2120 READ (DDE,KEY=DDF_K$,DOM=*NEXT)
+2130 NEXT_DDE:
+2140 K$=KEY(DDE,END=DDE_DONE); IF K$(1,LEN(DDF_K$))<>DDF_K$ THEN GOTO DDE_DONE
+2150 READ (DDE,KEY=K$)IOL=DDE_KEY0
+2160 RETVAL$+=DDE_A$+","
+2170 GOTO NEXT_DDE
+2180 DDE_DONE:
+2190 CLOSE (DDF),(DDE)
+2200 RET_IOL$=STP("IOLIST "+RETVAL$,1,",")
+2210 RETURN 
+2220 ! 
+9999 END 
+56002 REM "205455-Oracle - Build an IOLIST from data dictionary     
+56003 REM "307459-DBD-414 Change to ZZWIOL                                    

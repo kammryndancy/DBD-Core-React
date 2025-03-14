@@ -1,0 +1,424 @@
+0010 REM + FMP Record Conversion Program  <FMPCON>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 08/12/08 - 9.308888 - lms - SSP# 221788
+0037 REM "221788-Error 2 in FMPCON in dev data set.                          
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0110 X0$=PGN,X1$="FMP Record Conversion"
+0115 DIM A[255]; DIM Z[255] ! dimension array
+0600 SCREEN_DISPLAY:
+0601 ! Initialize and Screen Display
+0650 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0660 GOSUB BACKGROUND ! Initializes the background
+0670 IF Q1$="" THEN {
+0675 CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0
+0680 ON S0 GOTO 0900,9900
+0690  }
+0900 OPEN_FILES:
+0901 ! Open the files
+0910 GOSUB BUILD_FILE_LIST ! build Z$
+0915 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0960 GOSUB INIT_XP_FILES
+1000 PROGRAM_MAIN:
+1001 ! The Main Section of the Program
+1004 FMP_CTR=0
+1010 RESTORE 40000 ! position the read data pointer
+1020 READ DATA FMP_FILENO,FMP_FILENAME$,FMP_RECTYPE$,FMP_DESC$ ! get the FMP file info
+1025 FMP_FILENO=Z[FMP_FILENO]
+1027 GOSUB 8100
+1030 FMP_KEY$=KEF(FMP_FILENO,END=9900) ! get the first key SSP 221788
+1050 READ (FMP_FILENO,KEY=FMP_KEY$)C$ ! read the record
+1054 FMP_CTR+=1
+1055 IF MOD(FMP_CTR,T2)=1 THEN GOSUB 8150
+1060 GOSUB FMP_PROCESS ! process the FMP records
+1065 FMP_KEY$=KEY(FMP_FILENO,ERR=9900) ! get the next key
+1095 GOTO 1050 ! process the record
+6000 BACKGROUND:
+6001 ! Initializes the background
+6005 PRINT (0,ERR=*NEXT)'SB', ! set the focus to the background
+6010 GOSUB DISPLAY_DESC ! display the program description
+6020 GOSUB DISPLAY_FILE_LIST ! display the list of new files
+6165 PRINT (0,ERR=*NEXT)'SF', ! set focus to the foreground
+6195 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T2 to the reporting interval (report every T2 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",FMP_FILENO,T9,X3$,T,T2,K,B,D,S0,S1,F$
+8115 REM *** H2$=STR(T)+" # of records to do "; GOSUB 8800
+8129 REM "Set T2, we make sure T2 is > 1, because later on we MOD and look for a value of 1. IF T2 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8140 PRINT @(0,4),'CL',
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",21,10,50,T1,T,FMP_CTR
+8195 RETURN 
+8800 REM "Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+15000 FMP_PROCESS:
+15001 ! Process FMP records
+15005 A$="" ! init the string
+15010 SWITCH C$(1,1) ! record type
+15015 CASE "D" ! Customer Defaults
+15020 GOSUB CUSTOMER_DEFAULTS ! Update XPD
+15025 BREAK
+15030 CASE "T" ! Product Codes
+15035 GOSUB PRODUCT_CODES ! Update XPT
+15040 BREAK
+15045 CASE "X" ! Order Entry Special Charges
+15050 GOSUB OE_SPECIAL_CHARGES ! Update XPX
+15055 BREAK
+15060 CASE "V" ! Vendor Standards
+15065 GOSUB VENDOR_STANDARDS ! Update XPV
+15070 BREAK
+15075 CASE "Q" ! Promotion Codes
+15080 GOSUB PROMOTION_CODES ! Update XPQ
+15085 BREAK
+15090 CASE "a" ! Customer Contacts
+15095 GOSUB CUSTOMER_CONTACTS ! Update XPA
+15100 BREAK
+15105 CASE "d" ! Count Stops
+15110 GOSUB COUNT_STOPS ! Update XP7
+15115 BREAK
+15120 CASE "G" ! Reorder Groups
+15125 GOSUB REORDER_GROUPS ! Update XP8
+15130 BREAK
+15135 CASE "c" ! Customer Cost Centers
+15140 GOSUB CUST_COST_CENTERS ! Update XP9
+15145 BREAK
+15150 CASE "E" ! Customer Fiscal Year
+15155 GOSUB CUST_FISCAL_YEAR ! Update XPE
+15160 BREAK
+15165 CASE "e" ! Customer Category / Code Sets
+15170 GOSUB CUST_CAT_CODE_SETS ! Update XP4
+15175 BREAK
+15180 CASE "b" ! Art Status Flag
+15185 GOSUB ART_STATUS ! Update XPB
+15190 BREAK
+15195 CASE "C" ! Customer Price Categories
+15200 GOSUB CUST_PRICE_CATEGORIES ! Update XPC
+15205 BREAK
+15210 CASE "F" ! FOB Codes
+15215 GOSUB FOB_CODES ! Update XPF
+15220 BREAK
+15225 CASE "f" ! Customer Departments
+15230 GOSUB CUSTOMER_DEPARTMENTS ! Update XP2
+15235 BREAK
+15240 CASE "g" ! Customer Group
+15245 GOSUB CUSTOMER_GROUP ! Update XPG
+15250 BREAK
+15255 CASE "H" ! How To Ship Codes
+15260 GOSUB SHIP_CODES ! Update XPH
+15265 BREAK
+15270 CASE "h" ! RFQ Vendor Codes
+15275 GOSUB RFQ_VENDOR_CODES ! Update XP3
+15280 BREAK
+15285 CASE "I" ! Item Price Class
+15290 GOSUB ITEM_PRICE_CLASS ! Update XPI
+15295 BREAK
+15300 CASE "M" ! Freight Markup
+15305 GOSUB FREIGHT_MARKUP ! Update XPM
+15310 BREAK
+15315 CASE "P" ! Pricing Tables
+15320 GOSUB PRICING_TABLES ! Update XPP
+15325 BREAK
+15330 CASE "R" ! Customer Requisition Charges
+15335 GOSUB CUST_REQUISITION_CHARGES ! Update XPR
+15340 BREAK
+15345 CASE "S" ! Ship Via Codes
+15350 GOSUB SHIP_VIA_CODES ! Update XPS
+15355 BREAK
+15360 CASE "W" ! Vendor Product Codes
+15365 GOSUB VENDOR_PRODUCT_CODES ! Update XPW
+15370 BREAK
+15375 CASE "A" ! More Customer Defaults
+15380 GOSUB MORE_CUST_DEFAULTS ! Update XPZ
+15385 BREAK
+15390 DEFAULT ! Default Action
+15395 BREAK
+15400 END SWITCH 
+15405 RETURN 
+20000 CUSTOMER_DEFAULTS:! Customer Defaults (XPD)
+20010 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41005 ! read the FMP record
+20020 RESTORE 40005 ! position the read data pointer
+20030 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPD file info
+20040 CALL "UPDFMP;DUPLICATE_XPD",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20095 RETURN 
+20100 PRODUCT_CODES:! Product Codes (XPT)
+20110 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41010 ! read the FMP record
+20120 RESTORE 40010 ! position the read data pointer
+20130 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPT file info
+20140 CALL "UPDFMP;DUPLICATE_XPT",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20195 RETURN 
+20200 OE_SPECIAL_CHARGES:! Order Entry Special Charges (XPX)
+20210 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41015 ! read the FMP record
+20220 RESTORE 40015 ! position the read data pointer
+20230 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPX file info
+20240 CALL "UPDFMP;DUPLICATE_XPX",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20295 RETURN 
+20300 VENDOR_STANDARDS:! Vendor Standards (XPV)
+20310 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41020 ! read the FMP record
+20320 RESTORE 40020 ! position the read data pointer
+20330 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPV file info
+20340 CALL "UPDFMP;DUPLICATE_XPV",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20395 RETURN 
+20400 PROMOTION_CODES:! Promotion Codes (XPQ)
+20410 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41025 ! read the FMP record
+20420 RESTORE 40025 ! position the read data pointer
+20430 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPQ file info
+20440 CALL "UPDFMP;DUPLICATE_XPQ",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20495 RETURN 
+20500 CUSTOMER_CONTACTS:! Customer Contacts (XPA)
+20510 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41030 ! read the FMP record
+20520 RESTORE 40030 ! position the read data pointer
+20530 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPA file info
+20540 CALL "UPDFMP;DUPLICATE_XPA",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20595 RETURN 
+20600 COUNT_STOPS:! Count Stops (XP7)
+20610 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41035 ! read the FMP record
+20620 RESTORE 40035 ! position the read data pointer
+20630 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP7 file info
+20640 CALL "UPDFMP;DUPLICATE_XP7",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20695 RETURN 
+20700 REORDER_GROUPS:! Reorder Groups (XP8)
+20710 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41040 ! read the FMP record
+20720 RESTORE 40040 ! position the read data pointer
+20730 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP8 file info
+20740 CALL "UPDFMP;DUPLICATE_XP8",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20795 RETURN 
+20800 CUST_COST_CENTERS:! Customer Cost Centers (XP9)
+20810 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41045 ! read the FMP record
+20820 RESTORE 40045 ! position the read data pointer
+20830 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP9 file info
+20840 CALL "UPDFMP;DUPLICATE_XP9",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20895 RETURN 
+20900 CUST_FISCAL_YEAR:! Customer Fiscal Year (XPE)
+20910 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41050 ! read the FMP record
+20920 RESTORE 40050 ! position the read data pointer
+20930 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPE file info
+20940 CALL "UPDFMP;DUPLICATE_XPE",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+20995 RETURN 
+21000 CUST_CAT_CODE_SETS:! Customer Category / Code Sets (XP4)
+21010 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41055 ! read the FMP record
+21020 RESTORE 40055 ! position the read data pointer
+21030 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP4 file info
+21040 CALL "UPDFMP;DUPLICATE_XP4",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21095 RETURN 
+21100 ART_STATUS:! Art Status Flag (XPB)
+21110 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41060 ! read the FMP record
+21120 RESTORE 40060 ! position the read data pointer
+21130 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPB file info
+21140 CALL "UPDFMP;DUPLICATE_XPB",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21195 RETURN 
+21200 CUST_PRICE_CATEGORIES:! Customer Price Categories (XPC)
+21210 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41065 ! read the FMP record
+21220 RESTORE 40065 ! position the read data pointer
+21230 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPC file info
+21240 CALL "UPDFMP;DUPLICATE_XPC",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21295 RETURN 
+21300 FOB_CODES:! FOB Codes (XPF)
+21310 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41070 ! read the FMP record
+21320 RESTORE 40070 ! position the read data pointer
+21330 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPF file info
+21340 CALL "UPDFMP;DUPLICATE_XPF",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21395 RETURN 
+21400 CUSTOMER_DEPARTMENTS:! Customer Departments (XP2)
+21410 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41075 ! read the FMP record
+21420 RESTORE 40075 ! position the read data pointer
+21430 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP2 file info
+21440 CALL "UPDFMP;DUPLICATE_XP2",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21495 RETURN 
+21500 CUSTOMER_GROUP:! Customer Group (XPG)
+21510 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41080 ! read the FMP record
+21520 RESTORE 40080 ! position the read data pointer
+21530 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPG file info
+21540 CALL "UPDFMP;DUPLICATE_XPG",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21595 RETURN 
+21600 SHIP_CODES:! How To Ship Codes (XPH)
+21610 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41085 ! read the FMP record
+21620 RESTORE 40085 ! position the read data pointer
+21630 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPH file info
+21640 CALL "UPDFMP;DUPLICATE_XPH",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21695 RETURN 
+21700 RFQ_VENDOR_CODES:! RFQ Vendor Codes (XP3)
+21710 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41090 ! read the FMP record
+21720 RESTORE 40090 ! position the read data pointer
+21730 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XP3 file info
+21740 CALL "UPDFMP;DUPLICATE_XP3",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21795 RETURN 
+21800 ITEM_PRICE_CLASS:! Item Price Class (XPI)
+21810 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41095 ! read the FMP record
+21820 RESTORE 40095 ! position the read data pointer
+21830 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPI file info
+21840 CALL "UPDFMP;DUPLICATE_XPI",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21895 RETURN 
+21900 FREIGHT_MARKUP:
+21901 ! Freight Markup (XPM)
+21910 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41100 ! read the FMP record
+21920 RESTORE 40100 ! position the read data pointer
+21930 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPM file info
+21940 CALL "UPDFMP;DUPLICATE_XPM",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+21995 RETURN 
+22000 PRICING_TABLES:! Pricing Tables (XPP)
+22010 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41105 ! read the FMP record
+22020 RESTORE 40105 ! position the read data pointer
+22030 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPP file info
+22040 CALL "UPDFMP;DUPLICATE_XPP",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+22095 RETURN 
+22100 CUST_REQUISITION_CHARGES:! Customer Requisition Charges (XPR)
+22110 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41110 ! read the FMP record
+22120 RESTORE 40110 ! position the read data pointer
+22130 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPR file info
+22140 CALL "UPDFMP;DUPLICATE_XPR",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+22195 RETURN 
+22200 SHIP_VIA_CODES:! Ship Via Codes (XPS)
+22210 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41115 ! read the FMP record
+22220 RESTORE 40115 ! position the read data pointer
+22230 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPS file info
+22240 CALL "UPDFMP;DUPLICATE_XPS",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+22295 RETURN 
+22300 VENDOR_PRODUCT_CODES:! Vendor Product Codes (XPW)
+22310 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41120 ! read the FMP record
+22320 RESTORE 40120 ! position the read data pointer
+22330 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPW file info
+22340 CALL "UPDFMP;DUPLICATE_XPW",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+22395 RETURN 
+22400 MORE_CUST_DEFAULTS:! More Customer Defaults (XPZ)
+22410 READ (FMP_FILENO,KEY=FMP_KEY$)IOL=41125 ! read the FMP record
+22420 RESTORE 40125 ! position the read data pointer
+22430 READ DATA FILENO,FILENAME$,REC_TYPE$,DESC$ ! get the XPZ file info
+22440 CALL "UPDFMP;DUPLICATE_XPZ",Z[FILENO],A$,A{ALL},"U" ! write the record to the new file
+22495 RETURN 
+35000 DISPLAY_DESC:
+35001 ! Display the program description
+35002 ! This routine will display the programs description on the screen.
+35010 PRINT @(0,3),'CE' ! clear the screen beginning with row 3
+35020 PRINT @(0,3),"This program will copy all of the FMP records and write them to the new files."
+35025 PRINT @(0,4),"Below is a list of the FMP record types and the new files associated with each."
+35095 RETURN 
+35100 DISPLAY_FILE_LIST:
+35101 ! This routine will display the list of files.
+35105 LINE_NO=6,COLUMN_NO=40 ! set the line number, column number
+35110 PRINT @(0,LINE_NO),"Type  Name  Description" ! print the column heading
+35115 PRINT @(COLUMN_NO,LINE_NO),"Type  Name  Description" ! print the column heading
+35116 LINE_NO+=1 ! increment the line number
+35120 RESTORE 40005
+35130 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ERR=35195
+35135 PRINT @(0,LINE_NO)," "+RECTYPE$+"    "+FILENAME$+"   "+DESC$
+35140 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ERR=35195
+35145 PRINT @(COLUMN_NO,LINE_NO)," "+RECTYPE$+"    "+FILENAME$+"   "+DESC$
+35165 LINE_NO+=1 ! increment the line number
+35170 GOTO 35130
+35195 RETURN 
+38000 INIT_XP_FILES:
+38001 ! This routine will initialize all of the XP_ files.
+38010 RESTORE 40005
+38020 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ERR=38095
+38030 CALL "ZZINIT",STR(Z[FILENO]:"00")
+38050 GOTO 38020
+38095 RETURN 
+39000 BUILD_FILE_LIST:
+39001 ! This routine will read through all of the data records and 
+39002 ! build the string needed to open the files.
+39010 RESTORE 40000
+39020 READ DATA FILENO,FILENAME$,RECTYPE$,DESC$,ERR=39095
+39030 FILEFMT$=STR(FILENO:"00")+"O "+FILENAME$+"...  "
+39040 Z$+=FILEFMT$
+39050 GOTO 39020
+39095 RETURN 
+39998 ! Data Format:
+39999 ! Channel file opened on, Filename, Record Type, File Description
+40000 DATA 1,"FMP","","FMP File" ! Original File
+40005 DATA 2,"XPD","D","Customer Defaults" ! Customer Defaults
+40010 DATA 3,"XPT","T","Product Codes" ! Product Codes
+40015 DATA 4,"XPX","X","Order Entry Special Charges" ! Order Entry Special Charges
+40020 DATA 5,"XPV","V","Vendor Standards" ! Vendor Standards
+40025 DATA 6,"XPQ","Q","Promotion Codes" ! Promotion Codes
+40030 DATA 7,"XPA","a","Customer Contacts" ! Customer Contacts
+40035 DATA 8,"XP7","d","Count Stops" ! Count Stops
+40040 DATA 9,"XP8","G","Reorder Groups" ! Reorder Groups
+40045 DATA 10,"XP9","c","Customer Cost Centers" ! Customer Cost Centers
+40050 DATA 11,"XPE","E","Customer Fiscal Year" ! Customer Fiscal Year
+40055 DATA 12,"XP4","e","Customer Category/Code Sets" ! Customer Category / Code Sets
+40060 DATA 15,"XPB","b","Art Status Flag" ! Art Status Flag
+40065 DATA 16,"XPC","C","Customer Price Categories" ! Customer Price Categories
+40070 DATA 17,"XPF","F","FOB Codes" ! FOB Codes
+40075 DATA 18,"XP2","f","Customer Departments" ! Customer Departments
+40080 DATA 19,"XPG","g","Customer Group" ! Customer Group
+40085 DATA 20,"XPH","H","How To Ship Codes" ! How To Ship Codes
+40090 DATA 21,"XP3","h","RFQ Vendor Codes" ! RFQ Vendor Codes
+40095 DATA 22,"XPI","I","Item Prices Class" ! Item Price Class
+40100 DATA 23,"XPM","M","Freight Markup" ! Freight Markup
+40105 DATA 24,"XPP","P","Pricing Tables" ! Pricing Tables
+40110 DATA 25,"XPR","R","Customer Requisition Charges" ! Customer Requisition Charges
+40115 DATA 26,"XPS","S","Ship Via Codes" ! Ship Via Codes
+40120 DATA 27,"XPW","W","Vendor Product Codes" ! Vendor Product Codes
+40125 DATA 28,"XPZ","A","More Customer Defaults" ! More Customer Defaults
+41000 INIT_IOLISTS:
+41001 ! Here we build the IOLISTs for all the files.
+41005 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5] ! Customer Defaults
+41010 IOLIST A$,A[0],A[1] ! Product Codes
+41015 IOLIST A$,A[0],A[1],A[2],A[3] ! Order Entry Special Charges
+41020 IOLIST A$ ! Vendor Standards
+41025 IOLIST A$ ! Promotion Codes
+41030 IOLIST A$ ! Customer Contacts
+41035 IOLIST A$ ! Count Stops
+41040 IOLIST A$ ! Reorder Groups
+41045 IOLIST A$ ! Customer Cost Centers
+41050 IOLIST A$ ! Customer Fiscal Year
+41055 IOLIST A$ ! Customer Category / Code Sets
+41060 IOLIST A$ ! Art Status Flag
+41065 IOLIST A$ ! Customer Price Categories
+41070 IOLIST A$ ! FOB Codes
+41075 IOLIST A$ ! Customer Departments
+41080 IOLIST A$ ! Customer Group
+41085 IOLIST A$ ! How To Ship Codes
+41090 IOLIST A$ ! RFQ Vendor Codes
+41095 IOLIST A$ ! Item Price Class
+41100 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11] ! Freight Markup
+41105 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24] ! Pricing Tables
+41110 IOLIST A$,A[0],A[1],A[2],A[3],A[4] ! Customer Requisition Charges
+41115 IOLIST A$ ! Ship Via Codes
+41120 IOLIST A$,A[0] ! Vendor Product Codes
+41125 IOLIST A$,A[0],A[1],A[2],A[3] ! More Customer Defaults
+45195 RETURN 
+56000 REM + Modification History
+56002 REM "221788-Error 2 in FMPCON in dev data set.         

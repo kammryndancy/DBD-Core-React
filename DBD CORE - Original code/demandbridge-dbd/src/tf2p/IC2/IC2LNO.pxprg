@@ -1,0 +1,13 @@
+0010 REM "Assign Lot Number <IC2LNO>
+0035 REM "3.8 - 09/14/95 - 18.27 - wmz
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ENTER X3$,F0,X$
+1000 REM "Assign next Lot Number
+1020 X=0; EXTRACT (F0,KEY=X3$(9,3)+"LOT",DOM=1021)X
+1040 X=X+1; IF X>99999999 THEN X=1
+1060 WRITE (F0,KEY=X3$(9,3)+"LOT")X
+1080 X$=STR(X:"00000000")
+9900 REM 
+9910 EXIT 
+9999 END 

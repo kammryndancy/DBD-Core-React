@@ -1,0 +1,142 @@
+0010 REM "Generate AR Invoice Request Files <EC3IN2>
+0035 REM "5.7 - 10/07/19 - 17.156944 - dmm - SSP# 307209
+0037 REM "307209-DBD-71; DBSPT-66930; EC3IN2 needs AR1 Sender ID as priority 
+0040 REM "Copyright 2019 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! Will be called from AR2DUM if EC parm set for AR Invoice
+0055 ! Copied from EC3SN0 - WO233141
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,AZB_KEY$,ORDER$,CUST$,OTHER$ ! SSP282961, add CUST$
+0100 SETERR 9000
+0110 X0$="EC3IN2",X1$="Generate AR Invoice Request Files"
+0310 IOLIST EEE$
+0330 IOLIST AZB$,AZB[0],AZB[1],AZB[2],AZB[3],AZB[4],AZB[5],AZB[6],AZB[7],AZB[8],AZB[9],AZB[10],AZB[11],AZB[12],AZB[13],AZB[14],AZB[15],AZB[16],AZB[17],AZB[18],AZB[19],AZB[20],AZB[21],AZB[22],AZB[23],AZB[24],AZB[25],AZB[26],AZB[27],AZB[28],AZB[29],AZB[30]
+0340 IOLIST AZT$,AZT[0],AZT[1],AZT[2],AZT[3],AZT[4],AZT[5],AZT[6],AZT[7],AZT[8],AZT[9],AZT[10],AZT[11],AZT[12],AZT[13],AZT[14],AZT[15],AZT[16],AZT[17],AZT[18],AZT[19],AZT[20]
+0350 IOLIST EDW$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EEE...  03O AZB...  04O AZT...  05O EDW...  06O ECY...  07O ECA...  08O EC9...  09O EC6...  10O ECS...  11O AR1...  13O ZZPARM"
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 ! 
+0550 FIND (Z[13],KEY=X3$(9,3)+"XMLOUT",DOM=9900)XMLOUT$ ! Must have XMLOUT parameters
+0560 READ (Z[6],KEY=XMLOUT$(25,15),DOM=9900)ECY$
+0570 READ (Z[7],KEY=XMLOUT$(10,15),DOM=9900)ECA$
+0580 BUYER$=STP(XMLOUT$(10,15)),PASSWORD$=STP(ECA$(65,15))
+0595 ! 
+0900 DIM AZB[30],AZT[20]
+0920 NUM_LINES=0
+0930 SEPERATOR$=", "
+0950 CALL "ZZDISP","AX",ORDER$,"O/P",X3$,ORDER_NO$,"",0,0,X4$
+0995 ! 
+1000 ! Read EEE with order number, if found move on, if not we are done, unless AR1 has Sender ID
+1005 DIM AR1$(599); FIND (Z[11],KEY=CUST$,DOM=*NEXT)AR1$(1) ! SSP282961, read customer for possible 3p sender id and/or invoice all lines
+1010 READ (Z[1],KEY=ORDER$,DOM=*NEXT)IOL=0310; GOTO 1015 ! SSP282961, was DOM=9900, if no EEE then check AR1 for this customer for possible 3p Sender ID
+1011 IF AR1$(528,10)=DIM(10) THEN GOTO 9900 ELSE SENDER_ID_3P$=AR1$(528,10); GOTO 1025 ! SSP282961, no EEE record, but if AR1 has 3p Sender ID then set it and move on
+1015 IF AR1$(528,10)<>DIM(10) THEN SENDER_ID_3P$=AR1$(528,10),ORDER_ID_3P$=STP(EEE$(9,150),2); GOTO 1025 ELSE IF EEE$(9,150)=DIM(150) OR EEE$(159,10)=DIM(10) THEN GOTO 9900 ! EEE record must contain the 3P order ID and the 3P sender ID. SSP307209 we have EEE but if AR1 Sender ID set for this customer that has priority for sender ID setting.
+1020 ORDER_ID_3P$=STP(EEE$(9,150),2),SENDER_ID_3P$=EEE$(159,10)
+1025 GOSUB GET_3P_INFO
+1029 ! 
+1080 READ (Z[3],KEY=AZB_KEY$,DOM=9900)IOL=0330
+1085 INVOICE$=AZB$(7,8)
+1095 ! 
+1100 READ (Z[4],KEY=AZB_KEY$,DOM=*NEXT)
+1110 READ_AZT: AZT_KEY$=KEY(Z[4],END=1500); READ (Z[4],KEY=AZT_KEY$)IOL=0340
+1120 IF AZT_KEY$(1,17)<>AZB_KEY$ THEN GOTO 1500
+1125 IF AZT$(21,1)="M" OR AZT$(26,1)<>"Y" THEN GOTO READ_AZT ! SSP284230, new cust parm, moved the rest of this line to 1126, added check for invoice lines not displayed since they won't be used later in EC3IN1 OR AZT$(67,3)=DIM(3) OR AZT[1]<0 THEN GOTO READ_AZT ! WO264379, was <=0, will check ECS parm to see if 0 shipped allowed
+1126 IF AR1$(539,1)<>"Y" AND (AZT$(67,3)=DIM(3) OR AZT[1]<0) THEN GOTO READ_AZT ! SSP284230, if cust parm Include Credit Lines not Y then if no order line or shipped qty less than 0 then not valid line (moved from line 1125)
+1127 DIM ECS$(1000); FIND (Z[10],KEY=AZB$(18,10),DOM=*NEXT)ECS$(1) ! WO264379. SSP284230 was line 1126
+1128 IF AZT[1]=0 AND ECS$(765,1)<>"Y" THEN GOTO READ_AZT ! WO264379, only allow zero qty shipped lines if ECS parm activated. SSP284230 was line 1127
+1130 READ (Z[5],KEY=ORDER$+AZT$(67,3),DOM=*NEXT)IOL=0350; GOTO 1135 ! SSP282961, was DOM=READ_AZT, will check for customer parm that says all invoice lines and if Y then external line number not required
+1131 IF AR1$(538,1)="Y" THEN DIM EDW$(200); GOTO 1145 ELSE GOTO READ_AZT ! SSP282961, if customer all invoice lines set to Y then ok to move on without EDW else it is not ok so get next AZT
+1135 IF AR1$(538,1)<>"Y" THEN IF EDW$(35,3)=DIM(3) THEN GOTO READ_AZT ! SSP282961, if cust all inv lines not Y and no external line then get next AZT else move on
+1145 ! 
+1150 ! We have an order line, an external line number, and qty > 0 WO264379, qty may be = 0 if ECS parms says OK, SSP282961, external line number not required if cust parm all invoice lines is Y
+1155 NUM_LINES+=1
+1160 EXT_LINE$=STP(EDW$(35,3),2)
+1200 ! for this request, we just need to make sure we have at least one line that has an external line number for reporting
+1290 GOTO READ_AZT
+1500 ! create request file
+1505 IF NUM_LINES=0 THEN GOTO 9900
+1507 RND$=STR(INT(RND*1000000):"0000000")
+1510 OUT$=STP(ECY$(56,60))+DLM+STP(SUB(ECY$(176,20),"*","INVOICE_"+DTE(JUL(DAY)+((TIM+(TCB(44)/3600))/24),*:"%Y%Mz%Dz_%Hz%mz_%sz")+"_"+RND$))
+1520 OUT_TMP$=OUT$+".tmp"
+1530 ERASE OUT_TMP$,ERR=*NEXT
+1540 SERIAL OUT_TMP$,ERR=9900
+1550 OUTPUT=HFN; OPEN LOCK (OUTPUT)OUT_TMP$
+1590 ! 
+1600 ! add entries to request file
+1610 PRINT (OUTPUT)"basic=EC3IN1"
+1620 PRINT (OUTPUT)"user="+BUYER$
+1630 PRINT (OUTPUT)"password="+PASSWORD$
+1640 PRINT (OUTPUT)"template="+TEMPLATE$
+1650 PRINT (OUTPUT)"no_header=Y"
+1660 PRINT (OUTPUT)"remove_file=Y"
+1670 PRINT (OUTPUT)"send_data=Y"
+1680 PRINT (OUTPUT)"url="+URL$
+1690 PRINT (OUTPUT)"3p_order_id="+ORDER_ID_3P$
+1700 PRINT (OUTPUT)"3p_sender_id="+SENDER_ID_3P$
+1710 PRINT (OUTPUT)"display_invoice="+INVOICE$
+1720 IF AR1$(538,1)="Y" THEN PRINT (OUTPUT)"ext_lines_only=N" ELSE PRINT (OUTPUT)"ext_lines_only=Y" ! SSP282961
+1730 PRINT (OUTPUT)"azb_key="+AZB_KEY$
+1895 ! 
+1900 ! done with entries to request file
+1910 CLOSE (OUTPUT)
+1920 RENAME OUT_TMP$,OUT$,ERR=*NEXT
+1940 ! 
+1990 GOTO 5000
+1995 ! 
+5000 REM "EOJ
+5040 GOTO 9900
+5095 ! 
+7000 GET_3P_INFO:! Read EC9 for template and url
+7010 READ (Z[8],KEY=SENDER_ID_3P$+"00301",DOM=9900)EC9_00301$
+7015 TEMPLATE_FILE$=STP(ECY$(56,60),2)+DLM+STP(EC9_00301$(16,30),2)
+7020 OPEN (HFN,ERR=9900)TEMPLATE_FILE$; CHAN_1=LFO
+7025 READ RECORD (CHAN_1,END=9900)TEMPLATE$
+7030 TEMPLATE$=STP(TEMPLATE$)
+7040 CLOSE (CHAN_1)
+7045 ! 
+7050 READ (Z[8],KEY=SENDER_ID_3P$+"00302",DOM=9900)EC9_00302$
+7055 URL_FILE$=STP(ECY$(56,60),2)+DLM+STP(EC9_00302$(16,30),2)
+7060 OPEN (HFN,ERR=9900)URL_FILE$; CHAN_2=LFO
+7065 READ RECORD (CHAN_2,END=9900)URL$
+7070 URL$=STP(URL$)
+7080 CLOSE (CHAN_2)
+7090 RETURN 
+7095 ! 
+7100 GET_CARRIER_NAME:! Read EC6 for match on carrier id or name from SM4, use description as carrier name
+7105 CARRIER_NAME$="UPS" ! default
+7110 READ (Z[9],KEY=PAD(SM4$(31,6),10),DOM=*NEXT)EC6$; CARRIER_TMP$=STP(UCS(EC6$(11,30)),2); GOTO CHECK_CARRIER ! use carrier id from SM4
+7120 READ (Z[9],KEY=SM4$(37,10),DOM=*RETURN)EC6$; CARRIER_TMP$=STP(UCS(EC6$(11,20)),2); GOTO CHECK_CARRIER ! use carrier name from SM4
+7170 CHECK_CARRIER:! make sure carrier name found is valid
+7175 IF CARRIER_TMP$="UPS" OR CARRIER_TMP$="FEDEX" OR CARRIER_TMP$="USPS" THEN CARRIER_NAME$=CARRIER_TMP$
+7190 RETURN 
+7195 ! 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,1
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9190,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9190 GOSUB 6600; GOTO 9900
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9700 REM "FILES
+9740 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+9790 RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9940 EXIT 
+9999 END 
+56000 REM "233141-Ability to output an XML AR Invoice for H&R Block
+56002 REM "264379-Addt'l to WO263088; EC Cust Parm-Allow 0 qty shipped inv lns
+56004 REM "282961-add CUST$, possibly trigger by 3p sender ID in AR1   
+56006 REM "284230-FlowPoint Invoice; Include credit lines customer parameter  
+56008 REM "307209-DBD-71; DBSPT-66930; EC3IN2 needs AR1 Sender ID as priority 

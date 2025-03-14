@@ -1,0 +1,84 @@
+0010 ! <DR2EDB> Data Replication Embedded I/O for External database
+0020 OPEN_REQUEST:EXIT ! "don't do anything on open right now
+0100 ! 
+1000 POST_WRITE:! update the database
+1005 SETERR 9000
+1015 LOCAL ACCESS_MODE,KEY$,INDEX,VALUE$,FILE_NAME$,OUTPUT_PORT,OUTPUT_PORT_NAME$,DATA_REP_FILE_NAME$,DR1$,DR1_NAME$,ACTION$,ERR_MSG$
+1016 ACTION$="UPDATE"
+1020 ENTER ACCESS_MODE,KEY$,INDEX,VALUE$
+1100 ! ^100 Determine file name & open Global file if needed, on channel %DR_filename_PORT, file name opened is "DR_filename", prefix path should already be setup to point to external database
+1102 ! example of external database info needed:  OPEN (%EIO_PORT,IOL=*,OPT="KEY=GL_ACCT;REC=GL_ACCT:12+GL_ACCT_DESC:35+ACCT_TYPE:1+SUB_LEDGER:1+COST_CODE_TYPE:1+GL1_UNUSED_1:1")"[wdx][odb]test;GL1500"
+1110 GOSUB OPEN_REP_FILE
+1500 ! Write out record to the database
+1505 ! Only supports keyed files, if sort, index, or serial then extra work needed, Strip off trailing $00$ from a write record or we get error 1
+1510 VALUE_OUT$=STP(VALUE$,1,$00$) ! Strip trailing nulls or we get error 1
+1520 PROCESS_DATES:! Replace TopForm dates (class DATE-KKMMDD) with oracle formatted dates
+1525 DSTR$=FNOPT$(OUTPUT_PORT,"TFDATE=","")
+1530 WHILE DSTR$<>""
+1535 DPOS=NUM(MID(DSTR$,1,4),ERR=NEXT_DPOS)
+1537 IF STP(VALUE_OUT$(DPOS,6))="" THEN VALUE_OUT$=VALUE_OUT$(1,DPOS-1)+DIM(9)+SEP+MID(VALUE_OUT$,DPOS+6) ELSE VALUE_OUT$=VALUE_OUT$(1,DPOS-1)+UCS(FN%FMT_TFDATE$(MID(VALUE_OUT$,DPOS,6),"%Dz-%Ms-%Yz"))+SEP+MID(VALUE_OUT$,DPOS+6)
+1540 NEXT_DPOS: DSTR$=MID(DSTR$,5)
+1545 WEND 
+1550 WRITE (OUTPUT_PORT,KEY=KEY$)VALUE_OUT$; GOSUB LOG_ACTIVITY
+1990 EXIT 
+1999 ! 
+2000 POST_REMOVE:
+2005 LOCAL ACCESS_MODE,KEY$,INDEX,VALUE$,FILE_NAME$,OUTPUT_PORT,OUTPUT_PORT_NAME$,DATA_REP_FILE_NAME$,DR1$,DR1_NAME$,ACTION$,ERR_MSG$
+2006 ACTION$="DELETE"
+2008 ENTER ACCESS_MODE,KEY$,INDEX,VALUE$
+2010 GOSUB OPEN_REP_FILE
+2080 REMOVE (OUTPUT_PORT,KEY=KEY$,DOM=*NEXT,ERR=*NEXT)
+2085 GOSUB LOG_ACTIVITY
+2095 EXIT 
+2099 ! 
+3000 PROGRAM_VERIFY:! Return a string to verify this is a program
+3010 ENTER X$
+3020 X$="Write Directly to Replication Database"
+3095 EXIT 
+3099 ! 
+4000 OPEN_REP_FILE:! Set variables to id replication file & open it, get info and set log flag
+4005 FILE_NAME$=FIN(LFA,"FILENAME"),DR_FILE_NAME$=FILE_NAME$
+4007 IF MID(FILE_NAME$,1,3)="FMP" THEN FILE_NAME$="FMP"+MID(VALUE$,1,1)+MID(FILE_NAME$,4) ! If FMP, then add 1 char record type to name
+4010 OUTPUT_PORT_NAME$="%DR_"+FILE_NAME$+"_PORT"; DATA_REP_FILE_NAME$="DR_"+FILE_NAME$,DR1_NAME$="%DR_"+FILE_NAME$+"_DR1$"
+4020 IF EVN(OUTPUT_PORT_NAME$)<>0 THEN {
+4025 OUTPUT_PORT=EVN(OUTPUT_PORT_NAME$); DR1$=EVS(DR1_NAME$)
+4045  } ELSE {
+4050 OUTPUT_PORT=GFN; OPEN (OUTPUT_PORT,IOL=*)DATA_REP_FILE_NAME$
+4055 VIA OUTPUT_PORT_NAME$=OUTPUT_PORT
+4059 ! Get DR1 data and put into %DR_filename_DR1$
+4060 TMP=HFN; OPEN (TMP)"DR1"+%C$
+4065 DIM DR1$(500); FIND (TMP,ERR=*NEXT,KEY=PAD(DR_FILE_NAME$,10))DR1$
+4070 VIA DR1_NAME$=DR1$
+4075 CLOSE (TMP)
+4080  }
+4095 RETURN 
+4099 ! 
+4200 LOG_ACTIVITY:! log success or failure if logging is active, iF ERR_MSG$="" then success, else failure, msg in ERR_MSG$
+4202 ! PRINT MSG(-1)," ",ERR
+4204 LOCAL SEP$; SEP$="|"
+4205 IF DR1$(346,1)<>"Y" THEN {
+4206 ! If not logging and err_msg then use default log for now
+4210 IF ERR_MSG$<>"" THEN INVOKE "echo `date` "+QUO+" file_name="+FILE_NAME$+" key="+KEY$+" Error="+ERR_MSG$+QUO+" >> DR2EDB.log"
+4215 GOTO LOG_DONE
+4220  } ELSE {
+4260 INVOKE "echo "+QUO+FILE_NAME$+SEP$+FN%PRINT_DATETIME$(0,"%Y-%Mz-%Dz %Hz:%mz:%sz")+SEP$+ACTION$+SEP$+KEY$+SEP$+ERR_MSG$+SEP$+QUO+" >> "+"DR2EDB."+FN%PRINT_DATETIME$(0,"%Y%Mz%Dz")
+4290 LOG_DONE:
+4295 RETURN 
+4299 ! 
+5000 ! 5000 - Get option                                                       
+5010 DEF FNOPT$(LOCAL FILE_CHAN, LOCAL O$, LOCAL D$)
+5020 LOCAL X$,O
+5030 X$=FIN(FILE_CHAN,"FILENAME"); O=POS(";"=X$); IF O=0 THEN X$="" ELSE X$=X$(O)
+5040 X$=X$+";"+OPT(FILE_CHAN)+";"
+5050 O=POS(";"+UCS(O$)=UCS(X$))
+5060 IF O=0 THEN RETURN D$
+5070 X$=X$(O+1+LEN(O$))
+5080 RETURN X$(1,POS(";"=X$)-1)
+5090 END DEF
+9000 ! ^9000 Errors - send to error log and leave
+9005 ERROR_NO=ERR,LINE_NO=TCB(5)
+9010 SETERR 9050
+9020 ERR_MSG$="ERR: "+STR(ERROR_NO)+" LINE: "+STR(LINE_NO)+" PGM: "+PGN+" "+MSG(-1); GOSUB LOG_ACTIVITY
+9050 EXIT 
+9940 EXIT 
+9999 END 

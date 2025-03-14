@@ -1,0 +1,541 @@
+0010 REM "<SM2UCA> Import Scale Import File
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 11/15/23 - 10.870432 - tma - SSP# 307464
+0037 REM "307464-Remove company specific code in SM2UCA for 543              
+0040 REM "Copyright 2023 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,SEL_FILES$
+0100 SETERR 9000
+0110 X0$="SM2UCA",X1$="Import Scale Input File"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15] ! WO244750, expand SM0
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13]
+0330 IOLIST C$
+0350 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0400 IOLIST FS1$,FS1[0],FS1[1],FS1[2],FS1[3],FS1[4],FS1[5],FS1[6],FS1[7],FS1[8],FS1[9],FS1[10],FS1[11],FS1[12],FS1[13]
+0410 IOLIST SMC$,SMC[0],SMC[1],SMC[2],SMC[3],SMC[4],SMC[5],SMC[6],SMC[7],SMC[8],SMC[9],SMC[10],SMC[11],SMC[12],SMC[13],SMC[14],SMC[15] ! [212674]
+0420 IOLIST SME$,SME[0],SME[1],SME[2],SME[3],SME[4],SME[5],SME[6],SME[7],SME[8],SME[9],SME[10],SME[11],SME[12],SME[13],SME[14],SME[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O SM0... 03O FS2... 04O PO3... 05O SH1... 06O SMC...  07O FS1...  08O FMP...  13O ZZPARM 14O SHA...  15O SMI... 16O SM4...  17O SME...  " ! WO244750
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 DIM SH_PARM$(250); FIND (Z[13],KEY=X3$(9,3)+"S/H",DOM=9900)SH_PARM$(1) ! WO268495 added DIM
+0540 IFP$="",B_ORDERS$=""; IF MID(SH_PARM$,227,1)="Y" THEN IFP$="Y" ! WO 224750
+0545 SMI_MU=NUM(SH_PARM$(229,7),ERR=*NEXT) ! WO268495, % to markup vendor shipments
+0550 ORD_STP=0; READ RECORD (Z[13],KEY="S/MSTRIP"+X3$(9,3),DOM=*NEXT)SM_STRIP$; SM_STRIP$=STP(SM_STRIP$,1); IF LEN(SM_STRIP$)>11 THEN STRLIST$=SM_STRIP$(12),ORD_STP=1 ! WO248154, list of strings to strip from the order number
+0600 REM "
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 ! ^ 100 Check for FLAG file, if there wait until it is gone
+0710 REM "If flag file is blank then we don't have to check for it
+0711 FLG_FILE$=STP(SH_PARM$(175,12),3," ")
+0720 IF FLG_FILE$="" THEN IMPORT_PATH$=STP(SH_PARM$(91,60),2); IF MID(IMPORT_PATH$,LEN(IMPORT_PATH$),1)<>DLM THEN IMPORT_PATH$+=DLM END_IF ; GOTO 0790
+0721 IMPORT_PATH$=STP(SH_PARM$(91,60),2)
+0730 IF MID(IMPORT_PATH$,LEN(IMPORT_PATH$),1)<>DLM THEN IMPORT_PATH$+=DLM
+0731 FLG_FULL_NAME$=IMPORT_PATH$+FLG_FILE$
+0732 CLOSE (14); OPEN (14,ERR=0760)FLG_FULL_NAME$; CLOSE (14)
+0740 REM "If here then the file exists, give message wait a small bit then try again
+0750 PRINT @(20,21),"Waiting for Scale to Finish Updating...",; WAIT 1; PRINT @(0,21),'CL',; GOTO 0730
+0770 REM "now set flag file to block scale
+0780 SERIAL FLG_FULL_NAME$,10,0
+0790 ! 
+0900 DIM A[15] ! WO244750
+0905 TNL=60,REC_SIZE=173+TNL ! SSP 257952 NTL=New length of Tracking Number
+1000 ! ^100 "Check for import file, if found the process, else we're done
+1001 REM "If given file name only use it, if given wildcard then create list
+1005 IF POS("*"=SH_PARM$(151,12))=0 THEN FILE$=IMPORT_PATH$+STP(SH_PARM$(151,12),1),LIST$=""; GOTO 1070
+1010 LIST$="",P=POS("*"=SH_PARM$(151,12)),P1=P-1,P2=LEN(STP(SH_PARM$(151,12),1))-P,BEG$=SH_PARM$(151,P1),END$=SH_PARM$(151+P,P2)
+1015 SELECT AFILE$ FROM IMPORT_PATH$ WHERE MID(AFILE$,1,P1)=BEG$
+1017 P3=LEN(AFILE$),P4=P3-P2+1
+1020 IF MID(AFILE$,P4,P2)=END$ THEN LIST$+=IMPORT_PATH$+AFILE$+"|"
+1025 NEXT RECORD 
+1026 IF SEL_FILES$="Y" THEN CALL "ZZ2BLS;SELECT_FILES",LIST$,IMPORT_PATH$,"|" ! 264641
+1030 P=POS("|"=LIST$); IF P=0 THEN LIST$=""; GOTO 5000 ELSE FILE$=LIST$(1,P-1); LIST$=LIST$(P+1)
+1070 CLOSE (14); OPEN LOCK (14)FID(0); Z[1]=UNT; OPEN LOCK (Z[1],OPT="TEXT",ERR=5000)FILE$; CLOSE (14)
+1075 IF POS(X3$(9,3)="101288",3)>0 THEN GOSUB 3500; REM SSP 193468 SSP307430-DBD-333-DBSPT-149880
+1080 GOSUB 8100; GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0
+1110 READ (Z[1],END=5000)I$; I9=I9+1
+1111 IF POS(X3$(9,3)="101288",3)=0 THEN GOTO 1114; REM SSP 193468 SSP307430-DBD-333-DBSPT-149880
+1112 NEWKEY$="",KEY$="",OLD_REC$=""; IF POS("ADD"=I$)>0 AND POS(X3$(9,3)="101288",3)>0 THEN KEY$=I$; NEWKEY$=SUB(KEY$,"ADD","DELETE"); READ (MMF,KEY=NEWKEY$,DOM=1114)OLD_REC$; GOTO 1110 ! SSP307430-DBD-333-DBSPT-149880
+1114 I$=STP(I$,3,*$EFBBBF$); IF STP(I$,3," ")="" OR I$="" THEN GOTO 1110 ! SSP#280979
+1115 IF POS("A"=SH_PARM$(189,10))<>0 THEN GOSUB 3000 ELSE IF POS("U"=SH_PARM$(189,10))<>0 THEN GOSUB 3100
+1120 IF MOD(I9,T0)=1 THEN GOSUB 8150
+1125 I$=PAD(I$,REC_SIZE); REM "Correct length if short
+1140 DIM A$(700),A[15]; F8=0 ! WO244750
+1150 A$(1,9)=I$(1,8); REM "s/O number
+1152 A$(10,3)=I$(13,3); REM "S/O line number
+1154 GOSUB 4000; REM "Ship to code
+1155 DATE_ERR$="",TMP_DATE$=I$(97,8),TMP_DATE_FMT$="DAYFMT=MMDDYY" ! [SSP-209199], ssp 220643
+1156 CALL "*WIN/DATE",STP(TMP_DATE$,2),DATE_ERR$,TMP_DATE_FMT$ ! [SSP-209199], ssp 220643
+1157 IF LEN(STP(DATE_ERR$))>0 THEN Q$=DAY ELSE Q$=I$(97,8) ! [SSP-209199]
+1158 GOSUB 7500; A$(15,6)=Q0$; IF A$(15,2)="di" THEN A$(15,6)=X3$(21,6); REM "Shipped on date [SSP-209199]
+1159 IF LEN(STP(Q0$))<6 THEN A$(15,6)=%X3$(21,6) ! [SSP-209199]
+1160 Q$=I$(105,8); GOSUB 7550; A$(21,4)=Q0$; REM "Shipped on time
+1162 A$(25,6)=""; REM "Est Arrival
+1164 CID$=I$(71,20); GOSUB 7700; A$(31,6)=SHIP_VIA$; REM "Carrier id - Ship Method
+1166 IF STP(I$(71,20),3," ")="" THEN A$(37,12)=SH1$(8,12) ELSE IF NOT(NUL(MID(SH1$,8,12))) THEN A$(37,12)=MID(SH1$,8,12) ELSE A$(37,12)=I$(71,20); REM "Carrier name; 203359-Set carrier name to ship-via mapping desc if available
+1168 A$(49,20)=I$(48,20); REM "Tracking number
+1169 A$(383,60)=I$(173,TNL) ! sso257952 New Tracking Number
+1170 A$(69,16)=PICKUP_NUM$; REM "Pickup number SSP188149
+1172 A$(85,9)=""; REM "Zip code
+1174 A$(94,3)=I$(91,6); REM "Zone
+1176 A$(97,3)="NYN"; REM "Order updated? & P/O received? & Don'tBill?
+1177 A$(100,1)="N"; REM "Set Invoiced to 'Y' to skip invoicing & trigger removal of record in the report
+1178 A$(109,3)=I$(68,3); REM "Packer Id
+1179 A$(112,12)=I$(16,12); REM "Lot Id
+1180 A[0]=NUM(I$(123,7),ERR=1181); REM "Quantity
+1182 A[1]=NUM(I$(151,7),ERR=1183); REM "Actual weight
+1184 A[2]=NUM(I$(158,7),ERR=1185); REM "Shipping weight
+1186 A[3]=NUM(I$(165,7),ERR=1187); REM "Total cost for pkg
+1200 IF X3$(9,3)="546" THEN A$(178,15)="~"+CUST_PO$ ! 188149
+1410 REM "Set 97,1 98,1 and 100,1 (order updated, po recv, inv) if update mask from shipping parameters has a corresponding yes, MOVED 1415 TO 7605
+1450 GOSUB 7600; REM "Write out record
+1495 GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to SM2 for archiving. Erase an existing SM2 file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$=F1$; F2=POS("SM1"=F2$); IF F2=0 THEN GOTO 1995 ELSE F2$(F2,3)="SM2"
+1915 ERASE F2$,ERR=1916
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1932 IF TCB(82)>0 OR POS("Dd":MID(X3$,77,1))>0 THEN ERASE J$+DLM+F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$; GOTO 1940
+1995 GOTO 1015
+3000 REM "Process special import format into regular input format
+3005 I_OLD$=I$; DIM I$(REC_SIZE)
+3006 IF LEN(I_OLD$)<82 THEN I_OLD$=I_OLD$+DIM(82-LEN(I_OLD$))
+3010 I$(1,12)=I_OLD$(2,8); REM "Order #, ship to code
+3011 IF I$(1,2)="  " THEN I$(1,2)="00"; REM "sometimes a problem for non-divisional companies
+3012 I$(48,20)=I_OLD$(13,13),I$(68,3)=I_OLD$(26,4); REM "Tracking id , packer id
+3014 I$(71,20)=I_OLD$(30,5),I$(91,6)=I_OLD$(35,4); REM "Carrier id, zone
+3016 I$(97,8)=I_OLD$(39,8),I$(105,8)=I_OLD$(47,5); REM "Date & time
+3018 I$(151,7)=I_OLD$(52,9),I$(158,7)=I_OLD$(61,11),I$(163,7)=I_OLD$(72,10); REM "act wt, rounded wt, charges
+3095 RETURN 
+3100 REM "Take UPS comma delimited format & convert into ours
+3103 CR=POS($0D$=I$); IF CR>0 THEN I$=I$(1,CR-1); REM "SSP148532, Need to strip off carriage return before processing record, pvx only
+3104 IF MID(I$,1,11)="PICKUP_DATE" THEN EXITTO 1110; REM "Skip 1st line of text headers
+3105 I_OLD$=I$,INDEX=1; DIM I$(REC_SIZE),FIELD$[50]
+3109 REM "load comma seperated values into FIELD$ array
+3110 IPOS=POS(","=I_OLD$); IF IPOS=0 THEN FIELD$=I_OLD$,I_OLD$="" ELSE IF IPOS=1 THEN FIELD$="",I_OLD$=I_OLD$(2) ELSE FIELD$=I_OLD$(1,IPOS-1),I_OLD$=I_OLD$(IPOS+1)
+3111 IF FIELD$=QUO+QUO THEN FIELD$="" ! SSP272126
+3112 IF LEN(FIELD$)>2 THEN IF FIELD$(1,1)=QUO THEN FIELD$=FIELD$(2,LEN(FIELD$)-2)
+3114 FIELD$[INDEX]=FIELD$; INDEX=INDEX+1; IF I_OLD$<>"" THEN GOTO 3110
+3115 IF ORD_STP THEN GOSUB ORDER_NUM_STP END_IF ; GOSUB IFP_CHECK; IF LEN(FIELD$[5])<6 THEN EXITTO 1110 ELSE IF POS(X3$(9,3)="500605")>0 AND LEN(FIELD$[5])=7 THEN FIELD$[5]=FIELD$[5]+" " ELSE IF LEN(FIELD$[5])<8 THEN FIELD$[5]="00"+FIELD$[5]; REM "If len < 6 then can't be an order no, so skip it (ssp#122889) else THIS IS ORDER#, IF SHORT ADD DIVISION ON.  SSP186382, add special logic for 029, only want order numbers that are length of 6 or 7. SSP188299, 029 no longer needs this logic.  SSP191399, 802 needs special logic.!SSP#223525!ssp#232949 removed 802 from list WO 244750. WO248154, if STP parameter set, use global function to possibly strip unwanted characters from input order number
+3116 IF LEN(FIELD$[5])>8 THEN UTYPE_SHIP_POINT$=FIELD$[5](9,1),FIELD$[5]=FIELD$[5](1,8) ELSE UTYPE_SHIP_POINT$=""; REM "Capture ship point for use later if tacked on the end of the order
+3117 IF STP(FIELD$[17],3)>"" THEN FIELD$[10]=FIELD$[17] ! SSP#237231
+3118 REM "Expected order of fields is: PICKUP_DATE,WEIGHT_ACTUAL,WEIGHT_BILLABLE,ADDRESS_3,CONSIGNEE_ID,TRACKING_NO,STATUS,SERVICE_TYPE,PUBLISHED_CHG,ACCOUNT_NO, 100WEIGHT_FLAG (ssp#123192),  MARKUP CHG (ssp#125685), TOTAL SHIPMENT AMOUNT (SSP135401) WO231768
+3119 IF SH_PARM$(226,1)="Y" AND STP(FIELD$[10],3)>"" THEN GOSUB CHECK_SHA ! WO231768
+3120 GOSUB 3200; I$(151,7)=FIELD$[2],I$(158,7)=FIELD$[3]; REM "Ship date (maybe time ), actual weight,billed weight
+3121 I$(9,4)=FIELD$[4],I$(1,8)=FIELD$[5],I$(48,20)=DIM(20),I$(173,TNL)=FIELD$[6],I$(71,20)=FIELD$[8]; REM "Ship code, order #, tracking # ! SSP211490, was line 3122, moved to line 3121!"Carrier code, SSP211490, was on line 3123 added to 3121 !ssp#232503 ssp257952
+3122 IF POS(X3$(9,3)="537539541542",3)>0 THEN FIELD$[12]="",FIELD$[13]="" ELSE FIELD$[12]=STP(FIELD$[12],3,$22$),FIELD$[13]=STP(FIELD$[13],3,$22$); REM "SSP133694, SSP211490, was line 3123, moved to line 3122
+3123 IF STP(FIELD$[16],3)<>"" THEN IF STP(UCS(FIELD$[16]),3)<>"UNITEDSTATES" AND STP(UCS(FIELD$[16]),3)<>"USA" AND STP(UCS(FIELD$[16]),3)<>"US" AND STP(UCS(FIELD$[16]),3)<>"U.S.A" THEN FIELD$[9]=FIELD$[13],FIELD$[11]="Y" ! SSP#232503 !SSP#244073
+3124 IF POS(X3$(9,3)="522",3)=0 THEN IF FIELD$[11]="Y" THEN FIELD$[9]=FIELD$[13]; REM "If 100 weight shipment then set freight amount to total shipment amount, SSP211490, was line 3125, moved to line 3124  !SSP#270948
+3125 IF (FIELD$[11]="Y" OR POS(X3$(9,3)="522",3)>0) AND I$(1,8)=LAST_ORDER$ THEN GOTO 3134; REM "If this is the same as the last order then skip it, else add it to freight ssp#123192 (regardless of 100wgt flag and add markup ssp#125685), SSP132199, this was wrong since 8/4/00, should only be if 100 wgt flag is set. SSP132199, company 522 uses UPS professional and they need to always only look at the first record for an order. SSP211490, was line 3126, moved to line 3125!SSP#270948
+3126 IF (X3$(9,3)="598" AND STP(FIELD$[10],3)="70272W") OR (X3$(9,3)="595" AND STP(FIELD$[10],3)="") THEN FIELD$[7]="Y" ELSE IF X3$(9,3)="595" AND STP(FIELD$[10],3)="70272W" THEN GOTO 3128 ! SSP211490, if company 598 and specific ups account number or company 595 and blank account number, act like this is a void record, else if company 595 and specific ups account number, we don't want to set freight to 0 on line 3127, we want to process as usual.
+3127 CUST_PO$=""; IF FIELD$[14]="D" THEN FIELD$[10]="" ELSE IF POS(X3$(9,3)="021",3)=0 THEN IF STP(FIELD$[10],3)<>"" AND FIELD$[10]<>$2222$ THEN CUST_PO$=FIELD$[9],FIELD$[9]=".00"; GOTO 3134; REM "SSP133195, zero out freight of account number not blank, UPS is charging the shipto's account number, ssp136115.  Changed on 178500, corrected on 179949,188149 CUSTOM PROCESSING FOR 546.  SSP193230, if 334 and their account number then go around this line. - REMOVED PER SBB 4/26/06 LMS SEE CALL 194651
+3128 REM "CUST_PO$=""; IF X3$(9,3)="334" AND FIELD$[10]="266252" THEN GOTO *NEXT END_IF ; IF FIELD$[14]="D" THEN FIELD$[10]="" ELSE IF POS(X3$(9,3)="021",3)=0 THEN IF STP(FIELD$[10],3)<>"" AND FIELD$[10]<>$2222$ THEN CUST_PO$=FIELD$[9],FIELD$[9]=".00"; GOTO 3134; REM "SSP133195, zero out freight of account number not blank, UPS is charging the shipto's account number, ssp136115.  Changed on 178500, corrected on 179949,188149 CUSTOM PROCESSING FOR 546.  SSP193230, if 334 and their account number then go around this line.
+3130 IF FIELD$[14]="D" THEN FIELD$[50]=FIELD$[14],FIELD$[14]=""; FIELD$[9]=STP(FIELD$[9],3,$22$); FIELD$[9]=STR(NUM(FIELD$[9])*.01); FIELD$[10]=""; FIELD$[12]=STP(FIELD$[12],3,$22$); FIELD$[12]=STR(NUM(FIELD$[12])*.01); FIELD$[13]=STP(FIELD$[13],3,$22$); FIELD$[13]=STR(NUM(FIELD$[13])*.01); REM "If the file is from DHL Airborne then format the fields
+3131 IF I$(1,8)<>LAST_ORDER$ AND FIELD$[11]<>"Y" THEN I$(165,7)=STR(NUM(FIELD$[9],ERR=3132)+NUM(FIELD$[12],ERR=3132):"####.##") ELSE I$(165,7)=STR(NUM(FIELD$[9],ERR=3132):"####.##"); REM "Add Markup Chg to freight (ssp#125685) (added err=3132; 122655),Add markup only once 159311. SSP179949, if 100 wt shipment then don't add the markup charge.
+3132 IF POS(X3$(9,3)="074594",3)<>0 AND FIELD$[11]<>"Y" THEN I$(165,7)=STR(NUM(FIELD$[9],ERR=*NEXT)+NUM(FIELD$[12],ERR=*NEXT):"####.##"); REM "SSP#204207  !SSP#294469 
+3134 LAST_ORDER$=I$(1,8)
+3135 IF FIELD$[7]="Y" THEN EXITTO 1110; REM "SSP123394, STATUS="Y" means void, do not process
+3136 IF FIELD$[7]="DELETE" THEN EXITTO 1110; REM "SSP 179696 Harvey will send DELETE in field 7 to mean the same thing as a Y
+3137 IF X3$(9,3)="546" THEN PICKUP_NUM$=FIELD$[13],I$(123,7)=FIELD$[18] ELSE PICKUP_NUM$="" ! 188149
+3139 FREIGHT$=""; REM SSP 195127
+3140 IF FIELD$[15]<>"" THEN FREIGHT$=FIELD$[15]; FREIGHT$=STP(FREIGHT$,3,$22$); FREIGHT$=STP(FREIGHT$,3,$5E$); FREIGHT$=STP(FREIGHT$,3,$4D$); REM SSP 195127
+3142 ! F FIELD$[19]<>"" THEN PFF$="Y" ELSE PFF$=""; REM WO244750
+3145 RETURN 
+3200 REM "Set ship date based on 1st field in MM/DD/YY type or YYYYMMDDHHMMSS format input is FIELD$[1]
+3201 IF FIELD$[14]="D" THEN FIELD$[1]=FIELD$[1](3,2)+FIELD$[1](5,2)+FIELD$[1](1,2); REM " If the file is from DHL Airborne than format the date from YYMMDD to MMDDYY
+3204 IF LEN(FIELD$[1])=8 AND POS("/"=FIELD$[1])=0 THEN FIELD$[1]+="000000" ! SSP168376
+3205 IF POS("/"=FIELD$[1])<>0 THEN TMP$=FIELD$[1],MTH$=TMP$(1,POS("/"=TMP$)-1),TMP$=TMP$(POS("/"=TMP$)+1),DY$=TMP$(1,POS("/"=TMP$)-1),TMP$=TMP$(POS("/"=TMP$)+1),FIELD$[1]=STR(NUM(TMP$):"0000")+STR(NUM(MTH$):"00")+STR(NUM(DY$):"00")+"000000"
+3208 TMP$=FIELD$[1]; IF LEN(TMP$)<=8 THEN I$(97,8)=TMP$; GOTO 3245; REM "in MM/DD/YY format, just go on
+3210 DTMP$=TMP$(1,8),TTMP$=TMP$(9)
+3215 I$(97,8)=DTMP$(5,4)+DTMP$(3,2)
+3225 IF LEN(TTMP$)<6 THEN TTMP$=TTMP$+DIM(6-LEN(TTMP$)) ! SSP#267330
+3230 I$(105,8)=TTMP$(1,2)+":"+TTMP$(3,2)+":"+TTMP$(5,2)
+3245 RETURN 
+3500 REM "If Company 288, create memory file to allow searches on deletes ssp 193468
+3510 MMF=HFN
+3520 OPEN (MMF)"*memory*"
+3530 READ (Z[1],END=3580)I$
+3540 WRITE (MMF,KEY=I$)I$
+3550 GOTO 3530
+3580 REM CLOSE FILE AND REOPEN
+3585 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")FILE$
+3599 RETURN 
+4000 REM "Determine Shipping point code give S/O number, S/O line & shipto code
+4003 IF UTYPE_SHIP_POINT$<>"" THEN SHIPPING_POINT$=UTYPE_SHIP_POINT$; IF POS(X3$(9,3)="522029",3)>0 AND SHIPPING_POINT$="0" THEN SHIPPING_POINT$=" " END_IF ; GOTO 4040; REM "If U type processing, we got the ship_point passed back,so just use it(set in 3116)
+4004 SHIPPING_POINT$=" "; REM "Default to general shipping instructions
+4005 READ (Z[4],KEY=A$(1,9)+A$(10,3),DOM=4006)
+4010 KEY_4$=KEY(Z[4],END=4040); IF KEY_4$(1,12)<>A$(1,12) THEN GOTO 4040 ELSE READ (Z[4],KEY=KEY_4$,DOM=4010)PO3$
+4015 IF PO3$(12,4)=I$(9,4) THEN SHIPPING_POINT$=PO3$(10,1); GOTO 4040; REM "If ship to codes match then set shipping_point from her & exit
+4035 GOTO 4010
+4040 A$(13,1)=SHIPPING_POINT$
+4045 RETURN 
+5000 REM "EOJ
+5002 IF IFP$="Y" AND B_ORDERS$<>"" THEN CALL "SM2IFP;UPD_NOTEPAD",B_ORDERS$; B_ORDERS$="" ! WO 244750
+5003 IF FILE$="" THEN GOTO 5009 ELSE CLOSE (Z[1]); FILE_1$=FILE$,ARCHIVE$=FILE$+".bu",ARCHIVE_1$=FILE$+"."+DTE(JUL(0,0,0):"YYYYMMDD") ! SSP#265721
+5004 ERASE ARCHIVE$,ERR=5005; GOTO 5004
+5005 ! IF POS(X3$(9,3)="543",3)<>0 THEN COMMAND$="cp "+FILE$+" "+ARCHIVE_1$+"; cp /usr/lib/pvx/ship_in/template_file "+FILE_1$; INVOKE COMMAND$; GOTO 5009 ! SSP#265721"!SSP#307464 DBSPT-170479
+5006 IF POS(X3$(9,3)="288") THEN COMMAND$="cp "+FILE$+" "+ARCHIVE$+"; cp /usr/lib/pvx/ship_in/template_file "+FILE$; INVOKE COMMAND$; GOTO 5009; REM SSP 193802
+5007 IF POS(X3$(9,3)="455",3)<>0 THEN COMMAND$="copy "+FILE$+" "+ARCHIVE_1$; INVOKE COMMAND$ ELSE IF POS(X3$(9,3)="589603",3)<>0 THEN COMMAND$="cp "+FILE$+" "+ARCHIVE_1$; INVOKE COMMAND$ ! DBSPT-85788 SSP#307273!SSP#307464 DBSPT-170479
+5008 RENAME FILE$,ARCHIVE$,ERR=*NEXT
+5009 IF POS(X3$(9,3)="546",3)<>0 AND FILE$="/usr/lib/pvx/ship_in/default2.csv" THEN COMMAND$="cp /usr/lib/pvx/ship_in/template_file /usr/lib/pvx/ship_in/default2.csv"; INVOKE COMMAND$
+5014 IF LIST$<>"" THEN GOTO 1030
+5015 PRINT @(0,15),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Shipping Information From Scale"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7400 SET_READONLY:! SSP293040
+7410 SET_PARAM 'XI'
+7420 SET_READONLY_END:RETURN 
+7430 CLEAR_READONLY:
+7435 SET_PARAM -'XI'
+7440 CLEAR_READONLY_END:RETURN 
+7500 REM "Convert date q$ into q0$
+7501 REM "Q$ in MM/DD/YY format (1) or MMDDYY   (2)
+7505 Q0$=""
+7510 IF LEN(Q$)<8 THEN GOTO 7545 ELSE Q1$=Q$(7,2)
+7512 IF Q1$="  " THEN Q1$=Q$(5,2),TYPE$="2" ELSE TYPE$="1"; REM "SSP118269
+7515 IF Q1$<"50" THEN Q1$="20"+Q1$ ELSE Q1$="19"+Q1$
+7520 Q0$=CHR(NUM(Q1$(1,3),ERR=7521)-125)+Q1$(4,1)+Q$(1,2)
+7525 IF TYPE$="1" THEN Q0$=Q0$+Q$(4,2) ELSE IF TYPE$="2" THEN Q0$=Q0$+Q$(3,2); REM "SSP118269
+7545 RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2); X9=NUM(Q0$,ERR=*NEXT); GOTO 7595 ! SSP#267009
+7556 Q0$=DIM(4) ! SSP#267009
+7595 RETURN 
+7600 REM "Write out an A$ record
+7602 A$(124,3)="001"
+7603 IF F8>0 THEN DIM N[3]; FOR N0=1 TO 3; N[N0]=A[N0],A[N0]=0; NEXT N0; REM "If record already written once, don't duplicate the frt amount  and weights.
+7604 F9=0; IF A$(9,1)=" " THEN GOSUB 7800; REM "Get P/O code from S/O# & line # if blank
+7605 IF SH_PARM$(199,1)="Y" THEN A$(97,1)="Y" END_IF ; IF SH_PARM$(201,1)="Y" THEN A$(98,1)="Y" END_IF ; IF SH_PARM$(200,1)="Y" THEN A$(100,1)="Y" END_IF 
+7606 IF NUL(A$(324,4)) THEN A$(324,4)=FN_REC_NUM$(Z[2]) ! If nul rec_number then get next rec_num from file
+7608 WCHL=Z[2]; IF IFP$="Y" AND PFF$="Y" THEN GOSUB CHECK_VENDOR_FREIGHT; WCHL=Z[15]; GOTO 7615 ! WO244750
+7610 GOSUB 8350; IF WRITE$="YES" THEN GOSUB 8550; GOSUB UPDATE_SMC_SHIP_DATE; IF WRITE$="YES" THEN A$(194,40)=MESSAGE$; MESSAGE$="",A[3]=0,WRITE$="" ! WO247884, added GOSUB UPDATE_SMC_SHIP_DATE
+7615 WRITE (WCHL,KEY=A$(1,13)+A$(124,3),DOM=7620)IOL=0310; GOTO 7640 ! WO244750
+7618 REM "Increment sequence number and try again until no dup
+7620 A$(124,3)=FN%INCR$(A$(124,3)); GOTO 7615 ! STR(NUM(A$(124,3))+1:"000") ! 291110 - Use increment function
+7640 IF F9=1 THEN A$(9,1)=" "; REM "F9=1 means the p/o code was blank and we fixed it for this line, so set it back to blank for any further processing
+7641 IF F8=0 THEN F8=1 ELSE FOR N0=1 TO 3; A[N0]=N[N0]; NEXT N0; REM "If first time set F8 flag, else restore frt and weight amounts.
+7642 REM DIM FS1[13]; READ (Z[7],KEY=I$(1,8),DOM=7699)IOL=0400; REM SSP 195127
+7643 REM DIM SMC[3]; READ (Z[6],KEY=FS1$(6,10),DOM=7699)SMC$,SMC[0],SMC[1],SMC[2]; REM SSP 195127
+7650 REM "GOSUB 8400; REM SSP 195127
+7699 RETURN 
+7700 REM "Lookup CID$ in SH1$ to get 1 charcter Ship via code (SHIP_VIA$), IF NOT found then just return CID$ in SHIP_VIA$
+7705 SHIP_VIA$=CID$; DIM SH1$(25),CID_KEY$(6); CID_KEY$(1)=CID$
+7710 FIND (Z[5],KEY=CID_KEY$,DOM=7711)SH1$; SHIP_VIA$=SH1$(7,1); GOTO 7712
+7711 CID_KEY$(1)="UOL,"+CID_KEY$; FIND (Z[5],KEY=CID_KEY$,DOM=7712)SH1$; SHIP_VIA$=SH1$(7,1); REM "UPS has UOL, on front code
+7745 RETURN 
+7800 REM "fill in P/O code from Sales order # and sales order line #
+7810 FIND (Z[3],KEY=A$(1,8)+A$(10,3),DOM=7845)IOL=0330
+7830 A$(9,1)=C$(9,1),A$(98,1)="N",F9=1; REM "F9 means we fixed the p/o code
+7845 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8113 CALL "ZZ2FNC;SERIALRECCNT",Z[1],T
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8351 DIM FS1[13]; READ (Z[7],KEY=I$(1,8),DOM=8499)IOL=0400; REM SSP 195127
+8355 DIM SMC[16]; READ (Z[6],KEY=FS1$(6,10),DOM=8499)IOL=0410; REM SSP 195127 [212674]
+8357 GOSUB DETERMINE_FREIGHT_DISCOUNT ! [212674]
+8360 CARRIER$="12345678DHIJKLST"; REM SSP 195127
+8361 IF STP(FIELD$[10],3,$22$)<>"" THEN GOTO 8499; REM SSP 211144,216769
+8362 ! IF POS(STP(FIELD$[8])=CARRIER$,1)=0 THEN GOTO 8499; REM SSP 195127 SSP259330
+8400 READ (Z[3],KEY=FS1$(118,8),DOM=*NEXT)
+8401 FS2_KEY$=KEY(Z[3],END=8408); READ (Z[3])
+8402 IF FS2_KEY$(1,8)<>FS1$(118,8) THEN GOTO 8408
+8403 DIM FS2[29]; READ (Z[3],KEY=FS2_KEY$)IOL=0350
+8404 IF FS2$(233,1)<>"S" THEN GOTO 8401
+8405 DIM FMP[3]; READ (Z[8],KEY="X"+FS2$(19,10),DOM=8499)FMP$,FMP[0],FMP[1],FMP[2]
+8406 GOSUB 8500; REM IF FS2$(233,1)="S" AND FMP$(61,1)="Y" THEN FS2[6]=FS2[6]+NUM(FREIGHT$)*(1-SMC[0]/100),FS2[3]=FS2[3]+NUM(FIELD$[9]) ELSE IF FS2$(233,1)="S" AND FMP$(61,1)<>"Y" THEN FS2[6]=FS2[6]+NUM(FREIGHT$)*(1-SMC[0]/100),FS2[3]=FS2[3]+NUM(FIELD$[9]),FS2[1]=FS2[1]+NUM(FIELD$[9]),FS2[4]=FS2[4]+NUM(FREIGHT$)*(1-SMC[0]/100)
+8407 WRITE (Z[3],KEY=FS2$(147,8)+FS2$(6,3))IOL=0350; WRITE$="YES"; GOTO 8490
+8408 DIM FS2$(356),FS2[29]
+8409 IF MID(SMC$,11,10)=DIM(10) THEN GOTO 8499; REM SMC$(11,10)="FRT"+DIM(7); REM If no special charge code in customer default record, use FRT
+8410 DIM FMP[3]; READ (Z[8],KEY="X"+SMC$(11,10),DOM=8499)FMP$,FMP[0],FMP[1],FMP[2]
+8412 FS2$(147,8)=FS1$(118,8); REM Order Number
+8414 FS2$(3,1)="Y"; REM "Order complete?
+8416 FS2$(4,1)="Y"; REM "Fixed Price
+8418 FS2$(5,1)=" "; REM "Customer Form Line Type
+8420 FS2$(6,3)="001"; REM "Order Line Number
+8422 FS2$(9,1)=A$(9,1); REM "PO Code
+8423 FS2$(14,1)="N"
+8424 FS2$(18,1)="N"; REM Special shipping
+8426 FS2$(19,10)=SMC$(11,10); REM Special Charge code
+8428 FS2$(156,5)="SI"; REM "Print Flags
+8430 FS2$(161,10)=DIM(10); REM Customer for customer specific inventory
+8432 FS2$(171,12)=DIM(12); FS2$(183,6)=DIM(6); REM "Vendor job number and date
+8434 FS2$(155,1)="S"; REM "Special Charge
+8436 FS2$(136,1)=FS1$(86,1); REM "Taxable
+8437 FS2$(94,10)=SMC$(21,10); REM "Vendor Code
+8438 FS2$(128,5)=FS1$(97,5); REM "Commission Code
+8439 FS2$(120,4)=FMP$(55,4); REM "UOM
+8440 FS2$(4,1)="Y"; REM " Fixed Price
+8441 FS2$(124,4)=FMP$(55,4); REM "UOM
+8442 FS2$(14,1)=""; REM " Custom
+8444 FS2$(18,1)="N"; REM " Special Shipping
+8446 REM "FS2$(10,4)="0001";REM " Last Warehouse
+8448 FS2$(50,40)=FMP$(12,40); REM " Special Charge Description
+8450 FS2$(29,3)=FMP$(52,3); REM " Product Code
+8451 FS2$(233,1)="S"; REM Created by Shipping System
+8452 FS2$(133,1)=FMP$(59,1); REM " Keep Order History
+8454 FS2[0]=0,FS2[10]=0; REM " Clear Open and Original Qty
+8456 FS2[2]=1; FS2[5]=1,FS2[6]=0
+8457 IF NUM(FREIGHT$)*(1-FRT_PCT/100)<NUM(FIELD$[9]) THEN FS2[6]=NUM(FIELD$[9]) ELSE FS2[6]=NUM(FREIGHT$)*(1-FRT_PCT/100) ! [212674]
+8458 FS2[3]=0,FS2[1]=0; FS2[3]=NUM(FIELD$[9]),FS2[1]=0
+8459 IF MID(FMP$,61,1)="Y" THEN GOTO 8465
+8460 FS2[1]=FS2[3],FS2[4]=FS2[6],FS2[0]=1
+8465 WRITE (Z[3],KEY=FS2$(147,8)+FS2$(6,3),DOM=8470)IOL=0350; WRITE$="YES"; GOTO 8490
+8470 FS2$(6,3)=STR(NUM(FS2$(6,3))+1:"000")
+8480 GOTO 8465
+8490 DIM FS2[29],FS2$(356)
+8499 RETURN 
+8500 REM "Check to see if using Field 9 or Freight$
+8505 IF NUM(FREIGHT$)*(1-FRT_PCT/100)<NUM(FIELD$[9]) THEN GOTO 8515 ! [212674]
+8510 IF FS2$(233,1)="S" AND FMP$(61,1)="Y" THEN FS2[6]=FS2[6]+NUM(FREIGHT$)*(1-FRT_PCT/100),FS2[3]=FS2[3]+NUM(FIELD$[9]) ELSE IF FS2$(233,1)="S" AND FMP$(61,1)<>"Y" THEN FS2[6]=FS2[6]+NUM(FREIGHT$)*(1-FRT_PCT/100),FS2[3]=FS2[3]+NUM(FIELD$[9]),FS2[1]=FS2[1]+NUM(FIELD$[9]),FS2[4]=FS2[4]+NUM(FREIGHT$)*(1-FRT_PCT/100) ! [212674]
+8512 GOTO 8549
+8515 IF FS2$(233,1)="S" AND FMP$(61,1)="Y" THEN FS2[6]=FS2[6]+NUM(FIELD$[9]),FS2[3]=FS2[3]+NUM(FIELD$[9]) ELSE IF FS2$(233,1)="S" AND FMP$(61,1)<>"Y" THEN FS2[6]=FS2[6]+NUM(FIELD$[9]),FS2[3]=FS2[3]+NUM(FIELD$[9]),FS2[1]=FS2[1]+NUM(FIELD$[9]),FS2[4]=FS2[4]+NUM(FIELD$[9])
+8549 RETURN 
+8550 REM SET THE MESSAGES
+8551 IF NUM(FREIGHT$)*(1-FRT_PCT/100)<NUM(FIELD$[9]) THEN GOTO 8565 ! [212674]
+8560 MESSAGE$="Order Line C $"+STR(NUM(FIELD$[9]):"#,###.00-")+"/ P $"+STR(NUM(FREIGHT$)*(1-FRT_PCT/100):"#,###.00-"); A[3]=0 ! [212674]
+8561 GOTO 8579
+8565 MESSAGE$="Order Line C $"+STR(NUM(FIELD$[9]):"#,###.00-")+"/ P $"+STR(NUM(FIELD$[9]):"#,###.00-"); A[3]=0
+8579 RETURN 
+8600 CHECK_SHA:! WO231768, Optional Inbound Shipper ID file, only process records if matching shipper ID, if C (customer) type then process as usual, if D (distributor) type then blank out shipper ID and process
+8610 SHA_KEY$=PAD(FIELD$[10],30)
+8615 DIM SHA$(191); READ (Z[14],KEY=SHA_KEY$,DOM=*NEXT)SHA$(1); GOTO 8625
+8620 EXITTO 1110 ! For non-blank shipper IDs, but not found in the SHA file, don't process this record
+8625 IF SHA$(31,1)="D" THEN FIELD$[10]="" ! If found and D type then blank out the shipper ID and process
+8640 RETURN 
+8645 ! 
+8650 UPDATE_SMC_SHIP_DATE:! WO247884/288, update SM0 ship date, provided it's not blank, to SMC Ship Date in FS1, will be retrieved later in manual invoice entry for ARB ship date.  This logic is only triggered if customer has SMC record and it contains special charge code for FS2 freight line creation.  Always update since there may be multiple shipments and/or invoices for the order.
+8655 IF A$(15,6)=DIM(6) THEN RETURN 
+8660 EXTRACT RECORD (Z[7],KEY=A$(1,8),DOM=*RETURN)FS1_REC$
+8665 FS1_REC$(367,6)=A$(15,6)
+8670 WRITE RECORD (Z[7],KEY=A$(1,8))FS1_REC$
+8690 RETURN 
+8695 ! 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 CLOSE (MMF,ERR=*NEXT); REM CLOSE MEMORY FILE
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9911 ! CLEAR FLAG FILE
+9920 IF FLG_FILE$<>"" THEN ERASE FLG_FULL_NAME$,ERR=*NEXT
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 DEF FN_REC_NUM$(LOCAL CHANNEL) ! Set 319,4, RECORD_NUMBER based on next record available
+10005 LOCAL CURKNO,LAST_REC_NUM$,REC_NUM$
+10010 DIM LAST_REC_NUM$(4),REC_NUM$(4)
+10015 CURKNO=NUM(FIN(CHANNEL,"CURKNO",ERR=FN_RN_END),ERR=FN_RN_END)
+10020 LAST_REC_NUM$(1)=KEL(CHANNEL,KNO=2,ERR=FN_RN_END)
+10025 IF NUL(LAST_REC_NUM$) THEN DIM LAST_REC_NUM$(LEN(LAST_REC_NUM$),$00$) ! if blank then set to nulls to trigger getting lowest possible key
+10030 REC_NUM$(1)=FN%NEXT_SEQ$(LAST_REC_NUM$,0)
+10035 XTMP$=KEY(CHANNEL,KNO=CURKNO,ERR=FN_RN_END) ! Reset current key number
+10090 FN_RN_END:RETURN REC_NUM$
+10095 END DEF
+10099 ! **********************************************************
+12000 DETERMINE_FREIGHT_DISCOUNT:! [212674]-added routine
+12002 ! This routine will check the weight of the item against the
+12004 ! the weight breaks from SMC to determine if the Base Freight
+12006 ! Discount is to be used or if one of the Weight Breaks Discount
+12008 ! Percent is to be used.
+12010 GOSUB CHECK_SME ! WO275379, if SME then use that discount instead
+12030 FRT_PCT=SMC[0] ! set to the base percent
+12100 IF A[2]>0 THEN {! if there is a weight, ends at line 12150
+12110 TMP_VAR=1 ! set a temporary variable
+12115 FOR AB=1 TO 5 ! loop through weight breaks
+12120 IF SMC[TMP_VAR]>0 AND A[2]>=SMC[TMP_VAR] AND (A[2]<=SMC[TMP_VAR+1] OR SMC[TMP_VAR+1]=0) THEN {! ends at line 12135 [ssp216769]
+12125 FRT_PCT=SMC[TMP_VAR+2] ! set the freight percent to the break percent
+12130 AB=5 ! set the counter to exit the for...next loop
+12135  } ! begins at line 12120
+12140 TMP_VAR=TMP_VAR+3 ! increment the tempoaray variable by 3
+12145 NEXT AB
+12150  } ! begins at line 12100
+12195 RETURN 
+12199 ! **********************************************************
+12200 CHECK_SME:! WO275379, SME is by customer/ship via, which has priority over discount in SMC. Use the carrier ID if not blank, else read for ship via in order's gen ship record, find possible SME record, write into SMC matching buckets.
+12205 IF A$(31,1)<>DIM(1) THEN SV$=A$(31,1); GOTO 12220 ! Use ship via found from carrier ID SH1 mapping
+12210 DIM GEN$(428); FIND (Z[4],KEY=A$(1,8)+DIM(5),DOM=*RETURN)GEN$(1)
+12215 IF GEN$(150,1)=DIM(1) THEN RETURN ELSE SV$=GEN$(150,1)
+12220 DIM SME$(311),SME[15]; FIND (Z[17],KEY=FS1$(6,10)+SV$,DOM=*RETURN)IOL=0420
+12230 FOR X=0 TO 15
+12235 SMC[X]=SME[X]
+12240 NEXT X
+12290 RETURN 
+12295 ! 
+12500 IFP_CHECK:! [WO244750]
+12510 IF FIELD$[19]="Y" THEN PFF$="Y" ELSE PFF$=""; REM WO244750
+12525 IF IFP$="Y" AND PFF$="Y" THEN GOTO *NEXT ELSE RETURN 
+12530 FORD$=FIELD$[5]
+12535 IF STP(FORD$,2)="" THEN FORD$="IN"+DTE(0:"%Yz%Mz%Dz"); GOTO END_IFP_CHECK ! SSP272770, was FORD$="INVALID "
+12540 IF POS("-"=FORD$)>0 THEN FORD$=STP(FORD$,3,"-")
+12550 ! SSP301240, for inbound freight do not prefix with "00" if length of order number is 6, might be valid order but not the intended orderIF LEN(FORD$)=6 THEN FORD$="00"+FORD$; GOTO END_IFP_CHECK
+12555 IF FORD$=QUO+""+QUO THEN FORD$="IN"+DTE(0:"%Yz%Mz%Dz") ! ssp 247785
+12560 FORD$=PAD(FORD$,8)
+12575 END_IFP_CHECK:
+12580 FIELD$[5]=FORD$,FIELD$[4]="",FIELD$[10]=""
+12590 RETURN 
+12599 ! 
+13000 CHECK_VENDOR_FREIGHT:! [244750]
+13002 ! This routine is called if the PO Based Freight indicator set to "Y".
+13004 ! The SMI file will be updated accordingly.
+13005 A$(339,1)="Y" ! Inbound Freight Flag
+13010 IF STP(FIELD$[20],3)<>"" THEN A$(194,40)=FIELD$[20] ! WO244750
+13020 IF STP(FIELD$[21],3)<>"" THEN SID$=FIELD$[21]; CALL "SM2IFP;VENDOR_MAP",Z[14],SID$,VCODE$; A$(342,10)=VCODE$,A$(352,30)=SID$ ! WO244750
+13025 A[14]=A[3] ! WO268495, set ORIG_FRT field
+13040 GOSUB SET_READONLY; DIM FS1[13]; READ (Z[7],KEY=A$(1,8),DOM=*NEXT)IOL=0400; GOSUB CLEAR_READONLY; GOTO CHECK_FOR_DUPL ! SSP293040
+13041 GOSUB CLEAR_READONLY ! SSP293040
+13045 A$(341,1)="Y"; GOTO END_VENDOR_FREIGHT ! Invalid Order Number
+13050 CHECK_FOR_DUPL:! WO 259463
+13060 ALT_KEY$=A$(383,60)+A$(1,8)+"",TKLEN=68
+13065 READ (Z[15],KEY=ALT_KEY$,KNO=4,DOM=*NEXT)
+13070 TKEY$=KEY(Z[15],END=*NEXT); IF MID(TKEY$,1,TKLEN)=MID(ALT_KEY$,1,TKLEN) THEN A$(443,1)="Y"; GOTO END_VENDOR_FREIGHT
+13075 READ (Z[16],KEY=ALT_KEY$,KNO=4,DOM=*NEXT)
+13080 TKEY$=KEY(Z[16],END=*NEXT); IF MID(TKEY$,1,TKLEN)=MID(ALT_KEY$,1,TKLEN) THEN A$(443,1)="Y"; GOTO END_VENDOR_FREIGHT
+13090 IF SMI_MU<>0 THEN GOSUB CALC_SMI_MU ! WO268495, calc markup for whse shipments
+13110 CHECK_B_TYPE:
+13120 IF FS1$(54,1)="B" THEN GOTO *NEXT ELSE GOSUB CHECK_ORDER_TYPE; GOTO END_VENDOR_FREIGHT ! WO 246651
+13125 A$(340,1)="Y" ! B type Order
+13130 B_ORDNO$=A$(1,8); IF B_ORDERS$="" THEN B_ORDERS$=B_ORDERS$+B_ORDNO$
+13140 IF POS(B_ORDNO$=B_ORDERS$,8)=0 THEN B_ORDERS$+=B_ORDNO$
+13150 END_VENDOR_FREIGHT:
+13160 RETURN 
+13200 ORDER_NUM_STP:! WO248154 - strip from order number field based on parameter setting
+13210 INSTR$=FIELD$[5]
+13220 STP_ORD$=FN%STP$(INSTR$,STRLIST$,1,SEP)
+13230 FIELD$[5]=STP_ORD$
+13240 RETURN 
+13245 ! 
+13300 CHECK_ORDER_TYPE:! WO246651
+13305 REL_TYPE=0; DIM FS2[29]
+13308 IF POS(FS1$(54,1)="RW")<>0 THEN REL_TYPE=1; GOTO EXIT_ORDER_TYPE
+13310 READ (Z[3],KEY=FS1$(118,8),DOM=*NEXT)
+13315 READ_NEXT_FS2:
+13320 FS2_KEY$=KEY(Z[3],END=EXIT_ORDER_TYPE); READ (Z[3],KEY=FS2_KEY$)IOL=0350
+13330 IF FS2_KEY$(1,8)<>A$(1,8) THEN GOTO EXIT_ORDER_TYPE
+13350 IF FS2$(9,1)<>" " AND FS2$(94,10)=VCODE$ THEN REL_TYPE=0; GOTO EXIT_ORDER_TYPE
+13355 IF STP(VCODE$,2)="" OR STP(SID$,2)="" THEN GOTO NO_VENDOR
+13360 IF FS2$(9,1)=" " OR (FS2$(9,1)<>" " AND FS2$(94,10)<>VCODE$ AND STP(VCODE$,2)<>"") THEN REL_TYPE=1
+13390 GOTO READ_NEXT_FS2
+13400 NO_VENDOR:
+13410 IF FS2$(9,1)<>" " THEN REL_TYPE=0; GOTO EXIT_ORDER_TYPE
+13420 REL_TYPE=1
+13460 GOTO READ_NEXT_FS2
+13470 EXIT_ORDER_TYPE:
+13480 IF REL_TYPE=1 THEN A$(382,1)="Y" ELSE A$(382,1)=""
+13490 RETURN 
+13500 CALC_SMI_MU:! WO268495-IFP-add markup to whse shipments
+13505 MU_TO_APPLY=SMI_MU; GOSUB CHECK_SMC_MU; IF SMC_MU=-99.99 THEN RETURN ELSE IF SMC_MU<>0 THEN MU_TO_APPLY=SMC_MU ! WO268886, check for customer override in SMC, if -99.99 then bypass markup else if non-zero then use it instead of system markup setting
+13510 IF FS1$(54,1)="B" THEN MU=1; GOTO APPLY_MU ! B type order, apply markup every time.
+13515 ! if not B type, then read order lines and find a match for this vendor, with a PO code, then if special shipping check that and see if any to D-9000 type and if so then the markup applies.
+13520 MU=0; READ (Z[3],KEY=A$(1,8),DOM=*NEXT)
+13525 CHECK_FS2: FS2K$=KEY(Z[3],END=APPLY_MU); IF FS2K$(1,8)<>A$(1,8) THEN GOTO APPLY_MU
+13530 READ (Z[3],KEY=FS2K$,DOM=CHECK_FS2)CHECK_FS2$
+13535 IF CHECK_FS2$(9,1)=DIM(1) THEN GOTO CHECK_FS2 ! only if PO code
+13540 IF CHECK_FS2$(18,1)<>"Y" THEN GOTO CHECK_FS2 ! only special shipping
+13545 IF CHECK_FS2$(94,10)<>A$(342,10) THEN GOTO CHECK_FS2 ! match vendor
+13550 ! have FS2 with PO code, spec shipping and match on vendor so check PO3 and see if any shipping to D-9000 types
+13555 READ (Z[4],KEY=FS2K$(1,8)+DIM(1)+FS2K$(9,3),DOM=*NEXT)
+13560 CHECK_PO3: PO3K$=KEY(Z[4],END=CHECK_FS2); IF PO3K$(1,12)<>FS2K$(1,8)+DIM(1)+FS2K$(9,3) THEN GOTO CHECK_FS2
+13565 READ (Z[4],KEY=PO3K$,DOM=CHECK_PO3)CHECK_PO3$
+13570 IF MID(CHECK_PO3$,11,2)="D9" THEN MU=1; GOTO APPLY_MU ! found special ship record for this line that is shipping to whse so apply markup
+13575 GOTO CHECK_PO3
+13580 ! 
+13585 APPLY_MU:
+13590 IF MU THEN A[13]=A[3]*MU_TO_APPLY/100; A[3]+=A[13] ! calc markup and put in new MARKUP_AMT field, then add it to the TOTAL_FRT. WO268886, use MU_TO_APPLY rather than SMI_MU.
+13595 RETURN 
+13599 ! 
+13600 CHECK_SMC_MU:! WO268886
+13605 SMC_MU=0
+13610 DIM SMC_MU$(355); FIND (Z[6],KEY=FS1$(6,10),DOM=*RETURN)SMC_MU$(1)
+13615 SMC_MU=NUM(SMC_MU$(32,7),ERR=*RETURN)
+13645 RETURN 
+13649 ! 
+56000 REM "189013-Multiple problems due to NT
+56010 REM "191399-Need change to SM2UCA we did for 029 related to field 5 in
+56015 REM "193230-Mod to SM2UCA, if field 10 is Macorp's account number, then
+56016 REM "193468-Voided Tracking Numbers pulled in during Invoice Batch
+56017 REM "SSP 195127 add new field for Harvey shipping standard cost
+56018 REM "203359-The carrier_name is currently set to just the ship_via code
+56019 REM "203955-Request to change Shipping system - if field[9] less than
+56020 REM "204207-Credit Card invoices coming through the gateway are not
+56025 REM "209199-ICF table column name mismatch between Oracle and TopForm
+56028 ! 211490-Mods for 595 and 598, triggered by specific account number
+56030 REM "212674-Add more freight discounts based on weight.
+56032 REM "216769-Customer SHipping Weight Breaks problem. If the weight being
+56033 REM "220643-Problem with UPS Gateway - pulling in only one line of      
+56034 REM "223525-Importing tracking numbers from UPS and DHL are skipping     orders (ord# < 8 characters)
+56036 REM "231768-New SHA file to record Level One related account numbers.
+56037 REM "232503-UPS changes to be made to handle Canadian shipments.        
+56038 REM "244073-Need to make Canadian shipments act like a hundred weight   
+56040 REM "244750-Inbound Freight processing in the Customer Invoicing Gateway
+56042 REM "247785-Inbound Freight Process - invalid order "" has 999 sequences
+56044 REM "248154-CIG; Program to enter strings of data to remove from the    
+56046 REM "247884-New order header field for ship date during CIG provided the
+56047 REM "246651-Additional to WO244750 - CIG Inbound Freight Processing     
+56048 REM "257952-Need larger tracking number field to replace 20 character   
+56049 REM "259463-Inbound Freight; Add logic to first check for dup tracking  
+56050 REM "264641-Customer Invoicing GW; Add option to select which file(s) to
+56051 REM "265721-Shipping gateway needs to be modified to handle both UPS and
+56052 REM "267009-Invoicing gateways pulling in invalid characters into       
+56053 REM "267330-PE(047, SM2UCA-3230) when in CIG                            
+56054 REM "268495-Inbound Frt: add markup to frt amt for vendor whse shipments
+56056 REM "268886-Additional to WO268495; Customer default, bypass IFP Markup 
+56057 REM "270948-Issue with second line of freight in Shipping Gateway       
+56058 REM "272126-See 266259; SM2UCA triggering hundred wt flag for field 16  
+56060 REM "272770-Inbound Frt;8/19/14 UPS data change affected blank ord nums.
+56062 REM "275379-Freight Discounts entered by customer.  Need this by cust   
+56063 REM "280979-Error occurered while importing the shipping information    
+56064 REM "293040-Inbound Freight Journal; add readonly logic for getting the 
+56065 REM "291110-Modify SM files three character BOX_NUMBER to sequence using
+56066 REM "301240-IBF; vendor enters order number w/o division, prg prefix 00 
+56067 REM "307273-DBSPT-85788 Customer Invoicing Gateway File renames for 589  and 603
+56068 REM "307430-DBD-333;Add 101 to some of 288's company specfic code       
+56069 REM "307464-Remove company specific code in SM2UCA for 543              

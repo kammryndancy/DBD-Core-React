@@ -1,0 +1,29 @@
+0010 REM "Write Graphics Image <ZZGRPW>
+0030 REM "(C) 1985,1986,1987 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "This software contains trade secrets and proprietary information"
+1020 ENTER X3$,A1$,G0$,F0
+1100 REM "
+1120 CLOSE (14); OPEN (14)"ZZPARM"
+1130 FIND (14,KEY="GRCTRL")C$
+1200 REM "
+1220 FOR X=0 TO 5
+1230 X$=C$(8+X*8,8); IF POS(" "<>X$)=0 THEN GOTO 1290
+1235 PRINT @(12,22),"Creating graphics image for key: ",A1$," terminal: ",C$(8*X+8,8),
+1240 FIND (14,KEY="GR"+X$+" ")C0$
+1250 GOSUB 2000
+1255 K$=A1$+STR(X:"0")
+1260 WRITE (F0,KEY=K$)K$,Q9$
+1290 NEXT X
+1295 PRINT @(0,22),'CL',
+1400 REM "
+1950 GOTO 9900
+1990 REM 
+2000 REM "Exchange chars and create print image for term type X$
+2010 G$=G0$
+2020 CALL "ZZ2ASG",X3$,G$,C0$,2,""
+2040 CALL "ZZ2MNP",G$,Q9$,0,0,0-1
+2080 CLOSE (14); OPEN (14)"ZZPARM"
+2090 RETURN 
+9900 REM 
+9950 EXIT 
+9999 END 

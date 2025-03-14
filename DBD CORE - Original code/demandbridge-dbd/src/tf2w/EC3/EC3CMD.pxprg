@@ -1,0 +1,71 @@
+0010 REM "Log Msg/Email using ZZ2CMD <EC3CMD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 10/05/04 - 15.222777 - dmm - SSP# 176229
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! This program will be called to log a message to the server log or send an email using ZZ2CMD.  The email part will be modeled after EC3STS, server restart email.  First use of this program is SSP176229. ACTION$=L (log msg), ACTION$=E (send email).  See each section for what is required to send in.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC${ALL},ACTION$,MESSAGE$,SUBJECT$,EMAIL$,SESSIONID$,OTHER$,RETURN_CODE
+0100 SETERR 9000
+0110 X0$="EC3CMD",X1$="Log Msg/Email using ZZ2CMD"
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O XXX...  "
+0520 ! CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9200
+0595 ! 
+0900 ON POS(ACTION$="EL") GOTO 9900,1000,1300
+1000 ! Send email
+1010 GOSUB 7650
+1020 IF RETURN_CDE=0 THEN GOTO 9200 ELSE GOTO 9220
+1090 ! 
+1300 ! Log message 
+1310 IF NOT(%QUIET_MODE) THEN {
+1320 MESSAGE_TYPE$="INFO"
+1340 IF %X3$(48,2)="2" THEN OUT$=DTE(0:"%Y-%Dz-%Mz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$ ELSE OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MESSAGE_TYPE$+"|"+MESSAGE$; PRECISION 2
+1350 IF %NO_LOG THEN GOTO *NEXT ELSE PRINT (%WEBEC_LOG_FILE)OUT$
+1360 IF %DISPLAY_LOG THEN PRINT OUT$
+1370  } ! NOT (%QUIET_MODE)
+1395 ! 
+1400 ! Message Logged
+1410 GOTO 9240
+1420 ! 
+7500 REM "Run COMMAND$ and capture output in OUTPUT$
+7515 CALL "ZZ2CMD",X3$,X4$,COMMAND$,ARG$,"NR",RETURN_CDE,RETURN$
+7545 RETURN 
+7550 REM "Setup Args to run command 1=server name, 2=environment code, 3=Process id, 4=End file name, 5=restartfile name, 6=email message, 7=email subject, 8=email address, 9=arguments
+7555 ARG$=""
+7560 ARG$=ARG$+STP(EC$[14](1,15),3)+SEP; REM "{SERVER}
+7562 IF EC$[14](433,8)=DIM(8) THEN ENV$="EC3SRV" ELSE ENV$=EC$[14](433,8) END_IF ; ARG$=ARG$+ENV$+SEP; REM "{ENV}
+7566 ARG$=ARG$+"No PID"+SEP; REM "{PID}
+7568 ARG$=ARG$+STP(EC$[14](56,60),2)+DLM+"END."+STP(EC$[14](1,15),3)+SEP; REM {ENDFILE}
+7570 ARG$=ARG$+STP(EC$[14](56,60),2)+DLM+"RESTART."+STP(EC$[14](1,15),3)+SEP; REM {RESTARTFILE}
+7572 ARG$=ARG$+EMESS$+SEP; EMESS$="" ! Set & then clear email message
+7574 ARG$=ARG$+SUBJECT$+SEP; SUBJECT$="" ! Set & then clear subject 
+7576 ARG$=ARG$+STP(EMAIL$,1)+SEP ! Email address
+7578 ARG$=ARG$+STP(EC$[14](116,60),1)+SEP ! Arguments
+7590 REM "Now execute COMMAND
+7593 GOSUB 7500
+7595 RETURN 
+7650 ! Send email, modeled after EC3STS
+7660 REM "Email notify
+7662 IF STP(EMAIL$,1)="" OR X3$(77,1)<>"U" THEN GOTO 7670; REM "If no email address or not a unix system then skip it
+7664 EMESS$=MESSAGE$
+7665 COMMAND$="{WEBEC_FAIL_NOTIFY}"; GOSUB 7550
+7670 REM "After email notify
+7695 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9250
+9200 RETURN_CODE=1; GOTO 9900 ! Email sent
+9220 RETURN_CODE=3; GOTO 9900 ! Problem sending email
+9240 RETURN_CODE=5; GOTO 9900 ! Message logged
+9250 RETURN_CODE=6; GOTO 9900 ! Error occurred, check log
+9900 REM "End
+9910 ! CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 

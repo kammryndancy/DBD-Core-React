@@ -1,0 +1,132 @@
+0010 REM "Process VERTEX file and update Topform <CA2AR5>
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 04/23/98 - 10.68 - dmm - SSP# 091564
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="CA2AR5",X1$="Convert VERTEX Records"
+0120 DIM Z0$(80,"-"),Z1$(20,"0"),C[15]
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X tapefile 02O AR5...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0540 CLOSE (Z[1]); OPEN (Z[1],ISZ=200)"tapefile"
+0600 REM "
+0610 GOSUB 6000
+0620 GOSUB 8200
+0630 GOSUB 8100
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0800 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")"tapefile"
+0900 REM 
+0920 H0$=$0A$
+1000 REM "Read Data file
+1100 READ (Z[1],END=5000)R$
+1110 IF R$(2,2)="99" THEN GOSUB 8250; GOTO 5000
+1170 C1=C1+1
+1180 GOSUB 2000
+1300 IF MOD(C1,T0)=1 THEN GOSUB 8150; PRINT @(0,14),'LD',@(15,20),A$(1,2)+"-"+A$(3,4)+"-"+A$(7,4)+"  "+A$(11,25),
+1900 GOTO 1000
+2000 REM "Initialize TopForm Record
+2100 DIM A$(119),A[3]; REM "WO91564, DIM was 55, changed to 119
+2120 IF R$(2,2)="00" THEN GOTO 4915
+2140 A$(1,10)=R$(2,2)+"0"+R$(4,7)
+2145 IF R$(11,1)="1" THEN A$(3)=""
+2150 IF R$(11,1)="2" THEN A$(7)=""
+2159 REM "Set tax freight flag here, if record exists it will override this default setting.
+2160 IF R$(99,1)="T" THEN A$(36,1)="Y" ELSE A$(36,1)="N"
+2164 REM "See if record already exists, if so read in and update info in it.
+2165 READ (Z[2],KEY=A$(1,10),DOM=2166)IOL=0310
+2170 Q$=R$(25,20); CALL "ZZCASE",Q$,Q1$; R$(25,20)=Q1$
+2175 A$(11,25)=R$(25,20); REM "IF A$(11,25)="NORTH TOPEKA             " THEN ESCAPE
+2180 IF R$(11,1)="1" THEN A[0]=NUM(R$(45,5))/1000 ELSE IF R$(11,1)="2" THEN A[0]=NUM(R$(45,5))/1000 ELSE IF R$(11,1)="3" THEN A[0]=NUM(R$(50,5))/1000 ELSE A[0]=NUM(R$(50,5))/1000
+2200 REM "Update control and date fields
+2210 A$(37,6)=X3$(21,6)
+2215 A$(43,6)=H1$
+2220 A$(49,6)=FNE$(NUM(R$(16,2),ERR=2221))+R$(18,4)
+4900 REM "Write file(s)
+4905 IF POS(" "<>A$(11))=0 THEN GOTO 4915
+4910 WRITE (Z[2],KEY=A$(1,10))IOL=0310; C2=C2+1
+4915 RETURN 
+5000 REM "EOJ
+5010 IF T9$<>"Y" THEN X$=STR(C1)+" records done. Did not find a valid trailer record, data is incomplete!!!"; CALL "ZZPROM",".4",X3$,Z,X$,"","",0; GOTO 5021
+5015 X$="Process complete - "+STR(C2)+" of "+STR(C1)+" records loaded."
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+5200 REM "COMPLETE CYCLE
+5290 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program loads the Vertex Tax Data from a file named 'tapefile' into ",'LF',"the TopForm Sales Tax File (AR5)",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8112 T=INT(T0*B/200.0046)
+8114 REM 'SUBTRACT 2 , 1 FOR HEADER & 1 FOR TRAILER
+8115 PRINT @(25,10),"Rates to load:",@(40,10),STR(T-2:"##,##0"),
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.004); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",12,10,50,T1,T,C1
+8195 RETURN 
+8200 REM "Read first record and print file header information
+8205 READ RECORD (Z[1],END=8206)H$; GOTO 8210
+8206 CALL "ZZPROM",".4",X3$,0,"There are no records in the file!!!","","",0; GOTO 9900
+8210 IF POS("VERTEX 'SALESTAX' TAX RATE FILE"=H$)=0 THEN PRINT @(0,15),H$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Header Information!!!","","",0; GOTO 9900
+8214 REM "H0$ is date of tape, H1$ is update number
+8215 H0$=FNE$(NUM(H$(15,2),ERR=8216))+H$(17,4)
+8220 H1$=H$(21,4)
+8240 PRINT @(25,8),"Update Number: ",@(40,8),H1$,@(25,9),"Date produced: "
+8241 CALL "ZZDISP","D",H0$,"",X3$,"","",40,9,X4$
+8245 RETURN 
+8250 REM "Check out trailer record, set T9$ to "Y" if it is ok
+8260 IF POS("9"<>R$(1,10))<>0 OR POS("VERTEX 'SALESTAX' TAX RATE FILE"=R$)=0 THEN PRINT @(0,15),R$,; CALL "ZZPROM",".4",X3$,0,"This file does not have the proper Vertex Trailer Information!!!","","",0; GOTO 8295
+8280 T9$="Y"
+8295 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8950 DEF FNS(Z9$)=POS(" "<>Z9$)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

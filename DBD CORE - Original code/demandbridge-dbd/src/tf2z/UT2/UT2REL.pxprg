@@ -1,0 +1,143 @@
+0010 REM "New release parameter checks <UT2REL>                        
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 11/26/23 - 15.456351 - jvv - SSP# 307463
+0037 REM "307463-Allow access to all warehouses even if security by operator division restriction. 
+0040 REM "Copyright 2023 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2REL",X1$="New Release parameter checks"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "                                                                 
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS                                                          
+0310 IOLIST EC$(1,LEN(EC$))
+0320 IOLIST B$
+0330 IOLIST PARAM_3$,PARAM_3{ALL} ! 232358
+0331 IOLIST PARAM_31$,PARAM_31{ALL}
+0500 REM "FILES                                                            
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ECY...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "                                                                 
+0610 GOSUB 6000
+0620 ! OSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM "BEGIN MAIN PROCESS                                               
+1005 PRINT @(0,4),'CE',
+1010 ISWINDX=TCB(88)
+1020 ! C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1100 GOSUB CHECK_PARAMETERS
+1150 GOSUB CHECK_WEBEC_SETUPS
+1200 CALL "UT2SEG",X3$,X4$,"","*" ! Check for segmented file limits
+1250 GOSUB SET_ZZPARM_DEFAULTS
+2000 GOTO 5000
+5000 REM "EOJ                                                              
+5010 ! C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND                                                       
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This utility program will check certain parameter and file setups",@(0,5),""
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly                                                
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report                                                     
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)            
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING                                                 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL                                
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC                                       
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM                                      
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+10000 CHECK_PARAMETERS:
+10010 AR3_PARAM:
+10020 DIM PARAM_3$(1024),PARAM_3[8]; PARAM_3$(1,6)=X3$(9,3)+"AR3"; READ (Z[13],KEY=PARAM_3$(1,6),DOM=*NEXT)IOL=0330; GOTO EML_PARAM
+10030 WRITE (Z[13],KEY=X3$(9,3)+"AR3")IOL=0330
+10099 ! 
+10100 EML_PARAM:
+10110 DIM EML_PARAM$(255)
+10120 READ (Z[13],KEY=X3$(9,3)+"EML",DOM=*NEXT)EML_PARAM$
+10130 IF STP(MID(EML_PARAM$,7,60),2)="" OR STP(MID(EML_PARAM$,67,50),2)="" THEN DHDR$="Email Parameter Setup - DTGEMP",DMSG$="Email Server Address or Default Email Address not setup."; GOSUB DISPLAY_MSG
+10135 IF DSPPNL THEN PROCESS "DTGEMP","../DTG/DT.EN"
+10136 DSPPNL=0
+10139 ! 
+10145 RETURN 
+10150 ! 
+10200 REM "Set the ZZPARM parameter only if it is currently blank
+10205 DEF FNZZPARM_SET(CHAN,KEY$,OFFSET,STRLEN,DEFVAL$)
+10220 READ RECORD (CHAN,KEY=KEY$)ZZPREC$
+10230 IF NUL(MID(ZZPREC$,OFFSET,STRLEN)) THEN {
+10235 ZZPREC$(OFFSET,STRLEN)=DEFVAL$
+10240 WRITE RECORD (CHAN,KEY=KEY$)ZZPREC$
+10250  }
+10285 RETURN 1
+10290 END DEF
+10299 ! 
+10300 SET_ZZPARM_DEFAULTS:
+10310 IF POS(%C$="060080084110334338363364365366376433491498499520522545559566572574584585594805597605073100609603823825829830832590589833092391568560497575623074579629822139845632101288842057606093518813846635637639449020617640887",3)>0 THEN ZZPX=FNZZPARM_SET(Z[13],%C$+"F/M",347,1,"Y") ! 307454-Default 10% overrun paramter for this list of companies during the next release
+10320 IF POS(%C$="491505506507377546552562563092537629101288130644",3)>0 THEN ZZPX=FNZZPARM_SET(Z[13],%C$+"F/M",348,1,"Y") ! 307463-Do not restrict warehouse if operator division retriction
+14995 RETURN 
+14999 ! 
+15000 CHECK_WEBEC_SETUPS:
+15020 IF FN%HAS_MODULE("EC")=0 THEN RETURN 
+15099 ! 
+15100 WEBEC_SERVER:
+15110 READ (Z[1],KEY="",DOM=*NEXT)
+15120 NEXT_READ:
+15130 K$=KEY(Z[1],END=EC_SYSTEM_PARM); READ (Z[1],KEY=K$)ECY$
+15140 OPTD$=STP(MID(ECY$,423,10),2); IF OPTD$<>"" THEN IF POS("D"=OPTD$)>0 THEN DHDR$="Webec Server Setup",DMSG$="Server "+STP(MID(ECY$,1,15),2)+" has the Debug Option Selected. "+SEP+"This may cause Webec issues"; GOSUB DISPLAY_MSG
+15150 IF DSPPNL THEN %SERVER_ID$=ECY$(1,15); PROCESS "ECGMSA","../ECG/EC.EN"; %SERVER_ID$="",DSPPNL=0
+15160 GOTO NEXT_READ
+15190 ! 
+15200 EC_SYSTEM_PARM:! ECGMPA
+15210 IF FN%HAS_MODULE("DR")=0 THEN RETURN 
+15220 DIM EC$(1275)
+15230 READ (Z[13],KEY=X3$(9,3)+"E/C",DOM=*NEXT)IOL=0310; IF LEN(EC$)<1275 THEN EC$=PAD(EC$,1275)
+15240 IF STP(MID(EC$,596,60),2)="" THEN DHDR$="EC System Parameter Setup",DMSG$="Missing default email address"; GOSUB DISPLAY_MSG
+15250 IF DSPPNL THEN PROCESS "ECGMPA","../ECG/EC.EN"; DSPPNL=0
+15590 RETURN 
+15599 ! 
+20000 DISPLAY_MSG:
+20010 IF ISWINDX THEN DMSG$=DMSG$+SEP+"Do you wish to setup now?"
+20020 IF ISWINDX THEN MSGBOX DMSG$,DHDR$,"?,YESNO",_YESNO$; IF _YESNO$="YES" THEN DSPPNL=1 ELSE DSPPNL=0
+20030 IF NOT(ISWINDX) THEN MSGBOX DMSG$,DHDR$,"OK",OK$; DSPPNL=0
+20090 RETURN 
+56000 REM "307177-Release utility to check files and parameter setups         
+56001 REM "307454-DBD-368:Parameter to disable 10% overruns                   
+56002 REM "307463-Parameter to allow all w/h even if operator division  

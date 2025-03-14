@@ -1,0 +1,63 @@
+0010 REM "Return Program Remark Etc. <ZZ2PRG>
+0020 REM "(C) 1985-1988 Basic Ideas, Inc; Atlanta, GA. USA
+0030 REM "3.9 - 12/07/95 - 16.67 - kmc
+0035 REM "5.2 - 08/23/03 - 11.266388 - dmm - SSP# 133604
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "        Licensed Software - All Rights Reserved.
+0060 ! f0$ is program to get remark from
+0070 ! NORMAL END IS INDICATED BY A RET_CDE OF 1
+0080 SETERR 7140
+0090 ! ^ 90
+0100 ENTER P5_OUT$,OFS,F0$,M0,RET_CDE
+0110 IF P5_OUT$="?" THEN CALL "ZZPDOC","ZZ2PRG"; EXIT 
+0120 P5_OUT$="",RET_CDE=1,CALLED_CDE=0
+1000 ! ^ 1000
+1010 MAIN:
+1020 ! First find out if called and if so, what level called this program
+1030 ! the STK( ) function returns a character string reporting the program line number (5 digits) and program
+1040 ! full path name) being executed at the program level specified.
+1050 ! use a negative value to specify a level relative to the current level.
+1060 CALL "ZZ2FNC;GET_PRG_CALL_STACK",FO$,PRGLEVEL
+1070 ! 
+1080 IF OFS=0 THEN OFS=UNT
+1090 GOSUB OPEN_PRG; IF RET_CDE<>1 THEN GOTO 1220
+1100 ! 
+1110 CALL "ZZ2FNC;IS_A_PROGRAM",OFS,IP
+1120 IF IP=0 THEN P5$="** Not a program **"; RET_CDE=-1*ERR
+1130 IF RET_CDE<>1 THEN GOTO 1220
+1140 ! 
+1150 CALL "ZZ2FNC;IS_PROTECTED",OFS,RET_IP
+1160 IF RET_IP<>0 THEN P5$="** File is Protected **"; RET_CDE=-1
+1170 IF RET_CDE<>1 THEN GOTO 1220
+1180 ! 
+1190 CLOSE (OPS,ERR=*NEXT)
+1200 ! 
+1210 GOSUB LOAD_LINE
+1220 END_MAIN:
+1230 ! 
+1240 GOTO 7140
+7000 ! ^ 7000
+7010 LOAD_LINE:
+7020 IF PRGLEVEL>0 THEN {
+7030 P5$=LST(PGM(1,PRGLEVEL))
+7040  } ELSE {
+7050 ! open file and get line
+7060 CALL "ZZ2FNC;GET_PRG_REMARK",F0$,P5$
+7070  }
+7080 END_LOAD_LINE:RETURN 
+7090 ! 
+7100 OPEN_PRG:
+7110 OPEN (OFS,ERR=*NEXT)F0$; GOTO END_OPEN_PRG
+7115 PASS+=1; IF (MID(F0$,1,3)="ZZW" OR MID(F0$,1,3)="ZWG") AND PASS=1 THEN F0$="../ZZG/"+F0$; GOTO 7110 ! %GUI
+7120 P5$="** Unable to list first line **"
+7121 RET_CDE=0
+7130 END_OPEN_PRG:RETURN 
+7140 ! 
+7150 P5_OUT$=P5$
+7160 CLOSE (OPS,ERR=*NEXT)
+9900 ! ^9900
+9905 CLOSE (OFS,ERR=*NEXT)
+9910 EXIT 
+9989 ! ^ 9989
+9999 END 

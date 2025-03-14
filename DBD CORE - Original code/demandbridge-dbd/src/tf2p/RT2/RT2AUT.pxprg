@@ -1,0 +1,38 @@
+0010 REM "<RT2AUT> Check authorization for Remote T/M
+0035 REM "3.9 - 05/23/96 - 1.08
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "AUTH_CODE = 0 means ok to proceed, <>0 means not ok
+0090 SETERR 9000
+0100 ENTER X3$,AUTH_CODE
+0120 AUTH_CODE=1; REM "Set auth_code to deny until we're sure its ok
+1000 REM "Get salesperson record that matches the operator record from RT0
+1005 CLOSE (14); OPEN (14,ERR=1006)"RT0"; GOTO 1007
+1006 OPEN (14)"RT0"+X3$(9,3)
+1010 READ (14,END=1015)RT0$; IF RT0$(5,3)=X3$(40,3) THEN GOTO 1020 ELSE GOTO 1010
+1015 REM "If here then operator code match not found, so faile
+1016 AUTH_CODE=2; REM "No matching operator record
+1017 GOTO 9900
+1020 REM "RT0$ has operator code match, does ssn match?
+1025 SSN$=SSN
+1026 SSN$=PAD(SSN$(10),10,0,"0")
+1030 IF RT0$(38,10)<>SSN$ THEN AUTH_CODE=3; GOTO 9900; REM "Serial numbers don' match
+1100 REM "oK, GET rt4 RECORD AND CHECK THE DATE
+1110 AUTH_KEY$="RT"+RT0$(1,4)
+1120 CALL "ZZCRYP",X3$,SSN$,"","E",AUTH_KEY$,A{ALL},ENCODED_KEY$,X9
+1125 CLOSE (14); OPEN (14,ERR=1126)"RT4"; GOTO 1130
+1126 OPEN (14,ERR=1127)"RT4"+X3$(9,3); GOTO 1130
+1127 AUTH_CODE=4; GOTO 9900; REM "Can't find RT4 file
+1130 READ (14,KEY=HTA(ENCODED_KEY$),DOM=1131)RT4$; GOTO 1135
+1131 AUTH_CODE=5; GOTO 9900; REM "Matching record not found
+1135 CALL "ZZCRYP",X3$,SSN$,"","U",AUTH_DATE$,A{ALL},ATH(RT4$(13,12)),X9
+1140 TODAY$=DAY; TODAY$=TODAY$(8,1)+TODAY$(1,2)+TODAY$(4,2); REM "Convert Day into YMMDD format
+1150 IF TODAY$>AUTH_DATE$(2) THEN AUTH_CODE=6; REM "Authorization has expired
+1500 REM "if here, then everything ok
+1505 AUTH_CODE=0; GOTO 9900
+9000 REM "err
+9010 EXIT ERR
+9900 REM "END
+9910 IF AUTH_CODE<>0 THEN PRINT @(0,20),"Remote Telemarketing Authorization Denied, Code = ",AUTH_CODE," ",; INPUT *
+9940 EXIT 
+9999 END 

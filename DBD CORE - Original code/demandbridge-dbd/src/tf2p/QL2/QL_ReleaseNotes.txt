@@ -1,0 +1,45 @@
+
+
+Release Notes:
+
+DB/d data is transmistted to EQLink through the following scripts.
+
+1. Set up script: /usr/lib/pvx/runql2
+
+Generates the XML output for DB/d data (customers, items, locations, etc) that is used for setup in EQLink.
+
+Logging can optionally be enabled and verbosity levels can be controlled using the "LOG_LEVEL=" argument.
+
+Example:
+/usr/lib/pvx/pvx QL2CHG -arg c=500 cf=eqc ENV_ID=EQLINK LOG_LEVEL=-1 > /dev/null
+
+
+2. Set up script: /usr/lib/pvx/eqc-send-files
+
+Used to FTP XML files from DB/d server to an FTP site that is monitored by EQLink.
+
+Divisions are supported and there s assumed to be at least one division ("00") present.
+
+The directory structure is:
+
+export/eqc/*.xml
+export/eqc/00/*.xml
+
+The export directory should match what is setup in QL Parameter parameter.
+All master XML files will be generated in the main export directory.
+All customer specific XML files will be generated in the divisional subdirectories. Master files will be copied into the divisional subsirectories for export.
+These lines will need to be added to the script below for each division as required. 
+Master files from main directory will be ftp'd to each customer site.
+All copies of uploaded files will be kept in an "archive" directory under the respective directories.
+
+
+Example Crontab entries:
+----------------
+# Export and upload EQC change files every 10 minutes
+0,10,20,30,40,50 * * * * /usr/lib/pvx/eqc-export-files
+
+# Send DBD upload files to EQD EQLink site 
+2,12,22,32,42,52 * * * * /usr/lib/pvx/eqc-send-files > /dev/null 2>&1
+
+
+

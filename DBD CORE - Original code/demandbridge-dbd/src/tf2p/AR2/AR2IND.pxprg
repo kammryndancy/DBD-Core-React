@@ -1,0 +1,36 @@
+0010 REM "Change the print flags per new parameter <AR2IND>
+0035 REM "5.7 - 11/15/11 - 18.003333 - jvv - SSP# 249775
+0037 REM "249775-Changes to sales tax parameters and tax calculations to     
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0077 REM "C is file slot of ZZPARM
+0100 SETERR 9000
+0110 ENTER X3$,X4$,A$
+0300 REM 
+0305 DIM A[30]
+0307 DIM E[48] ! SSP 249775
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30]
+0350 IOLIST A0,E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15],E[16],E[17],E[18],E[19],E[20],E[21],E[22],E[23],E[24],E[25],E[26],E[27],E[28],E[29],E[30],E[31],E[32],E[33],E[34],E[35],E[36],E[37],E[38],E[39],E[40],E[41],E[42],E[43],E[44],E[45],E[46],E[47],E[48] ! SSP 249775
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ARB...  05O ART...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0900 REM 
+0910 READ (Z[1],KEY=A$(1,14),DOM=9900)IOL=0310
+0920 IF A[20]<0 THEN GOTO 9900
+0970 A9=A[20]
+1000 REM "Look for lines to default        
+1010 IF A9<=0 THEN GOTO 9900
+1020 READ (Z(5),IND=A9)IOL=0350
+1025 IF E$(47,3)<>DIM(3) THEN GOTO 1050 ! SSP#233793 If order line handled in AR2EAT
+1030 ! E$(6,1)="Y"       SSP#233793
+1035 IF E$(6,1)="Y" THEN E$(138,1)="X"; REM " UPDATE TO FMY!SSP#233793
+1040 WRITE (Z(5),IND=A9)IOL=0350
+1050 A9=A0
+1090 GOTO 1010
+9000 REM "errors
+9005 PRINT @(0,20),'CL',"ERR=",ERR," LINE=",TCB(5),; INPUT *
+9010 EXIT ERR
+9900 REM "End
+9930 EXIT 
+9999 END 
+56000 REM "249775-Changes to sales tax parameters and tax calculations to     

@@ -1,0 +1,52 @@
+0010 REM "Initialize company files from ZZE" <UT2INI>
+0035 REM "3.0
+0040 REM "Copyright 1989 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0110 OPEN (1)"ZZE"
+0199 REM "copy contents of these files from master
+0200 R$="AP2 AR2 AR5 GL5 GLX FMO FR1 ZY0 ZY1 ZY2 ZY3 ZY4 "
+0201 R$=R$+"ZYA ZYB "
+0202 R$=R$+"ZZS "
+0209 REM "only define files in ZZE with these prefixes
+0210 F0$="AP AR AS FE FM FS GL IC PO ZP "
+0220 D=0
+0230 REM "Also define these files"
+0231 REM "... means define with company extension
+0245 F2$="ZS0...  ZY1...  ZY9xxx  ZZ9xxx  ZZMxxx  ZZNxxx  ZZO...  "
+0300 ADDR "ZZINIT"
+0500 PRINT 'CS',"Reinitialize all files with a specified company code "
+0510 INPUT "Enter company code to setup: ",C0$
+0520 IF CTL=4 OR C0$="" THEN GOTO 9900
+0530 IF LEN(C0$)>3 THEN GOTO 0500
+0540 C0$=STR(NUM(C0$,ERR=0500):"000")
+0550 PRINT "The company code is ",C0$
+0560 INPUT "CR to continue or F4 to end ",*
+0570 IF CTL=4 THEN GOTO 9900
+1000 K$=KEY(1,END=2000)
+1020 READ (1,KEY=K$)A$
+1040 PRINT K$
+1050 IF K$(4,3)<>"   " THEN GOTO 1000
+1060 IF POS(K$(1,2)+" "=F0$,3)=0 THEN GOTO 1500
+1070 IF POS(K$(1,3)+" "=R$,4)>0 THEN GOTO 1000
+1075 F1$=K$(1,3)+C0$,K=NUM(A$(48,2))
+1080 B=NUM(A$(50,4),ERR=1081),N=NUM(A$(54,4)); GOTO 1095
+1090 B=0,N=20; IF A$(47,1)<>"S" THEN ESCAPE 
+1095 IF N=0 THEN N=20
+1100 PRINT "FILE=",F1$," K=",K," B=",B," N=",N
+1120 IF K=0 THEN INDEXED F1$,N,B; OPEN (2)F1$; CALL "ZZINIT","02"; CLOSE (2); GOTO 1500
+1140 IF B=0 THEN SORT F1$,K,N ELSE DIRECT F1$,K,N,B
+1190 GOTO 1000
+1500 REM "Check odd balls
+1520 IF POS(K$(1,3)=F2$,8)=0 THEN GOTO 1000
+1530 F1$=F2$(POS(K$(1,3)=F2$,8),8)
+1540 IF F1$(4,3)="..." THEN GOTO 1075
+1550 F1$=K$(1,3),K=NUM(A$(48,2)); GOTO 1076
+2000 REM "COPY STD FILES
+2010 FOR I=1 TO LEN(R$) STEP 4
+2020 F1$=R$(I,3)+C0$
+2030 PRINT "STANDARD FILE: ",F1$
+2040 INVOKE "cp 307/tfdd.307/"+F1$(1,3)+"500"+" z.mbfi/tf2d/"+F1$
+2060 NEXT I
+9920 DROP "ZZINIT"
+9999 END 

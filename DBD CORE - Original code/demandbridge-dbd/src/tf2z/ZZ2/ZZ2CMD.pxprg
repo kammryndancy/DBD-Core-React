@@ -1,0 +1,251 @@
+0010 REM "Do operating system command <ZZ2CMD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/07/24 - 13.052343 - crg - SSP# 307492
+0037 REM "307492-DBD-466:PxPlus ODBC interface utility for DBD use           
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! options to add -> don't display, save R$ to log, redisplay, interrupt command
+0055 ! iF %ZZ2CMD_DEBUG <>0 THEN just prior to invoke, display command and wait for input, can ret or escape
+0060 ! OPTION$ - R in option field = return R$ in RETURN$
+0061 ! OPTION$ - N in option field = No display
+0062 ! OPTION$ - { filename } - copy contents to this file name as we go, open & close within this progam
+0063 ! OPTION$ - I in option field = Ignore output, don't capture it
+0064 ! OPTION$ - T in option field = Transfer output file to workstation
+0065 ! OPTION$ - P in option field = Display transfer progress bar; default is to transfer silently
+0070 ! RETURN_CODE = 0-Normal,-1=Timed out,-99=Command Not Found
+0084 ! COMMAND$ - any single character after a ~ is passed in uninterpreted, the 2 characters following a # are replaced with the character with that hex value
+0085 ! COMMAND$ - strings enclosed in {}'s replaced from command file, cannot contain nested {}'s or other substition characaters
+0086 ! COMMAND$ - after replaceing {} strings, then [ number ] replaced with values from arg$, 
+0087 ! ARG$ - values positional starting at 1, seperated by SEP character
+0088 ! allowed_time (set in 120) is currently 15 seconds max
+0089 ! If final COMMAND$ starts with [WDX] or [wdx] then it is treated as a WINDX command and is executed on the PC client which must be running WINDX. Other options should work as intended unless otherwise stated.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,COMMAND$,ARG$,OPTION$,RETURN_CODE,RETURN$
+0100 SETERR 9000
+0110 X0$="ZZ2CMD",X1$="Perform Operating System command"
+0120 ALLOWED_TIME=15 ! # seconds to allow command to run before leaving
+0150 RETURN_CODE=0,RETURN$=""
+0160 X3_NO_TIME$=X3$; X3_NO_TIME$(78,1)="0"
+0162 ! process options
+0163 TMP=MSK(OPTION$,"{.*}"); IF TMP<>0 THEN OPT$=MID(OPTION$,1,TMP-1)+MID(OPTION$,MSL+TMP) ELSE IF TMP=0 THEN OPT$=OPTION$
+0165 IF POS("N"=OPT$)<>0 THEN SHOW_IT=0 ELSE SHOW_IT=1
+0166 IF POS("I"=OPT$)<>0 THEN IGNORE_OUTPUT=1 ELSE IGNORE_OUTPUT=0
+0167 IF POS("T"=OPT$)<>0 THEN XFER_FILE=1
+0168 IF POS("P"=OPT$)<>0 THEN XFER_PROGRESS=1
+0170 TMP=MSK(OPTION$,"{.*}"); IF TMP<>0 THEN COPY_FILE$=MID(OPTION$,TMP+1,MSL-2)
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ZC0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 ! Open file to copy results to, if successful, then copy_file=1 else copy_file=0
+0535 IF COPY_FILE$="" THEN GOTO 0540
+0536 ERASE COPY_FILE$,ERR=0537
+0537 SERIAL COPY_FILE$,ERR=0540 ! If can't create, then skip the whole thing
+0538 CF=HFN; OPEN LOCK (CF,ERR=0540)COPY_FILE$
+0539 COPY_FILE=1
+0600 REM "Set BASE_TYPE$ to "MS-WINDOWS","UNIX","OTHER" to use for lookups, set FULL_TYPE$ to SYS, and SYS_TYPE$ to "WINDOWS","UNIX",or "OTHER" for deciding how to do commands
+0610 FULL_TYPE$=SYS
+0620 IF MID(FULL_TYPE$,1,4)="UNIX" THEN BASE_TYPE$="UNIX",SYS_TYPE$="UNIX" ELSE IF FULL_TYPE$="MS-WINDOWS" THEN BASE_TYPE$="MS-WINDOWS",SYS_TYPE$="WINDOWS" ELSE BASE_TYPE$="OTHER",SYS_TYPE$="OTHER"
+0900 INITIALZATION:
+0905 DIM ZC0$(280)
+1000 PARSE_COMMAND:! get command from file, replace all meta characters, etc
+1005 ! put COMMAND$ to COMM$ & move chars to FINAL$, process escaped (~) characters
+1006 ! if { found move chars to COMM_KEY$ until } found, lookup in ZC0, substitue onto front of COMM$ and resume processing. Key may not contain [] arg substitution or # hex substitutions, nor nested keys
+1007 ! if [ found move chars to ARG_KEY$ until ] found, lookup in ARG$, substitute onto front of COMM$ and resume processing
+1008 ! if # found move chars to HEX_KEY$ until space found, add hex character to FINAL$
+1009 IF UCS(MID(COMMAND$,1,5))="[WDX]" THEN WINDX_COMMAND=1; WINDX$="[WDX]"; COMMAND$=MID(COMMAND$,6) ! If windx, set flag and remove tag from command for now
+1010 COMM$=COMMAND$,FINAL$="",INTERNAL_COMMAND=0
+1050 IF COMM$="" THEN GOTO PARSE_COMPLETE
+1055 CURRENT$=COMM$(1,1); COMM$=MID(COMM$,2)
+1060 SWITCH CURRENT$
+1065 TILDE: CASE "~"
+1066 IF COMM$>"" THEN FINAL$=COMM$(1,1); COMM$=MID(COMM$,2)
+1069 BREAK
+1070 OPEN_BRACE: CASE "{"; GOSUB DO_OPEN_BRACE; BREAK
+1075 POUND_SIGN: CASE "#"; GOSUB DO_HEX; BREAK
+1080 OPEN_BRACKET: CASE "["; GOSUB DO_OPEN_BRACKET; BREAK
+1085 DEFAULT: DEFAULT ; FINAL$+=CURRENT$
+1090 END SWITCH 
+1095 GOTO 1050
+1900 PARSE_COMPLETE:! now decide how to process & continue
+1901 ! invoke command, get results into r$ and display if desired
+1905 IF FINAL$="" THEN GOTO 1995
+1907 IF INTERNAL_COMMAND THEN GOSUB DO_INTERNAL; GOTO DONE ELSE IF WINDX_COMMAND THEN GOSUB DO_WINDX; GOTO DONE
+1910 SWITCH SYS_TYPE$
+1912 CASE "WINDOWS"; GOSUB DO_WINDOWS; BREAK
+1914 CASE "UNIX"; GOSUB DO_UNIX; BREAK
+1928 CASE "OTHER"; GOSUB DO_OTHER; BREAK
+1930 END SWITCH 
+1990 DONE:
+1994 IF POS("R"=OPT$)<>0 THEN IF NOT(NUL(R_IN$)) AND NUL(R$) THEN R$+=R_IN$ END_IF ; RETURN$=R$
+1995 GOTO 9900
+2000 DO_WINDOWS:! Process command as WINDOWS command
+2004 IF IGNORE_OUTPUT OR ZC0$(75,1)="Y" THEN GOTO DO_WINDOWS_IGNORE_OUTPUT
+2005 R$="",END_MARK$="--"+FID(0)+FID(0)+FID(0)+"--"; TEMP_FILE$=ENV("TEMP")+DLM+"commout"+FID(0); MAX_TIME=ALLOWED_TIME; IF NUM(ZC0$(71,3),ERR=*NEXT)>0 THEN MAX_TIME=NUM(ZC0$(71,3),ERR=*NEXT)
+2007 GOSUB CREATE_UNIQUE_TEMP_FILE
+2010 DOIT$=ENV("COMSPEC")+" /c "+FINAL$+" >> "+TEMP_FILE$+" && echo "+END_MARK$+" >> "+TEMP_FILE$
+2030 IF SHOW_IT THEN PRINT (0,ERR=*NEXT)'PUSH','CS','MESSAGE'(DEF 1,50),'MESSAGE'("Running: "+STP(ZC0$(41,30),1),1),'MESSAGE'("Seconds left:"+STR(MAX_TIME),2),@(20,0),'SB',"Running command: "+ZC0$(41,30),'PEN'(1,4,15),'LINE'(@X(0),@Y(1)+6,@X(80),@Y(1)+6),'SF',
+2045 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',DOIT$,; INPUT *
+2050 INVOKE HIDE DOIT$
+2052 WAIT 1 ! Some systems need to wait for the command to get started before we open the file at line 2060, otherwise no output ever shows up in the file
+2055 TMP=TMR(0) ! reset timer, we want to hold this to 20 seconds or less
+2060 SLOT=HFN; OPEN (SLOT,ERR=2061)TEMP_FILE$; GOTO 2065
+2061 IF ERR=12 THEN GOTO 2060 ELSE OPEN (SLOT)TEMP_FILE$
+2065 READ (SLOT,END=2070)R_IN$; IF STP(R_IN$,1)=END_MARK$ THEN GOTO 2075 ! If we find the end mark we are done
+2066 R$=R$+SEP+R_IN$; IF COPY_FILE THEN PRINT (CF)R_IN$
+2067 IF SHOW_IT THEN LINE=LINE+1; IF LINE=20 THEN CALL "ZZPROM","4",X3_NO_TIME$,Z,"","","",0; LINE=1 END_IF ; PRINT @(0,2),'LD',@(0,21),MID(R_IN$,1,79),
+2069 GOTO 2065
+2070 IF STP(R_IN$,1)<>END_MARK$ THEN ELAPSED=TMR(1); IF ELAPSED>MAX_TIME THEN TIMED_OUT=1,RETURN_CODE=-1,RETURN$="timed out at "+STR(ELAPSED)+" seconds"+SEP+DOIT$; GOTO 2075 ELSE PRINT (0,ERR=2065)'MESSAGE'("Seconds left:  "+STR(MAX_TIME-INT(ELAPSED)),2),; GOTO 2065
+2075 CLOSE (SLOT)
+2080 ERASE TEMP_FILE$,ERR=*NEXT
+2090 IF TIMED_OUT THEN M$="Command timed out after "+STR(MAX_TIME)+" seconds" ELSE M$="Command completed"
+2095 IF SHOW_IT THEN FOR II=LINE+1 TO 20; PRINT @(0,2),'LD',; NEXT II; CALL "ZZPROM","4",X3_NO_TIME$,Z,M$,"","",0; PRINT (0,ERR=*NEXT)'POP',
+2299 RETURN 
+2300 DO_WINDOWS_IGNORE_OUTPUT:! Do the FINAL$ command, but don't bother with capturing output, etc
+2320 DOIT$=ENV("COMSPEC")+" /c "+FINAL$
+2325 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',DOIT$,; INPUT *
+2350 INVOKE HIDE DOIT$
+2499 RETURN 
+2500 DO_UNIX:! Process command as UNIX command
+2501 ! Because of the way invoke works, we can't time out this command
+2504 IF IGNORE_OUTPUT OR ZC0$(75,1)="Y" THEN GOTO DO_UNIX_IGNORE_OUTPUT
+2505 R$="",TEMP_FILE$="/tmp"+DLM+"commout"+FID(0); MAX_TIME=ALLOWED_TIME; IF NUM(ZC0$(71,3),ERR=*NEXT)>0 THEN MAX_TIME=NUM(ZC0$(71,3),ERR=*NEXT)
+2507 GOSUB CREATE_UNIQUE_TEMP_FILE
+2510 DOIT$=FINAL$+" >> "+TEMP_FILE$+" 2>> "+TEMP_FILE$
+2515 IF %GUI THEN %ML_CMD.CTL'VALUE$=DOIT$; GOTO 2545
+2530 IF SHOW_IT THEN PRINT (0,ERR=*NEXT)'PUSH','CS','MESSAGE'("Running: "+STP(ZC0$(41,30),1),1),@(20,0),'SB',"Running command: "+ZC0$(41,30),'PEN'(1,4,15),'LINE'(@X(0),@Y(1)+6,@X(80),@Y(1)+6),'SF',
+2545 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',DOIT$,; INPUT *
+2550 INVOKE DOIT$,ERR=*NEXT
+2560 SLOT=HFN; OPEN (SLOT)TEMP_FILE$
+2561 IF XFER_FILE THEN GOSUB XFER_FILE; GOTO 2570
+2565 READ (SLOT,END=2570,ERR=2570)R_IN$; IF %GUI THEN IDX+=1; LIST_BOX LOAD %LB_CMD.CTL,IDX,R_IN$; IF CF=0 THEN GOTO 2565; REM ", The GOTO here skips the PRINT (CF), this is the TMP file used to create the FX0 file., DBSPT-94751 handle ERR 33 if response is too large to fit in process memory
+2566 R$=R$+SEP+R_IN$; IF COPY_FILE THEN PRINT (CF)R_IN$
+2567 IF SHOW_IT THEN LINE=LINE+1; IF LINE=20 THEN CALL "ZZPROM","5",X3_NO_TIME$,Z,"","","",0; LINE=1 END_IF ; PRINT @(0,2),'LD',@(0,21),MID(R_IN$,1,79),; IF Z=1 THEN EXITTO 9900; REM "152406
+2569 GOTO 2565
+2575 CLOSE (SLOT)
+2580 ERASE TEMP_FILE$,ERR=*NEXT
+2585 IF %GUI THEN RETURN 
+2595 IF SHOW_IT THEN FOR II=LINE+1 TO 20; PRINT @(0,2),'LD',; NEXT II; CALL "ZZPROM","4",X3_NO_TIME$,Z,M$,"","",0; PRINT (0,ERR=*NEXT)'POP',
+2799 RETURN 
+2800 DO_UNIX_IGNORE_OUTPUT:! do the FINAL$ command, but don't even attempt to capture the output
+2801 ! in Unix this will display to the screen unless the Final command redirects the output, this is assumed to be the case since usually we are here because of issues with capturing the output
+2825 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',FINAL$,; INPUT *
+2850 INVOKE FINAL$
+2999 RETURN 
+3000 DO_INTERNAL:! Process command as internal PVX command
+3010 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"Executing ",'LF',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',FINAL$,; INPUT *
+3050 EXECUTE FINAL$,ERR=3400
+3399 RETURN 
+3400 REM "Error occured executing internal command
+3410 ERR_FOUND=ERR,RET_CODE=ERR,RETURN$="Error "+STR(ERR_FOUND)+" on "+FINAL$
+3420 TP$="Error "+STR(ERR_FOUND)+" occurred!"
+3425 CALL "ZZPROM","4.",X3_NO_TIME$,Z,TP$,"","",0
+3499 RETURN 
+3500 DO_OTHER:! Process command as other, for now exit
+3999 RETURN 
+4000 DO_WINDX:! Process command intended to be run on client
+4003 CALL "[WDX]*Windx.utl;Get_Val","ENV("+QUO+"TEMP"+QUO+")",ENV_TEMP$; CALL "[WDX]*Windx.utl;Get_Val","ENV("+QUO+"COMSPEC"+QUO+")",ENV_COMSPEC$ ! Get env values we need
+4004 IF IGNORE_OUTPUT OR ZC0$(75,1)="Y" THEN GOTO DO_WINDX_IGNORE_OUTPUT
+4005 R$="",END_MARK$="--"+FID(0)+FID(0)+FID(0)+"--"; TEMP_FILE$=ENV_TEMP$+"\"+"commout"+FID(0); MAX_TIME=ALLOWED_TIME; IF NUM(ZC0$(71,3),ERR=*NEXT)>0 THEN MAX_TIME=NUM(ZC0$(71,3),ERR=*NEXT)
+4007 GOSUB CREATE_UNIQUE_TEMP_FILE
+4010 DOIT$=WINDX$+ENV_COMSPEC$+" /c "+FINAL$+" >> "+TEMP_FILE$+" && echo "+END_MARK$+" >> "+TEMP_FILE$
+4030 IF SHOW_IT THEN PRINT (0,ERR=*NEXT)'PUSH','CS','MESSAGE'(DEF 1,50),'MESSAGE'("Running: "+STP(ZC0$(41,30),1),1),'MESSAGE'("Seconds left:"+STR(MAX_TIME),2),@(20,0),'SB',"Running command: "+ZC0$(41,30),'PEN'(1,4,15),'LINE'(@X(0),@Y(1)+6,@X(80),@Y(1)+6),'SF',
+4045 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",WINDX$+COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',DOIT$,; INPUT *
+4050 INVOKE HIDE DOIT$,ERR=*NEXT
+4051 IF POS("U"=OPT$)<>0 THEN WAIT 30; GOTO 4053; REM " NEED LONGER WAIT FOR UNITED STATIONERS SSP# 148759
+4052 WAIT 1 ! Some systems need to wait for the command to get started before we open the file at line 4060, otherwise no output ever shows up in the file
+4060 SLOT=HFN; OPEN (SLOT,ERR=4070)WINDX$+TEMP_FILE$
+4065 READ (SLOT,END=4070)R_IN$; IF STP(R_IN$,1)=END_MARK$ THEN GOTO 4075 ! If we find the end mark we are done
+4066 R$=R$+SEP+R_IN$; IF COPY_FILE THEN PRINT (CF)R_IN$
+4067 IF SHOW_IT THEN LINE=LINE+1; IF LINE=20 THEN CALL "ZZPROM","4",X3_NO_TIME$,Z,"","","",0; LINE=1 END_IF ; PRINT @(0,2),'LD',@(0,21),MID(R_IN$,1,79),
+4069 GOTO 4065
+4075 CLOSE (SLOT)
+4077 EM=POS(END_MARK$=R$); IF EM<>0 THEN R$=MID(R$,1,EM-1)
+4080 ERASE WINDX$+TEMP_FILE$,ERR=*NEXT
+4095 IF SHOW_IT THEN FOR II=LINE+1 TO 20; PRINT @(0,2),'LD',; NEXT II; CALL "ZZPROM","4",X3_NO_TIME$,Z,M$,"","",0; PRINT (0,ERR=*NEXT)'POP',
+4299 RETURN 
+4300 DO_WINDX_IGNORE_OUTPUT:! Do the final$ command, but don't bother with capturing output, etc
+4320 DOIT$=WINDX$+ENV_COMSPEC$+" /c "+FINAL$
+4325 IF %ZZ2CMD_DEBUG THEN PRINT @(0,15),'CE',"cOMMAND=",COMMAND$,"|",'LF',"OPTIONS=",OPTION$,"|",'LF',"ZC0=",ZC0$(1,119),'LF',DOIT$,; INPUT *
+4350 INVOKE HIDE DOIT$
+4495 RETURN 
+4499 ! 
+7000 REM "Transfer file from source to destination
+7001 XFER_FILE:
+7030 CLOSE (SLOT); OPEN INPUT (HFN,ISZ=4096)TEMP_FILE$; SLOT=LFO
+7035 BIG_FILE=0; IF XFER_PROGRESS THEN XFER_FILE_SIZE=NUM(FIN(SLOT,"FILELENGTH"),ERR=*PROCEED); IF XFER_FILE_SIZE>100*1024 THEN BIG_FILE=1
+7036 IF BIG_FILE THEN CALL "*progbar;Init","Transferring file",30
+7038 IF BIG_FILE THEN XFER_TEXT$="File size: "+STP(STR((XFER_FILE_SIZE/1024):"#,###,###,###,##0"),2)+" KB"; CALL "*progbar;Update_percent",ERR=7090,XFER_TEXT$,XFER_PERCENT
+7040 CLOSE (CF); OPEN LOCK (HFN,ISZ=1)COPY_FILE$; CF=LFO
+7045 RA$=""; READ RECORD (SLOT,SIZ=32*1024,END=7090)RA$
+7050 IF LEN(RA$)>0 THEN WRITE RECORD (CF,SIZ=LEN(RA$))RA$
+7055 XFER_SIZE+=LEN(RA$); XFER_PERCENT=INT(XFER_SIZE*100/XFER_FILE_SIZE)
+7058 IF BIG_FILE THEN CALL "*progbar;Update_percent",ERR=7090,XFER_TEXT$,XFER_PERCENT
+7060 GOTO 7045
+7090 IF BIG_FILE THEN CALL "*progbar;Wrap_up"
+7095 RETURN 
+7099 ! 
+7500 DO_OPEN_BRACE:! load from comm$ into comm_key$ until } brace found, then lookup using full_type$, if not found then base_type$ add back to comm$ 
+7505 COMM_KEY$=""
+7510 IF COMM$="" THEN GOTO 7545 ELSE IF COMM$(1,1)="}" THEN COMM$=MID(COMM$,2); GOTO LOOKUP_COMM_KEY ELSE COMM_KEY$+=COMM$(1,1),COMM$=MID(COMM$,2); GOTO *SAME
+7515 LOOKUP_COMM_KEY:! given comm_key$, try FULL_TYPE$+COMM_KEY$ (each padded to 20), then BASE_TYPE$+COMM_KEY$, if not found then nothing happens, if found add to comm$ and continue
+7520 DIM ZC0$(280); FIND (Z[1],KEY=PAD(FULL_TYPE$,20)+PAD(COMM_KEY$,20),DOM=7525)ZC0$; GOTO ZC0_FOUND
+7525 FIND (Z[1],KEY=PAD(BASE_TYPE$,20)+PAD(COMM_KEY$,20),DOM=ZC0_NOT_FOUND)ZC0$; GOTO ZC0_FOUND
+7530 ZC0_FOUND:! Found ZC0 add to COMM$
+7535 COMM$=STP(ZC0$(101,180),1)+COMM$
+7537 IF ZC0$(74,1)="Y" THEN INTERNAL_COMMAND=1 ! if indicated, set to internal command
+7538 IF UCS(MID(COMM$,1,5))="[WDX]" THEN WINDX_COMMAND=1; WINDX$="[WDX]"; COMM$=MID(COMM$,6) ! If windx, set flag and remove tag from command for now
+7545 RETURN 
+7549 ZC0_NOT_FOUND: RETURN_CODE=-99; RETURN ! 232226
+7550 DO_HEX:! take next 2 chars from comm$ and interpret as hex number
+7555 IF LEN(COMM$)<2 THEN GOTO 7599 ELSE HEX$=COMM$(1,2),COMM$=MID(COMM$,3)
+7560 FINAL$+=ATH(HEX$,ERR=*NEXT)
+7599 RETURN 
+7600 DO_OPEN_BRACKET:! find matching ], if number, find matching value in ARG$ (values separated by SEPs), if not there, do nothing else add to FINAL$
+7605 ATMP=POS("]"=COMM$); IF ATMP=0 THEN COMM$=""; GOTO 7649 ! if no matching ] then we are done
+7610 ARG_NUM$=MID(COMM$,1,ATMP-1),COMM$=MID(COMM$,ATMP+1)
+7612 IF ARG$="" THEN GOTO 7649 ! there are no arguments  
+7613 IF ARG$(1,1)<>SEP THEN ARG$=SEP+ARG$ END_IF ; IF ARG$(LEN(ARG$),1)<>SEP THEN ARG$+=SEP ! make sure first and last chars are SEP chars
+7615 ARG_NUM=NUM(ARG_NUM$,ERR=7649)
+7620 START_SEP=POS(SEP=ARG$,1,ARG_NUM),END_SEP=POS(SEP=ARG$,1,ARG_NUM+1)
+7625 IF START_SEP=0 OR END_SEP=0 THEN GOTO 7649 ! The arg requested is greater than the number of arguments given
+7630 FINAL$+=ARG$(START_SEP+1,END_SEP-START_SEP-1) ! load requested argument into final string
+7649 RETURN 
+7650 CREATE_UNIQUE_TEMP_FILE:! take TEMP_FILE$ and make it unique and make it to use, we let caller make the temp_file name so we don't have to be operating system specific
+7655 RND$=STR(INT(RND*1000):"0000")
+7660 TST=HFN; OPEN (TST,ERR=7665)WINDX$+TEMP_FILE$+RND$; CLOSE (TST); GOTO 7655 ! if opened then go get another random number
+7665 TEMP_FILE$+=RND$; SERIAL WINDX$+TEMP_FILE$ ! name is unique, set it & create file to hold it
+7699 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9905 IF COPY_FILE THEN CLOSE (CF)
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "232226-Modification to return Missing Command code of -99
+56003 REM "273062-My invoices did not fax today after removing the variable   
+56004 REM "DBSPT-94751 - ERR 33 - Insufficient memory                         

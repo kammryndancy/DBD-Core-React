@@ -1,0 +1,30 @@
+0010 REM "Print out usage results <UT2USAG1>
+0100 ENTER C{ALL},C$,C0$
+0200 INPUT "Print on Terminal (T) or LP (L) or Exit (E): ",A$
+0300 IF POS(A$="TtLlEe")=0 THEN GOTO 0200
+0400 IF POS(A$="Ee")<>0 THEN GOTO 9900
+0450 CLOSE (7)
+0500 IF POS(A$="Tt")<>0 THEN OPEN (7)FID(0); PRINT (7)@(0,0),'CS', ELSE OPEN (7)"LP"
+1000 REM "Print C() and C$
+1010 PRINT (7)'FF',
+1020 PRINT (7)"          Test group name: ",C0$
+1030 PRINT (7)"Number of programs tested: ",C[0]:"##,##0",'LF','LF',
+1050 IF POS(A$="Tt")=0 THEN GOTO 1100 ELSE GOTO 1200
+1100 REM "Print on terminal
+1105 X=0,Y=2
+1110 FOR I=1 TO INT(LEN(C$)/7)
+1120 PRINT (7)@(X,Y),C$(I*7-6,7)," ",C[I]:"###,###"
+1130 Y=Y+1; IF Y>18 THEN Y=2,X=X+20
+1135 NEXT I
+1140 INPUT *
+1190 GOTO 9900
+1200 REM "Print on printer
+1210 FOR I=1 TO INT(LEN(C$)/7)
+1220 PRINT (7)C$(I*7-6,7),C[I]:"###,###"
+1230 NEXT I
+1240 PRINT (7)'FF',
+1250 GOTO 9900
+9900 REM "End
+9905 CLOSE (7)
+9910 EXIT 
+9999 END 

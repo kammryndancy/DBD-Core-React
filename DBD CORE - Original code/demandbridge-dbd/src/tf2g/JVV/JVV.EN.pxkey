@@ -1,0 +1,3424 @@
+<PxTable>
+ TableName=JVV.EN
+ TableKey=K1224606621
+ FileCreate=KEYED "JVV.EN",16,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00052
+
+<Data>
+
+   <RecordData>
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_9$="0"
+    FIELD_18$="1"
+    FIELD_32$="MS Sans Serif,1,S"
+    FIELD_33$="000F"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="79"
+    FIELD_5$="23"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"ARGMAA"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+";init"+QUO
+    FIELD_12$="P"+QUO+";post_display"+QUO
+    FIELD_13$="XPERFORM "+QUO+"ARGMAA;wrapup"+QUO+";%ARGMAA$="+QUO+QUO+",%GRID=0"
+    FIELD_15$="=%help_path$+"+QUO+"\hlp\Accounts_Receivable\WebHelp\AR_S1.htm"+QUO
+    FIELD_18$="2016/11/12 19:04 Chaitanya Guntur"
+    FIELD_21$="S-cXR"
+    FIELD_26$="ARGMAA"
+    FIELD_28$="jvv"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0162"
+    FIELD_1$="INV_QRY"
+    FIELD_2$="61"
+    FIELD_3$="0.6"
+    FIELD_4$="8"
+    FIELD_5$="1.8"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"INV"+QUO+")+"+QUO+" "+QUO+"+msg("+QUO+"LOOKUP"+QUO+")"
+    FIELD_9$="0"
+    FIELD_12$="X"
+    FIELD_13$="XREFRESH_FLG=1,vall$="+QUO+QUO+";Process "+QUO+"QRY_AR8.6"+QUO+","+QUO+"../ARG/AR.EN"+QUO+",vall$;if vall$<>"+QUO+QUO+" customer$=vall$;Perform "+QUO+"ARGMAA;Process_Customer"+QUO+";%customer$=customer$,NEXT_ID=X.CTL  ELSE CUSTOMER$="+QUO+QUO+",NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$=QUO+"ARGCAA_1"+QUO
+    FIELD_22$="CUST,CUST_1"
+    FIELD_30$="=MSG("+QUO+"ARGCAA_1"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0170"
+    FIELD_1$="ZIP_QRY"
+    FIELD_2$="69.35"
+    FIELD_3$="0.6"
+    FIELD_4$="8"
+    FIELD_5$="1.8"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"ARGMAA_01"+QUO+")"
+    FIELD_9$="0"
+    FIELD_13$="XREFRESH_FLG=1,vall$="+QUO+QUO+";Process "+QUO+"QRY_FT5.1"+QUO+","+QUO+"../OPG/OP.EN"+QUO+",vall$;if vall$<>"+QUO+QUO+" customer$=vall$;Perform "+QUO+"ARGMAA;Process_Customer"+QUO+";%customer$=customer$,NEXT_ID=X.CTL  ELSE CUSTOMER$="+QUO+QUO+",NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$=QUO+"ARGMAA_01T"+QUO
+    FIELD_22$="CUST,CUST_1"
+    FIELD_30$="=MSG("+QUO+"ARGMAA_01T"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0202"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="1"
+    FIELD_3$="1"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_32$="MS Sans Serif,1,R&"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0213"
+    FIELD_1$="CUSTOMER"
+    FIELD_2$="12"
+    FIELD_3$="1"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="1"
+    FIELD_12$="Xx'currentcellcolour$="+QUO+"Default"+QUO+",X'CURRENTROW=1,X'CURRENTCOLUMN=1"
+    FIELD_13$="XPERFORM "+QUO+"ARGMAA;process_customer"+QUO+"; %ARGMAA$=CUSTOMER$"
+    FIELD_14$="=MSG("+QUO+"CUST_CODE"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_19$="QRY_AR1.1"
+    FIELD_21$="TU"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0229"
+    FIELD_1$="CUST_NAME"
+    FIELD_2$="28"
+    FIELD_3$="1"
+    FIELD_4$="30"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_14$="Customer name"
+    FIELD_21$="LB"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0302"
+    FIELD_1$="FONTED_TEXT_3"
+    FIELD_2$="1"
+    FIELD_3$="2.8"
+    FIELD_4$="10"
+    FIELD_5$="1"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"BILL_T_C_C"+QUO+")+"+QUO+":"+QUO
+    FIELD_9$="0"
+    FIELD_22$="BILLTO"
+    FIELD_32$="MS Sans Serif,1,R&W"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0313"
+    FIELD_1$="BILL_TO_CUST"
+    FIELD_2$="12"
+    FIELD_3$="2.8"
+    FIELD_4$="15"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_7$="=%cust_mask$"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+";process_customer"+QUO
+    FIELD_14$="=MSG("+QUO+"BILL_T_C_C"+QUO+")"
+    FIELD_17$="=%ar_div_len+%cust_len"
+    FIELD_21$="LB"
+    FIELD_22$="BILLTO"
+    FIELD_24$="1"
+    FIELD_26$="ZZWLKU;ar_cust_val"
+    FIELD_27$="ZZWLKU;ar_cust_fmt"
+    FIELD_29$="CUSTOMER"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0329"
+    FIELD_1$="%CUST_NAME1"
+    FIELD_2$="28"
+    FIELD_3$="2.8"
+    FIELD_4$="30"
+    FIELD_5$="1"
+    FIELD_6$="M"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+    FIELD_22$="BILLTO"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0362"
+    FIELD_1$="INV_QRY1"
+    FIELD_2$="61"
+    FIELD_3$="2.6"
+    FIELD_4$="8"
+    FIELD_5$="1.8"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"ARGOR0_05"+QUO+")"
+    FIELD_9$="0"
+    FIELD_13$="XREFRESH_FLG=1,vall$="+QUO+QUO+";Process "+QUO+"ARGOR0"+QUO+","+QUO+"../ARG/AR.EN"+QUO+",vall$;if vall$<>"+QUO+QUO+" customer$=vall$;Perform "+QUO+"ARGMAA;Process_Customer"+QUO+";%customer$=customer$,NEXT_ID=X.CTL  ELSE CUSTOMER$="+QUO+QUO+",NEXT_ID=CUSTOMER.CTL"
+    FIELD_14$=QUO+"ARGOR0_01"+QUO
+    FIELD_22$="CUST,CUST_1"
+    FIELD_30$="=MSG("+QUO+"ARGOR0_01"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0501"
+    FIELD_1$="BOXES_2"
+    FIELD_2$="0"
+    FIELD_3$="4.4"
+    FIELD_4$="79"
+    FIELD_5$="16.5"
+    FIELD_6$="x"
+    FIELD_7$="=MSG("+QUO+"OPTIONS"+QUO+")"
+    FIELD_9$="0"
+    FIELD_10$="2"
+    FIELD_32$="MS Sans Serif,1,&S"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      0603"
+    FIELD_1$="X"
+    FIELD_2$="2"
+    FIELD_3$="5.8"
+    FIELD_4$="75"
+    FIELD_5$="8.7"
+    FIELD_6$="G"
+    FIELD_9$="2"
+    FIELD_10$="1100"
+    FIELD_12$="X%GRID=1,X'CURRENTCELLCOLOUR$="+QUO+"Light Cyan"+QUO
+    FIELD_13$="Xperform "+QUO+"ARGMAA;SEL_GRID"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_S"+QUO+")"
+    FIELD_21$="TD"
+    FIELD_22$="GRID"
+    FIELD_23$="[](Button)L25.00,[](Button)L25.00,[](Button)L25.00,"
+    FIELD_30$="=MSG("+QUO+"PRESS_S"+QUO+")"
+    FIELD_43$="0"
+    FIELD_50$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2203"
+    FIELD_1$="BUTTON_4"
+    FIELD_2$="2"
+    FIELD_3$="21"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Tostart}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+";First_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_22$="NAV_1,RESTRICT_DIV"
+    FIELD_30$="=MSG("+QUO+"PRESS_1ST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2207"
+    FIELD_1$="BUTTON_5"
+    FIELD_2$="6"
+    FIELD_3$="21"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Left}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+";Prior_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_22$="NAV_1,RESTRICT_DIV"
+    FIELD_30$="=MSG("+QUO+"PRESS_PRE"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2211"
+    FIELD_1$="BUTTON_6"
+    FIELD_2$="10"
+    FIELD_3$="21"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!Right}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"ARGMAA;Next_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_21$="<"
+    FIELD_22$="NAV_1,RESTRICT_DIV"
+    FIELD_30$="=MSG("+QUO+"PRESS_NEXT"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2215"
+    FIELD_1$="BUTTON_7"
+    FIELD_2$="14"
+    FIELD_3$="21"
+    FIELD_4$="4"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="{!ToEnd}"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+";Last_rec"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_22$="NAV_1,RESTRICT_DIV"
+    FIELD_30$="=MSG("+QUO+"PRESS_LAST"+QUO+")"
+    FIELD_34$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2230"
+    FIELD_1$="SEE_IMAGES"
+    FIELD_2$="29"
+    FIELD_3$="21"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"SEE_IMAGES"+QUO+")"
+    FIELD_9$="0"
+    FIELD_13$="XCALL "+QUO+"ILGVWM"+QUO+","+QUO+"CUSTOMER_NOTE"+QUO+",PAD(CUSTOMER$,10)"
+    FIELD_14$="=MSG("+QUO+"SEE_IMG_UA"+QUO+")"
+    FIELD_21$="H"
+    FIELD_30$="=MSG("+QUO+"SEE_IMG_UA"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2258"
+    FIELD_1$="CLEAR"
+    FIELD_2$="57"
+    FIELD_3$="21"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"&CLEAR"+QUO+")"
+    FIELD_9$="0"
+    FIELD_12$="XCUST_NAME$=%CUST_NAME$  ,LIST_TYPE_CODE$="+QUO+QUO+",%TM_CONTACT$="+QUO+QUO+",REFRESH_FLG=1"
+    FIELD_13$="P"+QUO+";process_clear"+QUO
+    FIELD_14$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_22$="CLEAR_1"
+    FIELD_30$="=MSG("+QUO+"PRESS_CLR"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      2268"
+    FIELD_1$="EXIT"
+    FIELD_2$="67"
+    FIELD_3$="21"
+    FIELD_4$="10"
+    FIELD_5$="1.75"
+    FIELD_6$="B"
+    FIELD_7$="=MSG("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="3"
+    FIELD_12$="Xx'currentcellcolour$="+QUO+"Default"+QUO+",X'CURRENTROW=1,X'CURRENTCOLUMN=1"
+    FIELD_13$="E"
+    FIELD_14$="=MSG("+QUO+"PRESS_EXIT"+QUO+")"
+    FIELD_21$="<"
+    FIELD_30$="=MSG("+QUO+"PRESS_E"+QUO+")"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      U001"
+    FIELD_1$="-1015"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="U"
+    FIELD_9$="0"
+    FIELD_13$="P"+QUO+"ICGMAZ;TAB_GRID"+QUO
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      V001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="+"
+    FIELD_9$="0"
+    FIELD_10$="SEE_IMAGES,S"
+    FIELD_13$="%HAS_IMAGE_LIB AND NOT(NUL(CUSTOMER$))"
+    FIELD_17$="Y"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ARGMAA      V002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="+"
+    FIELD_9$="0"
+    FIELD_13$="MID(%X3$,333,2)<>"+QUO+"  "+QUO
+    FIELD_17$="N"
+    FIELD_23$="RESTRICT_DIV,D"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       0000"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="80"
+    FIELD_5$="26"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"ORDE_PROC"+QUO+")+"+QUO+" - "+QUO+"+"+QUO+"DB Distributor "+QUO+"+$ae$"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+";init"+QUO
+    FIELD_18$="2008/05/16 16:24 dmm"
+    FIELD_21$="-MXR"
+    FIELD_26$="OPGMEN"
+    FIELD_28$="jvv"
+    FIELD_33$="000F"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       0202"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.8"
+    FIELD_4$="78"
+    FIELD_5$="22.6"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       0256"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="55"
+    FIELD_3$="1"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="B"
+    FIELD_7$="="+QUO+"{!Stop}"+QUO+"+msg("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="1000"
+    FIELD_13$="E"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       0304"
+    FIELD_1$="SHAPES_1"
+    FIELD_2$="2.5"
+    FIELD_3$="1.8"
+    FIELD_4$="75"
+    FIELD_5$="20.6"
+    FIELD_6$="["
+    FIELD_9$="0"
+    FIELD_10$="0,0,0"
+    FIELD_17$="1,7"
+    FIELD_23$="0,0"
+    FIELD_26$="0,0"
+    FIELD_32$="MS Sans Serif,1,&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       0314"
+    FIELD_1$="IMAGE_2"
+    FIELD_2$="13"
+    FIELD_3$="2.2"
+    FIELD_4$="54"
+    FIELD_5$="19.6"
+    FIELD_6$="I"
+    FIELD_7$="=picture$"
+    FIELD_9$="0"
+    FIELD_16$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       2442"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="41"
+    FIELD_3$="23.2"
+    FIELD_4$="37"
+    FIELD_5$="2.2"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ORDE_PROC"+QUO+")"
+    FIELD_9$="0"
+    FIELD_32$="Arial,2,RBI&"
+    FIELD_33$="0CFF"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       2503"
+    FIELD_1$="ML_TIME_OP"
+    FIELD_2$="2"
+    FIELD_3$="24"
+    FIELD_4$="22"
+    FIELD_5$="1.2"
+    FIELD_6$="M"
+    FIELD_8$="=DTE(0:"+QUO+"%Dl, %Ml %D, %Yl "+QUO+")"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  1"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="-[&Setup,&Order Processing,Order &Tracking,Re&ports,Purchase Or&ders,&Utilities],S:[&Custom Item=17002,&System],SS:[&System Setup,Supporting &Files],S"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  2"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="SS:[&Parameters=17005,&Divisions=17006,P&roduct Codes=17007,&Locations=17008,&Carton Labels=17009,&Finder's Fee Change=17010,&User Defined Specs=17011"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  3"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$=",Code &Set=17012],SSF:[&Recommended,&Optional],SSFR:[&F.O.B. Codes=17015,&How to Ship Codes=17016,&Ship Via Codes=17017,&O/P Special Charges=17018],SS"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  4"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="FO:[&Vendor Standards=17020,PMS &Number=17021,Vendor &Ink Chart=17022,&Freight Markup=17023,&Pricing Table=17024,&Thank You Letter=17025,V&endor/Produ"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  5"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ct Finders Fee=17026,&Suggestive Selling=17027,Spe&cial Pricing=17028,Pick P&riority=17029,&Order Contracts=17030,Order Contracts &History=17031,&Blan"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  6"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ket Purchase Orders=17032,B&lanket PO History=17033],O:[&Order Entry=17035,&Purchase Order Printing=17036,Packing List/&Delivery Tickets=17037,Carton "
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  7"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Label Printing=17038,Order &Thank You Letters=17039,Cust Order &Acknowledgments=17040,&Consolidated Pick List=17041,&User Specific PDF Printing=17042"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  8"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="],T:[&Job Status Posting=17044,&Shipping Acknowledgments=17045],P:[Product &Locator,Periodic &Updates,Order &Reports],PL:[Customs Item by &Size=17048,"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M  9"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order History by Item Code=17049],PU:[&Period End Processing=17051,&Remove Order Hist Detail=17052],PR:[Order &History=17054,Customer &Summary Bill=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 10"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7055,Custom &Items Sales Analysis=17056,&Open Sales Orders=17057,Order &Booking=17058,&Monthly Order Booking Summ=17059,&Finders Fee=17060,&Reorders=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 11"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7061,&Cust Backorder Status=17062],D:[&Processing,&Reports],DP:[Purchase Order &Entry=17065,Purchase Order &Printing=17066,Purchase &Order Receiving=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 12"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7067,&Receiving Report and Updt=17068,&Backorder Fill Report=17069,Enhanced Backorder &Fill Rpt=17070],DR:[&Open Purchase Order=17072,P/O &Cash Requir"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 13"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ements=17073,Purchase Order &Grouping=17074],U:[&Data File Maintenance,&Rebuild],UD:[&Order Booking File=17077,&Monthly Order Booking File=17078,&Prom"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 14"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="otion Sales File=17079,&Finder's Fee File=17080,,*&Sales Order History File,&Cleanup Open Order-P/O Files=17082],UR:[&Custom Item Master Sort=17084,&O"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 15"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="pen S/O and Open P/O Files=17085,O&rder History Files=17086,&Finders Fees Sort=17087,&Item Master From O/H=17088,&Ship-to Sort by Location=17089,S&et "
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M 16"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="order line lot flag=17090,&Non-Stock O/H to custom=17091,In&ventory Costing Sort=17092,Re&move order line by item=17093],"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="<Top Level>"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_14$="-"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Setup"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Custom Item"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGIAZ"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M003"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&System"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M004"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&System Setup"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M005"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Parameters"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M006"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Divisions"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPB"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M007"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="P&roduct Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSAA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M008"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Locations"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSKA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M009"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Carton Labels"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMDA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M010"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finder's Fee Change"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTR"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M011"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&User Defined Specs"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGIAY"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M012"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Code &Set"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGFAA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M013"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Supporting &Files"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M014"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Recommended"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M015"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&F.O.B. Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSBA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M016"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&How to Ship Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGSDA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M017"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Ship Via Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSCA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M018"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&O/P Special Charges"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGMCA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M019"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Optional"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M020"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Vendor Standards"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSFA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M021"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="PMS &Number"
+    FIELD_9$="0"
+    FIELD_13$="L"+QUO+"MNT_FMO"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M022"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Vendor &Ink Chart"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSGA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M023"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Freight Markup"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPH"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M024"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Pricing Table"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ICGMFA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M025"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Thank You Letter"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ZYGLAA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M026"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="V&endor/Product Finders Fee"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSEA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M027"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Suggestive Selling"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMBA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M028"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Spe&cial Pricing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"SPGSP0"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M029"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Pick P&riority"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMRA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M030"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Contracts"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCC"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M031"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order Contracts &History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCH"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M032"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Blanket Purchase Orders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCB"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M033"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="B&lanket PO History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCV"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M034"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Processing"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M035"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Entry"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGODM"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M036"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Purchase Order Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPAS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M037"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Packing List/&Delivery Tickets"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRBS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M038"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Carton &Label Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPDS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M039"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Thank You Letters"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRAS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M040"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Cust Order &Acknowledgments"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRXS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M041"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Consolidated Pick List"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPBS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M042"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&User Specific PDF Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ZRGZ10"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M043"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Tracking"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M044"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Job Status Posting"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGCAA"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M045"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Shipping Acknowledgments"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRCS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M046"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Re&ports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M047"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Product &Locator"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M048"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Customs Item by &Size"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGPLA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M049"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order History by Item Code"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGPMA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M050"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Periodic &Updates"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M051"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Period End Processing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUPA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M052"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Remove Order Hist Detail"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGROD"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M053"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Reports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M054"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRMS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M055"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Customer &Summary Bill"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGRES"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M056"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Custom &Items Sales Analysis"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRJS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M057"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open Sales Orders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRIS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M058"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Booking"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRGS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M059"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Monthly Order Booking Summ"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRHS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M060"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finders Fee"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRKS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M061"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Reorders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M062"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Cust Backorder Status"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M063"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Or&ders"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M064"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Processing"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M065"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Entry"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMAM"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M066"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPAS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M067"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase &Order Receiving"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMAG"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M068"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Receiving Report and Updt"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M069"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Backorder Fill Report"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRFS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M070"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Enhanced Backorder &Fill Rpt"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGBKS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M071"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Reports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M072"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open Purchase Order"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRAS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M073"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="P/O &Cash Requirements"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRBS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M074"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Grouping"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRDS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M075"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Utilities"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M076"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Data File Maintenance"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M077"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Booking File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT0"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M078"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Monthly Order Booking File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT1"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M079"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Promotion Sales File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGMEA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M080"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finder's Fee File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTU"+QUO
+    FIELD_14$=","
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M081"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="*&Sales Order History File"
+    FIELD_9$="0"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M082"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Cleanup Open Order-P/O Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT5"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M083"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Rebuild"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M084"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Custom Item Master Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT2"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M085"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open S/O and Open P/O Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT9"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M086"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="O&rder History Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT4"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M087"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finders Fees Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTQ"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M088"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Item Master From O/H"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTG"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M089"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Ship-to Sort by Location"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTT"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M090"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="S&et order line lot flag"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTH"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M091"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Non-Stock O/H to custom"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGUT1"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M092"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="In&ventory Costing Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUU5"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JMENU       M093"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Re&move order line by item"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUU6"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="80"
+    FIELD_5$="26"
+    FIELD_6$="D"
+    FIELD_7$="=MSG("+QUO+"ORDE_PROC"+QUO+")+"+QUO+" - "+QUO+"+"+QUO+"DB Distributor "+QUO+"+$ae$"
+    FIELD_9$="0"
+    FIELD_10$="1"
+    FIELD_11$="P"+QUO+";init"+QUO
+    FIELD_18$="2008/05/16 16:24 dmm"
+    FIELD_21$="-MX+"
+    FIELD_26$="OPGMEN"
+    FIELD_28$="jvv"
+    FIELD_33$="000F"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0202"
+    FIELD_1$="BOXES_1"
+    FIELD_2$="1"
+    FIELD_3$="0.8"
+    FIELD_4$="78"
+    FIELD_5$="22.6"
+    FIELD_6$="x"
+    FIELD_9$="0"
+    FIELD_10$="3"
+    FIELD_32$="MS Sans Serif,1,&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0256"
+    FIELD_1$="BUTTON_1"
+    FIELD_2$="55"
+    FIELD_3$="1"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="B"
+    FIELD_7$="="+QUO+"{!Stop}"+QUO+"+msg("+QUO+"E&XIT"+QUO+")"
+    FIELD_9$="1000"
+    FIELD_13$="E"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0304"
+    FIELD_1$="SHAPES_1"
+    FIELD_2$="2.5"
+    FIELD_3$="1.8"
+    FIELD_4$="75"
+    FIELD_5$="20.6"
+    FIELD_6$="["
+    FIELD_9$="0"
+    FIELD_10$="0,0,0"
+    FIELD_17$="1,7"
+    FIELD_23$="0,0"
+    FIELD_26$="0,0"
+    FIELD_32$="MS Sans Serif,1,&S"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        0314"
+    FIELD_1$="IMAGE_2"
+    FIELD_2$="13"
+    FIELD_3$="2.2"
+    FIELD_4$="54"
+    FIELD_5$="19.6"
+    FIELD_6$="I"
+    FIELD_7$="=picture$"
+    FIELD_9$="0"
+    FIELD_16$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        2442"
+    FIELD_1$="FONTED_TEXT_1"
+    FIELD_2$="41"
+    FIELD_3$="23.2"
+    FIELD_4$="37"
+    FIELD_5$="2.2"
+    FIELD_6$="F"
+    FIELD_7$="=MSG("+QUO+"ORDE_PROC"+QUO+")"
+    FIELD_9$="0"
+    FIELD_32$="Arial,2,RBI&"
+    FIELD_33$="0CFF"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        2503"
+    FIELD_1$="ML_TIME_OP"
+    FIELD_2$="2"
+    FIELD_3$="24"
+    FIELD_4$="22"
+    FIELD_5$="1.2"
+    FIELD_6$="M"
+    FIELD_8$="=DTE(0:"+QUO+"%Dl, %Ml %D, %Yl "+QUO+")"
+    FIELD_9$="0"
+    FIELD_21$="LB"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  1"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="-[&Setup,&Order Processing,Order &Tracking,Re&ports,Purchase Or&ders,&Utilities],S:[&Custom Item=17002,&System],SS:[&System Setup,Supporting &Files],S"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  2"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="SS:[&Parameters=17005,&Divisions=17006,P&roduct Codes=17007,&Locations=17008,&Carton Labels=17009,&Finder's Fee Change=17010,&User Defined Specs=17011"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  3"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$=",Code &Set=17012],SSF:[&Recommended,&Optional],SSFR:[&F.O.B. Codes=17015,&How to Ship Codes=17016,&Ship Via Codes=17017,&O/P Special Charges=17018],SS"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  4"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="FO:[&Vendor Standards=17020,PMS &Number=17021,Vendor &Ink Chart=17022,&Freight Markup=17023,&Pricing Table=17024,&Thank You Letter=17025,V&endor/Produ"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  5"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ct Finders Fee=17026,&Suggestive Selling=17027,Spe&cial Pricing=17028,Pick P&riority=17029,&Order Contracts=17030,Order Contracts &History=17031,&Blan"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  6"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ket Purchase Orders=17032,B&lanket PO History=17033],O:[&Order Entry=17035,&Purchase Order Printing=17036,Packing List/&Delivery Tickets=17037,Carton "
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  7"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Label Printing=17038,Order &Thank You Letters=17039,Cust Order &Acknowledgments=17040,&Consolidated Pick List=17041,&User Specific PDF Printing=17042"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  8"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="],T:[&Job Status Posting=17044,&Shipping Acknowledgments=17045],P:[Product &Locator,Periodic &Updates,Order &Reports],PL:[Customs Item by &Size=17048,"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M  9"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order History by Item Code=17049],PU:[&Period End Processing=17051,&Remove Order Hist Detail=17052],PR:[Order &History=17054,Customer &Summary Bill=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 10"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7055,Custom &Items Sales Analysis=17056,&Open Sales Orders=17057,Order &Booking=17058,&Monthly Order Booking Summ=17059,&Finders Fee=17060,&Reorders=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 11"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7061,&Cust Backorder Status=17062],D:[&Processing,&Reports],DP:[Purchase Order &Entry=17065,Purchase Order &Printing=17066,Purchase &Order Receiving=1"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 12"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="7067,&Receiving Report and Updt=17068,&Backorder Fill Report=17069,Enhanced Backorder &Fill Rpt=17070],DR:[&Open Purchase Order=17072,P/O &Cash Requir"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 13"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="ements=17073,Purchase Order &Grouping=17074],U:[&Data File Maintenance,&Rebuild],UD:[&Order Booking File=17077,&Monthly Order Booking File=17078,&Prom"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 14"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="otion Sales File=17079,&Finder's Fee File=17080,,*&Sales Order History File,&Cleanup Open Order-P/O Files=17082],UR:[&Custom Item Master Sort=17084,&O"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 15"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="pen S/O and Open P/O Files=17085,O&rder History Files=17086,&Finders Fees Sort=17087,&Item Master From O/H=17088,&Ship-to Sort by Location=17089,S&et "
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M 16"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="order line lot flag=17090,&Non-Stock O/H to custom=17091,In&ventory Costing Sort=17092,Re&move order line by item=17093],"
+    FIELD_9$="0"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="<Top Level>"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_14$="-"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Setup"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Custom Item"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGIAZ"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M003"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&System"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M004"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&System Setup"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M005"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Parameters"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M006"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Divisions"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPB"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M007"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="P&roduct Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSAA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M008"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Locations"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSKA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M009"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Carton Labels"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMDA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M010"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finder's Fee Change"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTR"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M011"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&User Defined Specs"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGIAY"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M012"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Code &Set"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGFAA"+QUO
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M013"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Supporting &Files"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M014"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Recommended"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M015"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&F.O.B. Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSBA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M016"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&How to Ship Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGSDA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M017"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Ship Via Codes"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSCA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M018"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&O/P Special Charges"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGMCA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M019"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Optional"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M020"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Vendor Standards"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSFA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M021"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="PMS &Number"
+    FIELD_9$="0"
+    FIELD_13$="L"+QUO+"MNT_FMO"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M022"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Vendor &Ink Chart"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSGA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M023"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Freight Markup"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMPH"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M024"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Pricing Table"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ICGMFA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M025"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Thank You Letter"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ZYGLAA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M026"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="V&endor/Product Finders Fee"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGSEA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M027"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Suggestive Selling"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMBA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M028"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Spe&cial Pricing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"SPGSP0"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M029"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Pick P&riority"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGMRA"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M030"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Contracts"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCC"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M031"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order Contracts &History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCH"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M032"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Blanket Purchase Orders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCB"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M033"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="B&lanket PO History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGOCV"+QUO
+    FIELD_17$="4"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M034"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Processing"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M035"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Entry"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGODM"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M036"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Purchase Order Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPAS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M037"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Packing List/&Delivery Tickets"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRBS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M038"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Carton &Label Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPDS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M039"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Thank You Letters"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRAS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M040"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Cust Order &Acknowledgments"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRXS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M041"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Consolidated Pick List"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPBS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M042"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&User Specific PDF Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ZRGZ10"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M043"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Tracking"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M044"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Job Status Posting"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGCAA"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M045"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Shipping Acknowledgments"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRCS"+QUO
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M046"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Re&ports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M047"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Product &Locator"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M048"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Customs Item by &Size"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGPLA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M049"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order History by Item Code"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGPMA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M050"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Periodic &Updates"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M051"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Period End Processing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUPA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M052"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Remove Order Hist Detail"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGROD"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M053"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Reports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M054"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &History"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRMS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M055"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Customer &Summary Bill"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGRES"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M056"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Custom &Items Sales Analysis"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRJS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M057"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open Sales Orders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRIS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M058"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Order &Booking"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRGS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M059"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Monthly Order Booking Summ"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRHS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M060"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finders Fee"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRKS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M061"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Reorders"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M062"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Cust Backorder Status"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"ARGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M063"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Or&ders"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M064"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Processing"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M065"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Entry"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMAM"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M066"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Printing"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGPAS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M067"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase &Order Receiving"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGMAG"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M068"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Receiving Report and Updt"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRRS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M069"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Backorder Fill Report"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRFS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M070"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Enhanced Backorder &Fill Rpt"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGBKS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M071"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Reports"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M072"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open Purchase Order"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRAS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M073"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="P/O &Cash Requirements"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRBS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M074"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Purchase Order &Grouping"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"POGRDS"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M075"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Utilities"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M076"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Data File Maintenance"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M077"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Order Booking File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT0"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M078"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Monthly Order Booking File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT1"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M079"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Promotion Sales File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGMEA"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M080"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finder's Fee File"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTU"+QUO
+    FIELD_14$=","
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M081"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="*&Sales Order History File"
+    FIELD_9$="0"
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M082"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Cleanup Open Order-P/O Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT5"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M083"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Rebuild"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="1"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M084"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Custom Item Master Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT2"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M085"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Open S/O and Open P/O Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT9"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M086"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="O&rder History Files"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUT4"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M087"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Finders Fees Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTQ"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M088"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Item Master From O/H"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTG"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M089"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Ship-to Sort by Location"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTT"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M090"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="S&et order line lot flag"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUTH"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M091"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="&Non-Stock O/H to custom"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FSGUT1"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M092"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="In&ventory Costing Sort"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUU5"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MENU        M093"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_7$="Re&move order line by item"
+    FIELD_9$="0"
+    FIELD_13$="C"+QUO+"FMGUU6"+QUO
+    FIELD_17$="2"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PMENU       0000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="P"
+    FIELD_7$="Popup Menu"
+    FIELD_9$="0"
+    FIELD_17$="0"
+    FIELD_18$="2018/09/13 12:00 jvv"
+    FIELD_28$="jvv"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PMENU       M000"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="P"
+    FIELD_7$="<Top Level>"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PMENU       M001"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="P"
+    FIELD_7$="&Test Group"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_13$="G"
+    FIELD_17$="0"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PMENU       M002"
+    FIELD_2$="0"
+    FIELD_3$="0"
+    FIELD_4$="0"
+    FIELD_5$="0"
+    FIELD_6$="P"
+    FIELD_7$="&Test item"
+    FIELD_8$="I"
+    FIELD_9$="0"
+    FIELD_17$="1"
+    FIELD_43$="0"
+    FIELD_52$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0000"
+    FIELD_1$="AR1_Cust"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="1"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"AR1"+QUO+"+%C$"
+    FIELD_16$="'MODE'($000F$)"
+    FIELD_18$="2018/04/05 10:09 jvv"
+    FIELD_19$="ARGMAB,tf2g/ARG/AR.EN"
+    FIELD_21$="R"
+    FIELD_23$="U0000000"
+    FIELD_24$="2"
+    FIELD_29$="_MN_.CUST_DIV$+_MN_.CUST_CODE$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0001"
+    FIELD_1$="CUST_LOOKUP"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="10"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0002"
+    FIELD_1$="Formula:TBL(SGN(%AR_DIV_LEN),"+QUO+QUO+",_MN_.CUST_DIV$+"+QUO+"-"+QUO+")+_MN_.CUST_CODE$(1,%CUST_LEN)"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"CUSTOMER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0003"
+    FIELD_1$="CUST_NAME"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0004"
+    FIELD_1$="SPER_NAME"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SPER"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="AR3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0005"
+    FIELD_1$="Formula:STP(_MN_.CUST_ADDR_1$)+"+QUO+","+QUO+"+STP(_MN_.CUST_ADDR_2$)+"+QUO+","+QUO+"+STP(_MN_.CUST_CITY$)+"+QUO+", "+QUO+"+_MN_.CUST_ST$+"+QUO+" "+QUO+"+STP(_MN_.CUST_ZIP_CODE$)"
+    FIELD_4$="40"
+    FIELD_6$="+"
+    FIELD_7$="Address"
+    FIELD_8$="S"
+    FIELD_9$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0006"
+    FIELD_1$="CUST_PHONE"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="=%PHONE_MASK$+"+QUO+"XXXX"+QUO
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   0007"
+    FIELD_1$="CUST_BAL"
+    FIELD_4$="14"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"CUST_BAL"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##,###,###.00-"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   F001"
+    FIELD_1$="AR3_Slsperson"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"AR3"+QUO+"+%C$"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="_MN_.SPER_CODE$"
+    FIELD_23$="00000000"
+    FIELD_30$="AR3"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AR1.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=pad(DIM(2,"+QUO+"0"+QUO+"),ABS(%ar_diV_LEN-2))"
+    FIELD_13$="C"+QUO+"UPDSYO;VAL_QRY_LIST"+QUO+",REPS$,_MN_.SPER_CODE$,_MN_.SPER_CODE_2$,_MN_.SPER_CODE_3$,_MN_.SPER_CODE_4$,_MN_.SPER_CODE_5$"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

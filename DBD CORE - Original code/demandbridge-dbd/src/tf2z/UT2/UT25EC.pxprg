@@ -1,0 +1,441 @@
+0010 REM "DemandBridge eCommerce 5.6 Update <UT25EC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 10/29/08 - 17.275277 - dmm - SSP# 224200
+0037 REM "224200-Create UT26EC, call from UT2560. UT2550 will call UT25EC.   
+0040 REM "Copyright 2008 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! This program runs as part of the currect release utility, which is UT2530 as of 3/6/04, UT2540 as of 4/6/05, UT2550 as of 4/12/06, UT2560 as of 11/14/07
+0051 ! Don't use this program anymore, use UT26EC as of 10/28/08, SSP224200, the last release utility to run UT25EC is now UT2550.
+0052 REM "153058 - unlimited item secure codes
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT25EC",X1$="DemandBridge eCommerce 5.6 Update"
+0120 DIM Z0$(80,"-"),S$(40),FMP3[3]
+0130 K0=20,K1=1
+0135 C9=-1
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=ESC+"BG"+Z0$+ESC+"EG"
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "Stay away from slot Z(11)
+0510 Z$="12O ZZE  13O ZZPARM  "
+0520 GOSUB 9750
+0600 REM "
+0610 GOSUB 6000
+0660 PRINT @(0,4),'CE',
+1000 REM 
+1010 GOSUB 4000
+1011 CLOSE (100); OPEN (100)"ZZPARM"; PARMSFOUND$="N"; FIND (100,KEY=X3$(9,3)+"E/C",DOM=9900); PARMSFOUND$="Y"; CLOSE (100); REM "ssp 156808
+1020 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Upgrade existing file specifications?","","",0; ON Z GOTO 1021,1800
+1120 H1$="Web EC Session file to 2048, string to 1984"
+1130 F$="ECB...",F1$="O"; GOSUB 7500; GOSUB 7900
+1140 DIM A[4]; A[0]=K,A[1]=2048,A[2]=R1,A[3]=D,A[4]=1984; GOSUB 8000
+1141 H1$="Web EC Expired Session file to 2048, string to 1984"
+1142 F$="ECC...",F1$="O"; GOSUB 7500; GOSUB 7900
+1143 DIM A[4]; A[0]=K,A[1]=2048,A[2]=R1,A[3]=D,A[4]=1984; GOSUB 8000
+1144 H1$="EC Catalog Category string size to 120"
+1145 F$="ECG...",F1$="O"; GOSUB 7500; GOSUB 7900
+1146 DIM A[4]; A[0]=K,A[1]=128,A[2]=R1,A[3]=D,A[4]=120; GOSUB 8000
+1150 H1$="Webec Buyer record, rec size to 2560, string to 1540"
+1152 F$="ECA...",F1$="O"; GOSUB 7500; GOSUB 7900
+1154 DIM A(4); A(0)=K,A(1)=2560,A(2)=R1,A(3)=D,A(4)=1540; GOSUB 8000
+1156 H1$="WebEC Catalog load parameters Rec size 512 String size 511"
+1158 F$="ECQ...",F1$="O"; GOSUB 7500; GOSUB 7900
+1160 DIM A[4]; A[0]=K,A[1]=512,A[2]=R1,A[3]=D,A[4]=511; GOSUB 8000
+1162 H1$="WebEC Form Parameters expand record size to 1024 string to 1000"
+1164 F$="ECR...",F1$="O"; GOSUB 7500; GOSUB 7900
+1166 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=1000; GOSUB 8000
+1168 H1$="WebEC Customer Parmameters expand record to 1024 and string to 1000"
+1170 F$="ECS...",F1$="O"; GOSUB 7500; GOSUB 7900
+1172 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=1000; GOSUB 8000
+1174 H1$="WebEC Order Message String Size to 290"
+1176 F$="ECX...",F1$="O"; GOSUB 7500; GOSUB 7900
+1178 DIM A[4]; A[0]=K,A[1]=512,A[2]=R1,A[3]=D,A[4]=290; GOSUB 8000
+1179 H1$="WebEC worksheet messageing file string size to 195 - key to 16"
+1180 F$="EC0...",F1$="O"; GOSUB 7500; GOSUB 7900
+1181 DIM A[4]; A[0]=16,A[1]=296,A[2]=R1,A[3]=D,A[4]=195; GOSUB 8000
+1182 H1$="WebEC Worksheet file record size to 2048 string to 1580"
+1183 F$="ECD...",F1$="O"; GOSUB 7500; GOSUB 7900
+1184 DIM A[4]; A[0]=K,A[1]=2048,A[2]=R1,A[3]=D,A[4]=1580; GOSUB 8000
+1185 H1$="WebEC Worksheet Lines string size to 499 bytes to 640"
+1186 F$="ECE...",F1$="O"; GOSUB 7500; GOSUB 7900
+1187 DIM A[4]; A[0]=K,A[1]=640,A[2]=R1,A[3]=D,A[4]=499; GOSUB 8000
+1188 H1$="WebEC Temp Order File, bytes to 640 string to 499"
+1189 F$="ECL...",F1$="O"; GOSUB 7500; GOSUB 7900
+1190 DIM A[4]; A[0]=K,A[1]=640,A[2]=R1,A[3]=D,A[4]=499; GOSUB 8000
+1191 H1$="Webec messages, expand key to 25, rec to 512, string to 500"
+1192 F$="ECO...",F1$="O"; GOSUB 7500; GOSUB 7900
+1193 DIM A[4]; A[0]=25,A[1]=512,A[2]=R1,A[3]=D,A[4]=500; GOSUB 8000
+1194 H1$="WebEC Order Entry Gateway Header, rec size to 1024 - string to 1000"
+1195 F$="OFA...",F1$="O"; GOSUB 7500; GOSUB 7900
+1196 DIM A(4); A(0)=K,A(1)=1024,A(2)=R1,A(3)=D,A(4)=1000; GOSUB 8000
+1200 H1$="WebEC Order Entry Lines to 1024, string to 500"
+1210 F$="OFB...",F1$="O"; GOSUB 7500; GOSUB 7900
+1220 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=500; GOSUB 8000
+1230 H1$="WebEC Order Entry Shipping to 1024, string to 500"
+1240 F$="OFC...",F1$="O"; GOSUB 7500; GOSUB 7900
+1250 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=500; GOSUB 8000
+1260 H1$="Credit Card Information Key to 11"
+1270 F$="EDD...",F1$="O"; GOSUB 7500; GOSUB 7900
+1280 DIM A[4]; A[0]=11,A[1]=416,A[2]=R1,A[3]=D,A[4]=316; GOSUB 8000
+1290 H1$="CC Invoice Entry Lines File to 512, string to 290"
+1300 F$="GRT...",F1$="O"; GOSUB 7500; GOSUB 7900
+1310 DIM A[4]; A[0]=K,A[1]=512,A[2]=R1,A[3]=D,A[4]=290; GOSUB 8000
+1320 H1$="CC Invoice Entry Header File to 1024,String to 689"
+1330 F$="GRB...",F1$="O"; GOSUB 7500; GOSUB 7900
+1340 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=689; GOSUB 8000
+1350 H1$="XML Map File to 1024,String to 852"
+1360 F$="EDB...",F1$="O"; GOSUB 7500; GOSUB 7900
+1370 DIM A[4]; A[0]=K,A[1]=1024,A[2]=R1,A[3]=D,A[4]=1003; GOSUB 8000
+1800 REM "
+1810 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Run special processing updates?","","",0; ON Z GOTO 1811,5000
+1900 REM "update emails/actions to 60 characters (server ver 3.0)
+1901 CLOSE (100); OPEN (100)"ECA"+X3$(9,3); TEMPY$="Y"; PRINT @(0,19),'CE',"Evaluating buyer email status...",
+1902 TEMP$=KEY(100,END=1903); READ (100,KEY=TEMP$)TEMPA$; IF TEMPA$(253,1)<>"Y" THEN TEMPY$="N"; GOTO 1902 ELSE GOTO 1902
+1903 IF TEMPY$="Y" THEN GOTO 1919 END_IF ; IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Have your buyer emails been upgraded to 60 characters?","","",0; ON Z GOTO 1904,1902
+1904 PRINT @(0,19),'CE',"Updating email/actions to server version 3.0",; READ (100,KEY="",DOM=1905)
+1905 ECA_KEY$=KEY(100,END=1919); EXTRACT RECORD (100,KEY=ECA_KEY$)ECA$; PRINT @(0,22),'CL',ECA_KEY$,
+1907 IF ECA$(253,1)="Y" THEN GOTO 1918
+1908 IF Z=0 THEN ECA$(253,1)="Y"; GOTO 1918
+1910 ECA$(470,10)=ECA$(271,5),ECA$(271,5)=DIM(5)
+1911 ECA$(460,10)=ECA$(266,5),ECA$(266,5)=DIM(5)
+1912 ECA$(266,10)=ECA$(261,5),ECA$(261,5)=DIM(5)
+1913 ECA$(400,60)=ECA$(199,30),ECA$(199,30)=DIM(30)
+1914 ECA$(340,60)=ECA$(169,30),ECA$(169,30)=DIM(30)
+1915 ECA$(169,60)=ECA$(139,30),ECA$(139,30)=DIM(30)
+1916 ECA$(253,3)="Y  "; REM "reuse of fms group
+1917 ECA$(89,3)=DIM(3),ECA$(93,4)=DIM(4),ECA$(101,8)=DIM(8),ECA$(229,4)=DIM(4),ECA$(323,1)=DIM(1); REM "clear out removed fields
+1918 WRITE RECORD (100,KEY=ECA_KEY$)ECA$; GOTO 1905
+1919 CLOSE (100); OPEN (100)"ECS"+X3$(9,3); REM "open customer parms for processing
+1920 REM "customer processing
+1921 K$=KEY(100,END=1929); EXTRACT RECORD (100,KEY=K$)ECS$
+1922 IF ECS$(514,1)="Y" THEN GOTO 1927
+1923 ECS$(384,60)=ECS$(72,30),ECS$(72,30)=DIM(30)
+1924 ECS$(444,10)=ECS$(107,5),ECS$(107,5)=DIM(5)
+1925 ECS$(454,60)=ECS$(292,30),ECS$(292,30)=DIM(30)
+1926 ECS$(514,1)="Y"; REM "set upgrade flag
+1927 WRITE RECORD (100,KEY=K$)ECS$; GOTO 1921
+1929 CLOSE (100); OPEN (100)"ZZPARM"
+1930 REM "process system parameters
+1931 EXTRACT RECORD (100,KEY=X3$(9,3)+"E/C",DOM=1939)ECPARM$
+1932 IF ECPARM$(440,1)="Y" THEN GOTO 1937
+1933 ECPARM$(440,1)="Y",ECPARM$(596,315)=DIM(315),ECPARM$(596,60)=ECPARM$(168,30); ECPARM$(168,30)=DIM(30)
+1934 IF ECPARM$(491,1)=" " THEN ECPARM$(491,1)="N",ECPARM$(492,60)=DIM(60); REM "set office supply module default
+1937 WRITE RECORD (100,KEY=X3$(9,3)+"E/C")ECPARM$
+1938 REM "update WS1 messages from WS0
+1939 CLOSE (100); CLOSE (101); OPEN (100)"ECX"+X3$(9,3); OPEN (101)"ECX"+X3$(9,3); READ (100,KEY="EC3WS0",DOM=1940)
+1940 ECXKEY$=KEY(100,END=1941); IF ECXKEY$(1,6)<>"EC3WS0" THEN GOTO 1941 ELSE READ (100,KEY=ECXKEY$)ECX$; ECX$(1,6)="EC3WS1",ECXKEY$(1,6)=ECX$(1,6); WRITE (101,KEY=ECXKEY$,DOM=1940)ECX$; GOTO 1940
+1941 CLOSE (100); CLOSE (101)
+1942 REM "expand record size for SPECIAL CHARGES
+1943 OPEN (100)"FMP"+X3$(9,3); READ (100,KEY="X",DOM=1944)
+1944 FMP3KEY$=KEY(100,END=1946); IF FMP3KEY$(1,1)<>"X" THEN GOTO 1946 ELSE EXTRACT (100,KEY=FMP3KEY$)FMP3$,FMP3[0],FMP3[1],FMP3[2],FMP3[3]
+1945 FMP3$=PAD(FMP3$,72); WRITE (100,KEY=FMP3KEY$)FMP3$,FMP3[0],FMP3[1],FMP3[2],FMP3[3]; GOTO 1944
+1946 REM "copy over old messages to new customer specific message format
+1947 CLOSE (100); CLOSE (101); OPEN (100)"ECX"+X3$(9,3); OPEN (101)"ECO"+X3$(9,3)
+1948 ECXKEY$=KEY(100,END=1949); READ (100,KEY=ECXKEY$)ECXREC$; DIM ECOREC$(300); ECOREC$=ECXREC$,ECOREC$=DIM(10)+ECOREC$; WRITE (101,KEY=ECOREC$(1,25),DOM=1948)ECOREC$; GOTO 1948
+1950 REM "update ECH to new multi keyed format, SSP165192, take out this logic, ECH will be updated properly during tfupdt
+1951 ! CLOSE (100); OPEN (100)"ZZPARM"; READ (100,KEY=X3$(9,3)+"E/C")ECPARM$; CLOSE (100); IF ECPARM$(553,1)="Y" THEN GOTO 1958
+1952 ! CLOSE (100); OPEN (100)"ECH"+X3$(9,3); ERASE "ECHNEW",ERR=1953
+1953 ! KEYED "ECHNEW",40,[1:1:10]+[1:11:10]+[1:61:40]+[1:41:20],,192; CLOSE (101); OPEN (101)"ECHNEW"
+1955 ! ECHKEY$=KEY(100,END=1956); READ (100,KEY=ECHKEY$)ECHREC$; PRINT @(0,22),'CL',ECHKEY$,; ECHREC$=PAD(ECHREC$,190); WRITE (101,KEY=ECHKEY$)ECHREC$; GOTO 1955
+1956 ! CLOSE (100); CLOSE (101); RENAME "ECH"+X3$(9,3),"ECHOLD"; RENAME "ECHNEW","ECH"+X3$(9,3)
+1957 ! OPEN (100)"ZZPARM"; EXTRACT RECORD (100,KEY=X3$(9,3)+"E/C")ECPARM$; ECPARM$(553,1)="Y"; WRITE RECORD (100,KEY=X3$(9,3)+"E/C")ECPARM$
+1958 CLOSE (100); CLOSE (101); ERASE "EDEOLD",ERR=1959
+1959 RENAME "EDE"+X3$(9,3),"EDEOLD"; KEYED "EDE"+X3$(9,3),35,[1:1:15]+[1:56:40]+[1:16:20],,192
+1995 PRINT @(0,19),'CE',
+1999 CLOSE (100); CLOSE (101)
+2000 REM "update files with standard settings
+2010 CLOSE (100); OPEN (100)"ZZPARM"
+2020 DIM ECPARM$(1024); EXTRACT (100,KEY=X3$(9,3)+"E/C",DOM=2021)ECPARM$
+2030 REM "set order status keyword search values
+2031 IF NOT(NUL(ECPARM$(843,10))) THEN GOTO 2042 ! If already filled in, don't overwrite
+2032 ECPARM$(843,10)="OSKW_OTYPE"
+2033 ECPARM$(853,10)="OSKW_CUSPO"
+2034 ECPARM$(863,10)="OSKW_ITEM"
+2035 ECPARM$(873,10)="OSKW_SHPTO"
+2036 ECPARM$(883,10)="OSKW_CITY"
+2037 ECPARM$(893,10)="OSKW_STATE"
+2038 ECPARM$(903,10)="OSKW_ZIP"
+2039 ECPARM$(913,10)="OSKW_BYDAT"
+2040 ECPARM$(923,10)="OSKW_ILINE"
+2042 IF ECPARM$(803,20)=DIM(20) THEN ECPARM$(803,20)="Warehouse Release"
+2044 IF ECPARM$(823,20)=DIM(20) THEN ECPARM$(823,20)="Reorder"
+2046 IF ECPARM$(797,3)=DIM(3) THEN ECPARM$(797,3)="090"
+2047 IF ECPARM$(800,3)=DIM(3) THEN ECPARM$(800,3)="045"
+2055 WRITE (100,KEY=X3$(9,3)+"E/C")ECPARM$
+2100 REM "update ECU... with User defined sort definitions
+2105 CLOSE (100); CLOSE (101); CLOSE (200); CLOSE (201)
+2110 OPEN (100,ERR=*NEXT)"tf2w/EC3/ECU000"; GOTO 2120
+2115 OPEN (100,ERR=DONE_WITH_ECU)"ECU000"
+2120 OPEN (101,ERR=DONE_WITH_ECU)"ECU"+X3$(9,3)
+2125 OPEN (200,ERR=*NEXT)"tf2w/EC3/ECV000"; GOTO 2135
+2130 OPEN (200,ERR=DONE_WITH_ECU)"ECV000"
+2135 OPEN (201,ERR=DONE_WITH_ECU)"ECV"+X3$(9,3)
+2140 NEXT_ECU: ECUKEY$=KEY(100,END=DONE_WITH_ECU); READ RECORD (100,KEY=ECUKEY$)ECU$
+2145 WRITE RECORD (101,KEY=ECUKEY$,DOM=NEXT_ECU)ECU$ ! if already on file, skip doing ECV and get next ECU to do
+2150 REM "update ECV... 
+2155 READ (200,KEY=DIM(10)+ECUKEY$,DOM=*NEXT)
+2160 NEXT_ECV: ECVKEY$=KEY(200,END=NEXT_ECU); IF NOT(NUL(MID(ECVKEY$,1,10))) OR MID(ECVKEY$,11,LEN(ECUKEY$))<>ECUKEY$ THEN GOTO NEXT_ECU
+2165 READ RECORD (200,KEY=ECVKEY$,DOM=NEXT_ECV)ECV$
+2170 WRITE RECORD (201,KEY=ECVKEY$)ECV$
+2175 GOTO NEXT_ECV
+2180 GOTO NEXT_ECU
+2190 DONE_WITH_ECU:
+2195 CLOSE (100); CLOSE (101); CLOSE (200); CLOSE (201)
+2199 ! 
+2200 REM "upgrade system parameters to string size of 1275 ; REM "148750
+2205 CLOSE (100); OPEN (100)"ZZPARM"
+2210 EXTRACT (100,KEY=X3$(9,3)+"E/C")ECPARM$
+2215 ECPARM$=PAD(ECPARM$,1275)
+2220 WRITE (100,KEY=X3$(9,3)+"E/C")ECPARM$; CLOSE (100)
+2225 REM "Expand EDD keys                        
+2227 CALL "EC3UTN",ERR=*NEXT,X3$,X4$,"","*"
+2230 ! Check EDI file, if not sort then create new sort file, write in keys, rename, SSP170977
+2235 CLOSE (100); OPEN (100)"EDI"+X3$(9,3)
+2240 RS=NUM(FIN(100,"RECORD_SIZE"))
+2245 IF RS=0 THEN CLOSE (100); GOTO 2275
+2250 SORT "EDINEW",20
+2255 CLOSE (101); OPEN (101)"EDINEW"
+2260 K$=KEY(100,END=2270); WRITE (101,KEY=K$); READ (100)
+2265 GOTO 2260
+2270 CLOSE (100); CLOSE (101); ERASE "EDI"+X3$(9,3); RENAME "EDINEW","EDI"+X3$(9,3)
+2275 ! Done with EDI file
+2300 ! SSP184884, setup TopForm standard color scheme records
+2305 CLOSE (100); CLOSE (101)
+2310 OPEN (100,ERR=*NEXT)"tf2w/EC3/EE2000"; GOTO 2320
+2315 OPEN (100,ERR=DONE_WITH_EE2)"EE2000"
+2320 OPEN (101,ERR=DONE_WITH_EE2)"EE2"+X3$(9,3)
+2325 NEXT_EE2: EE2KEY$=KEY(100,END=DONE_WITH_EE2); READ RECORD (100,KEY=EE2KEY$)EE2$
+2330 IF NUM(EE2KEY$,ERR=NEXT_EE2)>1000 THEN GOTO DONE_WITH_EE2 ELSE WRITE RECORD (101,KEY=EE2KEY$)EE2$; GOTO NEXT_EE2
+2340 DONE_WITH_EE2:
+2345 CLOSE (100); CLOSE (101)
+2349 ! 
+2350 CALL "ECGUTR;QUIETLY",ERR=*NEXT,X3$,X4$,"","UT25EC"
+3000 REM "Merge in new Menus/Options
+3001 GOTO 5000; REM "bypass menu merge
+3002 REM "M$[X,Y]
+3003 REM "X - job     Y-job variables
+3004 REM "Y values
+3005 REM "1-source file
+3006 REM "2-destination file
+3007 REM "3-overwrite y/n
+3010 JOBS=7
+3020 DIM J$[JOBS,4]
+3021 J$[1,1]="ZM0WEB",J$[1,2]="ZM0",J$[1,3]="N",J$[1,4]="Menus"
+3022 J$[2,1]="ZM1WEB",J$[2,2]="ZM1",J$[2,3]="N",J$[2,4]="Menu Options"
+3023 J$[3,1]="ZZGWEB",J$[3,2]="ZZG",J$[3,3]="N",J$[3,4]="Menu Graphics"
+3024 J$[4,1]="ZZTWEB",J$[4,2]="ZZT",J$[4,3]="N",J$[4,4]="Prompts"
+3025 J$[5,1]="ZZLWEB",J$[5,2]="ZZL",J$[5,3]="N",J$[5,4]="Lookup Definitions"
+3026 J$[6,1]="ZZEWEB",J$[6,2]="ZZE",J$[6,3]="N",J$[6,4]="File Definitions"
+3027 J$[7,1]="ZZFWEB",J$[7,2]="ZZF",J$[7,3]="N",J$[7,4]="File Layouts"
+3050 REM "run jobs
+3052 FOR J=1 TO JOBS
+3054 SOURCE_FILE$=J$[J,1],DEST_FILE$=J$[J,2],OVERWRITE$=J$[J,3],DESC$=J$[J,4]
+3056 PRINT @(0,18),'CE',@(0,19),"Updating:  ",DESC$,
+3058 CLOSE (100); CLOSE (101); OPEN (100,ERR=3095)SOURCE_FILE$; OPEN (101,ERR=3095)DEST_FILE$
+3060 KS$=KEY(100,END=3090); READ RECORD (100,KEY=KS$)RS$
+3062 V=V+1; IF MOD(V,20)=0 THEN PRINT @(0,22),'CL',KS$,
+3064 IF OVERWRITE$="Y" THEN WRITE RECORD (101,KEY=KS$)RS$ ELSE WRITE RECORD (101,KEY=KS$,DOM=3065)RS$
+3068 GOTO 3060
+3095 NEXT J; REM "get next job
+3500 REM "Rebuilds-
+3502 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Rebuild Menus?","","",0; ON Z GOTO 3503,3510
+3504 IF Q0$<>"!" THEN CALL "ZZ2XBA",X3$,X4$,Q0$,"*"
+3512 IF Q1$<>"*" THEN CALL "ZZPROM",".Y",X3$,Z,"Rebuild Prompts?","","",0; ON Z GOTO 3513,3520
+3514 IF Q0$<>"!" THEN CALL "ZZ2XDA",X3$,X4$,Q0$,"*"
+3990 GOTO 5000
+4000 REM "Define missing files F5$=Files to check, G5$=use number of records from this exisiting file or if number use it.
+4010 F5$="ECA...ECB...ECC...ECD...ECE...ECF...ECG...ECH...ECI...ECJ...ECK...ECL...ECM...ECN...ECO...ECP...ECQ...ECR...ECS...ECT...ECU...ECV...ECW...ECX...EC6...EC7...EC8...EC9...SH8...ECY...ECZ...EDA...EC0...EDC...EDD...EDE...EDF...EDG...EDH...OFA...OFB...OFC...OFD...OFE...OFF...OFG...OFH...EDI...EDJ...EDK...GRB...GRC...GRD...GRT...EDL...ZYW...EDM...GSD...GS3...EDN...EDO...EDP...EDQ...EDR...EDS...EDT...EDV...EDU...EDW...PP0...PP1...PP2...PP3...EDX...EDY...EDZ...EE0...EE1...EE2...EE3...EE4...EE5...EE6...EE7...EE8...EE9...EEA...ED9...EEB...EEC...EED..."
+4020 G5$="020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   020   "
+4030 IF F5$="" THEN GOTO 4190 ELSE F4$=F5$(1,6),F5$=F5$(7),G4$=G5$(1,6),G5$=G5$(7)
+4040 FIND (Z[12],KEY=F4$(1,3)+"   ")A$
+4050 CLOSE (14); OPEN (14,ERR=4051)F4$(1,3)+X3$(9,3); CLOSE (14); GOTO 4180
+4055 R1=NUM(G4$,ERR=4056),D=0; GOTO 4080
+4060 F$=G4$; F1$="O"; GOSUB 7500
+4070 GOSUB 7900; F1$="C"; GOSUB 7500
+4080 DIM A[4]; A[2]=R1,A[3]=D,Q$=F4$(1,3)+X3$(9,3)
+4090 IF A$(47,1)="S" THEN T0=3,A[0]=NUM(A$(48,2)) ELSE IF A$(47,1)="D" THEN T0=2,A[0]=NUM(A$(48,2)),A[1]=NUM(A$(50,4)) ELSE IF A$(47,1)="I" THEN T0=0,A[1]=NUM(A$(50,4)) ELSE ESCAPE 
+4100 GOSUB 7650
+4105 H1$="Defined file "+Q$; GOSUB 8800
+4110 IF T0<>0 THEN GOTO 4180
+4120 F$=F4$; F1$="O"; GOSUB 7500
+4130 CALL "ZZINIT",STR(F:"00")
+4140 F1$="C"; GOSUB 7500
+4180 GOTO 4030
+4190 RETURN 
+4200 REM "Create BATCH control record in ZZPARM
+4210 READ (Z[13],KEY="CMP"+X3$(9,3),DOM=4290)X$; IF X$(194,1)<>"1" THEN GOTO 4290
+4215 PRINT @(0,4),'CE',@(10,10),"Rebuilding Batch Control Record",
+4220 Q$=""; READ (Z[12],KEY="",DOM=4221)
+4230 READ (Z[12],END=4275)X$
+4240 IF X$(46,1)<>"1" THEN GOTO 4230
+4245 PRINT @(45,10),X$(1,3),
+4250 IF X$(4,3)="   " THEN X$(4,3)="..."
+4260 Q$=Q$+X$(1,6)+"  "
+4270 GOTO 4230
+4275 PRINT @(0,4),'CE',
+4280 Q$="BATCH"+Q$
+4285 WRITE (Z[13],KEY=Q$(1,5))Q$
+4290 RETURN 
+5000 REM "EOJ
+5010 PRINT @(0,4),'CE',@(0,10),"The automated portion of your DemandBridge eCommerce 5.6 installation is now    complete.  Contact Software Support for further instructions at 770 239-7777."
+5020 IF Q1$<>"*" THEN CALL "ZZPROM",".4",X3$,Z,"","","",0
+5040 GOTO 9900
+6000 REM "Bkg
+6020 PRINT 'SB',@(0,3),"This release program will update eCOMMERCE FUNCTIONS ONLY to level 5.6",@(0,5),"After answering YES to the Proceed question below, new files will be defined and",@(0,7),"some of your data will be adjusted to be compatible with DemandBridge Release 5.6.",@(0,9),"Also, various sort file rebuilds will be run automatically.",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Open/Close Files
+7505 Z$=""
+7510 FOR I=1 TO LEN(F$) STEP 6
+7515 Z$=Z$+STR(I:"00")+F1$+" "+F$(1,6)+"  "
+7520 NEXT I
+7525 GOSUB 9750
+7530 F=Z[1]
+7540 RETURN 
+7600 REM "CREATE TEMP FILE
+7610 Q$="-T"+FID(0)
+7615 ERASE Q$,ERR=7616; GOTO 7615
+7625 IF ERR<>12 THEN GOTO 9000
+7630 GOSUB 7650
+7635 Z$="11O "+Q$; GOSUB 9750
+7640 RETURN 
+7650 REM DEFINE FILE
+7660 IF T0=0 THEN INDEXED Q$,A[2],A[1],A[3],0 ELSE IF T0=2 THEN DIRECT Q$,A[0],0,A[1],A[3],0 ELSE IF T0=3 THEN SORT Q$,A[0],0,A[3],0 ELSE ESCAPE 
+7690 RETURN 
+7700 REM "EXPAND FILE -NOTE: Cannot expand strings of Indexed files!!!!
+7705 C=0
+7707 IF T0<>0 THEN EXTRACT (F,KEY="",DOM=7708) ELSE EXTRACT (F,IND=0)
+7710 IF T0<>0 THEN K$=KEY(F,END=7780) ELSE SETERR 7790; I0=IND(F)
+7715 READ RECORD (F,END=7780)A$
+7718 REM LET C=C+1; IF MOD(C,100)=0 THEN LET H1$="Record: "+STR(C); GOSUB 08800
+7719 C=C+1; IF MOD(C,T2)=1 THEN GOSUB 8150
+7720 IF A[4]=0 OR T=0 THEN GOTO 7735 ELSE P0=POS($8A$=A$); IF P0=0 THEN P0=LEN(A$)+1,A$=A$+$8A$
+7721 IF P0-1>A[4] THEN REM CALL "ZZPROM",".5",X3$,A,"String will be truncated!","","",0; ON A GOTO 07722,07900
+7722 DIM S$(A[4]); S$(1)=A$(1,P0-1),A$=S$+A$(P0)
+7730 REM IF LEN(A$)>A[1] THEN IF POS($00$<>A$(A[1]))>0 THEN CALL "ZZPROM",".5",X3$,A,"Record will be truncated!","","",0; ON A GOTO 07731,07900
+7735 IF LEN(A$)>A[1] THEN A$=A$(1,A[1])
+7750 IF T0=0 THEN WRITE RECORD (Z[11])A$ ELSE WRITE RECORD (Z[11],KEY=K$)A$
+7760 GOTO 7710
+7790 SETERR 9000
+7795 RETURN 
+7800 REM "RENAME FILES
+7810 ERASE "TX"+FID(0),ERR=7811; GOTO 7810
+7815 IF ERR<>12 THEN GOTO 9000
+7820 Z$="01C "+F$(1,6)+"  "; GOSUB 9750; CLOSE (Z[1],ERR=7821)
+7830 RENAME D,F9$,"TX"+FID(0)
+7840 TMP=Z[11]; Z$="11C "+Q$+"  "; GOSUB 9750; CLOSE (TMP,ERR=7841)
+7845 RENAME A[3],Q$,F9$
+7850 ERASE "TX"+FID(0)
+7860 H2$="*Finished*"; GOSUB 8800
+7890 RETURN 
+7900 REM 
+7910 CALL "ZZINFO",F,X0,X3$,R0,R1,K,B,D,T0,S0,F9$
+7940 RETURN 
+8000 REM 
+8005 GOSUB 8100
+8010 H2$="*Starting*"; GOSUB 8800
+8040 GOSUB 7600
+8050 GOSUB 7700
+8060 IF K=0 THEN GOSUB 8200
+8070 GOSUB 7800
+8090 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T2 to the reporting interval (report every T2 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",F,T9,X3$,T,T2,K,B,D,S0,S1,F$
+8115 H2$=STR(T)+" # of records to do "; GOSUB 8800
+8129 REM "Set T2, we make sure T2 is > 1, because later on we MOD and look for avalue of 1. IF T2 is 1, then nothing would get reported. We look fora result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8140 PRINT @(0,4),'CL',
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",4,10,50,T1,T,C
+8195 RETURN 
+8200 REM "INDEXED FILES
+8210 DIM Y[6]; EXTRACT (Z[11],IND=0)IOL=0290
+8220 Y[3]=A[2]-1
+8230 WRITE (Z[11],IND=0)IOL=0290
+8290 RETURN 
+8600 REM "Expand String-F=file slot, F0$=key prefix, F0=string length
+8605 C=0,H2$="*STARTING*"; GOSUB 8800
+8610 READ (F,KEY=F0$,DOM=8611)
+8620 K$=KEY(F,END=8690)
+8630 IF K$(1,LEN(F0$))<>F0$ THEN GOTO 8690
+8640 EXTRACT RECORD (F,KEY=K$)A$
+8650 P0=POS($8A$=A$); IF P0=0 THEN ESCAPE 
+8660 DIM A1$(F0); A1$(1)=A$(1,P0-1),A1$=A1$+A$(P0),A1$=A1$(1,LEN(A$))
+8665 C=C+1; IF MOD(C,100)=0 THEN H2$="Record: "+STR(C); GOSUB 8800
+8670 WRITE RECORD (F,KEY=K$)A1$
+8680 GOTO 8620
+8690 H2$="*FINISHED*"; GOSUB 8800
+8695 RETURN 
+8800 REM "Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+8900 REM "Special handling for FM4"
+8902 DIM B[15]
+8905 IOLIST B$,B1$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15]
+8910 READ (Z[1],KEY="",DOM=8911)
+8920 EXTRACT (Z[1],END=8940)IOL=8905
+8930 B1$=""; WRITE (Z[1])IOL=8905; GOTO 8920
+8940 RETURN 
+9000 REM "ERROR PROCESSING
+9001 ESCAPE 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; RETRY 
+9750 REM 
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9770 ON Z0 GOTO 9771,9900
+9790 RETURN 
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 IF PARMSFOUND$="Y" THEN RUN "EC3UT6" ELSE CLOSE (100); RUN "ZMENU"
+9999 END 
+56000 ! Program changes starting 10/31/05
+56010 REM "184145-Ability to have "My Catalog" feature work for multiple
+56015 REM "192242-For qty ddl available for prod cat page, would like to have
+56020 REM "194893-Change release from 5.4 to 5.5 
+56025 REM "191173-Logic to show previous, 1, 2, 3, 4, etc, then next links for
+56027 REM "194844-Favorites list in WebEC, have it work just like TOPS.
+56029 REM "199410-WebEC credit card accounts break with new release           
+56031 REM "201034-Buyer event-driven tasks, requires file EE7
+56033 REM "205923-Tiered purchase approval, files EE8 and EE9
+56035 REM "207913-Purchase approvals: Approver must be able to approve all    
+56037 REM "203699-Ability to apply expressions to XML data
+56038 REM "210688-Modify WebEC to support Peoplesoft punchout
+56039 REM "209898-WebEC item long descriptions
+56040 REM "213071-Change CHUI release from 5.5 to 5.6.  Change GUI release
+56042 REM "215367-EC shipping amt by customer, % of sale, or flat amt plus amt
+56044 REM "215369-Primary function by customer, can be up to three levels,
+56046 REM "224200-Create UT26EC, call from UT2560. UT2550 will call UT25EC.

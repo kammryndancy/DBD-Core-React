@@ -1,0 +1,252 @@
+0010 REM "Electronic Comerce Parameter Setup I <EW3MPA>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 08/27/03 - 10.742222 - tma - SSP# 163808
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EW3MPA",X1$="Electronic Commerce Parmeter Setup"
+0135 C9=-1,V0=-5
+0136 L4=15,L5=5,L6=24,L7=9,L8=28
+0140 M0$="-##,##0",M1$="-##0",M2$="-###.00"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 K9$=X3$(9,3)+"E/C",K9=LEN(K9$)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1,LEN(A$)); REM "148750
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01X ZZPARM  02O ECU...  06O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 B1$=""; FIND (Z[1],DOM=0611,KEY=X3$(9,3)+"F/W")B1$
+0620 ARPARMS$=""; FIND (Z[1],DOM=0621,KEY=X3$(9,3)+"A/R")ARPARMS$
+0690 GOSUB 6000
+1000 REM "
+1010 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1035 DIM A$(1275); REM "148750
+1045 A$(1,0+K9)=K9$+A1$
+1060 PRINT (0,ERR=1070)'CF',; GOSUB 6450; GOTO 1100
+1070 GOSUB 6000; GOSUB 6450
+1100 REM "KEY SEQ
+1110 X0=-1,C0=0,X1=0,C9=0,Z9=0
+1120 C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 9900
+1140 ON X0 GOTO 1500
+1200 REM "
+1215 IF C0<0 THEN GOTO 9900
+1500 REM "
+1505 Z9=-1
+1510 A1$=K9$
+1520 READ (Z[1],KEY=A1$,DOM=1600)IOL=0310; IF LEN(A$)<491 THEN A$=PAD(A$,491)
+1525 Z9=0
+1590 GOTO 1700
+1600 REM "
+1620 CALL "ZZPROM","2",X3$,Z,"","","",0; ON Z GOTO 1650,1630
+1630 GOTO 9800
+1690 GOTO 2000
+1700 REM "
+1790 GOSUB 6200
+1800 REM "
+1820 CALL "ZZPROM","P",X3$,Z,"","","",X0; ON Z GOTO 1850,6700
+1830 GOTO 2000
+1850 REM "MODIFY
+1855 X0=X0-1; IF Z9=1 THEN GOTO 1880 ELSE IF Z9=0 THEN Z9=1
+1860 EXTRACT (Z[1],KEY=A1$,DOM=1870)IOL=0310
+1865 C9=1
+1870 GOSUB 6200
+1890 IF Z<0 THEN GOTO 2035 ELSE GOTO 2000
+2000 REM "DATA SEQ
+2010 C0=0,X0=-1,X1=1
+2020 C9=1,X$="",C0=ABS(C0),X0=X0+1; IF C0=2 THEN IF X0>0 THEN X0=X0-2
+2025 IF C0>3 OR X0<0 THEN GOTO 1800
+2040 ON X0 GOTO 2400,2300,2500,3500,2550,2600,2700,2750,2850,2950,2100,2150,2200,2250,3700,1800
+2041 REM "ON X0 GOTO 2100,2250,2450,2150,3600,2200,2350,2400,2300,2600,3400,3100,2500,2550,2900,3000,2950,3050,3500,3550,2650,2700,2750,2800,2850,3150,3200,3250,3300,3350,1800
+2102 X$="Description used on order status keyword search DDL for R/W order types"
+2110 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,44,12,803,20,C0,"","{3"+X$,"","EW3MPA06"","","",""                                                                "
+2140 GOTO 2020
+2152 X$="Description used on order status keyword search DDL for S order type"
+2160 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,44,13,823,20,C0,"","{3"+X$,"","EW3MPA06"","","",""                                                                "
+2190 GOTO 2020
+2200 REM "cutoff in days for keyword searching                                 
+2205 X$="Cutoff in days for order status searching"
+2210 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,54,14,797,3,C0,"","{3"+X$,"","EW3MPD06"","","",""                                                                "
+2240 GOTO 2020
+2250 REM "default days to search                                               
+2255 X$="Default number of days for order status searching"
+2260 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,74,14,800,3,C0,"","{3"+X$,"","EW3MPD06"","","",""                                                                "
+2290 GOTO 2020
+2300 REM "Check for expired sessions every
+2310 CALL "ZZENTR","Z",A{ALL},A$,X4$,X3$,34,4,112,3,C0,"","{3"+X$,"","EW3MPA12"","","",""                                                                "
+2340 GOTO 2020
+2350 REM "Next Worksheet Number
+2360 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,34,9,115,10,C0,"","{3"+X$,"","EW3MPA14","","",""
+2390 GOTO 2020
+2400 REM 'NUMBER OF DAYS TO DISPLAY BACK FOR ORDER STATUS
+2402 X$="if order status to be by reversed order date set to '999'"
+2410 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,34,3,125,3,C0,"","{3"+X$,"","EW3MPA14","","",""
+2440 GOTO 2020
+2450 REM "template for template not found
+2460 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,34,6,128,40,C0,"","{3"+X$,"","E60:","","",""
+2465 CLOSE (14); OPEN (14,ERR=2466)STP(A$(128,40),1); GOTO 2470
+2466 TMP$="|WARNING - The file "+STP(A$(128,40),1)+" cannot be found."; CALL "ZZPROM",".4",X3$,Z,TMP$,"","",0
+2490 GOTO 2020
+2500 REM "Default Email Address
+2502 X$="messages will be sent to this address if the requested email address is blank"
+2510 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,15,5,596,60,C0,"","{3"+X$,"","EW3MPA20","","",""
+2540 GOTO 2020
+2550 REM "P/O Code range start code                                             
+2560 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,36,7,706,1,C0,"","{3"+X$,"","EW3MPB28","","",""
+2565 IF A$(706,1)=" " THEN A$(707,1)=" "; PRINT @(36,7),DIM(5), ELSE PRINT @(38,7),"-",
+2590 GOTO 2020
+2600 REM "P/O Code range end code                                               
+2605 IF A$(706,1)=" " THEN GOTO 2020
+2610 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,40,7,707,1,C0,"","{3"+X$,"","EW3MPB18","","",""
+2640 GOTO 2020
+2650 REM 'FORM IMAGE LABEL 1
+2652 X$="label used for display on form parmaters screen and catalog load utility"
+2660 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,56,9,261,10,C0,"","{3"+X$,"","EW3MPA20","","",""
+2690 GOTO 2020
+2700 REM "prevent line type display in order status detail                     
+2702 X$="I/C/M/N/S  (note: you may selectively suppress special charges in OPS-R4)"
+2710 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,60,8,709,5,C0,"","{3"+X$,"","EW3MPA22","","",""
+2720 TEST$=STP(A$(709,5),2); IF TEST$="" THEN GOTO 2723
+2722 FOR TT=1 TO LEN(TEST$); IF POS(TEST$(TT,1)="ICMNS")=0 THEN EXITTO 2700 ELSE NEXT TT
+2740 GOTO 2020
+2750 REM "prevent display of po codes in order status                          
+2752 X$="Order lines containing these PO codes will not display in order status detail"
+2760 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,60,9,714,20,C0,"","{3"+X$,"","EW3MPA24","","",""
+2790 GOTO 2020
+2850 REM "text if no quantity breaks on file                                   
+2860 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,45,10,754,35,C0,"","{3"+X$,"","EW3MPA28","","",""
+2890 GOTO 2020
+2900 REM "Default setting for customer parameter on ship-to restricted ship-via list                                                                     
+2950 REM "time window for credit card purchase                                 
+2951 IF ARPARMS$(130,1)<>"Y" THEN A$(933,3)=DIM(3); GOTO 2990
+2952 X$="To calculate order expiration date - order cleared if not purchased"
+2960 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,47,11,933,3,C0,"","{3"+X$,"","EW3MPA08","","",""
+2990 GOTO 2020
+3100 REM "primary order sort definition
+3102 X$="Used if blank on the buyer's record - Only header based for default (H1/H2/H3)"
+3110 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,34,13,431,2,C0,"","{3"+X$,"","EW3MPA20","","",""
+3120 IF POS(A$(431,2)="H1H2H3",2)=0 THEN GOTO 3100
+3140 GOTO 2020
+3150 REM "form image 1 default extension
+3152 X$="used as default extension in catalog load utility"
+3160 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,68,9,441,10,C0,"","{3"+X$,"","EW3MPA20"","","",""                                                                "
+3190 GOTO 2020
+3200 REM "form image 2 default extension
+3202 X$="used as default extension in catalog load utility"
+3210 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,68,10,451,10,C0,"","{3"+X$,"","EW3MPA20","","",""
+3240 GOTO 2020
+3250 REM "form image 3 default extension
+3252 X$="used as default extension in catalog load utility"
+3260 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,68,4,461,10,C0,"","{3"+X$,"","EW3MPA20","","",""
+3290 GOTO 2020
+3300 REM "form image 4 default extension
+3302 X$="used as default extension in catalog load utility"
+3310 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,68,12,471,10,C0,"","{3"+X$,"","EW3MPA20","","",""
+3340 GOTO 2020
+3350 REM "form image 5 default extension
+3352 X$="used as default extension in catalog load utility"
+3360 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,68,13,481,10,C0,"","{3"+X$,"","EW3MPA20","","",""
+3390 GOTO 2020
+3400 REM "default # rows on order status page
+3410 CALL "ZZENTR","SZ",A{ALL},A$,X4$,X3$,42,12,433,3,C0,"","{3"+X$,"","EW3MPA20","","",""
+3440 GOTO 2020
+3450 REM "unused
+3460 CALL "ZZENTR","SZU",A{ALL},A$,X4$,X3$,71,7,436,4,C0,"","{3"+X$,"","EW3MPA20","","",""
+3490 GOTO 2020
+3500 REM "company image name
+3502 X$="Used with ?tf?comp_logo? tag if company logo not set on customer"
+3510 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,17,6,951,30,C0,"","{3"+X$,"","EW3MPA20","","",""
+3540 GOTO 2020
+3550 REM "Error template
+3560 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,17,20,981,40,C0,"","{3"+X$,"","EW3MPA22","","",""
+3565 CLOSE (14); OPEN (14,ERR=3566)STP(A$(981,40),1); GOTO 3570
+3566 TMP$="|WARNING - The file "+STP(A$(981,40),1)+" cannot be found."; CALL "ZZPROM",".4",X3$,Z,TMP$,"","",0
+3590 GOTO 2020
+3600 REM "eol marker for email header footer
+3602 X$="(in hex) Enter end-of-line terminator for email header/footer text files"
+3610 CALL "ZZENTR","SU",A{ALL},A$,X4$,X3$,60,7,789,8,C0,"","{3"+X$,"","EW3MPA20","","",""
+3640 GOTO 2020
+3700 REM " E-Logistics controls
+3710 CALL "ZZENTR","Y",A{ALL},A$,X4$,X3$,60,15,708,1,C0,"","{3"+X$,"","EC3MPB20","","",""
+3740 GOTO 2020
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6010 PRINT @(5,3),"Oldest order to show status:",@(38,3),"days",
+6020 PRINT @(1,4),"Check for expired sessions every     minutes.",
+6030 PRINT @(0,5),"Default email:",
+6040 PRINT @(3,6),"Company logo:",
+6050 PRINT @(3,7),"P/O Code range for WebEC orders:",@(6,8),"Filter following line types from order status detail?",@(1,9),"Prevent order status line display with following PO codes:",@(1,10),"Text to display for stock if no qty breaks:",
+6060 PRINT @(1,11),"Time window for purchasing credit card order:",@(53,11),"(minutes)",
+6070 PRINT @(0,12),"Order type description:  Warehouse Release:",@(31,13),"Sales  Order:",
+6080 PRINT @(0,14),"Order status keyword search - Oldest order to search:",@(58,14),"days   Default:",@(29,15),"Activate e-Logistics controls?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6215 GOSUB 6450
+6220 PRINT @(34,4),A$(112,3),@(34,3),A$(125,3),@(15,5),A$(596,60),@(17,6),A$(951,30),
+6225 IF A$(706,2)="  " THEN PRINT @(36,7),DIM(5), ELSE PRINT @(36,7),A$(706,1)," - ",A$(707,1),
+6230 PRINT @(60,8),A$(709,5),@(60,9),A$(714,20),@(45,10),A$(754,35),@(44,12),A$(803,20),@(44,13),A$(823,20),@(54,14),A$(797,3),@(74,14),A$(800,3),@(60,15),A$(708,1),
+6235 IF ARPARMS$(130,1)="Y" THEN PRINT @(47,11),A$(933,3),
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6430 IF C9>=0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6455 IF C9<0 THEN GOTO 6445
+6490 RETURN 
+6500 REM "DELETE
+6510 REMOVE (Z[1],KEY=A1$,DOM=6511)
+6590 GOTO 1630
+6600 REM "ALT KEY DATA READS
+6690 RETURN 
+6700 REM "ADD ENTRY
+6710 WRITE (Z[1],KEY=A1$)IOL=0310
+6790 GOTO 1630
+6800 REM "NEXT ENTRY IN FILE
+6810 A1$=KEY(Z[1],END=6895)
+6820 A$(1,LEN(A1$))=A1$
+6825 IF A1$(1,LEN(K9$))<>K9$ THEN GOTO 6895
+6830 GOSUB 6600
+6835 GOSUB 6450
+6890 GOTO 1515
+6895 PRINT 'RB',; READ (Z[1],KEY=K9$,DOM=1140); GOTO 1140
+6902 V9$="2803  2804  4803  2906  2907  4806  6009  6010  6011  "
+9000 REM "ERROR PROCESSING
+9001 ESCAPE 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 SETERR 9940
+9930 Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,43 @@
+0010 REM "Unix- Create linked copy of locked file <ZZULNK>
+0030 REM "(C) 1985,1986 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "This software contains trade secrets and proprietary information"
+0900 REM "
+0910 REM "  Re-opens file F$ on physical device F1 if open on F0
+0911 REM "  or opens file as FID(0)+"TMP" on device F1 if not already open
+0912 REM "  * Unconditionally closes device F1
+0919 REM 
+0990 PRINT @(65,0),'CL',"*UNIT-ZZULNK*",
+1000 REM "
+1010 ENTER F$,F0,F1,X9,X0,X1
+1015 IF F0=0 THEN EXIT 99
+1020 CLOSE (F1)
+1105 F9$=FID(0)+"TMP"; ERASE F9$,ERR=1106; GOTO 1105
+1106 IF ERR<>12 THEN X0=-1,X1=ERR; GOTO 9800
+2000 REM "
+2010 Q$=FID(F0,ERR=2200); IF LEN(Q$)=2 THEN GOTO 9800
+2030 CLOSE (F1); OPEN (F1)"D"+STR(ASC(Q$(20,1)):"0"); D0$=FID(F1); CLOSE (F1); D0$=D0$(4,6)+D0$(21),D0$=D0$(1,POS("  "=D0$+"  ")-1)
+2090 GOTO 2500
+2120 D0$=""
+2190 GOTO 2500
+2200 REM "FILE NOT OPEN
+2290 GOTO 2500
+2500 REM "
+2501 GOTO 2520
+2510 PRINT 'CS',"FILE=",F$," DIRECTORY=",D0$," F0=",F0,", F1=",F1
+2512 INPUT *
+2520 GOSUB 3000
+2540 CLOSE (F1); IF X9=1 THEN OPEN (F1)F9$
+2550 IF X9=2 THEN OPEN (F1,ISZ=256)F9$
+2590 GOTO 9900
+3000 REM "Create linked entry for F$ in F9$ REF DIRectory D0$
+3030 Q$="name=`find ./"+D0$+" -name "+F$+" -print`"
+3040 Q$=Q$+";name=`echo $name | cut -d' ' -f1`"
+3045 Q$=Q$+"; ln $name .//UTILS/"+F9$
+3050 INVOKE Q$
+3090 RETURN 
+9800 REM "UNSUCCESSFUL 
+9890 GOTO 9940
+9900 REM "NORMAL EXIT
+9910 X0=0,X1=0
+9940 PRINT @(65,0),'CL',
+9999 END 

@@ -1,0 +1,15 @@
+0010 REM "Current BR version <BR2VER>
+0035 REM "3.7 - 07/21/93 - 13.05 - jsc
+0040 REM "Copyright 1993 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X2$,X1$,X0$
+1030 X0$=""
+1035 A$="BR370",X1$=A$(1,2),X2$=A$(3)
+1040 A$=HTA(A$)
+1050 A$=STR(%SSN:"0000000000")+A$
+1060 K$="@"+STR(%SSN)
+1080 CALL "ZZCRYP",X3$,K$,"","E",A$,A{ALL},C9$,X9
+1085 X0$=C9$
+1090 GOTO 9900
+9940 EXIT 
+9999 END 

@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Cycle Processing" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Cycle Processor</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapUtilities.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapBody.js">/*<![CDATA[*/ /*]]>*/</script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">Cycle Processor</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="width: 100%;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;margin-left: 0;margin-right: auto;">
+            <tbody>
+                <tr>
+                    <td><span style="font-weight: bold;font-style: normal;font-size: 8pt;font-family: Verdana;">DB&#160;Distributor &gt; Print Management &gt; Cycle Processing &gt; Cyle Processor (F/M P1)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="Nav" style="font-weight: bold;font-style: italic;">&#160;</p>
+        <p class="Nav"><a name="kanchor17"></a>After all pre-cycle checks and changes have been performed, along with any distributor warehouse audits, the Print Management Cycle may be started. You can choose to run the cycle for a single customer, or you can run the cycle for a group of customers that share the same Count Cycle code. After entering a single customer code, or a count cycle code, you can proceed. You will automatically be returned to the menu. The Cycle Processor screen also has an "inquiry" option that will allow you to see the status of customers and locations that are currently being processed.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav"><u>Effects of Starting the Cycle</u>
+        </p>
+        <p class="Nav">1. Creation of PM&#160;Cycle Control Record - When you start the PM&#160;Cycle, a control record is created for each customer location that is being processed. This record prevents you from starting the cycle processing twice for the same customer.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">2. Update of Customers PM&#160;Period - As each customers cycle is started, DB Distributor increments the "Last completed FMS&#160;reporting period" field in the Customer Master record. Prior to this point, any reports to be printed would have referenced the <i>last</i> FMS&#160;period for the customer. As of the start of the PM&#160;Cycle, we are going to process and report data for the <i>next</i> period.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">3. Freezing of Location Data - When the PM&#160;Cycle is started, DB Distributor records (freezes) the current status of each customer's inventory which is stored at either the distributor's warehouse or the customer's location. This snapshot of inventory activity is used by DB Distributor as the basis for the PM&#160;Cycle and PM&#160;Reports. This allows for billing and ordering to proceed without affecting the consistency of figures reported to the customers via PM&#160;Reports.</p>
+        <p class="Nav">&#160;</p>
+        <p class="Nav">At this point, you would continue to <a href="Count Sheet Printing.htm">Count Sheet Printing</a> for <i>counted</i> customers, or processing for <i>issue based</i> customers would continue to the <a href="Restocking Report.htm">Restocking Report</a> (optional), <a href="Customer Reports.htm">Customer Reports</a> (optional), or go directly to <a href="Completing Cycle.htm">Complete the Cycle</a>.</p>
+        <p class="Nav">&#160;</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

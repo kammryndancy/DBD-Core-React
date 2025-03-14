@@ -1,0 +1,48 @@
+0010 REM "Convert to TopForm Formats <EM2CVT>
+0020 REM "
+0035 REM "4.1 - 02/16/98 - 17.12 - jel - SSP# 090827
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "T$=Type, - D(ate), P(hone)"
+0051 REM "A$,A=Source, B$,B=Answer
+0052 REM "C$,C=not used
+0100 ENTER X3$,X4$,T$,A$
+0110 B$="",B=0; DIM S$(20); XT$=DAY,TIME$=STR(TIM:"00.00")
+0120 DIM Z1$(80," ")
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0700 IF T$(2,1)="D" THEN GOTO 1000; REM "Date
+0710 IF T$(2,1)="T" THEN GOTO 1500; REM "Time
+0720 IF T$(2,1)="S" THEN GOTO 2000; REM "Space fill
+0730 IF T$(2,1)="C" THEN GOTO 2500; REM "Get unique control number
+1000 REM "Date Conversion - YYMMDD
+1004 IF T$(7,6)="YYMMDD" THEN A$=XT$(7,2)+XT$(1,2)+XT$(4,2); GOTO 1090
+1090 GOTO 1490
+1490 GOTO 9900
+1500 REM "Time conversion - HHMM
+1510 A$(1,2)=TIME$(1,2),A=NUM(TIME$(3,3))*60
+1520 A$=A$(1,2)+STR(INT(A))
+1530 A$=STR(NUM(A$):"0000")
+1990 GOTO 9900
+2000 REM "Space fill
+2010 A$=Z1$(1,NUM(T$(8,2)))
+2020 GOTO 9900
+2050 REM "Type 0 - Strip - sign at end of string
+2055 X=1,B$=A$
+2057 P=POS("+"=B$); IF P>0 THEN B$=B$(1,P-1)+B$(P+1); GOTO 2057
+2060 P=POS("-"=B$); IF P>0 THEN B$=B$(1,P-1)+B$(P+1),X=-1; GOTO 2060
+2070 B=NUM(B$,ERR=2071)*X; GOTO 2400
+2080 B=0; GOTO 2400
+2400 REM 
+2490 GOTO 9900
+2500 REM "Get unique control number
+2510 READ (Z[13],KEY=X3$(9,3)+"E/M",DOM=1600)TEMP$
+2520 A$=TEMP$(143,9)
+2990 GOTO 9900
+8920 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 EXIT 
+9999 END 

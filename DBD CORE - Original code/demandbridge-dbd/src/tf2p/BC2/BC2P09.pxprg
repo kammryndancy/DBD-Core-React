@@ -1,0 +1,141 @@
+0010 REM "Printer Option Package for Oki 420/421 Ver 7.1 pvx co288 <BC2P09>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 01/08/09 - 9.632222 - tma - SSP# 226110
+0037 REM "226110-B/C is printing all the way across the bottom of the        
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0069 REM "IF P$='?' THEN P$ is returned with description of printer driver
+0070 REM "P$ is ptr string from ZZPARM if not found, we'll try to read a hard coded one
+0071 REM "D$ is the data to printe
+0072 REM "O$ is option code string, each option code is 5 chars long
+0073 REM "Q$ is for future sturff
+0074 REM "D1$ is string to print including print codes, etc.
+0075 REM "L0$ is for stuff that must go on  front of line, and applies to whole line, L1$ goes on end of line to turn off L0$
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,P$,D$,O$,Q$,D1$,L0$,L1$
+0100 SETERR 9000
+0105 IF P$="?" THEN P$="Okidata 421 Printer Driver"; GOTO 9920; REM "SKIP ZZFLES CALL @ 9910!SS#226110
+0110 X0$="BC2P09",X1$="Printer Option Package for Okidata 420/421" ! SSP#226110
+0120 DIM S$(80)
+0550 REM "At least pass the data back, no matter what happens
+0551 D1$=D$,L0$="",L1$=""
+0600 REM "If no printer codes record given try and read one
+0603 P$=STP(P$,1)
+0605 IF P$<>"" THEN GOTO 0621
+0610 CLOSE (14); OPEN (14)"ZZPARM"
+0620 FIND (14,KEY="ptrOKI521  ",DOM=9900)P$
+1000 REM "Look at each option, add codes to front & back of D1$ as needed
+1010 FOR I=1 TO LEN(O$)-20 STEP 20
+1015 O1$=O$(I+5,15)
+1020 P=POS(O$(I,5)="DBLHTBOLD UNDRLPSTNTBC39 EAN8 EAN13UPC-AUPC-E2OF5 C128AC128BC128CCOMP "); IF P>0 THEN P=INT((P+4)/5)
+1025 ON P GOSUB 2000,2100,2150,2200,2250,2300,2350,2400,2450,2500,2550,2600,2650,2700,2750,2000
+1190 NEXT I
+1195 GOTO 9900
+2000 REM 'DO NOTHING SUBROUTINE
+2095 RETURN 
+2100 REM "DBLHT - Double height on for field then off
+2103 IF D1$="" OR POS(" "<>D1$)=0 THEN GOTO 2145
+2104 REM "Set D2$ to actual data, S2$ to trailing spaces, print D2$ double height then print S2$ to space properly, otherwise spacing is off
+2105 DIM S0$(LEN(D1$)+1)
+2110 D2$=D1$(1,POS(S0$=D1$+S0$)-1)
+2115 DIM S2$(LEN(D1$)-LEN(D2$))
+2125 D1$=$0000001B7731$+D2$+$1B7730000000$+S2$
+2145 RETURN 
+2150 REM "BOLD - Bold printing
+2154 REM "Set D2$ to actual data, S2$ to trailing spaces, print D2$ double height then print S2$ to space properly, otherwise spacing is off
+2155 DIM S0$(LEN(D1$)+1)
+2160 D2$=D1$(1,POS(S0$=D1$+S0$)-1)
+2165 DIM S2$(LEN(D1$)-LEN(D2$))
+2175 D1$=$0000001B45$+D2$+$1B46000000$+S2$
+2195 RETURN 
+2200 REM "UNDRL - Underline
+2205 D1$=$0000001B2D01$+D1$+$1B2D00000000$
+2245 RETURN 
+2250 REM "PSTNT - PostNet code
+2255 D1$=$0000001B1043$+CHR(LEN(FNS$(D1$))+128)+FNS$(D1$)+$000000$
+2295 RETURN 
+2300 REM "BC39 - Barcode 3 of 9
+2305 C5$=$0200$; GOSUB 7550
+2345 RETURN 
+2350 REM "EAN8  - EAN 8 digit barcode
+2355 C5$=$0001$; GOSUB 7550
+2395 RETURN 
+2400 REM "EAN13 - EAN 13 digit barcode
+2405 C5$=$0002$; GOSUB 7550
+2445 RETURN 
+2450 REM "UPC-A - UPC-A 10 digit barcode
+2455 C5$=$0100$; GOSUB 7550
+2495 RETURN 
+2500 REM "UPC-E - UPC-E 6 digit barcode
+2505 C5$=$0104$; GOSUB 7550
+2545 RETURN 
+2550 REM "2OF5 - Interleaved 2 of 5 barcode
+2555 C5$=$0300$; GOSUB 7550
+2595 RETURN 
+2600 REM "C128A - Code 128 set A
+2605 C5$=$0400$; GOSUB 7550
+2645 RETURN 
+2650 REM "C128B - Code 128 Set B
+2655 C5$=$0401$; GOSUB 7550
+2695 RETURN 
+2700 REM "C128C - Code 128 Set C
+2705 C5$=$0402$; GOSUB 7550
+2745 RETURN 
+2750 REM "COMP - Compress printing
+2754 REM "Set D2$ to actual data, S2$ to trailing spaces, print D2$ double height then print S2$ to space properly, otherwise spacing is off
+2755 DIM S0$(LEN(D1$)+1)
+2760 D2$=D1$(1,POS(S0$=D1$+S0$)-1)
+2765 DIM S2$(LEN(D1$)-LEN(D2$))
+2775 D1$=$0000001B0F$+D2$+$12000000$+S2$
+2795 RETURN 
+7500 REM "Decode expected NUMERIC parameters from O1$ into O() array, current maximum # of parameters is set to 10. Positionality will be maintained. Array vluase of -9999 indicate parameters was blank or not a number. O1 is  highest parameter found, O2 is number of valid parameters found
+7510 DIM O[10]; O1=0,O2=0,W$=O1$; REM "W$ is work string containing O1$
+7515 IF W$="" THEN GOTO 7545
+7520 IF LEN(W$)<=3 THEN W0$=W$,W$="" ELSE W0$=W$(1,3),W$=W$(4)
+7525 O1=O1+1; O[O1]=-9999; IF POS(" "<>W0$)=0 THEN GOTO 7515
+7530 O[O1]=NUM(W0$,ERR=7510),O2=O2+1; GOTO 7515
+7545 RETURN 
+7550 REM "All barcodes have the same params etc, only a code changes, so, given code C5$ print a barcode
+7555 GOSUB 7500
+7560 D2$=$0000001B1041$+CHR(2+O1)+C5$; REM "Setup string for barcode, with code in C5$
+7565 FOR J0=1 TO O1
+7567 IF O[J0]=-9999 THEN D2$=D2$+$01$ ELSE D2$=D2$+CHR(O[J0])
+7570 NEXT J0
+7585 D1LEN$=FNS$(D1$),D1LEN=LEN(D1LEN$) ! SSP#226110
+7590 D1$=D2$+$1B1042$+CHR(D1LEN+128)+FNS$(D1$)+$000000$ ! SSP#226110
+7595 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 REM CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z(ALL),0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

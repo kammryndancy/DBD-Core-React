@@ -1,0 +1,52 @@
+0010 REM "<PA2SDA> GAP Status Code Descriptions
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.4 - 09/14/99 - 10.29 - dmm - SSP# 101028
+0040 REM "Copyright 1999 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="PA2SDA",X1$="GAP Status Code Descriptions"
+1000 IF Q0$="  " THEN A1$=""
+1010 IF Q0$="01" THEN A1$="Record is short: Check incoming file, delete record"
+1020 IF Q0$="02" THEN A1$="Closed or invalid Fiscal Year or Accounting Period: Open year or Delete record"
+1030 IF Q0$="03" THEN A1$="Invalid or Inactive Vendor: Setup Vendor or delete record"
+1040 IF Q0$="04" THEN A1$="Blank Invoice Number: Delete record"
+1050 IF Q0$="05" THEN A1$="Invoice Number Already Used for this Vendor: Delete record"
+1060 IF Q0$="06" THEN A1$="Invalid Terms Code: Setup code or enter valid one"
+1070 IF Q0$="07" THEN A1$="Invalid Bank Code: Setup Bank Code or enter valid one"
+1080 IF Q0$="08" THEN A1$="Invalid Category: Setup Category or enter valid one"
+1090 IF Q0$="09" THEN A1$="Invalid Salesperson Code: Setup Salesperson or enter valid one"
+1100 IF Q0$="10" THEN A1$="Invalid Numeric: Check incoming file, enter correct numeric"
+1110 IF Q0$="11" THEN A1$="Invalid G/L Account No: Setup G/L Account No or enter valid one"
+1120 IF Q0$="12" THEN A1$="Entry is not in balance: Correct entry"
+2000 GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 REM "CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z[ALL],0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

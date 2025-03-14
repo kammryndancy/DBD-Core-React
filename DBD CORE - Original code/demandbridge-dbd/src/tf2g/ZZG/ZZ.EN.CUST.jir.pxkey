@@ -1,0 +1,135 @@
+<PxTable>
+ TableName=ZZ.EN.CUST.jir
+ TableKey=K1194453071
+ FileCreate=KEYED "ZZ.EN.CUST.jir",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0000"
+    FIELD_1$="ZY9_Batch_Control"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="24"
+    FIELD_6$="Q"
+    FIELD_7$="Batch Query"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="ZY9"
+    FIELD_18$="2007/11/07 11:31 jir"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0001"
+    FIELD_1$="BATCH_NUMBER"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"BATCH_NO"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="5"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0002"
+    FIELD_1$="OPER_DESC"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"OPER_DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="40"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0003"
+    FIELD_1$="DATE_START"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DATE_START"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="6"
+    FIELD_19$="*ZZWQRY"
+    FIELD_27$="ZZWDTE;display"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0004"
+    FIELD_1$="TIME_START"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TIME_START"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"00:00"+QUO
+    FIELD_12$="4"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0005"
+    FIELD_1$="REMARKS"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"REMARKS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="30"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0006"
+    FIELD_1$="COMP_CODE"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"COMPANY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="3"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0007"
+    FIELD_1$="COMP_DESC"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"COMP_D"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="40"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     0008"
+    FIELD_1$="AUDIT_CTRL"
+    FIELD_4$="11"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"AUDIT_NUM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="6"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_ZY9     SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_13$="C"+QUO+"ZGBATC;PROCESS_QRY"+QUO+",PRIME_KEY$,ARG_2$"
+   </RecordData>
+
+</Data>
+
+</PxTable>

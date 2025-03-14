@@ -1,0 +1,16 @@
+#!/bin/sh 
+# use pdf2ps to create a postscript file
+
+
+PATH=$PATH:/usr/local/bin;export PATH
+# argument is full path directory of pdf file
+	if [ -n "$1" ] 
+	then
+		fname=$1
+	
+    outname=$2
+
+
+pdf2ps  $fname $outname
+
+fi

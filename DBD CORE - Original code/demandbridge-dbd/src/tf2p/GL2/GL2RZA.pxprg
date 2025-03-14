@@ -1,0 +1,24 @@
+0010 REM "Return period description from Period/Year <GL2RZA>
+0035 REM "3.6 - 08/03/92 - 13.35
+0040 REM "Copyright 1992 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+1010 REM "F0=ZY2 FILE, F1=PERIOD END DATES
+1020 ENTER X3$,K$,P0$,P$,W1$,F0,F1
+1025 T1$=W1$
+1030 IF F0=-1 THEN F0=NUM(X3$(60,3)); CLOSE (F0); OPEN (F0)"ZY2"
+1040 DIM S$(20),W1$(0)
+7600 REM "EXTENDED SETUP"
+7630 FIND (F1,KEY=K$+P0$)P1$
+7645 Q$=FND$(P1$(NUM(P$)*6+LEN(K$)+7,6)); IF T1$="2" THEN W1$=Q$; GOTO 7700 ELSE W1$="For the "
+7650 REM READ (F0,KEY=Q$(1,2),DOM=7651) X9$; GOTO 7655
+7653 READ (F0,KEY=" "+P$(1,2))X9$; X9$=X9$(2)
+7655 IF P$>"01" THEN W1$=W1$+FNS$(X9$(3,15))+" "
+7660 IF P1$(13,2)="12" THEN W1$=W1$+"Month" ELSE W1$=W1$+"Period"
+7664 IF X3$(48,1)="2" AND Q$(4,2)<>P$(1,2) THEN READ (F0,KEY=" "+Q$(4,2))X9$ ELSE IF X3$(48,1)<>"2" THEN IF Q$(1,2)<>P$(1,2) THEN READ (F0,KEY=" "+Q$(1,2))X9$
+7668 IF P$>"01" THEN W1$=W1$+"s"
+7670 IF T1$<>"1" AND X3$(48,1)<>"2" THEN W1$=W1$+" ending "+FNS$(X9$(51,15))+" "+Q$(4,2)+", "+Q$(7) ELSE IF X3$(48,1)<>"2" THEN W1$=FNS$(X9$(51,15))+" "+Q$(4,2)+", "+Q$(7)
+7680 IF T1$<>"1" AND X3$(48,1)="2" THEN W1$=W1$+" ending "+FNS$(X9$(51,15))+" "+Q$(1,2)+", "+Q$(7) ELSE IF X3$(48,1)="2" THEN W1$=FNS$(X9$(51,15))+" "+Q$(1,2)+", "+Q$(7)
+9940 EXIT 
+9999 END 

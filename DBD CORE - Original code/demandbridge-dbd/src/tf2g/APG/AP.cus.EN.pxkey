@@ -1,0 +1,31 @@
+<PxTable>
+ TableName=AP.cus.EN
+ TableKey=K1206110240
+ FileCreate=KEYED "AP.cus.EN",27,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00006
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="APGMAB                  001"
+    FIELD_1$="U"
+    FIELD_2$="000003"
+    FIELD_3$="_U000003.dat"
+    FIELD_4$="EMAIL_ADDRESS"
+    FIELD_5$="MID(VENDOR$,1,8)"
+    FIELD_6$="U"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="APGMPF                  001"
+    FIELD_1$="U"
+    FIELD_2$="000002"
+    FIELD_3$="_U000002.dat"
+    FIELD_4$="VEND_DESC_2"
+    FIELD_5$="VEND_CATEGORY$"
+    FIELD_6$="U"
+   </RecordData>
+
+</Data>
+
+</PxTable>

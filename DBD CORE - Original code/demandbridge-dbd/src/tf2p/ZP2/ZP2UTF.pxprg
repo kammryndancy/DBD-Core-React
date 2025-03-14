@@ -1,0 +1,276 @@
+0010 REM "Telemarketing Conversion-Specialty-67 <ZP2UTF>
+0035 REM "5.5 - 10/05/07 - 9.329444 - lms - SSP# 204109
+0037 REM "204109-Importing into contact Management                           
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 BEGIN 
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="ZP2UTF",X1$="T/M Convert to TopForm Prospect File"
+0120 DIM Z0$(80,"-"),Z1$(20,"0")
+0130 K0=20,K1=1
+0135 C9=-1
+0150 DIM FL(16); FL(1)=4,FL(2)=6,FL(3)=40,FL(4)=30,FL(5)=30,FL(6)=28,FL(7)=2,FL(8)=10,FL(9)=14,FL(10)=14,FL(11)=3,FL(12)=3,FL(13)=20,FL(14)=20,FL(15)=18,FL(16)=10; REM ssp 204109
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1]
+0330 IOLIST C$,C[0],C[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O ZP4...  03O ZP0...  04O ZPA...  05O ZPD...  06O ZPE...  07O AR1...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0585 RT_PARM$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT_PARM$
+0600 REM "
+0610 GOSUB 6000
+0620 REM GOSUB 8100
+0625 GOSUB 6200; REM "Get list type to use for new records
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM 
+0901 SLOT=UNT
+0902 CLOSE (SLOT); OPEN LOCK (SLOT,OPT="TEXT",ERR=5000)"tmlist"
+0905 GOSUB 8100
+0920 H0$=$0A$
+1000 REM "Read Data file
+1100 READ RECORD (SLOT,END=5000)R5$; GOSUB 6500
+1101 REM LET P0=POS(H0$=R1$); IF P0=0 THEN READ RECORD (Z[1],END=5000)R2$; LET R1$=R1$+R2$; GOTO 1100
+1110 REM LET R5$=R1$(1,P0-1),R1$=R1$(P0+LEN(H0$)),C1=C1+1; IF MOD(C1,T0)=1 THEN GOSUB 8155
+1120 DIM R$(300); R$(1)=R5$
+1180 GOSUB 2000
+1200 C=C+1
+1900 GOTO 1000
+2000 REM "Initialize TopForm Record
+2005 DIM A$(451),A[1]; ZPA$="",ZPD$="",ZPE$=""
+2010 REM "Read for existing record, if none we will set defaults for this list if any, set key info, write and extract new record
+2015 EXTRACT (Z[2],KEY=R$(1,10),DOM=2030)IOL=0310
+2016 IF LEN(A$)<451 THEN A$=A$+DIM(451-LEN(A$)); REM "During testing kept getting records that were 439
+2019 REM "Retain sort data, will use to remove changed records later
+2020 ZPA$=A$(1,4)+A$(419,20)+A$(5,6)
+2021 ZPD$=A$(200,10)+A$(1,10)
+2022 ZPE$=A$(203,7)+A$(200,3)+A$(1,10)
+2029 GOTO 2150
+2030 REM "If new contact, set default info found in 6200's for this list
+2040 A$=A0$,A[0]=A0
+2100 REM "List Type
+2110 A$(1,4)=LIST$
+2120 REM "Contact Code
+2140 IF POS(" "<>R$(5,6))<>0 THEN A$(5,6)=R$(5,6) ELSE GOSUB 7500
+2145 WRITE (Z[2],KEY=A$(1,10))IOL=0310; EXTRACT (Z[2],KEY=A$(1,10))IOL=0310
+2150 REM "Contact Name
+2151 REM "They want the data to come in exactly so all calls to ZZCASE to upper/lower the data have been remmed out
+2155 REM "LET Q$=R$(11,40); CALL "ZZCASE",Q$,X$
+2156 REM "LET P5=POS(","=X$); IF P5<>0 THEN LET J$=X$(P5+1); CALL "YUCASE",X3$,J$,J0$; LET X$(P5+1)=J0$
+2160 REM "LET A$(11,40)=X$
+2161 A$(11,40)=R$(11,40)
+2170 REM "Contact Address 1
+2175 REM "LET Q$=R$(51,30); CALL "ZZCASE",Q$,X$
+2180 REM "LET A$(51,30)=X$
+2181 A$(51,30)=R$(51,30)
+2190 REM "Contact Address 2
+2195 REM "LET Q$=R$(81,30); CALL "ZZCASE",Q$,X$
+2200 REM "LET A$(81,30)=X$
+2201 A$(81,30)=R$(81,30)
+2205 REM "City
+2210 REM "LET Q$=R$(111,28); CALL "ZZCASE",Q$,X$
+2220 REM "LET A$(391,28)=X$
+2221 A$(391,28)=R$(111,28)
+2230 REM "State
+2240 A$(127,2)=R$(139,2)
+2250 REM "Zip Code
+2255 Q$=R$(141,10); GOSUB 7600
+2260 A$(129,9)=X$
+2270 REM "Fax Number
+2280 Q$=R$(165,14); GOSUB 7700
+2300 A$(138,10)=X$
+2310 REM "Lookup Code
+2315 Q$=R$(185,20)
+2320 IF LEN(Q$)=10 THEN IF Q$=R$(11,10) THEN Q$=R$(11,20); REM "if = 1st 10 chars of contact name, then expand to be all 20
+2325 IF POS(" "<>Q$)=0 THEN Q$=A$(11,20)
+2330 CALL "YUCASE",X3$,Q$,X$
+2340 A$(419,20)=X$
+2350 REM "Contact Person
+2355 REM "LET Q$=R$(205,20); CALL "ZZCASE",Q$,X$
+2360 REM "LET A$(160,20)=X$
+2361 A$(160,20)=R$(205,20)
+2370 REM "Greeting
+2380 REM "LET A$(180,20)=X$
+2390 REM "Phone Number
+2410 Q$=R$(151,14); GOSUB 7700
+2420 A$(200,14)=X$
+2430 REM "Date entered
+2450 IF STP(A$(214,6),3," ")="" THEN A$(214,6)=X3$(21,6)
+2460 REM "Contact Category
+2470 IF POS(" "<>R$(179,3))<>0 THEN A$(223,3)=R$(179,3)
+2480 REM "Source of Lead
+2490 IF STP(A$(220,3),3," ")="" THEN A$(220,3)="IMP"
+2500 REM "Selection code #10 used for zipcode delivery barcode
+2510 A$(258,3)=R$(182,3)
+2520 REM "Contact Title
+2530 REM "LET Q$=R$(225,18); CALL "ZZCASE",Q$,X$
+2540 REM "LET A$(373,18)=X$
+2541 A$(373,18)=R$(225,18)
+2550 REM "Modified date
+2560 A$(439,6)=X3$(21,6)
+2570 REM "Modified time
+2580 A$(445,4)=STR(TIM*100:"0000")
+2590 REM "Operator who's processing the import
+2600 A$(449,3)=X3$(40,3)
+4900 REM "Write file(s)
+4905 REM "GOSUB 07800
+4907 REM "IF D9>0 THEN LET D9$=A$(5,6); GOTO 04990
+4910 WRITE (Z[2],KEY=A$(1,10))IOL=0310
+4920 C2=C2+1
+4925 REM "Check to see if sort records need to be removed, write new and changed sort records
+4930 IF ZPA$<>A$(1,4)+A$(419,20)+A$(5,6) THEN REMOVE (Z[4],KEY=ZPA$,DOM=4931) ELSE GOTO 4935
+4931 WRITE (Z[4],KEY=A$(1,4)+A$(419,20)+A$(5,6))
+4935 IF ZPD$<>A$(200,10)+A$(1,10) THEN REMOVE (Z[5],KEY=ZPD$,DOM=4936) ELSE GOTO 4940
+4936 WRITE (Z[5],KEY=A$(200,10)+A$(1,10))
+4940 IF ZPE$<>A$(203,7)+A$(200,3)+A$(1,10) THEN REMOVE (Z[6],KEY=ZPE$,DOM=4941) ELSE GOTO 4950
+4941 WRITE (Z[6],KEY=A$(203,7)+A$(200,3)+A$(1,10))
+4950 REM "If we have a customer code & this is the primary contact, then update AR1 with address lines 1 & 2, city, state, zip, these will be upper/lower
+4952 IF STP(A$(363,10),3," ")="" THEN GOTO 4990
+4955 EXTRACT RECORD (Z[7],KEY=A$(363,10),DOM=4990)CUST$
+4957 IF CUST$(401,10)<>A$(1,10) THEN GOTO 4990
+4960 Q$=A$(51,30); CALL "ZZCASE",Q$,X$
+4961 CUST$(56,30)=X$
+4965 Q$=A$(81,30); CALL "ZZCASE",Q$,X$
+4966 CUST$(86,30)=X$
+4970 Q$=A$(391,16); CALL "ZZCASE",Q$,X$
+4971 CUST$(116,16)=X$
+4975 CUST$(132,2)=A$(127,2)
+4980 CUST$(134,9)=A$(129,9)
+4985 WRITE RECORD (Z[7],KEY=A$(363,10))CUST$; IF RT_PARM$<>"" THEN CUS$=A$(363,10); CALL "RT2WOC",ERR=4986,X3$,X4$,CUS$,"AR1...","U",A$(363,10)
+4990 RETURN 
+5000 REM "EOJ
+5010 C1=T; GOSUB 8155
+5020 REM "GOSUB 07500
+5040 GOSUB 5200
+5080 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5090 GOTO 9900
+5200 REM "COMPLETE CYCLE
+5290 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This program updates existing and/or writes new records to TopForm's",@(0,5),"Telemarketing Contact Masterfile (ZP4)."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "Get list type to use for new records
+6210 LIST$="MED "
+6215 PRINT @(0,10),"List type to use for new records: ",@(34,10),LIST$
+6220 INPUT @(34,10),LIST$; IF CTL=4 THEN GOTO 9900
+6225 LIST$=PAD(LIST$,4)
+6230 IF STP(LIST$,3," ")="" THEN LIST$="MED "
+6235 DIM C$(45),C[1]; FIND (Z[3],KEY=LIST$,DOM=6236)IOL=0330; GOTO 6240
+6236 PRINT @(39,10),"Invalid list type, re-enter or F4 to end"; GOTO 6210
+6240 PRINT @(39,10),C$(5,40)
+6245 REM "Get default 000000 for this list if we have one
+6250 DIM A0$(451); READ (Z[2],KEY=LIST$+"000000",DOM=6290)A0$,A0
+6255 A0$(214,6)="      ",A0$(5,6)="      "
+6290 RETURN 
+6500 REM remove tabs                                                            
+6502 TMPRECORD$="",CNT=1
+6505 IF POS($09$=R5$)=0 THEN GOTO *RETURN
+6510 TB=POS($09$=R5$); IF TB=0 THEN TMPRECORD$=TMPRECORD$+R5$; GOTO 6590
+6520 TMPRECORD$=TMPRECORD$+PAD(R5$(1,TB-1),FL(CNT))
+6540 IF TB=LEN(R5$) THEN GOTO 6590 ELSE R5$=R5$(TB+1)
+6545 CNT=CNT+1
+6550 GOTO 6510
+6590 R5$=TMPRECORD$
+6592 R5$=PAD(R5$,253)
+6594 R5$=STP(R5$,3,$0D$); REM SSP 205524                                
+6595 RETURN 
+7500 REM "AUTO ASSIGN CODE
+7504 IF D9>0 THEN A$(5,6)=D9$; RETURN ; REM " IF d9>0 THEN we will recycle last number used
+7505 DIM C$(45),C[1]
+7510 EXTRACT (Z[3],KEY=A$(1,4))IOL=0330
+7515 IF C[0]=0 THEN GOTO 7550
+7520 C[0]=C[0]+1; IF C[0]>999999 THEN C[0]=1
+7540 A$(5,6)=STR(C[0]:"000000")
+7545 GOTO 7580
+7550 REM "alpha add, work from right to left, at each step N5 is the number to add to that column, if N5 is zero (no carry), then we are done
+7555 N5=1,N5$=C$(45,6)
+7556 REM "If all Z's, then roll over to next set of numbers.
+7557 IF POS("Z"<>N5$)=0 THEN DIM N5$(LEN(N5$)); N5$(LEN(N5$),1)="0"; GOTO 7578
+7560 FOR I=LEN(N5$) TO 1 STEP -1
+7564 IF N5$(I,1)=" " THEN GOTO 7575
+7565 N5$(I,1)=CHR(ASC(N5$(I,1))+N5)
+7569 REM "Now check to see if overflow occured,( out of ranges 0-9, or A-Z). If yes then set N5 to carry and adjust to proper value, else exit, we're done
+7570 IF N5$(I,1)>"Z" AND (N5$(I,1)<"0" OR N5$(I,1)>"9") THEN N5$(I,1)="0",N5=1 ELSE IF N5$(I,1)>"9" AND (N5$(I,1)<"A" OR N5$(I,1)>"Z") THEN N5$(I,1)="A",N5=0; EXITTO 7578 ELSE N5=0; EXITTO 7578
+7575 NEXT I
+7578 C$(45,6)=N5$,A$(5,6)=N5$
+7585 WRITE (Z[3])IOL=0330
+7590 RETURN 
+7600 REM "Zip Code Conversion
+7610 IF POS(" "<>Q$)=0 THEN X$=""; GOTO 7695
+7650 REM "eliminate, dash's and 4-digit 0's
+7660 X$=Q$
+7670 P0=POS("-"=X$); IF P0>0 THEN X$=X$(1,P0-1)+X$(P0+1); GOTO 7670
+7675 IF LEN(X$)>9 THEN X$=X$(1,9)
+7680 IF X$(6,4)="0000" THEN X$(6,4)=""
+7695 RETURN 
+7700 REM "Phone number conversion
+7710 IF POS(" "<>Q$)=0 THEN X$=""; GOTO 7795 ELSE X$=""
+7720 REM "Take first 10 digits
+7730 FOR I=1 TO LEN(Q$)
+7740 IF POS(Q$(I,1)="0123456789")>0 THEN X$=X$+Q$(I,1)
+7750 NEXT I
+7760 IF LEN(X$)>3 AND LEN(X$)<=7 THEN X$="   "+X$
+7795 RETURN 
+7800 REM " We're not using this logic since we are updating existing records as well as writing new ones therefore there will probably always be duplicates
+7801 REM "If duplicate D9=1 else D9=0, duplicate if phone number and address matches
+7805 D9=0
+7810 READ (Z[5],KEY=A$(200,10),DOM=7811)
+7815 K$=KEY(Z[5],END=7845); IF K$(1,10)<>A$(200,10) THEN GOTO 7845
+7820 READ (Z[2],KEY=K$(11,10),DOM=7845)J$
+7825 IF J$(51,87)=A$(51,87) THEN D9=1; GOTO 7845 ELSE READ (Z[5]); GOTO 7815; REM "IF dup set D9 and leave, else check to see if another phone number matches
+7845 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8105 REM "CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8110 FILE_SIZE$=FN%XFD$(SLOT,0)
+8111 T=INT(DEC(FILE_SIZE$(38,4))/252)
+8114 REM "LET T=INT(T0*2430/1467)
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C1
+8195 RETURN 
+8920 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8925 DEF FNU$(Z9$)=Z9$(1,POS("000"=Z9$+"000")-1)
+8930 DEF FNQ$(Z9$,Z9)=STR(NUM(Z9$):Z1$(1,Z9))
+8940 DEF FNE$(Z9)=CHR(ASC("A")+INT(Z9/10))+STR(MOD(Z9,10))
+8950 DEF FNS(Z9$)=POS(" "<>Z9$)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "204692-See 204109 - Update ZP2UTF to open and read text file 
+56001 REM "204109-Importing into contact Management 

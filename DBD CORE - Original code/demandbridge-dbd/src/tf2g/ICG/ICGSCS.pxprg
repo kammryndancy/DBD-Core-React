@@ -1,0 +1,64 @@
+0010 REM "Cost Change Utility Screen <IC2SCS>"
+0035 REM "5.7 - 02/09/14 - 17.105555 - jvv - SSP# 267628
+0037 REM "267628-Modify Cost Change Utility; Apply changes to custom item    
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM 
+0050 REM "Program Notes"
+0052 REM "The purpose of this software modification is to all the user to"
+0053 REM "change the cost of an inventory item in the files IC0_Item and"
+0054 REM "IC2_SupplierPrice."
+0055 REM 
+0056 REM "This program calls IC2SCC."
+0057 REM 
+0060 REM "The program will allow the user to enter a range of:"
+0061 REM "   Customer Code"
+0062 REM "   Item Code"
+0063 REM "   Vendor Code"
+0064 REM 
+0070 REM "The program will also require a value to be entered to use for"
+0071 REM "adjusting the costs. Also, the user will determine whether to"
+0072 REM "(M)ultiply or (D)ivide the above value."
+0099 REM 
+0100 INITIALIZE_PROGRAM:
+0110 IF TCB(88)=0 THEN MSGBOX "You must be using Windx to access TopForm to Access this program"; IF TCB(13)=1 THEN BEGIN ; RUN "ZMENU" ELSE EXIT 
+0120 PROCESS "ICGSCS","../ICG/IC.EN"
+0195 IF TCB(13)=1 THEN BEGIN ; RUN "ZMENU" ELSE EXIT 
+8000 PROCESS_RECORDS:
+8005 ML_AMOUNT$=ML_AMOUNT.CTL'VALUE$
+8010 IF STP(ML_AMOUNT$)="" THEN ML_AMOUNT$="1.000"
+8020 ML_AMOUNT=NUM(ML_AMOUNT$)
+8040 CALL "IC2SCC",ML_CUST_START$,ML_CUST_END$,ML_ITEM_START$,ML_ITEM_END$,ML_VEND_START$,ML_VEND_END$,ML_AMOUNT,DB_OPTION$,CB_LN9$ ! WO 267628
+8060 MSGBOX "Process complete!!"
+8095 RETURN 
+9000 ERROR_PROCESSING:
+9005 IF ERR=69 THEN GOTO CTRL_LOGIC
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR ERROR_PROCESSING
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,TRANSFER_CONTROL,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_PROCESSING; RETRY 
+9090 SETERR 0000; RETRY 
+9100 TRANSFER_CONTROL:
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR ERROR_PROCESSING; RETURN 
+9500 CTRL_LOGIC:
+9510 SETERR ERROR_PROCESSING; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 END_PROGRAM:
+9999 END 
+56000 REM "Modification History"
+56002 REM "05/15/2007 - Program Created."
+56004 REM "203731-Is there a way to change the cost on items which"
+56005 REM "       meet a set of rules?"
+56006 REM "267628-Modify Cost Change Utility; Apply changes to custom item    

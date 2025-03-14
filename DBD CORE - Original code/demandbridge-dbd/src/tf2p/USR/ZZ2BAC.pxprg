@@ -1,0 +1,13 @@
+0010 REM "<ZZ2BAC> Level 8 Return lines from program in CPL format
+0030 REM "(C) 1985,1986 Basic Ideas, Inc; Atlanta, Ga.
+0035 REM "3.9 - 11/29/95 - 9.63 - kmc
+0036 REM "PVX conversion 5/31/01 - plh
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "This program returns the lines in CPL() format which means that each line contains code and a its own symbol table which means that each returned line can be LST'ed DIRectly"
+0071 REM " A0$ has the each the length of each line in 3 bytes, followed by the line itself"
+0080 REM "This program is duplicate of ZZ2BA8 in PVX environment
+1020 ENTER Q0$,S0,S1,Q0,A0$
+1021 CALL "ZZ2BA8",Q0$,S0,S1,Q0,A0$
+9940 EXIT 
+9999 END 

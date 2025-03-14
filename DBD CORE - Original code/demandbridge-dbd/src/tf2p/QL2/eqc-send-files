@@ -1,0 +1,11 @@
+#! /bin/sh
+
+umask 0
+
+# Global files Division 00
+[ -e /usr/lib/pvx/export/eqc/*.xml ] && (cp /usr/lib/pvx/export/eqc/*.xml /usr/lib/pvx/export/eqc/00)
+# Division 00
+/usr/lib/pvx/java/netutil/runnetutil "file:/usr/lib/pvx/export/eqc/00?move=archive" "sftp://ftp.demandbridge.com/DB01?binary=true&ignoreFileNotFoundOrPermissionError=true&passiveMode=true&password=RAW(ahr7seeMah)&soTimeout=30000&stepwise=false&timeout=30000&username=eqlink"
+
+[ -e /usr/lib/pvx/export/eqc/*.xml ] && (mv /usr/lib/pvx/export/eqc/*.xml /usr/lib/pvx/export/eqc/archive)
+

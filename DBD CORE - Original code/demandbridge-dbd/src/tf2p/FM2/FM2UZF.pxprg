@@ -1,0 +1,73 @@
+0010 REM "Get cost and price from order hist <FM2UZF>
+0035 REM "3.8 - 07/26/94 - 9.21 - jsc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15]
+0899 GOTO 1000
+0900 REM 
+0910 REM "This program attempts to return a item's sell price from the order
+0911 REM "history files (FS6) and if the Bundled price is required, freight
+0912 REM "tax and special charges are pro-rated (if more than one item on the
+0913 REM "order) and re-figured to yield a bundled price.
+0915 REM "NOTE: This routine will first look into file AS7xxx, which would
+0916 REM "contain a MANUALLY ENTERED OVERRIDE SELL PRICE.  The maintenance
+0917 REM "program for file AS7xxx if FM2CAA.  As of 5/24/93, these options
+0918 REM "were implemented for ABP (c099), and were work ordered for QBF (c092,130).
+1012 REM "F0=FS6, F1=FS8, F2=AR6, F3=AR8
+1015 REM "X9$ IS PRICING METHOD
+1020 ENTER X3$,X9$,X8$,F0,F1,F2,F3,A0$,A1$,A2$,A3$,C0$,C0,C1,C2,H{ALL}
+1040 IF X9$="" THEN X9$="S"
+1050 C0$="",C0=0,C1=0,C2=0
+1060 IF A2$="" THEN A2$="B"
+1080 DIM A[8],C[15]
+1090 A3$=""
+1500 REM "CHECK AS7 FILE FIRST
+1510 CLOSE (14); OPEN (14)"AS7"+X3$(9,3)+"36"
+1520 FIND (14,KEY=A0$+A1$(1,8),DOM=1590)Q$,*,C2,C1
+1530 C0$=Q$(101,4)
+1550 CLOSE (14); GOTO 9900
+1590 CLOSE (14)
+2000 REM 
+2008 DIM H[10,3]
+2010 H0$="",H1$=""
+2020 H0=0,H1=0,H2=0,H3=0,H6=0
+2100 REM 
+2110 X$=A0$(1,10)+A1$
+2120 READ (F1,KEY=X$,DOM=2121)
+2125 Q$=KEY(F1,END=2500); IF Q$(1,LEN(X$))<>X$ THEN GOTO 2500 ELSE READ (F1)
+2130 READ (F0,KEY=Q$(1,10)+Q$(19,1)+Q$(20,10)+Q$(11,8)+Q$(30,1))IOL=0310
+2140 P=0; IF A$(11,1)="B" THEN P=POS(A$(12,10)=H1$,10); IF P=0 THEN H1$=H1$+A$(12,10); GOTO 2140 ELSE P=1
+2150 Q=3; IF A$(11,1)="B" THEN Q=0
+2152 IF A$(1,10)+A$(12,10)=A0$(1,20) THEN P=0,C0$=A$(101,4),C1=A[2],C0=A[1],H9=A[0]; IF A[5]>A[0] THEN H9=A[5]
+2155 IF A[0]=0 THEN A[0]=1
+2160 IF A[2]<>0 THEN X=A[0]*A[1]/A[2]; IF A[5]>A[0] THEN X=A[6]
+2180 H[Q,P]=H[Q,P]+X
+2181 IF P<>0 THEN H6=H6+X
+2182 IF A$(11,1)="B" THEN H0=H0+X
+2185 P=POS(A$(40,8)=H0$,8); IF P=0 THEN H0$=H0$+A$(40,8)
+2195 GOTO 2125
+2500 REM "PROCESS INVOICES
+2505 IF POS(A0$(11,10)=H1$,10)=0 OR POS("B"=X9$)=0 THEN H1$=""; DIM H[10,0]; GOTO 2900
+2510 FOR X=1 TO LEN(H0$) STEP 8
+2515 X$=A0$(1,10)+H0$(X,8)
+2520 FIND (F2,KEY=X$,DOM=2530)IOL=0330; GOTO 2600
+2530 FIND (F3,KEY=X$,DOM=2700)IOL=0330
+2540 C[6]=C[1],C[7]=C[2],C[8]=C[3]
+2600 REM 
+2620 H1=H1+C[6],H2=H2+C[7],H3=H3+C[8]
+2625 H[1,0]=H[1,0]+C[7],H[2,0]=H[2,0]+C[8]
+2630 H[8,0]=H[8,0]+C[6]
+2690 GOTO 2800
+2700 REM "INVOICE NOT THERE
+2705 A3$=A3$+"I"
+2800 NEXT X
+2809 REM "PRO-RATE SPECIAL CHGS
+2810 C9=0; IF H0<>0 THEN C9=100*(H0-H6)/H0
+2825 H[9,0]=H9,H[10,0]=C9
+2830 H[1,1]=H[1,0]*C9/100,H[2,1]=H[2,0]*C9/100,H[3,1]=H[3,0]*C9/100
+2940 IF C9=100 THEN Q=H[0,0]+H[1,0]+H[2,0]+H[3,0]; IF Q<>H[8,0] THEN Q=H[8,0]-Q; H[3,0]=H[3,0]+Q
+2950 C2=0; IF H9<>0 THEN C2=(H[0,0]+(H2+H3+H[3,0])*C9/100)*C1/H9
+2990 GOTO 9900
+9940 EXIT 
+9999 END 

@@ -1,0 +1,101 @@
+0010 REM "A/R Change Freight Taxable Flag <AR2UTI>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.3 - 12/28/04 - 12.773888 - lms - SSP# 171564
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UTI",X1$="A/R Change Freight Taxable Flag",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0140 T0$="ZZXAR5",C0=1,L9=0; DIM W$(23,$7E$); W$(1,10)="",W$(21)=""
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O AR5...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0590 READ (Z[13],KEY=X3$(9,3)+"A/R")D$
+0610 GOSUB 6000
+0620 GOSUB 8100
+0630 CALL T0$,ERR=0631,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9
+0635 CALL "ZZENTR","SRU",W{ALL},W$,X4$,X3$,45,15,21,1,C0,"",X$,"YN ","AR2UTI00","","","02V"
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0990 EXTRACT (Z[1],KEY=W$(1,10),DOM=0991)
+1000 REM 
+1020 K$=KEY(Z[1],END=5000)
+1040 IF K$(1,10)>W$(11,10) THEN GOTO 5000
+1060 EXTRACT RECORD (Z[1],KEY=K$)A$
+1061 IF MID(D$,134,1)<>"Y" THEN GOTO 1080
+1070 IF D$(134,1)="Y" THEN A$(36,1)=W$(21,1)
+1071 IF D$(134,1)="Y" THEN IF W$(21,1)<>DIM(1) THEN A$(154,1)=W$(21,1)
+1072 IF D$(134,1)="Y" THEN IF W$(22,1)<>DIM(1) THEN A$(155,1)=W$(22,1)
+1073 IF D$(134,1)="Y" THEN IF W$(23,1)<>DIM(1) THEN A$(156,1)=W$(23,1)
+1074 IF A$(154,1)=DIM(1) THEN A$(154,1)="N"
+1075 IF A$(156,1)=DIM(1) THEN A$(156,1)="N"
+1076 IF A$(155,1)=DIM(1) THEN A$(155,1)="N"
+1080 IF POS(" "<>A$(3,8))=0 AND W$(21,1)<>" " THEN A$(36,1)=W$(21,1)
+1100 IF POS(" "<>A$(3,4))>0 AND POS(" "<>A$(7,4))=0 AND W$(22,1)<>" " THEN A$(36,1)=W$(22,1)
+1120 IF POS(" "<>A$(7,4))>0 AND W$(23,1)<>" " THEN A$(36,1)=W$(23,1)
+1900 REM 
+1920 WRITE RECORD (Z[1])A$
+1950 GOTO 1000
+5000 REM "EOJ
+5005 C=T5; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,10),"This program will process the Accounts Receivable Sales Tax File, AR5,",'LF',"and change the Tax Freight? for each of the three sections of the sales tax",'LF',"code based upon the operators selections.",
+6040 PRINT @(4,14),"Enter Y or N to change to that value -or- leave blank for no change",@(20,15),"Change State portion?",@(19,16),"Change County Portion?",@(20,17),"Change Local Portion?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,9),"There are "+STR(T5)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T5,C
+8195 RETURN 
+8200 REM "Same as 8100,but for z(2)
+8210 CALL "ZZINFO",Z[2],T9,X3$,T5,T0,K,B,D,S0,S1,F$
+8230 T0=INT(T5*.02); IF T0<=1 THEN T0=2
+8240 R0=0,T1=0
+8245 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

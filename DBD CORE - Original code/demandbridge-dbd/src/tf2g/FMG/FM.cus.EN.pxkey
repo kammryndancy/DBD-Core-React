@@ -1,0 +1,31 @@
+<PxTable>
+ TableName=FM.cus.EN
+ TableKey=K1206548488
+ FileCreate=KEYED "FM.cus.EN",27,0,-2048,BSZ=4,OPT="0"
+ MaxFields=00006
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="FMGIAB                  001"
+    FIELD_1$="U"
+    FIELD_2$="000003"
+    FIELD_3$="_U000003.dat"
+    FIELD_4$="EMAIL_ADDRESS"
+    FIELD_5$="MID(CUSTOMER$,1,10)"
+    FIELD_6$="U"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FMGIAB                  002"
+    FIELD_1$="U"
+    FIELD_2$="000003"
+    FIELD_3$="_U000003.dat"
+    FIELD_4$="EMAIL_ADDRESS"
+    FIELD_5$="MID(VENDOR$,1,8)"
+    FIELD_6$="U"
+   </RecordData>
+
+</Data>
+
+</PxTable>

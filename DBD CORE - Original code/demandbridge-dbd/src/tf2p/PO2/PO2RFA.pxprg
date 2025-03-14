@@ -1,0 +1,595 @@
+0010 REM "Backorder Fill Report <PO2RFA>
+0035 REM "5.7 - 05/14/15 - 15.038888 - tma - SSP# 277376
+0037 REM "277376-Backorder Fill Report - he prints to PDF and gets an error  
+0040 REM "Copyright 2015 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 9000
+0095 PRECISION 14; T2=TIM; PRECISION 2
+0105 SETERR 9000; SETESC 9300
+0110 X0$="PO2RFA",X1$="Backorder Fill Report"
+0115 DIM PO3[4] ! [197451]-DIMs needed for PO3. Added line SSP207082
+0120 DIM A$(100),A[1],B$(100),C$(53),C[22],P[7],S0$(80),E$(20),E[8],M$(21),FS2[29],IC1[20],UM[2],H8$(46),FSH$(402); REM "SSP# 137868
+0140 Z0$="###,###-",Z1$="###,###.00-"
+0160 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0170 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+0175 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+0180 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+0210 T=1,T0=0,T1=6
+0220 W3=132
+0225 W=999
+0230 DIM T1$(W3,"-"),T2$(W3,"="),T3$(W3,"*"),Y5$(W3),Y6$(W3)
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,"",-1,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "I/O lists
+0305 REM "IOLIST FOR AR6 - Open invoice file
+0310 IOLIST A$,A[0],A[1]
+0315 REM "IOLIST FOR AR1 - Customer Masterfile
+0320 IOLIST B$
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15],C[16],C[17],C[18],C[19]
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8]
+0360 IOLIST F$,F[0],F[1],F[2],F[3],F[4],F[5],F[6],F[7],F[8],F[9],F[10]
+0380 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13]
+0390 IOLIST H$
+0400 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0410 IOLIST IC1$,IC1[0],IC1[1],IC1[2],IC1[3],IC1[4],IC1[5],IC1[6],IC1[7],IC1[8],IC1[9],IC1[10],IC1[11],IC1[12],IC1[13],IC1[14],IC1[15],IC1[16],IC1[17],IC1[18],IC1[19],IC1[20]
+0412 IOLIST DFT$,DFT[0],DFT[1],DFT[2],DFT[3]
+0420 IOLIST X3$,X4$,V1$,V3$,V2$,V0$
+0450 IOLIST M$,M[0],M[1]
+0460 IOLIST UM$,UM[0],UM[1],UM[2]
+0480 IOLIST FMPS$ ! [197451]-IOLIST for FMPS
+0485 IOLIST PO3$,PO3[0],PO3[1],PO3[2],PO3[3] ! [197451]-IOLIST for PO3
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]; GOSUB 7400
+0510 Y$="01O POG...  02O FM0...  03O IC0...  04O FS5...  05O FS2...  06O IC1...  07OSPOG...  08O FS1...  09O AR1...  10O AP4... 11O PO6...  13O ZZPARM  14O FMP...  15O FSH...  16O POK...  17O PO3...  " ! [197451] REM "hold Z[12] open for temp file use in 8500's
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+0529 ! SSP234297, fix timing issue, create/open/write to temp PO6, at the end, read out of temp and write to real po6, need to do this after the call to SH2EXP to increment the scale sequence number
+0530 TMP_PO6$="TMP_PO6_BOF"; ERASE TMP_PO6$,ERR=*NEXT ! SSP234297
+0532 PO6_KEY_SIZE=NUM(FIN(Z[11],"KEY_SIZE")) ! SSP234297
+0535 SORT TMP_PO6$,PO6_KEY_SIZE,0; TMP_PO6=HFN; OPEN (TMP_PO6)TMP_PO6$ ! SSP234297
+0536 ! 
+0560 READ (Z[13],KEY=X3$(9,3)+"A/R")P$,P[0],P[1],P[2],P[3],P[4],P[5],P[6],P[7]
+0575 READ (Z[13],KEY=X3$(9,3)+"I/C")P0$
+0576 READ (Z[13],KEY=X3$(9,3)+"F/M")P4$; REM "SSP115965
+0580 GOSUB 8500; REM "ssp#106782
+0600 IF V0$(98,1)="Y" THEN CALL "FM2UUF",ERR=*NEXT,X3$,X4$,"","*"
+0660 DIM M6[1]; M6[1]=2; IF P0$(45,1)>"2" THEN M6[1]=NUM(P0$(45,1)); REM "SSP115965
+0700 REM "Open Printer
+0720 CALL "ZZPRIN",X0$,X3$,Y0$,V3$,Z{ALL},W0$,W1$,W0,W9,W2,W3,W4; ON W4 GOTO 0721,9920
+0800 REM "Alternate Sort Info & total dim"
+0805 DIM U0$(4)
+0810 ON V0 GOTO 0820,0820,0830,0840
+0820 DIM U[3]; U=24,U0=3,U[0]=0,U[1]=4,U[2]=10,U[3]=10,T0=2,V1=4,V2=20,U0$="Y   ",T5$="S   AI/C        ",U5$="Location:",U6$="Item:"; GOTO 0850
+0850 DIM T[3,8]
+0860 V5=V1+1,V6=V5+V2,V7=V6+V3
+0900 REM " Position read"
+0905 REM "set key file to read from"
+0910 U1=Z[1]
+0930 IF LEN(V2$)>=U*2 THEN GOTO 0965
+0934 REM "create default 'all' range key
+0935 DIM V2$(U*2),V4$(U,"~"); U3=1
+0940 FOR U9=1 TO U0
+0945 U3=U3+U[U9-1]+U[U9-1]
+0950 V2$(U3+U[U9],U[U9])=V4$(1,U[U9])
+0955 NEXT U9
+0964 REM "Get starting key from range key
+0965 DIM V4$(U); U3=1,U4=1
+0970 FOR U9=1 TO U0
+0972 U3=U3+U[U9-1]+U[U9-1],U4=U4+U[U9-1]
+0975 V4$(U4,U[U9])=V2$(U3,U[U9])
+0980 NEXT U9
+0985 V4$(U,1)=CHR(ASC(V4$(U,1))-1)
+0990 READ (U1,KEY=V4$,DOM=0991)
+1000 REM "Read next record
+1005 U$=KEY(U1,END=5000)
+1008 REM "check key against range info"
+1009 U3=1,U2=1
+1010 FOR U9=1 TO U0
+1015 U2=U2+U[U9-1],U3=U3+U[U9-1]+U[U9-1]
+1020 IF U$(U2,U[U9])>=V2$(U3,U[U9]) THEN GOTO 1030 ELSE EXTRACT (U1,KEY=U$(1,U2-1)+V2$(U3,U[U9]),DOM=1021)
+1025 EXITTO 1000
+1030 IF U$(U2,U[U9])<=V2$(U3+U[U9],U[U9]) THEN GOTO 1040 ELSE READ (U1,KEY=U$(1,U2-1)+$FF$,DOM=1032)
+1035 EXITTO 1000
+1040 NEXT U9
+1100 REM "Get record"
+1110 U9$=U$,A$=U9$
+1150 READ (Z[1],KEY=U$,DOM=1000)IOL=0310
+1165 IF Q5=1 THEN PRINT @(30,21),U$,; IF A$(66,1)="Y" THEN GOSUB 1300; REMOVE (Z[1],KEY=U$,DOM=1000); GOTO 1000 ELSE GOTO 1000
+1300 REM "Read other data
+1400 REM "Subtotals"
+1415 GOSUB 3100
+1420 ON T GOTO 1470,1430,1440
+1430 GOSUB 6200
+1440 GOSUB 6300
+1490 T=0
+1500 REM "Print Data
+1510 IF W+1>W0 THEN GOSUB 6000
+1515 IF V0$(72,1)<>"Y" THEN GOTO 1800
+1520 CALL "ZZDISP","AXS",A$(52,10),"A/P",X3$,Y5$,"",3,0,X4$
+1523 GOSUB 7700
+1525 CALL "ZZDISP","AXS",A$(40,9),"P/O",X3$,Y5$,"",61,0,X4$
+1526 Y5$(75)=A$(49,3)
+1530 Y5$(86)=FND$(A$(25,6))
+1540 X=A[0],X0=98; GOSUB 7600
+1590 GOSUB 7300
+1850 REM "GOSUB 8000
+1851 IF V0$(98,1)<>"Y" THEN GOSUB 8000 ELSE IF V0$(98,1)="Y" THEN GOSUB 8700; REM " SSP# 165787
+1900 REM "Accumulate Totals"
+1910 T[T0,1]=T[T0,1]+A[0]
+1990 T[T0,0]=T[T0,0]+1
+1995 IF Q5=1 THEN RETURN ELSE A$(66,1)="Y"; WRITE (Z[1],KEY=U$)IOL=0310; GOTO 1000
+3000 REM "Subtotaling Routines"
+3050 REM "Add to T$ for total title, T & T5 should be set
+3055 T7$=T5$(T*4-3,4)
+3060 IF T7$(1,1)=" " THEN RETURN 
+3070 IF T7$(1,1)<>"S" THEN CALL "ZZDISP",T7$(1,1)+"X",T6$,T7$(2,3),X3$,T6$,"",0,0,X4$
+3080 IF T$="" THEN T$=T6$ ELSE T$=T$+" "+T6$
+3090 RETURN 
+3100 REM "High order break"
+3110 IF V1=0 THEN RETURN ELSE IF U1$=U9$(1,V1) THEN GOSUB 3200; RETURN 
+3120 GOSUB 3220
+3130 IF U1$="" THEN GOTO 3160
+3150 T=1,T$=U5$,T6$=U1$; GOSUB 3050; GOSUB 7000
+3155 IF U0$(1,1)="Y" THEN GOSUB 6200; GOSUB 6000
+3160 U1$=U9$(1,V1)
+3180 RETURN 
+3200 REM "Second highest order break"
+3210 IF V2=0 THEN RETURN ELSE IF U2$=U9$(V5,V2) THEN GOSUB 3300; RETURN 
+3220 GOSUB 3320
+3230 IF U2$="" THEN GOTO 3260
+3250 T=2,T$=U6$,T6$=U2$; GOSUB 3050; GOSUB 7000
+3255 IF U0$(2,1)="Y" THEN GOSUB 6000
+3260 U2$=U9$(V5,V2)
+3265 J9=1
+3280 RETURN 
+3380 RETURN 
+3480 RETURN 
+4200 REM "Set unit cost into A(6) from total cost of lots C,SSP115965, copied from FS2DAB
+4205 IF FS2$(10,1)="9" THEN GOTO 4245
+4206 REM "IF P4$(254,1)<>"Y" THEN GOTO 04245,THIS PARAMETER SHOULD ONLY HAVE TO DO WITH THE SELL PRICE NOT THE COST FROM THE LOT
+4210 CALL "FM2EXT",Z[13],1,FS2$(124,4),FS2[5],Q0,U,C,M6[1]
+4220 FS2[1]=U
+4245 RETURN 
+4250 REM "If price changed then ask to use new price, SSP115965, copied from FS2DAB
+4253 DONT_MOD$="N"; IF FS2[4]>0 AND P4$(254,1)="Y" THEN DONT_MOD$="Y"; IF FSH$(338,1)="Y" THEN DONT_MOD$="N" ! WO156021, even if P4$(254,1)="Y", if new division parameter is "Y" then allow sell price to update if different
+4254 IF FS2[4]>0 THEN IF H$(483,1)="Y" THEN DONT_MOD$="Y" ELSE IF H$(483,1)="N" THEN DONT_MOD$="N" ! WO201896, if new customer parameter(retain b/o sell price) is "Y" then DO NOT update sell price if different
+4255 IF S1=0 THEN GOTO 4290
+4257 IF FS2$(10,1)="9" AND P4$(259,1)="Y" THEN GOTO 4290; REM "ssp#91464
+4260 IF FS2$(124,4)=S1$ AND FS2[5]=S2 THEN IF FS2$(10,1)="9" THEN GOTO 4290 ELSE IF DONT_MOD$<>"Y" THEN FS2[4]=S1; GOTO 4285
+4265 FS2$(124,4)=S1$,FS2[5]=S2; IF A$(10,1)<>"9" AND DONT_MOD$<>"Y" THEN FS2[4]=S1,FS2[22]=FS2[4]
+4268 REM "IF EOM0>0 THEN LET A[0]=EOM0, EOM0=0; REM "SSP# 096315 CWJ 5/7/98
+4270 CALL "FM2EXT",Z[13],0,FS2$(124,4),FS2[5],FS2[0],FS2[4],E,M6[1]; FS2[6]=E
+4280 GOSUB 7800
+4285 GOSUB 7850
+4295 RETURN 
+5000 REM "End of Print
+5010 IF Q5=1 THEN IF SHIP_INTERFACE$<>"" THEN GOSUB 8550 ! SSP234297, removed GOTO 9900, need to write PO6 out first
+5012 IF Q5=1 THEN GOSUB PO6_TMP_TO_REAL; GOTO 9900 ! SSP234297, write PO6 TMP to real PO6 file
+5015 REM "IF SHIP_INTERFACE$<>"" THEN GOSUB 08550; REM "SSP#106782
+5020 IF W8=0 THEN GOTO 9900
+5030 T0$="END"
+5040 REM IF V1>0 THEN GOSUB 03120
+5200 REM "
+5210 T9=1
+5220 IF V3$(2,1)="T" THEN GOTO 9900
+5300 REM "Purge records
+5305 CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$ ! SSP# 277376 !IF FID(W9)<>FID(0) THEN PRINTER$=FID(W9); CLOSE (W9); OPEN (W9)PRINTER$; REM "SSP115075/117159
+5310 CALL "ZZPROM","X0AR2RHA",X3$,Z,"","","",0; ON Z GOTO 5311,9920 ! SSP#277376
+5360 Q5=1; GOTO 0900
+5390 RETURN 
+6000 REM "Page header
+6005 IF Q5=1 THEN RETURN 
+6040 CALL "ZZHEAD",X0$,X1$,X2$,X3$,W0$,W1$,W2$,W3$,W3,W,W9,W8,W0,W5,W2,W4$,W5$
+6045 ON W5 GOTO 6046,9900
+6060 GOSUB 6100
+6070 GOSUB 7300
+6090 RETURN 
+6100 REM "
+6110 IF V0$(72,1)<>"Y" THEN GOTO 6199
+6120 Y5$(4)="Vendor/Plant",Y5$(61)="P/O",Y5$(75)="P/O",Y5$(87)="Receipt",Y5$(98)="Quantity",Y5$(109)="Action",Y5$(119)="Qty"
+6125 GOSUB 7300
+6130 Y5$(4)="Code",Y5$(60)="Number",Y5$(75)="Line",Y5$(88)="Date",Y5$(98)="Received",Y5$(109)=" Req'd",Y5$(119)="BO'd"
+6135 GOSUB 7300
+6199 RETURN 
+6200 REM "Break #1 header
+6205 DIM B$(100)
+6210 FIND (Z[2],KEY="D"+S0$(1,10)+A$(1,4),DOM=6211)IOL=0320
+6250 W0$="Location: "+A$(1,4)
+6265 IF POS(" "<>B$(16,35))<>0 THEN W0$=W0$+" - "+FNS$(B$(16,35))
+6299 RETURN 
+6300 REM "Break #2 header
+6303 Q$=""; IF A$(5,10)<>S0$(1,10) THEN CALL "ZZDISP","AX",A$(5,10),"A/R",X3$,Q$,"",2,0,X4$; Q$=Q$+"/ "
+6305 DIM C$(188)
+6307 IF W+4>W0 THEN GOSUB 6000 ELSE GOSUB 7300
+6309 READ (Z[3],KEY=A$(5,20),DOM=6310)IOL=0330
+6310 CALL "ZZDISP","AX",C$(1,20),"I/C",X3$,X$,"",2,0,X4$
+6320 Y5$(1)=Q$+X$+"  "+C$(21,40)
+6324 X0=55; GOSUB 8100
+6325 GOSUB 7300
+6327 IF POS(" "<>C$(128,40))>0 THEN Y5$(12)=C$(128,40); GOSUB 7300
+6329 DIM F$(30),F[10]
+6330 READ (Z[6],KEY=A$(5,20)+A$(1,4),DOM=6331)IOL=0360
+6335 J9=0
+6338 GOSUB 8150
+6340 GOSUB 7300; Y5$(3)="Received",Y5$(14)="On hand",Y5$(26)="Committed",Y5$(38)="Avail/Sale",Y5$(54)="On P/O",Y5$(64)="Total Avail"; GOSUB 7300
+6343 X=L1,X0=1; GOSUB 7600
+6345 J4=F[3]+F[4]-F[5]+F[6],X=J4,X0=14; GOSUB 7600
+6350 X=F[7],X0=27; GOSUB 7600
+6355 X=J4-F[7],X0=40; GOSUB 7600
+6360 X=F[8],X0=53; GOSUB 7600
+6365 X=J4-F[7]+F[8],X0=66; GOSUB 7600
+6370 GOSUB 7300
+6399 RETURN 
+7000 REM "Totals logic
+7001 IF T<>T0 THEN RETURN ELSE IF T[T0,0]<2 THEN GOSUB 7300; GOTO 7100
+7002 IF W+3>W0 THEN GOSUB 6000
+7003 IF V0$(72,1)<>"Y" AND T=2 THEN GOTO 7040
+7005 Y5$(98)=T1$(1,LEN(Z0$)); GOSUB 7300
+7010 Y5$(1)=T3$(1,T0+1-T)+" "
+7015 IF T$<>"" THEN Y5$(T0+2-T)=T$+" Total ("+STR(T[T,0]:"0")+"):"
+7020 X=T[T,1],X0=98; GOSUB 7600
+7030 GOSUB 7300
+7040 REM "IF T=2 THEN GOSUB 8000; REM " SSP 165787
+7041 REM + IF T=2 AND V0$(98,1)<>"Y" THEN GOSUB 8000 ELSE IF T=2 AND V0$(98,1)="Y" THEN GOSUB 8700; REM " SSP 165787
+7065 IF T$="END" THEN Y5$(98)=T2$(1,LEN(Z0$)); GOSUB 7300
+7075 GOSUB 7300
+7090 IF T0$="END" THEN IF T=0 THEN GOSUB 7200; GOTO 7190
+7100 REM "Accumulate sub totals
+7110 IF T=0 THEN GOTO 7190
+7120 FOR X=0 TO T1
+7130 T[T-1,X]=T[T-1,X]+T[T,X],T[T,X]=0
+7140 NEXT X
+7190 RETURN 
+7200 REM "Elapsed time routine"
+7205 GOSUB 7300; Y5$(1)="Number of items printed: "+STR(T[0,0]); GOSUB 7300
+7210 PRECISION 14; T2=TIM-T2
+7220 IF INT(T2)>0 THEN T4$=STR(INT(T2))+" Hours " ELSE T4$=""
+7230 T3=INT(FPT(T2)*3600)
+7240 T3=T3/60
+7250 T4$=T4$+STR(T3:"##.##")+" Minutes"
+7260 Y5$(1)="Elapsed time: "+T4$; GOSUB 7300
+7280 PRECISION 2
+7290 RETURN 
+7300 REM "Output line Y5$ to output device
+7302 IF Q5=1 THEN RETURN 
+7310 W=W+1
+7330 IF Y5$=Y6$ THEN PRINT (W9)"" ELSE PRINT (W9)Y5$; DIM Y5$(W3)
+7395 RETURN 
+7400 REM "Read report selection parameters"
+7410 Z$="12O ZZP     "
+7420 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 7421,9900
+7430 Y3$=X3$(1,6),Y4$=X3$(178,7)
+7450 READ (Z[12],KEY=X3$(1,8),DOM=7451)IOL=0420
+7480 X3$(178,7)=Y4$,V0=NUM(V0$(71,1)),W3$=V0$(19,POS("   "=V0$(19,40)+"   ")-1)
+7485 V2$=V2$(41,8)+V2$(1,10)+V2$(21,10)+V2$(11,10)+V2$(31,10)
+7490 RETURN 
+7500 REM "CUSTOM PROGRAMMING ROUTINES
+7525 REM "Modified stmts:
+7550 REM "Added stmts:
+7575 REM "Deleted stmts:
+7600 REM "Put amount X at pos X0 in Y5$ using Z0$ mask or Z1$ mask
+7605 IF C$(120,4)<>M$(4,4) THEN DIM M$(21),M[2]; READ (Z[13],KEY="U/M"+C$(120,4))IOL=0450
+7615 IF M$(20,1)="Y" THEN M=M[1] ELSE M=C[14]
+7620 IF M=0 THEN M=1
+7625 X2=X/M
+7629 IF J9=0 THEN J9$=""; GOTO 7631 ELSE J9=0
+7630 J9$=" "+FNS$(C$(120,4)); IF M$(20,1)<>"Y" THEN J9$=J9$+"/"+FNR$(STR(M:"#,##0"))
+7640 IF FPT(X2)=0 THEN Y5$(X0)=STR(X2:Z0$)+J9$ ELSE Y5$(X0)=STR(X2:Z1$)+J9$
+7645 RETURN 
+7700 REM "Print Plant, Name
+7705 Y5$(18)=A$(62,4)
+7710 IF POS(" "<>A$(62,4))=0 THEN GOTO 7755
+7714 REM "get name based on plant
+7715 DIM B$(100); READ (Z[2],KEY="P"+B$(52,14),DOM=7716)IOL=0320
+7720 Y5$(23)=B$(16,35)
+7730 GOTO 7795
+7755 REM "Get vendor name from vendor file
+7760 DIM J9$(100); READ (Z[10],KEY=A$(52,10),DOM=7761)J9$
+7765 Y5$(23)=J9$(11,35)
+7795 RETURN 
+7800 REM "u/m stuff, SSP115965, copied from FS2DAB
+7802 D9=1,D8=1; FIND (Z[13],KEY="U/M"+FS2$(124,4),DOM=7845)IOL=0460
+7805 IF UM$(21,1)="Y" THEN FS2[4]=0
+7810 IF UM$(20,1)="Y" THEN IF UM[0]<>0 THEN FS2[5]=UM[0],D8=UM[0] ELSE FS2[5]=UM[1],D8=UM[1]
+7813 REM "Set divisor
+7815 IF UM$(20,1)="Y" OR UM$(21,1)="Y" THEN D9=1 ELSE D9=FS2[5]
+7816 IF D9=0 THEN D9=1
+7817 IF D8=0 THEN D8=1
+7820 REM "IF A$(12,1)="S" AND H$(61,1)="Y" THEN GOTO 07840
+7822 IF FS2[12]=0 THEN IF D9=1 THEN FS2[12]=C[19] ELSE FS2[12]=D9
+7823 IF RETURN$="Y" THEN RETURN$="N"; RETURN 
+7825 C=FS2[5],Q=FS2[0],U=FS2[4],E=FS2[6]
+7830 SETERR 7831; IF A0<>C AND Q=0 THEN U0=U; CALL "FM2EXT",Z[13],1,FS2$(124,4),C,A0,U,U0,M6[1]; REM " ELSE IF E<>0 THEN CALL "FM2EXT",Z[13],1,A$(95,4),C,Q,U,E,M6[1]
+7832 FS2[4]=U,FS2[6]=E,U=FS2[1],E=FS2[3]
+7834 SETERR 7835; IF A0<>C AND Q=0 THEN U0=U; CALL "FM2EXT",Z[13],1,FS2$(124,4),C,A0,U,U0,M6[1] ELSE IF E<>0 THEN CALL "FM2EXT",Z[13],1,FS2$(124,4),C,Q,U,E,M6[1]
+7836 FS2[1]=U,FS2[3]=E
+7838 SETERR 9000
+7839 A0=C
+7840 REM "GOSUB 06239
+7845 RETURN 
+7850 REM "Calculate extension, SSP115965, copied from FS2DAB
+7855 IF FS2$(10,1)="9" THEN FS2[6]=0,FS2[3]=0; GOTO 7895 ! SSP207055   
+7860 FS2[6]=FS2[0]/D9*FS2[4]/D8,FS2[3]=FS2[0]/D9*FS2[1]/D8
+7870 REM "GOSUB 06239
+7895 RETURN 
+7900 REM "Compute carton labels
+7903 FIND (Z[14],KEY="T"+FS2$(29,3),DOM=7904)H8$
+7904 IF H8$(22,1)="N" THEN FS2[9]=0; GOTO 7841
+7905 Q=FS2[0]; IF FS2[7]<>0 THEN Q=FS2[7]
+7910 PRECISION 6
+7920 IF FS2[12]>0 THEN FS2[9]=INT((Q+FS2[12]-1)/FS2[12]) ELSE FS2[12]=0
+7930 IF FS2[9]<0 THEN FS2[9]=0
+7940 PRECISION 2; IF X3$(65,1)>"2" THEN PRECISION NUM(X3$(65,1),ERR=7941)
+7945 RETURN 
+8000 REM "Print open orders for the inventory item
+8005 READ (Z[4],KEY=U2$,DOM=8006)
+8006 J0=0,J1=0,J=1,J2=1
+8010 K$=KEY(Z[4],END=8090)
+8015 IF K$(1,20)<>U2$ THEN GOTO 8090
+8020 READ (Z[4])
+8022 PRINT_AST$="N"
+8023 READ (Z[5],KEY=K$(25,11),DOM=8080)IOL=0350
+8024 IF E$(10,4)<>U1$ THEN GOTO 8080; END_IF ; IF E[8]<=0 THEN GOTO 8080; END_IF ; IF V0$(74,1)="N" THEN GOTO 8080; REM SSP208834 jdf
+8025 DIM G$(350),G[13]; READ (Z[8],KEY=K$(25,8),DOM=8080)IOL=0380; IF POS(G$(63,1)="YS")<>0 THEN PRINT_AST$="*INV*"; REM "SSP# 137868, 154149
+8026 IF V0$(99,1)="Y" THEN READ (Z[8],KEY=K$(25,8),DOM=*NEXT)FS1$
+8028 IF FSH$(1,2)<>K$(25,2) THEN DIM FSH$(402); READ (Z[15],KEY=K$(25,2),DOM=*NEXT)FSH$ ! WO156021, read order division record
+8029 DIM H$(483); READ (Z[9],KEY=G$(6,10),DOM=8030)IOL=0390
+8030 IF J2=1 THEN J2=0; IF P0$(44,1)="Y" THEN GOSUB 8300
+8031 IF P0$(44,1)="Y" THEN IF E$(2,1)="Y" THEN IF POS(E$(147,8)+E$(6,3)=L9$,11)<>0 THEN ON POS(V0$(74,1)=" NYP") GOTO 8033,8033,8033,8010,8032 ELSE GOTO 8033; REM "If lotted inv system, this line is lotted line check to see if this order#+line# is in L9$, if it is and v0$(74,1)="Y" to exclude lines with lotted items assigned then skip it else print it. New option P means print it if this line has a BO, we will print 5 *'s to indicate we will no reprint PL or select lots
+8032 IF E[8]<=0 THEN GOTO 8080 ELSE IF PRINT_AST$<>"*INV*" THEN PRINT_AST$="Y"
+8033 IF W+2>W0 THEN GOSUB 6000
+8034 IF J=1 THEN J=0; GOSUB 7300; Y5$(3)="Order #",Y5$(14)="Order date",Y5$(26)="Customer",Y5$(81)="Date Req.",Y5$(92)="Line",Y5$(99)="Quantity"; GOSUB 7300
+8035 CALL "ZZDISP","AXS",E$(147,8),"O/P",X3$,Y5$,"",3,0,X4$
+8036 Y5$(14)=FND$(G$(16,6))
+8037 CALL "ZZDISP","AXS",G$(6,10),"A/R",X3$,Y5$,"",27,0,X4$
+8038 Y5$(38)=H$(11,35),Y5$(81)=FND$(G$(55,6))
+8040 Y5$(93)=E$(6,3)
+8045 X=E[0],X0=98; GOSUB 7600; IF E[8]<>0 AND M<>0 THEN BO=E[8]/M
+8050 J0=J0+1,J1=J1+E[0]
+8052 IF PRINT_AST$="Y" THEN Y5$(110)="*****",Y5$(116)=STR(BO:Z0$) ELSE IF PRINT_AST$="*INV*" THEN Y5$(110)=PRINT_AST$
+8055 REM "GOSUB 7300
+8056 IF V0$(99,1)="Y" AND FS1$(128,1)="S" THEN Y5$(125)="*SUSP*"
+8057 GOSUB 7300
+8060 IF V0$(73,1)="Y" AND PRINT_AST$<>"Y" AND PRINT_AST$<>"*INV*" THEN GOSUB 8200
+8061 FS1$=""; REM " SSP# 164133
+8070 IF V0$(77,1)="Y" AND V0$(78,10)<=G$(6,10) AND G$(6,10)<=V0$(88,10) THEN G$(242,1)="F"; WRITE (Z[8],KEY=K$(25,8))IOL=0380; REM "SSP# 137868
+8080 READ (Z[4],KEY=K$,DOM=8010); GOTO 8010; REM "Reposition Z[4](FS5) after all the calls, etc it will be in wrong place
+8090 IF J0>1 THEN Y5$(100)=T1$(1,LEN(Z0$)); GOSUB 7300; X=J1,X0=98; GOSUB 7600
+8091 IF J0>0 THEN GOSUB 7300
+8095 RETURN 
+8100 REM "Print U/M at X0
+8105 IF C$(120,4)<>M$(4,4) THEN DIM M$(21),M[2]; READ (Z[13],KEY="U/M"+C$(120,4))IOL=0450
+8110 J9$=" "+FNS$(C$(120,4)); IF M$(20,1)<>"Y" THEN J9$=J9$+"/"+FNR$(STR(C[14]:"#,##0"))
+8115 Y5$(X0)=J9$
+8145 RETURN 
+8150 REM "Figure L1, total of received lines
+8154 L1=0
+8155 READ (Z[7],KEY=A$(1,24),DOM=8156)
+8160 K$=KEY(Z[7],END=8190)
+8165 IF K$(1,24)<>A$(1,24) THEN GOTO 8190
+8170 READ (Z[7],KEY=K$,DOM=8190)*,L2,L3
+8175 L1=L1+L2
+8180 GOTO 8160
+8195 RETURN 
+8200 REM "NEED TO WRITE TO PACKING LIST FILE
+8201 IF V0$(98,1)="Y" THEN READ (Z[8],KEY=K$(34,8),DOM=*NEXT) ELSE READ (Z[8],KEY=K$(25,8),DOM=*NEXT)FS1$
+8202 IF Q5<>1 OR PRINT_AST$="*INV*" THEN RETURN 
+8203 IF V0$(99,1)="Y" AND FS1$(128,1)="S" THEN GOTO 8290; REM " SSP# 164133
+8204 REM "Modified 8205 to activate lines 8280-8290 cwj 4/21/98
+8205 FOUND=0; IF P0$(44,1)="Y" AND POS(P0$(52,1)="AB")<>0 AND C$(112,1)="Y" THEN GOSUB 8400; IF FOUND<=0 AND V0$(75,1)="Y" THEN GOTO 8290; REM "If no lots found and we said don't print PL in this case then get out, SSP114058
+8206 REM "IF P0$(44,1)="Y" AND POS(P0$(52,1)="AB")<>0 AND C$(112,1)="Y" THEN GOTO 08400 ELSE GOTO 01000
+8250 REM "WO122361, if parm set then create SM0 record for further processing by CIG, setting record to not po recieve and not update order (no freight charges)
+8255 IF FOUND>0 THEN IF V0$(76,1)="Y" THEN DIM SM0$(700),SM0[15]; RET_CODE$=" ",SM0$(124,3)="001",SM0$(97,1)="Y",SM0$(98,1)="Y"; CALL "SM2MAA",X3$,X4$,SM0$,SM0{ALL},RET_CODE$ ! WO244750, expand SM0
+8280 IF POS("P"=MID(FS2$,156,5))>0 THEN GOSUB UPDATE_PO6 ! SSP193549, only print packing list if P in print flags.
+8285 REM 
+8290 RETURN 
+8300 REM "We have found at least one order line, and this is lotted inventory ssystem, so build string L9$ of order number+line number of the order lines that have committed lots of this item at this location
+8303 Y$="11C PO6...  11O ICF...  "
+8304 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+8305 L9$=""
+8310 READ (Z[11],KEY=K$(1,20),DOM=8311)
+8315 K9$=KEY(Z[11],END=8340)
+8320 IF K9$(1,20)<>K$(1,20) THEN GOTO 8340
+8325 READ (Z[11],KEY=K9$)L8$
+8330 IF POS(" "<>L8$(110,11))<>0 THEN L9$=L9$+L8$(110,11); REM "If the order# line field is  not blank in the lot, it is committed to an order line, add the order line to L9$. We are not looking for duplicates here though they may exist, because the search before the add would increase the processing time here. We may pay more during the search later, but its probably 1/2 dozen or the other.
+8335 GOTO 8315
+8340 Y$="11C ICF...  11O PO6...  "
+8341 CALL "ZZFLES",X3$,Y1$,Y0$,Y$,Z{ALL},Z0,Z1
+8345 RETURN 
+8400 REM "AUTOMATIC LOT SELECTION ROUTINE
+8403 FOUND=0
+8404 P=POS(" "=G$(232,5)); IF P=0 THEN ESCAPE ELSE G$(232+P-1,1)="B"; REM "Will check this in FM2ODZ and if B then won't remove PO6 records when starting
+8405 CALL "FM2ODH",X3$,-1,G$,G{ALL}
+8408 S1=0; IF V0$(74,1)="N" THEN Q0=E[8] ELSE Q0=E[0]; REM SSP208834 JDF
+8409 CALL "IC2LCA",X3$,X4$,P0$(52,1),0,C$(1,10)+C$(11,10)+F$(21,4)+G$(118,8)+E$(6,3),Q0,C,F,S1,S1$,S2,S3$,S3,S4; REM SSP208834 JDF
+8410 REM S1=0,Q0=E[0]; CALL "IC2LCA",X3$,X4$,P0$(52,1),0,C$(1,10)+C$(11,10)+F$(21,4)+G$(118,8)+E$(6,3),Q0,C,F,S1,S1$,S2,S3$,S3,S4; REM SSP208834 jdf
+8414 FOUND=Q0
+8415 IF Q0<=0 THEN GOTO 8490; REM "No lots selected
+8420 EXTRACT (Z[5],KEY=G$(118,8)+E$(6,3),DOM=8490)IOL=0400
+8425 FS2[7]=FS2[7]+Q0,FS2[8]=FS2[0]-FS2[7]; IF FS2[8]<0 THEN FS2[8]=0; REM "Reduce BO/add to shipped
+8426 IF P4$(261,1)="Y" AND F<>0 THEN FS2[17]=F; REM "Automatically add lot freight
+8427 RETURN$="Y"; GOSUB 7800; GOSUB 4200; GOSUB 7850; GOSUB 4250; REM "SSP115965, set sell price/cost from lot
+8428 GOSUB 7900; REM "recompute carton labels
+8429 IF FS2$(10,1)="9" THEN FS2[6]=0,FS2[3]=0,FS2[4]=0
+8430 WRITE (Z[5],KEY=G$(118,8)+E$(6,3))IOL=0400
+8433 IF SHIP_INTERFACE$<>"" THEN WRITE (Z[12],KEY=G$(118,8)+E$(6,3)); REM "ssp#106782 add to list to process later
+8435 REM "EXTRACT (Z[6],KEY=C$(1,10)+C$(11,10)+F$(21,4),DOM=08490) IOL=00410
+8440 REM "LET IC1[11]=IC1[11]-Q0; IF IC1[11]<0 THEN LET IC1[11]=0; REM "ADJUST BO AMT
+8445 REM "WRITE (Z[6],KEY=C$(1,10)+C$(11,10)+F$(21,4)) IOL=00410
+8490 P=POS(" "=G$(232,5)); IF P=0 THEN ESCAPE ELSE G$(232+P-1,1)="D"; REM "Will check this is FM2ODZ and if D is found then we won't set labels or packing list to print
+8492 CALL "FM2ODH",X3$,1,G$,G{ALL}
+8495 RETURN 
+8500 REM "Setup file to get list of order lines (in order # order) to send to shipping - ssp#106782
+8505 SHIP_INTERFACE$=""; FIND (Z[13],KEY=X3$(9,3)+"S/H",DOM=8545)SHIP_INTERFACE$
+8506 REM "If here, open file for writing
+8510 TMP$="Scale Interface"
+8515 CALL "ZZ2SRT",X3$,X4$,Z[13],Z[1],11,TMP$,Z,"  "; IF Z=2 THEN SHIP_INTERFACE$=""; GOTO 8545; REM "If error, cancel shipping interface
+8520 Z$="12O "+TMP$+" "; CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; IF Z1=1 THEN SHIP_INTERFACE$=""; GOTO 8545; REM "If problem cancel interface
+8545 RETURN 
+8550 REM "if shipping interface, now process each line in order# order - ssp#1-6782
+8552 PRINT @(0,18),'CE',@(15,21),"Sending information to Shipping Interface",
+8553 GOSUB 8600; C=0; GOSUB 8650
+8555 READ (Z[12],KEY="",DOM=8556)
+8560 ORDER_KEY$=KEY(Z[12],END=8590); READ (Z[12]); C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8650
+8565 REM "PRINT @(0,20),ORDER_KEY$,; INPUT *
+8570 ORDER$=ORDER_KEY$; IF ORDER$(1,8)=PREV_ORDER$ THEN OPTIONS$="F" ELSE OPTIONS$="SF",PREV_ORDER$=ORDER$(1,8); REM "ssp#106782 If old order, don't increment counter
+8575 CALL "SH2EXP",ERR=*NEXT,X3$,X4$,ORDER$,OPTIONS$,RET$ ! SSP239749 jdf
+8585 READ (Z[12],KEY=ORDER_KEY$,DOM=8560); GOTO 8560; REM "reposition after call if needed
+8590 PRINT @(0,18),'CE',
+8595 RETURN 
+8600 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8610 CALL "ZZINFO",Z[12],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8630 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8635 T1=0
+8645 RETURN 
+8650 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8655 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8695 RETURN 
+8700 REM " READ ORDERS-SORTED BY CUST LOCATION FROM FM0 - SSP 165787
+8701 HOLD_KEY$=""
+8705 READ (Z[16],KEY=U2$,DOM=8706)
+8706 J0=0,J1=0,J=1,J2=1
+8710 K$=KEY(Z[16],END=8790)
+8715 IF K$(1,20)<>U2$ THEN GOTO 8790
+8720 READ (Z[16])
+8723 PRINT_AST$="N"
+8725 READ (Z[5],KEY=K$(34,11),DOM=8780)IOL=0350
+8726 IF E$(10,4)<>U1$ THEN GOTO 8780; END_IF ; IF E[8]<=0 THEN GOTO 8780; END_IF ; IF V0$(74,1)="N" THEN GOTO 8780; REM SSP208834 jdf
+8727 DIM G$(350),G[13]; READ (Z[8],KEY=K$(34,8),DOM=8780)IOL=0380; IF POS(G$(63,1)="YS")<>0 THEN PRINT_AST$="*INV*"; REM "SSP# 137868, 154149 
+8728 IF FSH$(1,2)<>K$(34,2) THEN DIM FSH$(402); READ (Z[15],KEY=K$(34,2),DOM=*NEXT)FSH$ ! WO156021, read order division record 
+8729 DIM H$(483); READ (Z[9],KEY=G$(6,10),DOM=*NEXT)IOL=0390
+8730 IF J2=1 THEN J2=0; IF P0$(44,1)="Y" THEN GOSUB 8300
+8731 IF P0$(44,1)="Y" THEN IF E$(2,1)="Y" THEN IF POS(E$(147,8)+E$(6,3)=L9$,11)<>0 THEN ON POS(V0$(74,1)=" NYP") GOTO 8733,8733,8733,8710,8732 ELSE GOTO 8733; REM "If lotted inv system, this line is lotted line check to see if this order#+line# is in L9$, if it is and v0$(74,1)="Y" to exclude lines w ith lotted items assigned then skip it else print it. New option P means print it if this line has a BO, we will print 5 *'s to indicate we will not reprint PL or select lots     
+8732 IF E[8]>0 THEN PRINT_AST$="Y" ELSE GOTO 8780
+8733 IF W+2>W0 THEN GOSUB 6000
+8734 IF J=1 THEN J=0; GOSUB 7300; Y5$(3)="Order #",Y5$(14)="Order date",Y5$(26)="Customer",Y5$(81)="Date Req.",Y5$(92)="Line",Y5$(99)="Quantity"; GOSUB 7300
+8735 IF K$(25,9)<>HOLD_KEY$ AND V0$(98,1)="Y" THEN GOSUB 7300; Y5$(1,11)="Cost Code: ",Y5$(13,9)=K$(25,9),Y5$(24,13)="Description: ",Y5$(38,45)=K$(45,35); GOSUB 7300; HOLD_KEY$=K$(25,9)
+8736 CALL "ZZDISP","AXS",E$(147,8),"O/P",X3$,Y5$,"",3,0,X4$
+8737 Y5$(14)=FND$(G$(16,6))
+8738 CALL "ZZDISP","AXS",G$(6,10),"A/R",X3$,Y5$,"",27,0,X4$
+8739 Y5$(38)=H$(11,35),Y5$(81)=FND$(G$(55,6))
+8740 Y5$(93)=E$(6,3)
+8745 X=E[0],X0=98; GOSUB 7600
+8750 J0=J0+1,J1=J1+E[0]
+8752 IF PRINT_AST$="Y" THEN Y5$(110)="*****",Y5$(117)=STR(E[8]:Z0$) ELSE IF PRINT_AST$="*INV*" THEN Y5$(110)=PRINT_AST$
+8755 GOSUB 7300
+8760 IF V0$(73,1)="Y" AND PRINT_AST$<>"Y" THEN GOSUB 8200
+8770 IF V0$(77,1)="Y" AND V0$(78,10)<=G$(6,10) AND G$(6,10)<=V0$(88,10) THEN G$(242,1)="F"; WRITE (Z[8],KEY=K$(25,8))IOL=0380; REM "SSP# 137868 
+8780 READ (Z[16],KEY=K$,DOM=8710); GOTO 8710; REM "Reposition Z[4](FS5) after al 
+8790 IF J0>1 THEN Y5$(100)=T1$(1,LEN(Z0$)); GOSUB 7300; X=J1,X0=98; GOSUB 7600
+8791 IF J0>0 THEN GOSUB 7300
+8795 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 1000
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9900 REM "End program
+9910 IF Q5<>1 THEN CALL "ZZERPT",X3$,X4$,X0$,Y3$,Y4$,W9,W2,W5,W,W0,W8,T3,V3$ ! SSP#277376
+9920 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9922 CLOSE (TMP_PO6); ERASE TMP_PO6$,ERR=*NEXT ! SSP#240254
+9925 IF %GUI THEN CALL Y4$,ERR=*NEXT
+9926 IF %GUI THEN EXIT 
+9930 IF Y4$<>"" THEN RUN Y4$,ERR=9931
+9940 RUN "ZMENU"
+9999 END 
+10000 UPDATE_PO6:
+10001 W9$=A$(1,1)
+10010 IF POS(G$(47,1)="RW")>0 OR POS(X3$(9,3)="499568543537539541542",3)>0 OR MID(G$,246,4)="WEB " THEN IF A$(1,1)<>"8" OR POS(X3$(9,3)="470474",3)<>0 THEN W9$="0"; REM "SSP138569
+10020 IF P4$(285,1)="Y" THEN W9$=A$(1,1)
+10025 IF X3$(9,3)="499" AND A$(1,1)="8" THEN W9$="0"; REM SSP156216
+10030 WHSE$=A$(3,2)
+10035 DIM DFT[4]
+10040 READ (Z[14],KEY="D"+MID(G$,6,10),DOM=*NEXT)IOL=0412
+10045 IF DFT[3]<>0 THEN WHSE$=STR(DFT[3]:"00")
+10050 GOSUB CREATE_PO6_RECORDS ! [197451]-create the po6 records
+10085 REM *** Q$="L"+W9$+A$(2,1)+WHSE$+E$(147,8)+E$(6,3) ! [197451]-no longer needed here
+10090 REM *** (Z[11],KEY=Q$)                             ! [197451]-no longer needed here
+10099 RETURN 
+11000 CREATE_PO6_RECORDS:! [197451]-Added routine
+11002 FMP_LFN=Z[14] ! set the FMP LFN
+11004 PO3_LFN=Z[17] ! set the PO3 LFN
+11006 PO6_LFN=Z[11] ! set the PO6 LFN
+11010 ORDER_DIV$=FS2$(147,2) ! set the Order Division from FS2
+11012 ORDER_NUM$=FS2$(149,6) ! set the Order Number from FS2
+11014 ORDER_LINE_NUM$=FS2$(6,3) ! set the Order Line Number from FS2
+11016 PO_CODE$=FS2$(9,1) ! set the PO code from FS2
+11018 PRINT_FLAGS$=FS2$(156,5) ! set the print flag from FS2
+11020 SPECIAL_SHIPPING_FLAG$=FS2$(18,1) ! set the special shipping flag from FS2
+11022 WHSE_CODE_PKLIST$=FS2$(215,4) ! set the warehouse code packing list from FS2
+11030 GOSUB PROCESS_PO6_RECORDS ! generate the PO6 records and write them
+11095 RETURN 
+11100 WRITE_PO6_RECORD:! [197451]-Added routine
+11101 ! This routine will build the PO6 record and write
+11102 ! it to the PO6 file.
+11120 PO6_KEY$="" ! clear the key
+11122 PO6_KEY$+="L"+W9$+FS2$(11,1) ! append the PO6 type
+11124 PO6_KEY$+=WHSE$ ! append the warehouse
+11126 PO6_KEY$+=PICK_PRIORITY$ ! append the pick priority
+11127 PO6_KEY$+=ORDER_DIV$ ! SSP204533, wasn't writing the division
+11128 PO6_KEY$+=ORDER_NUM$ ! append the order number
+11130 PO6_KEY$+=ORDER_LINE_NUM$ ! append the order line number
+11150 WRITE (TMP_PO6,KEY=PO6_KEY$) ! write the record. SSP234297, change from writing to PO6_LFN to TMP_PO6
+11195 RETURN 
+11200 READ_SHIP_VIA_CODES:! [197451]-Added routine
+11201 ! This routine reads the FMPS file to get the picking
+11202 ! priority for the specified ship via code
+11210 PICK_PRIORITY$="~~" ! clear the field
+11220 FMPS_KEY$="S"+SHIP_VIA_CODE$ ! set the FMPS key
+11230 READ (FMP_LFN,KEY=FMPS_KEY$,DOM=11260)IOL=0480 ! read the FMPS record. SSP226505, DOM was *RETURN which was skipping the write of PO6, changed to go to line 11260
+11240 PICK_PRIORITY$=MID(FMPS$,278,2) ! set the pick priority
+11250 PICK_PRIORITY$=PAD(PICK_PRIORITY$,2) ! pad the pick priority
+11260 GOSUB WRITE_PO6_RECORD ! write the po6 record
+11295 RETURN 
+11300 PROCESS_PO6_RECORDS:! [197451]-Added routine
+11310 IF (SPECIAL_SHIPPING_FLAG$<>"Y") THEN {! no special shipping for the line
+11320 TMP_PO3_KEY$=ORDER_DIV$+ORDER_NUM$+"     " ! set the PO3 key
+11325  } ELSE {! special shipping
+11330 TMP_PO3_KEY$=ORDER_DIV$+ORDER_NUM$+" "+ORDER_LINE_NUM$+" ",PICK_PRIORITY$=DIM(2) ! set the PO3 key SSP#207082                                     
+11335  }
+11340 READ (PO3_LFN,KEY=TMP_PO3_KEY$,DOM=*NEXT,ERR=9000)IOL=0485; GOTO 11344 ! read the PO3 record SSP#207082                                          
+11342 READ (PO3_LFN,END=*RETURN)IOL=0485 ! SSP#207082                          
+11344 IF MID(PO3$,166,9)+MID(PO3$,7,3)<>TMP_PO3_KEY$(1,12) THEN GOTO 11695 ! SSP#207082                                                                 
+11345 SHIP_VIA_CODE$="" ! clear the field
+11350 SHIP_VIA_CODE$=PO3$(150,1) ! set the ship via code
+11355 GOSUB READ_SHIP_VIA_CODES ! read the FMPS file to get the pick priority
+11695 RETURN 
+11699 ! 
+12000 PO6_TMP_TO_REAL:! SSP234297, get PO6 TMP records into real PO6 file
+12010 READ (TMP_PO6,KEY="",DOM=*NEXT)
+12015 TMP_KEY$=KEY(TMP_PO6,END=TMP_PO6_DONE); READ (TMP_PO6)
+12020 WRITE (PO6_LFN,KEY=TMP_KEY$)
+12025 GOTO 12015
+12040 TMP_PO6_DONE:
+12045 ! CLOSE (TMP_PO6) Moved to 9900's 240254
+12050 ! ERASE TMP_PO6$,ERR=*NEXT Moved to 9900's 240254
+12095 RETURN 
+12099 ! 
+56000 REM + Modification History
+56002 REM "180032-Wireless Warehousing                                        
+56010 REM "193549-Print flags say no P/L, but BO fill report print one anyway 
+56020 REM "5.5 - 01/04/07 - 13.158055 - tma - SSP# 203365
+56022 REM "203365-PE during backorder fill report, FM2UUF                     
+56024 REM "5.5 - 01/15/07 - 15.4775 - mhe - SSP# 197451
+56026 REM "197451-WMS pick ticket priority by Ship Via priority/              
+56027 REM "205095-Changes from new release                                    
+56030 REM "201896-Would like to know if they can make an OP parameter about   
+56032 REM "208834-Problem with the backorder fill report.  Committing lots    
+56034 REM "226505-No PO6 created if blank Ship Via code during BO Fill Report
+56036 REM "234297-XML to warehouse, not going to the next sequence for BO's.
+56038 REM "239749-PE(012 FM20DH-2055)                                         
+56040 REM "244750-Inbound Freight processing in the Customer Invoicing Gateway
+56041 REM "277376-Backorder Fill Report - he prints to PDF and gets an error  

@@ -1,0 +1,150 @@
+0010 REM "<ED2RBA> EDI Bundle Outgoing Documents
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 12/21/05 - 12.372222 - lms - SSP# 190782
+0037 REM "190782-Getting program excpetion doing EDI preparing the bundled   
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="ED2RBA",X1$="EDI Bundle Outgoing Documents"
+0120 DIM Z0$(80,"-"),FILE$[350],Z1$(15," "); REM SSP 190782 - IF GETTING ERROR 42 AT 1030 MAKE THE FILE$[HERE] BIGGER...IT'S THE NUMBER OF FILES THEY'RE TRYING TO PROCESS
+0135 C9=-1
+0170 IF POS("MS"=UCS(SYS)) THEN ISWIN=1 ELSE ISWIN=0
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9900
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "Iolists
+0320 IOLIST EM1$
+0420 IOLIST I$
+0500 REM "Files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O EM1...  030 EM9...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0620 PARM$=X3$(9,3)+"E/M"
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0700 REM "Set Data Directory
+0720 INFO_D0$=%DATAPATH$
+0730 DATA_DIR$=STP(INFO_D0$,1)+DLM
+0800 REM "Set Prefix
+0900 REM "Read ZPARM for EDI
+0910 READ (Z[13],KEY=PARM$)IOL=0420
+0915 ELEMENT_SEPARATOR$=ATH("2A"),SEGMENT_TERMINATOR$=ATH("5E"); REM "Setup for original values:  * and ^ respectively
+0930 EXPORT_DIR$=STP(I$(152,30),1)
+0940 BUNDLE_DIR$=HWD+DLM+"bundle"+DLM
+0950 REM "Setup for Search
+0990 I=-1,J=-1
+1000 REM "Get list of files to process
+1001 SERIAL "EDILCK",0,0,ERR=1002; GOTO 1003
+1002 WAIT 5; GOTO 1001
+1015 SELECT A$ FROM EXPORT_DIR$
+1030 IF A$<>"." AND A$<>".." THEN FILE$[I+1]=STP(I$(152,30),1)+A$; I=I+1
+1035 NEXT RECORD 
+1040 ERASE "EDILCK",ERR=1041; REM "File list complete
+1045 IF I=-1 THEN CALL "ZZPROM",".4",X3$,0,"There are no files to process","","",0; GOTO 9900
+1050 REM "Open text file
+1060 J=J+1; IF J>I THEN GOTO 5000 ELSE CLOSE (32001); OPEN LOCK (32001,OPT="TEXT",ERR=1050)FILE$[J]; REM "Can't use ZZFLES to open because text files names can be longe"+             "r than 8
+1065 CLOSE (13); OPEN (13)"ZZPARM"; REM "Re-open ZZPARM closed in ZZ2BLS
+1100 REM "Process the file
+1105 C=0,SEGMENT$=""
+1110 READ (32001,END=1050)SEGMENT$
+1115 IF LEN(SEGMENT$)=0 THEN GOTO 1110
+1120 C=C+1
+1130 GOSUB 1200; REM "Break segment into elements
+1140 ELEMENT$[1]=PAD(ELEMENT$[1],3)
+1145 ON INT((POS(ELEMENT$[1]="ST ",3)+2)/3) GOSUB DONT_NEED,EL_ST
+1150 GOTO 1110
+1200 REM "Break segment into it's elements
+1201 REM "Assume < 50 elements for now
+1205 DIM ELEMENT$[50]; ELEMENT$[0]=SEGMENT$,EL_INDEX=0
+1220 P=POS(ELEMENT_SEPARATOR$=SEGMENT$),EL_INDEX=EL_INDEX+1
+1222 IF SEGMENT$="" THEN GOTO BUILD_ARRAY_END
+1225 IF P=0 THEN IF SEGMENT$(LEN(SEGMENT$),1)=SEGMENT_TERMINATOR$ THEN SEGMENT$=SEGMENT$(1,LEN(SEGMENT$)-1) END_IF ; ELEMENT$[EL_INDEX]=SEGMENT$; GOTO BUILD_ARRAY_END; REM "We have all the elements for this segment
+1230 IF P=1 THEN ELEMENT$[EL_INDEX]=" ",SEGMENT$=SEGMENT$(P+1); GOTO 1220; REM "Blank element, set to one blank space
+1235 ELEMENT$[EL_INDEX]=SEGMENT$(1,P-1),SEGMENT$=SEGMENT$(P+1); GOTO 1220
+1295 BUILD_ARRAY_END:RETURN 
+2000 DONT_NEED:REM "Don't need this segment, go get another one
+2045 DONT_NEED_END:RETURN 
+2150 EL_ST:REM "Need transaction set identifier code
+2160 IF ELEMENT$[2]="855" THEN TOT_POA=TOT_POA+1 ELSE IF ELEMENT$[2]="810" THEN TOT_INV=TOT_INV+1
+2170 DOC_TYPE$=ELEMENT$[2]
+2195 EL_ST_END:RETURN 
+5000 REM "Files Ready to Bundle - Selection
+5001 CLOSE (32001,ERR=*NEXT); REM " SSP
+5005 TOT_REC=TOT_POA+TOT_INV
+5010 GOSUB 6200
+5020 IF Q1$="" THEN CALL "ZZPROM","X0ED2RBA",X3$,Z,"Enter Transaction Set to Process","","",0
+5030 IF Z=2 THEN GOTO 9900
+5040 J=-1
+5050 REM "Create Bundled Text File
+5060 PRECISION 8; DATE_STAMP$=DTE(0:"%Y%Mz%Dz%Hz%mz"); DATE_STAMP$=DATE_STAMP$(3); PRECISION 2
+5070 BUNDLE_FILE$="EDIOUT."+DATE_STAMP$
+5080 SERIAL BUNDLE_FILE$,0,0,ERR=5090; GOTO 5100
+5090 WAIT 5; GOTO 5050
+5100 REM "Bundle Process
+5110 J=J+1
+5120 IF J>I THEN GOTO 5300
+5130 IF ISWIN THEN COMMAND$="type "+FILE$[J]+" >> "+DATA_DIR$+BUNDLE_FILE$; CALL "ZZ2CMD",X3$,X4$,COMMAND$,"","IN",COMM_CODE,COMM_CODE$; GOTO 5150; REM "Call command processor so command will happen on server
+5140 COMMAND$="cat "+FILE$[J]+" >> "+DATA_DIR$+BUNDLE_FILE$; INVOKE COMMAND$
+5160 ERASE FILE$[J],ERR=*NEXT
+5180 GOTO 5100
+5300 REM "Bundling complete
+5305 RENAME DATA_DIR$+BUNDLE_FILE$ TO BUNDLE_DIR$+BUNDLE_FILE$
+5390 GOTO 9900
+6000 REM "Background
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(20,4),"Files in export DIRectory ready to bundle:"
+6030 PRINT @(20,8),"PO Acknowledgements (855):"
+6040 PRINT @(20,10),"Invoices (810):"
+6050 PRINT @(20,12),"Total Number of Files to Bundle:"
+6180 PRINT (0)'SF',
+6190 RETURN 
+6200 REM "Print Data
+6210 PRINT @(56,8),TOT_POA:"#####0"
+6220 PRINT @(56,10),TOT_INV:"#####0"
+6230 PRINT @(56,11),"------"
+6240 PRINT @(56,12),TOT_REC:"#####0"
+8100 REM "GOSUB here, once, at the beginning, after the background is set a"+"nd before the Proceed? question. Set T to total # to do (by calli"+"ng ZZINFO) and T0 to the reporting interval (report every T0 numb"+"er of records) this is typically 2% of total; This also prints a "+"message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 REM "PRINT @(0,7),"THERE ARE "+STR(T)+"RECORDS TO PROCESS"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look "+"for avalue of 1. IF T0 is 1, then nothing would get reported. We "+"look for a result of 1 because this causes the first record to au"+"tomatically start the reporting instead of waiting until the T0't"+"h record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar g"+"raph given total #, T and current #, C, and time counter T1 (T1 i"+"s init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "Error Processing
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM "Transfer Control
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "Ctrl Logic
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "End of Program
+9906 ERASE "EDILCK",ERR=9907
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "190782-Getting program excpetion doing EDI preparing the bundled      

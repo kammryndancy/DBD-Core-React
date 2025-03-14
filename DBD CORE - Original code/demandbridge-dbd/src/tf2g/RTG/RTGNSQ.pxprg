@@ -1,0 +1,65 @@
+0010 ! RTGNSQ - Get next RT1 sequence number
+0100 ! ^100,5 - Call/Enter String
+0105 SETERR 0205; ENTER S$,N$
+0110 ! S$ is salesperson number
+0115 ! N$ is returned next number
+0120 ! N$ is calculated by first looking at RT0 for that salesperson to find
+0125 ! the number, then incrementing & writing back. If S$ is 'ALL' then the
+0130 ! 'ALL' record is used. IF the record can't be found, or when we test
+0135 ! the record and find it is already on file, then we will use PKY to
+0140 ! find the highest in the file, increment by 1 for N$, then increment
+0145 ! by 1 and store in RT0
+0150 ! 
+0200 ! ^100,5 - Constants & Functions
+0300 ! 300,5 - Iolists & Templates
+0305 IOLIST A$
+0500 ! 500,5 - Open files
+0505 _RT0=HFN; OPEN (_RT0)"RT0"+%C$ ! Remote TM Salesperson data
+0510 _RT1=HFN; OPEN (_RT1)"RT1"+%C$ ! Outbound Remote T/M Data
+0515 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"
+1000 ! ^1000,5 - Extract Record from RTO
+1005 DIM A$(75)
+1010 A$(1,4)=S$
+1015 EXTRACT (_RT0,KEY=A$(1,4),DOM=*NEXT)A$
+1020 N$=A$(48,5),X$=N$
+1025 TRANSLATE N$,"0"," "
+1030 ! 
+1100 ! ^100,5 - Check key to see if in RT1 already
+1105 DIM J$(9); J$(1)=S$,J$(5,5)=N$
+1110 FIND (_RT1,KEY=J$,DOM=*NEXT); GOTO 1200
+1115 X$=N$; GOSUB 1500 ! Get next seq #
+1120 A$(48,5)=X$; WRITE (_RT0,KEY=A$(1,4))A$
+1125 GOTO 9700
+1130 ! 
+1200 ! ^100,5 - Found duplicate, so get highest key in use, increment by 1
+1205 ! for N$ and then increment by 1 to store in file.
+1210 DIM J$(9); J$(1)=S$,J$(5,5)=$FFFFFFFFFF$
+1215 READ (_RT1,KEY=J$,DOM=*NEXT)
+1220 DIM K$(9); K$=KEP(_RT1,END=*NEXT)
+1225 IF K$(1,LEN(S$))<>S$ THEN K$(5,5)="00000"
+1230 ! 
+1300 ! ^100,5 - Now increment for N$
+1305 X$=K$(5,5); GOSUB 1500; N$=X$
+1310 ! 
+1400 ! ^100,5 - Now to write out
+1405 X$=N$; GOSUB 1500
+1410 A$(48,5)=X$; WRITE (_RT0,KEY=A$(1,4))A$
+1415 GOTO 9700
+1420 ! 
+1500 ! ^100,5 - Increment X$
+1505 TRANSLATE X$,"0"," "
+1510 X$=PAD(X$,5,0,"0")
+1515 I=LEN(X$) ! Initialize to least sig digit
+1520 C=0
+1525 IF X$(I,1)="Z" THEN X$(I,1)="0",C=1
+1530 IF X$(I,1)="9" THEN X$(I,1)="A"
+1531 IF NOT(POS(X$(I,1)="Z9")) THEN X$(I,1)=CHR(ASC(X$(I,1))+1)
+1535 I=I-1; IF I>0 AND C=1 THEN GOTO 1520
+1540 RETURN 
+9700 ! 9700,5 - Close files and clean up
+9705 CLOSE (_RT0)
+9710 CLOSE (_RT1)
+9715 CLOSE (ZZPARM)
+9800 ! ^100,5 - Return to previous
+9998 ! 9998,1 - End
+9999 END 

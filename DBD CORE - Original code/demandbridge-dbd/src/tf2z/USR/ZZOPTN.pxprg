@@ -1,0 +1,12 @@
+0010 REM "NEW PROMPTING ROUTINE <ZZOPTN>
+1000 ENTER S3
+1150 DIM B1$(80,"-")
+1200 REM "
+1210 PRINT @(0,22),'CE',
+1211 GOTO 1216
+1215 PRINT @(0,21),B1$,
+1220 PRINT @(5,22),"<F1> Special options",@(30),"<F2> Modify Data",@(55),"<F3> Make Another Entry",@(15,23),"<F4> Update Changes",@(40),"<F5> Delete this entry",
+1250 READ RECORD (14,SIZ=1)Q$; IF POS(Q$="12345")=0 THEN PRINT 'RB',; GOTO 1250
+1255 PRINT @(0,22),'CE',
+1260 S3=NUM(Q$)
+1290 EXIT 

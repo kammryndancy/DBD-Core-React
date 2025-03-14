@@ -1,0 +1,105 @@
+0010 REM "Merge new statisitical data in <UT2SMR>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 04/27/95 - 16.02 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2SMR",X1$="Merge Statistical Data from NEW file"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZPARM 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0615 GOSUB 7000
+0620 GOSUB 8100
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM "Copy record from NEW (open on z(3)) to regular (open on z(2)).
+1010 K$=KEY(Z[3],END=5000); READ RECORD (Z[3],KEY=K$)N$
+1020 C=C+1; IF MOD(C,T0)=0 THEN GOSUB 8150
+1030 REM "Attempt write, if new record then write out, and onto next, else get old record unpack add together then pack & write out
+1050 WRITE RECORD (Z[2],KEY=K$,DOM=1100)N$; GOTO 1010
+1100 REM "Merge with existing record
+1105 REM "Get Usage type, U$, and mask for usage type M$, and Key, K0$
+1110 U$=K$(LEN(K$),1),K0$=K$(1,LEN(K$)-1)
+1115 P=POS(U$=A$(49),17); IF P=0 THEN M$="92" ELSE M$=A$(50+P,3)
+1120 M0$=M$
+1150 DIM O[20],N[20]
+1160 CALL "ZZPACK",ERR=1010,X3$,"E",M$,P9$,0,0,O{ALL},Z[2],U$,K0$,A$
+1164 M$=M0$
+1165 CALL "ZZPACK",ERR=1010,X3$,"R",M$,P8$,0,0,N{ALL},Z[3],U$,K0$,A$
+1200 FOR I=0 TO 20; O[I]=O[I]+N[I]; NEXT I
+1205 M$=M0$
+1210 CALL "ZZPACK",X3$,"W",M$,P7$,0,0,O{ALL},Z[2],U$,K0$,A$
+1290 READ (Z[3],KEY=K$,DOM=1291); REM "To reposition file for next one
+1295 GOTO 1010
+5000 REM "EOJ
+5010 T=C; GOSUB 8150
+5020 CALL "ZZPROM",".4",X3$,Z,X$,"","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility will merge an new file with statistical data with and existing file. The new file will end in 'NEW'."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Enter statistical type
+7003 DIM A$(7); K9$="STAT",A$(1)=K9$
+7005 PRINT @(20,10),'SB',"Statistics Type:",'SF','CL',
+7010 CALL "ZZENTR","SXUX",A{ALL},A$,X4$,X3$,37,10,5,3,C0,"",X$,K9$,"UT2SMR00","ZZPA","",""; IF C0>4 THEN PRINT @(0,3),'CE',; GOSUB 6000; GOTO 7005
+7015 IF ABS(C0)=4 THEN GOTO 9900
+7020 FIND (Z[13],KEY=A$(1,7),DOM=7010)A$
+7030 PRINT @(42,10),A$(8,20)
+7050 CLOSE (14); OPEN (14,ERR=7055)A$(28,3)+"NEW"; CLOSE (14); GOTO 7060
+7055 J$="The new file to merge in ("+A$(28,3)+"NEW) cannot be found!"
+7056 CALL "ZZPROM",".4",X3$,Z,J$,"","",0; GOTO 7005
+7080 PRINT @(20,12),'SB',"Merge data from ",'SF',A$(28,3),"NEW",'SB'," into ",'SF',A$(28,6),
+7085 Z$="02CU 03CU 02O "+A$(28,6)+"  03O "+A$(28,3)+"NEW "
+7086 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7095 RETURN 
+8100 REM 
+8110 CALL "ZZINFO",Z[3],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(20,14),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

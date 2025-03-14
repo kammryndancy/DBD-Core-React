@@ -1,0 +1,498 @@
+<PxTable>
+ TableName=ZX4
+ TableKey=K1193710537
+ FileCreate=KEYED "ZX4",75,0,512,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZX4"
+    PHYSICALPATH$="ZX4"
+    LASTCHANGEDATE$="2007/10/27 15:03"
+    LASTCHANGEBY$="dmm"
+    LASTUPDATEDFILE$="2024/09/27 11:44:09-ChaitanyaGun_kianoi2"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST MENU_NUM$:[LEN(2)]"
+    NAME$="MENU_NUM"
+    DESCRIPTION$="Placement on Menu"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST TF_LEVEL$:[LEN(73)]"
+    NAME$="TF_LEVEL"
+    DESCRIPTION$="Level"
+    TYPE$="S"
+    LENGTH$="73"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST MENU_NUM$:[LEN(2,SEP=SEP)]"
+    NAME$="MENU_NUM"
+    DESCRIPTION$="Placement on Menu"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST TF_LEVEL$:[LEN(73,SEP=SEP)]"
+    NAME$="TF_LEVEL"
+    DESCRIPTION$="Level"
+    TYPE$="S"
+    LENGTH$="73"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST APPLICATION_CODE$:[LEN(2,SEP=SEP)]"
+    NAME$="APPLICATION_CODE"
+    DESCRIPTION$="Application Code"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST TF_UNUSED$:[LEN(SEP,SIZ=123)]"
+    NAME$="TF_UNUSED"
+    DESCRIPTION$="Unused"
+    TYPE$="S"
+    LENGTH$="123"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST UNUSED_1"
+    NAME$="UNUSED_1"
+    DESCRIPTION$="Unused_1"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST UNUSED_2"
+    NAME$="UNUSED_2"
+    DESCRIPTION$="UNUSED_2"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST UNUSED_3"
+    NAME$="UNUSED_3"
+    DESCRIPTION$="UNUSED_3"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST UNUSED_4"
+    NAME$="UNUSED_4"
+    DESCRIPTION$="UNUSED_4"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST UNUSED_5"
+    NAME$="UNUSED_5"
+    DESCRIPTION$="UNUSED_5"
+    TYPE$="N"
+    LENGTH$="14.2"
+    INTERNALFORMAT$="D"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="10Setup|Electronic Forms Interface                                         "
+    MENU_NUM$="10"
+    TF_LEVEL$="Setup|Electronic Forms Interface                                         "
+    APPLICATION_CODE$="EF"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="10Setup|System Utility Functions                                           "
+    MENU_NUM$="10"
+    TF_LEVEL$="Setup|System Utility Functions                                           "
+    APPLICATION_CODE$="ZZ"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="10Setup|Unix Fax Interface                                                 "
+    MENU_NUM$="10"
+    TF_LEVEL$="Setup|Unix Fax Interface                                                 "
+    APPLICATION_CODE$="FX"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Accounts Payable                                          "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Accounts Payable                                          "
+    APPLICATION_CODE$="AP"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Accounts Receivable                                       "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Accounts Receivable                                       "
+    APPLICATION_CODE$="AR"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Bank Reconciliation                                       "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Bank Reconciliation                                       "
+    APPLICATION_CODE$="BS"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Contact Management                                        "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Contact Management                                        "
+    APPLICATION_CODE$="TM"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Executive Sales Analysis                                  "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Executive Sales Analysis                                  "
+    APPLICATION_CODE$="EI"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|General Ledger                                            "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|General Ledger                                            "
+    APPLICATION_CODE$="GL"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Inventory Control                                         "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Inventory Control                                         "
+    APPLICATION_CODE$="IC"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Order Processing                                          "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Order Processing                                          "
+    APPLICATION_CODE$="OP"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Print Management                                          "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Print Management                                          "
+    APPLICATION_CODE$="FM"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="20DB Distributor|Request For Quotation System                              "
+    MENU_NUM$="20"
+    TF_LEVEL$="DB Distributor|Request For Quotation System                              "
+    APPLICATION_CODE$="QS"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="30DB Distributor Toolkits|Office Products                                  "
+    MENU_NUM$="30"
+    TF_LEVEL$="DB Distributor Toolkits|Office Products                                  "
+    APPLICATION_CODE$="OS"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="30DB Distributor Toolkits|Promo                                            "
+    MENU_NUM$="30"
+    TF_LEVEL$="DB Distributor Toolkits|Promo                                            "
+    APPLICATION_CODE$="PP"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="30DB Distributor Toolkits|Sage Promo                                       "
+    MENU_NUM$="30"
+    TF_LEVEL$="DB Distributor Toolkits|Sage Promo                                       "
+    APPLICATION_CODE$="SG"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="30DB Distributor Toolkits|eCommerce                                        "
+    MENU_NUM$="30"
+    TF_LEVEL$="DB Distributor Toolkits|eCommerce                                        "
+    APPLICATION_CODE$="EC"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Archive                                  "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Archive                                  "
+    APPLICATION_CODE$="ZR"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Bar Code Printing                        "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Bar Code Printing                        "
+    APPLICATION_CODE$="BC"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Credit Card Vault                        "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Credit Card Vault                        "
+    APPLICATION_CODE$="CV"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Data Replication                         "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Data Replication                         "
+    APPLICATION_CODE$="DR"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|EQ Link                                  "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|EQ Link                                  "
+    APPLICATION_CODE$="QL"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Electronic Data Interchange              "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Electronic Data Interchange              "
+    APPLICATION_CODE$="EM"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|External Databases                       "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|External Databases                       "
+    APPLICATION_CODE$="EX"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|FRAN                                     "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|FRAN                                     "
+    APPLICATION_CODE$="FR"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|IBSA                                     "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|IBSA                                     "
+    APPLICATION_CODE$="IB"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Image Library                            "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Image Library                            "
+    APPLICATION_CODE$="IL"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Import Management                        "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Import Management                        "
+    APPLICATION_CODE$="IM"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Kit Management                           "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Kit Management                           "
+    APPLICATION_CODE$="KT"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Reports Suite                            "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Reports Suite                            "
+    APPLICATION_CODE$="RP"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Shipping Management                      "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Shipping Management                      "
+    APPLICATION_CODE$="SM"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Tax Code Interface                       "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Tax Code Interface                       "
+    APPLICATION_CODE$="TW"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|VOILA                                    "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|VOILA                                    "
+    APPLICATION_CODE$="OF"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="40DB Distributor Optional Modules|Warehouse Management System              "
+    MENU_NUM$="40"
+    TF_LEVEL$="DB Distributor Optional Modules|Warehouse Management System              "
+    APPLICATION_CODE$="WW"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Accounts Payable Gateway                         "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Accounts Payable Gateway                         "
+    APPLICATION_CODE$="PA"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Cash Disbursements                               "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Cash Disbursements                               "
+    APPLICATION_CODE$="CD"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Cash Receipts                                    "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Cash Receipts                                    "
+    APPLICATION_CODE$="CR"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Contact List                                     "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Contact List                                     "
+    APPLICATION_CODE$="CT"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Customer Invoicing Plus                          "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Customer Invoicing Plus                          "
+    APPLICATION_CODE$="SP"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|EC Item                                          "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|EC Item                                          "
+    APPLICATION_CODE$="PE"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|General Ledger Posting                           "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|General Ledger Posting                           "
+    APPLICATION_CODE$="GG"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Order Entry                                      "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Order Entry                                      "
+    APPLICATION_CODE$="OF"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Order Requisition                                "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Order Requisition                                "
+    APPLICATION_CODE$="FO"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="50DB Distributor Gateways|Product Catalog                                  "
+    MENU_NUM$="50"
+    TF_LEVEL$="DB Distributor Gateways|Product Catalog                                  "
+    APPLICATION_CODE$="PC"
+    TF_UNUSED$="                                                                                                                           "
+   </RecordData>
+
+</Data>
+
+</PxTable>

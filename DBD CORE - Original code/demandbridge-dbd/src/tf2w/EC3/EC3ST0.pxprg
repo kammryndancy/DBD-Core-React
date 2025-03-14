@@ -1,0 +1,142 @@
+0010 REM "EC Shipto Setup & display <EC3ST0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 02/26/02 - 14.007777 - dmm - SSP# 146432
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3ST0",X1$="E/C Shipto Setup & Display"
+0120 EOL$=$0D0A$; EOL$=ATH(STP(EC_PARM$(57,8),1))
+0310 IOLIST FM0$
+0320 IOLIST AR1$
+0330 IOLIST AR5$
+0500 REM "Open files
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FM0... 02O AR1... 03O AR5... 04O FMP... 05O FMM... 06O ASR... 07O FTD... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "Build search strings
+0800 GOSUB 3000
+1000 REM "Process DATA array
+1005 DATA_TAGS$="001<ship_to_code>002<desc>003<addr_1>004<addr_2>005<city>006<state>007<zip>008<fax_no>009<lookup_seq>010<purchase_agent>011<greeting>012<phone_no>013<customers_location_code>014<fms_method>015<sales_tax_code>016<exclude_from_fms_rpts>017<cost_center>018<multiple_count_stops>019<digits_for_count_stop>020<location_name>021<location_tax_exempt>022<default_supply_whse>023<default_fob_code>024<how_to_ship>025<inside_delivery>026<ship_via_code>027<ship_via_text>028<count_schedule>029<secure_forms_allowed>030<location_options>031<entry_id>032<receiving_dept>033<addl_addr_1>034<addl_addr_2>035<addl_addr_3>036<addl_addr_4>037<dont_show_webec>038<template>"
+1008 DIM FM0$(618); ERR_FOUND=0,MESSAGE$="",FM0$(1,11)="C"+EC$[2](51,10); REM "preset type & customer code
+1009 DIM AR1$(600); FIND (Z[2],KEY=FM0$(2,10),DOM=1010)IOL=0320
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1018 DPOS=POS("<"+TAG$+">"=DATA_TAGS$); IF DPOS=0 THEN GOTO 1090 ELSE DINDEX=NUM(DATA_TAGS$(DPOS-3,3),ERR=1090)
+1019 ON DINDEX GOTO 1090,1021,1022,1023,1024,1025,1026,1027,1028,1029,1030,1031,1032,1033,1034,1035,1036,1037,1038,1039,1040,1041,1042,1043,1044,1045,1046,1047,1048,1049,1050,1051,1052,1053,1054,1055,1056,1057,1058,1090
+1021 FM0$(12,4)=VALUE$; GOTO 1090; REM "ship_to_code
+1022 FM0$(16,35)=VALUE$; GOTO 1090; REM "desc
+1023 FM0$(51,30)=VALUE$; GOTO 1090; REM "addr_1
+1024 FM0$(81,30)=VALUE$; GOTO 1090; REM "addr_2
+1025 FM0$(111,16)=VALUE$; GOTO 1090; REM "city
+1026 FM0$(127,2)=VALUE$; GOTO 1090; REM "state
+1027 FM0$(129,9)=STP(VALUE$,3,"-"); GOTO 1090; REM "zip - remove non alphabetic characters
+1028 PTMP$=VALUE$; GOSUB 7700; FM0$(138,12)=PTMP$; GOTO 1090; REM "fax_no
+1029 FM0$(150,10)=VALUE$; GOTO 1090; REM "lookup_seq
+1030 FM0$(160,20)=VALUE$; GOTO 1090; REM "purchase_agent
+1031 FM0$(180,20)=VALUE$; GOTO 1090; REM "greeting
+1032 PTMP$=VALUE$; GOSUB 7700; FM0$(200,14)=PTMP$; GOTO 1090; REM "phone_no
+1033 FM0$(214,9)=VALUE$; GOTO 1090; REM "customers_location_code
+1034 IF POS(VALUE$="IC ")<>0 THEN FM0$(223,1)=VALUE$ END_IF ; GOTO 1090; REM "fms_method
+1035 FM0$(224,10)=VALUE$; GOTO 1090; REM "sales_tax_code
+1036 IF VALUE$="Y" THEN FM0$(234,1)="Y" END_IF ; GOTO 1090; REM "exclude_from_fms_rpts
+1037 FM0$(236,9)=VALUE$; GOTO 1090; REM "cost_center
+1038 IF VALUE$="Y" THEN FM0$(345,1)="Y" END_IF ; GOTO 1090; REM "multiple_count_stops
+1039 FM0$(246,2)=STR(NUM(VALUE$,ERR=1090):"00"); GOTO 1090; REM "digits_for_count_stop
+1040 FM0$(248,35)=VALUE$; GOTO 1090; REM "location_name
+1041 IF VALUE$="Y" THEN FM0$(283,1)="Y" END_IF ; GOTO 1090; REM "location_tax_exempt
+1042 FM0$(284,4)=VALUE$; GOTO 1090; REM "default_supply_whse
+1043 FM0$(288,1)=VALUE$; GOTO 1090; REM "default_fob_code
+1044 FM0$(289,1)=VALUE$; GOTO 1090; REM "how_to_ship
+1045 FM0$(290,15)=VALUE$; GOTO 1090; REM "inside_delivery
+1046 FM0$(305,1)=VALUE$; GOTO 1090; REM "ship_via_code
+1047 FM0$(306,15)=VALUE$; GOTO 1090; REM "ship_via_text
+1048 FM0$(321,26)=VALUE$; GOTO 1090; REM "count_schedule
+1049 FM0$(347,20)=VALUE$; GOTO 1090; REM "secure_forms_allowed
+1050 FM0$(367,8)=VALUE$; GOTO 1090; REM "location_options
+1051 FM0$(375,1)=VALUE$; GOTO 1090; REM "entry_id
+1052 FM0$(382,20)=VALUE$; GOTO 1090; REM "receiving_dept
+1053 FM0$(402,30)=VALUE$; GOTO 1090; REM "addl_addr_1
+1054 FM0$(432,30)=VALUE$; GOTO 1090; REM "addl_addr_2
+1055 FM0$(462,30)=VALUE$; GOTO 1090; REM "addl_addr_3
+1056 FM0$(492,30)=VALUE$; GOTO 1090; REM "addl_addr_4
+1057 IF VALUE$="Y" THEN FM0$(235,1)="Y" END_IF ; GOTO 1090; REM "dont_show_webec
+1058 TEMPLATE$=VALUE$; GOTO 1090; REM "template
+1090 NEXT I
+1100 REM "Now that FM0$ is loaded, perform checks and defaulting
+1101 VERSION$="EV",PROGRAM$=PGN; DIM BYBINFO$[5]; BYBINFO$[1]=PROGRAM$,BYBINFO$[2]=VERSION$,BYBINFO$[3]=TEMPLATE$,BYBOPTIONS$=""
+1110 GOSUB 4000
+1500 REM "Use template$ to open file, read line by line and insert
+1505 CLOSE (100); OPEN (100,OPT="TEXT",ERR=9000)TEMPLATE$
+1506 REM "Setup line_tags$
+1507 LINE_TAGS$="001<ship_to_code>002<status_code>003<message>"
+1510 READ (100,END=1595)LINE$; GOSUB 7550
+1515 INDEX=POS("?tf?"=LINE$); IF INDEX=0 THEN PRINT (OUTPUT)LINE$,EOL$,; GOTO 1510
+1520 END_INDEX=POS("?"=LINE$(INDEX+4)),TAG$=LINE$(INDEX+4,END_INDEX-1),LINE1$=LINE$(1,INDEX-1),LINE2$=LINE$(INDEX+END_INDEX+4),LPOS=POS("<"+TAG$+">"=LINE_TAGS$); IF LPOS=0 THEN LINDEX=0 ELSE LINDEX=NUM(LINE_TAGS$(LPOS-3,3))
+1530 GOSUB 2000; GOTO 1515
+1995 GOTO 9900
+1999 REM "Get tag value & substitute
+2000 ON LINDEX GOTO 2090,2001,2002,2003,2090
+2001 LINE$=LINE1$+FM0$(12,4)+LINE2$; GOTO 2095; REM "ship_to_code
+2002 LINE$=LINE1$+STR(ERR_FOUND)+LINE2$; GOTO 2095; REM "status_code 0=OK
+2003 LINE$=LINE1$+MESSAGE$+LINE2$; GOTO 2095; REM "message
+2090 LINE$=LINE1$+"?"+LINE2$; GOTO 2095; REM "tag not found, replace with '?'
+2095 RETURN 
+3000 REM "Read customer data into AR1$
+3010 DIM AR1$(600); READ (Z[1],KEY=EC$[2](51,10),DOM=3011)AR1$
+3015 CALL "ZZDISP","AX",EC$[2](51,10),"A/R",X3$,CUST_CODE$,"",0,0,X4$
+3045 RETURN 
+4000 REM "Check and/or default fields in FM0$, we will leave if we find any errors
+4015 IF STP(FM0$(150,10),3," ")="" THEN FM0$(150,10)=UCS(FM0$(16,10)); REM "set lookup seq if blank from desc
+4020 IF STP(FM0$(224,10),3," ")="" THEN FM0$(224,10)=AR1$(235,10); REM "If sales tax code blank default from customer
+4022 FIND (Z[3],KEY=FM0$(224,10),DOM=4023)IOL=0330; GOTO 4025
+4023 ERR_FOUND=3,MESSAGE$="ERROR [  3] - Invalid sales tax code ["+FM0$(224,10)+"]."; GOTO 4095
+4025 IF STP(FM0$(236,9),3," ")="" THEN GOTO 4030 ELSE FIND (Z[4],KEY="c"+FM0$(2,10)+FM0$(236,9),DOM=4026); GOTO 4030; REM "Check cost center
+4026 ERR_FOUND=4,MESSAGE$="ERROR [  4] - Invalid customer cost center ["+FM0$(236,9)+"]."; GOTO 4095
+4030 IF STP(FM0$(284,4),3," ")="" THEN GOTO 4032 ELSE FIND (Z[1],KEY="D"+DIM(10)+FM0$(284,4),DOM=40031); GOTO 4032; REM "Check supply warehouse
+4031 ERR_FOUND=5,MESSAGE$="ERROR [  5] - Invalid supply warehouse ["+FM0$(284,4)+"]."; GOTO 4095
+4035 IF FM0$(288,1)=" " THEN GOTO 4037 ELSE FIND (Z[4],KEY="F"+FM0$(288,1),DOM=4036); GOTO 4037; REM "Check default FOB code
+4036 ERR_FOUND=6,MESSAGE$="ERROR [  6] - Invalid default FOB code ["+FM0$(288,1)+"]."; GOTO 4095
+4040 IF FM0$(289,1)=" " THEN GOTO 4042 ELSE FIND (Z[4],KEY="H"+FM0$(289,1),DOM=4041); GOTO 4042; REM "Check default how to ship code
+4041 ERR_FOUND=7,MESSAGE$="ERROR [  7] - Invalid how to ship code ["+FM0$(289,1)+"]."; GOTO 4095
+4045 DIM SHIP_VIA$(20); IF FM0$(305,1)=" " THEN GOTO 4047 ELSE FIND (Z[4],KEY="S"+FM0$(305,1),DOM=4046)SHIP_VIA$; GOTO 4047; REM "Check ship_via_code and save record for use in defaulting ship_via_text
+4046 ERR_FOUND=8,MESSAGE$="ERROR [  8] - Invalid ship via code ["+FM0$(305,1)+"]."; GOTO 4095
+4050 IF STP(FM0$(306,15),3," ")="" THEN FM0$(306,15)=SHIP_VIA$(3,15); REM "Default ship via text from ship via code if blank
+4080 GOSUB 7600; IF ERR_FOUND THEN GOTO 4095; REM "Verify or default shipto code
+4082 WRITE (Z[1],KEY=FM0$(1,15),DOM=4080)IOL=0310
+4085 WRITE (Z[5],KEY=FM0$(1,11)+FM0$(214,9)+FM0$(12,4)); REM "FMM
+4087 WRITE (Z[6],KEY=FM0$(200,10)+FM0$(1,15)); REM "ASR
+4089 WRITE (Z[7],KEY=FM0$(1,11)+FM0$(382,20)+FM0$(12,4)); REM "FTD
+4090 IF ERR_FOUND=0 THEN MESSAGE$="Shipto code ["+FM0$(12,4)+"] created successfully."
+4095 RETURN 
+7550 REM "Send LINE$ to EC3BYB for generic fields processing
+7560 CALL "EC3BYB",ERR=7561,X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,LINE$,BYBINFO${ALL},BYBOPTIONS$
+7595 RETURN 
+7600 REM "Verify ship to code in FM0$(12,4), if blank get next higher one, if given, check & see if it exists, currently error if it does. Set ERR_FOUND and message$
+7605 IF STP(FM0$(12,4),3," ")="" THEN GOTO 7610 ELSE FIND (Z[1],KEY=FM0$(1,15),DOM=7645); ERR_FOUND=1,MESSAGE$="ERROR [  1] Ship to code ["+FM0$(12,4)+"] already exists."; GOTO 7645; REM "IF ALL BLANK THEn process at 7610, else see if on file, if yes the give error,else ok we are done, go to end
+7610 REM "if here, blank code, find next higher ship to code
+7612 READ (Z[1],KEY=FM0$(1,11)+$FF$,DOM=7613)
+7614 PREV_KEY_1$=KEP(Z[1],END=7615); GOTO 7616
+7615 FM0$(12,4)="0001"; GOTO 7645; REM "if here, we found beginning of file so assign first number
+7616 IF PREV_KEY_1$(1,11)<>FM0$(1,11) THEN FM0$(12,4)="0001"; GOTO 7645; REM "if here there are no shiptos for this customer so use the first one
+7620 REM "if here we have the last one used in prev_key_1$(12,4), increment it
+7623 IF PREV_KEY_1$(12,4)="ZZZZ" THEN ERR_FOUND=2,MESSAGE$="ERROR [  2] No higher shipto code can be generated." ELSE FM0$(12,4)=PREV_KEY_1$(12,4)
+7625 FOR K_INDEX=15 TO 12 STEP -1
+7627 IF FM0$(K_INDEX,1)="Z" THEN FM0$(K_INDEX,1)="0" ELSE IF FM0$(K_INDEX,1)="9" THEN FM0$(K_INDEX,1)="A"; EXITTO 7630 ELSE FM0$(K_INDEX,1)=CHR(ASC(FM0$(K_INDEX,1))+1); EXITTO 7630
+7629 NEXT K_INDEX
+7645 RETURN 
+7700 REM "Given PTMP$, remove all but numbers
+7705 PTMP$=STP(PTMP$,2); IF PTMP$="" THEN GOTO 7745 ELSE MY_TMP$=PTMP$,LEN_MY_TMP=LEN(MY_TMP$),PTMP$=""
+7710 FOR MY_INDEX=1 TO LEN_MY_TMP; IF POS(MY_TMP$(MY_INDEX,1)="0123456789")<>0 THEN PTMP$=PTMP$+MY_TMP$(MY_INDEX,1) END_IF ; NEXT MY_INDEX
+7745 RETURN 
+8910 DEF FND$(Z9$)=Z9$(1*2+1,2)+"/"+Z9$(7-1*2,2)+"/"+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9900
+9900 REM "End
+9905 REM FOR I=1 TO 20; IF Z[I]<>0 THEN CLOSE (Z[I]) FI; NEXT I
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 

@@ -1,0 +1,273 @@
+0010 REM "<FO2UBA> Import Order Requisition Gateway
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/18/14 - 16.854444 - dmm - SSP# 271945
+0037 REM "271945-Order Req GW, add ability to select FO1 File(s) to process. 
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$,SEL_FILES$ ! WO271945
+0095 REM "Called from FO2RAS Q0$="", Q1$="*"
+0096 REM "Called from FO2GST Q1$="G"
+0097 REM "Adding changes for FO1 version 1.01 10/29/96
+0100 SETERR 9000
+0110 X0$="FO2UBA",X1$="Import Order Requisition Gateway"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0140 L0=138,L1=41; REM "Header should be 138 long, lines should be 41 long for version 1.00, will adjust at 1140 if another version
+0145 M0$="000"
+0150 COUNT=0; REM "Req count to send back to ghost task
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$; REM "FO0
+0320 IOLIST B$,B[0],B[1]; REM "FO2
+0330 IOLIST C$; REM "FMP-"S"
+0340 IOLIST D$; REM "FMP-"H"
+0350 IOLIST E$,E[0],E[1],E[2],E[3],E[4],E[5],E[6],E[7],E[8],E[9],E[10],E[11],E[12],E[13],E[14],E[15],E[16],E[17],E[18],E[19],E[20],E[21],E[22],E[23],E[24],E[25],E[26],E[27],E[28],E[29],E[20],E[31],E[32]; REM "IC0
+0360 IOLIST G$,G[0],G[1],G[2],G[3],G[4],G[5],G[6],G[7],G[8],G[9],G[10],G[11],G[12],G[13],G[14],G[15],G[16],G[17],G[18],G[19],G[20],G[21],G[22],G[23],G[24],G[25],G[26],G[27],G[28],G[29],G[30],G[31]; REM "FM1
+0370 IOLIST H$,H[0],H[1]; REM "ZZPARM-U/M
+0380 IOLIST L$; REM "FO5
+0390 IOLIST N$,N[0],N[1],N[2],N[3],N[4],N[5],N[6],N[7],N[8],N[9],N[10],N[11],N[13],N[14],N[15]; REM "FM4
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "Slot 1 used for import file opened in 1000's
+0510 Z$="02O FO0... 03O FO2... 04O FMP... 05O FM1... 06O IC0... 07O AR1... 08O FM0... 09O FO5... 10O FM4... 11O AR5... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 READ (Z[13],KEY=X3$(9,3)+"F/M")OPS_PARM$
+0555 DIM GOR$(50); READ (Z[13],KEY=X3$(9,3)+"GOR",DOM=0556)GOR$
+0600 REM "
+0610 IF Q1$<>"G" THEN GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM "Get list of FO1 files to process
+1010 CALL "ZZ2BLS","D0:FO1*","S",F$
+1012 IF X3$(77,1)="U" THEN CALL "ZZ2BLS","D0:fo1*","S",F_LOWER$; F$=F$+F_LOWER$
+1013 IF SEL_FILES$="Y" THEN CALL "ZZ2BLS;SELECT_FILES",F$,"D0:","" ! WO271945
+1015 P=POS(":"=F$); IF P=0 THEN GOTO 5000
+1020 F1$=F$(P+1); P1=POS(":"=F1$); IF P1>0 THEN F$=F1$(P1-2),F1$=F1$(1,P1-3) ELSE F$=""
+1050 Z$="01CU 01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN LOCK (Z[1],OPT="TEXT")F1$; REM "Open for reading raw file
+1065 CLOSE (13); OPEN (13)"ZZPARM"; REM "Re-open ZZPARM closed in ZZ2BLS
+1075 IF Q1$<>"G" THEN PRINT @(15,15),'CE',"Processing: "+F1$,
+1080 IF Q1$<>"G" THEN GOSUB 8100; GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0,I$="",RCOUNT$=""; DIM RCOUNT[50]
+1110 READ (Z[1],END=7750)I$
+1111 IF STP(I$,3," ")="" OR I$="" OR LEN(I$)<6 THEN GOTO 1110 ! SSP#265442 only checking for 1st 6 characters does a version check and pad later
+1112 I9=I9+1,COUNT=COUNT+1,L2=0,S1$="0",F3=0; REM "S1$ is header status code, F3 is 1 if cust parm has alt. inv. cust code!SSP 265442
+1115 P=POS(I$(1,3)=RCOUNT$,3); IF P=0 THEN RCOUNT$=RCOUNT$+I$(1,3); GOTO 1115; REM "Used to write to /usr/lib/pvx/GW_LOG
+1120 P1=(P+2)/3; RCOUNT[P1]=RCOUNT[P1]+1
+1125 IF Q1$<>"G" THEN IF MOD(I9,T0)=1 THEN GOSUB 8150
+1130 REM PRINT @(0,3),'CE',@(0,4),I$; INPUT *
+1135 DIM A$(428),B$(230),B[2]; F8=0; REM " SSP# 139226
+1137 L0=138,L1=41; REM "Header should be 138 long, lines should be 41 long for version 1.00, will adjust at 1140 if another version. SSP144936, used to be line 140.
+1140 IF POS(I$(4,3)="101200",3)>0 THEN L0=310; REM "Header of version 1.01 file is 310 long
+1141 IF I$(4,3)="200" THEN L1=91; REM "Lines part of version 2.00 file is 91 long
+1142 IF I$(4,3)="201" THEN L1=96; REM " Lines part of version 2.01 file is 96 long - SSP# 139226
+1143 IF I$(4,3)="201" THEN L0=350; REM " Header version 2.01 is 350 long - SSP# 139226
+1145 IF LEN(I$)<L0 THEN I9$=I$; DIM I$(L0); I$(1)=I9$; A$(149,1)="Y"; REM "Correct length if short, put on hold
+1150 A$(197,3)=I$(1,3); REM "Import Source
+1155 A$(200,3)=I$(4,3); REM "Import file version
+1160 A$(1,10)=PAD(STP(I$(7,10),1),10,"0"); REM "Customer Number
+1165 DIM AR1$(200); READ (Z[7],KEY=A$(1,10),DOM=1166)AR1$; GOTO 1175
+1166 A$(1,10)=I$(7,10); READ (Z[7],KEY=A$(1,10),DOM=1167)AR1$; GOTO 1175; REM "SSP112587
+1170 S1$="1",A$(149,1)="Y"; REM "Got the DOM, no such customer code in AR1
+1175 GOSUB 7900; REM "Read customer parameters
+1180 A$(11,4)=I$(17,4); IF STP(A$(11,4),3," ")="" THEN IF I$(4,3)>"100" THEN GOSUB 7950; IF STP(A$(11,4),3," ")="" THEN GOTO 1195; REM "Location, if blank & version > 1.00 then check for manual ship-to info or set to default ship-to
+1185 READ (Z[8],KEY="C"+A$(1,14),DOM=1190); GOTO 1195
+1190 IF S1$="1" THEN S1$="3" ELSE S1$="2",A$(149,1)="Y"; REM "Got the DOM, no such location code in FM0
+1195 A$(15,15)=I$(41,15); REM "Requisition Number
+1200 Q$=I$(86,6); GOSUB 7500; A$(81,6)=D0$; REM "Requested date
+1205 A$(51,30)=I$(56,30); IF STP(A$(51,30),3," ")="" THEN A$(51,30)=L$(21,30); REM "Attention name
+1210 DIM C$(18); IF I$(92,1)<>" " THEN READ (Z[4],KEY="S"+I$(92,1),DOM=1211)IOL=0330; REM "Read for ship via description
+1215 A$(87,1)=I$(92,1); REM "Ship Via Code
+1220 IF STP(I$(93,15),3," ")="" THEN A$(88,15)=C$(3,15) ELSE A$(88,15)=I$(93,15); REM "Ship Via Description
+1225 A$(31,20)=I$(21,20); REM "Ordered By
+1230 A$(103,1)=I$(108,1); REM "How To Ship Code
+1235 DIM D$(18); IF I$(108,1)<>" " THEN READ (Z[4],KEY="H"+I$(108,1),DOM=1236)IOL=0340
+1240 A$(104,15)=D$(3,15); REM "How To Ship Description
+1245 A$(119,15)=I$(109,15); REM "Inside Delivery
+1250 A$(134,15)=I$(124,15); REM "Ship With
+1255 Q2$=DAY,Q$=Q2$(7,2)+Q2$(1,2)+Q2$(4,2); GOSUB 7500; A$(159,6)=D0$; REM "Req Date
+1260 A$(165,6)=A$(159,6),T1$=STR(TIM:"00.00"),A$(171,4)=T1$(1,2)+T1$(4,2); REM "Date and time first entered
+1265 IF A$(200,3)="100" THEN GOTO 1365; REM "If version 1.00 then done with header
+1267 IF A$(11,4)<>"    " THEN IF POS(" "<>I$(139,87))>0 THEN A$(204,87)=I$(139,87); REM "Allow ship-to address override, WO91521
+1268 IF A$(11,4)<>"    " THEN IF POS(" "<>I$(276,35))>0 THEN A$(341,35)=I$(276,35); REM "Allow ship-to name override, WO91521
+1270 A$(291,35)=I$(226,35); REM "Mark for
+1275 IF STP(I$(261,10),3," ")="" THEN GOTO 1280 ELSE A$(326,10)=I$(261,10); READ (Z[11],KEY=A$(326,10),DOM=1276); GOTO 1280; REM "Valid sales tax code?
+1276 IF S1$<>"0" THEN S1$="H" ELSE S1$="G",A$(149,1)="Y"; REM "Invalid sales tax code, set status, put on hold
+1280 A$(336,1)=I$(271,1); REM "Taxable?
+1285 A$(337,4)=I$(272,4); REM "Ship from whse for all lines on this order
+1290 IF A$(200,3)<>"201" THEN GOTO 1365; REM " SSP# 139226
+1300 A$(376,40)=I$(311,40); REM " Email address - SSP# 139226
+1365 A$(196,1)=S1$; REM "Status Code
+1370 GOSUB 7600; REM "Write out header
+1500 REM "Write lines to FO2 file
+1505 I0$=I$(L0+1); REM "Set I0$ to start of lines
+1510 IF I0$="" OR STP(I0$,3," ")="" THEN GOTO 1110; REM "Done with this record
+1515 IF LEN(I0$)<L1 THEN I1$=I0$; DIM I0$(L1); I0$(1)=I1$; REM "If line isn't long enough fill with blanks
+1520 IF STP(I0$(1,L1),3," ")="" THEN GOTO 1635; REM "If we have a line of all blanks, we don't want to write it out
+1525 IF NUM(I0$(35,7),ERR=1635)=0 THEN GOTO 1635; REM "If qty is blank don't write out this line
+1530 L2=L2+1; REM "Increment line number
+1535 IF L2>199 THEN GOSUB 8600; GOTO 1111; REM "Issue with FS6 if more than 200 lines
+1540 B$(1,30)=A$(1,30); REM "Cust code,location,req#,seq#
+1545 B$(31,3)=STR(L2:M0$); REM "Line number
+1550 IF STP(I0$(1,10),3," ")="" THEN B$(35,10)=I0$(1,10); GOTO 1555 ELSE B$(35,10)=PAD(STP(I0$(1,10),1),10,"0"); DIM AR12$(200); READ (Z[7],KEY=B$(35,10),DOM=*NEXT)AR12$; GOTO 1555; REM "Customer Code portion of Item Code. SSP256704, if no customer supplied for item then go on to item code else try padding with zeros (original code), read AR1 to see if that is valid, if not then DOM to next line and just set to whatever is in input file.
+1551 B$(35,10)=I0$(1,10) ! SSP256704, tried padding with zeros but not valid customer code so set to data from input file and let it fall through.
+1555 B$(45,10)=I0$(11,10); REM "Item Code
+1560 DIM E$(188),E[33]
+1565 IF STP(B$(35,10),3," ")="" THEN GOSUB 8200 ELSE GOSUB 8300
+1570 IF B$(34,1)="I" THEN IF L$(75,1)<>"Y" THEN B$(121,1)="8",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "Parms say no stock requisitioning
+1575 IF B$(34,1)="I" OR B$(34,1)=" " THEN GOTO 1581 ELSE IF B$(34,1)="C" OR B$(34,1)="X" THEN DIM G$(350),G[31]; READ (Z[5],KEY=B$(35,20),DOM=1580)IOL=0360; IF G$(311,6)<>"      " THEN GOSUB 8400; GOTO 1581 ELSE GOTO 1581; REM "Check item security
+1580 B$(121,1)="A",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "Got the DOM, no item master to check for item security
+1585 B$(117,4)=I0$(21,4); REM "Ship From Warehouse
+1586 IF STP(B$(117,4),3," ")="" THEN IF A$(200,3)>"100" THEN B$(117,4)=A$(337,4); REM "If whse is blank & this is version 1.01 or greater, set whse from header
+1590 IF STP(B$(117,4),3," ")="" THEN GOTO 1596 ELSE READ (Z[8],KEY="D"+"          "+B$(117,4),DOM=1595); GOTO 1596; REM "If not blank, read FM0 to see if valid whse
+1595 B$(117,4)="    "; REM "If we go the DOM, set to blanks, FM2RTO will set to default whse
+1600 B$(113,4)=I0$(25,4); REM "Unit of Measure
+1605 DIM H$(22),H[2]; READ (Z[13],KEY="U/M"+B$(113,4),DOM=1606)IOL=0370; REM "Read for U/M info
+1610 IF H$(20,1)="Y" THEN B[1]=H[0] ELSE B[1]=NUM(I0$(29,6),ERR=1615); REM "If fixed U/M, use qty per U/M from ZZPARM
+1615 IF STP(B$(113,4),3," ")="" THEN B$(113,4)=E$(120,4),B[1]=E[14]; REM "If U/M is blank, get Sell U/M and Sell Qty/Unit from IC0
+1620 B[0]=NUM(I0$(35,7),ERR=1625); REM "Quantity
+1621 IF B$(121,1)=" " AND POS(B$(34,1)="CX")>0 THEN IF G[31]>0 THEN IF B[0]*B[1]>G[31] THEN B$(121,1)="K",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "SSP131690, requisition maximum by form
+1622 IF OPS_PARM$(240,1)="Y" THEN IF B$(121,1)=" " THEN IF POS(B$(34,1)="CX")<>0 THEN J2$="?"+A$(1,10)+B$(45,10)+"C"+B$(11,4); CALL "FS2DAH",X3$,J2$,B[0]*B[1],Z; IF Z=1 THEN B$(121,1)="J",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "Check location req maximum, if over put on hold, WO94880
+1625 IF B[0]>0 AND LIMIT>0 AND B$(121,1)=" " THEN GOSUB 8500; REM "Check FM4 avg usage against limit
+1627 IF A$(200,3)="200" THEN B$(122,50)=I0$(42,50); REM "Info for Shipment Confirmation file, WO91521
+1628 IF A$(200,3)="201" THEN B$(172,5)=I0$(92,5); REM " Print Flags - SSP# 139226
+1630 WRITE (Z[3],KEY=B$(1,33))IOL=0320
+1635 I0$=I0$(L1+1); DIM B$(230),B[2]; REM "Set I0$ to start of next line
+1640 GOTO 1510
+1900 REM "End of file
+1901 REM "Close & Rename to FO4 for archiving. Erase an existing FO4 file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$=F1$; IF F2$ LIKE "[Ff][Oo]1*" THEN F2$(1,3)="FO4" ELSE GOTO 1995
+1915 ERASE F2$,ERR=1916
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 REM INVOKE "mv "+J$+"/"+F1$+" "+J$+"/"+F2$+" > /dev/null"
+1936 ORIGINAL$=J$+DLM+F1$,ARCHIVE$=J$+DLM+F2$; RENAME ORIGINAL$,ARCHIVE$,ERR=*NEXT
+1995 GOTO 1015
+5000 REM "EOJ
+5010 IF Q1$<>"G" THEN PRINT @(0,15),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Order Requisition Gateway Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Convert date Q$ into D0$
+7501 REM "Q$ in YYMMDD format
+7505 D0$=""
+7506 IF STP(Q$,3," ")="" THEN GOTO 7545
+7510 IF LEN(Q$)<6 THEN GOTO 7545 ELSE D1$=Q$(1,2)
+7511 IF D1$="  " THEN D1$="00"; REM "SSP#121285
+7515 IF D1$<"50" THEN D1$="20"+D1$ ELSE D1$="19"+D1$
+7520 D0$=CHR(NUM(D1$(1,3),ERR=7521)-125)+D1$(4,1)+Q$(3,2)+Q$(5,2)
+7545 RETURN 
+7600 REM "Write out a header record to FO0
+7605 WRITE (Z[2],KEY=A$(1,30),DOM=7606)IOL=0310; GOTO 7640
+7609 REM "Increment sequence number and try again until no dup
+7610 IF A$(30,1)=" " OR A$(30,1)=$FF$ THEN A$(30,1)="0" ELSE A$(30,1)=CHR(ASC(A$(30,1))+1); IF ASC(A$(30,1))=138 THEN GOTO 7610; REM "SSP105175, added 138 logic, this is a field separator and will cause an error 26 when trying to read.
+7615 GOTO 7605
+7645 RETURN 
+7750 REM "End of file
+7752 IF LEN(RCOUNT$)<=0 THEN GOTO 7795
+7753 CLOSE (14); OPEN LOCK (14,ERR=*NEXT)"GW_LOG"; GOTO 7755
+7754 IF ERR=12 THEN SERIAL "GW_LOG"; GOTO 7753 ELSE GOTO 7795
+7755 FOR X=1 TO LEN(RCOUNT$)-2 STEP 3
+7756 S$="GOR|STAT|"+FN%CDS$+"|"+X3$(40,3)+"|"+X3$(9,3)+"|"+FID(0)+"|"+F1$+"|"+RCOUNT$(X,3)+"|"+STR(RCOUNT[(X+2)/3]:"0000")
+7757 REM S2$="echo "+QUO+S$+QUO+" >> /usr/lib/pvx/GW_LOG"
+7758 PRINT (14)S$
+7759 NEXT X
+7770 CLOSE (14)
+7795 GOTO 1900
+7900 REM "Read customer parameters
+7910 DIM L$(76); READ (Z[9],KEY=A$(1,10),DOM=7911)IOL=0380
+7920 IF STP(L$(11,10),3," ")="" THEN F3=0 ELSE F3=1; REM "Alt. inv. cust code?
+7930 IF L$(74,1)="Y" THEN A$(149,1)="Y"; REM "Review reqs?
+7940 LIMIT=0; LIMIT=NUM(L$(71,3),ERR=7941); REM "Set % of mthly avg as limit
+7945 RETURN 
+7950 REM "Blank location, manual ship-to?
+7955 DIM FMP_D$(242); READ (Z[4],KEY="D"+A$(1,10),DOM=7956)FMP_D$
+7960 IF FMP_D$(24,1)="Y" THEN IF S1$="1" THEN S1$="D"; GOTO 7995 ELSE S1$="C",A$(149,1)="Y"; GOTO 7995; REM "FMS customer, manual ship-to not allowed, set status & put on hold
+7965 IF STP(I$(139,87),3," ")="" THEN GOTO 7966 ELSE A$(204,87)=I$(139,87),A$(341,35)=I$(276,35); GOTO 7995; REM "If manual ship-to info fields are blank we'll see if there is a default ship-to to use, else set manual ship-to fields
+7970 IF FMP_D$(125,4)<>"    " THEN A$(11,4)=FMP_D$(125,4); GOTO 7995; REM "Found a default ship-to so let's use it
+7975 IF STP(AR1$(56,87),3," ")="" THEN IF S1$="1" THEN S1$="F"; GOTO 7995 ELSE S1$="E",A$(149,1)="Y"; GOTO 7995; REM "Didn't find a default ship-to and address info from AR1 blank, set status & put on hold
+7980 A$(204,87)=AR1$(56,87); REM "Using address info from AR1 as manual ship-to info
+7995 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8107 T=0
+8113 CALL "ZZ2FNC;SERIALRECCNT",Z[1],T
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8200 REM "Try to read IC0 1st with alt. inv. cust code, 2nd with cust code, 3rd with 10 blanks
+8203 REM "If found set item description & line type, if not set status & put on hold
+8210 IF F3=1 THEN FIND (Z[6],KEY=L$(11,10)+B$(45,10),DOM=8211)IOL=0350; B$(35,10)=L$(11,10),B$(34,1)="X",B$(73,40)=E$(21,40); GOTO 8215; REM "Found using alt. inv. cust code
+8211 FIND (Z[6],KEY=B$(1,10)+B$(45,10),DOM=8212)IOL=0350; B$(35,10)=B$(1,10),B$(34,1)="C",B$(73,40)=E$(21,40); GOTO 8215; REM "Found using cust code
+8212 FIND (Z[6],KEY=B$(35,20),DOM=8213)IOL=0350; B$(34,1)="I",B$(73,40)=E$(21,40); GOTO 8215; REM "Found using 10 blanks
+8213 B$(121,1)="4",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "Did not find item in IC0, put req on hold
+8290 RETURN 
+8300 REM "Read IC0 with 1st 10 of item code from imported data
+8303 REM "If found set item description & line type, if not set status & put on hold
+8310 FIND (Z[6],KEY=B$(35,20),DOM=8312)IOL=0350; B$(73,40)=E$(21,40)
+8311 IF B$(35,10)=B$(1,10) THEN B$(34,1)="C"; GOTO 8315 ELSE IF B$(35,10)=L$(11,10) THEN B$(34,1)="X"; GOTO 8315 ELSE IF GOR$(16,1)="Y" THEN B$(34,1)="C"; GOTO 8315 ELSE B$(121,1)="6",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; GOTO 8315; REM "6=found item but it's not the alt. inv. customer or the regular customer code
+8312 B$(121,1)="5",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310; REM "Did not find, put req on hold
+8390 RETURN 
+8400 REM "Item security
+8410 Q$=G$(311,6); FOR X=1 TO POS("  "=Q$,2) STEP 2
+8420 IF POS(Q$(X,2)=L$(51,20),2)=0 THEN EXITTO 8430 ELSE NEXT X; RETURN 
+8430 B$(121,1)="9",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310
+8490 RETURN 
+8500 REM "Read FM4 for monthly avg usage for limit
+8510 DIM N$(100),N[16]; FIND (Z[10],KEY=B$(1,10)+B$(45,10)+B$(11,4),DOM=8511)IOL=0390
+8520 IF N[0]>0 THEN IF B[0]>LIMIT*N[0]/100 THEN B$(121,1)="B",A$(149,1)="Y"; WRITE (Z[2],KEY=A$(1,30))IOL=0310
+8595 RETURN 
+8600 REM "More than 199 lines on this req, need to slit to another because of sequence issue in OE if over 200
+8610 I$=I$(1,L0)+I0$
+8620 IF X3$(9,3)="434" AND A$(1,10)="0039301000" THEN IF I$(55,1)="*" THEN PRINT @(10,10),"PROGRAM BREAK-TOO MANY LINES-CALL CSI-FO2UBA-8620"; ESCAPE ELSE I$(55,1)="*"; REM "GTF's customer Wards uses only unique PO numbers, see login in FM2RTO (1005) to avoid duplicates
+8645 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9001 IF Q1$<>"G" THEN PRINT @(4,15),ERR,"  ",TCB(5); INPUT *
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1150,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; IF Q1$="G" THEN Q0$=STR(COUNT) ELSE Q1$=A1$
+9935 EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "256704-Issue with customer code in lines, found on 256378/590      
+56004 REM "271945-Order Req GW, add ability to select FO1 File(s) to process. 

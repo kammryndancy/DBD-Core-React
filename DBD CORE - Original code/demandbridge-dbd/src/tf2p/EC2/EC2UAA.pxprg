@@ -1,0 +1,162 @@
+0010 REM "<EC2UAA> Export Electronic Commerce Data
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 02/19/02 - 11.737777 - plh - SSP# 142887 - DMM
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="EC2UAA",X1$="Export Electronic Commerce Data"
+0200 REM "
+0240 IF Q1$<>"G" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0320 EC0_IOL:IOLIST EC0$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O EC1... 02O EC0... 03O EC2... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 FIND (Z[13],KEY=X3$(9,3)+"E/C",DOM=9900)EC_PARM$
+0535 CURR_PREFIX$=PFX; CURR_DIR$=LWD
+0600 REM "
+0605 GOSUB 8100
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM "Initialization
+0910 DIM EC0$(73),COUNT[50]
+0915 COUNT$=""
+0920 READ (Z[1],KEY="",DOM=0921)
+1000 REM "Process EC1 checking EC0 for instructions on each Export Type
+1005 EC1$=KEY(Z[1],END=5000)
+1010 COUNT=COUNT+1; IF MOD(COUNT,T0)=1 THEN GOSUB 8150
+1015 TMP=POS(EC1$(1,4)=COUNT$,4); IF TMP=0 THEN COUNT$=COUNT$+EC1$(1,4); GOTO 1015 ELSE COUNT[(TMP+3)/4]=COUNT[(TMP+3)/4]+1
+1030 IF EC1$(1,4)<>EC0$(1,4) THEN READ (Z[2],KEY=EC1$(1,4),DOM=1031)IOL=EC0_IOL; GOTO 1035 ELSE GOTO 1035
+1032 REM "EC0$ record not found
+1033 MESS$=EC1$(1,4)+"|Export Type not found"; GOSUB 7500; GOTO 1090
+1050 IF EC0$(35,1)="Y" THEN GOSUB 2000
+1090 REMOVE (Z[1],KEY=EC1$,DOM=1095)
+1095 GOTO 1000
+2000 REM "Call Export Method
+2005 RET$=""
+2010 CALL EC0$(66,8),ERR=2011,X3$,X4$,EC_PARM$,EC0$,EC1$,OPTIONS$,FILES{ALL},RET$; IF RET$<>"" THEN GOSUB 7550 END_IF ; GOTO 2015
+2012 REM "Error in calling program
+2013 MESS$=EC1$(1,4)+"|Error ["+STR(ERR)+"] calling export method ["+STP(EC0$(66,8),1)+"] returned data ["+RET$+"]"; GOSUB 7500; GOTO 2045
+2045 RETURN 
+4000 REM "Now move files from work DIRectory to export DIRectory
+4001 REM "Check export first for same name file, if found then insert serial number prior to last suffix or on end if no suffix
+4002 REM "move to export with .TF on end and then rename when there
+4003 REM "Remember to skip the EC_LOG file in the work DIRectory
+4005 IF Q1$<>"G" THEN PRINT @(0,3),'CE',@(10,5),"Moving files from work DIRectory to export DIRectory",
+4010 GOSUB 4100; REM "Get list of files to process, Setup for bargraph display
+4015 GOSUB 4250; IF FILE_NAME$="" THEN GOTO 4090; REM "Get FILE_NAME$ - next file off FILE_LIST$, if FILE_NAME$="" then we are done
+4017 IF FILE_NAME$="EC_LOG" THEN GOTO 4015; REM "Skip the EC_LOG, leave it there
+4018 COUNT=COUNT+1; GOSUB 8150
+4020 TARGET_NAME$=FILE_NAME$,SEQ_NUM=0
+4030 IF POS("|"+TARGET_NAME$+"|"=EXPORT_LIST$)<>0 THEN GOSUB 4300; GOTO 4030; REM "If name found then we have to createnew unique name
+4034 REM "Copy file from work DIR to export DIR, but as FILE_NAME$.TF so that it won't be opened in mid copy (if the suffix is used to determine which files are processed) and then rename (via mv) in the export DIRectory.
+4035 RENAME STP(EC_PARM$(55,40),1)+DLM+FILE_NAME$ TO STP(EC_PARM$(15,40),1)+DLM+TARGET_NAME$+".TF"+""
+4036 RENAME STP(EC_PARM$(15,40),1)+DLM+TARGET_NAME$+".TF" TO STP(EC_PARM$(15,40),1)+DLM+TARGET_NAME$
+4085 GOTO 4015
+4093 COUNT=T; GOSUB 8150
+4095 RETURN 
+4100 REM "Get list of files to process, setup for bargraph display
+4105 T1=0,T=0,COUNT=0; FILE_LIST$=""
+4110 DIR_NAME$=STP(EC_PARM$(55,40),1); GOSUB 4200
+4120 T=DIR_COUNT; FILE_LIST$=DIR_LIST$
+4125 GOSUB 8150
+4129 REM "Get list of files in Export DIRectory to compare names to
+4130 DIR_NAME$=STP(EC_PARM$(15,40),1); GOSUB 4200; EXPORT_LIST$=DIR_LIST$
+4145 RETURN 
+4200 REM "Given DIR_NAME$, get list of files, # found is in DIR_COUNT,list will be in DIR_LIST$ which is formatted as "|FILENAME1||FILENAME2||...||FILENAMEN|"
+4201 REM "This is so a POS("|"+filename+"|"=DIR_LIST$) will return the correct value, even though the file names are different lengths.
+4205 DIR_LIST$="",DIR_COUNT=0
+4206 IF ISWIN THEN {
+4207 CLOSE (14); OPEN (14)"< dir /b/a-d "+DIR_NAME$
+4208  } ELSE {
+4210 CLOSE (14); OPEN (14)"< ls "+DIR_NAME$+" | cat"; REM "| cat will cause ls to put one file name per line
+4211  }
+4215 READ (14,END=4216)TMP$; DIR_LIST$=DIR_LIST$+"|"+TMP$+"|",DIR_COUNT=DIR_COUNT+1; GOTO 4215
+4245 RETURN 
+4250 REM "Get next file name on FILE_LIST$ and put it into FILE_NAME$, if no names left return FILE_NAME$=""
+4255 IF FILE_LIST$="" THEN FILE_NAME$=""; GOTO 4295
+4260 TMP=POS("|"=FILE_LIST$(2))
+4265 FILE_NAME$=FILE_LIST$(2,TMP-1); FILE_LIST$=FILE_LIST$(TMP+2)
+4295 RETURN 
+4300 REM "Create new TARGET_NAME$ from FILE_NAME$, until we get a unique one
+4301 REM "If FILE_NAME has a suffix add sequence counter before it, else add sequence counter on end
+4305 SEQ_NUM=SEQ_NUM+1,POINT_POS=POS("."=FILE_NAME$,-1)
+4310 IF POINT_POS=0 THEN TARGET_NAME$=FILE_NAME$+"."+STR(SEQ_NUM) ELSE TARGET_NAME$=FILE_NAME$(1,POINT_POS)+STR(SEQ_NUM)+"."+FILE_NAME$(POINT_POS+1)
+4345 RETURN 
+5000 REM "EOJ
+5005 GOSUB 7750
+5015 GOSUB 4000
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6004 IF Q1$="G" THEN RETURN 
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Exporting Electronic Commerce Information"
+6025 IF T>0 THEN PRINT @(10,7),"  There are ",STP(STR(T:"#,###,###"),0)," records to send"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "Given MESS$, log error, write EC1$ to error file
+7510 MESS_TYPE$="ERROR"; GOSUB 7800
+7540 WRITE (Z[3],KEY=EC1$); REM "Put into error file
+7545 RETURN 
+7550 REM "RET$ returned by export method, so add to log
+7555 MESS_TYPE$="MESS"
+7560 MESS$=EC1$(1,4)+"|Export method ["+STP(EC0$(66,8),1)+"] returned message saying ["+RET$+"]"
+7570 GOSUB 7800
+7595 RETURN 
+7750 REM "End of file
+7753 IF LEN(COUNT$)<=0 THEN GOTO 7795
+7754 MESS_TYPE$="STAT"
+7755 FOR X=1 TO LEN(COUNT$)-3 STEP 4
+7760 MESS$=COUNT$(X,4)+"|"+STR(COUNT[(X+3)/4]:"0000"); GOSUB 7800
+7775 NEXT X
+7795 RETURN 
+7800 REM "Write MESS$ of MESS_TYPE$ to EC_LOG
+7805 S$="E/C|"+MESS_TYPE$+"|"+FN%CDS$+"|"+X3$(40,3)+"|"+X3$(9,3)+"|"+FID(0)+"|"+MESS$+"|"
+7810 S2$="echo "+QUO+S$+QUO+" >> "+STP(EC_PARM$(55,40),1)+"/EC_LOG"; INVOKE S2$
+7850 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 TMP$=FN%XFD$(Z[1],10); T=DEC(TMP$(1,5))
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 IF Q1$<>"G" THEN CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,COUNT
+8195 RETURN 
+8910 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"      ")-1)
+9000 REM "ERROR PROCESSING
+9002 CWDIR CURR_DIR$
+9003 ESCAPE 
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

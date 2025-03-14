@@ -1,0 +1,32 @@
+0010 REM "Create List of Tables <DR2DMM>
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! copied from /home/pvx/crg/DR2DDF
+0055 ! TF_FILE$ is TopForm Data dictionary name, DR_FILE$ is outgoing file to open, IO$ is Embedded i/o program, ""= clear it,OPT$ is options
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$
+0100 SETERR 9000
+0105 PRINT 'CS',@(0,3),"Creating List of Tables in tftables.txt"
+0110 X0$="DR2DMM",X1$="Create List of Tables"
+0120 ERASE "tftables.txt",ERR=*NEXT
+0130 SERIAL "tftables.txt"
+0140 OUTPUT=HFN; OPEN LOCK (OUTPUT)"tftables.txt"
+0150 ! DDE=HFN; OPEN (DDE)"providex.dde"
+0170 DDF=HFN; OPEN (DDF)"providex.ddf"
+0195 S$=","
+0197 PRINT (OUTPUT)"TABLE_KEY",$09$,"TABLE_NAME",$09$,"PATH",$09$
+0200 READ_RECORD:
+0205 DDF_K$=KEY(DDF,END=9900) ! Get primary id
+0210 READ (DDF,KEY=DDF_K$,END=9900)IOL=8010
+0212 PRINT (OUTPUT)DDF_K$,$09$,TABLE_NAME$,$09$,PATH$,$09$
+1990 GOTO READ_RECORD
+8000 ! 8000 - iolists
+8010 IOLIST TABLE_NAME$,PATH$,LST_UPD$,FILE_PROC$,NOT_USED1$,NOT_USED2$,NOT_USED3$,NOT_USED4$,NOT_USED5$,ALT_IOLIST$,SEP$,RFU$
+8020 IOLIST IOLOBJ$,NAME$,DESC$,TYPE$,LEN$,OCC$,FORMAT$,VALID$,PRINT$,HELP$,NOTES$,KEYDEF$,QUERY$,CLASS$,FLAGS$,DFLT$,ALT_NAME$,USER_TAG$
+9000 REM "ERROR PROCESSING
+9005 PRINT "err: ",ERR," line: ",TCB(5),; INPUT *
+9900 REM "END PROGRAM
+9910 INPUT @(0,20),"Process complete <ret> to continue",*
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

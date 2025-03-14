@@ -1,0 +1,713 @@
+<PxTable>
+ TableName=ZF5
+ TableKey=K1372704714
+ FileCreate=KEYED "ZF5",11,0,-512,BSZ=3,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZF5_DocFmtHdr"
+    PHYSICALPATH$="="+QUO+"../tf2z/USR/ZF5"+QUO
+    LASTCHANGEDATE$="2006/08/21 17:42:10-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:28-ChaitanyaGun_kianoi2"
+    SEPERATOR$="$8A$"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="P"
+    NOTES$="Document Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=-2
+    IOLOBJ$="IOLIST FLEX_FORMAT_TYPE$:[LEN(1)]"
+    NAME$="FLEX_FORMAT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"FLEX_F_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="P"
+    NOTES$="Flexible Format Type"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST DOC_CODE$:[LEN(10,SEP=SEP)]"
+    NAME$="DOC_CODE"
+    DESCRIPTION$="=MSG("+QUO+"DOC_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Document Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST FLEX_FORMAT_TYPE$:[LEN(1,SEP=SEP)]"
+    NAME$="FLEX_FORMAT_TYPE"
+    DESCRIPTION$="=MSG("+QUO+"FLEX_F_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Flexible Format Type"
+    KEYDEFINITION$="1:2:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST FLEX_FORMAT_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="FLEX_FORMAT_DESC"
+    DESCRIPTION$="=MSG("+QUO+"FLEX_F_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST STYLE$:[LEN(1,SEP=SEP)]"
+    NAME$="STYLE"
+    DESCRIPTION$="=MSG("+QUO+"STYLE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="1"
+    INTERNALFORMAT$="S"
+    NOTES$="Style"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST OPTION_CODE_1$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE_1"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option code 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST OPTION_CODE_2$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE_2"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option code 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST OPTION_CODE_3$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE_3"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option code 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST OPTION_CODE_4$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE_4"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C_4"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option Code 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST OPTION_CODE_5$:[LEN(5,SEP=SEP)]"
+    NAME$="OPTION_CODE_5"
+    DESCRIPTION$="=MSG("+QUO+"OPTI_C_5"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Option Code 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST ZF5_UNUSED_1$:[LEN(SEP,SIZ=21)]"
+    NAME$="ZF5_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="21"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST NUM_LINES_IN_FORMAT"
+    NAME$="NUM_LINES_IN_FORMAT"
+    DESCRIPTION$="=MSG("+QUO+"NUM_L_I_F"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Number of lines in format"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST VERTICAL_OFFSET"
+    NAME$="VERTICAL_OFFSET"
+    DESCRIPTION$="=MSG("+QUO+"VERT_O"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Vertical Offset"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST NUM_COLUMNS"
+    NAME$="NUM_COLUMNS"
+    DESCRIPTION$="=MSG("+QUO+"NUM_C"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Number Columns"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST HORIZONTAL_OFFSET"
+    NAME$="HORIZONTAL_OFFSET"
+    DESCRIPTION$="=MSG("+QUO+"HORI_O"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Horizontal Offset"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST FIRST_LINE_SEC_1"
+    NAME$="FIRST_LINE_SEC_1"
+    DESCRIPTION$="=MSG("+QUO+"FIRS_L_S_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="First Line Section 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST NUM_LINES_SEC_1"
+    NAME$="NUM_LINES_SEC_1"
+    DESCRIPTION$="=MSG("+QUO+"NUM_L_S_1"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Number Lines Section 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST FIRST_LINE_SEC_2"
+    NAME$="FIRST_LINE_SEC_2"
+    DESCRIPTION$="=MSG("+QUO+"FIRS_L_S_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="First Line Section 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=18
+    IOLOBJ$="IOLIST NUM_LINES_SEC_2"
+    NAME$="NUM_LINES_SEC_2"
+    DESCRIPTION$="=MSG("+QUO+"NUM_L_S_2"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Number Lines Section2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=19
+    IOLOBJ$="IOLIST FIRST_LINE_SEC_3"
+    NAME$="FIRST_LINE_SEC_3"
+    DESCRIPTION$="=MSG("+QUO+"FIRS_L_S_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="First Line Section 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=20
+    IOLOBJ$="IOLIST NUM_LINES_SEC_3"
+    NAME$="NUM_LINES_SEC_3"
+    DESCRIPTION$="=MSG("+QUO+"NUM_L_S_3"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    EXTERNALFORMAT$="#####.0-"
+    NOTES$="Number Lines Section 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=21
+    IOLOBJ$="IOLIST ZF5_UNUSED_2"
+    NAME$="ZF5_UNUSED_2"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=22
+    IOLOBJ$="IOLIST ZF5_UNUSED_3"
+    NAME$="ZF5_UNUSED_3"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=23
+    IOLOBJ$="IOLIST ZF5_UNUSED_4"
+    NAME$="ZF5_UNUSED_4"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 4"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=24
+    IOLOBJ$="IOLIST ZF5_UNUSED_5"
+    NAME$="ZF5_UNUSED_5"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 5"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=25
+    IOLOBJ$="IOLIST ZF5_UNUSED_6"
+    NAME$="ZF5_UNUSED_6"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 6"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=26
+    IOLOBJ$="IOLIST ZF5_UNUSED_7"
+    NAME$="ZF5_UNUSED_7"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="N"
+    LENGTH$="14.3"
+    INTERNALFORMAT$="D"
+    NOTES$="ZF5 Unused 7"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="850       1"
+    DOC_CODE$="850       "
+    FLEX_FORMAT_TYPE$="1"
+    FLEX_FORMAT_DESC$="                              "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       3"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="3"
+    FLEX_FORMAT_DESC$="449's format 2 (Fresno)       "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=135
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=8
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       A"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="A"
+    FLEX_FORMAT_DESC$="Bill of Lading Format         "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       B"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="B"
+    FLEX_FORMAT_DESC$="Delivery Ticket Format        "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=4
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       C"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="C"
+    FLEX_FORMAT_DESC$="QBS Style                     "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=21
+    NUM_LINES_SEC_1=8
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       D"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="D"
+    FLEX_FORMAT_DESC$="FMS Priced Packing List       "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=90
+    FIRST_LINE_SEC_1=25
+    NUM_LINES_SEC_1=10
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="856       E"
+    DOC_CODE$="856       "
+    FLEX_FORMAT_TYPE$="E"
+    FLEX_FORMAT_DESC$="Reform Electronic Form Layout "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=66
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=11
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  A"
+    DOC_CODE$="FORMATCL  "
+    FLEX_FORMAT_TYPE$="A"
+    FLEX_FORMAT_DESC$="1-up Carton Label             "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=44
+    NUM_COLUMNS=70
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  B"
+    DOC_CODE$="FORMATCL  "
+    FLEX_FORMAT_TYPE$="B"
+    FLEX_FORMAT_DESC$="Double Wide Carton Label      "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=150
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  X"
+    DOC_CODE$="FORMATCL  "
+    FLEX_FORMAT_TYPE$="X"
+    FLEX_FORMAT_DESC$="Test & capabilities           "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=20
+    NUM_COLUMNS=80
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  Y"
+    DOC_CODE$="FORMATCL  "
+    FLEX_FORMAT_TYPE$="Y"
+    FLEX_FORMAT_DESC$="Testing bar codes             "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=66
+    NUM_COLUMNS=80
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATCL  Z"
+    DOC_CODE$="FORMATCL  "
+    FLEX_FORMAT_TYPE$="Z"
+    FLEX_FORMAT_DESC$="Test & capabilities           "
+    STYLE$="L"
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=16
+    NUM_COLUMNS=40
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  1"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="1"
+    FLEX_FORMAT_DESC$="QBF PL                        "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  2"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="2"
+    FLEX_FORMAT_DESC$="PL W/ LOGIN CODE FLD 78-80    "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  A"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="A"
+    FLEX_FORMAT_DESC$="Bill of Lading Format         "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  B"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="B"
+    FLEX_FORMAT_DESC$="Delivery Ticket Format        "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=4
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  C"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="C"
+    FLEX_FORMAT_DESC$="QBS Style                     "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=21
+    NUM_LINES_SEC_1=8
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  D"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="D"
+    FLEX_FORMAT_DESC$="FMS Priced Packing List       "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=42
+    NUM_COLUMNS=90
+    FIRST_LINE_SEC_1=25
+    NUM_LINES_SEC_1=10
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FORMATPL  E"
+    DOC_CODE$="FORMATPL  "
+    FLEX_FORMAT_TYPE$="E"
+    FLEX_FORMAT_DESC$="Electronic Bill of Lading Form"
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=51
+    NUM_COLUMNS=85
+    FIRST_LINE_SEC_1=24
+    NUM_LINES_SEC_1=5
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="JETREPORT 1"
+    DOC_CODE$="JETREPORT "
+    FLEX_FORMAT_TYPE$="1"
+    FLEX_FORMAT_DESC$="Jetform report format         "
+    STYLE$=" "
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+    NUM_LINES_IN_FORMAT=66
+    NUM_COLUMNS=80
+    FIRST_LINE_SEC_1=1
+    NUM_LINES_SEC_1=1
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="USAGE     1"
+    DOC_CODE$="USAGE     "
+    FLEX_FORMAT_TYPE$="1"
+    FLEX_FORMAT_DESC$="                              "
+    STYLE$="P"
+    OPTION_CODE_1$="     "
+    OPTION_CODE_2$="     "
+    OPTION_CODE_3$="     "
+    OPTION_CODE_4$="     "
+    OPTION_CODE_5$="     "
+    ZF5_UNUSED_1$="                     "
+   </RecordData>
+
+</Data>
+
+</PxTable>

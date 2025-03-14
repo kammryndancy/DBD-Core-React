@@ -1,0 +1,146 @@
+0010 REM "Cost Change Utility Screen <IC2SCS>"
+0035 REM "5.5 - 05/22/07 - 11.323333 - mhe - SSP# 203731
+0037 REM "203731-Is there a way to change the cost on items which            
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM 
+0050 REM "Program Notes"
+0052 REM "The purpose of this software modification is to all the user to"
+0053 REM "change the cost of an inventory item in the files IC0_Item and"
+0054 REM "IC2_SupplierPrice."
+0055 REM 
+0056 REM "This program calls IC2SCC."
+0057 REM 
+0060 REM "The program will allow the user to enter a range of:"
+0061 REM "   Customer Code"
+0062 REM "   Item Code"
+0063 REM "   Vendor Code"
+0064 REM 
+0070 REM "The program will also require a value to be entered to use for"
+0071 REM "adjusting the costs. Also, the user will determine whether to"
+0072 REM "(M)ultiply or (D)ivide the above value."
+0099 REM 
+0100 INITIALIZE_PROGRAM:
+0105 SETESC 9300; SETERR ERROR_PROCESSING
+0110 CLEAR ; ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0120 X0$="IC2SCC",X1$="Cost Change Utility"
+0125 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1,T0$="ZZXIC0",L0=10
+0140 IF X3$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0145 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=*NEXT)
+0195 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0197 DIM A$(1),A[1]
+0198 DIM VEND$(20),VEND[1]
+0300 CREATE_IOLISTS:
+0305 DIM IC0[40],IC2[17] ! dim iolist array lengths
+0320 IOLIST_IC0:IOLIST IC0$,IC0{ALL} ! iolist for IC0
+0321 IOLIST_IC2:IOLIST IC2$,IC2{ALL} ! iolist for IC2
+0500 OPEN_FILES:
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O IC0...  03O IC2...  13O ZZPARM  " ! set the string for opening
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! open the files
+0525 IF Z0 THEN GOTO END_PROGRAM ! if there is an error, exit
+0530 IC0_FL=Z[2],IC2_FL=Z[3],ZZPARM_FL=Z[13] ! set the open channels
+0700 PRE_DISPLAY:
+0710 DIM M6[1]; CALL "IC2PRE",X3$,ZZPARM_FL,"",M6{ALL},"",0,"",0 ! Set Inventory Unit Price Prescision
+0720 VEND$=DIM(10)+DIM(10,"~")
+0800 MAIN_DISPLAY:
+0810 GOSUB DISPLAY_BACKGROUND ! draw the background
+0815 GOSUB DISPLAY_DATA ! display the data
+0820 GOSUB GET_CUST_ITEM ! get the beg/end customer/item code
+0825 GOSUB GET_VENDOR ! get the beg/end vendor code
+0827 IF ABS(C0)=2 THEN GOTO 0820 ! back a field
+0835 GOSUB FACTOR_VALUE ! get the factor value
+0837 IF ABS(C0)=2 THEN GOTO 0825 ! back a field
+0840 BEG_CUST$=W$(1,10),END_CUST$=W$(21,10) ! set the beg/end customer
+0845 BEG_ITEM$=W$(11,10),END_ITEM$=W$(31,10) ! set the beg/end item code
+0850 BEG_VEND$=VEND$(1,10),END_VEND$=VEND$(11,10) ! set the beg/end vendor code
+0855 ADJ_VALUE=A[0] ! set the adjustment value
+0860 COMP_VALUE$=A$(1,1) ! set the (M)ult/(D)iv option
+0900 IF POS(" "<>END_CUST$)>0 THEN {
+0905 CALL "ZZPROM",".Y",X3$,Z,"NOTE: You indicated customer inventory costs are to change - Correct?","","",0
+0910 IF Z THEN GOTO 0001
+0915  }
+0960 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0
+0970 IF Z THEN GOTO END_PROGRAM
+1000 MAIN_LOOP:
+1015 CALL "IC2SCC",BEG_CUST$,END_CUST$,BEG_ITEM$,END_ITEM$,BEG_VEND$,END_VEND$,ADJ_VALUE,COMP_VALUE$
+1095 GOTO END_OF_JOB ! end of processing
+2000 COMPUTE_NEW_COST:
+2010 PRECISION 6
+2020 IF COMP_VALUE$="D" THEN COST=COST/ADJ_VALUE ELSE COST=COST*ADJ_VALUE
+2030 PRECISION M6[1]; COST=COST+0; PRECISION 2
+2035 IF X3$(9,3)="011" THEN IF FPT(COST/.25)<>0 THEN COST=INT((COST+.25)/.25)*.25
+2040 RETURN 
+2400 FACTOR_VALUE:
+2405 PRECISION 4
+2410 CALL "ZZENTR","N&",A{ALL},A$,X4$,X3$,55,12,0,140,C0,"#.0000","{3"+X$,"","IC2SCC02","","",""
+2420 X$="M=multiply, D=divide"
+2430 CALL "ZZENTR","SRU",A{ALL},A$,X4$,X3$,55,15,1,1,C0,"","{3"+X$,"MD","IC2SCC03","","",""
+2435 IF ABS(C0)=2 THEN GOTO 2410
+2440 IF A$(1,1)="D" AND A[0]=0 THEN GOTO FACTOR_VALUE
+2450 PRECISION 2
+2495 RETURN 
+2500 GET_CUST_ITEM:
+2550 CALL T0$,ERR=*NEXT,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9 ! retrieve the cust and item beg/end values
+2595 RETURN 
+2600 GET_VENDOR:
+2650 CALL "ZZENTR","AUF>",VEND{ALL},VEND$,X4$,X3$,32,9,1,10,C0,"","","","IC2SCC00","AP4","AP2MPC","" ! beg vendor
+2660 IF ABS(C0)=2 THEN GOTO *RETURN
+2750 CALL "ZZENTR","AUF<",VEND{ALL},VEND$,X4$,X3$,52,9,11,10,C0,"","","","IC2SCC01","AP4","AP2MPC","" ! end vendor
+2760 IF ABS(C0)=2 THEN GOTO 2650
+2795 RETURN 
+5000 END_OF_JOB:
+5030 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0 ! display process complete message
+5040 GOTO END_PROGRAM ! end program
+6000 DISPLAY_BACKGROUND:
+6005 PRINT (0,ERR=6016)'SB',
+6010 PRINT @(0,3),"This program will change the average cost of all inventory items within the",'LF',"selected range by a multiplier.  The multipler will be applied to the base",'LF',"cost and all quantity break costs.",
+6015 CALL T0$,ERR=6231,X3$,X4$,Y0$,W$,W{ALL},1,0,L0
+6020 CALL T0$,ERR=6021,X3$,X4$,Y0$,W$,W{ALL},2,0,L0
+6030 PRINT (0,ERR=6016)'SB',
+6040 PRINT @(0,9),'CL',@(17,9),"Vendor code:",'LF',Z0$
+6070 PRINT @(5,12),"Multiplier by which to adjust selling costs:",
+6080 PRINT @(5,13),"(to increase, enter 1.10 and Multiply)",
+6090 PRINT @(7,15),"Multiply or Divide cost using this factor?",
+6165 PRINT (0,ERR=*NEXT)'SF',
+6190 RETURN 
+6200 DISPLAY_DATA:
+6230 CALL "ZZDISP","A>",VEND$(1,10),"",X3$,"","",32,9,X4$ ! display the starting vendor
+6235 CALL "ZZDISP","A<",VEND$(11,10),"",X3$,"","",52,9,X4$ ! display the ending vendor
+6395 RETURN 
+9000 ERROR_PROCESSING:
+9005 IF ERR=69 THEN GOTO CTRL_LOGIC
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR ERROR_PROCESSING
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,TRANSFER_CONTROL,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_PROCESSING; RETRY 
+9090 SETERR 0000; RETRY 
+9100 TRANSFER_CONTROL:
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR ERROR_PROCESSING; RETURN 
+9500 CTRL_LOGIC:
+9510 SETERR ERROR_PROCESSING; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 END_PROGRAM:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "Modification History"
+56002 REM "05/15/2007 - Program Created."
+56004 REM "203731-Is there a way to change the cost on items which"
+56005 REM "       meet a set of rules?"

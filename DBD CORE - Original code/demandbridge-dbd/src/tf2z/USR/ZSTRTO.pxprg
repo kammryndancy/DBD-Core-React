@@ -1,0 +1,14 @@
+0010 REM "Convert string values for on-line services <ZSTRTO>
+0030 REM "(C) 1985-1989 Basic Ideas, Inc; Atlanta, GA. USA
+0035 REM "This software contains trade secrets and proprietary information"
+0310 IOLIST Q0$,A0$,A1$,A2$,A3$,A4$,A0,A1,A2
+1020 ENTER X3$,Q0$,F0,I0
+1200 REM "
+1220 A0$=FNS$(Q0$(21,10))
+1225 A1$=FNS$(Q0$(31,4))
+1230 A2$=FNS$(Q0$(35,30))
+1235 A3$=FNS$(Q0$(65,30))
+1990 WRITE (F0,IND=I0)IOL=0310
+8910 DEF FNS$(X$)=X$(1,LEN(X$)*SGN(POS(" "<>X$)))
+9940 EXIT 
+9999 END 

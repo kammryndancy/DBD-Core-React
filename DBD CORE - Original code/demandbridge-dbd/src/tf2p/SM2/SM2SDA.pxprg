@@ -1,0 +1,57 @@
+0010 REM "<SM2SDA> SMP Status Code Descriptions
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/08/10 - 15.296111 - dmm - SSP# 235823
+0037 REM "235823-CIG Plus System and Customer Parameter (new file), minimum  
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="SM2SDA",X1$="SMP Status Code Descriptions"
+1000 IF Q0$="0" THEN A1$="OK"
+1010 IF Q0$="1" THEN A1$="No P/O Number Supplied"
+1020 IF Q0$="2" THEN A1$="No P/O Line Number or Special Charge Code Supplied"
+1030 IF Q0$="3" THEN A1$="Invalid P/O Number"
+1040 IF Q0$="4" THEN A1$="Invalid P/O Line Number or Special Charge Code"
+1050 IF Q0$="5" THEN A1$="No Vendor Invoice Number Supplied"
+1060 IF Q0$="6" THEN A1$="Vendor Invoice Number Already in use in Open Invoice File"
+1070 IF Q0$="7" THEN A1$="Vendor Invoice Number Already in use in Invoice History File"
+1080 IF Q0$="8" THEN A1$="Quantity Received Missing"
+1090 IF Q0$="9" THEN A1$="Quantity Received is more than 10% Overrun"
+1100 IF Q0$="A" THEN A1$="Unit Cost is more than allowed per parameter"
+1110 IF Q0$="B" THEN A1$="Previously invoiced plus qty received is more than 10% Overrun"
+1120 IF Q0$="C" THEN A1$="Order line indicates special shipping yet no special shipping records found"
+1130 IF Q0$="D" THEN A1$="PO already being received in another batch, no receiving allowed"
+1140 IF Q0$="E" THEN A1$="PO already being received in another batch, no receiving allowed (Inv Costing)"
+1150 IF Q0$="F" THEN A1$="Calculated GP% is below the minimum allowed per parameter"
+2000 GOTO 9900
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 REM "CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z[ALL],0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "235823-Create a new error for CIG Plus, GP% is >= 20%.  Print on

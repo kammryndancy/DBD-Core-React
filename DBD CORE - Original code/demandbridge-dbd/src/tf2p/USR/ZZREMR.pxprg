@@ -1,0 +1,17 @@
+0010 REM "Remove records from a file <ZZREMR>
+0035 REM "4.1 - 02/26/97 - 14.21 - jel - SSP# 053551
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 REM "RECEIVE VARIABLES
+1020 ENTER A,A4$
+1050 REM " A= Number of the file that was passed , A4$= Portion of the key that was passed
+1100 REM "INITIAL READ
+1110 READ (A,KEY=A4$,DOM=1111)
+1200 REM "READ MAIN PROCESS
+1220 K$=KEY(A,END=9900)
+1250 READ (A,KEY=K$)
+1270 IF K$(1,LEN(A4$))<>A4$ THEN GOTO 9900 ELSE REMOVE (A,KEY=K$)
+1290 GOTO 1210
+9900 REM "END PROGRAM
+9910 EXIT 
+9999 END 

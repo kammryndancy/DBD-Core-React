@@ -1,0 +1,335 @@
+<PxTable>
+ TableName=ZZW
+ TableKey=K971278651
+ FileCreate=KEYED "ZZW",20,0,-270,BSZ=4,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZZW-Update Detail Lines"
+    PHYSICALPATH$="October 10,2001 5:39pm"
+    LASTCHANGEDATE$="rms"
+    SEPERATOR$="$8A$"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST ITEM_CODE$:[LEN(6)]"
+    NAME$="ITEM_CODE"
+    DESCRIPTION$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    NOTES$="Form Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST ITEM_CODE$:[LEN(6,SEP=SEP)]"
+    NAME$="ITEM_CODE"
+    DESCRIPTION$="=MSG("+QUO+"ITEM_CODE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Form Code"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST ITEM_DESC$:[LEN(40,SEP=SEP)]"
+    NAME$="ITEM_DESC"
+    DESCRIPTION$="=MSG("+QUO+"ITEM_DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="40"
+    INTERNALFORMAT$="S"
+    NOTES$="Form Description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST SRC_FILE$:[LEN(6,SEP=SEP)]"
+    NAME$="SRC_FILE"
+    DESCRIPTION$="=MSG("+QUO+"SRC_FILE"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Source File"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST DETAIL_FILE$:[LEN(6,SEP=SEP)]"
+    NAME$="DETAIL_FILE"
+    DESCRIPTION$="=MSG("+QUO+"DETA_F"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    NOTES$="Detail File"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST ITEM_LENGTH$:[LEN(2,SEP=SEP)]"
+    NAME$="ITEM_LENGTH"
+    DESCRIPTION$="=MSG("+QUO+"ITEM_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="Form Length"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST ITEM_WIDTH$:[LEN(3,SEP=SEP)]"
+    NAME$="ITEM_WIDTH"
+    DESCRIPTION$="=MSG("+QUO+"ITEM_WIDTH"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Form Width"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST FIRST_DETAIL_LINE$:[LEN(2,SEP=SEP)]"
+    NAME$="FIRST_DETAIL_LINE"
+    DESCRIPTION$="=MSG("+QUO+"FIRS_D_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="S"
+    NOTES$="First Detail Line"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST NUM_OF_DETAIL_LINES$:[LEN(SEP,SIZ=2)]"
+    NAME$="NUM_OF_DETAIL_LINES"
+    DESCRIPTION$="=MSG("+QUO+"NUM_O_D_L"+QUO+")"
+    TYPE$="S"
+    LENGTH$="2"
+    INTERNALFORMAT$="L"
+    NOTES$="# of Detail Lines"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="AR1SAA"
+    ITEM_CODE$="AR1SAA"
+    ITEM_DESC$="A/R Statement Printing                  "
+    SRC_FILE$="AR0   "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="66"
+    ITEM_WIDTH$="080"
+    FIRST_DETAIL_LINE$="  "
+    NUM_OF_DETAIL_LINES$="   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC0   001"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC0   001Carton attributes             "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="CA"
+    NUM_OF_DETAIL_LINES$="RTON_PACK=PO_LINE^CARTON_PACK; CARTON_WEIGHT=PO_LINE^CARTON_WEIGHT                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC0   002"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC0   002Last purchase information     "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="LA"
+    NUM_OF_DETAIL_LINES$="ST_COST=REC_NOW_COST; LAST_PURCHASE=RECEIVING_DATE                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC0   003"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC0   003Average cost calculation      "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="  "
+    NUM_OF_DETAIL_LINES$="                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC1   001"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC1   001Adjust receipts and on p/o amo"
+    SRC_FILE$="unts  "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="RE"
+    NUM_OF_DETAIL_LINES$="CEIPTS&+REC_NOW                                                       ON_PO&-REC_NOW; IF ON_PO<0 ON_PO=0                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC1   002"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC1   002Last active date & cost       "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="LA"
+    NUM_OF_DETAIL_LINES$="ST_ACTIVE=RECEIVING_DATE; LAST_COST=REC_NOW_COST                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC1   003"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC1   003Average cost                  "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="  "
+    NUM_OF_DETAIL_LINES$="                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC2   001"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC2   001Carton info                   "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="CA"
+    NUM_OF_DETAIL_LINES$="RTON_PACK=PO_LINE^CARTON_PACK                                         CARTON_WEIGHT=PO_LINE^CARTON_WEIGHT                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RUA IC2   002"
+    ITEM_CODE$="PO2RUA"
+    ITEM_DESC$=" IC2   002Last purchased date & cost    "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="LA"
+    NUM_OF_DETAIL_LINES$="ST_PURCHASED=RECEIVING_DATE                                           LAST_COST=REC_NOW_COST                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPA   001"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPA   001Set salesman                  "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="CU"
+    NUM_OF_DETAIL_LINES$="ST_INVOICE^SALESPERSON=SALESPERSON                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPA   002"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPA   002Set invoice date              "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="IN"
+    NUM_OF_DETAIL_LINES$="VOICE_DATE=ORDER_DATE                                                                                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPA   003"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPA   003Set audit number              "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="AU"
+    NUM_OF_DETAIL_LINES$="DIT_CONTROL_NO=^AUDIT_CONTROL_NO                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPA   004"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPA   004Set accounting date           "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="AC"
+    NUM_OF_DETAIL_LINES$="CTG_DATE=^ACCOUNTING_DATE                                                                                                                      "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPI   001"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPI   001Add to dollar sales figures   "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="IN"
+    NUM_OF_DETAIL_LINES$="VENTORY_MASTER^SALES_PTD&+(QUANTITY*SALES_PRICE),                     INVENTORY_MASTER^SALES_YTD&+QUANTITY*SALES_PRICE                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPI   002"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPI   002Add to qty sold               "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="QT"
+    NUM_OF_DETAIL_LINES$="Y_SOLD_PTD&+QUANTITY, QTY_SOLD_YTD&+QUANTITY                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPI   003"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPI   003Change activity date          "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="IF"
+    NUM_OF_DETAIL_LINES$=" DATE_LAST_SOLD < ORDER_DATE THEN DATE_LAST_SOLD = ORDER_DATE                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPALUA TPI   004"
+    ITEM_CODE$="TPALUA"
+    ITEM_DESC$=" TPI   004Change on-hand quantity       "
+    SRC_FILE$="      "
+    DETAIL_FILE$="      "
+    ITEM_LENGTH$="  "
+    ITEM_WIDTH$="   "
+    FIRST_DETAIL_LINE$="ON"
+    NUM_OF_DETAIL_LINES$="_HAND_QTY&-QUANTITY                                                                                                                            "
+   </RecordData>
+
+</Data>
+
+</PxTable>

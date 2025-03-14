@@ -1,0 +1,140 @@
+0010 REM "<AP2XBA> Import A/P Check Information
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 01/11/02 - 11.4125 - plh - SSP# 142887
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AP2XBA",X1$="Import A/P Check Information"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 APH_IOLIST:IOLIST APH$,APH[0],APH[1],APH[2],APH[3],APH[4],APH[5]
+0320 APC_IOLIST:IOLIST APC$,APC[0],APC[1],APC[2]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O APH... 03O APC... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 DIM APH[5],APC[2]
+1000 REM "Get list of SM1 files to process
+1010 F1$="GTAP2"
+1050 Z$="01O "+F1$+" "
+1055 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 1056,1995
+1060 CLOSE (Z[1]); OPEN (Z[1],ISZ=512)F1$; REM "Open for reading raw file
+1075 PRINT @(15,15),'CE',"Processing: "+F1$,
+1080 GOSUB 8100; GOSUB 8150
+1100 REM "Process the file
+1105 I9=0,I0$="",I1$="",F8=0
+1110 GOSUB 7700
+1120 IF MOD(I9,T0)=1 THEN GOSUB 8150
+1125 IF LEN(I$)<67 THEN I9$=I$; DIM I$(67); I$(1)=I9$; REM "Correct length if short
+1200 REM "fill APH record
+1205 DIM APH$(37),APH[5]
+1210 APH$(1,3)=X3$(9,3),APH$(4,3)="A  "; REM "Source Company, Bank Code
+1215 APH$(7,10)="00"+STP(I$(4,10),1)+DIM(10,"0"),APH$(17,1)=" "; REM "Vendor code, Special check code, default to 1. Tack on hidden div number and add 0's on end as needed
+1220 APH$(18,10)=STP(I$(14,18),2),APH$(28,6)=I$(32,6); REM "Vendor invoice umber, cut leading & trailing spaces, Check number
+1225 NUM_IN$=I$(44,12); GOSUB CONVERT_NUMBER; APH[0]=NUM_IN; REM "Gross invoice payment
+1230 NUM_IN$=I$(56,12); GOSUB CONVERT_NUMBER; APH[1]=NUM_IN; REM "Discount taken
+1295 WRITE (Z[2],KEY=APH$(1,27))IOL=APH_IOLIST; COUNT=COUNT+1
+1300 REM "Create or Update APC record based on APH info
+1305 DIM APC$(29),APC[2]
+1310 APC$(1,17)=APH$(1,17); REM "Source comp, bank code, vendor code, check code from aph$
+1315 APC$(18,6)=APH$(28,6); DATE$=I$(38,6); GOSUB CONVERT_YYMMDD; APC$(24,6)=DATE_RESULT$; REM "Check number, Check datae from I$ info
+1320 REM "read existing apc, if any, and add to it, write back out
+1325 EXTRACT (Z[3],KEY=APC$(1,17),DOM=1326)IOL=APC_IOLIST
+1330 APC[0]=APC[0]+APH[0],APC[1]=APC[1]+APH[1]; REM "Gross amount, discount taken
+1335 APC[2]=APC[2]+APH[0]-APH[1]; REM "Net amount of check
+1345 WRITE (Z[3],KEY=APC$(1,17))IOL=APC_IOLIST
+1795 GOTO 1110
+1900 REM "End of file
+1901 REM "Close & Rename to .done for archiving. Erase an existing .done file, if same name
+1905 Z$="01CU"+F1$+" "
+1906 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+1910 F2$=F1$+".done"
+1919 REM "Get disk DIRectory of data files
+1925 J$=%DATAPATH$
+1930 REM "Move the file
+1935 ERASE F2$,ERR=*PROCEED; RENAME J$+DLM+F1$ TO J$+DLM+F2$
+1995 GOTO 5000
+5000 REM "EOJ
+5004 READ (Z[13],KEY=X3$(9,3)+"A/P",DOM=5006)AP_PARMS$
+5005 IF COUNT>1 THEN DIM TEMP$(50); TEMP$(1)=X3$(9,3)+"APC"+X3$(174,4); WRITE (Z[13],KEY=TEMP$(1,10))AP_PARMS$(7,6)+TEMP$; REM "Put out check print record with current FY/AP
+5010 PRINT @(0,15),'CE',
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Importing Accounts Payable Check Information"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 CONVERT_YYMMDD:REM "Convert date in YYMMDD format into TopForm format, assume YY <=50 means 20+YY >50 means 19+YY
+7501 REM "YYMMDD in date$,result in DATE_RESULT$
+7505 DATE_RESULT$=""
+7510 IF LEN(DATE$)<6 THEN GOTO CONVERT_YYMMDD_END
+7515 IF DATE$(1,2)<="50" THEN DATE$="20"+DATE$ ELSE DATE$="19"+DATE$
+7520 DATE_RESULT$=CHR(NUM(DATE$(1,3),ERR=7521)-125)+DATE$(4)
+7545 CONVERT_YYMMDD_END:RETURN 
+7550 REM "Convert Q$(HH:MM:SS) format into Q0$(HHMM) format
+7555 Q0$=Q$(1,2)+Q$(4,2)
+7595 RETURN 
+7600 CONVERT_NUMBER:REM "Convert number in NUM_IN$ to NUM_IN including translating EBCIDIC to ASCII conversion artifacts
+7601 REM "Some programs when converting numberic values from EBCIDIC to ASCII will indicate negative numbers by adding a value to the least significant digit when translated the number is negative if the last char is not 0-9. The value will be as follows: }=0, J=1, K=2, L=3, M=4, N=5, O=6, P=7, Q=8, R=9....Furthermore 2 digits of precision are assumed so the number will be divided by 100
+7605 NUM_IN=0; TMP=POS(NUM_IN$(LEN(NUM_IN$),1)="}JKLMNOPQR")
+7610 IF TMP=0 THEN NUM_IN=NUM(NUM_IN$,ERR=CONVERT_NUMBER_END)/100; GOTO CONVERT_NUMBER_END
+7615 REM "Convert last char back to num and convert to negative
+7620 NUM_IN$(LEN(NUM_IN$),1)=STR(TMP-1:"0"),NUM_IN=(-NUM(NUM_IN$,ERR=CONVERT_NUMBER_END))/100
+7645 CONVERT_NUMBER_END:RETURN 
+7700 REM "Read next record
+7705 IF LEN(I0$)<130 OR POS($0A$=I0$)=0 THEN READ RECORD (Z[1],IND=I9,END=7750)I1$; I0$=I0$+I1$,I9=I9+1; GOTO 7705
+7710 IF POS($00$<>I0$)=0 THEN GOTO 7750 ELSE I1=POS($0A$=I0$); IF I1=1 THEN I0$=I0$(2); GOTO 7710 ELSE I$=I0$(1,I1-1),I0$=I0$(I1+1)
+7745 RETURN 
+7750 REM "End of file
+7795 GOTO 1900
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F2$
+8112 T=T0
+8115 REM PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

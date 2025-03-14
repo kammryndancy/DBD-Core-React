@@ -1,0 +1,151 @@
+0010 REM "Output Print information & options <BC2FMX>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.4 - 08/09/05 - 10.475555 - kmc - SSP# 186534
+0040 REM "Copyright 2005 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "P$ is print array
+0071 REM "O$ is options/field data array
+0072 REM "W9 is file slot of printer
+0073 REM "P0$ is printer record (if ="", then we'll read the record & set P0$)
+0074 REM "Q0$ is for future use
+0075 REM "Q(all) is for future use
+0076 REM "A$ and A(all) are Flex Format Doc print Type header info (ZF5)
+0077 REM "Z0 is return code, code of 1 = exit
+0078 REM "F9 is file slot of ZZPARM
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,P$,O$,W9,F9,A$,A{ALL},P0$,Q0$,Q{ALL},Z0
+0100 SETERR 9000
+0110 X0$="BC2FMX",X1$="Output Print information and fill in options"
+0115 IF X3$="?" THEN GOTO 8950
+0120 DIM S$(40)
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 REM DIM Z(NUM(X3$(60,3)))
+0510 REM LET Z$="01O ZF6...  13O ZZPARM  "
+0520 REM GOSUB 09750; ON Z0 GOTO 00521,09900
+0600 REM "If P0$="" then read in parameters
+0603 P0$=STP(P0$,1)
+0605 IF P0$>"" THEN GOTO 0650
+0610 DIM P0$(391)
+0620 READ (F9,KEY="PRINTERS")P8$,P9$
+0630 P=POS(FID(W9)=P9$); IF P=0 THEN GOTO 0650
+0640 READ (F9,KEY="ptr"+P8$(INT(P/2)*8+9,8),DOM=0650)P0$
+0650 REM "Set P0 to 1 if printer option package is found
+0655 IF POS(" "<>MID(P0$,384,8))<>0 THEN P0=1,P2$=FNS$(MID(P0$,384,8)) ELSE P0=0,P2$=""
+1000 REM "Send P$ to device W9 a line at a time (width of line in A(2))
+1005 IF A$(42,1)="L" THEN J0$="",J$="L_BEG"+S$(1,15); GOSUB 8100; GOSUB 8150; REM "If 'L'abel type then do beginning logic
+1007 IF P$="" THEN GOTO 1095
+1010 FOR L=0 TO INT(LEN(P$)/A[2])-1
+1015 P1$=P$(L*A[2]+1,A[2]); REM "seperate current line out
+1017 IF A$(42,1)="L" THEN GOSUB 8000; GOSUB 8050; GOTO 1076; REM "Handle label types differently
+1020 IF POS($7E$=P1$)<>0 THEN GOSUB 7500; REM "Expand any options if found and printer package found
+1074 WRITE RECORD (W9)P1$; IF POS(X3$(9,3)="107125288",3)=0 THEN PRINT (W9) ELSE IF POS(X3$(9,3)="125",3)<>0 THEN PRINT (W9)'CR',
+1075 ! PRINT (W9)P1$; IF POS(X3$(9,3)="125",3)<>0 THEN PRINT (W9)'CR', ! 186534
+1080 IF FID(W9)=FID(0) THEN IF L<>0 AND MOD(L,19)=0 THEN CALL "ZZPROM",".5",X3$,Z0,"","","",0; IF Z0=1 THEN GOTO 9900
+1090 NEXT L
+1095 IF A$(42,1)="L" THEN J0$="",J$="L_END"+S$(1,15); GOSUB 8100; GOSUB 8150; REM "IF 'L'abel type then do end of label logic
+1096 IF A$(42,1)="L" THEN J0$=FID(W9); CLOSE (W9); OPEN (W9)J0$
+1100 REM "Prepare for next item
+1105 DIM P$(LEN(P$))
+1110 O$=""
+1195 GOTO 9900
+7500 REM "Expand options found in string P1$
+7505 O=POS($7E$=P1$); IF O=0 OR LEN(P1$)<O+2 THEN GOTO 7595; REM "Len <O+2 ensures string is long enough to have the index to options in it. If not, the field is probably too close to the edge of the form.
+7510 I0=POS("<"+P1$(O+1,2)+">"=O$); IF I0=0 THEN P1$(O,3)="???"; GOTO 7505; REM "If not found, put in question marks & go on to next field.
+7515 I2$=O$(I0,POS("}"=O$(I0))); REM "Get options & data for this field
+7520 I1=POS("{"=I2$)
+7525 O0$=I2$(5,I1-5); REM "Get options+parameters string
+7530 D0$=I2$(I1+1,LEN(I2$)-I1-1),D1$=D0$,L0$="",L1$=""; REM "Get data before (D0$) and final printstring D1$, inited to D0$
+7550 IF P0=1 THEN CALL P2$,ERR=7551,X3$,X4$,P0$,D0$,O0$,"",D1$,L0$,L1$
+7572 REM "Remove space that would have been taken by the data (D0$) and add in string of codes + data
+7573 IF A$(42,1)="L" THEN IF LEN(P1$)=3 THEN P1$=D1$; GOTO 7590 ELSE P1$=P1$(4)+D1$; GOTO 7590; REM "If label type, just replace the marker in P1$ with the data
+7574 IF LEN(D0$)<3 THEN D0$=D0$+S$(1,3-LEN(D0$)); REM "PAD d0$ so that it at least erases the field marker information which is 3 chars long
+7576 IF O=1 THEN P1$=D1$+P1$(O+LEN(D0$)) ELSE IF O+LEN(D0$)>LEN(P1$) THEN P1$=P1$(1,O-1)+D1$ ELSE P1$=P1$(1,O-1)+D1$+P1$(O+LEN(D0$))
+7580 P1$=L0$+P1$+L1$
+7590 GOTO 7505
+7595 RETURN 
+8000 REM "Print a line for a 'L'abel type item
+8001 REM "Assume that NO fields are lacking the tilde, since all field should be inserted with positioning logic at lease
+8002 REM "Remove all spaces leaving only fields
+8005 IF POS($7E$=P1$)=0 THEN P1$=""; GOTO 8040
+8010 P3$=P1$,P1$=""
+8015 P9=POS($7E$=P3$); IF P9=0 THEN GOTO 8035
+8020 P1$=P1$+P3$(P9,3),P3$=P3$(P9+3); GOTO 8015
+8035 GOSUB 7500
+8045 RETURN 
+8050 REM "Print out a line to a 'L'abel type item, without line feeds
+8075 WRITE RECORD (W9)P1$
+8095 RETURN 
+8100 REM "Fill out D1$ for J$ as option, J0$ as data
+8125 CALL P2$,ERR=8126,X3$,X4$,P0$,J0$,J$,"",D1$,L0$,L1$
+8145 RETURN 
+8150 REM "Send D1$ out to W9 with no trailing line feed
+8160 WRITE RECORD (W9)D1$
+8195 RETURN 
+8200 REM 'DEBUGGING- PRINT P1$ TO SCREEN
+8201 IF P1$="" THEN GOTO 8245
+8205 PRINT @(0,3),'CE',
+8210 FOR J9=1 TO LEN(P1$)
+8215 IF P1$(J9,1)=$1B$ THEN PRINT "<ESC>", ELSE PRINT P1$(J9,1),
+8220 NEXT J9
+8225 INPUT *
+8245 RETURN 
+8250 REM "Debugging - Print D1$ to Screen
+8255 PRINT @(0,10),'CE',
+8260 FOR J9=1 TO LEN(D1$)
+8265 IF D1$(J9,1)=$1B$ THEN PRINT "<ESC>", ELSE PRINT D1$(J9,1),
+8270 NEXT J9
+8275 INPUT *
+8295 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8950 REM "Module Hellp
+8955 PRINT 'LF','LF'; LIST 0010; LIST 0035,0049; PRINT 'LF'
+8960 J$=LST(PGM(90)); IF POS("ENTER"=J$)=0 THEN GOTO 8961 ELSE J$="CALL "+QUO+X0$+QUO+J$(POS("ENTER"=J$)+5); PRINT J$
+8962 PRINT "X3$    = System Parameters."
+8963 PRINT "X4$    = Format Infomation."
+8965 PRINT "P$     = Print array of characters with print image."
+8967 PRINT "O$     = Options array for print fields with options, stores the data",'LF',"          and options."
+8969 PRINT "W9     = File slot that printer is open on."
+8971 PRINT "F9     = File slot that ZZPARM is open on."
+8973 PRINT "A$     = Flex Format Document Header string (ZF5) returned by BC2FMZ."
+8975 PRINT "A(ALL) = Flex Format Document Header numerics (ZF5) returned by BC2FMZ."
+8977 PRINT "P0$    = Printer hex codes record ('ptr'+Printer type in ZZPARM)."
+8979 PRINT "         RETURNS: If passed in as '', this routine will read it for you."
+8981 PRINT "Q0$    = Reserved for future use."
+8983 PRINT "Q(ALL) = Reserved for future use."
+8985 PRINT "Z0     = RETURNS: Control Code, if Z0=1, means goto end of report."
+8995 GOTO 9930
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

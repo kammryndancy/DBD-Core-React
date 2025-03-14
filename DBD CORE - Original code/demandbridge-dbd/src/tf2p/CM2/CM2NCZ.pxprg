@@ -1,0 +1,27 @@
+0010 REM "Return job totals from CM4 <CM2NCZ>
+0035 REM "3.8 - 09/26/94 - 13.46
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15],A[16],A[17],A[18],A[19],A[20],A[21],A[22],A[23],A[24],A[25],A[26],A[27],A[28],A[29],A[30],A[31],A[32],A[33],A[34],A[35],A[36],A[37],A[38],A[39],A[40]
+1010 REM "A0$ is franchise (company) 3x plus job number 8x
+1015 REM "This program looks at all activity records and builds one
+1016 REM "set of array values.
+1020 ENTER X3$,F0,A0$,T{ALL},T$
+1030 DIM T[40],A[40],T$(0)
+1200 REM "Use device 14 if no device supplied.
+1220 IF F0=0 THEN F0=14; CLOSE (F0); OPEN (14)"CM4"+X3$(9,3)
+1900 REM "GET DATE RANGE IF LEN(A0$)>10
+1920 IF LEN(A0$)>12 THEN D9$=A0$(13),A0$=A0$(1,12)
+2000 REM "Process CM4 records for this job, add to ttoals
+2010 READ (F0,KEY=A0$,DOM=2011)
+2020 READ (F0,END=3000)IOL=0310
+2040 IF A$(1,11)<>A0$(1,11) THEN GOTO 3000
+2045 IF A$(37,1)="0" THEN GOTO 2020
+2048 IF D9$>"" THEN IF A$(16,6)<D9$(1,6) OR A$(16,6)>D9$(7,6) THEN GOTO 2020
+2050 T9$=A$; IF T$="" THEN T$=A$
+2080 FOR X=0 TO 40; T[X]=T[X]+A[X]; NEXT X
+2290 GOTO 2020
+3000 REM "
+3290 GOTO 9900
+9940 EXIT 
+9999 END 

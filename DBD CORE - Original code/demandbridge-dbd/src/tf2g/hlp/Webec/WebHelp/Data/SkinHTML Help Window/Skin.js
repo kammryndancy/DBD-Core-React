@@ -1,0 +1,16 @@
+var xmlSkinData = "";
+xmlSkinData += '<?xml version=\"1.0\" encoding=\"utf-8\"?>';
+xmlSkinData += '<CatapultSkin Version=\"1\" Title=\"DemandBridge eCommerce Online Help\" AutoSyncTOC=\"True\" Tabs=\"TOC,Index,Search\" Top=\"110px\" Left=\"265px\" Width=\"750px\" Height=\"550px\" DefaultTab=\"TOC\" Bottom=\"110px\" Right=\"265px\" Anchors=\"Width,Height\" UseDefaultBrowserSetup=\"True\">';
+xmlSkinData += '    <!-- saved from url=(0016)http://localhost -->';
+xmlSkinData += '    <HtmlHelpOptions ShowMenuBar=\"False\" TopmostWindowStyle=\"False\" AutoShowNavigationPane=\"False\" EnableButtonCaptions=\"True\" NavigationPaneWidth=\"0\" Buttons=\"Hide,Back,Print,Options\" HideNavigationOnStartup=\"False\" />';
+xmlSkinData += '    <Toc LinesBetweenItems=\"True\" LinesFromRoot=\"True\" SingleClick=\"False\" PlusMinusSquares=\"True\" AlwaysShowSelection=\"True\" UseFolderIcons=\"False\" ImageListWidth=\"16\" BinaryStorage=\"False\" />';
+xmlSkinData += '    <Index BinaryStorage=\"True\" />';
+xmlSkinData += '    <WebHelpOptions NavigationPaneWidth=\"170\" VisibleAccordionItemCount=\"0\" AboutBox=\"About.png\" AboutBoxWidth=\"508\" AboutBoxHeight=\"324\">';
+xmlSkinData += '    </WebHelpOptions>';
+xmlSkinData += '    <Stylesheet Link=\"Stylesheet.xml\">';
+xmlSkinData += '    </Stylesheet>';
+xmlSkinData += '    <Toolbar EnableCustomLayout=\"True\" Buttons=\"Home|SelectTOC|SelectIndex|SelectSearch|RemoveHighlight|Print\">';
+xmlSkinData += '        <Script>&lt;a onmouseover=\"this.style.cursor=\'hand\'\"&gt;</Script>';
+xmlSkinData += '    </Toolbar>';
+xmlSkinData += '</CatapultSkin>';
+CMCXmlParser._FilePathToXmlStringMap.Add('Skin', xmlSkinData);

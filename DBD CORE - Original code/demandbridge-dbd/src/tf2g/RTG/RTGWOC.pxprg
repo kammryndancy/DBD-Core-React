@@ -1,0 +1,75 @@
+0010 ! RTGWOC -  Write RT7 Data given customer
+0035 ! "6.0 - 07/24/02 - 14.025277 - dmm
+0040 ! "Copyright 2002 Computer Software Inc.; Norcross, Georgia
+0041 ! "        Licensed Software - All Rights Reserved.
+0100 ! ^100,5 - Call/Enter routine
+0105 SETERR 0125; ENTER CUST$,F$,T$,K$
+0110 ! CUST$=Customer number, lookup customer, if found then if has ZP4 code then lookup ZP4 record, get list of sps to update and call RT2WOR for each
+0115 ! F$ = file name, T$= Update, Delete
+0120 ! K$=key value
+0125 ! If cust# all blanks then we are doing stock inventory so use RT0 to
+0126 ! check stock inventory flag for each salesperson.
+0130 ! 
+0500 ! 500,5 - Open files
+0505 _AR1=HFN; OPEN (_AR1,IOL=*)"AR1"+%C$ ! Customer master
+0510 _RT0=HFN; OPEN (_RT0)"RT0"+%C$ ! Remote TM Saleperson
+0515 _RT7=HFN; OPEN (_RT7)"RT7"+%C$ ! File and key info to tr'fer
+0520 _ZP4=HFN; OPEN (_ZP4,IOL=*)"ZP4"+%C$ ! Telemarketing contact
+0525 ZZPARM=HFN; OPEN (ZZPARM)"ZZPARM"
+0600 ! ^100,5 - Get parameters
+0605 RT_PARM$=""
+0610 CALL "RTGPRM",ERR=*NEXT,RT_PARM$
+1000 ! ^1000,5 - Main processing
+1005 IF STP(CUST$,2)="" THEN {
+1010 ! If customer # blank or '' then that means stock inventory, so build
+1015 ! SEND_TO$ from RT0 info.
+1020 GOSUB CHECK_STOCK_INV
+1025 GOTO 1300
+1030  }
+1035 ! 
+1100 ! ^100,5 - Read customer file
+1105 READ (_AR1,KEY=CUST$(1,10),DOM=9700)
+1110 IF STP(CONT_LIST_CODE$+CONT_CONT_CODE$,2)="" THEN {
+1115 GOTO 9700
+1120  } ELSE {
+1125 READ (_ZP4,KEY=CONT_LIST_CODE$+CONT_CONT_CODE$,DOM=9700,REC=TM$)
+1130  }
+1140 ! 
+1200 REMOTE_TM:! ^100,5 - Call RTGWOR to post to remote T/M based on parms
+1205 SP_CODE$=TM.SPER_CODE$
+1210 CALL "RTGLST",ERR=9700,RT_PARM$,TM.LIST_TYPE_CODE$,SP_CODE$,SEND_TO$
+1215 ! 
+1300 ! ^100,5 - Process SEND_TO$
+1305 IF LEN(SEND_TO$)=0 THEN GOTO 9700
+1310 CLOSE (_RT7); OPEN (_RT7)"RT7"+%C$
+1315 FOR INDEX=1 TO LEN(SEND_TO$)-3 STEP 4
+1320 IF T$="D" THEN {
+1325 CALL "RTGWOR",ERR=1370,SEND_TO$(INDEX,4),F$,T$,K$,S1$,A,A{ALL}
+1330  } ELSE {
+1335 DIM KEY_RT7$(14)
+1340 KEY_RT7$(1,4)=SEND_TO$(INDEX,4)
+1345 KEY_RT7$(5,4)=CONT_LIST_CODE$
+1350 KEY_RT7$(9,6)=F$
+1355 KEY_RT7$+=K$
+1360 WRITE (_RT7,KEY=KEY_RT7$)
+1365  }
+1370 NEXT INDEX
+1375 GOTO 9700
+1380 ! 
+2000 CHECK_STOCK_INV:! ^1000,5
+2005 ! Check RT0 info for each salesperson and add to SEND_TO$ those
+2010 ! tracking stock inventory
+2015 SEND_TO$=""
+2020 SELECT RT0$ FROM _RT0 BEGIN "" END $FF$ WHERE LEN(RT0$)>=78 AND MID(RT0$,78,1)="Y"
+2025 SEND_TO$+=RT0$(1,4)
+2030 NEXT RECORD 
+2035 RETURN 
+2040 ! 
+9700 WRAPUP:! 9700,5 - Close files and clean up
+9705 CLOSE (_AR1)
+9710 CLOSE (_RT0)
+9715 CLOSE (_RT7)
+9720 CLOSE (_ZP4)
+9725 CLOSE (ZZPARM)
+9998 ! 9998,1 - Return to previous
+9999 EXIT 

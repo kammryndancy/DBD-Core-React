@@ -1,0 +1,127 @@
+0010 REM "Repeat Order Validation Routine <FM2ODF>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 05/26/09 - 11.971666 - jdf - SSP# 194940
+0037 REM "194940-Issue with pulling in a repeat order and validating the     
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "We will pass in a string with an identifier (type) and validate certain fields, if we can't validate something we will send back the info so calling program (FM2ODE) can display message and remove any new order records written at this point, if anything besides the string is needed to do the read it will be sent in EXTRA$
+0055 REM "L=Order Line(FT4), S=Shipping info(FT5), P=PO header(FT8)
+0060 REM "Return code will be OK or NOF for not on file or ERR if TYPE$ is not supported, if NOF MSG$ will be message to display
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,RECORD$,TYPE$,EXTRA$,RET_CODE$,MSG$
+0100 SETERR 9000
+0110 X0$="FM2ODF",X1$="Repeat Order Validation Routine"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$
+0320 IOLIST B$
+0330 IOLIST IC0$,IC0[0],IC0[1],IC0[2],IC0[3],IC0[4],IC0[5],IC0[6],IC0[7],IC0[8],IC0[9],IC0[10],IC0[11],IC0[12],IC0[13],IC0[14],IC0[15],IC0[16],IC0[17],IC0[18],IC0[19],IC0[20],IC0[21],IC0[22],IC0[23],IC0[24],IC0[25],IC0[26],IC0[27],IC0[28],IC0[29],IC0[30],IC0[31],IC0[32],IC0[33],IC0[34],IC0[35],IC0[36],IC0[37],IC0[38],IC0[39],IC0[40]; REM " SSP 185963
+0340 IOLIST FM1$,FM1[0],FM1[1],FM1[2],FM1[3],FM1[4],FM1[5],FM1[6],FM1[7],FM1[8],FM1[9],FM1[10],FM1[11],FM1[12],FM1[13],FM1[14],FM1[15],FM1[16],FM1[17],FM1[18],FM1[19],FM1[20],FM1[21],FM1[22],FM1[23],FM1[24],FM1[25],FM1[26],FM1[27],FM1[28],FM1[29],FM1[30],FM1[31]; REM " SSP 185963
+0350 IOLIST FMPX$,FMPX[0],FMPX[1],FMPX[2]; REM "SSP 185963
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FM1...  02O IC0...  03O FMP...  04O FM0...  05O AP4...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0900 ON POS(TYPE$="LSP") GOSUB 5000,1000,1500,2000
+0910 IF RET_CODE$="" THEN RET_CODE$="OK"
+0995 GOTO 9900
+1000 REM "Check fields for order line
+1005 IF POS(" "<>RECORD$(161,10))>0 THEN CALL "ZZDISP","AX",RECORD$(161,10),"A/R",X3$,X$,"",0,0,X4$; CSC$="Y" ELSE CALL "ZZDISP","AX",EXTRA$,"A/R",X3$,J$,"",0,0,X4$
+1010 FM1$=""; DIM FM1[31]; IF RECORD$(14,1)<>"Y" THEN GOTO 1020 ELSE IF CSC$="Y" THEN READ (Z[1],KEY=RECORD$(161,10)+RECORD$(19,10),DOM=1011)IOL=0340; GOTO 1020 ELSE READ (Z[1],KEY=EXTRA$+RECORD$(19,10),DOM=1011)IOL=0340; GOTO 1020
+1012 IF CSC$="Y" THEN MSG$=X$ ELSE MSG$=J$
+1013 RET_CODE$="NOF",MSG$=FNS$(MSG$)+" "+RECORD$(19,10)+" Item Master Missing"
+1014 RETURN 
+1020 IC0$=""; DIM IC0[40]; IF POS(RECORD$(155,1)="IC")>0 THEN READ (Z[2],KEY=RECORD$(161,10)+RECORD$(19,10),DOM=1021)IC0$; GOTO 1030 ELSE GOTO 1030
+1022 RET_CODE$="NOF",MSG$=FNS$(X$)+" "+RECORD$(19,10)+" Item Master Missing"
+1023 RETURN 
+1030 FMPX$=""; DIM FMPX[3]; IF RECORD$(155,1)="S" THEN READ (Z[3],KEY="X"+RECORD$(19,10),DOM=1031)IOL=0350; GOTO 1040 ELSE GOTO 1040
+1032 RET_CODE$="NOF",MSG$=RECORD$(19,10)+" Special Charge Missing"
+1033 RETURN 
+1040 FIND (Z[3],KEY="T"+RECORD$(29,3),DOM=1041)PROD$; GOTO 1095
+1045 RET_CODE$="NOF",MSG$=FNS$(X$)+" "+RECORD$(29,3)+" Product Code Missing"
+1046 IF RECORD$(155,1)<>"M" THEN GOTO 3000
+1047 RETURN 
+1095 RETURN 
+1500 REM "Check fields for shipping information
+1505 IF STP(RECORD$(12,4),3," ")="" OR RECORD$(12,4)="M   " THEN GOTO 1520; REM "SSP112834, could be blank if non-fms, if blank get out,Allow manual also ssp#194780
+1510 READ (Z[4],KEY=RECORD$(11,1)+EXTRA$+RECORD$(12,4),DOM=1511); GOTO 1520
+1512 RET_CODE$="NOF",MSG$=RECORD$(12,4)+" Customer Location Missing"; IF RECORD$(11,1)="D" THEN MSG$=RECORD$(12,4)+" Warehouse Location Missing"
+1513 RETURN 
+1595 RETURN 
+2000 REM "Check fields for PO Header
+2005 IF POS(" "<>RECORD$(7,10))>0 THEN CALL "ZZDISP","AX",RECORD$(7,10),"A/P",X3$,X$,"",0,0,X4$ ELSE X$=""
+2010 READ (Z[5],KEY=RECORD$(7,10),DOM=2011); GOTO 2020
+2012 RET_CODE$="NOF",MSG$=FNS$(X$)+" Vendor Code for PO Missing"
+2013 RETURN 
+2020 IF POS(" "<>RECORD$(17,4))>0 THEN READ (Z[4],KEY="P"+RECORD$(7,10)+RECORD$(17,4),DOM=2021); GOTO 2030 ELSE GOTO 2030
+2021 RET_CODE$="NOF",MSG$=FNS$(X$)+" "+RECORD$(17,4)+" Plant Code for PO Missing"
+2022 RETURN 
+2095 RETURN 
+3000 REM "Replace invalid product code
+3005 IF FM1$<>"" THEN QUESTION$="PC: "+RECORD$(29,3)+"  ITEM: "+J$+" - "+FM1$(11,10)+" "+FM1$(42,40) ELSE IF IC0$<>"" THEN QUESTION$="PC: "+RECORD$(29,3)+"  ITEM:"+J$+" "+IC0$(11,10)+" "+IC0$(21,40) ELSE IF FMPX$<>"" THEN QUESTION$="PC: "+RECORD$(29,3)+"  Spec Chg: "+FMPX$(2,10)+" "+FMPX$(12,40) ! SSP194940 jdf
+3050 CALL "ZZPROM","10FM2ODF",X3$,Z,QUESTION$,"","",X0
+3055 IF Z=4 THEN RET_CODE$="NO",%BT_EXIT$="BUTTON_3"; GOTO 3199 ! SSP194940 jdf
+3070 REM " Select Valid Product code
+3160 IF NOT(%GUI) THEN CALL "ZZENTR","SZU",A{ALL},RECORD$,X4$,X3$,0,22,29,3,C0,"","{3"+X$,"T","IC2MAB04","FMPP","FM2SAA",""; IF C0=6 THEN PRINT 'CS', ! SSP194940 jdf
+3165 IF %GUI THEN PROCESS "FMGODA.2.D","../OPG/OP.EN",REPEAT_PROD_CODE$; RECORD$(29,3)=REPEAT_PROD_CODE$ ! SSP194940 jdf
+3168 IF %GUI AND %BT_EXIT$="BUTTON_3" THEN RET_CODE$="NO"; GOTO 3199 ! SSP194940 jdf
+3170 DIM FMPX[4]; FIND (Z[3],KEY="T"+RECORD$(29,3),DOM=3160)IOL=0350
+3175 RET_CODE$="NEW"
+3180 IF NOT(%GUI) THEN PRINT @(10,22),"Product code: ",RECORD$(29,3)," - ",FMPX$(5,15), ! SSP194940 jdf
+3199 GOTO 1047
+5000 REM "Type sent in not found
+5010 RET_CODE$="ERR"
+5095 RETURN 
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "194780-Isn't allowed to do a repeat order because the original     
+56002 REM "194940-Issue with pulling in a repeat order and validating the     

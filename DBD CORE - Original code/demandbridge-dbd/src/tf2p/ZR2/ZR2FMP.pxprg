@@ -1,0 +1,168 @@
+0010 REM "Extend FMPS Record Length   <ZR2FMP>
+0035 REM "5.7 - 03/11/10 - 10.944166 - jvv - SSP# 229728
+0037 REM "229728-Parameter for special charge codes classified as freight to 
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 REM "This program was created to increase the size of the records
+0051 REM "of the Type 'S' records in the FMP file. This is needed because
+0052 REM "of the addition of the Pick Priority to the record.
+0100 REM + Program Initialization
+0120 SETESC ESCAPE_ROUTINE
+0125 SETERR ERROR_ROUTINE
+0130 ENTER X3$,X4$,Q0$,Q1$,ERR=*NEXT
+0140 X0$="ZR2FMP"; X1$="Extend FMPS Record Length"
+0150 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0 ! call ZZCOMP
+0198 ! 
+0199 ! 
+0200 REM + Define Variables
+0210 DIM Z[255]
+0220 FMP_CTR=0
+0230 NEW_FMPS_LEN=280
+0240 NEW_FMPX_LEN=222 ! SSP 229728
+0250 DIM FMPX[3] ! SSP 229728
+0298 ! 
+0299 ! 
+0300 REM + Initialize IOLISTS
+0310 IOLIST_FMPS:IOLIST FMPS$
+0320 IOLIST_FMPX:IOLIST FMPX$,FMPX[0],FMPX[1],FMPX[2],FMPX[3] ! SSP 229728
+0398 ! 
+0399 ! 
+0500 REM + Open Files
+0510 Z$="01O FMP...  "
+0550 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! call to open the file
+0560 FMP_CHN=Z[1]
+0698 ! 
+0699 ! 
+0800 REM + Screen Display
+0820 GOSUB BACKGROUND
+0870 IF Q1$="*" THEN GOTO MAIN_LOOP
+0875 CALL "ZZPROM",".Y",X3$,S0,"Proceed with utility?","","",0
+0880 ON S0 GOTO MAIN_LOOP,END_PROGRAM
+0898 ! 
+0899 ! 
+1000 MAIN_LOOP:
+1020 READ (FMP_CHN,KEY="S",DOM=*NEXT)
+1030 GOSUB INIT_BAR_GRAPH
+1040 GOSUB NEXT_KEY
+1045 FMP_CTR=0 ! SSP 229728
+1050 READ (FMP_CHN,KEY="X",DOM=*NEXT) ! SSP 229728
+1055 GOSUB INIT_BAR_GRAPH ! ssp229728
+1060 GOSUB NEXT_FMPX_KEY ! SSP 229728
+1090 GOTO END_PROGRAM
+1098 ! 
+1099 ! 
+1200 NEXT_KEY:
+1210 FMPS_KEY$=KEY(FMP_CHN,END=*RETURN)
+1220 IF FMPS_KEY$(1,1)<>"S" THEN GOTO *RETURN
+1230 EXTRACT (FMP_CHN,KEY=FMPS_KEY$)FMPS$
+1235 IF LEN(FMPS$)<>NEW_FMPS_LEN THEN {
+1240 FMPS$=PAD(FMPS$,NEW_FMPS_LEN)
+1245  }
+1250 WRITE (FMP_CHN,KEY=FMPS_KEY$)FMPS$
+1260 FMP_CTR+=1 ! increment the counter
+1270 IF MOD(FMP_CTR,T2)=1 THEN GOSUB UPDATE_BAR_GRAPH
+1280 GOTO NEXT_KEY
+1290 RETURN 
+1298 ! 
+1299 ! 
+1300 NEXT_FMPX_KEY:! SSP 229728
+1310 FMPX_KEY$=KEY(FMP_CHN,END=*RETURN)
+1320 IF FMPX_KEY$(1,1)<>"X" THEN GOTO *RETURN
+1330 EXTRACT (FMP_CHN,KEY=FMPX_KEY$)IOL=IOLIST_FMPX
+1335 IF LEN(FMPX$)<>NEW_FMPX_LEN THEN {
+1340 FMPX$=PAD(FMPX$,NEW_FMPX_LEN)
+1345  }
+1350 WRITE (FMP_CHN,KEY=FMPX_KEY$)IOL=IOLIST_FMPX
+1360 FMP_CTR+=1 ! increment the counter
+1370 IF MOD(FMP_CTR,T2)=1 THEN GOSUB UPDATE_BAR_GRAPH
+1380 GOTO NEXT_FMPX_KEY
+1390 RETURN 
+1399 ! 
+6000 BACKGROUND:
+6001 REM "These lines are available for any notes"
+6002 REM "regarding the routine"
+6020 PRINT (0,ERR=*NEXT)'SB', ! set the focus to the background
+6030 PRINT @(0,3),'CE' ! clear the screen starting at line 3
+6032 PRINT @(0,3),"This program will increase the length of the Type S records"
+6034 PRINT @(0,4),"in the FMP file to "+STR(NEW_FMPS_LEN)+"."
+6280 PRINT (0,ERR=*NEXT)'SF', ! set focus to the foreground
+6290 RETURN 
+6298 ! 
+6299 ! 
+8100 INIT_BAR_GRAPH:
+8101 ! GOSUB here, once, at the beginning, after the background is
+8102 ! set and before the Proceed? question. Set T to total # to do
+8103 ! (by calling ZZINFO) and T2 to the reporting interval
+8104 ! (report every T2 number of records) this is typically 2% of
+8105 ! total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",FMP_CHN,T9,X3$,T,T2,K,B,D,S0,S1,F$
+8115 H2$=STR(T)+" # of records to do "; GOSUB 8800
+8125 ! Set T2, we make sure T2 is > 1, because later on we MOD
+8126 ! and look for a value of 1. IF T2 is 1, then nothing would
+8127 ! get reported. We look fora result of 1 because this causes
+8128 ! the first record to automatically start the reporting instead
+8129 ! of waiting until the T2'th record to get the first report
+8130 T2=INT(T*.02); IF T2<1 THEN T2=2
+8135 C=0,T1=0
+8140 PRINT @(0,4),'CL',
+8145 RETURN 
+8148 ! 
+8149 ! 
+8150 UPDATE_BAR_GRAPH:
+8151 ! Call this each time to update the bar graph.
+8152 ! Display horiz. bar graph 8150: given total #, T and current #
+8153 ! , C, and time counter T1 (T1 is init'ed here and used here,
+8154 ! just don't use it somewhere else)
+8175 CALL "ZZBARG",X3$,"HG",21,10,50,T1,T,FMP_CTR
+8195 RETURN 
+8198 ! 
+8199 ! 
+8800 DISPLAY_BAR_PROGRESS:
+8801 ! Display progress  - Eventually write a log file
+8810 L=L+1; IF L>15 THEN PRINT @(0,5),'LD',@(0,20),; L=15 ELSE PRINT @(0,L+5),
+8815 X$=STR(INT(TIM):"00")+STR(INT(FPT(TIM)*100):"00")
+8820 ! PRINT DAY," @ ",FNT$(X$)," ",H1$," ",H2$
+8830 H2$=""
+8840 RETURN 
+8998 ! 
+8999 ! 
+9000 ERROR_ROUTINE:
+9001 ! Error Processing Routine
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR ERROR_ROUTINE
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_ROUTINE; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 ESCAPE_ROUTINE:
+9305 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR ERROR_ROUTINE; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR ERROR_ROUTINE; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 END_PROGRAM:
+9901 ! End Program
+9905 PRINT @(0,20),'CL',
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+55998 ! 
+55999 ! 
+56000 REM + Modification History
+56001 REM " Program created on 02/13/2008 : mhe
+56002 REM "215969-FMPS records were expanded on ssp 190478.  Nothing was done
+56004 REM "229728-Parameter for special charge codes classified as freight to 

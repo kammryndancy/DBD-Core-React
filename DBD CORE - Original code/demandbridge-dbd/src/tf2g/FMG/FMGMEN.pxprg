@@ -1,0 +1,20 @@
+0010 ! FMGMEN - Item Management Menu
+0015 REM "5.0 - 06/01/2001 - rms - SSP# 133604
+0020 REM "Copyright 2001 Computer Software Inc.; Norcross, Georgia
+0021 REM "        Licensed Software - All Rights Reserved.
+0030 PRINT 'SHOW'(-1),
+0040 PROCESS "MENU","../FMG/FM.EN"
+0050 END 
+0100 INIT:! ^100,5 - Initialization Routine
+0105 IF DEC(MID(MSE,22,1))>0 THEN %WDX$="[WDX]" ELSE %WDX$=""
+0110 IF %WDX$<>"" THEN {
+0115 CALL %WDX$+"*WINDX.UTL;GET_LWD",%WINDX_DIR$
+0116 IF %WINDX_DIR$(LEN(%WINDX_DIR$),1)<>DLM THEN %WINDX_DIR$+=DLM
+0120  }
+0125 IF NOT(LEN(%WDX$)) THEN {
+0130 PICTURE$=".\tf_logo.bmp"
+0135  } ELSE {
+0140 PICTURE$=%WINDX$+%WINDX_DIR$+"topform\tf_logo.bmp"
+0145  }
+0150 EXIT 
+0155 END 

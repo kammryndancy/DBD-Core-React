@@ -1,0 +1,597 @@
+0010 REM "Remote T/M Package Input <RT2PIN>
+0015 REM "Prog Type: IP-3.1.2
+0020 SETESC 9300; SETERR 9000
+0035 REM "4.1 - 12/18/97 - 14.53 - kmc - SSP# 057163
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "F$ is name of Package
+0071 REM "R$ is return string, currently  normally ''
+0072 REM "R is return value, 0 if everything ok
+0073 REM "O$ is option string as follows:
+0074 REM "No options available at this time
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,F$,O$,R$,R
+0100 SETERR 9000
+0110 X0$="RT2PIN",X1$="Remote Telemarketing Package Input"
+0120 DIM S$(40),A[1]
+0140 S1$=$7E$,S2$=$8A$
+0150 PRINT @(0,1),X0$,@(40-INT(LEN(X1$)/2),1),X1$,; WAIT (0)
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O "+F$+"  13O ZZPARM "; REM "Reserve 3 & 4 for use later
+0520 GOSUB ZZFLES; ON Z0 GOTO *NEXT,9900
+0580 W9$=""; CALL "RT2PRM",ERR=*NEXT,X3$,X4$,W9$
+0600 REM "Rec_Index is current record index
+0610 REM "bytes_read < 16384 or else string size will be > 32k
+0620 R$="",R=0
+0621 BYTES_READ=16000,REC_INDEX=0
+0630 PRINT @(0,3),'CE',; WAIT (0)
+0631 LINE_CNT=7,LINE_TOP=7,LINE_BOTTOM=20
+0640 REM "Reopen the file with ISZ of bytes_read
+0650 CLOSE (Z[1]); OPEN (Z[1],ISZ=BYTES_READ)F$
+0660 GOSUB INIT_BAR_GRAPH
+1000 MAIN:REM "Read thru file
+1010 IF LEN(B$)<BYTES_READ AND B<>2 THEN {
+1020 READ RECORD (Z[1],IND=REC_INDEX,END=1070)B1$
+1040 REC_INDEX=REC_INDEX+1,B$=B$+B1$
+1050  }
+1060 GOTO 1080
+1070 EOF_FLAG=2; REM "Set B to 2 to signal end of file
+1080 REM "Get next record from package
+1090 B0=LEN(B$)
+1100 IF B0<5 THEN {
+1110 GOTO PACKAGE_END
+1120  } ELSE {
+1130 IF POS($00$<>B$(1,5))=0 THEN {
+1140 GOTO PACKAGE_END
+1150  } ELSE {
+1160 L=NUM(B$(1,5),ERR=1190)+5
+1170 GOTO 1220
+1180  }
+1190 R=1; M$="Bad record length ("+B$(1,5)+"). Terminating processing!"
+1200 GOSUB MSG_M
+1210 GOTO PACKAGE_END
+1220 IF B0<L THEN GOSUB 7800; GOTO 1220 ELSE A$=B$(1,L); IF B0=L THEN B$="" ELSE B$=B$(L+1)
+1230 C0=C0+1
+1240 REM LET M$=STR(C0)+"|"+STR(B0)+">"+STR(LEN(B$))+"+"+STR(LEN(A$))+"|"+STR(L)+"|"+A$+"|";GOSUB 0MSG_M
+1250 REM "Remove record size & $0A$
+1260 A0$=A$(6,L-6)
+1270 REM "Pull off CRC into H$
+1280 H$=A0$(LEN(A0$)-3,4),A0$=A0$(1,LEN(A0$)-4)
+1290 IF HTA(CRC(A0$))<>H$ THEN {
+1300 M$="Record "+STR(C0:"00000")+" has bad CRC -> "+H$+"|"+HTA(CRC(A0$))+"|"
+1310 GOSUB MSG_M
+1320 R=1
+1330 GOTO PACKAGE_END
+1340  }
+1350 IF LEN(A0$)<4 THEN {
+1360 M$="Record "+STR(C0:"00000")+" is too short. ("+STR(LEN(A0$))+")"
+1370 GOSUB MSG_M
+1380 GOTO 1430
+1390  }
+1400 C0$=A0$(1,3),D$=A0$(4)
+1410 IF MOD(C0,100)=0 THEN {
+1411 M$="Currently processing record: "+STR(C0); GOSUB MSG_M
+1412 GOSUB UPDATE_BAR_GRAPH
+1413 WAIT (0)
+1414  }
+1420 GOSUB DO_CMD
+1430 END_MAIN:GOTO MAIN
+1440 DO_CMD:
+1450 REM "Take action based on command
+1460 ON INT((POS(C0$="000ZZZ001002003004005006007008009010",3)+2)/3) GOTO 1590,1470,1480,1490,1500,1510,1520,1530,1540,1550,1560,1570,1580,1590
+1470 GOSUB CMD_000; GOTO END_DO_CMD; REM "000 - Start of package
+1480 GOSUB CMD_ZZZ; GOTO END_DO_CMD; REM "ZZZ - End of package
+1490 GOSUB CMD_001; GOTO END_DO_CMD; REM "001 - Message
+1500 GOSUB CMD_002; GOTO END_DO_CMD; REM "002 - Add record to DIRect or sort file
+1510 GOSUB CMD_003; GOTO END_DO_CMD; REM "003 - Delete record from DIRect or sort file
+1520 GOSUB CMD_004; GOTO END_DO_CMD; REM "004 - Add record to DIRect file, but don't overwrite existing
+1530 GOSUB CMD_005; GOTO END_DO_CMD; REM "005 - Delete 1 or more records matching the 1st part of th key
+1540 GOSUB CMD_006; GOTO END_DO_CMD; REM "006 - Call Program with 2 parameters
+1550 GOSUB CMD_007; GOTO DO_CMD; REM "007 - Unpack data into C0$ and D$ and then run it thru 1200's again
+1560 GOSUB CMD_008; GOTO END_DO_CMD; REM "008 - Add record in index file & update Header file pointer
+1570 GOSUB CMD_009; GOTO END_DO_CMD; REM "009 - Create a file if it does not already exist
+1580 GOSUB CMD_010; GOTO END_DO_CMD; REM "010 - Binary file copy
+1590 END_DO_CMD:RETURN 
+1600 CMD_000:REM "start of package
+1610 GOSUB STRIP_OFF_FIELD; D0$=F5$
+1620 GOSUB STRIP_OFF_FIELD; D1$=F5$
+1630 GOSUB STRIP_OFF_FIELD; D2$=F5$
+1640 GOSUB STRIP_OFF_FIELD; PACKAGE_SP$=F5$
+1650 M$=FNA$(F$)+"-"+FNA$(D2$)
+1660 M$=M$+S$(1,3)+FNE$(D0$)+S$(1,2)+D1$(1,2)+":"+D1$(3,2); GOSUB MSG_M; PRINT @(9,3),M$,; WAIT (0)
+1670 END_CMD_000:RETURN 
+1680 CMD_ZZZ:REM "End of File
+1690 GOSUB STRIP_OFF_FIELD
+1700 F5=0; F5=NUM(F5$,ERR=*NEXT)
+1710 IF F5<>C0 THEN {
+1720 M$="Package "+FNA$(F$)+" incomplete! Expected "+STR(F5)+" records, got "+STR(C0)+"!"
+1730  } ELSE {
+1740 M$="Package "+FNA$(F$)+" loaded successfully!"
+1750  }
+1760 GOSUB MSG_M
+1770 END_CMD_ZZZ:RETURN 
+1780 CMD_001:
+1790 REM - Message line
+1800 GOSUB STRIP_OFF_FIELD; IF F5$>"" THEN M$=F5$; GOSUB MSG_M
+1810 GOSUB STRIP_OFF_FIELD; IF F5$>"" THEN M$=F5$; GOSUB MSG_M
+1820 END_CMD_001:RETURN 
+1830 CMD_002:
+1840 REM " - Add record to DIRect or sort file
+1850 GOSUB STRIP_OFF_FIELD; F3$=F5$ REM "Get file name in F3$
+1860 GOSUB STRIP_OFF_FIELD; K3$=F5$ REM key in K3$ and data, if any, in D$
+1870 IF H3$<>F3$ THEN {
+1880 H3$="",Z$="03CU"+H3$+" 03O "+F3$+" "
+1890 GOSUB ZZFLES
+1900 ON Z0 GOTO *NEXT,END_CMD_002
+1910  }
+1920 REM "Hold currently open file name  in H3$
+1930 H3$=F3$
+1940 REM "Write out to sort file
+1950 IF D$="" OR D$=S1$+S1$+S1$ THEN {
+1960 WRITE (Z[3],KEY=K3$); GOTO END_CMD_002
+1970  }
+1980 REM "strip off seperators added as we have gone along
+1990 IF D$(LEN(D$),1)=S1$ THEN D$=D$(1,LEN(D$)-1)
+2000 P=POS(S1$=D$); IF P<>0 THEN D$(P,1)=S2$; GOTO *SAME
+2010 IF H3$(1,3)="ZP4" THEN {
+2020 RT_COMM$="U"; GOSUB PROCESS_ZP4
+2030 GOTO END_CMD_002
+2040  } ELSE {
+2050 WRITE RECORD (Z[3],KEY=K3$,ERR=2110)D$
+2060 IF H3$(1,3)="ZP5" THEN { RT_COMM$="U"; GOSUB PROCESS_ZP5 }
+2090 GOTO END_CMD_002
+2100  }
+2110 IF ERR=1 THEN { D$=D$(1,LEN(D$)-1); GOTO 2010
+2111  } ELSE {IF ERR=2 THEN {CALL "ZZEXPF",ERR=9000,X3$,X4$,"A",STR(Z[3]),Q0; GOTO 2010
+2114  } ELSE { M$="Add record Error: "+STR(ERR)+" File: "+F3$+" key: "+K3$ } }
+2116 GOSUB MSG_M
+2117 INPUT @(0,21),"<Ret> to continue",*,
+2118  } }
+2120 END_CMD_002:RETURN 
+2130 CMD_003:REM " - Delete record from DIRect or sort file
+2140 GOSUB STRIP_OFF_FIELD; F3$=F5$ REM "F3$=file name
+2150 GOSUB STRIP_OFF_FIELD; K3$=F5$ REM K3$=key to delete
+2160 IF H3$<>F3$ THEN {
+2170 H3$="",Z$="03CU"+H3$+" 03O "+F3$+" "
+2180 GOSUB ZZFLES
+2190 ON Z0 GOTO 2205,2305
+2200  }
+2210 H3$=F3$; REM "Hold currently open file name  in H3$
+2220 IF H3$(1,3)="ZP4" THEN {
+2230 RT_COMM$="D"
+2240 GOSUB PROCESS_ZP4
+2250  } ELSE {
+2260 IF POS(H3$(1,3)="ZP5ZPB",3) THEN {
+2270 RT_COMM$="D",RT_FILE$=H3$(1,3)+"..."
+2280 GOSUB PROCESS_ZP5
+2290  } }
+2300 REMOVE (Z[3],KEY=K3$,DOM=*NEXT)
+2310 END_CMD_003:RETURN 
+2320 CMD_004:
+2330 REM - Add record to DIRect file, don't overwrite
+2340 GOSUB STRIP_OFF_FIELD; F3$=F5$ REM F3$=file name
+2350 GOSUB STRIP_OFF_FIELD; K3$=F5$ REM K3$=key
+2360 GOSUB STRIP_OFF_FIELD; S3$=F5$ REM S3$=start pos of seq #
+2370 GOSUB STRIP_OFF_FIELD; S4$=F5$ REM S4$=len seq #, ,data is left in D$
+2380 IF H3$<>F3$ THEN {
+2390 H3$="",Z$="03CU"+H3$+" 03O "+F3$+" "
+2400 GOSUB ZZFLES
+2410 ON Z0 GOTO 2425,2670
+2420  }
+2430 H3$=F3$; REM "Hold currently open file name  in H3$
+2440 REM "strip off seperators added as we have gone along
+2450 IF D$(LEN(D$),1)=S1$ THEN D$=D$(1,LEN(D$)-1)
+2460 P=POS(S1$=D$); IF P<>0 THEN D$(P,1)=S2$; GOTO 2460
+2470 REM "If key exists we need to increment seq #
+2480 FIND (Z[3],KEY=K3$,DOM=2570)
+2490 GOSUB INCR_SEQ_NO
+2500 IF X=0 THEN {
+2510 GOTO 2480
+2520  } ELSE {
+2530 M$="Cannot find unique sequence number for record "+STR(C9)+"."
+2540 GOSUB MSG_M
+2550 GOTO END_CMD_004
+2560  }
+2570 IF D$="" OR D$=S1$+S1$ THEN {
+2580 WRITE (Z[3],KEY=K3$); GOTO 2670
+2590  } ELSE {
+2600 WRITE RECORD (Z[3],KEY=K3$,ERR=2620)D$; GOTO 2670
+2610  }
+2620 IF ERR=1 THEN {
+2630 D$=D$(1,LEN(D$)-1); GOTO 2570
+2640  } ELSE {
+2650 WRITE RECORD (Z[3],KEY=K3$)D$
+2660  }
+2670 IF POS(H3$(1,3)="ZP5ZPB",3) THEN {
+2680 RT_COMM$="U",RT_FILE$=H3$(1,3)+"..."
+2690 GOSUB PROCESS_ZP5
+2700  }
+2710 END_CMD_004:RETURN 
+2720 CMD_005:
+2730 REM - Remove 1 or more records where the 1st part of the key matchs
+2740 GOSUB STRIP_OFF_FIELD; F3$=F5$ REM "F3$=file name
+2750 GOSUB STRIP_OFF_FIELD; K3$=F5$ REM K3$=key to delete
+2760 IF H3$<>F3$ THEN H3$="",Z$="03CU"+H3$+" 03O "+F3$+" "; GOSUB ZZFLES; ON Z0 GOTO 2765,2825
+2770 REM "Hold currently open file name  in H3$
+2780 H3$=F3$
+2790 REM "Use extract, the key MIGHT be an exact match
+2800 EXTRACT (Z[3],KEY=K3$,DOM=*NEXT)
+2810 K9$=KEY(Z[3],END=END_CMD_005); IF K9$(1,LEN(K3$))<>K3$ THEN GOTO END_CMD_005
+2820 REMOVE (Z[3],KEY=K9$,DOM=2810); GOTO 2810
+2830 END_CMD_005:RETURN 
+2840 CMD_006:
+2850 REM "Call program with 2 parameters
+2860 GOSUB STRIP_OFF_FIELD; P0$=F5$ REM "Put program name into P0$
+2870 GOSUB STRIP_OFF_FIELD; P1$=F5$ REM parameters 1
+2880 GOSUB STRIP_OFF_FIELD; P2$=F5$ REM parameters 2
+2890 CALL P0$,ERR=*NEXT,X3$,X4$,P1$,P2$; GOTO END_CMD_006
+2900 M$=STR(C9)+" Error calling program "+P0$+" P1:"+P1$+" P2:"+P2$; GOSUB MSG_M
+2910 END_CMD_006:RETURN 
+2920 CMD_007:
+2930 REM "Unpack data into C0$ and D$ and then
+2940 REM run it thru DO_CMD again
+2950 A0$=ATH(D$)
+2960 REM "Remember to skip seperator @ A0$(4)
+2970 C0$=A0$(1,3),D$=A0$(5)
+2980 REM PRINT @(0,15),'CE',"C0$=",C0$,'LF'," D$=",D$,;INPUT *
+2990 END_CMD_007:RETURN 
+3000 CMD_008:
+3010 REM "Add record to index file, update pointers in header record
+3020 REM "records added to index file in the order received
+3030 GOSUB STRIP_OFF_FIELD; F4$=F5$ REM "Header file in F4$
+3040 GOSUB STRIP_OFF_FIELD; K4$=F5$ REM header key in K4$
+3050 GOSUB STRIP_OFF_FIELD; F4=NUM(F5$,ERR=3480) REM header index pointer field in F4,
+3060 GOSUB STRIP_OFF_FIELD; F3$=F5$ REM Index file in F3$, index file data left in D$
+3070 IF H3$<>F3$ THEN H3$="",Z$="03CU"+H3$+" 03O "+F3$+" " ELSE Z$=""
+3080 GOSUB ZZFLES; ON Z0 GOTO *NEXT,END_CMD_008
+3090 REM "Hold currently open file names in H3$ & H4$
+3100 H3$=F3$,H4$=F4$
+3110 REM "strip off seperators added as we have gone along
+3120 IF D$(LEN(D$),1)=S1$ THEN D$=D$(1,LEN(D$)-1)
+3130 P=POS(S1$=D$); IF P<>0 THEN D$(P,1)=S2$; GOTO 3130
+3140 REM "I3 is previous index, we'll need to read and set it also
+3150 REM h3 is first index, we'll need to update the header with it
+3160 REM at the end. We'll change it if the file we're writing, the
+3170 REM key we're writing or the bucket we're updating changes'
+3180 IF C4$<>F4$+K4$+STR(F4) THEN {
+3190 C4$=F4$+K4$+STR(F4),I3=0,H3=0,A9=0
+3200  }
+3210 REM "Get A9, open record in index
+3220 GOSUB LOAD_A9_NEXT_FILE_INDEX
+3230 REM "Clear the pointer to the next record to 0, so the
+3240 REM chain will be closed if we have any problems.
+3250 V0$=D$,V0=1,V1$="-1"; GOSUB CHG_FIELD; D$=V0$
+3260 WRITE RECORD (Z[3],IND=A9)D$
+3270 REM "If we had a previous index record, read it and update
+3280 REM the link to point to the one we just wrote out
+3290 IF I3>0 THEN {
+3300 READ RECORD (Z[3],IND=I3)D3$; V0$=D3$,V0=1,V1$=STR(A9)
+3310 GOSUB CHG_FIELD
+3320 D3$=V0$
+3330 WRITE RECORD (Z[3],IND=I3)D3$
+3340  }
+3350 I3=A9
+3360 IF H3=0 THEN {
+3370 H3=1; Z$="04CU 04O "+F4$+" "
+3380 GOSUB ZZFLES
+3390 IF Z0>1 THEN GOTO 3460
+3400 READ RECORD (Z[4],KEY=K4$,DOM=3460)D4$
+3410 V0$=D4$,V0=F4,V1$=STR(A9)
+3420 GOSUB CHG_FIELD
+3430 D4$=V0$
+3440 WRITE RECORD (Z[4],KEY=K4$)D4$
+3450  }
+3460 REM " Close header so it won't be open twice
+3470 Z$="04CU "; GOSUB ZZFLES
+3480 END_CMD_008:RETURN 
+3490 CMD_009:REM - Create file if it does not exist
+3500 GOSUB STRIP_OFF_FIELD; F8$=FNA$(F5$) REM "File name in F8$
+3510 GOSUB STRIP_OFF_FIELD; D8$=F5$ REM "file path, was Disk number in D8$
+3520 GOSUB STRIP_OFF_FIELD; K8$=F5$ REM "Key size in K8$
+3530 GOSUB STRIP_OFF_FIELD; B8$=F5$ REM "Bytes per record in B8$
+3540 GOSUB STRIP_OFF_FIELD; N8$=F5$ REM "Number of records in N8$
+3550 REM "Convert strings to numbers
+3560 REM build windows file path
+3570 IF POS("/"=D8$)>0 THEN D8$=SUB(D8$,"/",DLM)
+3571 LCHAR=LEN(D8$)
+3572 IF MID(D8$,1,1)="\" THEN {
+3573 TEMPDIR$=MID(D8$,2,LCHAR)
+3574  } ELSE {
+3575 TEMPDIR$=D8$
+3576  }
+3577 DIRFLAG=FNDIRCHECK(TEMPDIR$)
+3578 DCNT=0,DTOTAL=0,DEND=1
+3579 DTOTAL=POS(DLM=TEMPDIR$,1,0)
+3580 IF DIRFLAG=0 THEN {
+3600 FOR LOCAL X=1 TO DTOTAL
+3601 DEND=POS(DLM=TEMPDIR$,1,X)-1
+3602 SUBDIR$=MID(TEMPDIR$,1,DEND)
+3603 IF FNDIRCHECK(SUBDIR$)=0 THEN DIRECTORY SUBDIR$,ERR=*NEXT
+3610 NEXT X
+3611  }
+3620 REM IF POS(DLM=d8$)=1 THEN sep$="" ELSE sep$=DLM
+3630 FILE_PATH$=D8$; REM file_path$=HWD+sep$+d8$
+3640 KEY_SIZE=NUM(K8$,ERR=3690)
+3660 REC_SIZE=NUM(B8$,ERR=*NEXT)
+3670 REC_CNT=NUM(N8$,ERR=*NEXT)
+3680 GOTO 3710
+3690 M$="Error in numbers for file create |"+F8$+"|"+D8$+"|"+K8$+"|"+B8$+"|"+N8$+"|"
+3700 GOSUB MSG_M; R=1; GOTO PACKAGE_END
+3710 REM "check if file already exists with company extension
+3720 IF LEN(F8$)>=4 THEN {
+3730 IF F8$(4)="..." THEN {
+3740 CLOSE (14); OPEN (14,ERR=3770)F8$(1,3)+X3$(9,3)
+3750 CLOSE (14); GOTO END_CMD_009
+3760  } }
+3770 REM Check if file already exists without optional company extension
+3780 IF LEN(F8$)>=4 THEN {
+3790 IF F8$(4)="..." THEN {
+3800 CLOSE (14); OPEN (14,ERR=3840)F8$(1,3)
+3810 CLOSE (14)
+3820 GOTO END_CMD_009
+3830  } }
+3840 REM CHECK IF File already exists
+3850 CLOSE (14); OPEN (14,ERR=3870)F8$
+3860 CLOSE (14); GOTO END_CMD_009
+3870 REM File does not exist so make it
+3880 IF LEN(F8$)>=4 THEN {
+3890 IF STP(F8$(4),1,".")=F8$(1,3) THEN F8$(4)=X3$(9,3)
+3900  }
+3910 IF REC_CNT=0 AND KEY_SIZE=0 AND REC_SIZE<>0 THEN REC_CNT=100
+3920 REM (aftwr 3930) we know either Key_size<>0 and/or rec_size <>0
+3930 IF KEY_SIZE=0 AND REC_SIZE=0 AND REC_CNT=0 THEN {
+3940 SERIAL FILE_PATH$+F8$,ERR=4050
+3950  } ELSE {
+3960 IF KEY_SIZE=0 THEN {
+3970 INDEXED FILE_PATH$+F8$,REC_CNT,REC_SIZE,ERR=4050
+3980  } ELSE {
+3990 IF REC_SIZE=0 THEN {
+4000 SORT FILE_PATH$+F8$,KEY_SIZE,ERR=4050
+4010  } ELSE {
+4020 DIRECT FILE_PATH$+F8$,KEY_SIZE,0,REC_SIZE,ERR=4050
+4030  } } }
+4040 GOTO 4060
+4050 M$="Error in create for file create |"+STR(ERR)+"|"+F8$+"|"+D8$+"|"+K8$+"|"+B8$+"|"+N8$+"|"; GOSUB MSG_M; R=1; GOTO PACKAGE_END
+4060 REM "If indexed file, then initialize 0 record
+4070 IF KEY_SIZE=0 AND REC_SIZE<>0 THEN {
+4080 OPEN (14,ERR=END_CMD_009)F8$
+4090 CALL "ZZINIT",ERR=END_CMD_009,"14"
+4100 CLOSE (14)
+4110  }
+4120 END_CMD_009:RETURN 
+4130 CMD_010:REM - Binary text copy
+4140 GOSUB STRIP_OFF_FIELD; F3$=FNA$(F5$) REM filename
+4150 GOSUB STRIP_OFF_FIELD; BYTE_INDEX$=F5$ REM byte index
+4160 IF FN%NMV(BYTE_INDEX$)=0 THEN GOTO END_CMD_010
+4180 IF LEN(F3$)>4 THEN {
+4190 IF STP(F3$(4),3,".")="" THEN F3$(4)=X3$(9,3)
+4200 IF H3$<>F3$ THEN H3$="",Z$="03CU"+H3$+" 03O "+F3$+" "
+4210 GOSUB ZZFLES
+4220 IF Z0>0 THEN {
+4230 GOTO END_CMD_010
+4240  } ELSE {
+4250 H3$=F3$
+4260 CLOSE (Z[3]); OPEN (Z[3],ISZ=-1)F3$
+4270  } REM "If not already open, open it as a TEXT file
+4280 DATA_OUT$=ATH(D$); REM "Convert back to binary data
+4290 WRITE RECORD (Z[3],IND=NUM(BYTE_INDEX$),SIZ=LEN(DATA_OUT$))DATA_OUT$
+4300 END_CMD_010:RETURN 
+4900 REM "End of lines
+4910 Y[4]=-1; WRITE (F,IND=0)IOL=0290
+4920 CALL "ZZEXPF",X3$,X4$,"X"+STR(F),"",G9; IF G9>0 THEN GOTO 5290
+4925 EXTRACT (F,IND=0)IOL=0290
+4930 Z=NUM(FIN(F,"MAXREC")); IF Z<>0 THEN Y[3]=Z-1
+4935 Y[4]=-2; WRITE (F,IND=0)IOL=0290
+4940 GOTO 5230
+4980 GOTO 5290
+5000 PACKAGE_END:REM "End of package
+5010 IF C0$<>"ZZZ" THEN R=1; M$="Package incomplete, last record not found! ("+C0$+")"; GOSUB MSG_M
+5020 GOSUB UPDATE_BAR_GRAPH
+5030 CALL "*progbar;Wrap_up"
+5095 GOTO 9900
+5200 LOAD_A9_NEXT_FILE_INDEX:
+5201 REM "GET NEXT INDEX TO FILE IN A9
+5205 DIM Y[4]; F=Z[3]
+5210 EXTRACT (F,IND=0,ERR=5295)IOL=0290
+5215 IF Y[4]=-2 THEN READ (F); WAIT 0; GOTO 5210
+5220 Y[4]=-2; WRITE (F,IND=0)IOL=0290
+5230 IF Y[1]<1 THEN A9=Y[2],Y[2]=Y[2]+1; GOTO 5260
+5255 A9=Y[1]; READ (F,IND=A9)Y[1]
+5260 IF Y[0]<Y[3] OR Y[3]<=0 THEN Y[0]=Y[0]+1,Y[4]=-1 ELSE Y[2]=Y[2]-1; GOTO 4900
+5280 WRITE (F,IND=0)IOL=0290
+5290 RETURN 
+5295 IF ERR<>0 THEN GOTO 9000 ELSE RETRY 
+7500 MSG_M:REM "Print message M
+7504 IF LEN(M$)>78 THEN M$=M$(1,78)
+7505 IF LINE_CNT>LINE_BOTTOM THEN {
+7506 PRINT @(0,LINE_TOP),'LD',@(0,LINE_BOTTOM),M$,; WAIT (0)
+7507  } ELSE {
+7508 PRINT @(0,LINE_CNT),M$,; WAIT (0)
+7509  }
+7510 LINE_CNT=LINE_CNT+1
+7545 RETURN 
+7550 STRIP_OFF_FIELD:REM "Take a field off of front of D$, return value in F5$, shorten D$ by the field
+7555 P5=POS(S1$=D$)
+7560 ON P5 GOTO 7565,7570,7575
+7565 F5$=D$,D$=""; GOTO 7590; REM "No field sep found, so all of D$ is put in F5$
+7570 F5$="",D$=D$(2); GOTO 7590; REM "Field sep is 1st char, Field is ''
+7575 F5$=D$(1,P5-1),D$=D$(P5+1); GOTO 7590
+7595 RETURN 
+7600 INCR_SEQ_NO:REM "Increment seq # in K3$AND D$, start pos=S3$, length = S4$.
+7601 REM X=0 means seq # incremented, X=1 means overran length
+7605 X$=K3$(NUM(S3$),NUM(S4$)),X=0
+7606 REM "If all 9's then can't increment, signal error
+7610 IF POS("9"<>X$)=0 THEN X=1; GOTO 7645
+7615 DIM N$(NUM(S4$),"0")
+7620 X$=STR(NUM(X$)+1:N$)
+7635 K3$(NUM(S3$),NUM(S4$))=X$; IF LEN(D$)>=NUM(S3$)+NUM(S4$) THEN D$(NUM(S3$),NUM(S4$))=X$
+7645 RETURN 
+7650 ! ^50 Check if directory path exists and return 0-false, 1-true
+7651 DEF FNDIRCHECK(LOCAL DIRPATH$)
+7660 LOCAL CH1; LOCAL ISTHERE
+7670 CH1=UNT; ISTHERE=1
+7680 OPEN (CH1,ERR=*NEXT)DIRPATH$; GOTO 7690
+7681 ISTHERE=0
+7690 CLOSE (CH1)
+7691 RETURN ISTHERE
+7692 END DEF
+7700 CHG_FIELD:
+7701 REM "Given string V0$, replace the value of field # V0 with V1$. Fields seperated with S2$
+7705 V3=0,V4=0; REM "V3 will point to seperator before field V0, V4 will point to s"+          "eperator that terminates V4
+7710 FOR V2=1 TO V0
+7712 V0$=FNO$(V0$); REM "Remove trailing $00$
+7714 V3=V4
+7715 V5=POS(S2$=V0$(V4+1)); IF V5=0 THEN V0$=V0$+S2$; GOTO 7715 ELSE V4=V5+V4
+7720 NEXT V2
+7725 IF V4<=1 OR V3<=1 THEN V0$=V1$+V0$(V4) ELSE V0$=V0$(1,V3)+V1$+V0$(V4)
+7745 RETURN 
+7800 REM "If record too short try to read in another block
+7810 IF EOF_FLAG=2 THEN {
+7820 EXITTO PACKAGE_END
+7830  } ELSE {
+7840 READ RECORD (Z[1],IND=REC_INDEX,END=7880)B1$
+7850 REC_INDEX=REC_INDEX+1,B$=B$+B1$,B0=LEN(B$)
+7860 GOTO 7885
+7870  }
+7880 EOF_FLAG=2
+7890 RETURN 
+8000 PROCESS_ZP4:
+8001 REM "Process ZP4 records by checking 1st to see if
+8002 REM the record already exists,if so then if this is
+8003 REM the remote and the date modified on the existing
+8004 REM record is later than the date modified on the
+8005 REM record to be written, then we will not write it out.
+8010 IF RT_COMM$="D" THEN {
+8011 REM "IF DELETE, THEN READ RECORD IF AVAILABLE AND CONTINUE
+8014 READ RECORD (Z[3],KEY=K3$,DOM=PROCESS_ZP4_END)D$
+8015 SORT_COMM$="D",ZP4$=D$
+8016 GOSUB ZP4_SORTS
+8017 GOTO 8050
+8018  }
+8019 REM If no record found then write out and write out sorts and leave
+8020 WRITE RECORD (Z[3],KEY=K3$,DOM=*NEXT)D$; SORT_COMM$="A",ZP4$=D$; GOSUB ZP4_SORTS; GOTO 8050
+8030 READ RECORD (Z[3],KEY=K3$,DOM=8020)ZP4$
+8032 REM "If record in file is later modified than record to write
+8033 REM in then do not write it to the file
+8040 IF MID(ZP4$,439,10)>MID(D$,439,10) THEN GOTO 8050 ELSE WRITE RECORD (Z[3],KEY=K3$)D$; SORT_COMM$="D"; GOSUB ZP4_SORTS; ZP4$=D$; SORT_COMM$="A"; GOSUB ZP4_SORTS
+8050 ZP4$=D$,RT_FILE$="ZP4...",RT_KEY$=K3$,RT_DATA$=D$; GOSUB PROCESS_SEND_TO
+8060 PROCESS_ZP4_END:RETURN 
+8070 PROCESS_SEND_TO:REM "Process SEND_TO$ list given that RT_COMM$ is set"+      " to the command, RT_FILE$ to the file, RT_KEY$ to the key, RT_DATA$ to the data and there are no numerics to pass, ZP4$ is the data to look at to determine which remotes to send to
+8080 IF MID(W9$,7,1)<>"H" THEN GOTO PROCESS_SEND_TO_END
+8090 IF RT_LIST$<>ZP4$(1,4) OR RT_SP$<>ZP4$(359,4) THEN RT_LIST$=ZP4$(1,4),RT_SP$=ZP4$(359,4); CALL "RT2LST",ERR=PROCESS_SEND_TO_END,X3$,X4$,W9$,RT_LIST$,RT_SP$,SEND_TO$; TMP=POS(PACKAGE_SP$=SEND_TO$,4); IF TMP<>0 THEN IF TMP=1 THEN IF LEN(SEND_TO$)=4 THEN SEND_TO$="" ELSE SEND_TO$=SEND_TO$(5) END_IF ELSE IF TMP=LEN(SEND_TO$)-3 THEN SEND_TO$=SEND_TO$(1,LEN(SEND_TO$)-4) ELSE SEND_TO$=SEND_TO$(1,TMP-1)+SEND_TO$(TMP+4) END_IF ; REM "if list code or salesperson code different than last time, reget the send_to list-Remove sp of package we are processing
+8100 IF SEND_TO$<>"" THEN {
+8101 FOR INDEX=1 TO LEN(SEND_TO$)-3 STEP 4
+8105 CALL "RT2WOR",X3$,X4$,SEND_TO$(INDEX,4),RT_FILE$,RT_COMM$,RT_KEY$,RT_DATA$,1,A{ALL}
+8108 NEXT INDEX
+8109  }
+8110 PROCESS_SEND_TO_END:RETURN 
+8111 ! 
+8120 ! GOSUB here, once, at the beginning,
+8122 INIT_BAR_GRAPH:
+8130 T_BYTES$=FIN(Z[1])
+8131 TLT_BYTES=DEC(T_BYTES$(1,4))
+8150 T0=0
+8151 ! CALL "*progbar;Init","Remote Contack Mgmt Package",30,10,3
+8160 RETURN 
+8161 ! 
+8170 UPDATE_BAR_GRAPH:REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8181 IF TLT_BYTES>0 THEN {
+8182 BYTES_DONE=REC_INDEX*BYTES_READ
+8183 CALL "ZZBARG",ERR=8185,X3$,"HG",5,10,50,T0,TLT_BYTES,BYTES_DONE; WAIT (0)
+8184 ! CALL "*progbar;Update_percent",ERR=9800,"Progress of Install",PERCENT_DONE
+8185  }
+8190 RETURN 
+8200 PROCESS_ZP5:
+8201 REM "Process the ZP5 or ZPB record
+8202 REM RT_COMM$ should be set to D for delete or U for update
+8203 REM RT_FILE$ must be set to file name
+8210 IF MID(W9$,7,1)<>"H" THEN {
+8211 GOTO PROCESS_ZP5_END
+8212  } ELSE {
+8213 DIM ZP4$(400)
+8214 CLOSE (14); OPEN (14)"ZP4"+X3$(9,3)
+8215 READ (14,KEY=K3$(1,10),DOM=PROCESS_ZP5_END)ZP4$
+8216 CLOSE (14)
+8217  }
+8220 RT_KEY$=K3$,RT_DATA$=D$
+8221 GOSUB PROCESS_SEND_TO
+8230 PROCESS_ZP5_END:RETURN 
+8250 ZP4_SORTS:REM "Add or remove ZP4 sorts based on ZP4$ info
+8260 REM "SORT_COMM$ determines action to take
+8270 CLOSE (32500); OPEN (32500)"ZPA"+X3$(9,3)
+8280 CLOSE (32501); OPEN (32501)"ZPD"+X3$(9,3)
+8290 CLOSE (32502); OPEN (32502)"ZPE"+X3$(9,3)
+8300 KEY$=ZP4$(1,4)+ZP4$(419,20)+ZP4$(5,6)
+8310 IF SORT_COMM$="D" THEN REMOVE (32500,KEY=KEY$,DOM=8315) ELSE WRITE (32500,KEY=KEY$)
+8320 IF POS(X3$(9,3)="060",3)<>0 THEN {
+8330 KEY$=ZP4$(200,12)+ZP4$(1,10)
+8340  } ELSE {
+8350 KEY$=ZP4$(200,10)+ZP4$(1,10)
+8360  }
+8370 IF SORT_COMM$="D" THEN REMOVE (32501,KEY=KEY$,DOM=*NEXT) ELSE WRITE (32501,KEY=KEY$)
+8380 KEY$=ZP4$(203,7)+ZP4$(200,3)+ZP4$(1,10)
+8390 IF SORT_COMM$="D" THEN REMOVE (32502,KEY=KEY$,DOM=*NEXT) ELSE WRITE (32502,KEY=KEY$)
+8400 IF RT_COMM$<>"D" THEN GOTO ZP4_SORTS_END ELSE TEMP$="ZP5ZPB"
+8410 FOR I=1 TO LEN(TEMP$)-2 STEP 3
+8420 CLOSE (32500); OPEN (32500)TEMP$(I,3)+X3$(9,3)
+8430 READ (32500,KEY=ZP4$(1,10),DOM=8440)
+8440 KEY$=KEY(32500,END=8470)
+8450 IF KEY$(1,10)<>ZP4$(1,10) THEN GOTO 8470
+8460 REMOVE (32500,KEY=KEY$,DOM=8440); GOTO 8440
+8470 NEXT I
+8480 ZP4_SORTS_END:RETURN 
+8910 DEF FNA$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+8915 DEF FNE$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8920 DEF FNO$(Z9$)=Z9$(1,POS($00000000000000000000$=Z9$+$00000000000000000000$)-1)
+9000 REM "ERROR PROCESSING
+9002 PRINT "ERR=",ERR," @",TCB(5),'LF','LF'; ESCAPE 
+9010 EXIT ERR
+9750 ZZFLES:REM "Simulate ZZFLES
+9751 Z0=0
+9752 DO_ZZFLES:
+9753 IF LEN(Z$)<4 THEN GOTO END_ZZFLES
+9754 COMMAND$=Z$(1,4),Z$=Z$(5); SPACE_POS=POS(" "=Z$)
+9755 IF SPACE_POS=0 THEN {
+9756 FILE_NAME$=Z$,Z$=""
+9757  } ELSE {
+9758 FILE_NAME$=Z$(1,SPACE_POS-1); Z$=Z$(SPACE_POS+1)
+9759 WHILE LEN(Z$)>0 AND Z$(1,1)=" "
+9760 Z$=Z$(2)
+9761 WEND 
+9762  }
+9763 IF FN%NMV(COMMAND$(1,2))=0 THEN GOTO DO_ZZFLES ELSE FILE_SLOT=NUM(COMMAND$(1,2))
+9765 FILE_COMMAND$=COMMAND$(3,1)
+9766 IF LEN(FILE_NAME$)>8 THEN FILE_NAME$=FILE_NAME$(1,8)
+9767 IF FILE_COMMAND$="C" THEN {
+9770 FILE_SLOT_TO_CLOSE=Z[FILE_SLOT],Z[FILE_SLOT]=0
+9771 CLOSE (FILE_SLOT_TO_CLOSE,ERR=DO_ZZFLES)
+9772  } ELSE {
+9773 FIXED_3_DOTS=0
+9774 IF LEN(FILE_NAME$)>3 THEN {
+9775 IF STP(FILE_NAME$(LEN(FILE_NAME$)-2,3),3,".")="" THEN {
+9776 FILE_NAME$(LEN(FILE_NAME$)-2)=X3$(9,3),FIXED_3_DOTS=1
+9777  } }
+9778 Z[FILE_SLOT]=0; OPEN_SLOT=UNT
+9779 OPEN (OPEN_SLOT,ERR=ERR_ON_OPEN)FILE_NAME$
+9780 Z[FILE_SLOT]=OPEN_SLOT
+9781  }
+9782 GOTO DO_ZZFLES
+9787 REM Not found, so try opposite substitution of company no
+9788 ERR_ON_OPEN:
+9789 IF FIXED_3_DOTS=1 THEN {
+9790 FILE_NAME$=FILE_NAME$(1,LEN(FILE_NAME$)-3); Z0=1
+9791  } ELSE {
+9792 IF LEN(FILE_NAME$)=3 THEN FILE_NAME$=FILE_NAME$+X3$(9,3); Z0=1
+9793  }
+9795 OPEN (OPEN_SLOT,ERR=DO_ZZFLES)FILE_NAME$
+9796 Z0=0; Z[FILE_SLOT]=OPEN_SLOT; GOTO DO_ZZFLES
+9797 END_ZZFLES:RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CLOSE (Z[1])
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

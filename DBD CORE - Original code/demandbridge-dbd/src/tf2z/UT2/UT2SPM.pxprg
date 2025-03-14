@@ -1,0 +1,169 @@
+0010 REM "Statistical Data Period Mover <UT2SPM>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/29/11 - 9.391666 - tma - SSP# 245509
+0037 REM "245509-Change verbage on UT2SPM from TopForm Utility               
+0040 REM "Copyright 2011 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="UT2SPM",X1$="Statistical Data Period Mover"
+0120 DIM Z0$(80,"-"),S0$(20)
+0130 K0=20,K1=1
+0135 C9=-1
+0145 M0$="-#0"
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZPARM 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0615 GOSUB 7000
+0617 A9$=""
+0618 FOR I=0 TO 9; A9$=A9$+A$(49+I*17,1); NEXT I
+0619 A9$=FNS$(A9$)
+0620 GOSUB 8100
+0640 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 REM "K0$ is current key we are working on
+0910 K0$=""
+0920 W9=1200; REM "Size of Working array (1200 is 100 years/types * 12 periods)
+0949 REM "Do only one type of stats at a time
+0950 A8$=A9$(1,1); A9$=A9$(2)
+0960 READ (Z[2],KEY=A1$,DOM=0961)
+1000 REM "Read all of the record for each key. The numbers go into W, the year and type go into W$ ([1,4]=year, [5,1]=type)
+1010 K$=KEY(Z[2],END=5000); READ (Z[2])
+1011 IF A1$>"" THEN IF K$(1,LEN(A1$))<>A1$ THEN GOTO 1010
+1012 IF K$(LEN(K$),1)<>A8$ THEN GOTO 1010
+1015 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1020 IF K0$="" OR K$(1,LEN(K$)-5)<>K0$ THEN GOSUB 2000
+1100 REM "Read Record and load into Work Array W
+1105 REM "Get Usage type, U$, and mask for usage type M$, and Key, K1$
+1110 U$=K$(LEN(K$),1),K1$=K$(1,LEN(K$)-1); DIM O[20]
+1115 P=POS(U$=A$(49),17); IF P=0 THEN M$="92" ELSE M$=A$(50+P,3)
+1160 CALL "ZZPACK",ERR=1010,X3$,"R",M$,P9$,0,0,O{ALL},Z[2],U$,K1$,A$
+1200 REM "Add O() to W() and add to W$
+1205 W0$=K$(LEN(K$)-4,4); REM "Get year
+1209 REM "if the last year on W$ is not the year prior to here, then add the next year to W$ and check again. If W$ is '' this is first year, so just add it.
+1210 IF W$>"" THEN IF NUM(W0$)-NUM(W$(LEN(W$)-3,4))>1 THEN W$=W$+STR(NUM(W$(LEN(W$)-3,4))+1:"0000"); GOTO 1210
+1212 W$=W$+W0$
+1215 P0=LEN(W$)/4,P1=(P0-1)*12+1
+1220 FOR I=0 TO 11; W[P1+I]=O[I+1]; NEXT I; REM "Load the W array
+1995 GOTO 1000
+2000 REM "New key value
+2010 IF K0$<>"" THEN GOSUB 3000
+2020 DIM W[W9]; W$=""; REM "Clear working variables
+2025 K0$=K$(1,LEN(K$)-5); REM "Set key to match, minus the year and the type
+2040 IF A[0]<0 THEN W$=STR(NUM(K$(LEN(K$)-4,4))-1:"0000"); REM "Add the prior year to start off, if the amount to move the periods is negative
+2095 RETURN 
+3000 REM "Write out data from previous key K0$
+3003 IF W$="" THEN GOTO 3095 ELSE GOSUB 3200
+3005 IF A[0]>0 THEN W$=W$+STR(NUM(W$(LEN(W$)-3,4))+1:"0000"); REM "If moving forward then add the next year
+3007 REM "a year has been added before or after depending on the DIRection moved in order to get the overflow
+3008 P0=LEN(W$)/4*12; REM "Highest bucket we put stuff into
+3010 IF A[0]>0 THEN FOR I=P0 TO A[0]+1 STEP -1; W[I]=W[I-A[0]]; NEXT I; FOR I=A[0] TO 1 STEP -1; W[I]=0; NEXT I; REM "move data up 1 or more periods, periods at beginnning are 0'ed out.
+3015 IF A[0]<0 THEN FOR I=1 TO P0+A[0]; W[I]=W[I-A[0]]; NEXT I; FOR I=P0+A[0]+1 TO P0; W[I]=0; NEXT I; REM "Move data down 1 or more periods, periods at end are 0'ed out.
+3020 FOR W=1 TO LEN(W$)-3 STEP 4
+3025 U$=A8$,K1$=K0$+W$(W,4); DIM O[20]
+3030 P=POS(U$=A$(49),17); IF P=0 THEN M$="92" ELSE M$=A$(50+P,3)
+3035 P0=(W-1)/4*12+1; REM "Setup to move from W() to O() only the 12 months needed
+3040 FOR I=0 TO 11; O[I+1]=W[P0+I]; NEXT I
+3042 F1$=FID(Z[2]); IF F1$(4,2)<>"GL" THEN GOTO 3048
+3045 REM "Figure Balance Forward from last year, always.
+3046 O[0]=0; IF P0>12 THEN FOR I=P0-12 TO P0-1; O[0]=O[0]+W[I]; NEXT I
+3048 GOSUB 3100; IF X=0 THEN GOTO 3051; REM "If all zero then skip the write
+3050 CALL "ZZPACK",X3$,"W",M$,P9$,0,0,O{ALL},Z[2],U$,K1$,A$
+3080 NEXT W
+3085 READ (Z[2],KEY=K$,DOM=3086); REM "Reposition file to current key
+3095 RETURN 
+3100 REM "Check O(), X=1 if any are non zero, X=0 if all are non-zero
+3104 X=0
+3105 FOR I=0 TO 20
+3110 IF O[I]<>0 THEN X=O[I]
+3115 NEXT I
+3120 IF X<>0 THEN X=1; REM "Found at least one non-zero
+3145 RETURN 
+3200 REM "Remove existing records
+3205 READ (Z[2],KEY=K0$,DOM=3206)
+3210 K5$=KEY(Z[2],END=3240)
+3215 IF K5$(1,LEN(K0$))<>K0$ THEN GOTO 3240 ELSE IF K5$(LEN(K5$),1)<>A8$ THEN READ (Z[2],END=3240); GOTO 3210 ELSE REMOVE (Z[2],KEY=K5$,DOM=3210); GOTO 3210
+3245 RETURN 
+5000 REM "EOJ
+5005 GOSUB 3000
+5008 IF A9$>"" THEN GOTO 0900; REM "Get next type of stats
+5010 T=C; GOSUB 8150
+5020 CALL "ZZPROM",".4",X3$,Z,"","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(7,4),"This utility will move statistical data the indicated number",@(7,5),"of periods forward or backward (negative number of periods).",
+6030 PRINT @(20,10),"Statistics Type:",
+6035 PRINT @(9,12),"Number of periods to  move:",
+6040 PRINT @(18,14),"Key part to match:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Enter statistical type
+7003 DIM A$(7),A[1],A1$(20); K9$="STAT",A$(1)=K9$
+7010 CALL "ZZENTR","SXUX",A{ALL},A$,X4$,X3$,37,10,5,3,C0,"",X$,K9$,"UT2SPM00","ZZPA","",""; IF C0>4 THEN PRINT @(0,3),'CE',; GOSUB 6000; GOTO 7005
+7015 IF ABS(C0)=4 THEN GOTO 9900
+7020 FIND (Z[13],KEY=A$(1,7),DOM=7010)A$
+7030 PRINT @(42,10),A$(8,20)
+7035 Z$="02CU 02O "+A$(28,6)+"  "
+7036 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+7050 REM "Enter Number of periods to move
+7060 CALL "ZZENTR","N",A{ALL},A$,X4$,X3$,37,12,0,200,C0,M0$,X$,"","UT2SPM02","","",""; IF C0>4 THEN PRINT @(0,3),'CE',; GOSUB 6000; GOTO 7055
+7062 IF ABS(C0)=2 THEN GOTO 7000 ELSE IF INT(ABS(C0))=3 THEN GOTO 7000 ELSE IF ABS(C0)=4 THEN GOTO 9900
+7065 IF A[0]=0 THEN CALL "ZZPROM",".4",X3$,Z,"0 means don't move the data at all!","","",0; GOTO 7060
+7100 REM "Enter key to match
+7103 CALL "ZZINFO",Z[2],T9,X3$,T,T0,K,B,D,S0,S1,F$
+7104 IF LEN(A1$)<>K THEN DIM A1$(K)
+7105 X$="Enter part of the key to match, or all blanks for the whole file"
+7110 CALL "ZZENTR","SU",A{ALL},A1$,X4$,X3$,37,14,1,K,C0,"",X$,"","UT2SPM04","","",""; IF C0>4 THEN PRINT @(0,3),'CE',; GOSUB 6000; GOTO 7105
+7112 IF ABS(C0)=2 OR INT(ABS(C0))=3 THEN GOTO 7050 ELSE IF ABS(C0)=4 THEN GOTO 9900
+7115 A1$=FNS$(A1$); REM "Remove trailing spaces, match on the filled in part only
+7190 CALL "ZZPROM","10",X3$,Z,"Is the data correct?","","",0; ON Z GOTO 7010,7191
+7195 RETURN 
+8100 REM 
+8110 CALL "ZZINFO",Z[2],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(20,16),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8900 REM 
+8910 DEF FNS$(Z9$)=Z9$(1,POS(S0$=Z9$+S0$)-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56001 REM "245509-Change verbage on UT2SPM from TopForm Utility               

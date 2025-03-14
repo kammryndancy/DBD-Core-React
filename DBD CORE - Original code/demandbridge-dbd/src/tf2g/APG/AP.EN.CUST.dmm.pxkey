@@ -1,0 +1,131 @@
+<PxTable>
+ TableName=AP.EN.CUST.dmm
+ TableKey=K1446240827
+ FileCreate=KEYED "AP.EN.CUST.dmm",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0000"
+    FIELD_1$="AP4_Vend"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="95"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"VENDORS"+QUO+")"
+    FIELD_8$="2"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"AP4"+QUO+"+%C$"
+    FIELD_18$="2015/03/05 12:14 sns"
+    FIELD_19$="APGMAA"
+    FIELD_21$="R"
+    FIELD_23$="U0000000"
+    FIELD_24$="1"
+    FIELD_29$="_MN_.VEND_DIV$+_MN_.VEND_CODE$+_MN_.VEND_NAME$"
+    FIELD_33$="000F"
+    FIELD_34$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0001"
+    FIELD_1$="VEND_LOOKUP"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_L"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0002"
+    FIELD_1$="Formula:TBL(SGN(%AP_DIV_LEN),"+QUO+QUO+",_MN_.VEND_DIV$+"+QUO+"-"+QUO+")+_MN_.VEND_CODE$(1,%VEND_LEN)"
+    FIELD_4$="12"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"VENDOR"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0003"
+    FIELD_1$="VEND_NAME"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0004"
+    FIELD_1$="VEND_ADDR_1"
+    FIELD_4$="25"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_A_1"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0005"
+    FIELD_1$="VEND_CITY"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_CITY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0006"
+    FIELD_1$="VEND_ST"
+    FIELD_4$="4"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VEND_ST"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0007"
+    FIELD_1$="Formula:FN%ZZDISP$(_MN_.VEND_ZIP$,"+QUO+"ZIP"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"ZIP_CODE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   0008"
+    FIELD_1$="VEND_PHONE"
+    FIELD_4$="12"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"PHON_N"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_10$="=%PHONE_MASK$+"+QUO+"XXXX"+QUO
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_AP4.1   SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

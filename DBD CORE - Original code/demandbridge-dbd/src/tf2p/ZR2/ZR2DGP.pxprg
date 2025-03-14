@@ -1,0 +1,80 @@
+0010 REM "Get Repository Parameters <ZR2DGP>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.2 - 08/16/03 - 8.814166 - dmm - SSP# 133604
+0040 REM "Copyright 2003 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "INPUT - R$ = repository code, length 10
+0071 REM "OUTPUT - P$ = Repository Parameters, init'ed here
+0072 REM "              1,1 = Keep Objects? (Y/N)
+0073 REM "              2,8 = Storage file name (eg. ZR3... )
+0074 REM "             10,10= Repsitory Code
+0075 REM "             20,40= Key value
+0076 REM "             60,2 = Version
+0077 REM "             62,5 = Index into repository file
+0078 REM "             67,4 = Current Page number
+0079 REM "             71,3 = Current line number (the next to be used)
+0080 REM "             74,4 = Maximum line length
+0081 REM "             78,1 = Use item feeds and skip blank lines
+0082 REM "             79,3 = Source company code
+0083 REM "             82,1 = Keep latest version only?
+0085 REM "ONLY keep objects, storage file name , repository code & source company are assigned here and keep latest version only also
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,R$,P$
+0100 SETERR 9000
+0110 X0$="ZR2DGP",X1$="Get Repository Parameters"
+0120 DIM S$(40),P$(82)
+0200 REM "Determine if ZR0 file exists, if not, set parameters to no and exit
+0205 CLOSE (14); OPEN (14,ERR=0206)"ZR0"; CLOSE (14); GOTO 0220
+0210 CLOSE (14); OPEN (14,ERR=0211)"ZR0"+X3$(9,3); CLOSE (14); GOTO 0220
+0215 P$(1,1)="N"; GOTO 9930; REM "If still here, then we didn't find the files, they must not have it yet.
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZR0...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+1000 REM "Read record
+1005 DIM A$(77),A[1]
+1050 READ (Z[1],KEY=R$,DOM=1995)IOL=0310
+1070 P$(1,1)=A$(41,1),P$(2,8)=A$(52,8),P$(10,10)=R$; REM "Keep?, Storage file name and Repository code
+1075 F$=A$(52,8)
+1080 P$(74,4)=STR(A[0]:"0000"); REM "Maximum line length
+1085 P$(78,1)=A$(77,1); REM "Use item feeds and skip blank lines
+1090 P$(79,3)=X3$(9,3); REM "Assign source company code
+1095 P$(82,1)=A$(78,1); REM "Keep latest version only?
+1995 GOTO 9900
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 IF LEN(P$)<78 THEN P$=P$+" "; GOTO 9905
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 IF %GUI THEN EXIT ELSE RUN "ZMENU"
+9999 END 

@@ -1,0 +1,184 @@
+0010 REM "Cost Change Utility Processing <IC2SCC>"
+0035 REM "5.7 - 10/10/14 - 11.403888 - jvv - SSP# 273055
+0037 REM "273055-Expand IC2 for 6 additional cost breaks, allow entry in GUI 
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0049 REM 
+0050 REM "Program Notes"
+0052 REM "The purpose of this software modification is to all the user to"
+0053 REM "change the cost of an inventory item in the files IC0_Item and"
+0054 REM "IC2_SupplierPrice."
+0055 REM 
+0056 REM "This program is called from ICGSCS."
+0058 REM 
+0070 REM "List of fields changed in IC0_Item:"
+0071 REM "   AVG_COST"
+0072 REM 
+0074 REM "List of fields changed in IC2_SupplierPrice:"
+0075 REM "   BASE_COST"
+0076 REM "   QTY_COST_1"
+0077 REM "   QTY_COST_2"
+0078 REM "   QTY_COST_3"
+0079 REM "   QTY_COST_4"
+0080 REM "   QTY_COST_5"
+0081 REM "   QTY_COST_6"
+0099 REM 
+0100 INITIALIZE_PROGRAM:
+0105 SETESC 9300; SETERR ERROR_PROCESSING
+0115 ENTER BEG_CUST$,END_CUST$,BEG_ITEM$,END_ITEM$,BEG_VEND$,END_VEND$,ADJ_VALUE,COMP_VALUE$,CHNG_FM1$ ! WO 267628
+0125 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1,T0$="ZZXIC0",L0=10
+0140 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+0145 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=*NEXT)
+0195 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0197 DIM A$(1),A[1]
+0198 DIM VEND$(20),VEND[1]
+0200 IF STP(BEG_CUST$)="" THEN BEG_CUST$=DIM(10) ELSE BEG_CUST$=PAD(BEG_CUST$,10)
+0205 IF STP(END_CUST$)="" THEN END_CUST$=DIM(10,"~") ELSE END_CUST$=PAD(END_CUST$,10)
+0210 IF STP(BEG_ITEM$)="" THEN BEG_ITEM$=DIM(10) ELSE BEG_ITEM$=PAD(BEG_ITEM$,10)
+0215 IF STP(END_ITEM$)="" THEN END_ITEM$=DIM(10,"~") ELSE END_ITEM$=PAD(END_ITEM$,10)
+0220 IF STP(BEG_VEND$)="" THEN BEG_VEND$=DIM(10) ELSE BEG_VEND$=PAD(BEG_VEND$,10)
+0225 IF STP(END_VEND$)="" THEN END_VEND$=DIM(10,"~") ELSE END_VEND$=PAD(END_VEND$,10)
+0300 CREATE_IOLISTS:
+0305 DIM IC0[40],IC2[30] ! dim iolist array lengths WO273055
+0310 DIM FM1[31] ! WO 267628
+0320 IOLIST_IC0:IOLIST IC0$,IC0{ALL} ! iolist for IC0
+0321 IOLIST_IC2:IOLIST IC2$,IC2{ALL} ! iolist for IC2
+0325 IOLIST_FM1:IOLIST FM1$,FM1{ALL} ! iolist for FM1
+0500 OPEN_FILES:
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O IC0...  03O IC2...  04O FM1...  13O ZZPARM  " ! set the string for opening WO 267628
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1 ! open the files
+0525 IF Z0 THEN GOTO END_PROGRAM ! if there is an error, exit
+0530 IC0_FL=Z[2],IC2_FL=Z[3],ZZPARM_FL=Z[13] ! set the open channels
+0540 FM1_FL=Z[4] ! WO 267628
+0700 PRE_DISPLAY:
+0710 DIM M6[1]; CALL "IC2PRE",X3$,ZZPARM_FL,"",M6{ALL},"",0,"",0 ! Set Inventory Unit Price Prescision
+1000 MAIN_LOOP:
+1020 GOSUB UPDATE_IC0 ! loop through IC0
+1050 GOSUB UPDATE_IC2 ! loop through IC2
+1060 IF CHNG_FM1$="Y" THEN GOSUB UPDATE_FM1 ! WO 267628
+1095 GOTO END_OF_JOB ! end of processing
+2000 COMPUTE_NEW_COST:
+2010 PRECISION 6
+2020 IF COMP_VALUE$="D" THEN COST=COST/ADJ_VALUE ELSE COST=COST*ADJ_VALUE
+2030 PRECISION M6[1]; COST=COST+0; PRECISION 2
+2035 IF X3$(9,3)="011" THEN IF FPT(COST/.25)<>0 THEN COST=INT((COST+.25)/.25)*.25
+2040 RETURN 
+3000 UPDATE_IC0:
+3030 IC0_KEY$=BEG_CUST$+BEG_ITEM$ ! set the IC0 partial key
+3040 READ (IC0_FL,KEY=IC0_KEY$,DOM=GET_IC0_REC)IOL=IOLIST_IC0 ! read IC0
+3050 GOTO 3110
+3100 GET_IC0_REC:
+3104 IC0_KEY$=KEY(IC0_FL,ERR=*RETURN) ! get the key
+3105 READ (IC0_FL)IOL=IOLIST_IC0 ! read IC0
+3110 CUR_CUST$=IC0$(1,10) ! set the current customer
+3115 CUR_ITEM$=IC0$(11,10) ! set the current item
+3120 CUR_VEND$=IC0$(82,10) ! set the current vendor
+3150 IF CUR_CUST$>END_CUST$ THEN GOTO *RETURN ! if the current customer is greater than the end customer
+3160 IF CUR_ITEM$<BEG_ITEM$ THEN GOTO GET_IC0_REC ! if the current item is less than the beg item
+3165 IF CUR_ITEM$>END_ITEM$ THEN GOTO GET_IC0_REC ! if the current item is greater than the end item
+3170 IF CUR_VEND$<BEG_VEND$ THEN GOTO GET_IC0_REC ! if the current item is less than the beg vendor
+3180 IF CUR_VEND$>END_VEND$ THEN GOTO GET_IC0_REC ! if the current item is greater than the end vendor
+3200 COST=IC0[18] ! set the tmp fld to the avg_cost
+3205 IF COST>0 THEN {! if the cost has a value
+3210 GOSUB COMPUTE_NEW_COST ! compute the new cost
+3230 IC0[18]=COST ! set the avg_cost to the new cost
+3240 WRITE (IC0_FL,KEY=IC0_KEY$)IOL=IOLIST_IC0 ! write the record
+3250 IC0_CTR+=1
+3290  }
+3450 GOTO GET_IC0_REC ! read the next record
+3495 RETURN 
+3500 UPDATE_IC2:
+3530 IC2_KEY$=BEG_CUST$+BEG_ITEM$+BEG_VEND$+DIM(4) ! set the IC0 partial key
+3540 READ (IC2_FL,KEY=IC2_KEY$,DOM=GET_IC2_REC)IOL=IOLIST_IC2 ! read IC2
+3550 GOTO 3610
+3600 GET_IC2_REC:
+3604 IC2_KEY$=KEY(IC2_FL,END=*RETURN) ! get the key
+3605 READ (IC2_FL)IOL=IOLIST_IC2 ! read IC2
+3610 CUR_CUST$=IC2$(1,10) ! set the current customer
+3615 CUR_ITEM$=IC2$(11,10) ! set the current item
+3620 CUR_VEND$=IC2$(21,10) ! set the current vendor
+3650 IF CUR_CUST$>END_CUST$ THEN GOTO *RETURN ! if the current customer is greater than the end customer
+3660 IF CUR_ITEM$<BEG_ITEM$ THEN GOTO GET_IC2_REC ! if the current item is less than the beg item
+3665 IF CUR_ITEM$>END_ITEM$ THEN GOTO GET_IC2_REC ! if the current item is greater than the end item
+3670 IF CUR_VEND$<BEG_VEND$ THEN GOTO GET_IC2_REC ! if the current item is less than the beg vendor
+3680 IF CUR_VEND$>END_VEND$ THEN GOTO GET_IC2_REC ! if the current item is greater than the end vendor
+3700 FOR AB=0 TO 12 STEP 2 ! loop through the cost fields
+3710 COST=IC2[AB] ! set the tmp fld to the cost 
+3720 IF COST>0 THEN {! if the cost has a value
+3730 GOSUB COMPUTE_NEW_COST ! compute the new cost
+3740 IC2[AB]=COST ! set the new cost
+3750  }
+3760 NEXT AB
+3800 FOR AB=18 TO 28 STEP 2 ! loop through the cost fields 7-12 WO273055
+3810 COST=IC2[AB] ! set the tmp fld to the cost WO273055 
+3820 IF COST>0 THEN {! if the cost has a value WO273055
+3830 GOSUB COMPUTE_NEW_COST ! compute the new cost WO273055
+3840 IC2[AB]=COST ! set the new cost WO273055
+3850  } ! WO273055
+3860 NEXT AB ! WO273055
+3900 WRITE (IC2_FL,KEY=IC2_KEY$)IOL=IOLIST_IC2 ! write the IC2 record
+3910 IC2_CTR+=1
+3950 GOTO GET_IC2_REC ! read the next record
+3995 RETURN 
+4000 UPDATE_FM1:
+4030 FM1_KEY$=BEG_CUST$+BEG_ITEM$ ! set the FM1 partial key
+4040 READ (FM1_FL,KEY=FM1_KEY$,DOM=GET_FM1_REC)IOL=IOLIST_FM1 ! read FM1
+4050 GOTO 4110
+4100 GET_FM1_REC:
+4104 FM1_KEY$=KEY(FM1_FL,ERR=*RETURN) ! get the key
+4105 READ (FM1_FL)IOL=IOLIST_FM1 ! read FM1
+4110 CUR_CUST$=FM1$(1,10) ! set the current customer
+4115 CUR_ITEM$=FM1$(11,10) ! set the current item
+4120 CUR_VEND$=FM1$(82,10) ! set the current vendor
+4150 IF CUR_CUST$>END_CUST$ THEN GOTO *RETURN ! if the current customer is greater than the end customer
+4160 IF CUR_ITEM$<BEG_ITEM$ THEN GOTO GET_FM1_REC ! if the current item is less than the beg item
+4165 IF CUR_ITEM$>END_ITEM$ THEN GOTO GET_FM1_REC ! if the current item is greater than the end item
+4170 IF CUR_VEND$<BEG_VEND$ THEN GOTO GET_FM1_REC ! if the current item is less than the beg vendor
+4180 IF CUR_VEND$>END_VEND$ THEN GOTO GET_FM1_REC ! if the current item is greater than the end vendor
+4200 COST=FM1[1] ! set the tmp fld to the cost
+4205 IF COST>0 THEN {! if the cost has a value
+4210 GOSUB COMPUTE_NEW_COST ! compute the new cost
+4230 FM1[1]=COST ! set the cost to the new cost
+4240 WRITE (FM1_FL,KEY=FM1_KEY$)IOL=IOLIST_FM1 ! write the record
+4250 FM1_CTR+=1
+4290  }
+4450 GOTO GET_FM1_REC ! read the next record
+4495 RETURN 
+5000 END_OF_JOB:
+5040 GOTO END_PROGRAM ! end program
+9000 ERROR_PROCESSING:
+9005 IF ERR=69 THEN GOTO CTRL_LOGIC
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR ERROR_PROCESSING
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,TRANSFER_CONTROL,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR ERROR_PROCESSING; RETRY 
+9090 SETERR 0000; RETRY 
+9100 TRANSFER_CONTROL:
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR ERROR_PROCESSING; RETURN 
+9500 CTRL_LOGIC:
+9510 SETERR ERROR_PROCESSING; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 END_PROGRAM:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9999 END 
+56000 REM "Modification History"
+56002 REM "05/15/2007 - Program Created."
+56004 REM "203731-Is there a way to change the cost on items which"
+56005 REM "       meet a set of rules?"
+56006 REM "267628-Modify Cost Change Utility; Apply changes to custom item    
+56007 REM "273055-Expand IC2 for 6 additional cost breaks, allow entry in GUI 

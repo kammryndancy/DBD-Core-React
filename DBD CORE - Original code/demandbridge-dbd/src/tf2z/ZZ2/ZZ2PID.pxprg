@@ -1,0 +1,110 @@
+0010 REM "Assign FID on Linux & NT <ZZ2PID>
+0035 REM "5.7 - 09/19/24 - 11.130605 - jvv - SSP# 307503
+0037 REM "307503-Exclude background tasks in DBD user license count DBD-494  
+0040 REM "Copyright 2024 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! ******************************************************************
+0060 ! "Routine first tests for T0 id;
+0070 ! "If not T0 then FID already assigned so exit
+0080 ! ******************************************************************
+0090 ! "1st step >
+0100 ! "identify unique number, then convert to file index
+0110 ! "On regular connection to Unix & linux PID is unique
+0120 ! "On regular connection to Windows OBJ(0)(17,4) is unique
+0130 ! "On Windx connections PID is unique
+0140 ! "2nd step >
+0150 ! "divide address by fid range and take remainder
+0160 ! "to make sure numbers fall in range
+0170 ! "3rd step >
+0180 ! "extract record in FIDNUM
+0190 ! "on error 0 increment and keep trying
+0200 ! ******************************************************************
+0210 ! ******************************************************************
+0230 ! "Records are pre-existing and span T0 - Zz
+0231 ! "FIDS are assigned by record number
+0232 ! "File size is dynamically calculated
+0240 ! ******************************************************************
+0250 LOCAL UNAME$,ADDR$,FIDNO$
+0260 LOCAL FIDNO,P1,P2,WT_TIME,RESERVED_NUMBERS,OS,IS_WDX,LIMIT,CNT
+0300 ! 50 Get Original FID
+0310 ORIG_FID$=FID(0)
+0320 ORIG_FID$=MID(ORIG_FID$,1,2)
+0330 REM "IF MID(ORIG_FID$,1,2)<>"T0" THEN SETFID MID(ORIG_FID$,1,2); EXIT 
+0350 ! ^ 50 Iolist for FIDNUM
+0360 IOLIST FID_NAME$:[CHR(3)],FID_DATE$:[CHR(8)],FID_TIME:[NUM(9)],FID_IND:[NUM(1)]
+0370 IOLIST FIDNO$,COMP_CODE$,USER_ID$,IP_ADDRESS$,IP_PORT$,MACHINE_NAME$,PROCESS_ID$,FID_DATE$,FID_TIME$,USER_SLOT$
+0500 ! ^ 500 Open Global File
+0505 FILE_NAME$="FIDLIST"
+0510 %FIDLIST=FFN(FILE_NAME$)
+0515 IF %FIDLIST=-1 THEN %FIDLIST=GFN; OPEN (%FIDLIST,IOL=0370,ERR=FILE_MISSING)FILE_NAME$
+0520 ! IF %FIDLIST=-1 THEN %FIDLIST=GFN; OPEN (%FIDLIST,IOL=0360,ERR=FILE_MISSING)FILE_NAME$
+0530 RESERVED_NUMBERS=NUM(FIN(%FIDLIST,"NUMREC"))
+1000 ! ^ 1000 Main - Determine OS
+1010 OS=TCB(82)
+1020 IS_WDX=TCB(88)
+1030 IF OS>0 THEN GOSUB GET_WIN_ADDR ELSE GOSUB GET_PID_ADDR
+1050 ! Save number of retries and set to zero, (1 second each)
+1060 WT_TIME=PRM('WT')
+1070 SET_PARAM 'WT'=0
+1075 ! Setup for first extract
+1080 FID_IND=FIDNO
+1090 CNT=1
+1099 ! 
+1100 RECORD_READ:
+1110 EXTRACT (%FIDLIST,ERR=*NEXT,RNO=FID_IND); GOTO RECORD_SELECTED
+1120 FID_IND+=1
+1130 IF FID_IND>=RESERVED_NUMBERS THEN FID_IND=1; CNT+=1
+1140 IF CNT>RESERVED_NUMBERS THEN GOTO ERR_MSG
+1150 GOTO RECORD_READ
+1200 ! Record Available Update Info
+1210 RECORD_SELECTED:
+1220 FIDNO$=KEY(%FIDLIST)
+1230 FID_NAME$=UID,USER_ID$=UID
+1235 USER_SLOT$=STR(TCB(27))
+1240 FID_DATE$=DAY
+1250 FID_TIME=TME,FID_TIME$=STR(FID_TIME)
+1260 COMP_CODE$=%C$,PROCESS_ID$=STR(TCB(89))
+1265 READ DATA FROM "" TO WINFO$,IP_ADDRESS$,IP_PORT$,MACHINE_NAME$ ! Clear all fields that might not be set if this is not a Windx session
+1270 IF IS_WDX THEN {
+1275 CALL "[WDX]*windx.utl;Get_Addr",ERR=*NEXT,WINFO$
+1280 READ DATA FROM WINFO$,SEP=";" TO IP_ADDRESS$,IP_PORT$,MACHINE_NAME$
+1282 IF POS("<rs232>"=IP_ADDRESS$) THEN {
+1283 TMP$=IP_PORT$; IP_PORT$="",MACHINE_NAME$="",IP_ADDRESS$=""
+1285 TMP=-1; TMP=MSK(TMP$," -P [0-9]+ ",ERR=WRITE_RECORD); T_MSL=MSL; IF TMP>0 THEN IP_PORT$=MID(TMP$,TMP+4,T_MSL-4)
+1286 TMP=-1; TMP=MSK(TMP$,"@[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+",ERR=WRITE_RECORD); IF TMP>0 THEN IP_ADDRESS$=STP(MID(TMP$,TMP+1),2)
+1287 TMPX$="ENV("+QUO+"COMPUTERNAME"+QUO+")"; CALL "[WDX]*WindX.utl;GET_VAL",TMPX$,TMPY$; IF NOT(NUL(TMPY$)) THEN MACHINE_NAME$=TMPY$ ! SSP 307503
+1289  }
+1290  }
+1400 WRITE_RECORD:
+1450 WRITE LOCK (%FIDLIST,KEY=FIDNO$,ERR=ERR_MSG)
+1455 ! 
+1900 ASSIGN_FID:
+1905 SETFID FIDNO$
+1910 SET_PARAM 'WT'=WT_TIME
+1915 EXIT 
+2000 ERR_MSG:
+2005 MSGBOX "ERROR -  Assigning FID. "+STR(CNT)+" attempts! "+" Contact "+MSG("DB")+" Support!" ! SSP#296343
+2010 FIDNO$=ORIG_FID$
+2015 ! 
+2095 GOTO ASSIGN_FID
+6000 ! ^ 6000
+6010 GET_WIN_ADDR:
+6020 ADDR$=OBJ(0)
+6030 FIDNO$=MID(ADDR$,17,4)
+6040 FIDNO=DEC(FIDNO$)
+6050 FIDNO=MOD(FIDNO,RESERVED_NUMBERS)
+6060 RETURN 
+6100 ! ^ 100
+6110 GET_PID_ADDR:
+6120 FIDNO=MOD(TCB(89),RESERVED_NUMBERS)
+6130 RETURN 
+6139 ! 
+6140 FILE_MISSING:
+6143 CALL "TF"+%LIC_COMP$+";KILO",NUM_USERS
+6144 IF NUM_USERS>1 THEN MSGBOX "ERROR - File "+FILE_NAME$+" is missing.  "+"FID is set to "+ORIG_FID$+"! "+" Contact "+MSG("DB")+" Support!" ! SSP#296343
+6170 EXIT 
+6199 ! 
+9999 END 
+56001 REM "296343-Change verbage from 'contact Topform Support!' to 'Contact   DemandBridge 
+56002 REM "DBD-125-Modify recorded details, hide security data
+56003 REM "307503-Exclude background tasks in DBD user license count DBD-494  

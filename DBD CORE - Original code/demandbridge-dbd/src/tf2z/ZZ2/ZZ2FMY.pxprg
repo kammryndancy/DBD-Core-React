@@ -1,0 +1,110 @@
+0010 REM "Put field into Print array <ZZ2FMY>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 09/06/95 - 8.54 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "F5 is field #
+0071 REM "F5$ is info to print
+0072 REM "P$ is print array
+0073 REM "O$ is options list
+0074 REM "Q1$ and Q(ALL) are for future use
+0075 REM "Q0$ is list of account type + account codes (each 11 long) to match
+0076 REM "D$ and D(all) are document header string & array
+0077 REM "L2 is section of form (0=main, 1=detail section 1,etc). L3 is line number in that section.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,D$,D{ALL},F5,F5$,L2,L3,P$,O$,Q0$,Q1$,Q{ALL}
+0100 SETERR 9000
+0110 X0$="ZZ2FMY",X1$="Add field to Print and option information"
+0120 DIM S$(40)
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZF6...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+1000 REM "Find all records with print info for this field
+1005 DIM A[2]
+1006 N0$=STR(F5:"0000")
+1010 READ (Z[1],KEY=D$(1,11)+N0$,DOM=1011)
+1020 READ (Z[1],END=1495)IOL=0310; IF A$(1,15)<>D$(1,11)+N0$ THEN GOTO 1495
+1030 IF POS(" "<>A$(17,11))<>0 THEN IF POS(A$(17,11)=Q0$,11)=0 THEN GOTO 1020; REM "if the account type and account code are set, screen them out unless they match the account type, account list passed in as Q0$
+1040 IF Q0$>"" THEN IF POS(" "<>A$(17,11))=0 THEN READ (Z[1],KEY=A$(1,16)+Q0$,DOM=1041)IOL=0310; REM "If blank account type/code, then read to see if matching record with Account type/code exists, if so then use it instead of the blank one; if the new record has column # of 0, then skip this field
+1045 IF A[0]=0 THEN GOTO 1020; REM "Skip any records that got this far, or that we read in 1040 if the column number is 0
+1050 REM "LOAD NON BLANK OPTIONS AND THEIR PARAMETERS INTO O1$
+1055 O1$=""
+1060 FOR I=0 TO 4
+1063 IF POS(" "<>A$(69+I*5,5))<>0 THEN O1$=O1$+A$(69+I*5,5)+A$(94+I*15,15)
+1064 NEXT I
+1100 REM "Headings are in 29,20 and 49,20. IF both headings blank, then print data at col,line position. If headings, headings 1 on first line, heading 2 below. If '<>' in headings then data inserted there (after stripping trailing blanks) if '<>' not in headings, data printed on the next line.
+1101 REM "if DATA IS "" THEN A FIELD WOULD JUST PRINT THE HEADINGS ALLOWING FREE FORM HEADINGS TO BE PUT INTO A FORM IF THE PRINTING PROGRAM CALLS THAT FIELD NUMBER OR FIELD NUMBERS.
+1110 IF POS(" "<>A$(29,40))=0 THEN F9$=F5$; GOSUB 7500; GOTO 1480; REM " No headings just print the data
+1200 IF POS("<>"=A$(29,40))<>0 THEN GOTO 1300; REM "IF <> in headings goto 1300's to print
+1204 REM "if here then the headings are not blank, and they do NOT have a <> in them, so print each non blank heading on a seperate line, and the data on the next line if the data is not ""
+1205 L1=0
+1210 IF POS(" "<>A$(29,20))<>0 THEN F9$=FNS$(A$(29,20)),L0=L1,L1=L1+1; GOSUB 7500
+1215 IF POS(" "<>A$(49,20))<>0 THEN F9$=FNS$(A$(49,20)),L0=L1,L1=L1+1; GOSUB 7500
+1220 IF F5$<>"" THEN F9$=F5$,L0=L1,L1=L1+1; GOSUB 7500
+1295 GOTO 1480
+1300 REM "If here we have data to insert at pos of '<>' in either heading 1 or heading 2 each printed on a seperate line, unless the heading is blank.
+1305 L1=0
+1310 FOR I0=0 TO 1
+1320 F8$=FNS$(A$(29+I0*20,20))
+1325 IF POS(" "<>F8$)=0 THEN GOTO 1380; REM "Heading is blank, so skip it
+1330 IF POS("<>"=F8$)=0 THEN F9$=F8$,L0=L1,L1=L1+1; GOSUB 7500; GOTO 1380; REM "Heading only
+1340 P0=POS("<>"=F8$)
+1345 IF P0=1 THEN F9$=FNS$(F5$)+F8$(3) ELSE IF P0=LEN(F8$)-1 THEN F9$=F8$(1,P0-1)+FNS$(F5$) ELSE F9$=F8$(1,P0-1)+FNS$(F5$)+F8$(P0+2)
+1350 L0=L1,L1=L1+1; GOSUB 7500
+1380 NEXT I0
+1480 GOTO 1020
+1495 GOTO 9900
+7495 RETURN 
+7500 REM "Put string F9$ into P$
+7501 REM "string O1$ is options if O1$ not blank then increment option field counter and place option marker, a tilde, and option field counter into the string, add option field counter, option string, and field data to O$
+7505 REM "If not in wrap mode  then chop string to fit line, check to include, horizontal offset from document header L0 IS VERTICAL OFFSET FOR PRINTING HEADINGS, ETC.
+7506 REM "L3 is offset from current section
+7510 IF O1$<>"" THEN O1=1; GOSUB 7700; O$=O$+"<"+O$(1,2)+">"+O1$+"{"+F9$+"}",F9$=$7E$+O$(1,2)
+7540 IF O1<>1 AND D[3]+A[0]+LEN(F9$)>D[2] THEN F9$=F9$(1,D[2]-(D[3]+A[0]))
+7555 IF D[1]+A[1]+L0>D[0] THEN GOTO 7590; REM "If off the page, then skip it
+7570 P$(D[3]+A[0]+(D[1]+A[1]+L0+L3)*D[2],LEN(F9$))=F9$
+7590 L0=0,O1=0
+7595 RETURN 
+7700 REM "Increment option field counter that is 1st 2 bytes in O$, each position goes from 0-z
+7705 IF O$="" THEN O$="00"; GOTO 7745 ELSE J$=O$(1,2)
+7710 IF J$(2,1)="z" THEN O$(1,2)=FNI$(J$(1,1))+"0" ELSE O$(1,2)=J$(1,1)+FNI$(J$(2,1))
+7745 RETURN 
+8905 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+8910 DEF FNI$(Z9$)=CHR(ASC(Z9$)+1)
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,85 @@
+<PxTable>
+ TableName=GL.EN.CUST.cjb
+ TableKey=K1282322619
+ FileCreate=KEYED "GL.EN.CUST.cjb",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    0000"
+    FIELD_1$="*File==%datapath$+dlm+"+QUO+"ZZPARM"+QUO
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="72"
+    FIELD_5$="27"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"FISC_Y"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="1"
+    FIELD_10$="=%datapath$+dlm+"+QUO+"ZZPARM"+QUO
+    FIELD_18$="2009/03/30 11:04 jir"
+    FIELD_21$="R"
+    FIELD_23$="C0K000M0"
+    FIELD_24$="1"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    0001"
+    FIELD_1$="Fld#1(9,4)"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FISC_Y"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    0002"
+    FIELD_1$="Fld#1(13,2)"
+    FIELD_4$="22"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"NUM_OF_AP"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    0003"
+    FIELD_1$="Formula:STR(MID(FN%FMT_TFDATE$(_MN_.FLD#1$(15,6),%WINDATE_FMT$),1,2)+"+QUO+"/"+QUO+")+STR(MID(FN%FMT_TFDATE$(_MN_.FLD#1$(15,6),%WINDATE_FMT$),3,2)+"+QUO+"/"+QUO+")+STR(MID(FN%FMT_TFDATE$(_MN_.FLD#1$(15,6),%WINDATE_FMT$),5))"
+    FIELD_4$="20"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"DTE_PR_FY"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    0004"
+    FIELD_1$="Fld#1(99,1)"
+    FIELD_4$="7"
+    FIELD_6$="E"
+    FIELD_7$="Status"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_12$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_GLYE    SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="=%C$+"+QUO+"G/LYE"+QUO
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

@@ -1,0 +1,128 @@
+0010 REM "<CD2CUA> Update Cash Disbursements Gateway
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/02/17 - 9.284722 - tma - SSP# 292224
+0037 REM "292224-error message when trying to process the CDG Journal/Update 
+0040 REM "Copyright 2017 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! 254808 - Original CD GW development 09/2012
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="CD2CUA",X1$="Update Cash Disbursements Gateway"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0290 IOLIST Y[0],Y[1],Y[2],Y[3],Y[4]
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOL_CD3:IOLIST CD3$,CD3{ALL}
+0320 IOL_APH:IOLIST APH$,APH[0],APH[1],APH[2],APH[3],APH[4],APH[5]
+0330 IOL_APC:IOLIST APC$,APC[0],APC[1],APC[2]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01L CD3... 02O APH... 03O APC... 13O ZZPARM "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0525 OPEN (HFN)"*MEMORY*"; Z_SPC=LFO ! Memory file to hold special check codes
+0600 REM "
+0610 GOSUB 6000
+0640 REM "IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"PROCEED?","","",0; ON Z GOTO 00641,09900
+0650 GOSUB 8100; GOSUB 8150
+0900 I9=0,I0$="",I1$="",F8=0,COUNT=0
+0910 CD3_FYAP$="" ! SSP258180
+0990 READ (Z[1],KEY="",KNO=0,DOM=0991)
+1000 REM "Process file
+1005 NEXT_REC:
+1010 K$=KEY(Z[1],END=5000); DIM CD3$(218),CD3[4]; READ (Z[1],KEY=K$)IOL=IOL_CD3
+1015 IF CD3_FYAP$="" THEN IF CD3$(1,6)<>DIM(6) THEN CD3_FYAP$=CD3$(1,6) ! SSP258180
+1200 REM "Fill APH record
+1205 DIM APH$(37),APH[5]
+1210 APH$(1,3)=X3$(9,3),APH$(4,3)=CD3$(7,3); REM "Source Company, Bank Code
+1215 APH$(7,10)=CD3$(14,10),APH$(17,1)=" "; REM "Vendor code, Special check code (will be determined later)
+1220 APH$(18,10)=CD3$(24,10),APH$(28,6)=CD3$(34,6); REM "Vendor invoice number, Check number
+1223 GOSUB GET_SPC; APH$(17,1)=SPC$ ! Determine and set check code
+1225 APH[0]=CD3[0]; REM "Gross invoice payment
+1230 APH[1]=CD3[1]; REM "Discount taken
+1295 WRITE (Z[2],KEY=APH$(1,27))IOL=IOL_APH; COUNT=COUNT+1
+1300 REM "Create or Update APC record based on APH info
+1305 DIM APC$(39),APC[3]
+1310 APC$(1,17)=APH$(1,17); REM "Source comp, bank code, vendor code, check code from APH
+1315 APC$(18,6)=APH$(28,6),APC$(24,6)=CD3$(40,6); REM "Check number, Check date
+1320 REM "Read existing APC, if any, and add to it, write back out
+1325 EXTRACT (Z[3],KEY=APC$(1,17),DOM=1326)IOL=IOL_APC
+1330 APC[0]=APC[0]+APH[0],APC[1]=APC[1]+APH[1]; REM "Gross amount, discount taken
+1335 APC[2]=APC[2]+APH[0]-APH[1]; REM "Net amount of check
+1345 WRITE (Z[3],KEY=APC$(1,17))IOL=IOL_APC
+1500 DONE_REC:
+1510 REMOVE (Z[1],KEY=K$,DOM=*NEXT)
+1795 GOTO NEXT_REC
+1799 ! 
+5000 REM "EOJ
+5002 PRINT @(0,15),'CE',
+5003 READ (Z[13],KEY=X3$(9,3)+"A/P",DOM=9900)AP_PARMS$
+5004 READ (Z[13],KEY=X3$(9,3)+"CDGUAA",DOM=*NEXT)GCD_PARMS$; REMOVE (Z[13],KEY=X3$(9,3)+"CDGUAA")
+5005 IF NUL(GCD_PARMS$) THEN FYAP_PARMS$=AP_PARMS$(7,6) ELSE FYAP_PARMS$=GCD_PARMS$(1,6)
+5006 IF CD3_FYAP$>"" THEN FYAP_PARMS$=CD3_FYAP$ ! SSP258180
+5010 IF COUNT>=1 THEN DIM TEMP$(50); TEMP$(1)=X3$(9,3)+"APC"+X3$(174,4); WRITE (Z[13],KEY=TEMP$(1,10))FYAP_PARMS$+TEMP$; REM "Put out check print record with FY/AP fom import program  !SSP#292224
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(10,5),"Updating Gateway Records to Cash Disbursements Entry Records"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6199 ! 
+8000 REM "Get special check code to use for given vendor and check combination
+8010 GET_SPC:
+8020 FIND (Z_SPC,KEY=APH$(1,16)+APH$(28,6),DOM=NO_SPC)SPC$; GOTO SPC_FOUND ! If there is an SPC for this vendor+check already then just reuse it
+8030 NO_SPC:! If no SPC for vendor+check then make a new one
+8040 SPC$=" "; FIND (Z_SPC,KEY=APH$(1,16)+DIM(6),DOM=*NEXT)SPC$; GOTO 8060 ! Find last SPC code used for this vendor and increment it
+8050 IF NUL(SPC$) THEN SPC$="0" ! We are seeing this vendor for first time, start them off
+8060 SPC$=FN%NEXT_SEQ$(SPC$,5) ! Increment by 1, sequence mode 5 gives us 1..9,A..Z,a..z then ERR 41
+8070 WRITE (Z_SPC,KEY=APH$(1,16)+DIM(6))SPC$ ! Save off last SPC code used for this vendor
+8080 SPC_FOUND:
+8090 WRITE (Z_SPC,KEY=APH$(1,16)+APH$(28,6))SPC$ ! Resave SPC for this vendor+check for later
+8095 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F2$
+8112 T=T0
+8115 REM PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 CLOSE (Z_SPC); Z_SPC=0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "258180-Cash Disbursements GW; use FY/AP from first CD3 record      
+56001 REM "292224-error message when trying to process the CDG Journal/Update 

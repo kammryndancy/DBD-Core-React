@@ -1,0 +1,199 @@
+0010 REM "Create Text Record of PO Info <PO2PAT>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 01/26/09 - 15.883055 - LMS - SSP# 214091
+0037 REM "214091-Email from Brenda requesting ability to have another        
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "WO126561, send in file format and go to area to create that type record, then see if output file exists, if so append records, if not create file then write records
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,FORMAT$,HEADER${ALL},LINE${ALL},NUM_LINES,X9$
+0100 SETERR 9000
+0110 X0$="PO2PAT",X1$="Create Text Record of PO Info"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0150 REM "SEPARATE$=","
+0151 SEPARATE$=QUO+","+QUO
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 REM "Z$="13O ZZPARM  "
+0520 REM "CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0620 REM "BC=2; BC=NUM(X9$(38,1),ERR=*NEXT)
+0621 DIM F5$(2); IF NUM(X9$(38,1),ERR=4163)>0 THEN DIM F5$(NUM(X9$(38,1))); REM 
+0622 BC=2; BC=LEN(F5$,ERR=*NEXT)
+1000 REM "Go to proper section based on format code
+1001 IF FORMAT$="01" THEN FILENAME$="ideal.txt" ELSE IF FORMAT$="02" THEN FILENAME$="ideal.txt" ELSE IF FORMAT$="03" THEN FILENAME$="lincoln.txt"; REM SSP 214091
+1010 ON POS(FORMAT$="010203",2)/2+.5 GOTO 9900,2000,2000,2000,2000,2000,9000; REM SSP 214091
+2000 REM "WO126561, Company 538, format 01, file name ideal.txt
+2010 IF NUM_LINES>=1 THEN HAVE_LINES=1,ON_LINE=1
+2020 RECORD$=""
+2035 FOR X=3 TO 7; GOSUB 7550; NEXT X; REM "Shipto name and address, customer po number, our po number, date requested, order date
+2045 X=10; GOSUB 7550; REM "Previous job number
+2050 FOR X=17 TO 19; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; NEXT X; REM "Quantity, description, size information
+2055 FOR X=21 TO 22; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; NEXT X; REM "Item/item number, unit cost
+2060 X=25; GOSUB 7550; X=27; GOSUB 7550; REM "Customer code, customer service rep
+2065 FOR X=32 TO 35; GOSUB 7550; NEXT X; REM "Ply number, paper color, paper weight, paper grade                                                    
+2070 FOR X=38 TO 39; GOSUB 7550; NEXT X; REM "Inks, performations      
+2075 X=44; GOSUB 7550; X=54; GOSUB 7550; X=93; GOSUB 7550; REM " Composition, proof required, 1st set of 4 comment lines
+2078 X=96; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; REM "
+2079 IF POS(FORMAT$="0203",2)=0 THEN X=97; GOSUB 7550; REM "Unit price, total selling price for PO, 2nd set of 4 comment lines, mark for, your item number SSP 214091
+2080 X=101; GOSUB 7550; X=103; GOSUB 7550; REM "Unit price, total selling price for PO, 2nd set of 4 comment lines, mark for, your item number
+2082 IF POS(FORMAT$="0203",2)=0 THEN X=106; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500; REM "Unit price, total selling price for PO, 2nd set of 4 comment lines, mark for, your item number SSP 214091
+2085 FOR X=107 TO 109; GOSUB 7550; NEXT X; REM "Overall left-right, top-bottom, number of parts
+2090 IF POS(FORMAT$="0203",2)=0 THEN X=115; GOSUB 7550; REM "Date required from vendor, ordered by, line item cost extension, vendor's standard comment, proof status description SSP 214091
+2091 X=122; GOSUB 7550; REM "Date required from vendor, ordered by, line item cost extension, vendor's standard comment, proof status description
+2092 IF POS(FORMAT$="0203",2)=0 THEN X=129; REM "Date required from vendor, ordered by, line item cost extension, vendor's standard comment, proof status description SSP 214091
+2093 IF POS(FORMAT$="0203",2)=0 THEN X=140; GOSUB 7550; REM "Date required from vendor, ordered by, line item cost extension, vendor's standard comment, proof status description SSP 214091
+2094 X=154; GOSUB 7550; REM "Date required from vendor, ordered by, line item cost extension, vendor's standard comment, proof status description
+2095 IF POS(FORMAT$="0203",2) THEN GOSUB 3000; REM SSP 214091
+2096 IF POS(FORMAT$="0203",2) THEN RECORD$=SUB(RECORD$(1,LEN(RECORD$)),"|",QUO+","+QUO); REM SSP 214091
+2097 REM "IF POS(FORMAT$="0203",2) THEN RECORD$=SUB(RECORD$(1,LEN(RECORD$)),QUO+""+QUO,QUO+"NA"+QUO);REM SSP 214091
+2098 RECORD$=RECORD$+QUO+HEADER$[155]+QUO; REM "Proof status date, last field in record
+2099 IF POS(FORMAT$="0203",2) THEN RECORD$=RECORD$+$0D0A$; REM "Add carriage return line feed - Only add for Format type 2  and type 3 per SSP 214091
+2100 REM "Attempt to open the file, if ok then lock it, append the record, close it.  If err=12 then create file, open and lock it, write record, close it. If err=0 then wait 5 and try again.
+2110 CLOSE (32502); OPEN LOCK (32502,OPT="TEXT",ERR=2111)FILENAME$; GOSUB 7650; GOTO 2180; REM SSP 214091
+2111 IF ERR=12 THEN GOSUB 7700; GOTO 2180 ELSE IF ERR=0 THEN WAIT 5; GOTO 2110
+2180 IF HAVE_LINES THEN ON_LINE=ON_LINE+1; NUM_LINES=NUM_LINES-1; IF NUM_LINES>=1 THEN GOTO 2020
+2190 GOTO 9900
+3000 REM "WO162991, Company 130, format 02, file name ideal.txt                 
+3010 REM "IF NUM_LINES>=1 THEN HAVE_LINES=1,ON_LINE=1
+3020 REM "RECORD$=""
+3050 X=8; GOSUB 7550; REM "Plant quote number
+3052 FOR X=15 TO 16; GOSUB 7550; NEXT X; REM "Ship Via and Ship With
+3056 X=23; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; ; REM " Unit of Measure
+3058 FOR X=26 TO 27; GOSUB 7550; NEXT X; REM "CSR and SLSP
+3059 X=29; GOSUB 7550; REM "Salesperson Name
+3060 X=31; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; REM "PO line Number
+3061 FOR X=36 TO 37; GOSUB 7550; NEXT X
+3065 FOR X=42 TO 43; GOSUB 7550; NEXT X; REM "Marginal words,Marginal words position,composition,CRC?,Negative Supplied?,Artwork Supplied,Plant to set screens/pantographs?,Plant to make adjustments,Return-Art?,Return-Negatives?,Return-CRC?,Destroy old copy?,Proof required?
+3066 FOR X=45 TO 53; GOSUB 7550; NEXT X; REM "Marginal words,Marginal words position,composition,CRC?,Negative Supplied?,Artwork Supplied,Plant to set screens/pantographs?,Plant to make adjustments,Return-Art?,Return-Negatives?,Return-CRC?,Destroy old copy?,Proof required?
+3070 FOR X=58 TO 71; GOSUB 7550; NEXT X; REM "Starting number,Modulus numbering system,number of numbering positions,color of numbers,arabic numbering,press numbering,collator numbering, guarantee numbering,list missing numbers,MICR numbering,static numbering,consecutive numbeering,consecutive numbering,other numbering,quantity per carton
+3072 FOR X=77 TO 89; GOSUB 7550; NEXT X; REM "punching ply  numbers, punching positions,punching number of holes,punching diameter, punching C to C, binding books, binding pads, binding number of sets per,binding wrap around, binding triad, binding open end, binding parts left in book, binding Poly Wrap
+3075 REM "X=93; GOSUB 7550; REM " first set of 4 comment lines        
+3080 REM "X=96; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; REM "Unit price
+3082 X=102; GOSUB 7550; REM "COMBINATION QUANTITY
+3085 REM "FOR X=101 TO 103; GOSUB 7550; NEXT X; REM "2ND SET OF 4 COMMENTS, COMBINAITON QUANTITY, MARK FOR
+3086 X=133; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; REM "Cont for ship inst message
+3087 X=149; GOSUB 7550; REM "Our PO number second printing
+3090 FOR X=159 TO 165; IF HAVE_LINES THEN GOSUB 7600 ELSE GOSUB 7500 END_IF ; NEXT X; REM "CUSTOMERS ITEM CODE, VARIABLE PRINT FIELD 1, VARIABLE PRINT FIELD 2, VARIABLE PRINT ID, VARIABLE PRINT PROOF URL, VARIABLE PRINT VENDOR URL, VARIABLE PRINT PROOF/FILE URL
+3091 FOR X=169 TO 178; GOSUB 7550; NEXT X; REM "ORDER NOTEPAD LINES ONE THRU 10
+3092 FOR X=120 TO 121; GOSUB 7550; NEXT X; REM "SUB PACK AND QTY/SUB PACK
+3095 RECORD$=RECORD$+QUO+HEADER$[155]+QUO; REM "Proof status date, last field i n record                                                                   
+3096 REM "RECORD$=STP(RECORD$(1,LEN(RECORD$)),3,"|")
+3097 REM "RECORD$=SUB(RECORD$(1,LEN(RECORD$)),"|",QUO+","+QUO)
+3099 RETURN 
+3100 REM "Attempt to open the file, if ok then lock it, append the record, clos e it.  If err=12 then create file, open and lock it, write record, close i t. If err=0 then wait 5 and try again.                                     
+3110 CLOSE (32502); OPEN LOCK (32502,OPT="TEXT",ERR=3111)FILENAME$; GOSUB 7650; GOTO 3180; REM SSP 214091
+3111 IF ERR=12 THEN GOSUB 7800; GOTO 3180 ELSE IF ERR=0 THEN WAIT 5; GOTO 3110
+3180 IF HAVE_LINES THEN ON_LINE=ON_LINE+1; NUM_LINES=NUM_LINES-1; IF NUM_LINES>=1 THEN GOTO 3020
+3190 GOTO 9900
+3299 RETURN 
+4000 REM " ADD EXTRA FIELDS FOR PLY RELATED INFORMATION
+4001 NUM_COM=POS("|"=HEADER$[X],1,0)
+4002 IF POS(FORMAT$="0203",2) AND X=93 THEN FOR X_ADD=NUM_COM TO 4; HEADER$[X]=HEADER$[X]+DIM(2)+"|"; NEXT X_ADD; REM SSP 214091
+4003 IF POS(FORMAT$="0203",2) AND X=101 THEN FOR X_ADD=NUM_COM TO 4; HEADER$[X]=HEADER$[X]+DIM(2)+"|"; NEXT X_ADD; REM SSP 214091
+4020 IF POS(FORMAT$="0203",2) AND X=32 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(2)+"|"; NEXT X_ADD; REM SSP 214091
+4030 IF POS(FORMAT$="0203",2) AND X=33 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(3)+"|"; NEXT X_ADD; REM SSP 214091
+4040 IF POS(FORMAT$="0203",2) AND X=34 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(4)+"|"; NEXT X_ADD; REM SSP 214091
+4050 IF POS(FORMAT$="0203",2) AND X=35 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(6)+"|"; NEXT X_ADD; REM SSP 214091
+4051 IF POS(FORMAT$="0203",2) AND X=36 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(6)+"|"; NEXT X_ADD; REM SSP 214091
+4052 IF POS(FORMAT$="0203",2) AND X=37 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(6)+"|"; NEXT X_ADD; REM SSP 214091
+4060 IF POS(FORMAT$="0203",2) AND X=38 THEN FOR X_ADD=NUM_PLYS TO 8; HEADER$[X]=HEADER$[X]+"|"+DIM(27+BC); NEXT X_ADD; REM SSP 214091
+4070 IF POS(FORMAT$="0203",2) AND X=39 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(10)+"|"; NEXT X_ADD; REM SSP 214091
+4080 IF POS(FORMAT$="0203",2) AND X=42 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(20)+"|"; NEXT X_ADD; REM SSP 214091
+4090 IF POS(FORMAT$="0203",2) AND X=43 THEN FOR X_ADD=NUM_PLYS+1 TO 8; HEADER$[X]=HEADER$[X]+DIM(8)+"|"; NEXT X_ADD; REM SSP 214091
+4199 RETURN 
+5000 REM "EOJ
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility program will ... "
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7500 REM "If field is blank set to "",
+7510 RECORD$=RECORD$+QUO+QUO+","
+7545 RETURN 
+7550 IF X=32 AND POS(FORMAT$="0203",2) AND NUM_PLYS=0 AND LEN(HEADER$[X])>0 THEN NUM_PLYS=NUM(HEADER$[X](LEN(HEADER$[X]),1),ERR=*NEXT); REM "Header fields  SSP 214091
+7551 IF X=49 AND LEN(HEADER$[X])=0 THEN HEADER$[X]="N"
+7552 P=POS(QUO=HEADER$[X]); IF P<=0 THEN GOTO 7553 ELSE HEADER$[X](P,1)=" "; GOTO 7552
+7553 GOSUB 4000
+7554 IF POS(FORMAT$="0203",2) AND X=32 AND POS(QUO+QUO=HEADER$[X])=0 THEN HEADER$[X]=SUB(HEADER$[X](1,LEN(HEADER$[X])),"|",QUO+","+QUO); REM SSP 214091
+7559 IF POS(FORMAT$="0203",2) AND X=44 THEN HEADER$[X]=MID(HEADER$[X],1,6)+SEPARATE$+MID(HEADER$[X],10,6)+SEPARATE$+MID(HEADER$[X],19,6)+SEPARATE$+MID(HEADER$[X],28,6)+SEPARATE$; REM SSP 214091
+7560 IF X=38 THEN HEADER$[X]=SUB(HEADER$[X](1,LEN(HEADER$[X])),"|",F5$)
+7561 IF POS(FORMAT$="0203",2) AND X=38 AND ON_LINE=NUM_LINES THEN HEADER$[X]=MID(HEADER$[X],1,6)+SEPARATE$+MID(HEADER$[X],7+BC,6)+SEPARATE$+MID(HEADER$[X],13+BC*2,6)+SEPARATE$+MID(HEADER$[X],19+BC*3,6)+SEPARATE$+MID(HEADER$[X],25+BC*4,6)+SEPARATE$+MID(HEADER$[X],31+BC*5,6)+SEPARATE$+MID(HEADER$[X],37+BC*6,6)+SEPARATE$+MID(HEADER$[X],43+BC*7,6)+SEPARATE$+MID(HEADER$[X],49+BC*8,6)+SEPARATE$+MID(HEADER$[X],55+BC*9,6)+SEPARATE$+MID(HEADER$[X],61+BC*10,6)+SEPARATE$+MID(HEADER$[X],67+BC*11,6)+SEPARATE$+MID(HEADER$[X],73+BC*12,6)+SEPARATE$+MID(HEADER$[X],79+BC*13,6)+SEPARATE$+MID(HEADER$[X],85+BC*14,6)+SEPARATE$+MID(HEADER$[X],91+BC*15,6); REM SSP 214091
+7571 IF POS(FORMAT$="0203",2) AND X=93 THEN HEADER$[X]=SUB(HEADER$[X](1,LEN(HEADER$[X])),"|",SEPARATE$); REM SSP 214091
+7572 IF POS(FORMAT$="0203",2) AND X=38 THEN HEADER$[X]=SUB(HEADER$[X](1,LEN(HEADER$[X])),"|",","); REM SSP 214091
+7573 IF POS(FORMAT$="0203",2) AND X=101 THEN HEADER$[X]=SUB(HEADER$[X](1,LEN(HEADER$[X])),"|",SEPARATE$); REM SSP 214091
+7574 REM "IF X=93 THEN GOSUB 4000
+7575 REM "IF X=101 THEN GOSUB 4000
+7580 RECORD$=RECORD$+QUO+HEADER$[X]+QUO+","
+7590 RETURN 
+7600 REM "Line fields
+7605 P=POS(QUO=LINE$[ON_LINE,X]); IF P<=0 THEN GOTO 7606 ELSE LINE$[ON_LINE,X](P,1)=" "; GOTO 7605
+7610 RECORD$=RECORD$+QUO+LINE$[ON_LINE,X]+QUO+","
+7640 RETURN 
+7650 REM "Opened existing file, attempt to lock and append record, then close file
+7655 LOCK (32502,ERR=7656); GOTO 7660
+7656 IF ERR=0 THEN WAIT 5; GOTO 7655
+7660 TMP$=FN%XFD$(32502,0)
+7665 IF DEC(TMP$(38,4))>0 THEN READ (32502,IND=DEC(TMP$(38,4))-1,ERR=7666)
+7670 PRINT (32502)RECORD$
+7675 CLOSE (32502)
+7690 RETURN 
+7700 REM "Create file, open it, lock it, write record, close file - format 01
+7710 SERIAL FILENAME$,7,0; REM SSP 214091
+7715 OPEN LOCK (32502,OPT="TEXT")FILENAME$; LOCK (32502); REM SSP 214091
+7725 PRINT (32502)RECORD$
+7730 CLOSE (32502)
+7740 RETURN 
+7800 REM "Create file, open it, lock it, write record, close file - format 02   
+7810 SERIAL FILENAME$,7,0; REM SSP 214091
+7815 OPEN LOCK (32502,OPT="TEXT")FILENAME$; LOCK (32502); REM SSP 214091
+7825 PRINT (32502)RECORD$
+7830 CLOSE (32502)
+7840 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,102 @@
+0010 REM "Setup ZR0 records <ZR2UT0>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 10/01/02 - 9.385277 - lms - SSP# 149046
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Code to get ASF records and setup logic is in 7000's
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="ZR2UT0",X1$="Setup Default Repository Parameters"
+0120 DIM Z0$(80,"-")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZR0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 GOSUB 6000
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+1000 REM 
+1011 WRITE RECORD (Z[1],DOM=1012,KEY="AR_INVOICE")"AR_INVOICEA/R Invoices                  NARINV_BKG ZR3...  00000ZRXAR6ZZXAR6NY         
+1012 WRITE RECORD (Z[1],DOM=1013,KEY="CR_JOURNAL")"CR_JOURNALCash Receipts Journal         N          ZR7...  00000ZRXZR4ZZXZR4YN         
+1013 WRITE RECORD (Z[1],DOM=1014,KEY="DETAIL_JRL")"DETAIL_JRLDetail A/R Sales Journal      N          ZR5...  00000ZRXZR4ZZXZR4YN         
+1014 WRITE RECORD (Z[1],DOM=1015,KEY="LOT_RECVIN")"LOT_RECVINP/O Lot Receiving Report      N          ZRG...  00000ZRXZR4ZZXZR4YN         
+1015 WRITE RECORD (Z[1],DOM=1016,KEY="POR_JRNL  ")"POR_JRNL  Purchase Order Receiving Jrl  N          ZR8...  00000ZRXZR4ZZXZR4YY         
+1016 WRITE RECORD (Z[1],DOM=1017,KEY="PURCHASJRL")"PURCHASJRLA/P Purchases Journal         N          ZRF...  00000ZRXZR4ZZXZR4YY         
+1017 WRITE RECORD (Z[1],DOM=1018,KEY="SALES_JRNL")"SALES_JRNLA/R Summary Sales Journal     N          ZR4...  00000ZRXZR4ZZXZR4YN         
+1018 WRITE RECORD (Z[1],DOM=1019,KEY="SUMBIL_RPT")"SUMBIL_RPTSummary Bill Report           N          ZRC...  00000ZRXZR4ZZXZR4YN         
+1019 WRITE RECORD (Z[1],DOM=1020,KEY="TRAN_REGIS")"TRAN_REGISG/L Detail Trans Register     N          ZR9...  00000ZRXZR4ZZXZR4YN         
+1020 WRITE RECORD (Z[1],DOM=2021,KEY="SALES_TAX ")"SALES_TAX Sales Tax Payable Report      N          ZRT...  00000ZRXZR5ZRXZRTYN         
+2000 REM "done
+2010 GOTO 5000
+5000 REM "EOJ
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This CSI utility will setup the records needed for starting the storing of documents to repositories. The utility will not overwrite existing entries",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+7000 REM "Logic to create lines @ 1000 -2000 from data in files.
+7010 DIM Z5$(80,$00$); N=1010
+7015 T$=""
+7020 EXECUTE "DELETE 1001,1999"
+7050 REM 'DO FILES
+7055 F1=1; GOSUB 7800
+7090 PRINT N-1010," RECORDS LOADED"
+7095 ESCAPE 
+7286 ESCAPE 
+7800 REM "Get all records from file Z( F1 ) that contain T$
+7805 F0=Z[F1]
+7810 READ (F0,KEY="",DOM=7811)
+7815 K$=KEY(F0,END=7840); READ RECORD (F0,KEY=K$)R$
+7820 IF T$<>"" AND POS(T$=K$)=0 THEN GOTO 7815
+7825 R$=R$(1,POS(Z5$=R$+Z5$)-1),N=N+1; IF N=2000 THEN ESCAPE 
+7826 R$(60,5)="00000"; REM "Clear index
+7827 R$(41,1)="N"; REM "Turn off for now
+7830 EXECUTE STR(N)+"WRITE RECORD (Z("+STR(F1)+"),DOM="+STR(N+1)+",KEY="+QUO+K$+QUO+") "+QUO+R$+QUO
+7835 GOTO 7815
+7845 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

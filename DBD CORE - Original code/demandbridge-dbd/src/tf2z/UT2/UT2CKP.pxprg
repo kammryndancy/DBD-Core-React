@@ -1,0 +1,52 @@
+0010 REM "Check 300 Progs vs 312 Progs <UT2CKP>
+0100 BEGIN 
+0105 DIM Z0$(10,"0")
+0220 PRINT 'CS'
+0400 REM "GET FILE LISTS
+0410 X$="312",X0$=X$
+0420 PRINT 'LF',"Getting files for ",X$; INVOKE "cd "+X$+"/tf2p; find ./ -print >/usr/lib/basic/UTILS/TMP."+X$
+0430 X$="300",X1$=X$
+0450 PRINT 'LF',"Getting files for ",X$; INVOKE "cd "+X$+"/tf2p; find ./ -print >/usr/lib/basic/UTILS/TMP."+X$
+0600 REM "PROCESS FILES
+0610 A$=""
+0620 OPEN (1)"TMP.300"
+1000 REM "NEXT FILE
+1010 IF POS($00$<>A$)=0 AND A$>"" THEN GOTO 5000
+1020 IF POS($0A$=A$)=0 THEN READ RECORD (1)X$; A$=A$+X$
+1030 P=POS($0A$=A$),Q$=A$(1,P-1),A$=A$(P+1)
+1035 Q$=Q$(3)
+1040 IF Q$="" THEN GOTO 1000
+1050 REM 
+1060 IF POS("/"=Q$)=0 THEN GOTO 1000
+1070 D0$=Q$(1,3),Q$=Q$(5)
+1200 REM "PROCESS PROGRAM
+1210 PRINT @(0),"Looking at: ",Q$,
+1220 INVOKE "ls -l "+X0$+"/tf2p/"+D0$+"/"+Q$+" >./UTILS/TMP.XXX"
+1230 INVOKE "ls -l "+X1$+"/tf2p/"+D0$+"/"+Q$+" >>./UTILS/TMP.XXX"
+1250 REM 
+1255 CLOSE (3); OPEN (3)"TMP.XXX"; READ RECORD (3)X$
+1260 P=POS($0A$=X$),Q0$=X$(1,P-1),Q1$=X$(P+1),Q1$=Q1$(1,POS($0A$=Q1$+$0A$)-1)
+1265 IF POS($00$<>Q1$)=0 THEN PRINT " NOT ON COMPARE VOLUME"; GOTO 1000
+1270 X$=Q0$; GOSUB 7000; Q0$=F$
+1280 X$=Q1$; GOSUB 7000; Q1$=F$
+1290 IF Q0$(10)=Q1$(10) THEN PRINT " NOT DIFFERENT "; GOTO 1000
+1400 REM "DIFFERENT
+1410 F0=F0+1; PRINT " *DIFFERENT *"
+1990 GOTO 1000
+7000 REM "RETURN STRING W/ DATA (1,9)=PERMS, 10,9=SIZE, 19,16=DATE)
+7010 DIM F$(40); F$(1,9)=X$(1,9)
+7015 X$=X$(POS(" "=X$))
+7018 P=POS(" "<>X$); X$=X$(P)
+7019 REM "SKIP U NO
+7020 P=POS(" "=X$); X$=X$(P); P=POS(" "<>X$),X$=X$(P)
+7025 P=POS(" "<>X$); X$=X$(P)
+7030 REM "SKIP OWNER ID
+7035 P=POS(" "=X$); X$=X$(P); P=POS(" "<>X$),X$=X$(P)
+7040 REM "SKIP ??
+7045 P=POS(" "=X$); X$=X$(P); P=POS(" "<>X$),X$=X$(P)
+7050 REM "GET SIZE
+7060 P=POS(" "=X$),Z$=X$(1,P-1)
+7065 P=POS(" "=X$); X$=X$(P); P=POS(" "<>X$),X$=X$(P)
+7070 F$(10,9)=STR(NUM(Z$):Z0$(1,9))
+7075 P=POS("  "=X$); F$(19,16)=X$(1,11)
+7090 RETURN 

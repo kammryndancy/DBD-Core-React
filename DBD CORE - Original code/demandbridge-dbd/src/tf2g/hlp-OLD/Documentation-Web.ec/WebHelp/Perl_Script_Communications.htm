@@ -1,0 +1,446 @@
+<!doctype HTML public "-//W3C//DTD HTML 4.0 Frameset//EN">
+
+<html>
+
+<!--(==============================================================)-->
+<!--(Document created with RoboEditor. )============================-->
+<!--(==============================================================)-->
+
+<head>
+
+<title>Perl Script Communications</title>
+
+<!--(Meta)==========================================================-->
+
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Originator content=ImportDoc>
+<meta name=OriginalFile content="C:\Documents and Settings\ddw\My Documents\TopForm Docs\Existing Source Docs\Webec System Admin Documenation - Providex.doc">
+<meta name=generator content="RoboHELP by eHelp Corporation - www.ehelp.com">
+<meta name=generator-major-version content=0.1>
+<meta name=generator-minor-version content=1>
+<meta name=filetype content=kadov>
+<meta name=filetype-version content=1>
+<meta name=page-count content=1>
+<meta name=layout-height content=1672>
+<meta name=layout-width content=590>
+
+
+<!--(Links)=========================================================-->
+
+ <link rel='stylesheet' href='default_ns.css'>
+<script type="text/javascript" language="JavaScript" title="WebHelpSplitCss">
+<!--
+if (navigator.appName !="Netscape")
+{   document.write("<link rel='stylesheet' href='default.css'>");}
+//-->
+</script>
+<!--(Style Sheet)===================================================-->
+
+<style>
+<!--
+
+A:visited {
+	color: #800080;
+}
+
+A:link {
+	color: #0000ff;
+}
+
+-->
+</style>
+
+
+<style type="text/css">
+<!--
+img_whs1 {border: none; width: 400px; height: 108px; float: none; border-style: none;}
+table.whs2 {border: none; x-border-left: 1px table-solid; x-border-top: 1px table-solid; x-border-right: 1px table-solid; x-border-bottom: 1px table-solid; border-spacing: 0px; margin-left: 6px; border-spacing: 0px;}
+col.whs3 {width: 82.5pt;}
+col.whs4 {width: 137.3pt;}
+col.whs5 {width: 149.8pt;}
+td.whs6 {width: 109px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-left-style: Double; border-left-color: #000099; border-top-style: Double; border-top-color: #000099; border-right-style: Double; border-right-color: #000099; border-bottom-style: Double; border-bottom-color: #000099; border-right-width: 3px; border-left-width: 3px; border-top-width: 3px; border-bottom-width: 3px; background-color: #cccccc;}
+td.whs7 {width: 183px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-top-style: Double; border-top-color: #000099; border-right-style: Double; border-right-color: #000099; border-bottom-style: Double; border-bottom-color: #000099; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; background-color: #cccccc;}
+td.whs8 {width: 199px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-top-style: Double; border-top-color: #000099; border-right-style: Double; border-right-color: #000099; border-bottom-style: Double; border-bottom-color: #000099; border-top-width: 3px; border-bottom-width: 3px; border-right-width: 3px; background-color: #cccccc;}
+td.whs9 {width: 109px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-left-style: Double; border-left-width: 3px; border-left-color: #000099; border-right-style: Double; border-right-width: 3px; border-right-color: #000099; border-bottom-style: Double; border-bottom-width: 3px; border-bottom-color: #000099;}
+td.whs10 {width: 183px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-style: Double; border-right-width: 3px; border-right-color: #000099; border-bottom-style: Double; border-bottom-width: 3px; border-bottom-color: #000099;}
+td.whs11 {width: 199px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-style: Double; border-right-width: 3px; border-right-color: #000099; border-bottom-style: Double; border-bottom-width: 3px; border-bottom-color: #000099;}
+td.whs12 {width: 109px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+td.whs13 {width: 183px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+td.whs14 {width: 199px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+table.whs15 {border: none; x-border-left: 1px table-solid; x-border-top: 1px table-solid; x-border-right: 1px table-solid; x-border-bottom: 1px table-solid; margin-left: 6px; border-spacing: 0px;}
+col.whs16 {width: 1.046in;}
+col.whs17 {width: 2.727in;}
+td.whs18 {x-cell-content-align: top; width: 106.2pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double;}
+td.whs19 {x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double;}
+td.whs20 {x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+td.whs21 {x-cell-content-align: top; width: 106.2pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double;}
+td.whs22 {x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+td.whs23 {x-cell-content-align: top; width: 106.2pt; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+td.whs24 {x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+col.whs25 {width: 72.4pt;}
+col.whs26 {width: 131.6pt;}
+col.whs27 {width: 160.3pt;}
+td.whs28 {width: 96px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double;}
+td.whs29 {width: 175px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double;}
+td.whs30 {width: 213px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; background-color: #cccccc; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-top-color: #000099; border-top-width: 3px; border-top-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+td.whs31 {width: 96px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double;}
+td.whs32 {width: 175px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+td.whs33 {width: 213px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double; border-right-color: #000099; border-right-width: 3px; border-right-style: Double;}
+td.whs34 {width: 96px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-left-color: #000099; border-left-width: 3px; border-left-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+td.whs35 {width: 175px; x-cell-content-align: top; padding: 0in 5.4pt 0in 5.4pt; padding-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; border-right-color: #000099; border-right-width: 3px; border-right-style: Double; border-bottom-color: #000099; border-bottom-width: 3px; border-bottom-style: Double;}
+-->
+</style>
+<script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
+<!--
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//-->
+</script>
+<style type="text/css">
+<!--
+  div.WebHelpPopupMenu {position:absolute; left:0px; top:0px; z-index:4; visibility:hidden;}
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+</head>
+
+<!--(Body)==========================================================-->
+
+
+<body lang=EN-US>
+
+<script type="text/javascript" language="javascript1.2">
+<!--
+if (window.gbWhTopic)
+{
+	if (window.addTocInfo)
+	{
+	addTocInfo("Web.ec Help\nServer menu\nServer Administration\nPerl Script Communications");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Web-ec.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+//-->
+</script><img src="Graphics/TopForm_Logo-Help4.jpg" x-maintain-ratio="TRUE" width="400px" height="108px" border="0" class="img_whs1">
+
+<h1>Perl Script &amp; Communications with the TopForm Web Server</h1>
+
+<p class=Normal><span style="font-weight: bold;"><B>Web.</B></span><span style="font-style: italic; font-weight: bold;"><I><B>ec</B></I></span> 
+ uses a Perl script to handle communication between web page requests and 
+ your TopForm <span style="font-weight: bold;"><B>Web.</B></span><span style="font-style: italic; font-weight: bold;"><I><B>ec</B></I></span> 
+ server. When a buyer on your web site clicks on a link or presses a button, 
+ the pages request the Perl script (cgi-bin/ecclient.pl) to process the 
+ request, send it to the TopForm Web Server and wait for a response (the 
+ response being the resulting web page with the requested information).</p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>In your live <span style="font-weight: bold;"><B>Web.</B></span><span 
+ style="font-style: italic; font-weight: bold;"><I><B>ec</B></I></span> environment, 
+ the communication file is suffixed with “.ec” and is placed in the “www_interface” 
+ directory on your TopForm server. When the TopForm Web Server sees a file 
+ in the “www_interface” directory with this suffix it knows a request has 
+ come in. </p>
+
+<h2>Web.ec Development Environment</h2>
+
+<p class=Normal>With your development environment, the development pages 
+ will process requests with a different Perl script (cgi-bin/ec_dev.pl) 
+ that will process files with a “.dev” suffix into a “www_dev” directory 
+ on your TopForm server. A separate TopForm Web Server will be standing 
+ by looking for files with the “.dev” suffix that appear in the “www_dev” 
+ directory. </p>
+
+<p class=Normal>&nbsp;</p>
+
+<p class=Normal>See <a HREF="Web-ec_system_components.htm">Web.ec system 
+ components</a> and <a HREF="Web.ec_transaction_processing.htm">Web.ec 
+ transaction processing</a> for more information.</p>
+
+<h2>Perl Connectivity</h2>
+
+<p class=Normal>There are two methods currently in use for communication 
+ between your Web Server and your TopForm server using Perl.</p>
+
+<p class=Normal>&nbsp;</p>
+
+<h4>Port Communication (Internal or External Web Server) </h4>
+
+<p class=NormalIndent><b style="font-weight: bold;">Primary Connectivity 
+ Method: </b>This method is the primary method, and uses two Perl scripts, 
+ one on your Web Server and one on your TopForm server. The two scripts 
+ &quot;<i style="font-style: normal;">talk&quot;</i> with each other over 
+ a specified port between the two systems. </p>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<p class=NormalIndent>The Perl scripts in this environment are as follows.</p>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<p class=NormalIndent><b style="font-weight: bold;">Web Server</b></p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs2">
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table><table x-use-null-cells cellspacing='0' border='3' bordercolor='#000099' bordercolorlight='#000099' bordercolordark='#000099'>");
+//--></script>
+<col class="whs3">
+<col class="whs4">
+<col class="whs5">
+
+<tr>
+<td bgcolor="#CCCCCC" valign="top" width="109px" class="whs6">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;"
+	align=center>Perl Script</td>
+<td bgcolor="#CCCCCC" valign="top" width="183px" class="whs7">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;"
+	align=center>Location on Web Server</td>
+<td bgcolor="#CCCCCC" valign="top" width="199px" class="whs8">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;"
+	align=center>Comments</td></tr>
+
+<tr>
+<td valign="top" width="109px" class="whs9">
+<p class=NormalIndent
+	style="margin-left: 0in;">ecclient.pl</td>
+<td valign="top" width="183px" class="whs10">
+<p class=NormalIndent
+	style="margin-left: 0in;">C:\Inetpub\wwwroot\cgi-bin</td>
+<td valign="top" width="199px" class="whs11">
+<p class=NormalIndent
+	style="margin-left: 0in;">This is the script for your <b>Live WebEC</b> 
+ environment.</p>
+<p class=NormalIndent
+	style="margin-left: 0in;">&nbsp;</p>
+<p class=NormalIndent
+	style="margin-left: 0in; font-style: normal;"><i style="font-style: normal;"><span 
+ style="font-weight: bold;"><B>Note:</B></span> If your web pages are using “ecclient.pl”, 
+ this means that the ecclient.pl script has simply been renamed on your 
+ server.</i></td></tr>
+
+<tr>
+<td valign="top" width="109px" class="whs12">
+<p class=NormalIndent
+	style="margin-left: 0in;">ecclient_dev.pl</td>
+<td valign="top" width="183px" class="whs13">
+<p class=NormalIndent
+	style="margin-left: 0in;">C:\Inetpub\wwwroot\cgi-bin</td>
+<td valign="top" width="199px" class="whs14">
+<p class=NormalIndent
+	style="margin-left: 0in;">This is the script for your <b>Development 
+ WebEC</b> environment.</td></tr>
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table></table><table>");
+//--></script>
+</table>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<p class=NormalIndent><b style="font-weight: bold;">TopForm Web Server</b></p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs15">
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table><table x-use-null-cells cellspacing='0' border='3' bordercolor='#000099' bordercolorlight='#000099' bordercolordark='#000099'>");
+//--></script>
+<col>
+<col class="whs16">
+<col class="whs17">
+
+<tr>
+<td bgcolor="#CCCCCC" valign="top" width="106.2pt" class="whs18">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Perl Script</td>
+<td bgcolor="#CCCCCC" valign="top" width="100" class="whs19">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Location on Web Server</td>
+<td bgcolor="#CCCCCC" valign="top" width="261" class="whs20">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Comments</td></tr>
+
+<tr>
+<td valign="top" width="106.2pt" class="whs21">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">ecserver.pl</td>
+<td valign="top" width="100" class="whs22">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">/etc</td>
+<td valign="top" width="261" class="whs22">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">This is the script for 
+ your <b>Live WebEC</b> environment and communicates on port 4543. </td></tr>
+
+<tr>
+<td valign="top" width="106.2pt" class="whs23">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">ecserver_dev.pl</td>
+<td valign="top" width="100" class="whs24">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">/etc</td>
+<td valign="top" width="261" class="whs22">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">This is the script for 
+ your <b>Development WebEC</b> environment and communicates on port 4544.</td></tr>
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table></table><table>");
+//--></script>
+</table>
+
+<h4>Drive Mapping (Internal NT Server Only – Samba Required)</h4>
+
+<p class=NormalIndent
+	style="font-weight: normal;"><b style="font-weight: normal;"><span 
+ style="font-weight: bold; font-style: italic;"><I><B>Note:</B></I></span><span style="font-weight: normal;"> 
+ This method is only in use if you are specifically advised by a TopForm 
+ representative. </span></b></p>
+
+<p class=NormalIndent
+	style="font-weight: normal;">&nbsp;</p>
+
+<p class=NormalIndent
+	style="font-weight: normal;"><b style="font-weight: normal;"><span 
+ style="font-weight: normal;">Port communication is the primary connectivity 
+ method in use. This method </span></b>the maps a drive on your Web Server 
+ to your TopForm server “www_interface” directory. The drive mapping for 
+ your live WebEC environment must be drive “W”. In this environment, the 
+ Perl script on your Web Server post all requests to drive W which places 
+ them in the “www_interface” directory on your TopForm server.</p>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<p class=NormalIndent>The following table describes the Perl script used 
+ in this environment.</p>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<!--(Table)=========================================================-->
+<table x-use-null-cells cellspacing="0" class="whs2">
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table><table x-use-null-cells cellspacing='0' border='3' bordercolor='#000099' bordercolorlight='#000099' bordercolordark='#000099'>");
+//--></script>
+<col class="whs25">
+<col class="whs26">
+<col class="whs27">
+
+<tr>
+<td bgcolor="#CCCCCC" valign="top" width="96px" class="whs28">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Perl Script</td>
+<td bgcolor="#CCCCCC" valign="top" width="175px" class="whs29">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Location on Web Server</td>
+<td bgcolor="#CCCCCC" valign="top" width="213px" class="whs30">
+<p class=NormalIndent
+	style="margin-left: 0in;
+			font-weight: bold;
+			text-align: center;
+			margin-right: 0pt;"
+	align=center>Comments</td></tr>
+
+<tr>
+<td valign="top" width="96px" class="whs31">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">Ec.pl</td>
+<td valign="top" width="175px" class="whs32">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">C:\Inetpub\wwwroot\cgi-bin</td>
+<td valign="top" width="213px" class="whs33">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">This is the script for 
+ your <b>Live WebEC</b> environment.</td></tr>
+
+<tr>
+<td valign="top" width="96px" class="whs34">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">ec_dev.pl</td>
+<td valign="top" width="175px" class="whs35">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">C:\Inetpub\wwwroot\cgi-bin</td>
+<td valign="top" width="213px" class="whs33">
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">This is the script for 
+ your <b>Development WebEC</b> environment.</p>
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;">&nbsp;</p>
+<p class=NormalIndent
+	style="margin-left: 0in; margin-right: 0pt;"><i style="font-style: italic;"><span 
+ style="font-weight: bold;"><B>Note:</B></span>&nbsp; <span style="font-style: normal;">This 
+ script will be using the &quot;Y” drive. You must map the “Y” drive to 
+ the “www_dev” directory on your TopForm Server.</span></i></td></tr>
+<script language='JavaScript'><!--
+if ((navigator.appName == "Netscape") && (parseInt(navigator.appVersion) == 4)) document.write("</table></table><table>");
+//--></script>
+</table>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<p class=NormalIndent>&nbsp;</p>
+
+<script type="text/javascript" language="javascript1.2">
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+//-->
+</script>
+</body>
+
+</html>

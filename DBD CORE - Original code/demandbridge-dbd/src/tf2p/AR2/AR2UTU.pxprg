@@ -1,0 +1,118 @@
+0010 REM "Build ARL records from ARK records <AR2UTU>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.1 - 10/25/02 - 9.445555 - lms - SSP# 149046
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="AR2UTU",X1$="Build ARL records from ARK records"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0165 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$,A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12],A[13],A[14],A[15]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ARK...  02O AR6...  03O ARL...  05O AXL...  06O AR5...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 FIND (Z[13],KEY=X3$(9,3)+"A/R")P0$
+0600 REM "
+0610 GOSUB 6000
+0630 GOSUB 8100
+0640 IF Q1$="" THEN CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0641,9900
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 DIM A$(65),A[15]
+1000 REM 
+1001 REM "C is count of ARK recs processed, C1 is count of records added to AS9
+1009 REM "Read ARK
+1010 READ (Z[1],END=5000)IOL=0310
+1014 REM "Read AR6 if available
+1015 DIM B$(169),B[14]
+1020 READ (Z[2],KEY=A$(1,18),DOM=1021)IOL=0320
+1100 REM "If fiscal year & AP are blank(couldnot find AR6) then calculate from invoice date, using month for period & year for FY.
+1105 IF POS(" "<>B$(127,6))<>0 THEN F$=B$(127,6); GOTO 1120
+1110 J$=FND$(A$(19,6))
+1115 F$=J$(7,4)+J$(1,2)
+2000 REM "Create an AS3 Record AND write out
+2005 DIM AR5$(190); FIND (Z[6],KEY=A$(25,10),DOM=2006)AR5$
+2100 REM 
+2120 DIM C$(53),C[25]
+2204 REM "Fiscal Year & Acctg period
+2205 C$(1,6)=F$
+2209 REM "Sales Tax Code
+2210 C$(7,10)=A$(25,10)
+2214 REM "Invoice number
+2215 C$(17,8)=A$(11,8)
+2219 REM "Customer number
+2220 C$(25,10)=A$(1,10)
+2224 REM "Invoice Date
+2225 C$(35,6)=A$(19,6)
+2227 C$(41,6)=C$(35,6); REM "Transaction date set to same as invoice date
+2230 REM "Invoice Net Aount
+2235 C[0]=A[0]
+2240 REM "Total inv amt for this tax code
+2245 C[1]=A[0]
+2250 REM "Addtional frt not in net sale
+2255 C[2]=A[2]
+2260 REM "Move taxable amount & tax billed for state, county and local
+2265 FOR I=5 TO 10; C[I-2]=A[I]; NEXT I
+2710 WRITE (Z[3],KEY=C$(1,24),DOM=2716)IOL=0330; C1=C1+1
+2720 IF MID(P0$,134,1)="Y" THEN IF AR5$(119,2)+AR5$(121,25)+AR5$(79,25)<>DIM(52) THEN WRITE (Z[5],KEY=C$(1,6)+AR5$(119,2)+AR5$(121,25)+AR5$(79,25)+C$(17,8)+AR5$(1,10)); REM "SSP$ 149046
+2755 C=C+1
+2760 IF MOD(C,T1)=1 THEN GOSUB 8150
+2995 GOTO 1000
+5000 REM "EOJ
+5010 J$="Process complete!!    "+FNS$(STR(C1:"###,##0"))+" records added to ARL."
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,J$,"","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(0,4),"This TopForm utility program will add information to the Sales Tax Payable File (ARL) based on invoice information in the Sales Tax/Commission Pending file (ARK) and the Open Invoice File (AR6). Records will be generated for all open invoices, so the Sales Tax Payable Report may need to be run for prior periods to clear them. If an ARL record already exists, it will not be overwritten with new information. The ARL file may be maintained with the SAR-M3 option."
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "Get approx total number of records T, by div'ing #sectors @512 per, by the record size we are expecting.
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,14),"There are "+STR(T)+" Sales Tax Pending records to process"
+8120 T1=INT(T*.02); IF T1<=1 THEN T1=2; REM " set to 2% of total record,if 1 set to 2 to do mod correctly
+8145 RETURN 
+8150 REM "Display horiz. bar graph given total #, T and current #, C
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T2,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("          "=Z9$+"          ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

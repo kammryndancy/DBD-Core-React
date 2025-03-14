@@ -1,0 +1,28 @@
+0035 REM "5.3 - 05/06/04 - 10.503055 - tma - SSP# 171726
+0040 REM "Copyright 2004 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1020 ENTER X3$,X4$,F0,A1$,A$,A{ALL}
+1200 REM 
+1220 READ RECORD (F0,KEY=A1$,DOM=1500)X$
+1230 A$=A1$,A1=LEN(A1$)+1
+1400 REM 
+1405 DIM A[100]
+1410 FOR X=0 TO 14
+1415 SETERR 1425
+1420 IF A1$(LEN(A1$),1)<>"N" THEN A[X]=DEC(X$(A1+X*5,5))/100 ELSE A[X]=DEC(X$(A1+X*5,5))
+1490 NEXT X
+1500 REM "Read prior year into next 12 buckets
+1504 REM "Subtract one from the year, key is some stuff +year (YYYY) + balance type (1,1)
+1505 Y$=A1$(LEN(A1$)-4,4),A2$=A1$,A2$(LEN(A1$)-4,4)=STR(NUM(Y$,ERR=1595)-1:"0000")
+1520 READ RECORD (F0,KEY=A2$,DOM=1595)X$
+1530 A$=A2$,A1=LEN(A2$)+1
+1535 FOR X=0 TO 14
+1536 SETERR 1560
+1540 IF A2$(LEN(A2$),1)<>"N" THEN A[X+15]=DEC(X$(A1+X*5,5))/100 ELSE A[X+15]=DEC(X$(A1+X*5,5))
+1560 SETERR 9000
+1570 NEXT X
+1595 READ (F0,KEY=A1$,DOM=1596)STATREC$
+1598 A$=A1$
+5000 REM 
+5050 EXIT 
+9999 END 

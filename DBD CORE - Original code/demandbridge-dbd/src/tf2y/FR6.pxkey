@@ -1,0 +1,718 @@
+<PxTable>
+ TableName=FR6
+ TableKey=K1372704548
+ FileCreate=KEYED "FR6",4,0,-512,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="FR6_FinancialRpt"
+    PHYSICALPATH$="2006/08/21 17:41"
+    LASTCHANGEDATE$=":56-csc"
+    LASTUPDATEDFILE$="2015/08/28 12:43:27-jvv"
+    SEPERATOR$="$8A$"
+    VERSION$="7100000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST REPORT_CODE$:[LEN(4)]"
+    NAME$="REPORT_CODE"
+    DESCRIPTION$="=MSG("+QUO+"REPO_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="P"
+    NOTES$="Report number"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST REPORT_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="REPORT_CODE"
+    DESCRIPTION$="=MSG("+QUO+"REPO_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Report number"
+    KEYDEFINITION$="1:1:A"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST REPORT_DESC$:[LEN(30,SEP=SEP)]"
+    NAME$="REPORT_DESC"
+    DESCRIPTION$="=MSG("+QUO+"REPO_D"+QUO+")"
+    TYPE$="S"
+    LENGTH$="30"
+    INTERNALFORMAT$="S"
+    NOTES$="Report description"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST TITLE_1$:[LEN(65,SEP=SEP)]"
+    NAME$="TITLE_1"
+    DESCRIPTION$="=MSG("+QUO+"TITLE_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="65"
+    INTERNALFORMAT$="S"
+    NOTES$="Title 1"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST TITLE_2$:[LEN(65,SEP=SEP)]"
+    NAME$="TITLE_2"
+    DESCRIPTION$="=MSG("+QUO+"TITLE_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="65"
+    INTERNALFORMAT$="S"
+    NOTES$="Title 2"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST TITLE_3$:[LEN(65,SEP=SEP)]"
+    NAME$="TITLE_3"
+    DESCRIPTION$="=MSG("+QUO+"TITLE_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="65"
+    INTERNALFORMAT$="S"
+    NOTES$="Title 3"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST USE_REPORT_TEMPLATE$:[LEN(4,SEP=SEP)]"
+    NAME$="USE_REPORT_TEMPLATE"
+    DESCRIPTION$="=MSG("+QUO+"USE_R_T"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Use report template"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST INITIAL_COLUMN_CNTRL$:[LEN(5,SEP=SEP)]"
+    NAME$="INITIAL_COLUMN_CNTRL"
+    DESCRIPTION$="=MSG("+QUO+"INIT_C_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="5"
+    INTERNALFORMAT$="S"
+    NOTES$="Initial column control"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST CONSOLIDATION_CODE$:[LEN(4,SEP=SEP)]"
+    NAME$="CONSOLIDATION_CODE"
+    DESCRIPTION$="=MSG("+QUO+"CONS_C"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Consolidation code"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST REPORT_CONS_1$:[LEN(4,SEP=SEP)]"
+    NAME$="REPORT_CONS_1"
+    DESCRIPTION$="=MSG("+QUO+"REPO_CON_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+    NOTES$="Report Consolidations"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST REPORT_CONS_2$:[LEN(4,SEP=SEP)]"
+    NAME$="REPORT_CONS_2"
+    DESCRIPTION$="=MSG("+QUO+"REPO_CON_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST REPORT_CONS_3$:[LEN(4,SEP=SEP)]"
+    NAME$="REPORT_CONS_3"
+    DESCRIPTION$="=MSG("+QUO+"REPO_CON_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="4"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=12
+    IOLOBJ$="IOLIST MASKING_GL$:[LEN(12,SEP=SEP)]"
+    NAME$="MASKING_GL"
+    DESCRIPTION$="=MSG("+QUO+"MASKING_GL"+QUO+")"
+    TYPE$="S"
+    LENGTH$="12"
+    INTERNALFORMAT$="S"
+    NOTES$="Masking, G/L"
+    TAG$="F/R"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=13
+    IOLOBJ$="IOLIST OPTIONS$:[LEN(10,SEP=SEP)]"
+    NAME$="OPTIONS"
+    DESCRIPTION$="=MSG("+QUO+"OPTIONS"+QUO+")"
+    TYPE$="S"
+    LENGTH$="10"
+    INTERNALFORMAT$="S"
+    NOTES$="Options (G-Acct Num, Z-Skip 0 Accts)"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=14
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_1$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_1"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_1"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+    NOTES$="Consolidate Companies"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=15
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_2$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_2"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_2"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=16
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_3$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_3"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_3"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=17
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_4$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_4"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_4"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=18
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_5$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_5"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_5"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=19
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_6$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_6"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_6"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=20
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_7$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_7"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_7"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=21
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_8$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_8"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_8"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=22
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_9$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_9"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_9"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=23
+    IOLOBJ$="IOLIST CONSOLIDATE_COMP_10$:[LEN(3,SEP=SEP)]"
+    NAME$="CONSOLIDATE_COMP_10"
+    DESCRIPTION$="=MSG("+QUO+"CONS_CMP_0"+QUO+")"
+    TYPE$="S"
+    LENGTH$="3"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=24
+    IOLOBJ$="IOLIST FR6_UNUSED_1$:[LEN(SEP,SIZ=58)]"
+    NAME$="FR6_UNUSED_1"
+    DESCRIPTION$="=MSG("+QUO+"UNUSED"+QUO+")"
+    TYPE$="S"
+    LENGTH$="58"
+    INTERNALFORMAT$="L"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="0001"
+    REPORT_CODE$="0001"
+    REPORT_DESC$="Test                          "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="P/L "
+    INITIAL_COLUMN_CNTRL$="P/L  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0010"
+    REPORT_CODE$="0010"
+    REPORT_DESC$="COMPANY COMPARISON            "
+    TITLE_1$="Company Comparison P/L Summary                                   "
+    TITLE_2$="As of Period {per} ending {ped}                                  "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="PL-S"
+    INITIAL_COLUMN_CNTRL$="S/S  "
+    CONSOLIDATION_CODE$="****"
+    REPORT_CONS_1$="****"
+    REPORT_CONS_2$="****"
+    REPORT_CONS_3$="C1  "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0020"
+    REPORT_CODE$="0020"
+    REPORT_DESC$="title                         "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="TEST"
+    INITIAL_COLUMN_CNTRL$="TEST "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0024"
+    REPORT_CODE$="0024"
+    REPORT_DESC$="Test Report                   "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="S/S "
+    INITIAL_COLUMN_CNTRL$="S/S  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0099"
+    REPORT_CODE$="0099"
+    REPORT_DESC$="Spreadsheet                   "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="S/S "
+    INITIAL_COLUMN_CNTRL$="S/S  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0100"
+    REPORT_CODE$="0100"
+    REPORT_DESC$="M                             "
+    TITLE_1$="I n c o m e   S t a t e m e n t                                  "
+    TITLE_2$="For: Atlanta Division                                            "
+    TITLE_3$="As of period {per}, Fiscal Year Ending {fye}                     "
+    USE_REPORT_TEMPLATE$="P/L "
+    INITIAL_COLUMN_CNTRL$="P/L-1"
+    CONSOLIDATION_CODE$="****"
+    REPORT_CONS_1$="*0**"
+    REPORT_CONS_2$="****"
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0110"
+    REPORT_CODE$="0110"
+    REPORT_DESC$="Dept 2                        "
+    TITLE_1$="5 Years Comparative Income Statement                             "
+    TITLE_2$="Chattanooga Division                                             "
+    TITLE_3$="As of period {per} of fiscal year {yr#}                          "
+    USE_REPORT_TEMPLATE$="P/L "
+    INITIAL_COLUMN_CNTRL$="BAL-C"
+    CONSOLIDATION_CODE$="****"
+    REPORT_CONS_1$="*2**"
+    REPORT_CONS_2$="****"
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0120"
+    REPORT_CODE$="0120"
+    REPORT_DESC$="Northern Tennessee            "
+    TITLE_1$="Income Statement - Spread Sheet Format                           "
+    TITLE_2$="Northern Tennessee Area                                          "
+    TITLE_3$="As of period {per}, fiscal year ending {fye}                     "
+    USE_REPORT_TEMPLATE$="P/L "
+    INITIAL_COLUMN_CNTRL$="S/S  "
+    CONSOLIDATION_CODE$="****"
+    REPORT_CONS_1$="*5**"
+    REPORT_CONS_2$="****"
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0200"
+    REPORT_CODE$="0200"
+    REPORT_DESC$="Test Report                   "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="SLS "
+    INITIAL_COLUMN_CNTRL$="S/S  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="0500"
+    REPORT_CODE$="0500"
+    REPORT_DESC$="BALANCE SHEET                 "
+    TITLE_1$="Balance Sheet for Company 500                                    "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="BALS"
+    INITIAL_COLUMN_CNTRL$="BALS "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="1111"
+    REPORT_CODE$="1111"
+    REPORT_DESC$="CONSOLIDATED BALANCE SHEET    "
+    TITLE_1$="CONSOLIDATED BALACE SHEET                                        "
+    TITLE_2$="                                                                 "
+    TITLE_3$="[PTD]                                                            "
+    USE_REPORT_TEMPLATE$="1111"
+    INITIAL_COLUMN_CNTRL$="1111 "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="2222"
+    REPORT_CODE$="2222"
+    REPORT_DESC$="                              "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="    "
+    INITIAL_COLUMN_CNTRL$="     "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="4444"
+    REPORT_CODE$="4444"
+    REPORT_DESC$="                              "
+    TITLE_1$="                                                                 "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="    "
+    INITIAL_COLUMN_CNTRL$="     "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="9000"
+    REPORT_CODE$="9000"
+    REPORT_DESC$="Sales Report                  "
+    TITLE_1$="This is the Sales Report                                         "
+    TITLE_2$="                                                                 "
+    TITLE_3$="                                                                 "
+    USE_REPORT_TEMPLATE$="SLS "
+    INITIAL_COLUMN_CNTRL$="AR2  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="MBF1"
+    REPORT_CODE$="MBF1"
+    REPORT_DESC$="MBF P/L                       "
+    TITLE_1$="MBF TITLE                                                        "
+    TITLE_2$="                                                                 "
+    TITLE_3$="[PTD]                                                            "
+    USE_REPORT_TEMPLATE$="MBF1"
+    INITIAL_COLUMN_CNTRL$="MBF  "
+    CONSOLIDATION_CODE$="    "
+    REPORT_CONS_1$="    "
+    REPORT_CONS_2$="    "
+    REPORT_CONS_3$="    "
+    MASKING_GL$="            "
+    OPTIONS$="          "
+    CONSOLIDATE_COMP_1$="   "
+    CONSOLIDATE_COMP_2$="   "
+    CONSOLIDATE_COMP_3$="   "
+    CONSOLIDATE_COMP_4$="   "
+    CONSOLIDATE_COMP_5$="   "
+    CONSOLIDATE_COMP_6$="   "
+    CONSOLIDATE_COMP_7$="   "
+    CONSOLIDATE_COMP_8$="   "
+    CONSOLIDATE_COMP_9$="   "
+    CONSOLIDATE_COMP_10$="   "
+    FR6_UNUSED_1$="                                                          "
+   </RecordData>
+
+</Data>
+
+</PxTable>

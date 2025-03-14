@@ -1,0 +1,251 @@
+0010 REM "Add/Delete Inventory Costing Records-Po Rec <FM2ICC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 06/23/10 - 14.336666 - jvv - SSP# 222976
+0037 REM "222976-Job Costing and special charges - with multiple receipts    
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "Coming from PO2MAU or PO2MAG or PO2MAB to either delete or add FTF records, WO111482
+0081 REM "A$ & A[ALL] is PO7 record, B$ and B[ALL] is PO2 record or blank
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,PROG$,C0,A$,A{ALL},B$,B{ALL}
+0100 SETERR 9000
+0110 X0$="FM2ICC",X1$="Add/Delete Inventory Costing Records-PO Rec"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1
+0200 REM "
+0240 REM "CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST FTE$,FTE[0],FTE[1],FTE[2],FTE[3],FTE[4],FTE[5],FTE[6],FTE[7],FTE[8],FTE[9],FTE[10],FTE[11],FTE[12],FTE[13],FTE[14],FTE[15]
+0320 IOLIST FTF$,FTF[0],FTF[1],FTF[2],FTF[3],FTF[4],FTF[5],FTF[6],FTF[7],FTF[8],FTF[9],FTF[10],FTF[11],FTF[12],FTF[13],FTF[14],FTF[15]
+0330 IOLIST FS2$,FS2[0],FS2[1],FS2[2],FS2[3],FS2[4],FS2[5],FS2[6],FS2[7],FS2[8],FS2[9],FS2[10],FS2[11],FS2[12],FS2[13],FS2[14],FS2[15],FS2[16],FS2[17],FS2[18],FS2[19],FS2[20],FS2[21],FS2[22],FS2[23],FS2[24],FS2[25],FS2[26],FS2[27],FS2[28],FS2[29]
+0400 IOLIST FTF_2$,FTF_2[0],FTF_2[1],FTF_2[2],FTF_2[3],FTF_2[4],FTF_2[5],FTF_2[6],FTF_2[7],FTF_2[8],FTF_2[9],FTF_2[10],FTF_2[11],FTF_2[12],FTF_2[13],FTF_2[14],FTF_2[15]
+0410 IOLIST ICF$,ICF[0],ICF[1],ICF[2],ICF[3],ICF[4],ICF[5],ICF[6],ICF[7],ICF[8],ICF[9],ICF[10],ICF[11],ICF[12]
+0420 IOLIST FTF_3$,FTF_3[0],FTF_3[1],FTF_3[2],FTF_3[3],FTF_3[4],FTF_3[5],FTF_3[6],FTF_3[7],FTF_3[8],FTF_3[9],FTF_3[10],FTF_3[11],FTF_3[12],FTF_3[13],FTF_3[14],FTF_3[15]
+0430 IOLIST FTF_4$,FTF_4[0],FTF_4[1],FTF_4[2],FTF_4[3],FTF_4[4],FTF_4[5],FTF_4[6],FTF_4[7],FTF_4[8],FTF_4[9],FTF_4[10],FTF_4[11],FTF_4[12],FTF_4[13],FTF_4[14],FTF_4[15]
+0440 IOLIST UM$,UM[0],UM[1],UM[2]
+0450 IOLIST FTF_5$,FTF_5[0],FTF_5[1],FTF_5[2],FTF_5[3],FTF_5[4],FTF_5[5],FTF_5[6],FTF_5[7],FTF_5[8],FTF_5[9],FTF_5[10],FTF_5[11],FTF_5[12],FTF_5[13],FTF_5[14],FTF_5[15]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O FTE...  02O FTF...  03O FS2...  04O FS1...  05O FMP...  06O ARV...  07O FM0...  08O IC0...  09O ICF...  10OSFTF...  13O ZZPARM  14OSFTF...  15O POH...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0530 READ (Z[13],KEY=X3$(9,3)+"I/C")ICS$
+0531 P8=NUM(ICS$(40,2)),P9=NUM(ICS$(42,1))
+0600 REM "
+0610 ! IF A[0]=0 AND A[4]=0 THEN GOTO 9900 ! SSP#218237 If rec amount=0 and invoice amount=0 nothing to do so exit, SSP 220282 - Was causing issue with special charges that are extension only
+0900 ON C0 GOTO 1000,2000
+1000 REM "DELETE - Update pending buckets of FTE and main FTF records and remove FTF transaction record(s)
+1005 DIM FTE$(150),FTE[15],FTF$(150),FTF[15],FTF_2$(150),FTF_2[15]
+1010 DIM FS1$(350); READ (Z[4],KEY=A$(1,8),DOM=9900)FS1$
+1015 KEY$=A$(1,8)+FS1$(237,3)
+1020 EXTRACT (Z[1],KEY=KEY$,DOM=9900)IOL=0310
+1025 READ (Z[2],KEY=KEY$,DOM=1026)
+1030 K$=KEY(Z[2],END=1085); READ (Z[2],KEY=K$)IOL=0320
+1035 IF FTF$(1,11)<>KEY$ THEN GOTO 1085
+1040 IF FTF$(15,3)<>A$(66,3) THEN GOTO 1030
+1045 EXTRACT (Z[2],KEY=K$(1,14)+"000",DOM=9900)IOL=0400
+1050 FTE[6]=FTE[6]-FTF[9],FTE[7]=FTE[7]-(FTF[10]+FTF[11]); IF K$(12,3)="001" THEN FTE[8]=FTE[8]-FTF[8]
+1055 FOR X=8 TO 12; FTF_2[X]=FTF_2[X]-FTF[X]; NEXT X
+1060 WRITE (Z[2],KEY=FTF_2$(1,17))IOL=0400
+1065 REMOVE (Z[2],KEY=K$,DOM=1066)
+1070 GOTO 1030
+1085 WRITE (Z[1],KEY=FTE$(1,11))IOL=0310
+1090 GOTO 9900
+2000 REM "ADD - Create FTF transaction(s) for PO7 record, add additional g/l account numbers/amounts to PO7 record if necessary, update pending buckets of FTE and main FTF records
+2020 DIM FTE$(150),FTE[15],FTF$(150),FTF[15],FTF_2$(150),FTF_2[15],ICF$(269),ICF[12]
+2025 DIM FS1$(350); READ (Z[4],KEY=A$(1,8),DOM=9900)FS1$
+2027 IF FS1$(240,1)<>"Y" THEN GOTO 9900; REM "Order created after ICF parm turned on
+2030 FTE_SEQ$=FS1$(237,3)
+2035 EXTRACT (Z[1],KEY=A$(1,8)+FTE_SEQ$,DOM=9900)IOL=0310
+2040 EXTRACT (Z[2],KEY=FTE$(1,11)+A$(20,3)+"000",DOM=9900)IOL=0400
+2050 FTF$(1,14)=FTF_2$(1,14); REM "Order number, seq, line number
+2051 REM "get seq # and verify before going on we will need it later, write out key and extract it to protect it
+2052 FTF$(15,3)=STR(NUM(FTE$(58,3))+1:"000")
+2053 WRITE (Z[10],KEY=FTF$(1,17),DOM=2054)IOL=0320; EXTRACT (Z[10],KEY=FTF$(1,17)); FTE$(58,3)=FTF$(15,3),A$(66,3)=FTF$(15,3); GOTO 2055
+2054 IF NUM(FTF$(15,3))=999 THEN ESCAPE ELSE FTF$(15,3)=STR(NUM(FTF$(15,3))+1:"000"); GOTO 2053
+2058 FTF$(18,11)=FTF_2$(18,11); REM "PO code, vendor code
+2060 FTF$(29,10)=A$(10,10),FTF$(39,6)=A$(39,6); REM "Invoice no, rec date
+2065 FTF$(51,4)=FTF_2$(51,4),FTF[0]=FTF_2[0],FTF$(55,1)="P"; REM "Cost u/m, qty per unit,status=pending
+2067 FTF$(68,10)=FTF_2$(68,10); REM "Item code or special charge code
+2070 IF B$(77,4)<>FTF$(51,4) THEN FTF$(51,4)=B$(77,4),FTF[0]=B[2]; REM "If PO2 record is different for cost u/m and qty per unit then use it
+2075 FTF[1]=FTF_2[1],FTF[8]=A[0],FTF_2[8]=FTF_2[8]+A[0],FTF[13]=A[2]; IF A$(20,3)="001" THEN FTE[8]=FTE[8]+A[0]; REM "Qty ordered, pending qty received, receive now cost extension (will be used in update)
+2080 IF A$(20,3)<>"001" THEN GOSUB 3000; GOTO 2500; REM "Non-product stuff
+2100 REM "We're receiving line 001
+2110 IF FTE$(53,1)=" " THEN FTE$(53,1)="P"; REM "Product received?
+2150 IF STP(A$(10,10),3," ")="" THEN GOSUB 3500 ELSE FTE$(53,1)="I"; GOSUB 3300; REM "No AP invoice or yes we have one, set flag to invoiced
+2500 REM "Write FTF and FTE records
+2515 REM "FTF$(15,3) should have been check and verified above
+2520 WRITE (Z[10],KEY=FTF$(1,17))IOL=0320; FTE$(58,3)=FTF$(15,3),A$(66,3)=FTF$(15,3)
+2575 WRITE (Z[1],KEY=FTE$(1,11))IOL=0310
+2580 WRITE (Z[2],KEY=FTF_2$(1,17))IOL=0400
+2590 GOTO 9900
+3000 REM "Not line 001
+3010 IF STP(A$(10,10),3," ")="" THEN GOSUB 3600; GOTO 3090; REM "No vendor invoice, see if we need to add estimated or not
+3020 IF POS(FTE$(53,1)=" P")>0 THEN FTF[11]=A[2],FTF_2[11]=FTF_2[11]+A[2],FTE[7]=FTE[7]+A[2]; GOSUB 4000; GOTO 3090; REM "Product not rec'd yet, or rec'd without an invoice, set actual cost in progress in transaction and invoice cost to date in header, change g/l account number to inventory in progress account
+3021 EST=FTF_2[9]+FTF_2[3]; IF EST<>0 THEN FTF[9]=-EST,FTF_2[9]=FTF_2[9]-EST,FTE[6]=FTE[6]-EST; REM "If we have estimated cost in inventory for this non 001 line it needs to be backed out
+3022 IF ICS$(44,1)="Y" THEN GOSUB 4100 ELSE LOTTED$="N"; REM "See if product is lotted item
+3023 IF LOTTED$="N" THEN FTF[10]=A[2],FTF_2[10]=FTF_2[10]+A[2],FTE[7]=FTE[7]+A[2]; GOTO 3090
+3025 REM "IF FTE$(53,1)="P" THEN LET FTF[9]=A[2], FTF_2[9]=FTF_2[9]+A[2], FTE[7]=FTE[7]+A[2]; GOTO 03090; REM "PRODUCT RECV'D, NOT INVOICED SET TO ESTIMATED COST
+3027 GOSUB 4150; IF LOTS_LEFT$="Y" THEN FTF[10]=A[2],FTF_2[10]=FTF_2[10]+A[2],FTE[7]=FTE[7]+A[2] ELSE FTF[12]=A[2]-EST,FTF_2[12]=FTF_2[12]+(A[2]-EST),FTE[7]=FTE[7]+A[2],FTF[10]=EST,FTF_2[10]=FTF_2[10]+EST; REM "If no lots left then set to unallocated cost
+3030 REM "LET FTF[10]=A[2], FTF_2[10]=FTF_2[10]+A[2], FTE[7]=FTE[7]+A[2]; REM "PRODUCT RECV'D PUT INTO ACT IN INVENTORY
+3090 RETURN 
+3300 REM "Line 001, have an invoice
+3310 IF ICS$(44,1)="Y" THEN GOSUB 4100 ELSE LOTTED$="N"; REM "See if this item is lotted
+3312 ESTIMATED=FTF_2[3]; IF ESTIMATED>0 THEN GOSUB 3700; FTF[9]=-ESTIMATED,FTF_2[9]=FTF_2[9]-ESTIMATED,FTE[6]=FTE[6]-ESTIMATED; REM "If we had anything in est in inv bucket then we need to subtract it off now!estimated was FTF_2[9]+FTF_2[3] this seems to cause problems with receiving the same PO under different AP invoices SSP#222223
+3315 IF LOTTED$="N" THEN FTF[10]=A[6],FTF_2[10]=FTF_2[10]+A[6],FTE[7]=FTE[7]+A[6]; GOTO 3340
+3320 IF FTF[8]=0 AND FTF_2[2]>0 THEN GOSUB 4150; IF LOTS_LEFT$="Y" THEN FTF[10]=A[6],FTF_2[10]=FTF_2[10]+A[6],FTE[7]=FTE[7]+A[6]; GOTO 3340 ELSE FTF[12]=A[6]-ESTIMATED,FTF_2[12]=FTF_2[12]+(A[6]-ESTIMATED),FTE[7]=FTE[7]+A[6],FTF[10]=ESTIMATED,FTF_2[10]=FTF_2[10]+ESTIMATED; GOTO 3340; REM "If lotted item and no qty rec'd at this time and we have rec'd inventory previously, see if any lots remain to decide whether it's actual cost in inventory or unallocated cost
+3325 FTF[10]=A[6],FTF_2[10]=FTF_2[10]+A[6],FTE[7]=FTE[7]+A[6]
+3340 GOSUB 3400
+3390 RETURN 
+3400 REM "Read '000' FTF records to get any pending or updated cost in progress to back out and put to inventory, also back out estimated since we now have an invoice for line 001 if this line has been invoiced
+3410 DIM FTF_3$(150),FTF_3[15],GL_LIST[5]; ACIP=0,ECII=0,GL_LIST$="",COST=0,QTY_ORD=0
+3420 READ (Z[2],KEY=FTF$(1,11)+"002",DOM=3421)
+3425 K1$=KEY(Z[2],END=3470); EXTRACT (Z[2],KEY=K1$)IOL=0420
+3430 IF K1$(1,11)<>FTF$(1,11) THEN GOTO 3470
+3433 IF K1$(15,3)<>"000" THEN READ (Z[2],KEY=K1$(1,14)+"zzz",DOM=3425); GOTO 3425
+3434 ! OSUB CHECK_FS2; IF NO_FS2 THEN GOTO 3470 ! SSP 222976
+3435 DIM FTF_4$(150),FTF_4[15]
+3436 ACIP=FTF_3[5]+FTF_3[11],ECII=FTF_3[3]+FTF_3[9]; IF ACIP=0 THEN GOSUB CHECK_FS2; IF NO_FS2 THEN GOTO 3470; REM "Actual cost in progress (ACIP) and estimated cost in inventory (ECII) SSP 222976
+3437 IF ACIP<>0 THEN GOSUB 4200; FTF_4[10]=ACIP,FTF_3[10]=FTF_3[10]+ACIP,FTF_4[11]=-ACIP,FTF_3[11]=FTF_3[11]-ACIP,FTF_4[9]=-ECII,FTF_3[9]=FTF_3[9]-ECII,FTE[6]=FTE[6]-ECII ELSE IF FTF[8]<>0 AND FTF_3[3]+FTF_3[9]=0 AND FTF_3[2]+FTF_3[8]=0 THEN UNIT$=FTF_3$(51,4),QTY_PER_UNIT=FTF_3[0]; GOSUB 4300; IF UM$(21,1)="Y" THEN QTY_ORD=1 ELSE QTY_ORD=FTF_3[1] END_IF ; COST=QTY_ORD/D9*FTF_3[7]/D8,FTF_4[9]=COST,FTF_3[9]=FTF_3[9]+COST,FTE[6]=FTE[6]+COST; REM "If there was act in progress then move to inventory g/l account, set to act in inv bucket, zero out act in prog and est in inv buckets otherwise if we are receiving product at this time then set est in inv bucket - SSP#  139088  
+3439 WRITE (Z[2],KEY=K1$)IOL=0420
+3440 REM "Create matching transaction for this line & write out
+3442 FTF_4$=FTF_3$; FTF_4$(15,3)=A$(66,3),FTF_4$(39,6)=A$(39,6),FTF_4$(45,6)="",FTF_4$(55,1)="P",FTF_4$(29,10)=""; REM "Copy 000 FTF record, set seq to PO7 seq, trans date to receipt date, and clear audit control number, set transaction to pending, set invoice # to clear
+3443 REM "FOR I4=8 TO 12; LET FTF_4[I4]=FTF_3[I4]; NEXT I4; REM "TRANSFER PENDING BUCKETS
+3445 WRITE (Z[2],KEY=FTF_4$(1,17),DOM=3446)IOL=0430; GOTO 3447
+3446 ESCAPE ; REM "Seq # in ftf_4$(15,3) (matching a$(66,3)) should not be in use!
+3465 GOTO 3425
+3470 REM "update PO7 info with G/L info
+3475 IF LEN(GL_LIST$)>=12 THEN A$(69,12)=GL_LIST$(1,12),A[7]=-GL_LIST[1]
+3477 IF LEN(GL_LIST$)>=24 THEN A$(81,12)=GL_LIST$(13,12),A[8]=-GL_LIST[2]
+3490 RETURN 
+3500 REM "Line 001, no invoice
+3502 REM "Read '000' FTF records for lines other than 001 to get the cost either from the order line or actual in progress and put in estimated in inventory.  We will not move anything out of actual in progress at this time since we don't have an invoice for line 001 which means there is no g/l trans at this time.
+3505 FTF[9]=A[2],FTF_2[9]=FTF_2[9]+A[2],FTE[6]=FTE[6]+A[2]; REM "Update the receive now extension instead of A[6] the invoice now extension
+3510 DIM FTF_3$(150),FTF_3[15]; ACIP=0,ECII=0,COST=0,QTY_ORD=0
+3520 READ (Z[2],KEY=FTF$(1,11)+"00200 ",DOM=3521)
+3525 K1$=KEY(Z[2],END=3570); EXTRACT (Z[2],KEY=K1$)IOL=0420
+3530 IF K1$(1,11)<>FTF$(1,11) THEN GOTO 3590
+3533 IF K1$(15,3)<>"000" THEN READ (Z[2],KEY=K1$(1,14)+"zzz",DOM=3525); GOTO 3525 ! SSP 222976
+3535 ! OSUB CHECK_FS2; IF NO_FS2 THEN GOTO 3570 ! SSP 222976
+3536 DIM FTF_4$(150),FTF_4[15]; ACIP=FTF_3[5]+FTF_3[11]; IF ACIP=0 THEN GOSUB CHECK_FS2; IF NO_FS2 THEN GOTO 3570; REM "Actual cost in progress SSP 222976
+3537 IF FTF_3[3]+FTF_3[9]<>0 THEN GOTO 3539; REM "If we've already set and used estimated in the past don't do it again (partial receipts)
+3538 IF ACIP<>0 THEN FTF_4[9]=ACIP,FTF_3[9]=FTF_3[9]+ACIP,FTE[6]=FTE[6]+ACIP ELSE UNIT$=FTF_3$(51,4),QTY_PER_UNIT=FTF_3[0]; GOSUB 4300; IF UM$(21,1)="Y" THEN QTY_ORD=1 ELSE QTY_ORD=FTF_3[1] END_IF ; COST=QTY_ORD/D9*FTF_3[7]/D8,FTF_4[9]=COST,FTF_3[9]=FTF_3[9]+COST,FTE[6]=FTE[6]+COST; REM "If there is updated and/or pending actual in progress use that amount for estimated in inventory otherwise calculate the cost extension from the order line and use that
+3539 WRITE (Z[2],KEY=K1$)IOL=0420
+3540 REM "Create matching transaction for this line & write out
+3542 FTF_4$=FTF_3$; FTF_4$(15,3)=A$(66,3),FTF_4$(39,6)=A$(39,6),FTF_4$(45,6)="",FTF_4$(55,1)="P"; REM "Copy 000 FTF record, set seq to PO7 seq, trans date to receipt date, and clear audit control number, set transaction to pending
+3543 REM "FOR I4=8 TO 12; LET FTF_4[I4]=FTF_3[I4]; NEXT I4; REM "TRANSFER PENDING BUCKETS
+3545 WRITE (Z[2],KEY=FTF_4$(1,17),DOM=3546)IOL=0430; GOTO 3547
+3546 ESCAPE ; REM "Seq # in ftf_4$(15,3) (matching a$(66,3)) should not be in use!
+3565 GOTO 3525
+3595 RETURN 
+3600 REM "Receiving non line 001, no invoice, see if we should add estimated
+3610 IF FTE$(53,1)=" " THEN GOTO 3695; REM "Haven't received product yet
+3615 EST=FTF_2[9]+FTF_2[3]
+3620 IF EST<>0 THEN GOTO 3695; REM "If we've already got estimated then get out
+3625 UNIT$=FTF_2$(51,4),QTY_PER_UNIT=FTF_2[0]; GOSUB 4300; IF UM$(21,1)="Y" THEN QTY_ORD=1 ELSE QTY_ORD=FTF_2[1] END_IF ; COST=QTY_ORD/D9*FTF_2[7]/D8
+3630 IF ICS$(44,1)="Y" THEN GOSUB 4100 ELSE LOTTED$="N"
+3640 IF LOTTED$="Y" THEN GOSUB 4150
+3645 IF LOTS_LEFT$="Y" OR LOTTED$="N" THEN FTF[9]=COST,FTF_2[9]=FTF_2[9]+COST,FTE[6]=FTE[6]+COST
+3695 RETURN 
+3700 REM "Calculating estimated amount, need to determine if we should use the full amount or partial if we now have a vendor invoice for only part of what we have received so far, ssp129787
+3710 QTY_REC=FTF_2[2]+FTF_2[8]
+3720 REM "IF QTY_REC>A[4] THEN PORTION=A[4]/QTY_REC,ESTIMATED=ESTIMATED*PORTION
+3730 IF QTY_REC>A[4] AND A[4]<>0 THEN PREC_ESTIMATED=ESTIMATED; PRECISION 18; PORTION=QTY_REC/A[4],PREC_ESTIMATED=(PREC_ESTIMATED+FTF_2[4])/PORTION; PRECISION 2; ESTIMATED=PREC_ESTIMATED ! 220282 SSP 230911
+3745 RETURN 
+3800 CHECK_FS2:REM "If receiving for line 001, check to see if special charge lines are still valid in PO2 . SSP 222976
+3805 NO_FS2=0 ! SSP 222976
+3810 FS2_KEY$=K1$(1,8)+K1$(12,3) ! SSP 222976
+3820 FIND (Z[3],KEY=FS2_KEY$,DOM=3840)*; GOTO 3850 ! SSP 222976
+3840 NO_FS2=1 ! SP 222976 Set flag if no FS2 rec exists
+3850 RETURN ! SSP 222976
+4000 REM "Lookup inventory in progress g/l acct no and replace the one in PO7
+4010 DIM PC$(100); READ (Z[5],KEY="T"+FTE$(46,3),DOM=4011)PC$
+4015 DIM ARV$(250); READ (Z[6],KEY=PC$(24,9),DOM=4016)ARV$
+4020 IF STP(ARV$(214,12),3," ")="" THEN FTF$(56,12)=A$(27,12); GOTO 4090 ELSE FTF$(56,12)=ARV$(214,12),A$(27,12)=ARV$(214,12)
+4035 IF ICS$(39,1)<>"Y" THEN GOTO 4090; REM "Warehouse substitution
+4040 DIM WHSE$(522); READ (Z[7],KEY="D"+DIM(10)+FTE$(54,4),DOM=4090)WHSE$
+4045 P9$=ARV$(214,12)
+4050 P9$(P8,P9)=WHSE$(214,P9)
+4055 FTF$(56,12)=P9$,A$(27,12)=P9$
+4090 RETURN 
+4100 REM "See if lotted item
+4110 DIM IC0$(187); READ (Z[8],KEY=FTE$(26,20),DOM=4111)IC0$
+4120 IF IC0$(112,1)="Y" THEN LOTTED$="Y" ELSE LOTTED$="N"
+4140 RETURN 
+4150 REM "If lotted item see if any lots out there for this PO, this whse
+4160 READ (Z[9],KEY=FTE$(26,20)+FTE$(54,4),DOM=4161)
+4165 K$=KEY(Z[9],END=4190); READ (Z[9],KEY=K$)IOL=0410
+4170 IF K$(1,24)<>FTE$(26,20)+FTE$(54,4) THEN GOTO 4190
+4175 IF ICF$(41,8)<>FTE$(1,8) THEN GOTO 4165
+4180 LOTS_LEFT$="Y"; GOTO 4195
+4190 GOSUB 4500; REM "LET LOTS_LEFT$="N", will also check POH
+4195 RETURN 
+4200 REM "Capture G/L Acct # and amount from FTF record to put into alternate  G/L spots
+4203 DIM GL_ACCT$(12); GL_ACCT$=FTF_3$(56,12)
+4204 IF STP(GL_ACCT$,3," ")="" THEN GOSUB 4400; IF FOUND$="Y" THEN GL_ACCT$=FTF_5$(56,12),FTF_3$(56,12)=FTF_5$(56,12) ELSE GOTO 4245; REM "Try to find g/l acct in a pending record for this line
+4205 GL_POS=POS(GL_ACCT$=GL_LIST$); IF GL_POS=0 THEN GL_LIST$=GL_LIST$+GL_ACCT$; GOTO 4205
+4210 IF GL_POS>13 THEN ESCAPE ; REM " This means more than 2 extra GL numbers found!, only 2 will fit currently into PO7
+4215 GL_INDEX=INT((GL_POS+11)/12)
+4220 GL_LIST[GL_INDEX]=GL_LIST[GL_INDEX]+ACIP; REM "Post updated and pending actual in progress
+4245 RETURN 
+4300 REM "Calculate order line cost extension to use for estimated
+4310 DIM UM[2]; D9=1,D8=1
+4315 FIND (Z[13],KEY="U/M"+UNIT$,DOM=4395)IOL=0440
+4320 IF UM$(20,1)="Y" THEN IF UM[0]<>0 THEN QTY_PER_UNIT=UM[0],D8=UM[0] ELSE QTY_PER_UNIT=UM[1],D8=UM[1]
+4330 IF UM$(20,1)="Y" OR UM$(21,1)="Y" THEN D9=1 ELSE D9=QTY_PER_UNIT
+4335 IF D8=0 THEN D8=1
+4340 IF D9=0 THEN D9=1
+4395 RETURN 
+4400 REM "Can't find Inv WIP G/L number in the main FTF record, maybe there is a current pending transaction for this amount, try to find it that way
+4410 DIM FTF_5$(150),FTF_5[15]; FOUND$="N"
+4415 READ (Z[14],KEY=FTF_3$(1,14),DOM=4416)
+4420 K2$=KEY(Z[14],END=4495); READ (Z[14],KEY=K2$)IOL=0450
+4425 IF K2$(1,14)<>FTF_3$(1,14) THEN GOTO 4495
+4430 IF K2$(15,3)="000" THEN GOTO 4420
+4435 IF FTF_5$(55,1)<>"P" THEN GOTO 4420
+4440 IF STP(FTF_5$(56,12),3," ")="" THEN GOTO 4420
+4445 IF FTF_5[11]=ACIP THEN FOUND$="Y" ELSE GOTO 4420
+4495 RETURN 
+4500 REM "If no lots found in ICF, check POH to see if new lots
+4505 READ (Z[15],KEY=FTF$(1,8),DOM=4506)
+4510 K3$=KEY(Z[15],END=4540); READ (Z[15],KEY=K3$)POH$
+4515 IF K3$(1,8)<>FTF$(1,8) THEN GOTO 4540
+4520 IF K3$(10,27)<>"001"+FTE$(26,20)+FTE$(54,4) THEN GOTO 4510
+4530 LOTS_LEFT$="Y"; GOTO 4545
+4540 LOTS_LEFT$="N"
+4545 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56002 REM "218237-If you zero out all information on a line receiving a BAS   
+56003 REM "220282-Issue with Est. Cost moving to Act. on the Inventory Costing
+56005 REM "222976-Job Costing and special charges - with multiple receipts    

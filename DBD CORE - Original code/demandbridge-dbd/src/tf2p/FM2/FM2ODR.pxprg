@@ -1,0 +1,55 @@
+0010 REM + Change Custom Item Revision Date  <FM2ODR>
+0035 REM "5.6 - 02/22/08 - 15.683055 - mhe - SSP# 200645
+0037 REM "200645-Program OPGMPA revision date parameter does not appear      
+0040 REM "Copyright 2008 DemandBridge, Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 ENTER X3$,FM1_KEY$,FM1_CHN
+0120 IF %GUI THEN GOTO GUI_PROGRAM
+1000 CHUI_PROGRAM:
+1002 REM "This routine is called if the user is running the
+1003 REM "Character version of DB Distributor software.
+1110 READ RECORD (FM1_CHN,KEY=FM1_KEY$,DOM=CHUI_EXIT)FM1_REC$
+1120 CALL "ZZPROM",".Y",X3$,S3,"Do you wish to change the item Revision date? (Currently "+FM1_REC$(167,6)+")","","",0; ON S3 GOTO CHUI_MAIN,CHUI_EXIT
+1200 CHUI_MAIN:
+1202 REM "This routine is executed when the user wants to
+1203 REM "change the date in the Character version.
+1220 EXTRACT RECORD (FM1_CHN,KEY=FM1_KEY$,DOM=CHUI_EXIT)FM1_REC$
+1230 PRINT @(0,22),'CE',@(12),"Item Rev Date: ",
+1240 CALL "ZZENTR","S",A{ALL},FM1_REC$,X4$,X3$,27,22,167,6,C0,"","","","","","",""
+1250 WRITE RECORD (FM1_CHN,KEY=FM1_KEY$)FM1_REC$
+1400 CHUI_EXIT:
+1402 REM "This routine is called when the exiting the program.
+1420 PRINT @(0,22),'CE',
+1495 EXIT 
+5000 GUI_PROGRAM:
+5002 REM "This routine is called if the user is running the
+5003 REM "Graphical version of DB Distributor software.
+5020 PROCESS "FMGIRD","../OPG/OP.EN",FM1_KEY$,STR(FM1_CHN)
+5095 EXIT 
+5200 GUI_INIT:
+5202 REM "This routine is called during the initialization
+5203 REM "of the panel.
+5230 FM1_KEY$=ARG_1$
+5240 FM1_CHN=NUM(ARG_2$)
+5250 READ RECORD (FM1_CHN,KEY=FM1_KEY$,DOM=GUI_EXIT)FM1_REC$
+5260 EXTRACT RECORD (FM1_CHN,KEY=FM1_KEY$,DOM=GUI_EXIT)FM1_REC$
+5395 RETURN 
+5400 GUI_MAIN:
+5402 REM "This routine is called during the display of the panel.
+5420 ITEM_REVISION$=STP(FM1_REC$(167,6))
+5595 RETURN 
+5600 GUI_EXIT:
+5602 REM "This routine is called when the exiting the panel.
+5610 CMD_STR$="END"
+5795 RETURN 
+10200 GUI_UPDATE:
+10202 REM "This routine will update the FM1 record with the
+10203 REM "new revision date. This is the only field updated
+10204 REM "in this program.
+10220 FM1_REC$(167,6)=PAD(ITEM_REVISION$,6)
+10230 WRITE RECORD (FM1_CHN,KEY=FM1_KEY$)FM1_REC$
+10250 GOTO GUI_EXIT
+10395 RETURN 
+56000 REM + Modification History
+56002 REM "Program created on 02/22/2008 by mhe
+56010 REM "200645-Program OPGMPA revision date parameter does not appear

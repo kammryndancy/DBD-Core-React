@@ -1,0 +1,28 @@
+0010 REM "Return Fee parameters from 000 record <CM2ZAD>
+0035 REM "3.8 - 07/05/95 - 13.19
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "A$ is Source company (1,3)+job number (4,9)
+0071 REM "A(0) is service fee %, A(1) is Add fund fee %
+0090 ENTER X3$,A$,A{ALL}
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27],B[28],B[29],B[30],B[31],B[32],B[33],B[34],B[35],B[36],B[37],B[38],B[39],B[40]
+1000 REM "Open CM4 on seperate device
+1010 F0=14
+1020 CLOSE (F0,ERR=1021)
+1025 OPEN (F0)"CM4"+X3$(9,3)
+1200 REM 
+1205 DIM A[2],B[40]
+1209 REM "We want to find the first record that matches and we will use it's rates (this should be the 000 record for most, or the 001 record for cost only jobs)
+1210 READ (F0,KEY=A$,DOM=1211)
+1215 K$=KEY(F0,END=1235)
+1220 IF K$(1,LEN(A$))<>A$ THEN GOTO 1235
+1230 FIND (F0,KEY=K$,DOM=1231)IOL=0320; A[0]=B[36],A[1]=B[37]
+1235 CLOSE (F0)
+1300 REM "If the both fees are 0 then get the defaults from the parameter records - NOTE: THIS LOGIC MEANS THAT IT IS IMPOSSIBLE TO SPECIFY A 0% SERVICE FEE AND A 0% AD FUND FEE!!!!!!!!!!!
+1305 IF A[0]<>0 OR A[1]<>0 THEN GOTO 9900
+1310 OPEN (F0)"ZZPARM"
+1315 A0$=A$(1,3)
+1320 CALL "CM2ZAB",X3$,F0,A0$,A{ALL}
+1325 CLOSE (F0)
+9940 EXIT 
+9999 END 

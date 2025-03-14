@@ -1,0 +1,96 @@
+0010 REM "Import Read Method - PRISM <IM2G07>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 08/27/09 - 13.803611 - dmm - SSP# 232301
+0037 REM "232301-Setup IMPORT Definition for PRISM for CIG Plus              
+0040 REM "Copyright 2009 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 ! SSP232301, copied from IM2G06, need to throw away blank lines, headings, totals at the end, etc.
+0080 REM "COMMAND$ -> O+filename=open file, C=close file, R=read next record,D+code (G=ghost task calling, xx=line for bargraph)=display instructions, ?=who am I description
+0081 REM "OPTION$ -> Options, if needed
+0082 REM "RECORD$ -> data returned to calling program
+0083 REM "RETURN_CODE -> 0=ok, -1=end of file, else error code
+0084 REM "INTERNAL_USE -> Array of values used by this program from invocation to invocation, must be preserved by calling program
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,COMMAND$,OPTION$,RECORD$,RETURN_CODE,INTERNAL_USE${ALL}
+0100 SETERR 9000
+0110 X0$="IM2G07",X1$="Import Read Method - Read PRISM"
+0200 REM "Initialization
+0205 RETURN_CODE=0
+0210 IF FN%NEA("INTERNAL_USE$",0)=0 THEN DIM INTERNAL_USE$[10]
+0211 REM "INTERNAL_USE$[1]=Filename we are using
+0400 REM "Command Director
+0405 IF COMMAND$="" THEN GOTO 9900
+0410 ON POS(COMMAND$(1,1)="OCRD?") GOTO 9900,OPEN_FILE,CLOSE_FILE,READ_RECORD,DISPLAY_PARMS,WHO_AM_I,9900
+0600 WHO_AM_I:REM "Return in Record$ a description of this method
+0610 RECORD$="Read PRISM file, logic to throw away blank lines, headings, totals at end, etc."
+0695 WHO_AM_I_END:GOTO 9900
+0700 OPEN_FILE:REM "open filename that is COMM$(2). Check for exists first.
+0701 REM "if not found ret_code =12. Store filename in INTERNAL_USE$[1]
+0702 REM "Hardcoded to use file channel 32501
+0705 INTERNAL_USE$[1]=COMMAND$(2)
+0710 CLOSE (32501); OPEN LOCK (32501,OPT="TEXT",ERR=0711)INTERNAL_USE$[1]; GOTO 0715
+0711 RETURN_CODE=ERR; GOTO 9900
+0795 OPEN_FILE_END:GOTO 9900
+0800 READ_RECORD:REM "Read a record, err goes into return code
+0810 READ (32501,END=END_OF_FILE)RECORD$
+0815 IF RECORD$="" OR RECORD$=$1A$ THEN GOTO 0810; REM "$1a$ is dos file terminator ^Z.
+0820 IF STP(RECORD$,1)="" THEN GOTO 0810
+0825 P=POS($09$=RECORD$); IF STP(RECORD$(1,P),1)="" OR RECORD$(1,P)=$09$ THEN GOTO 0810 ! First field is blank, might be totals record
+0830 TEST$=STP(RECORD$,3,$09$),TEST$=STP(TEST$,3,$0D$) ! Strip tabs and carriage return
+0835 TEST$=STP(TEST$,1)
+0840 IF TEST$="" THEN GOTO 0810
+0845 IF LEN(TEST$)>=7 AND TEST$(1,7)="invoice" THEN GOTO 0810
+0850 IF LEN(TEST$)>=7 AND TEST$(1,7)="INVOICE" THEN GOTO 0810 ! Column headings
+0875 GOTO READ_RECORD_END ! RECORD$ is OK
+0880 END_OF_FILE: RETURN_CODE=2; GOTO READ_RECORD_END
+0895 READ_RECORD_END:GOTO 9900
+0900 CLOSE_FILE:REM "Close file, not used at this time
+0940 CLOSE_FILE_END:GOTO 9900
+0950 DISPLAY_PARMS:REM "Display parms, not used at this time
+0990 DISPLAY_PARMS_END:GOTO 9900
+1000 REM "BEGIN MAIN PROCESS
+1020 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1600 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5020 IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "232301-Setup IMPORT Definition for PRISM for CIG Plus

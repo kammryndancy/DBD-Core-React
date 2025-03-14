@@ -1,0 +1,161 @@
+0010 REM "Email File based on Action <EC3EMC>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 10/06/14 - 15.956388 - dmm - SSP# 271988
+0037 REM "271988-EC tag to bypass sending order confirmation to entered email
+0040 REM "Copyright 2014 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 ! This program will be called from EC3SRV when it sees email_results=Y.  This will take the file just created and add the email stuff then email it.  The code will be modeled after the emailing code in EC3SRV.  Created for WO166006.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT
+0100 SETERR 9000
+0110 X0$="EC3EMC",X1$="Email File based on Action"
+0120 HTML_TEXT$="Content-type: text/html"
+0130 CONTENT_TYPE$="text/html" ! Email body content type, defaults to text/plain
+0140 ENV_CODE$="email" ! Email message envelope - defaults to retrieving "email_start.txt" and "email_end.txt" - see 8000's
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0300 REM "IOLISTS                                                          
+0310 IOLIST A$
+0320 IOLIST B$
+0500 REM "FILES - no files to be opened at this time    
+0505 ! DIM Z[NUM(X3$(60,3))]
+0510 ! Z$="01O "
+0520 ! CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9200
+0595 ! 
+1000 REM "Process DATA array
+1005 DATA_TAGS$="001<email_action_code>002<email_content_type>003<email_env_code>004<email_subject>"
+1010 FOR I=1 TO NUM_ENTRIES
+1015 TAG$=DATA$[I,0],VALUE$=DATA$[I,1]
+1018 DPOS=POS("<"+TAG$+">"=DATA_TAGS$); IF DPOS=0 THEN GOTO 1090 ELSE DINDEX=NUM(DATA_TAGS$(DPOS-3,3),ERR=1090)
+1019 ON DINDEX GOTO 1090,1021,1022,1023,1024,1090
+1021 EMAIL_ACTION_CODE$=VALUE$; GOTO 1090 ! email_action_code
+1022 CONTENT_TYPE$=VALUE$; GOTO 1090 ! email_content_type
+1023 ENV_CODE$=VALUE$; GOTO 1090 ! email_env_code
+1024 SUBJECT$=VALUE$; GOTO 1090 ! email_subject
+1090 NEXT I
+1100 ! Check buyer for match on action code
+1105 EC$[12]=""
+1110 B_EMAIL$=STP(EC$[2](109,60),2),B_ACTIONS$=STP(EC$[2](256,10),2),P_EMAIL$=STP(EC$[2](169,60),2),P_ACTIONS$=STP(EC$[2](266,10),2),S_EMAIL$=STP(EC$[2](340,60),2),S_ACTIONS$=STP(EC$[2](460,10),2),C_EMAIL$=STP(EC$[2](400,60),2),C_ACTIONS$=STP(EC$[2](470,10),2)
+1115 IF EMAIL_ACTION_CODE$="O" AND STP(%WORKSHEET$,3)<>"" THEN GOSUB CHECK_WK_BUYER ! SSP219608
+1120 FOR EI=0 TO 3; ON EI GOTO 1121,1122,1123,1124
+1121 EMAIL_ADDR$=B_EMAIL$,EMAIL_ACTIONS$=B_ACTIONS$; GOTO 1130
+1122 EMAIL_ADDR$=P_EMAIL$,EMAIL_ACTIONS$=P_ACTIONS$; GOTO 1130
+1123 EMAIL_ADDR$=S_EMAIL$,EMAIL_ACTIONS$=S_ACTIONS$; GOTO 1130
+1124 EMAIL_ADDR$=C_EMAIL$,EMAIL_ACTIONS$=C_ACTIONS$; GOTO 1130
+1130 IF POS(EMAIL_ACTION_CODE$=EMAIL_ACTIONS$)=0 THEN GOTO 1160
+1135 IF EMAIL_ADDR$="" THEN GOTO 1160; REM "Skip if address blank
+1140 ETMP$="{[email]"+EMAIL_ADDR$
+1145 IF NUL(SUBJECT$) THEN CALL "EC3SEM",X3$,X4$,EC_PARM$,EC${ALL},"EMAILSUB_"+EMAIL_ACTION_CODE$,%WORKSHEET$,SUBJECT$ END_IF ; ETMP$=ETMP$+"[subject]"+SUBJECT$
+1150 ETMP$=ETMP$+"}",EC$[12]=EC$[12]+ETMP$
+1160 NEXT EI
+1165 IF EMAIL_ACTION_CODE$="O" AND STP(%WORKSHEET$,3)<>"" THEN GOSUB CHECK_ALT_ORD_CONF ! SSP223336
+1200 ! Get temp file name, close, then reopen using logic from EC3SRV to send email
+1210 FILE$=FIN(OUTPUT,"FILENAME")
+1220 CLOSE (OUTPUT)
+1230 IF EC$[12]<>"" THEN GOSUB 8000
+1290 GOTO 9900
+7500 REM "Put MESS$ in log & display to screen if IMODE
+7501 REM "MTYPE$ is type, clear it after, if '' then say info
+7502 REM "valid are INFO,WARN,EXIT,EXCP,STAT,EMAIL
+7504 IF %QUIET_MODE THEN GOTO 7541
+7505 IF MTYPE$="" THEN MTYPE$="INFO"
+7510 IF X3$(48,2)="2" THEN OUT$=DTE(0:"%Y-%Dz-%Mz|%Hz:%mz:%sz")+"|"+MTYPE$+"|"+MESS$ ELSE OUT$=DTE(0:"%Y-%Mz-%Dz|%Hz:%mz:%sz")+"|"+MTYPE$+"|"+MESS$; PRECISION 2
+7520 IF USE_START_LOG THEN GOTO *NEXT ELSE IF %NO_LOG THEN GOTO 7540 ELSE PRINT (%WEBEC_LOG_FILE)OUT$; REM "151249, if start_log set, don't do anything We may use the start log until we have the server id
+7540 IF %DISPLAY_LOG THEN PRINT OUT$
+7541 MTYPE$=""
+7545 RETURN 
+8000 REM "Process email params in EC$[12]
+8001 REM "EC$[12] is a string of repeated elements
+8002 REM "element information
+8003 REM "{ } surround each packet with [around each tag]  {[tag]data[tag]data}{[tag]data[tag]data}
+8005 DIM ETEXT_NEEDED$(30); ETEXT_NEEDED$(1,10)=ENV_CODE$,ETEXT_NEEDED$(16,10)=ENV_CODE$,ETEXT_NEEDED$(11,5)="00001",ETEXT_NEEDED$(26,5)="00002"; CALL "EC3BYC",X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,ETEXT_NEEDED$,ETEXT${ALL}
+8008 ETAG_LIST$="001<email>002<subject>003<content_type>",ETAG_COUNT=3
+8009 REM "get next packet
+8010 IF STP(EC$[12],1)="" THEN GOTO 8070
+8012 START_PACKET=POS("{"=EC$[12]),END_PACKET=POS("}"=EC$[12])
+8013 IF START_PACKET=0 THEN IF END_PACKET=0 THEN EC$[12]=""; GOTO 8010 ELSE EC$[12]=EC$[12](END_PACKET+1); GOTO 8010; REM "get starting position of packet - if problem clear to next }
+8014 IF END_PACKET=0 THEN EC$[12]=""; GOTO 8010; REM "no correct termination of packets
+8015 PACKET$=EC$[12](START_PACKET+1,END_PACKET-START_PACKET),EC$[12]=EC$[12](END_PACKET+1)
+8016 IF PACKET$="" THEN GOTO 8040 END_IF ; START_TAG=POS("["=PACKET$),END_TAG=POS("]"=PACKET$); IF END_TAG=0 THEN END_TAG=POS("}"=PACKET$) END_IF ; IF END_TAG=0 THEN END_TAG=LEN(PACKET$)
+8017 ETAG$="<"+PACKET$(START_TAG+1,END_TAG-(START_TAG+1))+">"; IF END_TAG=LEN(PACKET$) THEN PACKET$="" ELSE PACKET$=PACKET$(END_TAG+1); REM "get tag and remove from packet
+8018 DATA_END=POS("["=PACKET$); IF DATA_END=0 THEN DATA_END=POS("}"=PACKET$) END_IF ; IF DATA_END=0 THEN DATA_END=LEN(PACKET$) END_IF ; DATA$=PACKET$(1,DATA_END-1); IF DATA_END=LEN(PACKET$) THEN PACKET$=""
+8019 ELIST_START=POS(ETAG$=ETAG_LIST$); IF ELIST_START=0 THEN GOTO 8016 ELSE ELIST_INDEX=NUM(ETAG_LIST$(ELIST_START-3,3))
+8020 ON ELIST_INDEX GOTO 8039,8021,8022,8023,8039
+8021 EMAIL_ADDRESS$=DATA$; GOTO 8039
+8022 SUBJECT$=DATA$; GOTO 8039
+8023 CONTENT_TYPE$=DATA$
+8039 GOTO 8016
+8040 REM "packet parsed - FINAL PROCESSING for current message
+8041 REM "** TO DO NEXT **
+8042 REM "need to get header/footer email 3rd party text
+8043 REM "next write the header/page/footer (with processing logic for tags in the email header) to a file
+8044 REM "write an ".EM" file that contains  "BASIC=EC3EM0  SESSION_ID=  TEMPLATE=<FILENAME FROM ABOVE>
+8045 REM "EC3EM0 - new program to get file open "TEMPLATE" and send to email system and delete .em file and email document
+8048 MESS$="Initiating email",MTYPE$="EMAIL"; GOSUB 7500; MESS$="Destination e-mail address: "+EMAIL_ADDRESS$; MTYPE$="EMAIL"; GOSUB 7500; MESS$="Subject: "+SUBJECT$,MTYPE$="EMAIL"; GOSUB 7500
+8050 GOSUB 8100; REM "send email
+8060 GOTO 8010
+8070 REM "all tags processed
+8095 RETURN 
+8100 REM "Copy output file to new file before returning the output file
+8101 REM "Use port 1001 and 1002
+8105 CLOSE (1001); CLOSE (1002)
+8110 PRECISION 5; EMAIL_FILE$=%SERVER_DIR$+"TMP"+STR(INT(RND*100000)); PRECISION 2
+8111 OPEN (1002,ERR=8115)EMAIL_FILE$; CLOSE (1002); GOTO 8110; REM "if we can open the file then it is in use, try again
+8115 REM "Create file, then open files and copy
+8120 SERIAL EMAIL_FILE$,DISK_NO,0,ERR=8110
+8121 OPEN (1001,ERR=8145)FILE$; OPEN (1002)EMAIL_FILE$; MESS$="Creating temp HTML e-mail file "+EMAIL_FILE$,MTYPE$="EMAIL"; GOSUB 7500
+8122 TEXT_IN$=ETEXT$[1]; GOSUB 8150
+8123 WRITE RECORD (1002)TEXT_IN$; REM "write out email header
+8125 READ RECORD (1001,SIZ=8192,END=8129)COPY$; COPY$=STP(COPY$,1,$00$); IF MID(COPY$,1,LEN(HTML_TEXT$))=HTML_TEXT$ THEN COPY$=MID(COPY$,LEN(HTML_TEXT$)+1) END_IF ; IF COPY$="" THEN GOTO 8125 ELSE WRITE RECORD (1002,SIZ=LEN(COPY$))COPY$; GOTO 8125 ! strip off html_header if here, it is covered in email open
+8128 IF EC_PARM$(1177,1)="Y" THEN SID$=EC$[1](1,7) ELSE SID$=EC$[1](1213,64) ! SSP212160 jdf
+8129 WRITE RECORD (1002)ETEXT$[2]; REM "write out email closing
+8130 PRECISION 5; EMAIL_ACTION_FILE$=%SERVER_DIR$+STR(INT(RND*100000))+".em"; PRECISION 2; CLOSE (1003); OPEN (1003,ERR=8131)EMAIL_ACTION_FILE$; GOTO 8130; REM "find unused tmp file name for email control file
+8131 SERIAL EMAIL_ACTION_FILE$,DISK_NO,0,ERR=8140; OPEN (1003)EMAIL_ACTION_FILE$
+8132 WRITE RECORD (1003)"basic=EC3EM0"; WRITE RECORD (1003)"template="+EMAIL_FILE$; WRITE RECORD (1003)"session_id="+SID$; WRITE RECORD (1003)"remove_file=Y" ! SSP212160 jdf
+8133 MESS$="Posting e-mail to send : "+EMAIL_ACTION_FILE$,MTYPE$="EMAIL"; GOSUB 7500
+8140 CLOSE (1001); CLOSE (1002); CLOSE (1003)
+8145 RETURN 
+8150 REM "call parser for email text
+8151 REM "TEXT_IN$ = text to be parsed / returned
+8155 DIM ETAG_VALUES$[ETAG_COUNT]; ETAG_VALUES$[1]=EMAIL_ADDRESS$,ETAG_VALUES$[2]=SUBJECT$,ETAG_VALUES$[3]=CONTENT_TYPE$
+8170 CALL "EC3BYD",X3$,X4$,EC_PARM$,EC${ALL},"?tf?","?",ETAG_LIST$,ETAG_COUNT,ETAG_VALUES${ALL},TEXT_IN$
+8195 RETURN 
+8500 CHECK_ALT_ORD_CONF:! SSP223336
+8510 SAVE_WK$=EC$[1](97,10),EC$[1](97,10)=%WORKSHEET$; CALL "EC3WSH",X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,EC3WSH_ECD$,EC3WSH_ECD2$; EC$[1](97,10)=SAVE_WK$ ! current worksheet is usually blank at this point, but just in case, temporarily set the worksheet, call EC3WSH to get ECD, then restore current worksheet
+8585 ORDER_EMAIL$=STP(EC3WSH_ECD$(677,40),2); IF EC3WSH_ECD$(1138,1)="Y" THEN GOTO *NEXT ELSE IF ORDER_EMAIL$="" THEN GOTO *NEXT ELSE IF ORDER_EMAIL$=B_EMAIL$ OR ORDER_EMAIL$=P_EMAIL$ OR ORDER_EMAIL$=S_EMAIL$ OR ORDER_EMAIL$=C_EMAIL$ THEN GOTO *NEXT ELSE EMAIL_ADDR$=ORDER_EMAIL$,EMAIL_ACTIONS$="O"; ETMP$="{[email]"+EMAIL_ADDR$; CALL "EC3SEM",X3$,X4$,EC_PARM$,EC${ALL},"EMAILSUB_"+EMAIL_ACTION_CODE$,EC3WSH_ECD$(1,10),SUBJECT$; ETMP$=ETMP$+"[subject]"+SUBJECT$; ETMP$=ETMP$+"}",EC$[12]=EC$[12]+ETMP$ ! Model code based on EC3WS1 line 8585 for WO179708, if buyer entered an email address that doesn't match any in the buyer record then email conf to that one also. WO271988, if bypass tag set then bypass sending conf to the entered email address
+8587 IF APPROVER_EMAIL_ADDR$="" THEN GOTO *NEXT ELSE IF APPROVER_EMAIL_ADDR$=B_EMAIL$ OR APPROVER_EMAIL_ADDR$=P_EMAIL$ OR APPROVER_EMAIL_ADDR$=S_EMAIL$ OR APPROVER_EMAIL_ADDR$=C_EMAIL$ THEN GOTO *NEXT ELSE EMAIL_ADDR$=APPROVER_EMAIL_ADDR$,EMAIL_ACTIONS$="O"; ETMP$="{[email]"+EMAIL_ADDR$; CALL "EC3SEM",X3$,X4$,EC_PARM$,EC${ALL},"EMAILSUB_"+EMAIL_ACTION_CODE$,EC3WSH_ECD$(1,10),SUBJECT$; ETMP$=ETMP$+"[subject]"+SUBJECT$; ETMP$=ETMP$+"}",EC$[12]=EC$[12]+ETMP$ ! WO244587, send email to approver's email address if set at line 8730 and not a match to any of the buyer email addresses.
+8595 RETURN 
+8599 ! 
+8700 CHECK_WK_BUYER:! SSP219608, get worksheet header, if buyer on worksheet doesn't match session buyer, like in case of approved purchase approval order, then get the worksheet buyer's ECA record and set email addresses and actions
+8705 ! 
+8710 SAVE_WK$=EC$[1](97,10),EC$[1](97,10)=%WORKSHEET$; CALL "EC3WSH",X3$,X4$,EC_PARM$,EC${ALL},DATA${ALL},NUM_ENTRIES,OUTPUT,EC3WSH_ECD$,EC3WSH_ECD2$; EC$[1](97,10)=SAVE_WK$ ! current worksheet is usually blank at this point, but just in case, temporarily set the worksheet, call EC3WSH to get ECD, then restore current worksheet
+8720 IF EC3WSH_ECD$(11,15)=EC$[2](1,15) THEN GOTO *RETURN ! If wk buyer and session buyer match then we don't need to check anything else.
+8730 APPROVER_EMAIL_ADDR$=""; IF EC$[7](748,1)="Y" AND POS("O"=EC$[2](256,10))>0 THEN APPROVER_EMAIL_ADDR$=STP(EC$[2](109,60),2) ! WO244587, capture the approver's email address, customer option to send order conf to approver
+8750 ! 
+8760 ! code mostly copied from EC3WS1, same purpose, purchase approval
+8765 ECAFSLOT=FN%FFN("ECA"+X3$(9,3)); IF ECAFSLOT<0 THEN GOTO 8790
+8770 DIM ECA$(1540); READ (ECAFSLOT,KEY=EC3WSH_ECD$(11,15),DOM=8790)ECA$
+8775 B_EMAIL$=STP(ECA$(109,60),2),B_ACTIONS$=STP(ECA$(256,10),2)
+8780 P_EMAIL$=STP(ECA$(169,60),2),P_ACTIONS$=STP(ECA$(266,10),2)
+8782 S_EMAIL$=STP(ECA$(340,60),2),S_ACTIONS$=STP(ECA$(460,10),2)
+8785 C_EMAIL$=STP(ECA$(400,60),2),C_ACTIONS$=STP(ECA$(470,10),2)
+8790 RETURN 
+8795 ! 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9002 J=ERR,K=TCB(5); SETERR 0000; ENDTRACE 
+9010 LAST_WEBEC_ERR$="ERR: "+STR(J)+" AT: "+STR(K); LAST_WEBEC_ERR$=GBL("LAST_WEBEC_ERR",LAST_WEBEC_ERR$); REM "131928
+9090 GOTO 9250
+9200 RETURN_CODE=1; GOTO 9900 ! Problem opening files
+9220 RETURN_CODE=3; GOTO 9900 ! Server record not found
+9240 RETURN_CODE=5; GOTO 9900 ! All done
+9250 RETURN_CODE=6; GOTO 9900 ! Error occurred, check log
+9900 REM "End
+9910 ! CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9950 EXIT 
+9999 END 
+56002 REM "201193-Questions about security of Boars Head EC Promo site.       
+56004 REM "212160-Webec is down.  Cannot use 64 character session id          
+56006 REM "223336-Would like information on adding the email address to the
+56008 REM "219608-EC Purchase Approval - if ordering buyer has alternate ord
+56010 REM "244587-EC Customer Parameter - Send order confirmation to approver?
+56012 REM "249883-DB Flowpoint; XML vendor invoice support email notification 
+56014 REM "271988-EC tag to bypass sending order confirmation to entered email

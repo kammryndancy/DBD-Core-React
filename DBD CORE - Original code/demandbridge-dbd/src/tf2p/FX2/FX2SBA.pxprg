@@ -1,0 +1,53 @@
+0010 REM "Output Fax Number <FX2SBA>
+0035 REM "4.4 - 03/01/00 - 13.72 - tma - SSP# 121781
+0040 REM "Copyright 2000 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1010 REM "N0$ IS PRESET PHONE NUMBER, N1$=PARAMETERS  FROM FX2SAA, N9$ = RESULT
+1012 REM "If a value is passed into here as N9$, then it will be regarded as an option. Currently supported are: S=suppress vsifax formatting, just return the phone number
+1020 ENTER X3$,X4$,N0$,N1$,N9$,X9; SETERR 9000
+1030 OPTIONS$=N9$
+1040 X9=0,N9$=""
+1050 IF N0$>"" THEN IF N0$(1,1)=" " THEN N0$=N0$(2); GOTO 1050
+1080 DIM S$(20),Z[NUM(X3$(60,3))]
+2000 REM 
+2005 L9=0,N9$=FNS$(N1$(569,20)),P=POS("#"=N9$); IF P<>0 THEN N5$=N9$(1,P-1),N6$=N9$(P+1)
+2010 IF N0$="" THEN GOSUB 7500
+2015 N0$=FNS$(N0$); IF N0$>"" THEN IF N0$(1,1)=" " THEN N0$=N0$(2); GOTO 2015
+2016 IF LEN(N0$)=10 THEN IF POS(N0$(1,3)=N1$(629,9),3)>0 THEN N0$=N0$(4)
+2017 IF LEN(N0$)=10 THEN IF POS(N0$(1,3)=N1$(638),3)>0 THEN N0$="1"+N0$(4)
+2018 IF LEN(N0$)=10 THEN IF POS("I"=N1$(647,8))=0 THEN N0$="1"+N0$
+2029 REM "SUFFIX IS ONLY ADDED IF THE NUMBER IS LONG DISTANCE OR MANDATORY
+2050 IF LEN(N0$)<10 THEN IF POS("!"=N1$(569,20))=0 THEN N9$=N5$+N0$; GOTO 2800 ELSE GOTO 2300
+2200 REM "Access code - ? means long distance only
+2202 N9$=N5$+N0$+N6$
+2205 P=POS("?"=N9$); IF P=0 THEN GOTO 2300 ELSE P1=POS("?"<>N9$(P)+" ")-1
+2210 X=LEN(FNS$(N0$)); IF X<10 THEN GOTO 2300
+2220 GOSUB 7600; P=POS("?"=N9$),N9$=N9$(1,P-1)+N8$+N9$(P+P1)
+2290 GOTO 2400
+2300 REM "Access code - ! means mandantory for all numbers
+2302 N9$=N5$+N0$+N6$
+2310 P=POS("!"=N9$); IF P=0 THEN GOTO 2400 ELSE P1=POS("!"<>N9$(P)+" ")-1
+2330 GOSUB 7600; N9$=N9$(1,P-1)+N8$+N9$(P+P1)
+2390 GOTO 2400
+2800 REM "ADD V-SYSTEMS FAX STUFF
+2809 REM "If S in options field, then Suppress VsiFax formatting, else use either version 2 or version 3 style format for number
+2810 IF POS("S"=OPTIONS$)=0 THEN IF N9$>"" THEN IF LEN(N1$)>=695 THEN IF N1$(695,1)>="3" THEN N9$="@+VFX[tfn="+N9$+"]" END_IF ELSE N9$="@-FNUM="+N9$
+2820 IF POS("S"=OPTIONS$)=0 AND N1$(695,1)<"3" THEN N9$="@-FNUM="+N9$
+2940 X9=0
+2950 GOTO 9900
+7505 DIM N0$(14)
+7510 PRINT @(0,22),"Enter the fax number to contact:",'CL',
+7520 CALL "ZZENTR","PO",X{ALL},N0$,X4$,X3$,35,22,1,14,C0,"","","","","","",""
+7540 IF C0=4 THEN X9=1; GOTO 9900 ELSE N0$=FNS$(N0$); IF N0$="" THEN GOTO 7500
+7590 PRINT @(0,22),'CL',; RETURN 
+7600 REM "ACCESS CODE
+7605 Q$=FNS$(N1$(589,40))+":",P2=LEN(Q$); PRINT @(0,22),Q$,'CL',
+7615 DIM N8$(P1)
+7620 CALL "ZZENTR","ZUZ",X{ALL},N8$,X4$,X3$,P2+2,22,1,P1,C0,"","","","","","",""
+7660 PRINT @(0,22),'CL',; RETURN 
+7690 RETURN 
+8910 DEF FNS$(X$)=X$(1,POS(S$=X$+S$)-1)
+9040 EXIT ERR
+9900 REM 
+9940 EXIT 
+9999 END 

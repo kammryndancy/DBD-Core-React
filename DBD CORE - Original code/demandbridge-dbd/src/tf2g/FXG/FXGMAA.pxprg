@@ -1,0 +1,39 @@
+0010 ! FXGMAA - Memo-Fax Feature
+0020 ! "5.2 - 09/19/03 - 13.062222 - jir
+0030 ! "Copyright 2003 Computer Software Inc.; Norcross, Georgia
+0040 ! "        Licensed Software - All Rights Reserved.
+0045 PRINT 'DIALOGUE'(5,2,86,30,"Quick Fax - FXGMAA",'B?'+'BLACK'),; GOTO 0070
+0050 PROCESS "FXGMAA","../FXG/FX.EN"
+0060 EXIT 
+0070 PROCEED:
+0075 PRINT '_BLACK','WHITE',
+0080 %ML_CMD.CTL=ML_CMD.CTL,%LB_CMD.CTL=LB_CMD.CTL
+0090 PRINT @(0,23),'BLACK',
+1000 ! 1000,10
+1010 X2=-1; CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,-1,X1,X2
+1020 IF SYS="MS-WINDOWS" THEN MSGBOX "This feature not supported from the TopForm menu in Windows",MSG("WARNING"),"!,TIM=5"; EXIT 
+1030 CLOSE (14); OPEN (14)"ZZPARM"
+1040 CALL "FX2SBC",X3$,14,F0$,X9
+1050 F0=14
+1060 READ (F0,KEY="o"+X3$(40,3))O0$
+1070 ! 
+1080 ! GET TERM TYPE
+1090 S0$=""
+1100 CALL "ZZCTLK",X3$,K$,"Z"
+1110 %ML_CMD.CTL=0,%LB_CMD.CTL=0
+1120 IF SYS="MS-WINDOWS" THEN WINDOWS=1 ELSE WINDOWS=0
+1130 IF WINDOWS=0 THEN GOTO 1190
+1140 COMM$=""+ENV("COMSPEC")+" /c "+QUO+STP(F0$(697,30),1)+DLM+"universalfaxclient\universalfaxclient.exe"+QUO
+1160 INVOKE COMM$,ERR=1165
+1180 GOTO 1290
+1190 REM "PHO FROM
+1200 P0$=F0$(7,16)
+1210 S0$=S0$+";FXNAME='"+O0$(5,30)+"';export FXNAME"
+1220 IF F0$(7,3)<>"   " THEN S0$=S0$+";FXNUM='"+P0$+"'; export FXNUM"
+1240 IF POS(X3$(9,3)="057")<>0 THEN S0$=S0$+"; "+STP(F0$(697,30),1)+"/obin/fxmemo -x "; GOTO 1255
+1250 IF F0$(695,1)="3" THEN S0$=S0$+"; "+STP(F0$(697,30),1)+"/bin/vsiterm -x" ELSE IF F0$(695,1)="4" THEN S0$=S0$+"; "+STP(F0$(697,30),1)+"/obin/fxmemo -x" ELSE S0$=S0$+";cd /usr/vsifax/bin; fxmemo -x"
+1270 S0$=S0$(2)
+1275 ! ML_CMD.CTL'VALUE$=S0$
+1280 INVOKE S0$,ERR=1285
+1285 PRINT 'POP',
+1290 EXIT 

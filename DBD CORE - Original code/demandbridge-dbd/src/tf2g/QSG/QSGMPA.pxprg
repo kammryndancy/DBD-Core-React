@@ -1,0 +1,43 @@
+0010 ! RFQ Parameter Setup <QSGMPA>
+0035 REM "5.7 - 07/19/10 - 17.698333 - dmm - SSP# 236015
+0037 REM "236015-RFQ parameter to use new listbox including #workings days & 
+0040 REM "Copyright 2010 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF TCB(13)=1 THEN BEGIN 
+0060 PROCESS "QSGMPA","../QSG/QS.EN"
+0070 END 
+0080 INIT:
+0200 ! ^200,10 Setup
+0210 DIM RFQ$:"A1:C(6),A2:C(1),A3:C(1),A4:C(1),A5:C(60),A6:C(1),A7:C(1),A8:C(184)" ! SSP 200437 SSP 201419 SSP 232848, WO236015
+0300 ! ^300,10 - Iolist
+0310 RFQ_IOL:IOLIST RFQ$,RFQ0,RFQ1,RFQ2,RFQ3,RFQ4,RFQ5,RFQ6,RFQ7,RFQ8
+0320 ! 
+0500 ! ^ 500,10 - Open Files
+0510 _ZZPARM=HFN; OPEN (_ZZPARM)"ZZPARM"
+0520 RETURN 
+0530 ! 
+1000 ! ^1000,10 Read in parameters
+1010 READ_REC:
+1020 PARM_KEY$=%C$+"RFQ",KEY_SIZE=LEN(PARM_KEY$)
+1030 READ DATA FROM "" TO IOL=RFQ_IOL
+1040 RFQ$(1,KEY_SIZE)=PARM_KEY$
+1050 READ (_ZZPARM,KEY=PARM_KEY$,DOM=*NEXT)IOL=RFQ_IOL
+1060 REFRESH_FLG=1
+1070 RETURN 
+1080 ! 
+1200 ! ^1200,10 Write out parameters
+1210 WRITE_REC:
+1220 WRITE (_ZZPARM,KEY=PARM_KEY$)IOL=RFQ_IOL
+1230 CMD_STR$="E"
+1240 RETURN 
+1250 ! 
+9900 ! ^9900,10 - Wrap up
+9910 WRAP_UP:
+9920 CLOSE (_ZZPARM)
+9930 RETURN 
+9999 END 
+56000 ! "200437-Program QSGMPA RFQ parameter question is missing in qatst   
+56002 ! "201419-WO185571/WO189791;Changes to RFQ for 288 need to be added to
+56003 ! "       GUI
+56005 REM "232848-RFQ System parm, use "P" tag for output.  Modify RFQ output 
+56006 REM "236015-RFQ parm-use new list box-working days-new vend fields

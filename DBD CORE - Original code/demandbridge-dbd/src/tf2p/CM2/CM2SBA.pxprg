@@ -1,0 +1,43 @@
+0010 REM <CM2SBA> "Write Summary Bill No From R/L to M/L
+0035 REM "3.9 - 05/31/96 - 16.63 - dmm
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9900
+0110 ENTER X3$,X4$
+0310 IOLIST A$
+0500 REM "FILES
+0505 Z=NUM(X3$(60,3)); DIM Z[Z]
+0510 Z$="01O CMH...  02O AR6...  "
+0515 Z$=Z$+"13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,0; ON Z0 GOTO 0521,9900
+0600 GOSUB 8100
+0900 READ (Z[1],KEY="",DOM=0901)
+0910 PRINT @(0,22),'CE',@(3,22),"Summary Bill:",
+1000 REM 
+1005 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1010 DIM A$(26)
+1020 K$=KEY(Z[1],END=5000); READ (Z[1],KEY=K$)IOL=0310
+1030 PRINT @(20,22),K$(1,10),"-",K$(11,8),"-",A$(19,8),
+1040 EXTRACT RECORD (Z[2],DOM=1060,KEY=A$(1,18))A1$
+1045 A1$(160,8)=A$(19,8)
+1050 WRITE RECORD (Z[2],KEY=A$(1,18))A1$
+1060 REMOVE (Z[1],DOM=1000,KEY=A$(1,18))
+1080 GOTO 1000
+5000 REM "EOJ
+5010 C=T; GOSUB 8150
+5040 GOTO 9900
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9900 REM "END PROGRAM
+9905 X0=1
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 PRINT @(0,22),'CE',
+9930 EXIT 
+9999 END 

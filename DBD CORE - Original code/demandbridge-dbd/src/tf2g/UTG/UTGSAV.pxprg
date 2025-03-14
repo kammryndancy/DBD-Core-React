@@ -1,0 +1,26 @@
+0010 ! UTGSAV - Export Control to word
+0035 REM "5.5 - 09/07/07 - 16.471111 - jdf - SSP# 211380
+0037 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 MSGBOX "Missing entry point specification on call","UTGSAV","!"; EXIT 45
+0060 END 
+0070 ! 
+0080 EXPORT:
+0090 IF TCB(29)<5140000 THEN EXIT 
+0100 ! 
+0110 ENTER CTRL_NAME
+0120 NAME$="image"+FID(0)+".bmp"
+0130 SAVE CONTROL CTRL_NAME TO NAME$
+0140 CALL %WDX$+"*windx.utl;get_lwd",LOCATION$
+0150 F_LOC$=LOCATION$+"\"+NAME$
+0160 SYSTEM_HELP "WINWORD.EXE"
+0170 WAIT 2
+0180 WORD=HFN; OPEN (WORD)%WDX$+"[DDE]winword;"
+0190 WRITE RECORD (WORD)"[InsertPicture .name = "+QUO+F_LOC$+QUO+", .LinkToFile = 1]"
+0200 CLOSE (WORD)
+0210 ERASE %WDX$+F_LOC$,ERR=*NEXT
+0220 EXIT 
+9999 END 
+56000 ! "200873-Provide ability in GUI to export screen print to Word       
+56002 REM "211380-TopForm file feldnames which are SQL keywords break Oracle. 

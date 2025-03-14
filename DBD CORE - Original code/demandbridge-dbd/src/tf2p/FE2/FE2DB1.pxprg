@@ -1,0 +1,77 @@
+0010 REM "Quote detail entry display <FE2DB1>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.7 - 04/08/94 - 14.75 - kmc
+0040 REM "Copyright 1994 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 SETERR 9000
+0110 ENTER X3$,X4$,C0,Z0$,A$,A{ALL},B$,E2$,D$,S0,S1,U0,U1,E$,E{ALL},N$
+0140 M0$="##,##0-",M1$="###.00-",M2$="###,##0-",M3$="###,###.00-",M4$="##,###,###.00-",M5$="####,###.00"; REM "Change in FE2DAB also
+1000 REM 
+1010 ON C0 GOSUB 6000,6200,6450,8300,6230,7000,6230,7300
+1090 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6006)'SB',
+6015 IF LEN(B$)<391 THEN DIM B$(391)
+6020 IF B$(391,1)="T" THEN PRINT @(0,3),"Quote no:",@(21)," TM code:" ELSE IF B$(391,1)="P" THEN PRINT @(0,3),"Quote no:",@(21),"Customer:", ELSE PRINT @(0,3),"Quote no:",@(21),"Customer:",
+6025 PRINT @(1,4),"Line no:",@(23),"Custom?",@(35),"Line type:",@(49),"Item type:",
+6030 PRINT @(1,5),"Item code",@(12),"P/C Lft-Rght Top-Botm",@(35),"Ply Item description",@(1,7),"Supplier:",@(65),"Plant:",@(0,8),Z0$,
+6040 PRINT @(7,9),"Unit  Qty/Unit",@(24),"Quantity",@(35),"Amt/Unit",@(48),"Extension",@(64),"Gross Profit",@(0,10),"Price:",@(1,11),"Cost:",@(64),"Fixed price?",@(0,12),"Carton pack:",@(0,13),Z0$,
+6050 PRINT @(0,14),"Quote quantity:",@(5,15),"Unit Cost:",@(1,16),"Desired G.P.%:",@(4,17),"Unit price:",@(4,18),"Total sale:",@(4,19),"Total cost:",@(2,20),"Gross profit:",@(0,21),"Gross profit %:",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6215 GOSUB 6450
+6220 PRINT @(31,4),A$(99,1),@(46),A$(9,1),@(60),A$(140,10),
+6230 PRINT @(1,6),A$(10,10),@(12),A$(20,3),@(16),A$(23,8),@(25),A$(31,8),@(35),A$(39,2),@(39),A$(41,40),
+6240 CALL "ZZDISP","A",A$(81,10),"A/P",X3$,"","",11,7,X4$; PRINT @(72,7),A$(91,4)
+6245 GOSUB 8300
+6250 PRINT @(7,10),A$(95,4),@(12),A[0]:M0$,; IF A$(99,1)<>"Y" THEN PRINT @(19),A[1]/S0:M4$,@(33),A[17]:M3$,@(44),A[18]:M4$,; GOSUB 7700
+6260 PRINT @(7,11),E$(9,4),@(12),E[0]:M0$,; IF A$(99,1)<>"Y" THEN PRINT @(19),A[1]/U0:M4$,@(33),E[25]:M3$,@(44),E[26]:M4$,
+6270 PRINT @(77,11),A$(101,1),@(12,12),A[24]:M0$,
+6300 REM "Bottom section
+6305 D9$=""; FOR I=1 TO 5; IF A[I+1]<>0 THEN D9$=D9$+STR(I); NEXT I ELSE NEXT I
+6310 I1=3; IF D9$="" THEN GOTO 6350
+6315 FOR I=1 TO LEN(D9$)
+6320 I0=NUM(D9$(I,1)),I1=I1+13
+6325 PRINT @(I1,14),A[I0+1]/S0:M5$,@(I1,15),A[I0+18]:M5$,@(I1,16),A[I0+6]:M5$,@(I1,17),A[I0+11]:M5$,
+6330 C2=A[I0+1]/S0*A[I0+18]/S1,S2=A[I0+1]/S0*A[I0+11]/S1
+6335 G0=S2-C2,G1=0; IF S2<>0 THEN G1=G0*100/S2
+6340 PRINT @(I1,18),S2:M5$,@(I1,19),S2-G0:M5$,@(I1,20),G0:M5$,@(I1,21),G1:M5$,
+6345 NEXT I
+6350 IF I1<>68 THEN I1=I1+13; FOR I=14 TO 20; PRINT @(I1,I),'CL',; NEXT I
+6390 RETURN 
+6450 REM "DISPLAY KEYS
+6460 IF B$(391,1)="T" THEN PRINT @(21,3),'SB'," TM code:",'SF', ELSE IF B$(391,1)="P" THEN PRINT @(21,3),'SB',"Prospect:",'SF', ELSE PRINT @(21,3),'SB',"Customer:",'SF',
+6465 CALL "ZZDISP","A",A$(150,8),"O/P",X3$,"","",10,3,X4$
+6470 PRINT @(31,3),B$(20,35),@(10,4),A$(6,3),
+6490 RETURN 
+7000 REM "Display bottom of screen
+7010 PRINT @(0,9),'CE','SB',
+7015 GOSUB 6040
+7020 GOSUB 6230
+7040 RETURN 
+7300 REM "Display after terms & cond.
+7310 PRINT @(0,13),'CE','SB',
+7315 GOSUB 6050
+7320 GOSUB 6300
+7340 RETURN 
+7700 REM "Calc & display gross profit
+7701 REM "Code also in FE2DAB
+7705 IF A[18]=0 THEN PRINT @(59,10),'CL',; GOTO 7740
+7710 G0=A[18]-E[26]
+7715 G1=G0*100/A[18]
+7720 PRINT @(59,10),G0:M3$,@(70),G1:"-###.00%",
+7740 RETURN 
+8300 REM "Display Vendor, Plant name
+8310 DIM E3$(40)
+8320 IF POS(" "<>E2$(111,16))=0 THEN E2$(111,18)=D$(106,18)
+8325 IF POS(" "<>E2$(111,16))=0 THEN E3$(1)=D$(11,35) ELSE E3$(1)=FNS$(D$(11,35))+"-"+FNS$(E2$(111,16))+", "+E2$(127,2)
+8335 PRINT @(24,7),E3$,; E3$=""
+8340 RETURN 
+8900 REM "
+8910 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+9000 REM "Errors
+9010 EXIT ERR
+9900 REM "End
+9910 EXIT 
+9999 END 

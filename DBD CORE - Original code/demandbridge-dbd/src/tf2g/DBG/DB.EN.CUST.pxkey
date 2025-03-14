@@ -1,0 +1,104 @@
+<PxTable>
+ TableName=DB.EN.CUST
+ TableKey=K1443552634
+ FileCreate=KEYED "DB.EN.CUST",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0000"
+    FIELD_1$="DB0_Dashboard"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="80"
+    FIELD_5$="15"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"QRY_DB0"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"DB0"+QUO+"+%C$"
+    FIELD_18$="2011/04/18 17:03 Chaitanya Guntur"
+    FIELD_21$="=R"
+    FIELD_23$="C0000000"
+    FIELD_29$="_MN_.DASHBOARD_INDEX$"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0001"
+    FIELD_1$="DASHBOARD_INDEX"
+    FIELD_4$="10"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DSH_BRD_NO"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0002"
+    FIELD_1$="TF_NAME"
+    FIELD_4$="35"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"NAME"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0003"
+    FIELD_1$="TITLE"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TITLE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0004"
+    FIELD_1$="WIDTH"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"WIDTH"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0005"
+    FIELD_1$="HEIGHT"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"HEIGHT"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DB0     0006"
+    FIELD_1$="WAIT_SECONDS"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"TIME"+QUO+")"
+    FIELD_8$="N"
+    FIELD_9$="0"
+    FIELD_10$="##0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

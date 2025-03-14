@@ -1,0 +1,24 @@
+0010 REM "Return accounting period based on date <ZZ2FYP>
+0035 REM "3.9 - 04/04/96 - 17.97 - dmm
+0040 REM "Copyright 1996 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+1000 REM 
+1020 ENTER X3$,A1$,A2$
+1101 REM "A1$ is the source date, A2$ returns the Fiscal Year+ Period
+1102 REM "+FYE date.
+1105 REM "RETURNS: (1,4)=year, (5,2)=period, (7,6)=fye date, (13,6)=PRIOR period end date, (19,6)=Current period date
+7700 REM "Default accounting period based on date
+7705 A2$=""; IF POS(" "<>A1$(1,6))=0 THEN CALL "ZZPROM",".4",X3$,0,"(ZZ2FYP) ERROR: The specified date is blank!","","",0; EXIT 99
+7708 CLOSE (14); OPEN (14)"ZZPARM"
+7710 D1$=X3$(9,3)+"G/LYE"
+7715 EXTRACT (14,KEY=D1$,DOM=7716)P1$; GOTO 7720
+7720 READ (14,END=7770)P1$
+7725 IF P1$(1,8)<>D1$(1,8) AND P1$(1,8)<>"%%%G/LYE" THEN GOTO 7770
+7730 IF P1$(15+NUM(P1$(13,2))*6,6)<A1$(1,6) THEN GOTO 7720
+7740 FOR I=1 TO NUM(P1$(13,2))
+7745 IF A1$(1,6)<=P1$(15+I*6,6) THEN A2$=P1$(9,4)+STR(I:"00")+P1$(15+NUM(P1$(13,2))*6,6)+P1$(15+(I-1)*6,12); EXITTO 7755
+7750 NEXT I
+7790 GOTO 9900
+8910 DEF FNS$(Z9$)=Z9$(1,POS(S$=Z9$+S$)-1)
+9940 EXIT 
+9999 END 

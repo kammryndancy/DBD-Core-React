@@ -1,0 +1,256 @@
+0010 REM "Change Customer Location Code <FM2UU8>
+0015 REM "Prog Type: I -3.0A    
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.0 - 01/11/02 - 17.475277 - plh - SSP# 142887
+0040 REM "Copyright 2002 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0080 REM "copied from FM2UU6, WO129242
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000; SETESC 9300
+0110 X0$="FM2UU8",X1$="Change Customer Location Code",K9$="",K9=0
+0120 DIM Z0$(80,"-")
+0130 K0=32,K1=5
+0135 C9=-1
+0140 M0$="0",M1$="00"
+0145 GOSUB 8950
+0200 REM "
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(65,1)>"2" THEN PRECISION NUM(X3$(65,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9],A[10],A[11],A[12]
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15]
+0330 IOLIST C$,C[0],C[1],C[2],C[3],C[4],C[5],C[6],C[7],C[8],C[9],C[10],C[11],C[12],C[13],C[14],C[15],C[16],C[17],C[18],C[19],C[20],C[21],C[22],C[23],C[24],C[25],C[26],C[27],C[28],C[29],C[30]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0507 REM "Slot 4 will be used to open the text file
+0510 Z$="01X FM0...  02O AR1...  03O FMM...  13O ZZPARM  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0590 READ (Z[1],KEY=K9$,DOM=0591)
+0600 REM "
+0680 GOSUB 6000
+1000 REM "
+1010 Y8=1; CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,X2
+1015 DIM V7$(28); V7$(1,1)="1",V7$(2,1)="1",V7$(5,1)="1",V7$(6,1)="1",V7$(12,1)="1",V7$(13,1)="1",V7$(20,1)="1"
+1035 DIM A$(8),A[3],A1$(20),LOC$(1)
+1060 PRINT (0,ERR=1070)'CF',; GOSUB 6450; GOTO 1100
+1070 GOSUB 6000; GOSUB 6450
+1100 REM "KEY SEQ
+1110 X0=-1,C0=0,X1=0,C9=0,Z9=0
+1120 SETERR 9000; C0=ABS(C0),X$=""; IF C0=2 AND X0>0 THEN X0=X0-1 ELSE IF C0<>2 THEN X0=X0+1; IF C0=4 THEN GOTO 9900
+1140 ON X0 GOTO 1200,1250,1300,1350,1400,1500
+1200 REM "Name of text file
+1205 X$="Enter text file name, file must be located in BASIC data DIRectory"
+1210 CALL "ZZENTR","S",A{ALL},A$,X4$,X3$,28,12,1,8,C0,"","{1"+X$,"","FM2UU800","","",""
+1211 IF C0=4 THEN GOTO 9900
+1213 FILE$=STP(A$(1,8),1)
+1215 Z$="04O "+FILE$+"  "
+1220 GOSUB 9750; ON Z0 GOTO 1221,8800
+1225 CLOSE (Z[4]); OPEN LOCK (Z[4],OPT="TEXT")FILE$
+1240 GOTO 1120
+1250 REM "Length of current location code
+1255 X$="Enter the length of the current location code field in text file, maximum of 9"
+1260 CALL "ZZENTR","N",A{ALL},A$,X4$,X3$,28,13,0,200,C0,M0$,"{2"+X$,"","FM2UU802","","",""
+1265 IF A[0]>9 OR A[0]<=0 THEN GOTO 1260
+1290 GOTO 1120
+1300 REM "Length of new location code
+1305 X$="Enter the length of the new location code field in text file, maximum of 9"
+1310 CALL "ZZENTR","N",A{ALL},A$,X4$,X3$,28,14,1,200,C0,M0$,"{2"+X$,"","FM2UU804","","",""
+1315 IF A[1]>9 OR A[1]<=0 THEN GOTO 1310
+1340 GOTO 1120
+1350 REM "Length of customer code
+1355 X$="Enter 10 or 8 may be used if non-divisional"
+1360 CALL "ZZENTR","N",A{ALL},A$,X4$,X3$,28,15,2,200,C0,M1$,"{2"+X$,"","FM2UU806","","",""
+1365 IF A[2]<>8 AND A[2]<>10 THEN GOTO 1360
+1390 GOTO 1120
+1400 REM "Also change lookup sequence?
+1405 X$="Enter Y to also change the lookup sequence to match the new location code",LOC$="N"
+1410 CALL "ZZENTR","Y",A{ALL},LOC$,X4$,X3$,28,17,1,1,C0,"","{2"+X$,"","FM2UU808","","",""
+1440 GOTO 1120
+1500 REM "Read records in the file and check the length compared to the total of the lengths entered and if not the same then display message and get out.  Read the customer master and if no customer record then display message and get out.  Keep a count of the number of records not found in FMM.
+1505 COUNT=0
+1510 READ (Z[4],END=1800)RECORD$
+1513 IF LEN(RECORD$)<>A[0]+A[1]+A[2] THEN GOTO 8850
+1514 PRINT @(0,12),'CE',@(10,12),"Initial pass for number of records with no match...",
+1520 FS1=1,FS2=FS1+A[0],FS3=FS2+A[1]; REM "Field starting positions
+1525 CUST$=RECORD$(FS3,A[2]); IF LEN(CUST$)=8 THEN CUST$="00"+CUST$
+1530 READ (Z[2],KEY=CUST$,DOM=8875)AR1$
+1535 KEY$="C"+CUST$+PAD(RECORD$(FS1,A[0]),9); READ (Z[3],KEY=KEY$,DOM=1536)
+1540 K$=KEY(Z[3],END=1541); IF K$(1,20)=KEY$ THEN GOTO 1510
+1545 COUNT=COUNT+1; PRINT @(1,15),"No match for record: "+RECORD$
+1550 GOTO 1510
+1810 PRINT @(1,18),"There are "+STR(COUNT)+" records in the text file with no match",
+1820 CALL "ZZPROM","Y",X3$,Z,"Proceed with location code change?","","V",X0; ON Z GOTO 1821,9900
+2000 REM " Close text file and reopen to position back to the first record.  Read each record and use FMM to get to the correct FM0 record, change the location code and optionally the lookup sequence.  Write record.
+2010 PRINT @(0,12),'CE',; GOSUB 8100; GOSUB 8150
+2020 CLOSE (Z[4]); OPEN LOCK (Z[4],OPT="TEXT")FILE$
+2025 I9=0,COUNT=0,WROTE=0
+2030 READ (Z[4],END=5000)RECORD$
+2035 I9=I9+1; IF MOD(I9,T0)=1 THEN GOSUB 8150
+2040 CUST$=RECORD$(FS3,A[2]); IF LEN(CUST$)=8 THEN CUST$="00"+CUST$
+2045 KEY$="C"+CUST$+PAD(RECORD$(FS1,A[0]),9); READ (Z[3],KEY=KEY$,DOM=2046)
+2050 K$=KEY(Z[3],END=2100); IF K$(1,20)<>KEY$ THEN GOTO 2100
+2055 EXTRACT RECORD (Z[1],KEY="C"+CUST$+K$(21,4),DOM=2100)FM0$
+2060 FM0$(214,9)=PAD(RECORD$(FS2,A[1]),9)
+2065 IF LOC$="Y" THEN FM0$(150,10)=PAD(RECORD$(FS2,A[1]),10)
+2070 WRITE RECORD (Z[1],KEY="C"+CUST$+K$(21,4))FM0$
+2075 WROTE=WROTE+1
+2080 GOTO 2030
+2100 REM "Couldn't find a match in FMM, add 1 to COUNT and go get the next record in the text file
+2110 COUNT=COUNT+1; GOTO 2030
+5000 REM "END
+5020 IF WROTE=0 THEN GOTO 1000
+5025 PRINT @(0,13),'CE',
+5030 X$=STR(I9)+" records read, "+STR(WROTE)+" written, "+STR(COUNT)+" not found"
+5040 CALL "ZZPROM",".4",X3$,0,X$,"","",0
+5050 X$="The Rebuild Shipto Sorts Utility will now be run"
+5055 CALL "ZZPROM",".4",X3$,0,X$,"","",0
+5060 RUN_UTILITY$="Y"
+5090 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6020 PRINT @(1,3),"This program will read the entered text file located on the BASIC data         DIRectory, and change the Customer's Location Code and optionally the Lookup    Sequence.  The first pass will display the number of records not found.  You    will have the option to end the process at that point.  If you proceed,         each matching record will be changed and rewritten.  The appropriate sort       rebuild program will then be run.  You should backup your FM0 and FMM files     prior to proceeding.  All users should be out of TopForm.",
+6060 PRINT @(12,12+V0),"Text file name:",@(0,13+V0),"Length of current loc code:",
+6065 PRINT @(4,14+V0),"Length of new loc code:",@(7,15+V0),"Length of cust code:",
+6070 PRINT @(4,17+V0),"Change lookup sequence?",
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6200 REM "DISPLAY DATA
+6205 REM "D9 controls returns for displays of pieces of the screen
+6215 GOSUB 6450
+6390 RETURN 
+6400 REM "WHOLE SCREEN
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6420 GOSUB 6000
+6430 IF C9>0 THEN GOSUB 6200 ELSE GOSUB 6450
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+6450 REM "DISPLAY KEYS
+6455 IF C9<0 THEN GOTO 6445
+6464 PRINT @(28,12),A$(1,8),
+6470 PRINT @(28,13),STR(A[0]:M0$),@(28,14),STR(A[1]:M0$),@(28,15),STR(A[2]:M0$),
+6475 PRINT @(28,17),LOC$(1,1),
+6490 RETURN 
+6500 REM "DELETE
+6510 REMOVE (Z[1],KEY=A1$,DOM=6511)
+6590 A1$=""; GOTO 1630
+6600 REM "ALT KEY DATA READS
+6605 FIND (Z[2],KEY=A$(1,10),DOM=6606)IOL=0320
+6610 FIND (Z[3],KEY=A$(11,10),DOM=6611)IOL=0330
+6690 RETURN 
+6700 REM "ADD ENTRY
+6705 IF Z9=0 THEN GOTO 6790
+6710 WRITE (Z[1],KEY=A1$)IOL=0310
+6790 C9=0; IF Z=6 OR K1=0 THEN GOTO 9900 ELSE IF Z<4 THEN GOTO 1000 ELSE C0=-(3.1+(Z-4)/10); GOTO 6800
+6800 REM "NEXT ENTRY IN FILE
+6805 ON 10*FPT(C0)+2 GOTO 6850,6806
+6810 A1$=KEY(Z[1],END=6895)
+6820 IF A1$="" THEN GOTO 6800 ELSE IF A1$(1,LEN(K9$))<>K9$ THEN GOTO 6895
+6825 A$(1,LEN(A1$))=A1$
+6830 GOSUB 6600
+6835 GOSUB 6450
+6840 GOTO 1515
+6850 REM "PRIOR ENTRY
+6855 CALL "ZZKEYP",ERR=6856,Z[1],A1$; GOTO 6820
+6860 PRINT 'RB',; CALL "ZZKEYL",ERR=6861,Z[1],A1$; GOTO 6820
+6865 GOTO 1100
+6870 GOTO 6895
+6890 GOTO 1515
+6895 IF A1$="" THEN GOTO 6860 ELSE PRINT 'RB',; READ (Z[1],KEY=K9$,DOM=6896)
+6898 ON S9 GOTO 6810,1100
+7200 REM "Forced read 
+7210 IF ERR<>0 THEN GOTO 9000
+7220 CALL "ZZREAD",Z[1],A1$,A$,A{ALL},S8; ON S8 GOTO 7221,1630
+7230 GOSUB 6200
+7240 CALL "ZZPROM","E0",X3$,0,"","","",0; GOTO 7290
+7250 CALL "ZZPROM","E0A",X3$,0,"","","",0; GOTO 7290
+7290 GOTO 1630
+7300 REM 
+7310 ON FPT(C0)*10 GOTO 7390,7325,7330,7390
+7325 IF V8$="" THEN X0=X0+4; GOTO 7390 ELSE X0=NUM(V8$(POS(STR(X0:"00")<=V8$,2),2)); GOTO 7390
+7330 IF V8$="" THEN X0=X0-6; GOTO 7335 ELSE X0=POS(STR(X0-1:"00")<=V8$,2)-2; IF X0<0 THEN X0=0; GOTO 7390 ELSE X0=NUM(V8$(X0,2)); GOTO 7390
+7335 IF X0<0 THEN X0=0; GOTO 7390
+7390 IF X0>0 THEN X0=X0-0
+7395 C0=3; RETURN 
+7400 REM "EXTRACT
+7410 EXTRACT (Z[1],ERR=7200,KEY=A1$,DOM=7440)IOL=0310
+7420 C9=1,Z9=1; GOSUB 5800
+7440 RETURN 
+7450 REM "EXTRACT NEW ENTRY
+7460 WRITE (Z[1],KEY=A1$,DOM=7250)IOL=0310; GOTO 7400
+7490 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8105 REM "CALL "ZZINFO",Z[1],T9,X3$,T,T0,K,B,D,S0,S1,F2$
+8106 REM "LET T=T0
+8107 T=0
+8111 DIR_PATH$=%DATAPATH$
+8112 FULL_PATH$=DIR_PATH$+DLM+FILE$
+8113 CALL "ZZ2FNC;SerialRecCnt",Z[4],T ! CLOSE (14); OPEN (14)"< cat "+FULL_PATH$+" | wc -l"; READ (14)NUM_REC$
+8114 ! T=NUM(NUM_REC$,ERR=8130)
+8115 PRINT @(0,12),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8135 T1=0
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,I9
+8195 RETURN 
+8800 REM "Trouble opening text file, display message then exit program
+8810 CALL "ZZPROM",".4",X3$,S3,"The entered text file could not be opened","","",0; GOTO 9900
+8850 REM "Lengths entered do not match actual length of record
+8860 CALL "ZZPROM",".4",X3$,S3,"The entered lengths do not total to the actual length of the record","","",0; GOTO 9900
+8875 REM "Customer code missing, display message then exit
+8880 CALL "ZZPROM",".4",X3$,S3,"Customer code "+RECORD$(FS3,A[2])+" is not valid, check text file","","",0; GOTO 9900
+8905 DEF FNP$(Z9$)="("+Z9$(1,3)+") "+Z9$(4,3)+"-"+Z9$(7,4)+" Ext: "+Z9$(11,4)
+8910 DEF FND$(Z9$)=Z9$(NUM(X3$(48,1))*2+1,2)+X3$(59,1)+Z9$(7-NUM(X3$(48,1))*2,2)+X3$(59,1)+STR((ASC(Z9$(1,1))-65)*10+1900+NUM(Z9$(2,1))-1570*POS("  "=Z9$(1,2)):"####")
+8915 DEF FNT$(Z9$)=STR(NUM(Z9$(1,2))-12*POS("13"<=Z9$(1,2),2)+12*POS("00"=Z9$(1,2)):"00")+":"+STR(NUM(Z9$(3,2))*.6:"00")+" "+CHR(65+15*POS("12"<=Z9$(1,2),2))+"M"
+8920 DEF FNB$(Z9$)=X3$(214-6*NUM(Z9$),1)
+8925 DEF FNS$(Z9$)=Z9$(1,POS("   "=Z9$+"   ")-1)
+8930 DEF FNR$(Z9$)=Z9$(POS(" "<>Z9$))
+8949 DEF FNC$(Z9$)=Z9$(1,POS(" "=Z9$+" ")-1)
+8950 REM "Program flow logic
+8960 DIM U0$(6); U0$(1)=FID(0),U0$=U0$+"PF"; CLOSE (14); OPEN (14)"ZZPARM"
+8970 FIND (14,KEY=U0$,DOM=8990)U0$,U1$
+8975 IF U1$="" THEN Q1$=""; GOTO 8990
+8980 Q1=NUM(U1$(7,2)),Q1$=U1$(9,Q1),U1$=U1$(Q1+9)
+8990 RETURN 
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9700 REM "PROG FLOW
+9710 IF U1$="" THEN REMOVE (Z[13],KEY=U0$,DOM=9900); GOTO 9900
+9720 WRITE (Z[13],KEY=U0$)U0$,U1$
+9730 RUN U1$(1,6)
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9905 Y8=2
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9915 IF RUN_UTILITY$="Y" THEN CALL "FM2UTT",X3$,X4$,"","*"
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

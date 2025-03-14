@@ -1,0 +1,29 @@
+! Abre el archivo de entrada para lectura
+OPEN (1) "UT2"                ! Abre el archivo de datos para lectura
+
+OPEN (2) "output.json" ! Abre el archivo de salida para escritura
+
+! Iniciar el formato JSON
+PRINT (2) "{"                 ! Escribe la apertura del objeto JSON
+PRINT (2) "  \"records\": [" 
+
+FIRST = 1                     ! Bandera para controlar las comas entre registros
+
+! Bucle para leer y procesar cada registro
+LOOP:
+  READ RECORD (1, ERR=DONE) RECORD$  ! Lee un registro del archivo de datos
+  IF NOT(FIRST) THEN PRINT (2) ","  ! Si no es el primer registro, coloca una coma
+  PRINT (2) "    { \"record\": \"" + RECORD$ + "\" }"
+  FIRST = 0                  ! Desactiva la bandera despu‚s del primer registro
+
+  GOTO LOOP                  ! Repetir para el siguiente registro
+
+! Finalizar el archivo JSON
+DONE:
+PRINT (2) "  ]"              ! Cierra la lista de registros
+PRINT (2) "}"                ! Cierra el objeto JSON
+
+! Cerrar los archivos abiertos
+CLOSE (1)                     ! Cierra el archivo de datos
+CLOSE (2)                     ! Cierra el archivo de salida
+

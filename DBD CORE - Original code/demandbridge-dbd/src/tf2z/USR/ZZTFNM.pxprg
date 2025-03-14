@@ -1,0 +1,17 @@
+0010 REM "Get correct tf file name <ZZTFNM>
+0035 REM "4.1 - 11/03/98 - 10.36 - tma - SSP# 105100
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 SETERR 9000
+0095 ENTER NAME$
+0110 NAME$=""
+1000 REM "If SSN then set & exit, else get company code from ZZPARM
+1010 IF %SSN=406001157 THEN NAME$="tf500"; GOTO 9900
+1050 NAME$="tf"+%LISC_COMP$; REM "lisc_comp$ set in START_UP
+1150 REM "End
+1160 GOTO 9900
+9000 REM "Error
+9010 EXIT ERR
+9900 REM "end
+9940 EXIT 
+9999 END 

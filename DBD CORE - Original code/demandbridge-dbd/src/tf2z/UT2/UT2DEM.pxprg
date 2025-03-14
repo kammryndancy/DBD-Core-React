@@ -1,0 +1,26 @@
+0010 REM "Restore Demo Data to volume 0 <UT2DEM>
+0035 REM "4.1 - 10/09/97 - 11.9 - dmm - SSP# 090792
+0040 REM "Copyright 1997 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0300 D2$=%DATAPATH$
+0500 PRINT 'CS',"Restore Demo Files Utility - Unix Version",'LF'
+0520 PRINT 'BB',"WARNING - Only for CSI Internal Use - will clear existing data",'EB','LF'
+0600 PRINT @(0,7),"Begin restore from demo.40 to "+D2$+"?",@(10,8),"(Y/y=Yes, N/n=Run ZSTART, E/e=Exit to Basic): ",; INPUT 'RB',Q$
+0610 IF POS(Q$="Nn")>0 THEN GOTO 9000 ELSE IF POS(Q$="Ee")>0 THEN GOTO 9900 ELSE IF POS(Q$="Yy")=0 THEN GOTO 0600
+0650 INPUT "Are you sure you want to restore? (Y/y=Yes, N/n=Run ZSTART, E/e=Exit to Basic): ",'RB',Q$
+0660 IF POS(Q$="Nn")>0 THEN GOTO 9000 ELSE IF POS(Q$="Ee")>0 THEN GOTO 9999 ELSE IF POS(Q$="Yy")=0 THEN GOTO 0650
+0690 PRINT 'LF',"Clearing DIRectory "+D2$+" in progress"
+0700 INVOKE "cd "+D2$+" ; rm  * "
+0725 PRINT "Directory clearing complete"
+0750 PRINT "Demo file restore in progress...Do not interrupt"
+0780 INVOKE "umask 0"
+0800 INVOKE "cd "+D2$+";"+"cpio -ivcudB </usr/lib/basic8/demo.40"
+0900 INVOKE "sync"
+1000 INPUT "Demo file restore complete - <Ret> to continue ",'RB',*
+8950 DEF FNS$(Z9$)=Z9$(1,POS("    "=Z9$+"    ")-1)
+9000 BEGIN 
+9020 RUN "ZSTART"
+9900 PRINT 'CS',
+9990 DELETE 0001,65000
+9999 END 

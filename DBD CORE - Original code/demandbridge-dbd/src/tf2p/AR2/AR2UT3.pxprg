@@ -1,0 +1,49 @@
+0010 REM "Rebuild customer sort files <AR2UT3>
+0035 REM "5.5 - 03/06/07 - 10.062222 - mhe - SSP# 205703
+0037 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$
+0040 REM "Copyright 2007 TopForm Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0100 BEGIN 
+0120 DIM Z0$(80,"-")
+0200 REM 
+0210 PRINT 'CS',@(25,1),"Rebuild customer sort files",@(0,2),Z0$,
+0220 INPUT @(20,10),"Company number? ",C0$,
+0222 IF C0$="" THEN GOTO 9950
+0225 C0$=STR(NUM(C0$):"000"); PRINT @(37,10),'CL',C0$,
+0230 OPEN (1)"AR1"+C0$
+0237 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$
+0240 OPEN (5)"AR3"+C0$
+0300 REM 
+0310 PRINT @(20,10),'CE',"Clearing sort files",
+0320 OPEN (2)"ARE"+C0$
+0321 F$=FN%FID$(2); CLOSE (2) ! [205703]-changed FID() to FN%FID$()
+0322 ERASE F$(4,6)
+0323 FILE F$; OPEN (2)F$(4,6)
+0330 OPEN (3)"ARU"+C0$
+0331 F$=FN%FID$(3); CLOSE (3) ! [205703]-changed FID() to FN%FID$()
+0332 ERASE F$(4,6)
+0333 FILE F$; OPEN (3)F$(4,6)
+0340 OPEN (4)"ARF"+C0$
+0341 F$=FN%FID$(4); CLOSE (4) ! [205703]-changed FID() to FN%FID$()
+0342 ERASE F$(4,6)
+0343 FILE F$; OPEN (4)F$(4,6)
+1000 REM 
+1005 PRINT @(20,10),'CE',"Rebuilding customer - ",
+1010 READ (1,END=2000)A$
+1012 PRINT @(42,10),A$(1,10),
+1015 WRITE (2,KEY=A$(155,10)+A$(1,10))
+1020 WRITE (3,KEY=A$(278,4)+A$(1,10))
+1030 GOTO 1010
+2000 REM "SALESPERSON LOOKUP
+2005 PRINT @(20,10),'CE',"Rebuilding salesperson - ",
+2010 READ (5,END=9900)B$
+2015 PRINT @(42,10),B$(1,4)+" - ",B$(139,10),
+2020 WRITE (4,KEY=B$(139,10)+B$(1,4))
+2030 GOTO 2010
+9900 REM 
+9910 PRINT @(20,10),'CE',
+9920 INPUT @(20,10),"Process complete - <Return> to continue ",*
+9950 RUN "ZMENU"
+9999 END 
+56000 REM + Modification History
+56002 REM "205703-Oracle - FID and FIB calls, replace with FN%FID$ and FN%FIB$

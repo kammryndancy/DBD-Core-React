@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="Reorder Processing" class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>About Reorder Processing</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapUtilities.js">/*<![CDATA[*/ /*]]>*/</script>
+        <script src="../SkinSupport/MadCapHighlighter.js">/*<![CDATA[*/ /*]]>*/</script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 528px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;">About Reorder Processing</span>
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p><a name="kanchor26"></a>DB Distributor provides you with the ability to monitor those items that will soon require reordering from the factory. DB Distributor determines that an item has reached this point based on established reorder points on the Item Master. Along with the ability to monitor these items is the option of printing Reorder Notices that can be used to stimulate orders from your customers.
+</p>
+        <p>&#160;</p>
+        <p>This section addresses those tasks involved in processing reorder information. Generally, reorder processing should immediately follow the completion of the PM Cycle. In this way, it becomes easier to schedule their processing since it falls in conjunction with the Cycle Processing. DB Distributor will, however, allow you to process Reorder Notices at any time.
+</p>
+        <p>&#160;</p>
+        <p><i>NOTE</i>:  It is not recommended that Reorder Processing be done during a PM Cycle as the PM Cycle will be changing the data used by the reorder notice programs.
+Also, Reorder Processing is generally a procedure performed for PM&#160;Customers. For Non-PM&#160;Customers, you will have to start the Reorder Process by running the <a href="Customer Reorder Report.htm">Customer Reorder Report</a>.</p>
+        <p>&#160;</p>
+        <p>The main areas of Reorder Processing include:</p>
+        <p>&#160;</p>
+        <ul>
+            <li value="1"><b>Establishing Reorder Points</b>
+            </li>
+        </ul>
+        <p>The criterion DB Distributor uses to determine whether an item is ready to be reordered is manually established on the Item Master under the Reorder Tab menu option in the <u style="font-style: normal;text-decoration: none;"><a href="../PM Setup/Custom Item Setup.htm">Custom Item Master</a></u>. </p>
+        <p>&#160;</p>
+        <ul>
+            <li value="1"><b>Creating Reorder Notice Print Records</b>
+            </li>
+        </ul>
+        <p>The Reorder Notice Print Records are the indicators used by DB Distributor that a Reorder Notice is ready to be printed for a customer's item. Creation of these print records can be accomplished through either automatic or manual methods.</p>
+        <p>&#160;</p>
+        <p><b>Automatic </b>- As discussed in the <a href="../PM Setup/System Parameters.htm">System Parameter Setup</a>, you may specify  whether or not Reorder Notices will be automatically generated as a result of the PM Cycle Usage Update. If this parameter has been set to ‘Y’ (checked), then DB Distributor will automatically create the Reorder Notice Print Records and you a<i style="font-style: normal;font-weight: normal;text-decoration: none;">re ready for printing Reorder Notices</i>. Reorder Notice print records can also be automatically generated by running the <a href="On-Demand Notice Report.htm">On-Demand Notice Report</a>.</p>
+        <p>&#160;</p>
+        <p><b>Manual</b> - Reorder Notice print records can be manually generated as a result of running the <a href="Manual Notice Selection.htm">Manual Notice Selection</a> option on the menu.</p>
+        <p>&#160;</p>
+        <ul>
+            <li value="1"><b>Generating Reorder Notices</b>
+            </li>
+        </ul>
+        <p>Once the Reorder Notice Print Records are generated in the Reorder Notice print file, you are ready for printing the <a href="Reorder Notice Printing.htm">Reorder Notices</a>.</p>
+        <p>&#160;</p>
+        <ul>
+            <li value="1"><b>Removing Reorder Notice Print Records</b>
+            </li>
+        </ul>
+        <p>The Reorder Notice Print Records exist both before and after printing of the Reorder Notice. Prior to printing, the existence of these records identifies those items for which notices are to be printed. Following printing, these records are updated with the notice printing date and are used as status records for the printed notices. Removal of these print records can be accomplished through either automatic or manual methods.         <![CDATA[ ]]></p>
+        <p>&#160;</p>
+        <p><b>Automatic </b>- The Reorder Notice Print Records will generally be removed by the system as a result of normal processing. The records will automatically be removed if the item is deleted, marked as obsolete on the item master, or if a Purchase Order is issued for the item.</p>
+        <p>&#160;</p>
+        <p><b>Manual</b> - The Print Records can also be removed from the file at any time by going to the <a href="Manual Notice Selection.htm">Manual Notice Selection</a> screen, calling up the print record, and simply deleting it.</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007 DemandBridge, Inc.</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

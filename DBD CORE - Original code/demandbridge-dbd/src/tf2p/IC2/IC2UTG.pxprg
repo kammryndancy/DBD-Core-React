@@ -1,0 +1,120 @@
+0010 REM "Selling Price Change Utility <IC2UTG>
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.7 - 03/15/16 - 12.676944 - tma - SSP# 283577
+0037 REM "283577-ICS U1 Change selling price is too hard to back out of.     
+0040 REM "Copyright 2016 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0100 SETERR 9000
+0110 X0$="IC2UTG",X1$="Selling Price Change Utility"
+0120 DIM Z0$(80,"-")
+0130 K0=20,K1=1
+0135 C9=-1,T0$="ZZXIC0",L0=10
+0200 REM "
+0240 IF X3$="" THEN CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0320 IOLIST B$,B[0],B[1],B[2],B[3],B[4],B[5],B[6],B[7],B[8],B[9],B[10],B[11],B[12],B[13],B[14],B[15],B[16],B[17],B[18],B[19],B[20],B[21],B[22],B[23],B[24],B[25],B[26],B[27],B[28],B[29],B[30],B[31],B[32],B[33],B[34],B[35],B[36],B[37],B[38],B[39],B[40]
+0321 IOLIST B$,STR(B[0]),B[1],STR(B[2]),B[3],STR(B[4]),B[5],STR(B[6]),B[7],STR(B[8]),B[9],STR(B[10]),B[11],STR(B[12]),STR(B[13]),B[14],B[15],B[16],STR(B[17]),STR(B[18]),B[19],STR(B[20]),B[21],STR(B[22]),B[23],STR(B[24]),B[25],STR(B[26]),B[27],STR(B[28]),B[29],STR(B[30]),B[31],STR(B[32]),B[33],B[34],B[35],B[36],B[37],B[38],B[39],B[40]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="02O IC0...  13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0550 DIM M6[1]; CALL "IC2PRE",X3$,Z[13],"",M6{ALL},"",0,"",0
+0585 RT$=""; CALL "RT2PRM",ERR=0586,X3$,X4$,RT$
+0600 REM "
+0605 DIM A$(1),A[1]; A$(1,1)="M",A(0)=1,M1$="#.0000" ! SSP#283577
+0610 GOSUB 6000
+0620 GOSUB 8100
+0640 CALL T0$,ERR=0641,X3$,X4$,Y0$,W$,W{ALL},0,C0,L9; IF ABS(C0)=4 THEN GOTO 0680 ! SSP#283577
+0645 IF C0>=6 THEN C0=C0-5,L9=L9+1; GOSUB 6400; GOTO 0640 ! SSP#278485
+0660 GOSUB 2350
+0680 IF POS(" "<>W$(21,10))>0 THEN CALL "ZZPROM","YE",X3$,Z,"NOTE: You indicated customer inventory prices are to change - Correct?","","",0; ON Z GOTO 0681,0001,9900 ! SSP#283577
+0840 CALL "ZZPROM",".Y",X3$,Z,"Proceed?","","",0; ON Z GOTO 0841,9900
+0900 DIM B[40]
+0990 EXTRACT (Z[2],KEY=W$(1,20),DOM=0991)
+1000 REM "
+1020 EXTRACT (Z[2],END=5000)IOL=0320
+1025 IF B$(1,10)>W$(21,10) THEN GOTO 5000
+1030 IF B$(11,10)<W$(11,10) THEN GOTO 1200
+1035 IF B$(11,10)>W$(31,10) THEN GOTO 1200
+1040 C=C+1; IF MOD(C,T0)=1 THEN GOSUB 8150
+1100 FOR I=0 TO 12 STEP 2; GOSUB 2000; NEXT I
+1120 FOR I=22 TO 32 STEP 2; GOSUB 2000; NEXT I
+1200 WRITE (Z[2])IOL=0321
+1202 IF RT$>"" THEN IF RT$(7,1)="H" THEN CUST$=B$(1,10); CALL "RT2WOC",ERR=1203,X3$,X4$,CUST$,"IC0...","U",B$(1,20)
+1220 GOTO 1020
+2000 REM "Compute New Price"
+2010 PRECISION 6
+2020 IF A$(1,1)="D" THEN B[I]=B[I]/A[0] ELSE B[I]=B[I]*A[0]
+2030 PRECISION M6[1]; B[I]=B[I]+0; PRECISION 2
+2035 IF X3$(9,3)="011" THEN IF FPT(B[I]/.25)<>0 THEN B[I]=INT((B[I]+.25)/.25)*.25
+2040 RETURN 
+2350 REM "Factor
+2352 PRECISION 4
+2360 CALL "ZZENTR","N&",A{ALL},A$,X4$,X3$,55,11,0,140,C0,M1$,"{3"+X$,"","IC2UTG00","","","" ! SSP#283577
+2400 REM "Multiply or Divide?
+2405 X$="M=multiply, D=divide"
+2410 CALL "ZZENTR","SRU",A{ALL},A$,X4$,X3$,55,14,1,1,C0,"","{3"+X$,"MD","IC2UTG04","","",""
+2420 IF A$(1,1)="D" AND A[0]=0 THEN GOTO 2350
+2430 PRECISION 2
+2440 RETURN 
+5000 REM "EOJ"
+5010 C=T; GOSUB 8150
+5030 CALL "ZZPROM",".4",X3$,Z,"Process complete!!","","",0
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 PRINT (0,ERR=6016)'SB',
+6010 PRINT @(0,3),"This program will change the selling price of all inventory items within the",'LF',"selected range by a multiplier.  The multipler will be applied to the base",'LF',"selling price and all quantity break prices.",
+6015 CALL T0$,ERR=6231,X3$,X4$,Y0$,W$,W{ALL},1,0,L0
+6020 CALL T0$,ERR=6021,X3$,X4$,Y0$,W$,W{ALL},2,0,L0
+6040 PRINT @(5,11),"Multiplier by which to adjust selling prices:",@(55,11),A(0):M1$, ! SSP#283577
+6050 PRINT @(5,12),"(to increase, enter 1.10 and Multiply)",
+6060 PRINT @(7,14),"Multiply or Divide price using this factor?",@(55,14),A$(1,1),
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+6400 REM "WHOLE SCREEN                                  
+6405 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,X5$,X0,X1,0
+6410 GOSUB 6000
+6440 IF ABS(C0)>4 THEN C0=ABS(C0)-5
+6445 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 CALL "ZZINFO",Z[2],T9,X3$,T,T0,K,B,D,S0,S1,F$
+8115 REM IF I$="" THEN PRINT @(0,9),"There are "+STR(T)+" records to process"
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 REM "283577-ICS U1 Change selling price is too hard to back out of.     

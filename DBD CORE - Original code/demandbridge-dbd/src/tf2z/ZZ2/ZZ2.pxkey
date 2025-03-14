@@ -1,0 +1,602 @@
+<PxTable>
+ TableName=ZZ2
+ TableKey=K971281877
+ FileCreate=KEYED "ZZ2",17,0,-512,BSZ=4,OPT="0"
+ MaxFields=00005
+
+<Data>
+
+   <RecordData>
+    FIELD_1$="T1    ASGI709092155      "
+    FIELD_4$="0"
+    FIELD_5$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2DCA ARB   "
+    FIELD_1$="AR2DCA ARB      FISCAL_YEAR     04Fiscal year         0Z   001ACCOUNTING_PER  02Accounting period   0Z   005INVOICE_NUMBER  07Invoice number      0AAR6007                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2REE FMY   "
+    FIELD_1$="AR2REE FMY      CUSTOMER_CODE   10Customer code       3AA/R   LOCATION_CODE   04Location code       3Z                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA AR+   "
+    FIELD_1$="AR2SAA AR+   X  CUSTOMER_CODE   10Customer Code       0AA/R001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA AR-   "
+    FIELD_1$="AR2SAA AR-   S  SALES_YTD       12Year to date sales  0N   999CUSTOMER_CODE   10Customer account num0AA/R001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA AR0   "
+    FIELD_1$="AR2SAA AR0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA AR1   "
+    FIELD_1$="AR2SAA AR1      CUSTOMER_NUMBER 10A/R Customer number 0AA/R001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2SAA ARG   "
+    FIELD_1$="AR2SAA ARG                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2YCA U01   "
+    FIELD_1$="AR2YCA U01   X  INVOICE_NUMBER  07Invoice number      0AAR6                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="AR2YRA U03   "
+    FIELD_1$="AR2YRA U03   X  INVOICE_NUMBER  07Invoice number      0AAR6                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="BR2RAA BR1   "
+    FIELD_1$="BR2RAA BR1      BANK ACCOUNT    03Bank code           0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CM2NCA CM5   "
+    FIELD_1$="CM2NCA CM5   X  COMPANY_CODE    03Company code        3S   001SALESPERSON     04Salesperson code    3S   005SEQUENCE        01Sequence            2A   017PO_NUMBER       09PO Number           0AP/O018ACTIVITY_DATE   06                    0D                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CM2NDA CM5   "
+    FIELD_1$="CM2NDA CM5   X  COMPANY_CODE    03Company code        3S   001SALESPERSON     04Salesperson code    0S   005SEQUENCE        01Sequence            0A   017PO_NUMBER       09PO Number           0AP/O018ACTIVITY_DATE   06                    0D                                                                                                                                                                                                                                             "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="CS2RBA CS5   "
+    FIELD_1$="CS2RBA CS5   X  CUSTOMER_CODE   10Customer number     1AA/R001FORM_CODE       10Form code           0S   011                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FA2RAA FX0   "
+    FIELD_1$="FA2RAA FX0   X  ASSET_CODE      06Asset code          0S   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FC2RAA FS4   "
+    FIELD_1$="FC2RAA FS4   X  CUSTOMER_CODE   10Customer number     1AA/R000ORDER_NUMBER    08Order Number        0AO/P001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FE2RAA FE4   "
+    FIELD_1$="FE2RAA FE4      SALESMAN        04Salesman name       0S   000QUOTE_NUMBER    05Quote number        0S   005                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FE2RAA FE5   "
+    FIELD_1$="FE2RAA FE5      QUOTE_NUMBER    05Quote number        0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2BKA FS1   "
+    FIELD_1$="FM2BKA FS1      ORDER_NUMBER    08Sales order number  0OO/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2BKA FS4   "
+    FIELD_1$="FM2BKA FS4      CUSTOMER_CODE   10Customer code       0AA/R001ORDER_NUMBER    08Sales order number  0AO/P011                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CBA FMZ   "
+    FIELD_1$="FM2CBA FMZ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CCA FMZ   "
+    FIELD_1$="FM2CCA FMZ   X                                                                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CEA IC1   "
+    FIELD_1$="FM2CEA IC1   X  CUSTOMER_CODE   10Customer            3AA/R   FORM_CODE       10Item                2S      LOCATION_CODE   04Warehouse           0Z                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CGA ICM   "
+    FIELD_1$="FM2CGA ICM   X  CUSTOMER_CODE   10Customer            3AA/R001FORM_CODE       10Item                2S   011PO_NUMBER       09PO Number           0AP/O021LOCATION_CODE   04Whse                0Z   030                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CIA IC1   "
+    FIELD_1$="FM2CIA IC1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2CKA FMZ   "
+    FIELD_1$="FM2CKA FMZ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2FIA RIA   "
+    FIELD_1$="FM2FIA RIA   X  LOCATION_CODE   04Location code       0Z      ORDER_NUMBER    08Sales order number  0Z      LINE_NUMBER     03Line number         0Z                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2KRA ARU   "
+    FIELD_1$="FM2KRA ARU      SALESPERSON     04Salesperson code    0S      CUSTOMER_CODE   10Customer code       1AA/R001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2KRA FMD   "
+    FIELD_1$="FM2KRA FMD      CUSTOMER_CODE   10Customer code       1AA/R   FORM_CODE       10Form code           0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RAA FMD   "
+    FIELD_1$="FM2RAA FMD   X  CUSTOMER_CODE   10Customer number     3AA/R   LOCATION_CODE   04                    0Z      FORM_CODE       10Form Code           0S                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RDA FM1   "
+    FIELD_1$="FM2RDA FM1      CUSTOMER_CODE   10Customer code       0AA/R   FORM_CODE       10Form code           0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RGA FSA   "
+    FIELD_1$="FM2RGA FSA                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RHA FSD   "
+    FIELD_1$="FM2RHA FSD   X  AR_DIVISION_NO  02A/R Division number 0Z   001SALESPERSON     04Salesperson code    0S   003ORDER_DATE      06Date                0D   007ORDER_AMOUNT    22Order amount        0N   000ORDER_COST      22Cost                0N   001                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIA FS1   "
+    FIELD_1$="FM2RIA FS1      ORDER_NUMBER    08Sales order number  2AO/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIA FSI   "
+    FIELD_1$="FM2RIA FSI      SALESPERSON     04Salesperson code    2S   001AR_DIVISION_NO  02Division            2Z   005CUSTOMER_NUMBER 10Customer Code       2AA/R007ORDER_NUMBER    08Sales order number  2AO/P017                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIA FSJ   "
+    FIELD_1$="FM2RIA FSJ      AR_DIVISION_NO  02Division            3Z   001CUSTOMER_NUMBER 10Customer Code       2AA/R003ORDER_NUMBER    08Sales order number  2AO/P013                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIA RIA   "
+    FIELD_1$="FM2RIA RIA   X  LOCATION_CODE   04Location code       3Z      ORDER_NUMBER    08Sales order number  0Z                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RIB RIA   "
+    FIELD_1$="FM2RIB RIA   X  LOCATION_CODE   04Location code       3Z      ORDER_NUMBER    08Sales order number  0Z                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RJA FM1   "
+    FIELD_1$="FM2RJA FM1      CUSTOMER_NUMBER 10A/R Customer number 2AA/R001FORM_NUMBER     10Form Number         2S   011                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA FMC   "
+    FIELD_1$="FM2ROA FMC   X  CUSTOMER_CODE   10Customer code       3AA/R001FORM_CODE       10Item Code           0S   011LOCATION_CODE   05Location code       0Z                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA FMD   "
+    FIELD_1$="FM2ROA FMD   X  CUSTOMER_CODE   10Customer code       3AA/R001FORM_CODE       10Item Code           0S   011LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA FME   "
+    FIELD_1$="FM2ROA FME   X  CUSTOMER_CODE   10Customer code       2AA/R001LOCATION_CODE   05Location            3Z   021FORM_CODE       10Item Code           0S   011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA FMH   "
+    FIELD_1$="FM2ROA FMH   X  CUSTOMER_GROUP  03Customer group code 3S   000FORM_CODE       10Item Code           2S   011CUSTOMER_CODE   10Customer code       0AA/R001LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROA IC0   "
+    FIELD_1$="FM2ROA IC0      CUSTOMER_CODE   10Customer code       1AA/R001FORM_CODE       10Item Code           0S   011                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROL FMD   "
+    FIELD_1$="FM2ROL FMD   X  CUSTOMER_CODE   10Customer code       2AA/R001FORM_CODE       10Form code           0S   011LOCATION_CODE   05Location code       3Z   021                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROL FME   "
+    FIELD_1$="FM2ROL FME   X  CUSTOMER_CODE   10Customer code       2AA/R001LOCATION_CODE   05Location code       3Z   021FORM_CODE       10Form code           0S   011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2ROX FMD   "
+    FIELD_1$="FM2ROX FMD   X  CUSTOMER_CODE   10Customer number     3AA/R001FORM_CODE       10Form Code           0S   011LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RPA FMF   "
+    FIELD_1$="FM2RPA FMF   X  CUSTOMER_CODE   10Customer number     3AA/R000GROUPING_CODE   24Grouping            2S      DAYS_SUPPLY     03Days supply         0 Z     FORM_CODE       10Item Code           2S   011CUSTOMER        10Customer code       0S   001LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RPA FSU   "
+    FIELD_1$="FM2RPA FSU   X  CUSTOMER_GROUP  03Customer group code 1S      GROUPING_CODE   24Grouping data       0S      DAYS_SUPPLY     03Days supply         0Z      FORM_CODE       10Item Code           2S   011CUSTOMER_CODE   10Customer code       0AA/R001LOCATION_CODE   05Location code       0Z   021CUSTOMER_CODE   10Customer code       0S   000                                                                                                                                           "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RQA FMC   "
+    FIELD_1$="FM2RQA FMC   X  CUSTOMER_CODE   10Customer code       3AA/R001FORM_CODE       10Item code           0S   011LOCATION_CODE   05Location code       0Z                                                                                                                                                                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RQA FMD   "
+    FIELD_1$="FM2RQA FMD   X  CUSTOMER_CODE   10Customer code       3AA/R001FORM_CODE       10Item code           2S   011LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RQA FME   "
+    FIELD_1$="FM2RQA FME   X  CUSTOMER_CODE   10Customer code       2AA/R001LOCATION_CODE   05Location            3Z   021FORM_CODE       10Item code           0S   011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RQA FMH   "
+    FIELD_1$="FM2RQA FMH   X  GROUP           03Form group          0S   001FORM_CODE       10Item code           2S   011CUSTOMER_CODE   10Customer code       0AA/R001LOCATION_CODE   05Location code & type0Z   011                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RRA FSR   "
+    FIELD_1$="FM2RRA FSR      SALESPERSON     04Salesperson code    1S      CUSTOMER_NUMBER 10A/R Customer number 0AA/R                                                                                                                                                                                                                                                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RTA FMD   "
+    FIELD_1$="FM2RTA FMD   X  CUSTOMER_CODE   10Customer            3AA/R001FORM_CODE       10Item Code           2S   011LOCATION_CODE   05Location            0Z   021                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RTA FME   "
+    FIELD_1$="FM2RTA FME   X  CUSTOMER_CODE   10Customer code       0AA/R001LOCATION_CODE   05Location            3Z   021FORM_CODE       10Item Code           0S   011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RTA FMH   "
+    FIELD_1$="FM2RTA FMH   X  CUSTOMER_GROUP  03Customer group code 3S   000FORM_CODE       10Item Code           2S   011CUSTOMER_CODE   10Customer code       0AA/R001LOCATION_CODE   05Location code       0Z   021                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RVA FME   "
+    FIELD_1$="FM2RVA FME   X  CUSTOMER_CODE   10Customer number     1AA/R001LOCATION_CODE   05Location            1Z   021FORM_CODE       10Form code           0S   011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2RWA FMH   "
+    FIELD_1$="FM2RWA FMH   X  CUSTOMER_GROUP  03Customer group code 3S   001FORM_CODE       10Form code           2S      CUSTOMER_CODE   10Customer code       0AA/R021LOCATION_CODE   05Location code       0Z   011                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2SRA FML   "
+    FIELD_1$="FM2SRA FML   X  RESTOCKING_TYPE 01Restocking type     1S   001CUSTOMER_CODE   10Customer number     1AA/R002LOCATION_CODE   04Location code       2Z   012FORM_CODE       10Form code           0S   016                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2SSA FM5   "
+    FIELD_1$="FM2SSA FM5   X  NOTICE_TYPE     01Reorder Notice Type 1       NOTICE_FORMAT   01Format code         2S      CUSTOMER_CODE   10Customer code       3AA/R003LOCATION_CODE   04Location code       0Z   013FORM_CODE       10Form code           0S   017                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2TBA FM1   "
+    FIELD_1$="FM2TBA FM1      CUSTOMER_CODE   10Customer number     0AA/R   FORM_CODE       10Form code           0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FM2TCA FM1   "
+    FIELD_1$="FM2TCA FM1   X  CUSTOMER_CODE   10Customer number     3AA/R   FORM_CODE       10Form code           2S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FR2RAA FM1   "
+    FIELD_1$="FR2RAA FM1   X  CUSTOMER_CODE   10Customer number     0AA/R001FORM_CODE       10Form Code           0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FR2RAA FR6   "
+    FIELD_1$="FR2RAA FR6                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FR2RBA FR4   "
+    FIELD_1$="FR2RBA FR4      TEMPLATE        04Template            1    001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FR2RCA FR9   "
+    FIELD_1$="FR2RCA FR9   X  A               12G/L Account         0AG/L000A               03Sequence            0Z   013                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FS2RAA FSP   "
+    FIELD_1$="FS2RAA FSP   X  PROMOTION       02Promotion           3    000GROUP           10Form group          2S   000                10Features            2S   000                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FW2RAA FW1   "
+    FIELD_1$="FW2RAA FW1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="FW2RAS FW1   "
+    FIELD_1$="FW2RAS FW1   X  ORDER_NUMBER    06Order number        0AO/P                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC2RGA IC0   "
+    FIELD_1$="IC2RGA IC0   X  CUSTOMER_CODE   10Customer code       1AA/R   ITEM_NUMBER     10Item number         0AI/C                                                                                                                                                                                                                                                                                                                                                                                    "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC2RGA IC5   "
+    FIELD_1$="IC2RGA IC5   X  PRODUCT_CODE    03Product code        2Z      CUSTOMER_CODE   10Customer code       0AA/R001ITEM_NUMBER     10Item number         0AI/C011                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="IC2RNA ARU   "
+    FIELD_1$="IC2RNA ARU   X  SALESPERSON     04Salesperson code    0S      CUSTOMER_CODE   10Customer code       1AA/R001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RAA PO1   "
+    FIELD_1$="PO2RAA PO1      PO_NO           09P/O Number          2AP/O                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RAA PO8   "
+    FIELD_1$="PO2RAA PO8      VENDOR_NO       10Vendor code         2AA/P001PLANT_NO        04Plant code          2SF/M011PO_NO           09P/O Number          2AP/O015                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RAA PO9   "
+    FIELD_1$="PO2RAA PO9      SALESPERSON     04Salesperson code    2S   001CUSTOMER_NUMBER 10Customer code       2AA/R005PO_NO           09P/O Number          2AP/O015                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RBA PO4   "
+    FIELD_1$="PO2RBA PO4      AP_DIVISION     02A/P Division Number 3AA/P001VENDOR_NO       08Vendor code         2AA/P003PLANT_NO        04Plant code          2SF/M011PO_NO           09P/O number          2AP/O015                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RDA POB   "
+    FIELD_1$="PO2RDA POB      VENDOR_NO       10Vendor number       3AA/P001PLANT_NO        04Plant number        2SF/M011PRODUCT_CODE    03Product code        0S   015LEFT_RIGHT      08Size                0S   008TOP_BOTTOM      08Size                2S   026PLYS            02Ply                 2Z   034                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RDA POC   "
+    FIELD_1$="PO2RDA POC      VENDOR_NO       10Product Code        0AA/P001PLANT_NO        04Plant number        0ZF/M011PRODUCT_CODE    03Product code        3S   015LEFT_RIGHT      08Size                0S   018TOP_BOTTOM      08Size                2S   026PLYS            02Ply                 2Z   034                                                                                                                                                                                         "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="PO2RRA PO7   "
+    FIELD_1$="PO2RRA PO7      PO_NO&AP_INV_NO 19P/O and A/P invoice 2S      PO_LINE         03Purchase order line 2Z                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="RS2RAA RSL   "
+    FIELD_1$="RS2RAA RSL   X  RESTOCKING_TYPE 01Restocking type     1S   001CUSTOMER_CODE   10Customer code       1AA/R002LOCATION_CODE   04Location code       2Z   012FORM_CODE       10Form code           0S   016                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TESTBA TES   "
+    FIELD_1$="TESTBA TES   X  CUSTOMER        10Customer code       0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPADRA TPL   "
+    FIELD_1$="TPADRA TPL   X  ORDER_NUMBER    05Sales order number  0Z   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAA TP0   "
+    FIELD_1$="TPARAA TP0      CUSTOMER_CODE   09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAA TP1   "
+    FIELD_1$="TPARAA TP1   X  SORT CODE       14Sort code           0S   197CUST NUMBER     09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAA TP2   "
+    FIELD_1$="TPARAA TP2   X  SLSMN           03Salesperson         3S   194SORT CODE       14Sort code           0S   197CUST NUMBER     09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAA TPX   "
+    FIELD_1$="TPARAA TPX   S  SALES_YTD       12Year to date sales  0N   001CUSTOMER_CODE   09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAANTP1   "
+    FIELD_1$="TPARAANTP1   X  SORT CODE       14Sort code           0S   197CUST NUMBER     09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARAANTP2   "
+    FIELD_1$="TPARAANTP2      SLSMN           03Verkoper            0S   194SORT CODE       14Alfa Sort.          0S   197CUST NUMBER     09Klant nummer        0AT/P001                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARBA TP4   "
+    FIELD_1$="TPARBA TP4   X  CUST NUMBER     09Customer number     0AT/P                                                                                                                                                                                                                                                                                                                                                                                                                                  "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARDA TP0   "
+    FIELD_1$="TPARDA TP0      CUSTOMER_CODE   09Customer code       0AT/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARDA TPX   "
+    FIELD_1$="TPARDA TPX   R  SALES_YTD       11Year to date sales  0N   001CUSTOMER_CODE   09Customer code       0AT/P001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARHA TP0   "
+    FIELD_1$="TPARHA TP0      CUSTOMER_CODE   09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARHA TP2   "
+    FIELD_1$="TPARHA TP2      SALESPERSON     03Salesperson code    0S   194SORT_CODE       14Sort code           0S   197CUSTOMER_CODE   09Customer number     0AT/P001                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARSA TP0   "
+    FIELD_1$="TPARSA TP0      CUSTOMER_CODE   09Customer code       0AT/P001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="TPARTA TP3   "
+    FIELD_1$="TPARTA TP3      SALESPERSON     03Salesperson code    0S   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="UT201A U02   "
+    FIELD_1$="UT201A U02   X  INVOICE_NUMBER  07Invoice number      0AAR6001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2BRA ZB1   "
+    FIELD_1$="ZA2BRA ZB1      LIBRARY         03Library code        1S      SELECTION       20Selection code      0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RAA ZA0   "
+    FIELD_1$="ZA2RAA ZA0      DATABASE.NAME   20Database            0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RBA ZA0   "
+    FIELD_1$="ZA2RBA ZA0   X  DATABASE.NAME   20Database            0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RBA ZA4   "
+    FIELD_1$="ZA2RBA ZA4   X  DATABASE.NAME   20Database            0S   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RCA ZA2   "
+    FIELD_1$="ZA2RCA ZA2      ELEMENT.NAME    20Element name        0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RDA ZA3   "
+    FIELD_1$="ZA2RDA ZA3   X  MACRO_CODE      26Macro code          0S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RFA ZA1   "
+    FIELD_1$="ZA2RFA ZA1   X  DATABASE.NAME   20Database            1S   001FIELD.NAME      20Field               0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RFA ZA4   "
+    FIELD_1$="ZA2RFA ZA4   X  DATABASE.NAME   20Database            1S   001CALC_TYPE       01Calc Type           0S   000FIELD_NUMBER    03Field num           0Z   087POSITION_INDEX  03Start pos           0Z   090FIELD.NAME      20Field               0S   011                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZA2RGA ZAA   "
+    FIELD_1$="ZA2RGA ZAA   X  ELEMENT.NAME    20Element name        1S   021DATABASE.NAME   20Database            0S   001                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RAA ZP4   "
+    FIELD_1$="ZP2RAA ZP4      LIST_TYPE       04List type           3S   001PROSPECT_CODE   06Prospect code       0S   005                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RAA ZPA   "
+    FIELD_1$="ZP2RAA ZPA   X  LIST_TYPE       04List type           3S   001SORT_CODE       10Sort code           0S   150PROSPECT_CODE   06Prospect code       0S   005                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RBA ZP4   "
+    FIELD_1$="ZP2RBA ZP4      LIST_TYPE       04List type           3S   001PROSPECT_CODE   06Prospect code       0S   005                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RBA ZPA   "
+    FIELD_1$="ZP2RBA ZPA   X  LIST_TYPE       04List type           3S   001SORT_CODE       20Sort code           0S   150PROSPECT_CODE   06Prospect code       0S   005                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RLA ZP4   "
+    FIELD_1$="ZP2RLA ZP4   X  LIST_TYPE       04List type           0S      PROSPECT_CODE   06Prospect code       0S                                                                                                                                                                                                                                                                                                                                                                                       "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZP2RLA ZPA   "
+    FIELD_1$="ZP2RLA ZPA   X  LIST_TYPE       04List type           0S   001SORT_CODE       20Sort code           0S      PROSPECT_CODE   06Prospect code       0S   005                                                                                                                                                                                                                                                                                                                                   "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW2DRA ZW5   "
+    FIELD_1$="ZW2DRA ZW5   X  LINE_NUMBER     05Line number         0Z                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW2DRA ZW6   "
+    FIELD_1$="ZW2DRA ZW6   X  SYSTEM_CODE     02System Application C0S   012KEYWORD         12Keywords            0S   020                                                                                                                                                                                                                                                                                                                                                                                 "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZW2RAA ZW0   "
+    FIELD_1$="ZW2RAA ZW0   X  CONTROL_NUMBER  06Control number      0Z   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZ2FCA ZZE   "
+    FIELD_1$="ZZ2FCA ZZE      FILE_NAME       06File name           1S   001                                                                                                                                                                                                                                                                                                                                                                                                                               "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZ2FRA ZZB   "
+    FIELD_1$="ZZ2FRA ZZB      FILE_NAME       06File name           1S                                                                                                                                                                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="ZZ2LRA ZZT   "
+    FIELD_1$="ZZ2LRA ZZT                      02P?                  0S   001                01Language            0S   003                02Prompt              0S   004                06Prompt              0S   006                                                                                                                                                                                                                                                                                     "
+   </RecordData>
+
+</Data>
+
+</PxTable>

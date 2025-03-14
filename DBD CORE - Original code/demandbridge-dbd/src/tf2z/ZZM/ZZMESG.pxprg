@@ -1,0 +1,14 @@
+0010 REM "Return Message Parameters <ZZMESG>
+0030 REM "(C) 1985-1989 Basic Ideas, Inc; Atlanta, GA. USA
+0035 REM "This software contains trade secrets and proprietary information"
+1020 ENTER X3$,Q0$,Q1$,Q2$,Q0,Q1,Q3$
+1040 Q$=FID(13,ERR=1045); IF LEN(Q$)>2 THEN IF Q$(4,6)="ZZPARM" THEN F0=13,F0$=""; GOTO 1100
+1050 F0$=FID(14,ERR=1051),F0=14; IF LEN(F0$)>2 THEN F0$=F0$(4,6)+F0$(21)
+1060 F0=14; CLOSE (F0); OPEN (F0)"ZZPARM"
+1110 M0$="MESG",M9$=""; READ (F0,KEY="MESG",DOM=2100)M0$,M9$
+1120 Q3$=M9$
+1290 IF POS("*"+X3$(1,2)=M9$,3)>0 THEN X3$(200,1)="M" ELSE X3$(200,1)=""
+2045 IF POS(X3$(40,3)=M9$,3)>0 THEN X3$(200,1)="M"
+2210 IF F0$>"" THEN CLOSE (F0); OPEN (F0)F0$
+9950 EXIT 
+9999 END 

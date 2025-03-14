@@ -1,0 +1,95 @@
+0010 REM "Read in Flex Format Document Parameters <ZZ2FMZ>
+0015 REM "Prog Type: IP-3.1.2   
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 09/01/95 - 14.09 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "A$ is flex doc print header string
+0071 REM "A(all) is flex doc print header array
+0072 REM "X9(all) is dim'ed to highest field # found, and set to 0 if not printed, and 1 if field is printed.
+0073 REM "D9$ is document code + type , (1,10)+(1,1)
+0074 REM "X9$ is the types array with each 1 char type in the corresponding field number, for compatibility w/existing programs
+0075 REM "C0 is return code 0=ok, 1=no header record found, 2=no fields information
+0076 REM "Q1$ and Q(ALL) for future use
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,D9$,A$,A{ALL},X9{ALL},X9$,Q1$,Q{ALL},C0
+0100 SETERR 9000
+0110 X0$="ZZ2FMZ",X1$="Read Flexible Format Document Print Parameters"
+0115 IF X3$="?" THEN GOTO 8950
+0120 DIM S$(40)
+0300 REM "IOLISTS
+0310 IOLIST A$(1),A[0],A[1],A[2],A[3],A[4],A[5],A[6],A[7],A[8],A[9]
+0320 IOLIST B$,B[0],B[1]
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZF5...  02O ZF6...  03O ZF1...  "
+0520 GOSUB 9750; ON Z0 GOTO 0521,9900
+0600 REM "INIT
+0605 C0=0
+1000 REM "Read Print Header information
+1010 DIM A[9],B[2]
+1020 READ (Z[1],KEY=D9$,DOM=1021)IOL=0310; GOTO 1025
+1021 C0=1; GOTO 9900; REM "Header information not found
+1500 REM "Dim X9 array based on Document's Field definitions in ZF1, find highest number and dim array
+1510 READ (Z[3],KEY=D9$(1,10)+$FFFFFFFF$,DOM=1511)
+1515 K$=KEP(Z[3],END=1521)
+1517 IF K$(1,10)<>D9$(1,10) THEN C0=2; GOTO 9900; REM "No field information
+1520 H=0,H=NUM(K$(11),ERR=1521); GOTO 1525
+1521 C0=2; GOTO 9900; REM "Error on conv of k$, no field information
+1525 DIM X9[H],X9$(H)
+1529 REM "Run through ZF6 information setting all of the fields to print
+1530 READ (Z[2],KEY=D9$,DOM=1531)
+1540 K$=KEY(Z[2],END=1560); READ (Z[2],KEY=K$)IOL=0320; IF K$(1,LEN(D9$))<>D9$ THEN GOTO 1560 ELSE X9=NUM(K$(LEN(D9$)+1,4),ERR=1540),X9[X9]=1; IF X9=0 THEN GOTO 1540 ELSE X9$(X9)=B$(28,1); GOTO 1540
+2000 GOTO 9900
+8950 REM "Module Hellp
+8955 PRINT 'LF','LF'; LIST 0010; LIST 0035,0049; PRINT 'LF'
+8960 J$=LST(PGM(90)); IF POS("ENTER"=J$)=0 THEN GOTO 8961 ELSE J$="CALL "+QUO+X0$+QUO+J$(POS("ENTER"=J$)+5); PRINT J$
+8962 PRINT "X3$    = System Parameters"
+8963 PRINT "X4$    = Format Infomation"
+8964 PRINT "D9$    = Flex Format Document code (1,10) + Flex Format Type (11,1)"
+8965 PRINT "          EX: 'FORMATCL  A'"
+8966 PRINT "A$     = RETURNS: Flex Format Document Print Information from ZF5."
+8967 PRINT "A(ALL) = RETURNS: Flex Format Document Print Numerics from ZF5."
+8968 PRINT "X9(ALL)= RETURNS: Array Dimmed to highest field number (from ZF1)"
+8969 PRINT "                  for this document. If a field is to be printed"
+8970 PRINT "                  (as found in ZF6) its corresponding index in "
+8971 PRINT "                  X9(ALL) is set to 1."
+8972 PRINT "X9$    = RETURNS: String of field print types from ZF6 info."
+8973 PRINT "Q1$    = Reserved for future use."
+8974 PRINT "Q(ALL) = Reserved for future use."
+8975 PRINT "C0     = RETURNS: Return code 0=ok, 1=No header record found in ZF5,"
+8976 PRINT "                  2=No field information found in ZF6."
+8995 GOTO 9930
+9000 REM "ERROR PROCESSING
+9010 Y5=ERR,Y6=TCB(5); IF Y5=68 OR Y5=69 THEN GOTO 9500
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9120 ON Y8 GOTO 9900,0990,9920
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)<>"1" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; SETESC 9300; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9740 RETURN 
+9750 REM "FILES
+9760 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1
+9790 RETURN 
+9800 REM "EXIT PROGRAM
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="How To..." class="">
+    <!-- saved from url=(0014)about:internet -->
+    <head><title>Customer Supplied Inventory</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapHighlighter.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapUtilities.js"> <![CDATA[ ]]></script>
+        <script src="../SkinSupport/MadCapBody.js"> <![CDATA[ ]]></script>
+    </head>
+    <body>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic.gif" style="width: 24px;height: 17px;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">How to Enter an Order to Bring in Customer-Supplied Inventory</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p><b style="font-style: normal;">&#160;</b>
+        </p>
+        <p class="Nav" style="text-align: justify;">DB Distributor has the capability to better manage Customer Supplied Inventory.</p>
+        <p class="Nav" style="text-align: justify;">A new field has been added to the Vendor Master file (AP4), called Customer Supplied PO Type (Y/N).  This field can be maintained in Vendor Master File Maintenance (A/P, S1, Screen 1-Vendor Constant Data) and though the Graphical User Interface (Accounts Payable &gt;
+Setup &gt; Vendors).
+</p>
+        <p style="text-align: justify;">If the Customer Supplied PO Type field is answered Yes for the vendor, during the entry of a Purchase Order in the character-based user interface (P/O, P1) or graphical user interface (Order Processing &gt; Purchase Orders &gt; Processing &gt; Purchase Order Entry), the PO will be flagged as a Customer Supplied PO.  The user will only be allowed to enter items from 9XXX warehouses on this type Purchase Order.
+
+</p>
+        <p style="text-align: justify;">During Purchase Order Receiving in the character-based user interface (P/O, P3) or graphical user interface (Order Processing &gt; Purchase Orders &gt; Purchase Order Receiving), the user will not be allowed to enter a Vendor Invoice.
+
+</p>
+        <p style="text-align: justify;">During Purchase Order Receiving Report and Update in the character-based user interface (P/O,P4) or graphical user interface (Order Processing &gt; Purchase Orders &gt; Processing &gt; Receiving Report and Update) a flag will be written to the Lot Master file (ICF) indicating that the lot was received on a Customer Supplied PO.  Additionally, the Customer Supplied PO flag will be added to the Monthly Shipment Detail File (FMZ) and Summary Bill (FMY) files.
+
+</p>
+        <p style="text-align: justify;">When an Accounts Receivable Release has been entered for an item using a lot that has been flagged as coming in on a Customer Supplied Purchase Order, Monthly Shipment Detail File (FMZ) and Summary Bill (FMY) records will be flagged as coming from a Customer Supplied PO.
+
+</p>
+        <p style="text-align: justify;">The following maintenance programs have been modified to display the new Customer Supplied PO field, but not to allow the user to add or maintain this field.
+</p>
+        <p>&#160;</p>
+        <p>SIC:</p>
+        <p>L1.  Inventory Lot Setup</p>
+        <p />
+        <p>SFM:</p>
+        <p>S3. Maintain FMZ file
+</p>
+        <p>S4. Maintain FMZ lot detail
+</p>
+        <p>SB. Summary Bill File (FMY)
+</p>
+        <p>&#160;</p>
+        <p>In the Graphical User Interface:</p>
+        <p style="text-align: justify;">Inventory Control/System Utilities/Inventory Lot Setup
+</p>
+        <p style="text-align: justify;">Print Management/Setup/Other/Utilities/Items Management Utility/Maintain
+        FMZ File
+</p>
+        <p style="text-align: justify;">Print Management/Setup/Other/Utilities/Items Management Utility/Maintain
+        FMZ File Lot Detail
+</p>
+        <p style="text-align: justify;">Print Management/Setup/Other/Utilities/Items Management Utility/Summary
+        Bill File
+</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2009 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

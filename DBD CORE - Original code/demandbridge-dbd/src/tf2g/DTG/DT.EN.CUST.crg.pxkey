@@ -1,0 +1,290 @@
+<PxTable>
+ TableName=DT.EN.CUST.crg
+ TableKey=K1402335319
+ FileCreate=KEYED "DT.EN.CUST.crg",16,0,2048,BSZ=4,OPT="0"
+ MaxFields=00043
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0000"
+    FIELD_1$="DT0_Contrl"
+    FIELD_2$="2"
+    FIELD_3$="2"
+    FIELD_4$="110"
+    FIELD_5$="30"
+    FIELD_6$="Q"
+    FIELD_7$="=MSG("+QUO+"SCHDLD"+QUO+")+"+QUO+" "+QUO+"+MSG("+QUO+"REPORTS"+QUO+")"
+    FIELD_8$="0"
+    FIELD_9$="0"
+    FIELD_10$="="+QUO+"DT0"+QUO+"+%C$"
+    FIELD_18$="2012/09/13 08:09 Chaitanya Guntur"
+    FIELD_21$="=R"
+    FIELD_23$="C0000000"
+    FIELD_29$="MID(PRIME_KEY$,1,51)"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0001"
+    FIELD_1$="Fld#1(1,6)"
+    FIELD_4$="7"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"Program"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0002"
+    FIELD_1$="Fld#1(7,6)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"Date"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0003"
+    FIELD_1$="Fld#1(13,4)"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"Time"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0004"
+    FIELD_1$="Fld#1(17,3)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"Company"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0005"
+    FIELD_1$="Fld#1(20,3)"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"User"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0006"
+    FIELD_1$="Fld#1(23,2)"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="="+QUO+"Printer"+QUO
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0007"
+    FIELD_1$="Fld#2"
+    FIELD_4$="35"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"DESC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0008"
+    FIELD_1$="Fld#4"
+    FIELD_4$="6"
+    FIELD_6$="E"
+    FIELD_7$="Minute"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0009"
+    FIELD_1$="Fld#5"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="Hour"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0010"
+    FIELD_1$="Fld#6"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="Day of Month"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0011"
+    FIELD_1$="Fld#7"
+    FIELD_4$="5"
+    FIELD_6$="E"
+    FIELD_7$="Month"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0012"
+    FIELD_1$="Fld#8"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="Day of Week"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0013"
+    FIELD_1$="TF_SEQUENCE"
+    FIELD_4$="8"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"SEQ"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0014"
+    FIELD_1$="Formula:TBL(POS(_MN_.XFER_TYPE$="+QUO+"123456789"+QUO+"),_MN_.XFER_TYPE$,"+QUO+"PRINTER"+QUO+","+QUO+"EMAIL"+QUO+","+QUO+"FTP"+QUO+","+QUO+"HTTP"+QUO+","+QUO+"HTTPS"+QUO+","+QUO+"FAX"+QUO+","+QUO+"WEBEC"+QUO+","+QUO+"HOLD"+QUO+","+QUO+"ARCHIVE"+QUO+")"
+    FIELD_4$="10"
+    FIELD_6$="+"
+    FIELD_7$="=MSG("+QUO+"TRANS_TYPE"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0015"
+    FIELD_1$="OUTPUT_LOC"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"OUT_LOC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0016"
+    FIELD_1$="EMAIL_SUBJECT"
+    FIELD_4$="40"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"EML_SUBJEC"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0017"
+    FIELD_1$="EMAIL_FROM"
+    FIELD_4$="30"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"EML_FROM"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0018"
+    FIELD_1$="FTP_LOGIN"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FTP_LOGIN"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0019"
+    FIELD_1$="FTP_PASSWORD"
+    FIELD_4$="20"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"FTP_PASS"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 0020"
+    FIELD_1$="VAL_HTTP_RESP"
+    FIELD_4$="15"
+    FIELD_6$="E"
+    FIELD_7$="=MSG("+QUO+"VHTTP"+QUO+")"
+    FIELD_8$="S"
+    FIELD_9$="0"
+    FIELD_30$="_MN_"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 F001"
+    FIELD_1$="*File=="+QUO+"ZZK"+QUO+"+%C$"
+    FIELD_6$="O"
+    FIELD_7$="="+QUO+"ZZK"+QUO+"+%C$"
+    FIELD_8$="-1"
+    FIELD_9$="0"
+    FIELD_10$="MID(PRIME_KEY$,21,31)+"+QUO+"S"+QUO
+    FIELD_23$="000000000"
+    FIELD_30$="ZZK"
+    FIELD_43$="0"
+   </RecordData>
+
+   <RecordData>
+    ExternalKey$="QRY_DT0_S.2 SLCT"
+    FIELD_6$="S"
+    FIELD_9$="1000"
+    FIELD_10$="="+QUO+"SCHEDULED_DBD_RPT"+QUO
+    FIELD_43$="0"
+   </RecordData>
+
+</Data>
+
+</PxTable>

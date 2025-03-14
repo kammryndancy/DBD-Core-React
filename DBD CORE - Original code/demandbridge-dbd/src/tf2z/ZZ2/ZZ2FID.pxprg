@@ -1,0 +1,75 @@
+0010 ! "<ZZ2FID> Routine to assign FID code to user id
+0020 ! "8/20/01 plh 129412
+0030 ! "Copyright 2001 TopForm Software Inc.; Norcross Georgia
+0040 ! "Licensed Software - All Rights Reserved
+0050 ! ******************************************************************
+0060 ! "Routine first tests for T0 id;
+0070 ! "If not T0 then FID already assigned so exit
+0080 ! ******************************************************************
+0090 ! "1st step >
+0100 ! "identify unique number, then convert to file index
+0110 ! "On regular connection to Unix & linx PID is unique
+0120 ! "On regular connection to Windows OBJ(0)(17,4) is unique
+0130 ! "On Windx connections PID is unique
+0140 ! "2nd step >
+0150 ! "divide address by fid range and take remainder
+0160 ! "to make sure numbers fall in range
+0170 ! "3rd step >
+0180 ! "extract record in fidnos
+0190 ! "on error 0 increment and keep trying
+0200 ! ******************************************************************
+0210 ! ******************************************************************
+0220 ! "keep running count in TO record, time field
+0230 ! "Records are pre-existing and span T0 - Zz
+0240 ! ******************************************************************
+0250 LOCAL UNAME$,ADDR$,FIDNO$
+0260 LOCAL FIDNO,P1,P2,H_FID,WT_TIME,RESERVED_NUMBERS,OS
+0280 RESERVED_NUMBERS=4*62-1
+0300 ! ^ 300 IOL LISTS
+0310 IOLIST FID_NAME$:[CHR(3)],FID_DATE$:[CHR(8)],FID_TIME$:[NUM(9)]
+0500 ! ^ 500 FILES
+0510 H_FID=FFN("FIDNOS")
+0520 IF H_FID=-1 THEN H_FID=GFN; OPEN (H_FID)"FIDNO"
+0530 FID_NAME$=UID
+0540 FID_DATE$=DAY
+0550 FID_TIME=TME
+0560 OS=TCB(82)
+0600 ! ^ 100 Get Address and branch for differing String Layouts
+0610 ! ^ 10  return by telnet and TCP/IP connections
+0620 GET_ADDR:
+0630 ADDR$=UCS(PTH(%COM_IN))
+0640 IF POS("[TCP]"=ADDR$)>=1 THEN ADDR$=KEF(%COM_IN); GOTO PARSE_TCP
+0700 ! ^ 100 Get Connection Number from Telnet Path String Layout
+0710 ! ^  10 on failure goto hash method
+0720 PARSE_TELNET:
+0730 P1=POS("0123456789"^ADDR$,-1)+1
+0740 IF P1<=1 THEN GOTO HASH_IT
+0750 FIDNO$=MID(ADDR$,P1)
+0760 FIDNO=NUM(FIDNO$,ERR=HASH_IT)
+0770 ! divide address by fid range and take remainder
+0780 ! to make sure numbers fall in range
+0790 FIDNO=MOD(FIDNO,4*62-1)
+0800 IF FIDNO=0 THEN GOTO HASH_IT
+0810 GOTO FILE_READ
+0900 ! ^100 Get Connection Number from TCP Path String Layout
+0910 ! ^ 10 on failure goto hash method
+0920 PARSE_TCP:
+0930 P1=POS(";"=ADDR$,1)+1
+0940 P2=POS(";"=ADDR$,-1)-1
+0950 IF P<1=1 OR P2<=0 OR P2<P1 THEN GOTO HASH_IT
+0960 FIDNO$=MID(ADDR$,P1,P2-P1)
+0970 FIDNO=NUM(FIDNO$,ERR=HASH_IT)
+0980 ! mod address to make sure numbers fall in range
+0990 FIDNO=MOD(FIDNO,RESERVED_NUMBERS)
+1000 IF FIDNO=0 THEN GOTO HASH_IT
+1100 ! ^ 100 Read record
+1110 FILE_READ:
+1120 WT_TIME=PRM('WT')
+1130 SET_PARAM 'WT'=0
+1140 EXTRACT (H_FID,ERR=1680,IND=FIDNO)
+1150 WRITE (H_FID,IND=FIDNO)IOL=0610
+1160 ASSIGN_FID:
+1170 EXIT 
+2000 ! ^1000
+2010 HASH_IT:
+2020 UNAME$=UID

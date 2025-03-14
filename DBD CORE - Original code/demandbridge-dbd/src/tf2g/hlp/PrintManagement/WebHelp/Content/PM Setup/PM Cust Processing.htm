@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" MadCap:tocPath="PM Setup|PM Customer Setup" MadCap:InPreviewMode="false" MadCap:PreloadImages="false" MadCap:RuntimeFileType="Topic" MadCap:TargetType="WebHelp" lang="en-us" xml:lang="en-us" class="" MadCap:PathToHelpSystem="../../" MadCap:HelpSystemFileName="Print_Management.xml" MadCap:SearchType="Stem">
+    <!-- saved from url=(0016)http://localhost -->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>PM Customer - Processing Controls</title>
+        <link href="../SkinSupport/Slideshow.css" rel="stylesheet" />
+        <link href="../SkinSupport/MadCap.css" rel="stylesheet" />
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <script src="../SkinSupport/MadCapBody.js">
+        </script>
+        <script src="../SkinSupport/MadCapUtilities.js">
+        </script>
+        <script src="../SkinSupport/MadCapHighlighter.js">
+        </script>
+        <script src="../SkinSupport/jquery.min.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapAll.js" type="text/javascript">
+        </script>
+        <script src="../SkinSupport/MadCapTopicAll.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <p>&#160;</p>
+        <table style="width: 100%;border-left-style: solid;border-left-width: 0px;border-right-style: solid;border-right-width: 0px;border-top-style: solid;border-top-width: 0px;border-bottom-style: solid;border-bottom-width: 0px;margin-left: 0;margin-right: auto;">
+            <col style="width: 30px;" />
+            <col style="width: 511px;" />
+            <col style="width: 86px;" />
+            <tbody>
+                <tr>
+                    <td style="text-align: left;vertical-align: middle;padding-left: 0px;padding-right: 0em;border-left-style: none;border-left-width: 1px;border-right-style: none;border-right-width: 1px;border-top-style: none;border-top-width: 1px;border-bottom-style: none;border-bottom-width: 1px;">
+                        <img src="../Resources/Images/H1 Graphic_24x17.gif" style="width: 24;height: 17;" />
+                    </td>
+                    <td style="padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><span style="font-weight: bold;font-style: normal;font-size: 18pt;color: #AAC2CE;font-family: Verdana;font-variant: small-caps;"></span><span style="font-weight: bold;font-style: normal;font-variant: small-caps;font-size: 18pt;color: #AAC2CE;">IM Customer - Processing Controls</span>
+                        <br />
+                    </td>
+                    <td style="text-align: right;padding-left: 1.5em;padding-right: 1em;border-left-width: .5em;border-right-width: .5em;border-top-width: .5em;border-bottom-width: .5em;"><a href="http://www.demandbridge.com/" target="_blank"><img src="../Resources/Images/TopFormLogo.gif" /></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p class="Nav" style="font-style: normal;font-weight: normal;text-align: justify;">The processing controls allows you to setup how this customer, and their items, will function within the Item Management module.
+</p>
+        <p class="Nav" style="font-style: normal;font-weight: normal;" />
+        <table style="width: 100%;margin-left: 0;margin-right: auto;">
+            <col style="width: 101px;" />
+            <col style="width: 546px;" />
+            <tbody>
+                <tr>
+                    <td style="font-size: 8pt;font-weight: bold;">Field</td>
+                    <td style="font-size: 8pt;font-weight: bold;">Description</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Last Completed IMS&#160;Year/Period</td>
+                    <td style="font-size: 8pt;text-align: justify;">Available options: 01 to 13, This parameter identifies the period in which IM reporting was last completed. Once set, this parameter will be maintained by the Item Management system and will be incremented following the start of a IM Cycle for a customer. For new IM customers this parameter should be set to the period prior to the period in which the customer will first be included in IM cycle processing. For example, if the first period in which this customer will be included in the IM cycle is '06', then the correct setting for this parameter would be '05'.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Num of Periods to retain Dist. Detail Hist</td>
+                    <td style="font-size: 8pt;text-align: justify;">Available options: 01 to 99.  
+Recommended setting: 3. 
+This parameter allows you to identify the number of periods you wish to save distribution detail for this customer. The main consideration in setting this parameter is the storage capacity of your computer. The more period distribution detail is maintained, the greater the storage requirements will be. Since the distribution detail file contains a record of every activity affecting a form, this file will be fairly large.
+This parameter may be changed at a later date with the only effect being the selection of distribution detail data to be cleared during period-end processing.
+</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Num of Prior Years Usage Hist to retain</td>
+                    <td style="font-size: 8pt;text-align: justify;">Available options: 01 to 99. 
+
+This parameter allows you to identify the number of years of usage history to retain for this customer. It is recommended that you retain at least one year of usage history so that you will have the option of generating reorder notice usage graphs from a prior year's period. DB Distributor is able to store usage history in a space-conserving format. As a result, each year of usage history requires very little disk space.
+This parameter may be changed at a later date with the only effect being the selection of distribution detail data to be cleared during period-end processing.
+</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">IMS&#160;Cycle</td>
+                    <td style="font-size: 8pt;text-align: justify;">You may group customers to be processed by assigning them the same IM cycle code. If you specify when beginning cycle processing to process by IM cycle, DB Distributor will select those customers whose PM cycle match the cycle that is entered in this parameter.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Should Stock Items be excluded from setup as IMS&#160;Items</td>
+                    <td style="font-size: 8pt;">If this is set to "Y", any stock items added to the items masterfile would have the IMS&#160;flag set to "N".</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Does Cust have multiple ship-to's</td>
+                    <td style="font-size: 8pt;text-align: justify;">Y&#160;or N. Tells the system if this customer has more than one ship-to location.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Default Ship-to</td>
+                    <td style="font-size: 8pt;text-align: justify;">This parameter is used by DB Distributor to default prompting for a customer's location within the Item Management system and customer's ship-to location setup/inquiry. A valid ship-to location must be used.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Default Warehouse</td>
+                    <td style="font-size: 8pt;text-align: justify;">Default warehouse for this customer in your system.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Cost Code format</td>
+                    <td style="font-size: 8pt;text-align: justify;">Should the Cost Code format include the Cost Center, Department, or both. None can also be selected.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Store the Dept section of the cost code in Item Master</td>
+                    <td style="font-size: 8pt;text-align: justify;">If the Cost Code includes the Department section, you can choose is the Department field should be viewable in the Custom Item Setup panel.</td>
+                </tr>
+                <tr>
+                    <td style="font-size: 8pt;">Track usage of KIT&#160;components</td>
+                    <td style="font-size: 8pt;text-align: justify;">For your KIT&#160;items, should the component items have usage statistics kept for them.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p>Continue to <a href="PM Cust Reporting.htm">Reporting Controls</a></p>
+        <p>Back to <a href="PM Customer Setup.htm">IM Customer Setup</a></p>
+        <p class="Nav">&#160;</p>
+        <div style="width: 100%;position: relative;">
+            <p style="text-align: center;font-size: 8pt;color: #808080;" align="center">Copyright © 
+ 2007-2016 Demand Bridge, LLC</p>
+        </div>
+        <script type="text/javascript" src="../SkinSupport/MadCapBodyEnd.js">
+        </script>
+    </body>
+</html>

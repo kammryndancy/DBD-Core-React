@@ -1,0 +1,170 @@
+<PxTable>
+ TableName=ZMS
+ TableKey=K1372704718
+ FileCreate=KEYED "ZMS",6,0,-768,BSZ=2,OPT="0"
+ Iolist=Embedded
+
+<TableInfo>
+    NAME$="ZMS_MESSAGE_OF_DAY"
+    PHYSICALPATH$="ZMS"
+    LASTCHANGEDATE$="2006/08/21 17:42:54-csc"
+    LASTUPDATEDFILE$="2024/09/27 11:43:57-ChaitanyaGun_kianoi2"
+    VERSION$="14000000"
+</TableInfo>
+
+<MetaData>
+
+ <ExternalKeyInfo>
+
+   <FieldDefinition>
+    DictIndex=-1
+    IOLOBJ$="IOLIST MESS_NUMBER$:[LEN(6)]"
+    NAME$="MESS_NUMBER"
+    DESCRIPTION$="=MSG("+QUO+"MESS_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="P"
+    KEYDEFINITION$="1:1:A"
+    QUERY$="QRY_ZMS,/usr/lib/pvx/tf2g/ZZG/ZZ.EN"
+   </FieldDefinition>
+
+ </ExternalKeyInfo>
+
+ <RecordInfo>
+
+   <FieldDefinition>
+    DictIndex=1
+    IOLOBJ$="IOLIST MESS_NUMBER$:[LEN(6,SEP=SEP)]"
+    NAME$="MESS_NUMBER"
+    DESCRIPTION$="=MSG("+QUO+"MESS_N"+QUO+")"
+    TYPE$="S"
+    LENGTH$="6"
+    INTERNALFORMAT$="S"
+    KEYDEFINITION$="1:1:A"
+    QUERY$="QRY_ZMS,/usr/lib/pvx/tf2g/ZZG/ZZ.EN"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=2
+    IOLOBJ$="IOLIST DESC_LINE_1$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_1"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=3
+    IOLOBJ$="IOLIST DESC_LINE_2$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_2"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=4
+    IOLOBJ$="IOLIST DESC_LINE_3$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_3"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=5
+    IOLOBJ$="IOLIST DESC_LINE_4$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_4"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=6
+    IOLOBJ$="IOLIST DESC_LINE_5$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_5"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=7
+    IOLOBJ$="IOLIST DESC_LINE_6$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_6"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=8
+    IOLOBJ$="IOLIST DESC_LINE_7$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_7"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=9
+    IOLOBJ$="IOLIST DESC_LINE_8$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_8"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=10
+    IOLOBJ$="IOLIST DESC_LINE_9$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_9"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+   <FieldDefinition>
+    DictIndex=11
+    IOLOBJ$="IOLIST DESC_LINE_10$:[LEN(60,SEP=SEP)]"
+    NAME$="DESC_LINE_10"
+    DESCRIPTION$="=MSG("+QUO+"DESC"+QUO+")"
+    TYPE$="S"
+    LENGTH$="60"
+    INTERNALFORMAT$="S"
+   </FieldDefinition>
+
+ </RecordInfo>
+
+</MetaData>
+
+<Data>
+
+   <RecordData>
+    ExternalKey$="000001"
+    MESS_NUMBER$="000001"
+    DESC_LINE_1$="     Welcome to DB Distributor                              "
+    DESC_LINE_2$="                                                            "
+    DESC_LINE_3$="                                                            "
+    DESC_LINE_4$="                                                            "
+    DESC_LINE_5$="                                                            "
+    DESC_LINE_6$="                                                            "
+    DESC_LINE_7$="                                                            "
+    DESC_LINE_8$="                                                            "
+    DESC_LINE_9$="                                                            "
+    DESC_LINE_10$="                                                            "
+   </RecordData>
+
+</Data>
+
+</PxTable>

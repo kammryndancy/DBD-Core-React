@@ -1,0 +1,102 @@
+0010 REM "Retreive Statistical Data <UT2RSD>
+0020 SETESC 9300; SETERR 9000
+0035 REM "3.8 - 06/15/95 - 13.92 - kmc
+0040 REM "Copyright 1995 Computer Software Inc.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0070 REM "Q0$ is first year to retrieve, Q0 is number of years to retreive, Q0(all) is returned values, 12 per year, starting at bucket 1
+0071 REM "Q$ is stat type (1,3 - eg: I/C) and balance type (4,1 - eg: U)
+0072 REM "K$ is 1st part of key we are to match (eg: item #, Account code, etc)
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q$,K$,Q0$,Q0,Q0{ALL}
+0100 SETERR 9000
+0110 X0$="UT2RSD",X1$="Retreive Statistical Data"
+0120 DIM Z0$(80,"-"),S0$(20)
+0130 K0=20,K1=1
+0135 C9=-1
+0145 M0$="-#0"
+0200 REM "
+0240 REM CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 09920
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0300 REM "IOLISTS
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0510 Z$="01O ZZPARM 13O ZZPARM  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0615 DIM A$(7); A$="STAT"+Q$(1,3)
+0617 A9$=Q$(4,1)
+0650 READ (Z[13],KEY=A$,DOM=9900)A$
+0655 Z$="02O "+A$(28,6)+" "
+0660 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0661,9900
+0910 K0$=""
+0920 DIM Q0[Q0*12]; REM "Size of array is 12 * number of years requested
+0925 P=0; REM "P is the pointer to where to insert into Q0 array
+0949 REM "Do only one type of stats at a time
+0950 A8$=A9$(1,1); A9$=A9$(2)
+0960 READ (Z[2],KEY=K$,DOM=0961)
+0962 Q2$=""
+0965 FOR I=1 TO Q0; Q2$=Q2$+STR(NUM(Q0$)+I-1:"0000"); NEXT I
+0970 Q1$=Q2$(LEN(Q2$)-3,4); REM "Q1$ is the last year we are getting
+1000 REM "Read through records matching the key if the year falls in the range q0$ -> Q0$+Q0 then add to the Q0 array
+1010 K0$=KEY(Z[2],END=5000); READ (Z[2])
+1011 IF K$>"" THEN IF K0$(1,LEN(K$))<>K$ THEN GOTO 5000
+1012 IF K0$(LEN(K0$),1)<>A8$ THEN GOTO 1010
+1014 IF K0$(LEN(K0$)-4,4)<Q0$ OR K0$(LEN(K0$)-4,4)>Q1$ THEN GOTO 1010
+1100 REM "Read record and load into Q0()
+1105 REM "Get Usage type, U$, and mask for usage type M$, and Key, K1$
+1110 U$=K0$(LEN(K0$),1),K1$=K0$(1,LEN(K0$)-1); DIM O[20]
+1115 P0=POS(U$=A$(49),17); IF P0=0 THEN M$="92" ELSE M$=A$(50+P0,3)
+1160 CALL "ZZPACK",ERR=1010,X3$,"R",M$,P9$,0,0,O{ALL},Z[2],U$,K1$,A$
+1200 REM "Add O() to Q0(), and update P, the current pointer
+1205 P=(POS(K0$(LEN(K0$)-4,4)=Q2$)-1)/4*12+1; IF P=0 THEN GOTO 1295; REM "Set P based on the year
+1210 IF P=1 THEN Q0[0]=O[0]; REM "If the first year the update the beg balance to the zero bucket
+1220 FOR I=0 TO 11; Q0[P+I]=Q0[P+I]+O[I+1]; NEXT I
+1990 READ (Z[2],KEY=K0$,DOM=1991); REM "Reposition file to after last key read
+1995 GOTO 1000
+3100 REM "Check O(), X=1 if any are non zero, X=0 if all are non-zero
+3104 X=0
+3105 FOR I=0 TO 20
+3110 IF O[I]<>0 THEN X=O[I]
+3115 NEXT I
+3120 IF X<>0 THEN X=1; REM "Found at least one non-zero
+3145 RETURN 
+3200 REM "Remove existing records
+3205 READ (Z[2],KEY=K0$,DOM=3206)
+3210 K5$=KEY(Z[2],END=3240)
+3215 IF K5$(1,LEN(K0$))<>K0$ THEN GOTO 3240 ELSE IF K5$(LEN(K5$),1)<>A8$ THEN READ (Z[2],END=3240); GOTO 3210 ELSE REMOVE (Z[2],KEY=K5$,DOM=3210); GOTO 3210
+3245 RETURN 
+5000 REM "EOJ
+5008 IF A9$>"" THEN GOTO 0900; REM "Get next type of stats
+5040 GOTO 9900
+8900 REM 
+8910 DEF FNS$(Z9$)=Z9$(1,POS(S0$=Z9$+S0$)-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9930 SETERR 9940; Q1$=A1$; EXIT 
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 

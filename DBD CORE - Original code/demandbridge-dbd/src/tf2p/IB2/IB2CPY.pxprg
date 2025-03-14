@@ -1,0 +1,130 @@
+0010 REM "<IB2CPY> copy IBSA files from server to PC
+0020 SETESC 9300; SETERR 9000
+0035 REM "5.6 - 12/22/08 - 11.510277 - jir - SSP# 180550
+0037 REM "180550-Set up IBSA in GUI                                          
+0040 REM "Copyright 2008 Demand Bridge, LLC.; Norcross, Georgia
+0041 REM "        Licensed Software - All Rights Reserved.
+0050 IF %GUI THEN PROCESS "IBGCPY","../IBG/IB.EN"; EXIT ! SSP 180550
+0090 CLEAR ; SETERR 0100; ENTER X3$,X4$,Q0$,Q1$
+0095 INIT:
+0100 IF %GUI=0 THEN SETERR 9000
+0110 X0$="IB2CPY",X1$="Copy IBSA Files from Server to PC"
+0120 DIM Z0$(80,"-"),FILE$[150]
+0130 K0=20,K1=1
+0135 C9=-1
+0170 IF TCB(88)<>0 THEN ISWIN=1 ELSE ISWIN=0
+0191 REM "IF TCB(88)<>0 THEN %WDX$="[wdx]" ELSE %WDX$=""
+0200 REM "
+0210 IF %GUI THEN X0=-1 ! SSP 180550
+0240 CALL "ZZCOMP",X0$,X1$,X2$,X3$,X4$,M9$,X0,X1,X2; IF X1>0 THEN GOTO 9920 ! SSP 180550
+0245 IF X3$(66,1)>"2" THEN PRECISION NUM(X3$(66,1),ERR=0246)
+0295 DIM Z0$(80,X3$(235,1)); Z0$=MNM('GS')+Z0$+MNM('GE')
+0298 IF TCB(88)=0 THEN CALL "ZZPROM",".4",X3$,Z,"This program MUST be run using WindX...","","",0; RUN "ZMENU"
+0299 IF %GUI=0 THEN CALL "ZZ2PRP","IB",RESULT$,DATE$; IF RESULT$<>"Y" THEN CALL "ZZPROM",".4",X3$,Z,"Access Denied! IBSA is not an installed module.","","",0; RUN "ZMENU"
+0300 REM "IOLISTS
+0310 IOLIST A$; REM "EM1
+0320 IOLIST B$
+0330 IOLIST C$
+0500 REM "FILES
+0505 DIM Z[NUM(X3$(60,3))]
+0509 REM "Slot 1 used for ED0 file opened in 1000's, slot 2 used for text file created in 700's to write to
+0510 Z$="13O ZZPARM  20O FS2...  21O FS1...  22O FMP...  "
+0520 CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0521,9900
+0600 REM "
+0610 IF %GUI=0 THEN GOSUB 6000
+0620 PARM$=X3$(9,3)+"IBS"
+0630 IF %GUI THEN RETURN 
+0640 IF Q1$="" AND %GUI=0 THEN CALL "ZZPROM",".Y",X3$,Z,"PROCEED?","","",0; ON Z GOTO 0641,9900
+0650 PROCEED:
+0710 REM "SERIAL TEXT$,0,0,ERR=0711; GOTO 0712; REM "Create text file to write to
+0711 REM "EXT_1=EXT_1+1; GOTO 0705
+0720 REM "Z$="02CU 02O "+TEXT$+" "
+0730 REM "CALL "ZZFLES",X3$,Y1$,Y0$,Z$,Z{ALL},Z0,Z1; ON Z0 GOTO 0731,9900
+0740 REM "CLOSE (Z[2]); OPEN LOCK (Z[2],OPT="TEXT")TEXT$; REM "Re-open as a text file
+0800 REM "Set Prefix
+0900 REM "Read ZZPARM file for DIRectory and hex codes
+0910 DIM I$(512); READ (Z[13],KEY=PARM$,DOM=0911)I$
+1000 REM "Get list of .exp files to process
+1005 I=-1,J=0
+1010 IMPORT_PATH$=STP(I$(8,120),1); REM " Directory on server where files were originally placed
+1011 IF NUL(IMPORT_PATH$) THEN MSGBOX "Setup : Directory on server where files were originally place"; CMD_STR$="E"; GOTO 9900 ! ssp 180550
+1012 PC_PATH$=STP(I$(248,120),1); REM "Directory on PC to put files
+1013 IF NUL(PC_PATH$) THEN MSGBOX "Setup : Directory on PC to put files"; CMD_STR$="E"; GOTO 9900
+1015 SELECT AT$ FROM IMPORT_PATH$,ERR=9900
+1030 IF AT$<>"." AND AT$<>".." AND POS("ARINV"=AT$)<>0 THEN FILE$[I+1]=IMPORT_PATH$+AT$; I=I+1; REM " ONLY PICK ONES WITH ARINV IN THE NAME
+1035 NEXT RECORD 
+1036 SLOT=UNT
+1060 CLOSE (SLOT); OPEN INPUT (SLOT,ISZ=8000,ERR=5000)FILE$[J]; REM "Open for reading raw file
+1065 CLOSE (13); OPEN (13)"ZZPARM"; REM "Re-open ZZPARM closed in ZZ2BLS
+1075 IF %GUI=0 THEN PRINT @(15,15),'CE',"Processing: "+FILE$[J]
+1100 REM "PROCESS THE FILE
+1105 PC_FILE$=FILE$[J](LEN(IMPORT_PATH$)+1)
+1106 PC_FILE$=STP(PC_FILE$,1)
+1110 SERIAL PC_PATH$+PC_FILE$,ERR=*PROCEED; REM " Create New file
+1120 TMP_CHAN=HFN; OPEN PURGE (TMP_CHAN,ISZ=1,ERR=*NEXT)PC_PATH$+PC_FILE$; GOTO 1131
+1135 READ RECORD (SLOT,END=*NEXT)J$; WRITE RECORD (TMP_CHAN,SIZ=LEN(J$))J$; GOTO *SAME
+1931 CLOSE (SLOT,ERR=1932)
+1945 ERASE FILE$[J],ERR=1946
+1985 J=J+1
+1999 GOTO 1036
+5000 REM "EOJ
+5001 XFD$=FN%XFD$(Z[2],0),TOT_REC=DEC(XFD$(38,4))
+5003 CLOSE (Z[2],ERR=5004)
+5004 IF TOT_REC=0 THEN ERASE TEXT$; GOTO 5012
+5005 NAME_2$="FO1.",EXT_2=1
+5007 GOR$=NAME_2$+STR(EXT_2:"000")
+5010 REM RENAME TEXT$,GOR$,ERR=5011; GOTO 5012; REM "Rename the ED1 file we wrote to, to an FO1 file to be used in the Order Requisition Gateway
+5011 REM EXT_2=EXT_2+1; GOTO 5007
+5015 IF %GUI=0 THEN C=T; GOSUB 8150
+5020 REM "IF Q1$="" THEN CALL "ZZPROM",".4",X3$,Z,"PROCESS COMPLETE!!","","",0
+5030 CMD_STR$="E"
+5040 GOTO 9900
+6000 REM "BACKGROUND
+6005 IF %GUI=0 THEN PRINT (0,ERR=6016)'SB',
+6020 IF %GUI=0 THEN PRINT @(0,4),"Copying IBSA files from Server to PC"
+6165 PRINT (0,ERR=6166)'SF',
+6190 RETURN 
+8100 REM "GOSUB here, once, at the beginning, after the background is set and before the Proceed? question. Set T to total # to do (by calling ZZINFO) and T0 to the reporting interval (report every T0 number of records) this is typically 2% of total; This also prints a message (@8115),so adjust accordingly
+8110 T=0; CALL "ZZ2FNC;SERIALRECCNT",SLOT,T
+8115 IF %GUI=0 THEN PRINT @(0,7),"There are "+STR(T)+" records to process"
+8129 REM "Set T0, we make sure T0 is > 1, because later on we MOD and look for avalue of 1. IF T0 is 1, then nothing would get reported. We look for a result of 1 because this causes the first record to automatically start the reporting instead of waiting until the T0'th record to get the first report
+8130 T0=INT(T*.02); IF T0<=1 THEN T0=2
+8145 RETURN 
+8150 REM "Call this each time to update the bar graph. Display horiz. bar graph given total #, T and current #, C, and time counter T1 (T1 is init'ed here and used here, just don't use it somewhere else)
+8155 CALL "ZZBARG",X3$,"HG",19,10,50,T1,T,C
+8195 RETURN 
+8950 DEF FNS$(Z9$)=Z9$(1,POS("     "=Z9$+"     ")-1)
+9000 REM "ERROR PROCESSING
+9005 IF ERR=69 THEN GOTO 9500
+9010 Y5=ERR,Y6=TCB(5)
+9015 SETERR 9016; Y8$=LST(PGM(Y6))
+9016 SETERR 9000
+9040 CALL "ZZERRM",Y8$,X0$,Y7$,X3$,Y5,Y6,Y7,Y8,0
+9045 REM 
+9050 ON Y7 GOTO 9060,9100,9800,9070,9090
+9055 REM 
+9060 RETRY 
+9070 SETERR 9080
+9075 EXECUTE Y7$
+9080 SETERR 9000; RETRY 
+9090 SETERR 0000; RETRY 
+9100 REM " TRANSFER CONTROL
+9180 GOTO 0990
+9190 GOTO 9800
+9300 SETESC 9350
+9310 SETERR 9350
+9315 IF X3$(47,1)="N" THEN RETURN ELSE SETESC 0000; RETURN 
+9350 SETERR 9000; RETURN 
+9500 REM "CTRL LOGIC
+9510 SETERR 9000; GOSUB 6400
+9520 ON C9 GOTO 1140,2040
+9900 REM "END PROGRAM
+9901 CMD_STR$="E"
+9905 END_PROG:
+9910 CALL "ZZFLES",X3$,Y1$,Y0$,"END",Z{ALL},0,0
+9920 IF %GUI THEN EXIT 
+9930 SETERR 9940; Q1$=A1$
+9940 SETESC 9350
+9950 RUN "ZMENU"
+9999 END 
+56000 ! "180550-Set up IBSA in GUI                                          
